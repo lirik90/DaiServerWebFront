@@ -1,0 +1,17 @@
+<h2>Типы состояний</h2>
+<button (click)="add()">Добавить тип состояния</button>
+<ul class="houses">
+  <li *ngFor="let item of statusTypes" [class.selected]="stype == item">
+    <a class="pre_badge" (click)="select(item)">
+      <span class="badge">{{item.id}}</span> {{item.title}}
+    </a>
+    <button class="delete" title="delete status type" (click)="remove(item)">x</button>
+  </li>
+</ul>
+
+<div class="house_form" *ngIf="stype">Тип состояния:
+  <label>Имя: <input [(ngModel)]="stype.name" placeholder="Name"/></label>
+  <label>Заголовок: <input [(ngModel)]="stype.title" placeholder="Title"/></label>
+  <label>Цвет: <input [(ngModel)]="stype.color" placeholder="Цвет"/></label>
+  <button (click)="save()">Сохранить тип состояния</button>
+</div>

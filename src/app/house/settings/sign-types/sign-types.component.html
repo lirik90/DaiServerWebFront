@@ -1,0 +1,15 @@
+<h2>Еденицы измерения</h2>
+<button (click)="add()">Добавить еденицу измерения</button>
+<ul class="houses">
+  <li *ngFor="let item of signTypes" [class.selected]="sign == item">
+    <a class="pre_badge" (click)="select(item)">
+      <span class="badge">{{item.id}}</span> {{item.name}}
+    </a>
+    <button class="delete" title="delete sign" (click)="remove(item)">x</button>
+  </li>
+</ul>
+
+<div class="house_form" *ngIf="sign">Еденица измерения:
+  <label>Имя: <input [(ngModel)]="sign.name" placeholder="Name"/></label>
+  <button (click)="save()">Сохранить еденицу измерения</button>
+</div>

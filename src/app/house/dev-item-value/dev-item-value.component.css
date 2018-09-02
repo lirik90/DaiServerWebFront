@@ -1,0 +1,12 @@
+mat-slider {
+  width: 100%;
+}
+.holding {
+	cursor: pointer;
+  text-decoration: underline;
+}
+.holding:hover {
+	background-color: #eee;
+	color: #6A9D80;
+	border-radius: 16px;
+}

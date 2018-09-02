@@ -1,0 +1,20 @@
+<ng-container *ngIf="group">
+  <h2>Параметры: {{group.type.title}}</h2>
+  <p *ngIf="description">{{group.type.description}}</p>
+
+  <form class="example-form" (ngSubmit)="onSubmit()" #paramForm="ngForm">
+    <ng-container *ngFor="let data of group.params">
+      <p *ngIf="!canShowIt(data.param.type)">{{data.param.title}}</p>
+      <mat-form-field *ngIf="canShowIt(data.param.type)" class="example-full-width">
+        <input matInput placeholder="{{data.param.title}} ({{data.param.name}})" 
+               name="{{data.id}}" [(ngModel)]="data.value">
+        <mat-hint *ngIf="data.param.description">{{data.param.description}}</mat-hint>
+      </mat-form-field>
+    </ng-container>
+    <button mat-raised-button color="primary" [disabled]="cantChange || !paramForm.form.valid" type="submit">Сохранить</button>
+
+    <button mat-raised-button *ngIf="group.type.code_id" routerLink="../settings/code/{{group.type.code_id}}">Edit code</button>
+    <button mat-raised-button (click)="goBack()">go back</button>
+  </form>
+</ng-container>
+<button mat-raised-button *ngIf="!group" (click)="goBack()">go back</button>

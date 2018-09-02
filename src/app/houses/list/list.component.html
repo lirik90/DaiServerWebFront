@@ -1,0 +1,32 @@
+<h2>Проекты</h2>
+<app-house-search></app-house-search>
+
+<ul class="houses">
+  <li *ngFor="let house of houses">
+    <a class="pre_badge" routerLink="/house/{{house.id}}/view">
+      <span class="badge">{{house.id}}</span> {{house.title}}
+    </a>
+   <button class="delete" title="detail project"
+      (click)="detail(house)">?</button>
+   <button class="delete" title="delete project"
+      (click)="delete(house)">x</button>
+    </li>
+</ul>
+
+<mat-paginator [length]="resultsLength"
+               [pageSize]="10"
+               [pageSizeOptions]="[5, 10, 25, 100]">
+</mat-paginator>
+
+<hr>
+<div class="house_form">Проект:
+  <label>Имя: <input [(ngModel)]="new_house.name" placeholder="Name" /></label>
+  <label>Заголовок: <input [(ngModel)]="new_house.title" placeholder="Display name" /></label>
+  <label>Описание: <input [(ngModel)]="new_house.description" placeholder="Description" /></label>
+  <label>Уникальный номер: <input [(ngModel)]="new_house.device" placeholder="Device UUID" /></label>
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button (click)="add()">
+    Добавить
+  </button>
+</div>
+

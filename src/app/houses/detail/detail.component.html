@@ -1,0 +1,20 @@
+<div *ngIf="house">
+  <h2>Подробнее о проекте: «{{ house.title | uppercase }}»</h2>
+  <div><span>Ид: </span>{{house.id}}</div>
+  <div><span>Имя: </span>{{house.name}}</div>
+  <div><span>Уникальный номер: </span>{{house.device}}</div>
+  <div>
+    <label>Заголовок:
+      <input [(ngModel)]="house.title" placeholder="title">
+    </label>
+  </div>
+  <div>
+    <label class="desc_label">Описание:
+      <textarea [(ngModel)]="house.description" placeholder="description"></textarea>
+    </label>
+  </div>
+</div>
+<button (click)="goBack()">Назад</button>
+<button *ngIf="house" routerLink="/house/{{house.id}}/manage">Открыть</button>
+<button *ngIf="can_save" (click)="save()">Сохранить</button>
+

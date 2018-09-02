@@ -1,0 +1,14 @@
+<div id="search-component">
+  <h4>Поиск проекта</h4>
+
+  <input #searchBox id="search-box" (keyup)="search(searchBox.value)" />
+
+  <ul class="search-result">
+    <li *ngFor="let house of houses$ | async" >
+      <a routerLink="/house/{{house.id}}/view">
+        {{house.title}}
+      </a>
+    </li>
+  </ul>
+</div>
+

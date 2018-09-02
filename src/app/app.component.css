@@ -1,0 +1,112 @@
+/* AppComponent's private CSS styles */
+h1 {
+  font-size: 1.2em;
+  color: #999;
+  margin-bottom: 0;
+}
+h2 {
+  font-size: 2em;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.main-is-mobile .main-toolbar {
+  position: fixed;
+  z-index: 2;
+}
+
+.main-spacer {
+  flex: 1 1 auto;
+}
+
+.hello-user {
+  color: #999;
+}
+
+mat-spinner {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.top-menu a, .top-menu input, .top-menu li, .top-menu ol, .top-menu p, .top-menu ul {
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: .3px;
+    font-weight: 400;
+}
+.top-menu ul li {
+    padding-bottom: 2px;
+    list-style-type: none;
+    cursor: pointer;
+}
+.top-menu a.nav-link {
+    margin: 0;
+    padding: 24px 16px;
+    cursor: pointer;
+	font-size: 16px;
+	font-weight: 400;
+	text-transform: uppercase;
+	text-decoration: none;
+  color: #607D8B;
+  display: inline-block;
+}
+.nav-link > span {
+  vertical-align: super;
+}
+.top-menu a.nav-link:hover {
+  color: #039be5;
+  background-color: #CFD8DC;
+}
+.top-menu a.nav-link.active {
+  background-color: #CFD8DC;
+}
+
+.top-menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 80%;
+}
+.top-menu ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  list-style-position: inside;
+  padding: 0;
+  margin: 0;
+}
+
+h1.main-app-name {
+  margin-left: 8px;
+	margin-right: 8px;
+}
+
+.main-sidenav-container {
+  flex: 1;
+  height: 86%;
+}
+
+.main-is-mobile .main-sidenav-container {
+  flex: 1 0 auto;
+}
+
+@media only screen and (max-width: 600px) {
+  mat-toolbar {
+    height: 48px;
+  }
+  mat-toolbar .top-menu a.nav-link {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+}
+

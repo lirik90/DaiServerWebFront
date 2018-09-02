@@ -1,0 +1,60 @@
+<h2>Секции</h2>
+<button (click)="add()">Добавить секцию</button>
+<ul class="houses">
+  <li *ngFor="let sct of sections" [class.selected]="sel_sct == sct">
+    <a class="pre_badge" (click)="select(sct)">
+      <span class="badge">{{sct.id}}</span> {{sct.name}}
+    </a>
+    <button class="delete" title="delete section" (click)="remove(sct)">x</button>
+  </li>
+</ul>
+
+<div class="house_form" *ngIf="sel_sct">Секция:
+  <label>Имя: <input [(ngModel)]="sel_sct.name" placeholder="Name"/></label>
+  <label>День: <input [(ngModel)]="sel_sct.dayStart" placeholder="Day"/></label>
+  <label>Ночь: <input [(ngModel)]="sel_sct.dayEnd" placeholder="Night"/></label>
+  <button (click)="save()">Сохранить секцию</button>
+
+  <h2>Группы в секции:</h2>
+  <button (click)="add_group()">Добавить группу</button>
+  <ul class="houses">
+    <li *ngFor="let group of sel_sct.groups" [class.selected]="sel_group == group">
+      <a class="pre_badge" (click)="select_group(group)">
+        <span class="badge">{{group.id}}</span> {{group.type && group.type.title}}
+      </a>
+      <button class="delete" title="delete item type" (click)="remove_group(group)">x</button>
+    </li>
+  </ul>
+
+  <div class="house_form" *ngIf="sel_group">Группа:
+    <label>Тип группы: <select [(ngModel)]="sel_group.type_id">
+        <option value="0">Нет</option>
+        <option *ngFor="let gtype of groupTypes" [value]="gtype.id">{{gtype.title}}</option>
+      </select>
+    </label>
+
+    <h2>Элементы в группе:</h2>
+    <button (click)="add_item()">Добавить элемент</button>
+    <ul class="houses">
+      <li *ngFor="let item of sel_group.items">
+        <a class="pre_badge">
+          <span class="badge">{{item.id}}</span> {{item.name || item.type.title}}
+        </a>
+        <button class="delete" title="delete item" (click)="remove_item(item)">x</button>
+      </li>
+    </ul>
+
+    <h2>Уставки в группе:</h2>
+    <button (click)="add_param()">Добавить уставку</button>
+    <ul class="houses">
+      <li *ngFor="let data of sel_group.params">
+        <a class="pre_badge">
+          <span class="badge">{{data.id}}</span> {{data.param.title}}
+        </a>
+        <button class="delete" title="delete param" (click)="remove_param(data)">x</button>
+      </li>
+    </ul>
+
+    <button (click)="save_param()">Сохранить группу</button>
+  </div>
+</div>

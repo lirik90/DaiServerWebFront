@@ -1,0 +1,26 @@
+<h1 mat-dialog-title>{{data.name || data.type.name}}</h1>
+<div mat-dialog-content>
+  <p>Установку значения нельзя отменить. Вы уверены что хотите сделать это?</p>
+
+  <mat-form-field *ngIf="values">
+    <mat-select [(value)]="value">
+      <mat-option *ngFor="let title of values ; index as i" [value]="i">{{title}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-slider *ngIf="!values"
+    [disabled]="data.value == null"
+    [thumb-label]="true"
+    tick-interval="auto"
+    [max]="max" min="0" step="1"
+    [(ngModel)]="value">
+  </mat-slider>
+  <mat-form-field>
+    <input type="number" matInput placeholder="Value" [(ngModel)]="value">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="value" cdkFocusInitial>Ok</button>
+</div>
+

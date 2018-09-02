@@ -1,0 +1,23 @@
+<div class="house-container" [class.house-is-mobile]="mobileQuery.matches">
+  <mat-toolbar class="house-toolbar">
+    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+    <mat-icon [matTooltip]="status_desc" [ngClass]="status_class"></mat-icon>
+    <app-drag-scroll *ngIf="houseService.house">{{houseService.house.title}}</app-drag-scroll>
+    <span *ngIf="!mobileQuery.matches && connected" matTooltip="Время на устройстве">{{dt_text}} {{dt_tz_name}}</span>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="house-sidenav-container"
+                         [style.marginTop.px]="mobileQuery.matches ? 48 : 0">
+    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
+                 [fixedInViewport]="mobileQuery.matches" [fixedTopGap]="mobileQuery.matches ? 96 : 48" [opened]="!mobileQuery.matches">
+
+      <mat-nav-list>
+        <a *ngFor="let nav of fillerNav" mat-list-item routerLink="{{nav.link}}" routerLinkActive="active" (click)="mobileQuery.matches && snav.close()"><mat-icon>{{nav.icon}}</mat-icon>{{nav.text}}</a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+			<router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
