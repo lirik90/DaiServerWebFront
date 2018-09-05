@@ -109,7 +109,7 @@ export class ControlService {
       }
     });
 
-    this.wsbService.start("wss://" + document.location.hostname + ":25589/");
+    this.wsbService.start("wss://" + document.location.hostname + "/wss/");
 	}
 
   close(): void {
