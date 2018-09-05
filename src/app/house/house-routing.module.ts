@@ -39,6 +39,7 @@ const houseRoutes: Routes = [
             loadChildren: 'app/house/settings/settings.module#SettingsModule',
             canLoad: [AuthGuard]
           },
+          { path: 'beerbox', loadChildren: 'app/beerbox/beerbox.module#BeerboxModule', canLoad: [AuthGuard] },
         ]
       } 
     ]

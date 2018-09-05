@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Подтверждение замены кеги</h1>
+<div mat-dialog-content>
+  <p>После замены кеги вам нужно это подтвердить. Вы уверены что хотите сделать это?</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Нет</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Я заменил кегу</button>
+</div>
