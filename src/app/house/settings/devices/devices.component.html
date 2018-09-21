@@ -1,42 +1,25 @@
-<h2>Устройства</h2>
-<button (click)="add()">Добавить устройство</button>
+<h2>Устройства:</h2>
+<button (click)="save()">Сохранить устройства</button>
+<button (click)="cancel()" *ngIf="changed">Отмена</button>
+
 <ul class="houses">
-  <li *ngFor="let dev of devices" [class.selected]="sel_dev == dev">
-    <a class="pre_badge" (click)="select(dev)">
-      <span class="badge badge_id">{{dev.id}}</span><span class="badge badge_adr">ADR {{dev.address}}</span> {{dev.name}}
-    </a>
-    <button class="delete" title="delete device"
-      (click)="remove(dev)">x</button>
-  </li>
-</ul>
-
-<div class="house_form" *ngIf="sel_dev">Устройство:
-  <label>Имя: <input [(ngModel)]="sel_dev.name" placeholder="Name" /></label>
-  <label>Адрес: <input [(ngModel)]="sel_dev.address" placeholder="Address" /></label>
-
-  <button (click)="add_item()">Добавить элемент</button>
-  <ul class="houses">
-    <li *ngFor="let item of sel_dev.items" [class.selected]="sel_item == item">
-      <a class="pre_badge" (click)="select_item(item)">
-        <span class="badge badge_id left_tab">{{item.id}}</span>{{item.name || (item.type && item.type.title)}}
+  <ng-container *ngFor="let item of items">
+    <li *ngIf="item.state !== changeState.Delete" [class.selected]="sel_item == item">
+      <a class="pre_badge" (click)="select(item)">
+        <span class="badge badge_id">{{item.obj.id}}</span><span class="badge badge_adr">ADR {{item.obj.address}}</span> {{item.obj.name}}
       </a>
       <button class="delete" title="delete device"
-                             (click)="remove_item(item)">x</button>
+        (click)="remove(item)">x</button>
     </li>
-  </ul>
+  </ng-container>
+</ul>
 
-  <button (click)="save()">Сохранить устройство</button>
+<button (click)="add()">Добавить устройство</button>
+<div class="house_form" *ngIf="sel_item"><p>Устройство:</p>
+  <label>Имя: <input [(ngModel)]="sel_item.obj.name" placeholder="Name" (ngModelChange)="itemChanged()" /></label>
+  <label>Адрес: <input [(ngModel)]="sel_item.obj.address" placeholder="Address" (ngModelChange)="itemChanged()" /></label>
 
-  <div *ngIf="sel_item">
-    Элемент:
-    <label>Имя: <input [(ngModel)]="sel_item.name" placeholder="Name" /></label>
-    <label>Юнит: <input [(ngModel)]="sel_item.unit" placeholder="Unit" /></label>
-    <label>Предок: <input [(ngModel)]="sel_item.parent_id" placeholder="Parent" /></label>
-    <label>Тип: <select [(ngModel)]="sel_item.type_id">
-        <option *ngFor="let type of itemtypes" [value]="type.id">{{type.title}}</option>
-      </select></label>
-    <button (click)="save_item()">Сохранить элемент</button>
-  </div>
+  <app-deviceitems *ngIf="!changed" [dev]="sel_item.obj"></app-deviceitems>
 </div>
 
 
