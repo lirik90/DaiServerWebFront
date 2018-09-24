@@ -17,7 +17,6 @@
 - /api/v1/detail/ -> HouseDetail
 - /api/v1/events/ -> PaginatorApi<EventLog>
 - /api/v1/logs/ -> PaginatorApi<Logs>
-- /api/v1/sections/ -> ?
 - /api/v1/code/ -> Codes
 
 ### Авторизация
@@ -45,15 +44,11 @@
 [1 байт **CMD**][4 байта **PROJECT_ID**][N байт **ТЕЛО ЗАПРОСА**]
 
 ### Сообщения посылаемые клиентом
-#### Cmd.Auth (1) - Авторизация
+#### Cmd.Auth (1) - Авторизация. Ответ: Cmd.Welcome
 [1][0][N TOKEN]
-##### Ответ:
-[2]
 
-#### Cmd.ConnectInfo (3) - Подключён ли проект или нет
+#### Cmd.ConnectInfo (3) - Подключён ли проект или нет. Ответ: Cmd.ConnectInfo
 [3][PROJ_ID]
-##### Ответ:
-[3][PROJ_ID][1байт BOOLEAN Connected][QString IP][INT64 time milliseconds][QString TimeZone name]
 
 #### Cmd.WriteToDevItem (4) - Изменить значение элемента (Вкл./Выкл./Значение)
 [4][PROJ_ID][4байта ITEM_ID][QVariant RAW_VALUE]
@@ -80,12 +75,18 @@
 #### Cmd.Welcome (2) - Авторизация успешна
 [2]
 
+#### Cmd.ConnectInfo (3) - Состояние подключения проекта
+[3][PROJ_ID][1байт BOOLEAN Connected][QString IP][INT64 time milliseconds][QString TimeZone name]
+
 #### Cmd.DevItemValues (10) - Новые значения элементов
 [10][PROJ_ID][4байта PACK_SIZE][[4байта ITEM_ID][QVariant raw_value][QVariant display_value][Повторяется PACK_SIZE раз]
 
-#### Cmd.ConnectInfo (3)
-#### Cmd.Eventlog (11)
-#### Cmd.GroupMode (12)
+#### Cmd.Eventlog (11) - Новое сообщение в журнале
+[11][PROJ_ID][4байта EVENT_ID][4байта TYPE_ID][QString ISODateWithMs][QString category][QString message]
+
+#### Cmd.GroupMode (12) - Новое значение режима автоматизации
+[12][PROJ_ID][4байта MODE_ID][4байта GROUP_ID]
+
 ---
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.0.
