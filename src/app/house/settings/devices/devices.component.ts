@@ -43,8 +43,8 @@ export class DevicesComponent extends ChangeTemplate<Device> implements OnInit {
     let name = ByteTools.saveQString(obj.name);
     let view = new Uint8Array(12 + name.length);
     ByteTools.saveInt32(obj.id, view);
-    ByteTools.saveInt32(obj.address, view, 4);
-    view.set(name, 8);
+    view.set(name, 4);
+    ByteTools.saveInt32(obj.address, view, 4 + name.length);
     ByteTools.saveInt32(obj.checker_id, view, 8 + name.length);
     return view;
   }

@@ -42,7 +42,7 @@ export abstract class ChangeTemplate<T> {
         this.changed = true;
     }
   }
- 
+
   cancel(): void {
     if (this.sel_item !== undefined)
       this.select(this.sel_item);
@@ -64,37 +64,51 @@ export abstract class ChangeTemplate<T> {
   abstract saveObject(obj: T): Uint8Array;
 
   getChangedData(): Uint8Array {
-    let size = 0;
     let data;
-    let data_list = [];
-    let flag_array = [];
+    let updateSize = 0;
+    let insertSize = 0;
+    let updateList = [];
+    let insertList = [];
+    let deleteList = [];
     for (const item of this.items) {
-      data = this.saveObject(item.obj);
-      size += data.length;
-      data_list.push(data);
-      flag_array.push(item.state === ChangeState.Delete ? 0 : 1);
-    }
-    let count = flag_array.length;
-    let flag = 0;
-    let flag_data = [];
-    let view = new Uint8Array(4 + size + Math.ceil(count / 8));
-    ByteTools.saveInt32(this.items.length, view);
-    let pos = 4;
-    for (let i = 0; i < count; ++i) {
-      data = data_list[i];
-      view.set(data, pos);
-      pos += data.length;
-      flag ^= (-flag_array[i] ^ flag) & (1 << (i % 8));
-      if ((i+1) % 8 === 0) {
-        flag_data.push(flag);
-        flag = 0;
+      if (item.state === ChangeState.Delete) {
+        deleteList.push((<any>item.obj).id);
+      } else if (item.state === ChangeState.Upsert) {
+        data = this.saveObject(item.obj);
+
+        if ((<any>item.obj).id > 0) {
+          updateSize += data.length;
+          updateList.push(data);
+        } else {
+          insertSize += data.length;
+          insertList.push(data);
+        }
       }
     }
-    if (count % 8 !== 0)
-      flag_data.push(flag);
-    do {
-      view[pos] = flag;
-    } while(++pos < view.length);
+
+    let view = new Uint8Array(12 + updateSize + insertSize + (deleteList.length * 4));
+
+    ByteTools.saveInt32(updateList.length, view);
+    let pos = 4;
+    for (const data of updateList) {
+      view.set(data, pos);
+      pos += data.length;
+    }
+
+    ByteTools.saveInt32(insertList.length, view, pos);
+    pos += 4;
+    for (const data of insertList) {
+      view.set(data, pos);
+      pos += data.length;
+    }
+
+    ByteTools.saveInt32(deleteList.length, view, pos);
+    pos += 4;
+    for (const id of deleteList) {
+      ByteTools.saveInt32(id, view, pos);
+      pos += 4;
+    }
+
     return view;
   }
 
