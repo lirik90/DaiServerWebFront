@@ -23,6 +23,20 @@ export enum Cmd {
   DevItemValues,
   Eventlog,
   GroupMode,
+
+  StructModifyDevices,
+  StructModifyDeviceItems,
+  StructModifySections,
+  StructModifyGroups,
+  StructModifyGroupItems,
+  StructModifyGroupParams,
+  StructModifyGroupTypes,
+  StructModifyGroupItemTypes,
+  StructModifyGroupParamTypes,
+  StructModifyGroupStatuses,
+  StructModifyStatusTypes,
+  StructModifySigns,
+  StructModifyScripts,
 }
 
 export interface ConnectInfo {
@@ -42,7 +56,7 @@ export class ControlService {
 	constructor(
     private wsbService: WebSocketBytesService,
     private houseService: HouseService,
-    @Inject(DOCUMENT) private document) 
+    @Inject(DOCUMENT) private document)
   {
     this.opened = wsbService.opened;
   }
@@ -128,7 +142,7 @@ export class ControlService {
   parseConnectInfo(data: ArrayBuffer): ConnectInfo {
     if (data === undefined)
       return;
-    
+
     let view = new Uint8Array(data);
     const connected: boolean = view[0] == 1;
     const [start, ip] = ByteTools.parseQString(view, 1);
@@ -141,7 +155,7 @@ export class ControlService {
   parseEventMessage(data: ArrayBuffer): EventLog {
     if (data === undefined)
       return;
-    
+
     let view = new Uint8Array(data);
     const [start, id] = ByteTools.parseUInt32(view);
     const [start1, type] = ByteTools.parseUInt32(view, start);
@@ -191,14 +205,13 @@ export class ControlService {
       msg_size += view.length;
     }
 
-    view = new Uint8Array(8 + msg_size);
-    ByteTools.saveInt32(4 + msg_size, view); // QByteArray size
-    ByteTools.saveInt32(params.length, view, 4);
+    view = new Uint8Array(4 + msg_size);
+    ByteTools.saveInt32(params.length, view);
     let start: number = 8;
     for (const data of data_list) {
       view.set(data, start);
       start += data.length;
-    } 
+    }
 
     this.wsbService.send(Cmd.ChangeParamValues, this.houseService.house.id, view);
   }

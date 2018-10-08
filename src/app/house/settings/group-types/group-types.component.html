@@ -46,7 +46,12 @@
     </label>
     <label><input type="checkbox" [(ngModel)]="sel_itype.isRaw"/> Требует нормализации</label>
     <label><input type="checkbox" [(ngModel)]="sel_itype.groupDisplay"/> Виден в группе</label>
-    <label><input type="checkbox" [(ngModel)]="sel_itype.saveImmediately"/> Сохранять немедленно</label>
+    <label>Алгоритм сохранения изменений: <select [(ngModel)]="sel_itype.saveAlgorithm">
+        <option value="1">Не сохранять автоматически</option>
+        <option value="2">Сохранять немедленно</option>
+        <option value="3">Сохранять по таймеру</option>
+      </select>
+    </label>
 
     <button (click)="save_it()">Сохранить тип элемента</button>
   </div>

@@ -6,7 +6,7 @@ import { SettingsRoutingModule } from './settings-routing.module';
 import { SettingsService } from './settings.service';
 
 import { SettingsComponent } from './settings.component';
-import { DevicesComponent } from './devices/devices.component';
+import { DevicesComponent, DeviceItemsComponent } from './devices/devices.component';
 import { SectionsComponent } from './sections/sections.component';
 import { GroupTypesComponent } from './group-types/group-types.component';
 import { StatusTypesComponent } from './status-types/status-types.component';
@@ -31,6 +31,7 @@ const monacoConfig: NgxMonacoEditorConfig = {
   declarations: [
     SettingsComponent, 
     DevicesComponent, 
+    DeviceItemsComponent,
     SectionsComponent, 
     GroupTypesComponent, 
     StatusTypesComponent, 

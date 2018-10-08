@@ -1,84 +1,90 @@
-export class Codes {
-  id: number;
-  name: string;
-  text: string;
+export class Codes { // Скрипт автоматизации
+  id: number;   // ID
+  name: string; // Имя
+  text: string; // Скрипт
 }
 
-export class GroupType {
-  id: number;
-  name: string;
-  title: string;
-  code_id: number;
+export class GroupType { // Тип группы
+  id: number;           // ID
+  name: string;         // Имя
+  title: string;        // Заголовок
+  code_id: number;      // ID скрипта автоматизации
   description: string;
 }
 
-export class SignType {
-  id: number;
-  name: string;
+export class SignType { // Еденица измерения
+  id: number;   // ID
+  name: string; // Еденица измерения
 }
 
-export class CheckerType {
-  id: number;
-  name: string;
+export class CheckerType { // Плагин работы с устройством
+  id: number;   // ID
+  name: string; // Имя плагина
 }
 
-export enum ItemTypeRegister {
+export enum ItemTypeRegister { // Тип данных элемента
   Unknown,
-  DiscreteInputs,
-  Coils,
-  InputRegisters,
-  HoldingRegisters,
+  DiscreteInputs,   // Булевы значения только для чтения
+  Coils,            // Булевы значения чтение/запись
+  InputRegisters,   // Значения только для чтения
+  HoldingRegisters, // Значения чтение/запись
 }
 
-export class ItemType {
-  id: number;
-  name: string;
-  title: string;
-  isRaw: boolean;
-  groupType_id: number;
-  groupDisplay: boolean;
-  sign_id: number;
-  sign: SignType;
-  registerType: number;
-  saveImmediately: boolean;
+export enum SaveAlgorithmType { // Алгоритм сохранения изменений значения
+  Unknown,
+  DontSave,         // Не сохранять автоматически
+  SaveImmediately,  // Сохранять немедленно
+  SaveByTimer,      // Сохранять по таймеру
+}
+
+export class ItemType { // Тип элемента
+  id: number;               // ID
+  name: string;             // Имя элемента для использования в скриптах автоматизации
+  title: string;            // Отображаемое имя элемента по-умолчанию
+  isRaw: boolean;           // Флаг необходимости нармализации значения
+  groupType_id: number;     // ID типа группы к которой может принадлежать элемент (Плохой?)
+  groupDisplay: boolean;    // Флаг отображения в Обзоре
+  sign_id: number;          // ID еденицы измерения
+  sign: SignType;           // Еденица измерения
+  registerType: number;     // Тип данных элемента
+  saveAlgorithm: number;    // Алгоритм сохранения изменений значения
 }
 
 export class Section {
-  id: number;
-  name: string;
-  dayStart: number;
-  dayEnd: number;
-  groups: Group[];
+  id: number;       // ID
+  name: string;     // Имя секции
+  dayStart: number; // Время начала дня в секундах
+  dayEnd: number;   // Время конца для в секундах
+  groups: Group[];  // Группы
 }
 
-export class DeviceItem {
-  id: number;
-  parent_id: number;
-  device_id: number;
-  group_id: number;
-  
-  unit: number;
-  name: string;
-  type_id: number;
-  type: ItemType;
+export class DeviceItem { // Элемент устройства
+  id: number;         // ID
+  parent_id: number;  // ID родителя
+  device_id: number;  // ID устройства
+  group_id: number;   // ID группы
 
-  value: any;
-  raw_value: any;
+  unit: number;       // Порядковый номер в протоколе
+  name: string;       // Имя
+  type_id: number;    // ID типа
+  type: ItemType;     // Тип
+
+  value: any;         // Отображаемое значение
+  raw_value: any;     // Сырое значение
 }
 
-export class Group {
-  id: number;
-  section_id: number;
-  type_id: number;
-  mode_id: number;
-  type: GroupType;
-  items: DeviceItem[] = [];
-  params: ParamValue[] = [];
-
-  status: number;
+export class Group {  // Группа
+  id: number;               // ID
+  section_id: number;       // ID секции
+  type_id: number;          // ID типа группы
+  mode_id: number;          // ID режима автоматизации
+  type: GroupType;          // Тип группы
+  items: DeviceItem[] = []; // Элементы в группе
+  params: ParamValue[] = [];// Уставки
+  status: number;           // Состояние
 }
 
-export enum ParamType {
+export enum ParamType { // Тип значения уставки
   Unknown,
   Int,
   Bool,
@@ -86,48 +92,47 @@ export enum ParamType {
   String,
   Bytes,
   TimeType,
-  RangeType,
-  ComboType,
+  RangeType,  // Используется для задания двух дочерних элементов
+  ComboType,  // Используется для задания дочерних элементов (Кажется не реализованно)
 }
 
-export class ParamItem {
-  id: number;
-  groupType_id: number;
-  parent_id: number;
-  childs: ParamItem[] = [];
-  
-  title: string;
-  name: string;
-  description: string;
-  type: number;
+export class ParamItem {  // Тип уставки
+  id: number;               // ID
+  groupType_id: number;     // ID типа группы к которой может принадлежать уставка
+  parent_id: number;        // ID родителя
+  childs: ParamItem[] = []; // Дочерние типы
+
+  title: string;            // Отображаемое имя
+  name: string;             // Имя латиницей используется в скриптах
+  description: string;      // Описание
+  type: number;             // Тип значения уставки
 }
 
-export class ParamValue {
-  id: number;
-  group_id: number;
-  param_id: number;
-  value: string;
-
-  param: ParamItem;
+export class ParamValue { // Уставка
+  id: number;       // ID
+  group_id: number; // ID группы
+  param_id: number; // ID типа уставки
+  value: string;    // Значение
+  param: ParamItem; // Тип уставки
 }
 
-export class Device {
-  id: number;
-  address: number;
-  name: string;
-  checker_id: number;
-  items: DeviceItem[];
+export class Device { // Устройство
+  id: number;         // ID
+  address: number;    // Адрес
+  name: string;       // Имя
+  checker_id: number; // ID используемого плагина
+  items: DeviceItem[];// Массив элементов
 }
 
-export class Logs {
-//  id: number;
-  date: string;
-  item_id: number;
-  raw_value: string;
-  value: string;
+export class Logs { // Запись журнала изменений значения
+//  id: number;     // ID
+  date: string;     // Время изменения
+  item_id: number;  // ID элемент
+  raw_value: string;// Значение
+  value: string;    // Отображаемое значение
 }
 
-export enum EventLogType {
+export enum EventLogType { // Тип события в журнале событий
   DebugEvent,
   WarningEvent,
   CriticalEvent,
@@ -136,14 +141,14 @@ export enum EventLogType {
   UserEvent
 }
 
-export class EventLog {
-  id: number;
-  date: string;
-  who: string;
-  msg: string;
-  type: number;
-  color: string = '';
-  
+export class EventLog { // Запись в журнале событий
+  id: number;         // ID
+  date: string;       // Время события
+  who: string;        // Категория
+  msg: string;        // Сообщение
+  type: number;       // Тип события
+  color: string = ''; // Цвет?
+
 /*
   Types: any = {
     0: 'DebugEvent',
@@ -156,20 +161,20 @@ export class EventLog {
 }
 
 export class Settings {
-  id: number;
+  id: number;     // ID
   param: string;
   value: string;
 }
 
 export class StatusType {
-  id: number;
+  id: number;     // ID
   name: string;
   title: string;
   color: string;
 }
 
 export class Status {
-  id: number;
+  id: number;           // ID
   groupType_id: number;
   type_id: number;
   name: string;
@@ -180,14 +185,14 @@ export class Status {
 }
 
 export class HouseDetail {
-  id: number;
-  name: string;
+  id: number;             // ID проекта
+  name: string;           // Имя проекта
 
-  sections: Section[];
-  devices: Device[];
-  params: ParamItem[];
-  groupTypes: GroupType[];
-  itemTypes: ItemType[];
-  signTypes: SignType[];
+  devices: Device[];      // Устройства и их элементы в системе
+  sections: Section[];    // Наполнение секций
+  params: ParamItem[];    // Типы уставок
+  groupTypes: GroupType[];// Типы групп
+  itemTypes: ItemType[];  // Типы элементов
+  signTypes: SignType[];  // Еденицы измерения
 }
 
