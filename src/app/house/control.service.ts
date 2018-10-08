@@ -205,9 +205,8 @@ export class ControlService {
       msg_size += view.length;
     }
 
-    view = new Uint8Array(8 + msg_size);
-    ByteTools.saveInt32(4 + msg_size, view); // QByteArray size
-    ByteTools.saveInt32(params.length, view, 4);
+    view = new Uint8Array(4 + msg_size);
+    ByteTools.saveInt32(params.length, view);
     let start: number = 8;
     for (const data of data_list) {
       view.set(data, start);

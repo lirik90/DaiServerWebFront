@@ -92,12 +92,15 @@ export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements 
 
   saveObject(obj: DeviceItem): Uint8Array {
     let name = ByteTools.saveQString(obj.name);
-    let view = new Uint8Array(16 + name.length);
+    let view = new Uint8Array(20 + name.length);
     ByteTools.saveInt32(obj.id, view);
-    ByteTools.saveInt32(obj.type_id, view, 4);
-    ByteTools.saveInt32(obj.unit, view, 8);
-    view.set(name, 12);
-    ByteTools.saveInt32(obj.parent_id, view, 12 + name.length);
+    view.set(name, 4);
+    let pos = 4 + name.length;
+    ByteTools.saveInt32(this.dev.id, view, pos);
+    ByteTools.saveInt32(obj.type_id, view, pos + 4);
+    ByteTools.saveInt32(obj.unit, view, pos + 8);
+    ByteTools.saveInt32(obj.group_id, view, pos + 12);
+    ByteTools.saveInt32(obj.parent_id, view, pos + 16);
     return view;
   }
 
