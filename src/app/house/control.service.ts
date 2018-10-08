@@ -207,7 +207,7 @@ export class ControlService {
 
     view = new Uint8Array(4 + msg_size);
     ByteTools.saveInt32(params.length, view);
-    let start: number = 8;
+    let start: number = 4;
     for (const data of data_list) {
       view.set(data, start);
       start += data.length;
