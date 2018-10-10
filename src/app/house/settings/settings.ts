@@ -17,7 +17,7 @@ export abstract class ChangeTemplate<T> {
 
   items: ChangeInfo<T>[];
   sel_item: ChangeInfo<T>;
-  constructor() {}
+  constructor(private itemType: new () => T) {}
 
   abstract getObjects(): T[];
 
@@ -47,6 +47,16 @@ export abstract class ChangeTemplate<T> {
     if (this.sel_item !== undefined)
       this.select(this.sel_item);
     this.fillItems();
+  }
+
+  initItem(obj: T): void {}
+
+  create(): void {
+    this.changed = true;
+    let obj: T = new this.itemType();
+    (<any>obj).id = 0;
+    this.initItem(obj);
+    this.addItem(obj);
   }
 
   addItem(obj: T, select: boolean = true): void {

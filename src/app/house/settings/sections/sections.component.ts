@@ -1,72 +1,91 @@
-import { Component, OnInit } from '@angular/core';
+import { Input, Component, OnInit } from '@angular/core';
 
 import { HouseService } from "../../house.service";
 import { Section, Group, GroupType } from "../../house";
+import { Cmd } from "../../control.service";
+import { ByteTools, WebSocketBytesService } from "../../../web-socket.service";
 import { SettingsService } from "../settings.service";
+import { ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
 
 @Component({
   selector: 'app-sections',
   templateUrl: './sections.component.html',
   styleUrls: ['../../../houses/list/list.component.css', './sections.component.css']
 })
-export class SectionsComponent implements OnInit {
-  groupTypes: GroupType[];
-  sections: Section[];
-  sel_sct: Section;
-  sel_group: Group;
-
+export class SectionsComponent extends ChangeTemplate<Section> implements OnInit {
   constructor(
     private houseService: HouseService,
     private settingsService: SettingsService,
-  ) { }
+    private wsbService: WebSocketBytesService,
+  ) {
+    super(Section);
+  }
+
+  getObjects(): Section[] {
+    return this.houseService.house.sections;
+  }
 
   ngOnInit() {
-    this.sections = this.houseService.house.sections;
-    this.groupTypes = this.houseService.house.groupTypes;
-  }
+    this.fillItems();
 
-  select(sct: Section): void {
-    if (this.sel_sct == sct) {
-      this.sel_sct = undefined;
-      this.sel_group = undefined;
-    } else
-      this.sel_sct = sct;
-  }
-  
-  remove(sct: Section): void {
+    /*
     // Dialog
     this.sections = this.sections.filter(s => s !== sct);
     this.settingsService.deleteSection(sct).subscribe(_ => {
       // this.controlService.deleteSection(sct);
-    });
-  }
-
-  add(): void {
-    this.sel_sct = new Section();
-    this.sel_sct.id = 0;
-    this.sections.push(this.sel_sct);
+    });*/
   }
 
   save(): void {
-    this.sel_sct.name = this.sel_sct.name.trim();
-    if (!this.sel_sct.name) return;
+    let data = this.getChangedData();
+    this.wsbService.send(Cmd.StructModifySections, this.houseService.house.id, data);
   }
 
-  select_group(group: Group): void {
-    this.sel_group = this.sel_group == group ? undefined : group;
-  }
-  
-  remove_group(group: Group): void {
-    // Dialog
-  }
-
-  add_group(): void {
-    this.sel_group = new Group();
-    this.sel_group.id = 0;
-    this.sel_group.section_id = this.sel_sct.id;
-    this.sel_sct.groups.push(this.sel_group);
-  }
-
-  save_group(): void {
+  saveObject(obj: Section): Uint8Array {
+    let name = ByteTools.saveQString(obj.name);
+    let view = new Uint8Array(12 + name.length);
+    return view;
   }
 }
+
+@Component({
+  selector: 'app-groups',
+  templateUrl: './groups.component.html',
+  styleUrls: ['../../../houses/list/list.component.css', './sections.component.css']
+})
+export class GroupsComponent extends ChangeTemplate<Group> implements OnInit {
+  @Input() sct: Section;
+
+  groupTypes: GroupType[];
+
+  constructor(
+    private houseService: HouseService,
+    private wsbService: WebSocketBytesService,
+  ) {
+    super(Group);
+  }
+
+  getObjects(): Group[] {
+    return this.sct.groups;
+  }
+
+  ngOnInit() {
+    this.groupTypes = this.houseService.house.groupTypes;
+    this.fillItems();
+  }
+
+  initItem(obj: Group): void {
+    obj.section_id = this.sct.id;
+  }
+
+  save(): void {
+    let data = this.getChangedData();
+    this.wsbService.send(Cmd.StructModifyGroups, this.houseService.house.id, data);
+  }
+
+  saveObject(obj: Group): Uint8Array {
+    let view = new Uint8Array(20);
+    return view;
+  }
+}
+

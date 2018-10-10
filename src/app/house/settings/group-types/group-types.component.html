@@ -11,10 +11,10 @@
 </ul>
 
 <div class="house_form" *ngIf="sel_gtype">Тип группы:
-  <label>Имя: <input [(ngModel)]="sel_gtype.name" placeholder="Name" /></label>
-  <label>Заголовок: <input [(ngModel)]="sel_gtype.title" placeholder="Title" /></label>
-  <label>Скрипт: <input [(ngModel)]="sel_gtype.code_id" placeholder="Code ID" /></label>
-  <label>Описание: <textarea [(ngModel)]="sel_gtype.description" placeholder="description"></textarea></label>
+  <mat-form-field><input matInput [(ngModel)]="sel_gtype.name" placeholder="Имя" /></mat-form-field>
+  <mat-form-field><input matInput [(ngModel)]="sel_gtype.title" placeholder="Заголовок" /></mat-form-field>
+  <mat-form-field><input matInput [(ngModel)]="sel_gtype.code_id" placeholder="Скрипт" /></mat-form-field>
+  <mat-form-field><textarea matInput [(ngModel)]="sel_gtype.description" placeholder="Описание"></textarea></mat-form-field>
   <button (click)="save()">Сохранить тип группы</button>
 
   <h2>Типы элементов в группе</h2>
@@ -30,28 +30,28 @@
   </ul>
 
   <div class="house_form" *ngIf="sel_itype">Тип элемента:
-    <label>Имя: <input [(ngModel)]="sel_itype.name" placeholder="Name" /></label>
-    <label>Заголовок: <input [(ngModel)]="sel_itype.title" placeholder="Title" /></label>
-    <label>Тип данных: <select [(ngModel)]="sel_itype.registerType">
-        <option value="1">DiscreteInputs</option>
-        <option value="2">Coils</option>
-        <option value="3">InputRegisters</option>
-        <option value="4">HoldingRegisters</option>
-      </select>
-    </label>
-    <label>Еденицы измерения: <select [(ngModel)]="sel_itype.sign_id">
-        <option value="0">Нет</option>
-        <option *ngFor="let sign of signTypes" [value]="sign.id">{{sign.name}}</option>
-      </select>
-    </label>
-    <label><input type="checkbox" [(ngModel)]="sel_itype.isRaw"/> Требует нормализации</label>
-    <label><input type="checkbox" [(ngModel)]="sel_itype.groupDisplay"/> Виден в группе</label>
-    <label>Алгоритм сохранения изменений: <select [(ngModel)]="sel_itype.saveAlgorithm">
-        <option value="1">Не сохранять автоматически</option>
-        <option value="2">Сохранять немедленно</option>
-        <option value="3">Сохранять по таймеру</option>
-      </select>
-    </label>
+    <mat-form-field><input matInput [(ngModel)]="sel_itype.name" placeholder="Имя" /></mat-form-field>
+    <mat-form-field><input matInput [(ngModel)]="sel_itype.title" placeholder="Заголовок" /></mat-form-field>
+    <mat-form-field><mat-select [(ngModel)]="sel_itype.registerType" placeholder="Тип данных">
+        <mat-option value="1">DiscreteInputs</mat-option>
+        <mat-option value="2">Coils</mat-option>
+        <mat-option value="3">InputRegisters</mat-option>
+        <mat-option value="4">HoldingRegisters</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field><mat-select [(ngModel)]="sel_itype.sign_id" placeholder="Еденицы измерения">
+        <mat-option value="0">Нет</mat-option>
+        <mat-option *ngFor="let sign of signTypes" [value]="sign.id">{{sign.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field><input matInput type="checkbox" [(ngModel)]="sel_itype.isRaw"/> Требует нормализации</mat-form-field>
+    <mat-form-field><input matInput type="checkbox" [(ngModel)]="sel_itype.groupDisplay"/> Виден в группе</mat-form-field>
+    <mat-form-field><mat-select [(ngModel)]="sel_itype.saveAlgorithm" placeholder="Алгоритм сохранения изменений">
+        <mat-option value="1">Не сохранять автоматически</mat-option>
+        <mat-option value="2">Сохранять немедленно</mat-option>
+        <mat-option value="3">Сохранять по таймеру</mat-option>
+      </mat-select>
+    </mat-form-field>
 
     <button (click)="save_it()">Сохранить тип элемента</button>
   </div>
@@ -68,22 +68,22 @@
   </ul>
 
   <div class="house_form" *ngIf="param">Тип уставки:
-    <label>Имя: <input [(ngModel)]="param.name" placeholder="Name"/></label>
-    <label>Заголовок: <input [(ngModel)]="param.title" placeholder="Title"/></label>
-    <label>Описание: <input [(ngModel)]="param.description" placeholder="Description"/></label>
-    <label>Предок: <input [(ngModel)]="param.parent_id" placeholder="Parent ID"/></label>
-    <label>Тип данных: <select [(ngModel)]="param.type">
-        <option value="0">Unknown</option>
-        <option value="1">Int</option>
-        <option value="2">Bool</option>
-        <option value="3">Float</option>
-        <option value="4">String</option>
-        <option value="5">Bytes</option>
-        <option value="6">TimeType</option>
-        <option value="7">RangeType</option>
-        <option value="8">ComboType</option>
-      </select>
-    </label>
+    <mat-form-field><input matInput [(ngModel)]="param.name" placeholder="Имя"/></mat-form-field>
+    <mat-form-field><input matInput [(ngModel)]="param.title" placeholder="Заголовок"/></mat-form-field>
+    <mat-form-field><input matInput [(ngModel)]="param.description" placeholder="Описание"/></mat-form-field>
+    <mat-form-field><input matInput [(ngModel)]="param.parent_id" placeholder="Предок"/></mat-form-field>
+    <mat-form-field><mat-select [(ngModel)]="param.type" placeholder="Тип данных">
+        <mat-option value="0">Unknown</mat-option>
+        <mat-option value="1">Int</mat-option>
+        <mat-option value="2">Bool</mat-option>
+        <mat-option value="3">Float</mat-option>
+        <mat-option value="4">String</mat-option>
+        <mat-option value="5">Bytes</mat-option>
+        <mat-option value="6">TimeType</mat-option>
+        <mat-option value="7">RangeType</mat-option>
+        <mat-option value="8">ComboType</mat-option>
+      </mat-select>
+    </mat-form-field>
     <button (click)="save_it()">Сохранить тип уставки</button>
   </div>
 
@@ -98,16 +98,16 @@
     </li>
   </ul>
   <div class="house_form" *ngIf="status">Состояние группы:
-    <label>Имя: <input [(ngModel)]="status.name" placeholder="Name"/></label>
-    <label>Тип: <select [(ngModel)]="status.type_id">
-        <option value="0">Нет</option>
-        <option *ngFor="let item of statusTypes" [value]="item.id">{{item.title}}</option>
-      </select>
-    </label>
-    <label>Текст: <input [(ngModel)]="param.text" placeholder="Text"/></label>
-    <label>Значение: <input [(ngModel)]="param.value" placeholder="Value"/></label>
-    <label><input type="checkbox" [(ngModel)]="param.isMultiValue"/>Мульти-значение</label>
-    <label><input type="checkbox" [(ngModel)]="param.inform"/>Посылать уведомление</label>
+    <mat-form-field><input matInput [(ngModel)]="status.name" placeholder="Имя"/></mat-form-field>
+    <mat-form-field><mat-select [(ngModel)]="status.type_id" placeholder="Тип">
+        <mat-option value="0">Нет</mat-option>
+        <mat-option *ngFor="let item of statusTypes" [value]="item.id">{{item.title}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field><input matInput [(ngModel)]="param.text" placeholder="Текст"/></mat-form-field>
+    <mat-form-field><input matInput [(ngModel)]="param.value" placeholder="Значение"/></mat-form-field>
+    <mat-form-field><input matInput type="checkbox" [(ngModel)]="param.isMultiValue"/>Мульти-значение</mat-form-field>
+    <mat-form-field><input matInput type="checkbox" [(ngModel)]="param.inform"/>Посылать уведомление</mat-form-field>
     <button (click)="save_param()">Сохранить состояние группы</button>
   </div>
 </div>

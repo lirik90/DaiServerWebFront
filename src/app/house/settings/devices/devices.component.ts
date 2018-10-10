@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { Device, DeviceItem, ItemType } from "../../house";
+import { Device, DeviceItem, ItemType, Section } from "../../house";
 import { HouseService } from "../../house.service";
 import { Cmd } from "../../control.service";
 import { ByteTools, WebSocketBytesService } from "../../../web-socket.service";
@@ -17,7 +17,7 @@ export class DevicesComponent extends ChangeTemplate<Device> implements OnInit {
     private houseService: HouseService,
     private wsbService: WebSocketBytesService,
   ) {
-    super();
+    super(Device);
   }
 
   getObjects(): Device[] {
@@ -26,12 +26,6 @@ export class DevicesComponent extends ChangeTemplate<Device> implements OnInit {
 
   ngOnInit() {
     this.fillItems();
-  }
-
-  add(): void {
-    let dev = new Device();
-    dev.id = 0;
-    this.addItem(dev);
   }
 
   save(): void {
@@ -60,12 +54,13 @@ export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements 
   @Input() dev: Device;
 
   itemtypes: ItemType[];
+  sections: Section[];
 
   constructor(
     private houseService: HouseService,
     private wsbService: WebSocketBytesService,
   ) {
-    super();
+    super(DeviceItem);
   }
 
   getObjects(): DeviceItem[] {
@@ -74,15 +69,27 @@ export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements 
 
   ngOnInit() {
     this.itemtypes = this.houseService.house.itemTypes;
+    this.sections = this.houseService.house.sections;
     this.fillItems();
   }
 
-  add(): void {
-    let item = new DeviceItem();
-    item.id = 0;
-    item.name = '';
-    item.device_id = this.dev.id;
-    this.addItem(item);
+  typeChanged(): void {
+    this.itemChanged();
+    this.sel_item.obj.group_id = 0;
+    if (this.sel_item.obj.type_id > 0) {
+      for (const itemtype of this.itemtypes) {
+        if (this.sel_item.obj.type_id == itemtype.id) {
+          this.sel_item.obj.type = itemtype;
+          break;
+        }
+      }
+    }
+  }
+
+  initItem(obj: DeviceItem): void {
+    obj.name = '';
+    obj.device_id = this.dev.id;
+    obj.type_id = 0;
   }
 
   save(): void {
@@ -103,5 +110,4 @@ export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements 
     ByteTools.saveInt32(obj.parent_id, view, pos + 16);
     return view;
   }
-
 }

@@ -1,0 +1,48 @@
+<h2>Группы в секции:</h2>
+<button (click)="save()">Сохранить группы</button>
+<button (click)="cancel()" *ngIf="changed">Отмена</button>
+
+<ul class="houses">
+  <ng-container *ngFor="let item of items">
+    <li *ngIf="item.state !== changeState.Delete" [class.selected]="sel_item == item">
+      <a class="pre_badge" (click)="select(item)">
+        <span class="badge">{{item.obj.id}}</span> {{item.obj.type && item.obj.type.title}}
+      </a>
+      <button class="delete" title="delete group" (click)="remove(item)">x</button>
+    </li>
+  </ng-container>
+</ul>
+
+<button (click)="create()">Добавить группу</button>
+<div class="house_form" *ngIf="sel_item"><p>Группа:</p>
+  <mat-form-field>
+    <mat-select placeholder="Тип группы" [(ngModel)]="sel_item.obj.type_id" (ngModelChange)="itemChanged()">
+      <mat-option value="0">Нет</mat-option>
+      <mat-option *ngFor="let gtype of groupTypes" [value]="gtype.id">{{gtype.title}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <h2 *ngIf="!sel_item.obj.items.length">В группе нет элементов</h2>
+  <div *ngIf="sel_item.obj.items.length">
+    <h2>Элементы в группе:</h2>
+    <ul class="houses">
+      <li *ngFor="let item of sel_item.obj.items">
+        <a class="pre_badge">
+          <span class="badge">{{item.id}}</span> {{item.name || item.type.title}}
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <h2 *ngIf="!sel_item.obj.params.length">В группе нет уставок</h2>
+  <div *ngIf="sel_item.obj.params.length">
+    <h2>Уставки в группе:</h2>
+    <ul class="houses">
+      <li *ngFor="let data of sel_item.obj.params">
+        <a class="pre_badge">
+          <span class="badge">{{data.id}}</span> {{data.param.title}}
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

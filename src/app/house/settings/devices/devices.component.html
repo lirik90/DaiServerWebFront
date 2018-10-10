@@ -8,18 +8,19 @@
       <a class="pre_badge" (click)="select(item)">
         <span class="badge badge_id">{{item.obj.id}}</span><span class="badge badge_adr">ADR {{item.obj.address}}</span> {{item.obj.name}}
       </a>
-      <button class="delete" title="delete device"
-        (click)="remove(item)">x</button>
+      <button class="delete" title="delete device" (click)="remove(item)">x</button>
     </li>
   </ng-container>
 </ul>
 
-<button (click)="add()">Добавить устройство</button>
+<button (click)="create()">Добавить устройство</button>
 <div class="house_form" *ngIf="sel_item"><p>Устройство:</p>
-  <label>Имя: <input [(ngModel)]="sel_item.obj.name" placeholder="Name" (ngModelChange)="itemChanged()" /></label>
-  <label>Адрес: <input [(ngModel)]="sel_item.obj.address" placeholder="Address" (ngModelChange)="itemChanged()" /></label>
+  <mat-form-field>
+    <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.name" placeholder="Имя"/>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.address" placeholder="Адрес" type="number" min="0"/>
+  </mat-form-field>
 
   <app-deviceitems *ngIf="!changed" [dev]="sel_item.obj"></app-deviceitems>
 </div>
-
-

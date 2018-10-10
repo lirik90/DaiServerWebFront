@@ -7,19 +7,38 @@
     <a class="pre_badge" (click)="select(item)">
       <span class="badge badge_id left_tab">{{item.obj.id}}</span>{{item.obj.name || (item.obj.type && item.obj.type.title)}}
     </a>
-    <button class="delete" title="delete device item"
-                           (click)="remove_item(item)">x</button>
+    <button class="delete" title="delete device item" (click)="remove_item(item)">x</button>
   </li>
 </ul>
 
-<button (click)="add()">Добавить элемент</button>
-<div *ngIf="sel_item">
+<button (click)="create()">Добавить элемент</button>
+<div class="house_form" *ngIf="sel_item">
   <p>Элемент:<p>
-  <label>Имя: <input [(ngModel)]="sel_item.obj.name" placeholder="Name" (ngModelChange)="itemChanged()" /></label>
-  <label>Юнит: <input [(ngModel)]="sel_item.obj.unit" placeholder="Unit" (ngModelChange)="itemChanged()" /></label>
-  <label>Предок: <input [(ngModel)]="sel_item.obj.parent_id" placeholder="Parent" (ngModelChange)="itemChanged()" /></label>
-  <label>Тип: <select [(ngModel)]="sel_item.obj.type_id" (ngModelChange)="itemChanged()">
-      <option *ngFor="let type of itemtypes" [value]="type.id">{{type.title}}</option>
-    </select></label>
+  <mat-form-field>
+    <input matInput [(ngModel)]="sel_item.obj.name" placeholder="Имя" (ngModelChange)="itemChanged()" />
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="number" min="0" [(ngModel)]="sel_item.obj.unit" placeholder="Юнит" (ngModelChange)="itemChanged()" />
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [(ngModel)]="sel_item.obj.parent_id" placeholder="Предок" (ngModelChange)="itemChanged()" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select [(ngModel)]="sel_item.obj.type_id" placeholder="Тип" (ngModelChange)="typeChanged()">
+      <mat-option *ngFor="let type of itemtypes" [value]="type.id">{{type.title}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select [(ngModel)]="sel_item.obj.group_id" placeholder="Группа">
+      <mat-option>-- Нет --</mat-option>
+      <mat-optgroup *ngFor="let sct of sections" [label]="sct.name">
+        <ng-container *ngFor="let grp of sct.groups">
+
+          <mat-option *ngIf="sel_item.obj.type_id == 0 || sel_item.obj.type.groupType_id == grp.type_id" [value]="grp.id">{{grp.type.title}}</mat-option>
+        </ng-container>
+      </mat-optgroup>
+    </mat-select>
+  </mat-form-field>
+
 </div>
 
