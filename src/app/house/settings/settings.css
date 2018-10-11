@@ -57,7 +57,7 @@
   border-radius: 4px 0 0 4px;
 }
 
-button {
+button.mybtn {
   background-color: #eee;
   border: none;
   padding: 5px 10px;
@@ -67,11 +67,11 @@ button {
   font-family: Arial;
 }
  
-button:hover {
+button.mybtn:hover {
   background-color: #cfd8dc;
 }
 
-button.delete {
+button.mybtn.delete {
   position: relative;
   /*left: 162px;*/
   top: -33px;
@@ -81,7 +81,7 @@ button.delete {
   margin-right: 5px;
 }
 
-button.delete:hover {
+button.mybtn.delete:hover {
   background-color: #556BAA;
 }
 

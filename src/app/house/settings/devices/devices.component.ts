@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { ViewChild, Component, OnInit, Input } from '@angular/core';
 
 import { Device, DeviceItem, ItemType, Section } from "../../house";
 import { HouseService } from "../../house.service";
@@ -10,14 +10,14 @@ import { ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
 @Component({
   selector: 'app-devices',
   templateUrl: './devices.component.html',
-  styleUrls: ['../../../houses/list/list.component.css', './devices.component.css']
+  styleUrls: ['../settings.css', './devices.component.css']
 })
 export class DevicesComponent extends ChangeTemplate<Device> implements OnInit {
   constructor(
-    private houseService: HouseService,
-    private wsbService: WebSocketBytesService,
+    wsbService: WebSocketBytesService,
+    houseService: HouseService,
   ) {
-    super(Device);
+    super(Cmd.StructModifyDevices, wsbService, houseService, Device);
   }
 
   getObjects(): Device[] {
@@ -26,11 +26,6 @@ export class DevicesComponent extends ChangeTemplate<Device> implements OnInit {
 
   ngOnInit() {
     this.fillItems();
-  }
-
-  save(): void {
-    let data = this.getChangedData();
-    this.wsbService.send(Cmd.StructModifyDevices, this.houseService.house.id, data);
   }
 
   saveObject(obj: Device): Uint8Array {
@@ -48,7 +43,7 @@ export class DevicesComponent extends ChangeTemplate<Device> implements OnInit {
 @Component({
   selector: 'app-deviceitems',
   templateUrl: './deviceitems.component.html',
-  styleUrls: ['../../../houses/list/list.component.css', './devices.component.css']
+  styleUrls: ['../settings.css', './devices.component.css']
 })
 export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements OnInit {
   @Input() dev: Device;
@@ -57,10 +52,10 @@ export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements 
   sections: Section[];
 
   constructor(
-    private houseService: HouseService,
-    private wsbService: WebSocketBytesService,
+    wsbService: WebSocketBytesService,
+    houseService: HouseService,
   ) {
-    super(DeviceItem);
+    super(Cmd.StructModifyDeviceItems, wsbService, houseService, DeviceItem);
   }
 
   getObjects(): DeviceItem[] {
@@ -71,6 +66,16 @@ export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements 
     this.itemtypes = this.houseService.house.itemTypes;
     this.sections = this.houseService.house.sections;
     this.fillItems();
+  }
+
+  title(item: DeviceItem = undefined): string {
+    if (!item)
+      item = this.sel_item.obj;
+    if (item.name.length)
+      return item.name;
+    else if (item.type && item.type.title.length)
+      return item.type.title;
+    return '';
   }
 
   typeChanged(): void {
@@ -90,11 +95,6 @@ export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements 
     obj.name = '';
     obj.device_id = this.dev.id;
     obj.type_id = 0;
-  }
-
-  save(): void {
-    let data = this.getChangedData();
-    this.wsbService.send(Cmd.StructModifyDeviceItems, this.houseService.house.id, data);
   }
 
   saveObject(obj: DeviceItem): Uint8Array {

@@ -1,4 +1,5 @@
-import { ByteTools } from "../../web-socket.service";
+import { ByteTools, WebSocketBytesService } from "../../web-socket.service";
+import { HouseService } from "../house.service";
 
 export enum ChangeState {
   NoChange,
@@ -17,7 +18,11 @@ export abstract class ChangeTemplate<T> {
 
   items: ChangeInfo<T>[];
   sel_item: ChangeInfo<T>;
-  constructor(private itemType: new () => T) {}
+  constructor(
+    private cmd: number,
+    private wsbService: WebSocketBytesService,
+    public houseService: HouseService,
+    private itemType: new () => T) {}
 
   abstract getObjects(): T[];
 
@@ -43,7 +48,16 @@ export abstract class ChangeTemplate<T> {
     }
   }
 
-  cancel(): void {
+  save(evnt: any = undefined): void {
+    if (evnt !== undefined)
+      evnt.stopPropagation();
+    let data = this.getChangedData();
+    this.wsbService.send(this.cmd, this.houseService.house.id, data);
+  }
+
+  cancel(evnt: any = undefined): void {
+    if (evnt !== undefined)
+      evnt.stopPropagation();
     if (this.sel_item !== undefined)
       this.select(this.sel_item);
     this.fillItems();
@@ -121,5 +135,4 @@ export abstract class ChangeTemplate<T> {
 
     return view;
   }
-
 }

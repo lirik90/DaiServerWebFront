@@ -44,8 +44,8 @@
         <mat-option *ngFor="let sign of signTypes" [value]="sign.id">{{sign.name}}</mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field><input matInput type="checkbox" [(ngModel)]="sel_itype.isRaw"/> Требует нормализации</mat-form-field>
-    <mat-form-field><input matInput type="checkbox" [(ngModel)]="sel_itype.groupDisplay"/> Виден в группе</mat-form-field>
+    <mat-checkbox [(ngModel)]="sel_itype.isRaw">Требует нормализации</mat-checkbox>
+    <mat-checkbox [(ngModel)]="sel_itype.groupDisplay">Виден в группе</mat-checkbox>
     <mat-form-field><mat-select [(ngModel)]="sel_itype.saveAlgorithm" placeholder="Алгоритм сохранения изменений">
         <mat-option value="1">Не сохранять автоматически</mat-option>
         <mat-option value="2">Сохранять немедленно</mat-option>
@@ -106,8 +106,8 @@
     </mat-form-field>
     <mat-form-field><input matInput [(ngModel)]="param.text" placeholder="Текст"/></mat-form-field>
     <mat-form-field><input matInput [(ngModel)]="param.value" placeholder="Значение"/></mat-form-field>
-    <mat-form-field><input matInput type="checkbox" [(ngModel)]="param.isMultiValue"/>Мульти-значение</mat-form-field>
-    <mat-form-field><input matInput type="checkbox" [(ngModel)]="param.inform"/>Посылать уведомление</mat-form-field>
+    <mat-checkbox [(ngModel)]="param.isMultiValue">Мульти-значение</mat-checkbox>
+    <mat-checkbox [(ngModel)]="param.inform">Посылать уведомление</mat-checkbox>
     <button (click)="save_param()">Сохранить состояние группы</button>
   </div>
 </div>

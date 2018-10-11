@@ -14,11 +14,11 @@ import { ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
 })
 export class SectionsComponent extends ChangeTemplate<Section> implements OnInit {
   constructor(
-    private houseService: HouseService,
+    wsbService: WebSocketBytesService,
+    houseService: HouseService,
     private settingsService: SettingsService,
-    private wsbService: WebSocketBytesService,
   ) {
-    super(Section);
+    super(Cmd.StructModifySections, wsbService, houseService, Section);
   }
 
   getObjects(): Section[] {
@@ -34,11 +34,6 @@ export class SectionsComponent extends ChangeTemplate<Section> implements OnInit
     this.settingsService.deleteSection(sct).subscribe(_ => {
       // this.controlService.deleteSection(sct);
     });*/
-  }
-
-  save(): void {
-    let data = this.getChangedData();
-    this.wsbService.send(Cmd.StructModifySections, this.houseService.house.id, data);
   }
 
   saveObject(obj: Section): Uint8Array {
@@ -59,10 +54,10 @@ export class GroupsComponent extends ChangeTemplate<Group> implements OnInit {
   groupTypes: GroupType[];
 
   constructor(
-    private houseService: HouseService,
-    private wsbService: WebSocketBytesService,
+    wsbService: WebSocketBytesService,
+    houseService: HouseService,
   ) {
-    super(Group);
+    super(Cmd.StructModifyGroups, wsbService, houseService, Group);
   }
 
   getObjects(): Group[] {
@@ -76,11 +71,6 @@ export class GroupsComponent extends ChangeTemplate<Group> implements OnInit {
 
   initItem(obj: Group): void {
     obj.section_id = this.sct.id;
-  }
-
-  save(): void {
-    let data = this.getChangedData();
-    this.wsbService.send(Cmd.StructModifyGroups, this.houseService.house.id, data);
   }
 
   saveObject(obj: Group): Uint8Array {
