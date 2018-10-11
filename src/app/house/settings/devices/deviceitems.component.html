@@ -3,7 +3,7 @@
     <mat-expansion-panel-header>
       <mat-panel-title>Элементы устройства</mat-panel-title>
       <mat-panel-description>
-        &nbsp;
+        Всего: {{items.length}}
         <span *ngIf="changed">
           <button mat-icon-button (click)="save($event)"><mat-icon>save</mat-icon></button>
           <button mat-icon-button (click)="cancel($event)"><mat-icon>cancel</mat-icon></button>
