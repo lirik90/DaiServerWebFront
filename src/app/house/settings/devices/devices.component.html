@@ -10,21 +10,19 @@
         </span>
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <section>
-      <ul class="houses">
-        <ng-container *ngFor="let item of items">
-          <li *ngIf="item.state !== changeState.Delete" [class.selected]="sel_item == item">
-            <a class="pre_badge" (click)="select(item); slist.close()">
-              <span class="badge badge_id">{{item.obj.id}}</span><span class="badge badge_adr">ADR {{item.obj.address}}</span> {{item.obj.name}}
-            </a>
-            <button class="mybtn delete" title="delete device" (click)="remove(item)">x</button>
-          </li>
-        </ng-container>
-      </ul>
-    </section>
-    <section>
-      <button class="mybtn" (click)="create()">Добавить устройство</button>
-    </section>
+    <button class="mybtn" (click)="create(); slist.close()">Добавить устройство</button>
+    <ul class="houses">
+      <ng-container *ngFor="let item of items">
+        <li *ngIf="item.state !== changeState.Delete" [class.selected]="sel_item == item">
+          <a class="pre_badge" (click)="select(item); slist.close()">
+            <span class="badge badge_id">{{item.obj.id}}</span>
+            <span class="badge badge_adr">ADR {{item.obj.address}}</span>
+            {{item.obj.name}}
+          </a>
+          <button class="mybtn delete" title="delete device" (click)="remove(item)">x</button>
+        </li>
+      </ng-container>
+    </ul>
   </mat-expansion-panel>
   <mat-expansion-panel expanded hideToggle *ngIf="sel_item">
     <mat-expansion-panel-header>
@@ -33,18 +31,12 @@
         {{sel_item.obj.name}}
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <section>
-      <mat-form-field>
-        <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.name" placeholder="Имя"/>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.address" placeholder="Адрес" type="number" min="0"/>
-      </mat-form-field>
-    </section>
-
-    <section>
-      <app-deviceitems *ngIf="!changed" [dev]="sel_item.obj"></app-deviceitems>
-    </section>
+    <mat-form-field>
+      <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.name" placeholder="Имя"/>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.address" placeholder="Адрес" type="number" min="0"/>
+    </mat-form-field>
   </mat-expansion-panel>
+  <app-deviceitems *ngIf="!changed && sel_item" [dev]="sel_item.obj"></app-deviceitems>
 </mat-accordion>
-

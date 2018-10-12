@@ -3,39 +3,37 @@ import { Component, OnInit } from '@angular/core';
 import { HouseService } from "../../house.service";
 import { StatusType } from "../../house";
 
+import { Cmd } from "../../control.service";
+import { ByteTools, WebSocketBytesService } from "../../../web-socket.service";
+
+import { ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
+
 @Component({
   selector: 'app-status-types',
   templateUrl: './status-types.component.html',
-  styleUrls: ['../../../houses/list/list.component.css', './status-types.component.css']
+  styleUrls: ['../settings.css', './status-types.component.css']
 })
-export class StatusTypesComponent implements OnInit {
-  statusTypes: StatusType[];
-  stype: StatusType;
-
+export class StatusTypesComponent extends ChangeTemplate<StatusType> implements OnInit {
   constructor(
-    private houseService: HouseService,
-  ) {}
+    wsbService: WebSocketBytesService,
+    houseService: HouseService,
+  ) {
+    super(Cmd.StructModifyStatusTypes, wsbService, houseService, StatusType);
+  }
+
+  getObjects(): StatusType[] {
+    return []; // this.houseService.house.satusTypes;
+  }
 
   ngOnInit() {
-    this.statusTypes = []; //this.houseService.house.statusTypes;
+    this.fillItems();
   }
 
-  select(stype: StatusType): void {
-    this.stype = this.stype == stype ? undefined : stype;
-  }
-  
-  remove(stype: StatusType): void {
-    // Dialog
-  }
-
-  add(): void {
-    this.stype = new StatusType();
-    this.stype.id = 0;
-    this.statusTypes.push(this.stype);
-  }
-
-  save(): void {
-    this.stype.name = this.stype.name.trim();
-    if (!this.stype.name) return;
+  saveObject(obj: StatusType): Uint8Array {
+    let name = ByteTools.saveQString(obj.name);
+    let view = new Uint8Array(4 + name.length);
+    ByteTools.saveInt32(obj.id, view);
+    view.set(name, 4);
+    return view;
   }
 }

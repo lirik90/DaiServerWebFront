@@ -10,7 +10,7 @@ import { ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
 @Component({
   selector: 'app-sections',
   templateUrl: './sections.component.html',
-  styleUrls: ['../../../houses/list/list.component.css', './sections.component.css']
+  styleUrls: ['../settings.css', './sections.component.css']
 })
 export class SectionsComponent extends ChangeTemplate<Section> implements OnInit {
   constructor(
@@ -46,7 +46,7 @@ export class SectionsComponent extends ChangeTemplate<Section> implements OnInit
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
-  styleUrls: ['../../../houses/list/list.component.css', './sections.component.css']
+  styleUrls: ['../settings.css', './sections.component.css']
 })
 export class GroupsComponent extends ChangeTemplate<Group> implements OnInit {
   @Input() sct: Section;
@@ -67,6 +67,12 @@ export class GroupsComponent extends ChangeTemplate<Group> implements OnInit {
   ngOnInit() {
     this.groupTypes = this.houseService.house.groupTypes;
     this.fillItems();
+  }
+
+  title(item: Group = undefined): string {
+    if (item === undefined)
+      item = this.sel_item.obj;
+    return item.type ? item.type.title : '';
   }
 
   initItem(obj: Group): void {

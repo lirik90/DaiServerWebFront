@@ -1,0 +1,38 @@
+<mat-expansion-panel class="example-headers-align" hideToggle #slist>
+  <mat-expansion-panel-header>
+    <mat-panel-title><p>Состояния группы</p></mat-panel-title>
+    <mat-panel-description>
+      Всего: {{items.length}}
+      <span *ngIf="changed">
+        <button mat-icon-button (click)="save($event)"><mat-icon>save</mat-icon></button>
+        <button mat-icon-button (click)="cancel($event)"><mat-icon>cancel</mat-icon></button>
+      </span>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <button class="mybtn" (click)="create(); slist.close()">Добавить состояние</button>
+  <ul class="houses">
+    <li *ngFor="let item of items" [class.selected]="sel_item == item">
+      <a class="pre_badge" (click)="select(item); slist.close()">
+        <span class="badge badge_id left_tab">{{item.obj.id}}</span>
+        {{item.obj.name}}
+      </a>
+      <button class="mybtn delete" title="delete status" (click)="remove(item)">x</button>
+    </li>
+  </ul>
+</mat-expansion-panel>
+<mat-expansion-panel expanded hideToggle *ngIf="sel_item">
+  <mat-expansion-panel-header>
+    <mat-panel-title>Детали</mat-panel-title>
+    <mat-panel-description>{{sel_item.obj.name}}</mat-panel-description>
+  </mat-expansion-panel-header>
+  <mat-form-field><input matInput [(ngModel)]="status.name" placeholder="Имя"/></mat-form-field>
+  <mat-form-field><mat-select [(ngModel)]="status.type_id" placeholder="Тип">
+      <mat-option value="0">Нет</mat-option>
+      <mat-option *ngFor="let item of statusTypes" [value]="item.id">{{item.title}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field><input matInput [(ngModel)]="param.text" placeholder="Текст"/></mat-form-field>
+  <mat-form-field><input matInput [(ngModel)]="param.value" placeholder="Значение"/></mat-form-field>
+  <mat-checkbox [(ngModel)]="param.isMultiValue">Мульти-значение</mat-checkbox>
+  <mat-checkbox [(ngModel)]="param.inform">Посылать уведомление</mat-checkbox>
+</mat-expansion-panel>

@@ -1,4 +1,4 @@
-import { ViewChild, Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { Device, DeviceItem, ItemType, Section } from "../../house";
 import { HouseService } from "../../house.service";
@@ -37,7 +37,6 @@ export class DevicesComponent extends ChangeTemplate<Device> implements OnInit {
     ByteTools.saveInt32(obj.checker_id, view, 8 + name.length);
     return view;
   }
-
 }
 
 @Component({
@@ -91,7 +90,7 @@ export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements 
     }
   }
 
-  initItem(obj: DeviceItem): void {
+  inititem(obj: DeviceItem): void {
     obj.name = '';
     obj.device_id = this.dev.id;
     obj.type_id = 0;
