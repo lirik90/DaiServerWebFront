@@ -39,6 +39,10 @@ export class SectionsComponent extends ChangeTemplate<Section> implements OnInit
   saveObject(obj: Section): Uint8Array {
     let name = ByteTools.saveQString(obj.name);
     let view = new Uint8Array(12 + name.length);
+    ByteTools.saveInt32(obj.id, view);
+    view.set(name, 4);
+    ByteTools.saveInt32(obj.dayStart, view, 4 + name.length);
+    ByteTools.saveInt32(obj.dayEnd, view, 8 + name.length);
     return view;
   }
 }

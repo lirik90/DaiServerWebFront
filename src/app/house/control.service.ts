@@ -26,15 +26,14 @@ export enum Cmd {
 
   StructModifyDevices,
   StructModifyDeviceItems,
+  StructModifyDeviceItemTypes,
   StructModifySections,
   StructModifyGroups,
-  StructModifyGroupItems,
-  StructModifyGroupParams,
   StructModifyGroupTypes,
-  StructModifyGroupItemTypes,
+  StructModifyGroupParams,
   StructModifyGroupParamTypes,
   StructModifyGroupStatuses,
-  StructModifyStatusTypes,
+  StructModifyGroupStatusTypes,
   StructModifySigns,
   StructModifyScripts,
 }

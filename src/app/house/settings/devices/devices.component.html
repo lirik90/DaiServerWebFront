@@ -37,6 +37,9 @@
     <mat-form-field>
       <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.address" placeholder="Адрес" type="number" min="0"/>
     </mat-form-field>
+    <mat-form-field>
+      <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.checker_id" placeholder="Плагин" type="number" min="0"/>
+    </mat-form-field>
   </mat-expansion-panel>
   <app-deviceitems *ngIf="!changed && sel_item" [dev]="sel_item.obj"></app-deviceitems>
 </mat-accordion>

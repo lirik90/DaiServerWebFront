@@ -37,7 +37,7 @@
       <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.title" placeholder="Заголовок" />
     </mat-form-field>
     <mat-form-field>
-      <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.code_id" placeholder="Скрипт" />
+      <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.code_id" placeholder="Скрипт" type="number" min="0" />
     </mat-form-field>
     <mat-form-field>
       <textarea matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.description" placeholder="Описание"></textarea>

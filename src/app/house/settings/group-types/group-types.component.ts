@@ -31,9 +31,14 @@ export class GroupTypesComponent extends ChangeTemplate<GroupType> implements On
 
   saveObject(obj: GroupType): Uint8Array {
     let name = ByteTools.saveQString(obj.name);
-    let view = new Uint8Array(4 + name.length);
+    let title = ByteTools.saveQString(obj.title);
+    let desc = ByteTools.saveQString(obj.description);
+    let view = new Uint8Array(8 + name.length + title.length + desc.length);
     ByteTools.saveInt32(obj.id, view);
     view.set(name, 4);
+    view.set(title, 4 + name.length);
+    ByteTools.saveInt32(obj.code_id, view, 4 + name.length + title.length);
+    view.set(desc, 8 + name.length + title.length);
     return view;
   }
 }
@@ -52,7 +57,7 @@ export class ItemTypesComponent extends ChangeTemplate<ItemType> implements OnIn
     wsbService: WebSocketBytesService,
     houseService: HouseService,
   ) {
-    super(Cmd.StructModifyGroupItemTypes, wsbService, houseService, ItemType);
+    super(Cmd.StructModifyDeviceItemTypes, wsbService, houseService, ItemType);
   }
 
   getObjects(): ItemType[] {
@@ -72,9 +77,18 @@ export class ItemTypesComponent extends ChangeTemplate<ItemType> implements OnIn
 
   saveObject(obj: ItemType): Uint8Array {
     let name = ByteTools.saveQString(obj.name);
-    let view = new Uint8Array(4 + name.length);
-    ByteTools.saveInt32(obj.id, view);
-    view.set(name, 4);
+    let title = ByteTools.saveQString(obj.title);
+    let view = new Uint8Array(16 + name.length + title.length);
+    let pos = 0;
+    ByteTools.saveInt32(obj.id, view); pos += 4;
+    view.set(name, pos); pos += name.length;
+    view.set(title, pos); pos += title.length;
+    ByteTools.saveInt32(obj.groupType_id, view, pos); pos += 4;
+    view[pos] = obj.groupDisplay ? 1 : 0; pos += 1;
+    view[pos] = obj.isRaw ? 1 : 0; pos += 1;
+    ByteTools.saveInt32(obj.sign_id, view, pos); pos += 4;
+    view[pos] = obj.registerType; pos += 1;
+    view[pos] = obj.saveAlgorithm; pos += 1;
     return view;
   }
 }

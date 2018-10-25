@@ -18,7 +18,7 @@ export class StatusTypesComponent extends ChangeTemplate<StatusType> implements 
     wsbService: WebSocketBytesService,
     houseService: HouseService,
   ) {
-    super(Cmd.StructModifyStatusTypes, wsbService, houseService, StatusType);
+    super(Cmd.StructModifyGroupStatusTypes, wsbService, houseService, StatusType);
   }
 
   getObjects(): StatusType[] {
