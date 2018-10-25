@@ -25,23 +25,23 @@
     <mat-panel-title>Детали</mat-panel-title>
     <mat-panel-description>{{sel_item.obj.title}}</mat-panel-description>
   </mat-expansion-panel-header>
-  <mat-form-field><input matInput [(ngModel)]="sel_item.obj.name" placeholder="Имя" /></mat-form-field>
-  <mat-form-field><input matInput [(ngModel)]="sel_item.obj.title" placeholder="Заголовок" /></mat-form-field>
-  <mat-form-field><mat-select [(ngModel)]="sel_item.obj.registerType" placeholder="Тип данных">
+  <mat-form-field><input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.name" placeholder="Имя" /></mat-form-field>
+  <mat-form-field><input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.title" placeholder="Заголовок" /></mat-form-field>
+  <mat-form-field><mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.registerType" placeholder="Тип данных">
       <mat-option value="1">DiscreteInputs</mat-option>
       <mat-option value="2">Coils</mat-option>
       <mat-option value="3">InputRegisters</mat-option>
       <mat-option value="4">HoldingRegisters</mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field><mat-select [(ngModel)]="sel_item.obj.sign_id" placeholder="Еденицы измерения">
+  <mat-form-field><mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.sign_id" placeholder="Еденицы измерения">
       <mat-option value="0">Нет</mat-option>
       <mat-option *ngFor="let sign of signTypes" [value]="sign.id">{{sign.name}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-checkbox [(ngModel)]="sel_item.obj.isRaw">Требует нормализации</mat-checkbox>
-  <mat-checkbox [(ngModel)]="sel_item.obj.groupDisplay">Виден в группе</mat-checkbox>
-  <mat-form-field><mat-select [(ngModel)]="sel_item.obj.saveAlgorithm" placeholder="Алгоритм сохранения изменений">
+  <mat-checkbox (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.isRaw">Требует нормализации</mat-checkbox>
+  <mat-checkbox (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.groupDisplay">Виден в группе</mat-checkbox>
+  <mat-form-field><mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.saveAlgorithm" placeholder="Алгоритм сохранения изменений">
       <mat-option value="1">Не сохранять автоматически</mat-option>
       <mat-option value="2">Сохранять немедленно</mat-option>
       <mat-option value="3">Сохранять по таймеру</mat-option>

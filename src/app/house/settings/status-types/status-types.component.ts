@@ -31,9 +31,14 @@ export class StatusTypesComponent extends ChangeTemplate<StatusType> implements 
 
   saveObject(obj: StatusType): Uint8Array {
     let name = ByteTools.saveQString(obj.name);
-    let view = new Uint8Array(4 + name.length);
-    ByteTools.saveInt32(obj.id, view);
-    view.set(name, 4);
+    let title = ByteTools.saveQString(obj.title);
+    let color = ByteTools.saveQString(obj.color);
+    let view = new Uint8Array(4 + name.length + title.length + color.length);
+    let pos = 0;
+    ByteTools.saveInt32(obj.id, view); pos += 4;
+    view.set(name, pos); pos += name.length;
+    view.set(title, pos); pos += title.length;
+    view.set(color, pos); pos += color.length;
     return view;
   }
 }

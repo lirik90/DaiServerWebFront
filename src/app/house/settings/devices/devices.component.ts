@@ -90,7 +90,7 @@ export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements 
     }
   }
 
-  inititem(obj: DeviceItem): void {
+  initItem(obj: DeviceItem): void {
     obj.name = '';
     obj.device_id = this.dev.id;
     obj.type_id = 0;
@@ -98,15 +98,15 @@ export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements 
 
   saveObject(obj: DeviceItem): Uint8Array {
     let name = ByteTools.saveQString(obj.name);
-    let view = new Uint8Array(20 + name.length);
-    ByteTools.saveInt32(obj.id, view);
-    view.set(name, 4);
-    let pos = 4 + name.length;
-    ByteTools.saveInt32(this.dev.id, view, pos);
-    ByteTools.saveInt32(obj.type_id, view, pos + 4);
-    ByteTools.saveInt32(obj.unit, view, pos + 8);
-    ByteTools.saveInt32(obj.group_id, view, pos + 12);
-    ByteTools.saveInt32(obj.parent_id, view, pos + 16);
+    let view = new Uint8Array(24 + name.length);
+    let pos = 0;
+    ByteTools.saveInt32(obj.id, view); pos += 4;
+    view.set(name, pos); pos += name.length;
+    ByteTools.saveInt32(obj.device_id, view, pos); pos += 4;
+    ByteTools.saveInt32(obj.type_id, view, pos); pos += 4;
+    ByteTools.saveInt32(obj.unit, view, pos); pos += 4;
+    ByteTools.saveInt32(obj.group_id, view, pos); pos += 4;
+    ByteTools.saveInt32(obj.parent_id, view, pos); pos += 4;
     return view;
   }
 }

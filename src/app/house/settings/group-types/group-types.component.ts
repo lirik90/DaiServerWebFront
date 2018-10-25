@@ -61,15 +61,16 @@ export class ItemTypesComponent extends ChangeTemplate<ItemType> implements OnIn
   }
 
   getObjects(): ItemType[] {
-    return this.houseService.house.itemTypes;
+    return this.houseService.house.itemTypes.filter(obj => obj.groupType_id === this.grouptype.id);
   }
 
   ngOnInit() {
+    console.log(this.grouptype);
     this.signTypes = this.houseService.house.signTypes;
     this.fillItems();
   }
 
-  inititem(obj: ItemType): void {
+  initItem(obj: ItemType): void {
     obj.name = '';
     obj.title = '';
     obj.groupType_id = this.grouptype.id;
@@ -116,7 +117,7 @@ export class ParamTypesComponent extends ChangeTemplate<ParamItem> implements On
     this.fillItems();
   }
 
-  inititem(obj: ParamItem): void {
+  initItem(obj: ParamItem): void {
     obj.name = '';
     obj.title = '';
     obj.groupType_id = this.grouptype.id;
@@ -124,9 +125,17 @@ export class ParamTypesComponent extends ChangeTemplate<ParamItem> implements On
 
   saveObject(obj: ParamItem): Uint8Array {
     let name = ByteTools.saveQString(obj.name);
-    let view = new Uint8Array(4 + name.length);
-    ByteTools.saveInt32(obj.id, view);
-    view.set(name, 4);
+    let title = ByteTools.saveQString(obj.title);
+    let desc = ByteTools.saveQString(obj.description);
+    let view = new Uint8Array(13 + name.length + title.length + desc.length);
+    let pos = 0;
+    ByteTools.saveInt32(obj.id, view); pos += 4;
+    view.set(name, pos); pos += name.length;
+    view.set(title, pos); pos += title.length;
+    view.set(desc, pos); pos += desc.length;
+    view[pos] = obj.type; pos += 1;
+    ByteTools.saveInt32(obj.groupType_id, view, pos); pos += 4;
+    ByteTools.saveInt32(obj.parent_id, view, pos); pos += 4;
     return view;
   }
 }
@@ -154,16 +163,24 @@ export class StatusesComponent extends ChangeTemplate<Status> implements OnInit 
     this.fillItems();
   }
 
-  inititem(obj: Status): void {
+  initItem(obj: Status): void {
     obj.name = '';
     obj.groupType_id = this.grouptype.id;
   }
 
   saveObject(obj: Status): Uint8Array {
     let name = ByteTools.saveQString(obj.name);
-    let view = new Uint8Array(4 + name.length);
-    ByteTools.saveInt32(obj.id, view);
-    view.set(name, 4);
+    let title = ByteTools.saveQString(obj.text);
+    let view = new Uint8Array(18 + name.length + title.length);
+    let pos = 0;
+    ByteTools.saveInt32(obj.id, view); pos += 4;
+    view.set(name, pos); pos += name.length;
+    view.set(title, pos); pos += title.length;
+    ByteTools.saveInt32(obj.type_id, view, pos); pos += 4;
+    view[pos] = obj.isMultiValue ? 1 : 0; pos += 1;
+    ByteTools.saveInt32(obj.value, view, pos); pos += 4;
+    ByteTools.saveInt32(obj.groupType_id, view, pos); pos += 4;
+    view[pos] = obj.inform ? 1 : 0; pos += 1;
     return view;
   }
 }

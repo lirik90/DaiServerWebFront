@@ -25,14 +25,14 @@
     <mat-panel-title>Детали</mat-panel-title>
     <mat-panel-description>{{sel_item.obj.name}}</mat-panel-description>
   </mat-expansion-panel-header>
-  <mat-form-field><input matInput [(ngModel)]="status.name" placeholder="Имя"/></mat-form-field>
-  <mat-form-field><mat-select [(ngModel)]="status.type_id" placeholder="Тип">
+  <mat-form-field><input matInput (ngModelChange)="itemChanged()" [(ngModel)]="status.name" placeholder="Имя"/></mat-form-field>
+  <mat-form-field><mat-select (ngModelChange)="itemChanged()" [(ngModel)]="status.type_id" placeholder="Тип">
       <mat-option value="0">Нет</mat-option>
       <mat-option *ngFor="let item of statusTypes" [value]="item.id">{{item.title}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field><input matInput [(ngModel)]="param.text" placeholder="Текст"/></mat-form-field>
-  <mat-form-field><input matInput [(ngModel)]="param.value" placeholder="Значение"/></mat-form-field>
-  <mat-checkbox [(ngModel)]="param.isMultiValue">Мульти-значение</mat-checkbox>
-  <mat-checkbox [(ngModel)]="param.inform">Посылать уведомление</mat-checkbox>
+  <mat-form-field><input matInput (ngModelChange)="itemChanged()" [(ngModel)]="param.text" placeholder="Текст"/></mat-form-field>
+  <mat-form-field><input matInput (ngModelChange)="itemChanged()" [(ngModel)]="param.value" placeholder="Значение"/></mat-form-field>
+  <mat-checkbox (ngModelChange)="itemChanged()" [(ngModel)]="param.isMultiValue">Мульти-значение</mat-checkbox>
+  <mat-checkbox (ngModelChange)="itemChanged()" [(ngModel)]="param.inform">Посылать уведомление</mat-checkbox>
 </mat-expansion-panel>

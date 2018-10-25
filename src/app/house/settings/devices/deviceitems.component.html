@@ -40,7 +40,7 @@
     </mat-select>
   </mat-form-field>
   <mat-form-field>
-    <mat-select [(ngModel)]="sel_item.obj.group_id" placeholder="Группа">
+    <mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.group_id" placeholder="Группа">
       <mat-option>-- Нет --</mat-option>
       <mat-optgroup *ngFor="let sct of sections" [label]="sct.name">
         <ng-container *ngFor="let grp of sct.groups">
