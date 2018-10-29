@@ -36,6 +36,7 @@ export enum Cmd {
   StructModifyGroupStatusTypes,
   StructModifySigns,
   StructModifyScripts,
+  StructModifyCheckerType,
 }
 
 export interface ConnectInfo {

@@ -194,5 +194,7 @@ export class HouseDetail {
   groupTypes: GroupType[];// Типы групп
   itemTypes: ItemType[];  // Типы элементов
   signTypes: SignType[];  // Еденицы измерения
+  statusTypes: StatusType[];  // Типы состояний
+  statuses: Status[];  // Состояния
 }
 

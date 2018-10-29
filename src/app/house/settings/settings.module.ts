@@ -16,6 +16,7 @@ import { SignTypesComponent } from './sign-types/sign-types.component';
 import { CodeComponent, CodesComponent } from './code/code.component';
 
 import { MonacoEditorModule, NgxMonacoEditorConfig, NGX_MONACO_EDITOR_CONFIG } from 'ngx-monaco-editor';
+import { CheckerTypesComponent } from './checker-types/checker-types.component';
 const monacoConfig: NgxMonacoEditorConfig = {
   baseUrl: 'static', // configure base path for monaco editor
   defaultOptions: { scrollBeyondLastLine: false }, // pass deafult options to be used
@@ -42,6 +43,7 @@ const monacoConfig: NgxMonacoEditorConfig = {
     SignTypesComponent, 
     CodesComponent,
     CodeComponent,
+    CheckerTypesComponent,
   ],
   entryComponents: [
   ],

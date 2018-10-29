@@ -22,7 +22,7 @@ export class StatusTypesComponent extends ChangeTemplate<StatusType> implements 
   }
 
   getObjects(): StatusType[] {
-    return []; // this.houseService.house.satusTypes;
+    return this.houseService.house.statusTypes;
   }
 
   ngOnInit() {

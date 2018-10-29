@@ -4,7 +4,8 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 
 import { HouseService } from '../house.service';
-import { Section } from '../house';
+import { Section, CheckerType } from '../house';
+import { PaginatorApi } from "../../user";
 
 @Injectable()
 export class SettingsService {
@@ -13,6 +14,11 @@ export class SettingsService {
   constructor(
     private hServ: HouseService
   ) {}
+
+  getCheckerTypes(): Observable<PaginatorApi<CheckerType>> {
+    const url = this.hServ.url('checkers');
+    return this.hServ.getPiped<PaginatorApi<CheckerType>>(url, 'fetched checkers', 'getCheckers', {} as PaginatorApi<CheckerType>);
+  }
 
   getSection(id: number): Observable<Section> {
     const url = this.hServ.url(this.sct_s, id);

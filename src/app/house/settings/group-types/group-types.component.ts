@@ -156,7 +156,7 @@ export class StatusesComponent extends ChangeTemplate<Status> implements OnInit 
   }
 
   getObjects(): Status[] {
-    return []; // this.houseService.house.statusTypes;
+    return this.houseService.house.statuses;
   }
 
   ngOnInit() {
