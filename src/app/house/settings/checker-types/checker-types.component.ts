@@ -3,10 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { HouseService } from "../../house.service";
 import { CheckerType } from "../../house";
 
-import { Cmd } from "../../control.service";
 import { ByteTools, WebSocketBytesService } from "../../../web-socket.service";
 
-import { ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
+import { StructType, ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
 import { SettingsService } from "../settings.service";
 
 @Component({
@@ -22,7 +21,7 @@ export class CheckerTypesComponent extends ChangeTemplate<CheckerType> implement
     houseService: HouseService,
     private settingsService: SettingsService,
   ) {
-    super(Cmd.StructModifyCheckerType, wsbService, houseService, CheckerType);
+    super(StructType.CheckerType, wsbService, houseService, CheckerType);
   }
 
   getObjects(): CheckerType[] {

@@ -29,7 +29,7 @@
     <input matInput [(ngModel)]="sel_item.obj.name" placeholder="Имя" (ngModelChange)="itemChanged()" />
   </mat-form-field>
   <mat-form-field>
-    <input matInput type="number" min="0" [(ngModel)]="sel_item.obj.unit" placeholder="Юнит" (ngModelChange)="itemChanged()" />
+    <input matInput type="number" min="-1" [(ngModel)]="sel_item.obj.unit" placeholder="Юнит" (ngModelChange)="itemChanged()" />
   </mat-form-field>
   <mat-form-field>
     <input matInput [(ngModel)]="sel_item.obj.parent_id" placeholder="Предок" (ngModelChange)="itemChanged()" />

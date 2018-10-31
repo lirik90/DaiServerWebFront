@@ -3,10 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { HouseService } from "../../house.service";
 import { SignType } from "../../house";
 
-import { Cmd } from "../../control.service";
 import { ByteTools, WebSocketBytesService } from "../../../web-socket.service";
 
-import { ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
+import { StructType, ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
 
 @Component({
   selector: 'app-sign-types',
@@ -18,7 +17,7 @@ export class SignTypesComponent extends ChangeTemplate<SignType> implements OnIn
     wsbService: WebSocketBytesService,
     houseService: HouseService,
   ) {
-    super(Cmd.StructModifySigns, wsbService, houseService, SignType);
+    super(StructType.Signs, wsbService, houseService, SignType);
   }
 
   getObjects(): SignType[] {

@@ -12,7 +12,7 @@
                 <h4 routerLink="/house/{{houseId}}/group/{{group.id}}/param">{{group.type.title}}</h4>
                 <button mat-icon-button><mat-icon>settings</mat-icon></button>
                 <mat-form-field>
-                  <mat-select placeholder="Режим" [value]="group.mode_id.toString()"
+                  <mat-select placeholder="Режим" [value]="group.mode_id ? group.mode_id.toString() : '0'"
                     (selectionChange)="controlService.changeGroupMode($event.value, group.id)"
                     (click)="$event.stopPropagation()">
                     <mat-option>Не выбран</mat-option>

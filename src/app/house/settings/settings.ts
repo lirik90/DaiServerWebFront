@@ -1,5 +1,23 @@
+import { Cmd } from "../control.service";
 import { ByteTools, WebSocketBytesService } from "../../web-socket.service";
 import { HouseService } from "../house.service";
+
+export enum StructType {
+  Unknown,
+  Devices,
+  CheckerType,
+  DeviceItems,
+  DeviceItemTypes,
+  Sections,
+  Groups,
+  GroupTypes,
+  GroupParams,
+  GroupParamTypes,
+  GroupStatuses,
+  GroupStatusTypes,
+  Signs,
+  Scripts,
+}
 
 export enum ChangeState {
   NoChange,
@@ -52,7 +70,7 @@ export abstract class ChangeTemplate<T> {
     if (evnt !== undefined)
       evnt.stopPropagation();
     let data = this.getChangedData();
-    this.wsbService.send(this.cmd, this.houseService.house.id, data);
+    this.wsbService.send(Cmd.StructModify, this.houseService.house.id, data);
   }
 
   cancel(evnt: any = undefined): void {
@@ -110,10 +128,12 @@ export abstract class ChangeTemplate<T> {
       }
     }
 
-    let view = new Uint8Array(12 + updateSize + insertSize + (deleteList.length * 4));
+    let view = new Uint8Array(13 + updateSize + insertSize + (deleteList.length * 4));
+    view[0] = this.cmd;
 
-    ByteTools.saveInt32(updateList.length, view);
-    let pos = 4;
+    let pos = 1;
+    ByteTools.saveInt32(updateList.length, view, pos);
+    pos += 4;
     for (const data of updateList) {
       view.set(data, pos);
       pos += data.length;

@@ -2,10 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 
 import { Device, DeviceItem, ItemType, Section } from "../../house";
 import { HouseService } from "../../house.service";
-import { Cmd } from "../../control.service";
 import { ByteTools, WebSocketBytesService } from "../../../web-socket.service";
 
-import { ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
+import { StructType, ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
 
 @Component({
   selector: 'app-devices',
@@ -17,7 +16,7 @@ export class DevicesComponent extends ChangeTemplate<Device> implements OnInit {
     wsbService: WebSocketBytesService,
     houseService: HouseService,
   ) {
-    super(Cmd.StructModifyDevices, wsbService, houseService, Device);
+    super(StructType.Devices, wsbService, houseService, Device);
   }
 
   getObjects(): Device[] {
@@ -54,7 +53,7 @@ export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements 
     wsbService: WebSocketBytesService,
     houseService: HouseService,
   ) {
-    super(Cmd.StructModifyDeviceItems, wsbService, houseService, DeviceItem);
+    super(StructType.DeviceItems, wsbService, houseService, DeviceItem);
   }
 
   getObjects(): DeviceItem[] {

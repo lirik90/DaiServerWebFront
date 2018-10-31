@@ -3,10 +3,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { HouseService } from "../../house.service";
 import { ItemType, SignType, GroupType, ParamItem, Status } from "../../house";
 
-import { Cmd } from "../../control.service";
 import { ByteTools, WebSocketBytesService } from "../../../web-socket.service";
 
-import { ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
+import { StructType, ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
 
 @Component({
   selector: 'app-group-types',
@@ -18,7 +17,7 @@ export class GroupTypesComponent extends ChangeTemplate<GroupType> implements On
     wsbService: WebSocketBytesService,
     houseService: HouseService,
   ) {
-    super(Cmd.StructModifyGroupTypes, wsbService, houseService, GroupType);
+    super(StructType.GroupTypes, wsbService, houseService, GroupType);
   }
 
   getObjects(): GroupType[] {
@@ -57,7 +56,7 @@ export class ItemTypesComponent extends ChangeTemplate<ItemType> implements OnIn
     wsbService: WebSocketBytesService,
     houseService: HouseService,
   ) {
-    super(Cmd.StructModifyDeviceItemTypes, wsbService, houseService, ItemType);
+    super(StructType.DeviceItemTypes, wsbService, houseService, ItemType);
   }
 
   getObjects(): ItemType[] {
@@ -106,7 +105,7 @@ export class ParamTypesComponent extends ChangeTemplate<ParamItem> implements On
     wsbService: WebSocketBytesService,
     houseService: HouseService,
   ) {
-    super(Cmd.StructModifyGroupParamTypes, wsbService, houseService, ParamItem);
+    super(StructType.GroupParamTypes, wsbService, houseService, ParamItem);
   }
 
   getObjects(): ParamItem[] {
@@ -152,7 +151,7 @@ export class StatusesComponent extends ChangeTemplate<Status> implements OnInit 
     wsbService: WebSocketBytesService,
     houseService: HouseService,
   ) {
-    super(Cmd.StructModifyGroupStatuses, wsbService, houseService, Status);
+    super(StructType.GroupStatuses, wsbService, houseService, Status);
   }
 
   getObjects(): Status[] {

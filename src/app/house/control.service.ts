@@ -23,20 +23,7 @@ export enum Cmd {
   DevItemValues,
   Eventlog,
   GroupMode,
-
-  StructModifyDevices,
-  StructModifyDeviceItems,
-  StructModifyDeviceItemTypes,
-  StructModifySections,
-  StructModifyGroups,
-  StructModifyGroupTypes,
-  StructModifyGroupParams,
-  StructModifyGroupParamTypes,
-  StructModifyGroupStatuses,
-  StructModifyGroupStatusTypes,
-  StructModifySigns,
-  StructModifyScripts,
-  StructModifyCheckerType,
+  StructModify,
 }
 
 export interface ConnectInfo {

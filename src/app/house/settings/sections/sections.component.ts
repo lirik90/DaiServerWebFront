@@ -2,10 +2,9 @@ import { Input, Component, OnInit } from '@angular/core';
 
 import { HouseService } from "../../house.service";
 import { Section, Group, GroupType } from "../../house";
-import { Cmd } from "../../control.service";
 import { ByteTools, WebSocketBytesService } from "../../../web-socket.service";
 import { SettingsService } from "../settings.service";
-import { ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
+import { StructType, ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
 
 @Component({
   selector: 'app-sections',
@@ -18,7 +17,7 @@ export class SectionsComponent extends ChangeTemplate<Section> implements OnInit
     houseService: HouseService,
     private settingsService: SettingsService,
   ) {
-    super(Cmd.StructModifySections, wsbService, houseService, Section);
+    super(StructType.Sections, wsbService, houseService, Section);
   }
 
   getObjects(): Section[] {
@@ -61,7 +60,7 @@ export class GroupsComponent extends ChangeTemplate<Group> implements OnInit {
     wsbService: WebSocketBytesService,
     houseService: HouseService,
   ) {
-    super(Cmd.StructModifyGroups, wsbService, houseService, Group);
+    super(StructType.Groups, wsbService, houseService, Group);
   }
 
   getObjects(): Group[] {
