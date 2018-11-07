@@ -11,13 +11,15 @@
   </mat-expansion-panel-header>
   <button class="mybtn" (click)="create(); slist.close()">Добавить тип уставки</button>
   <ul class="houses">
-    <li *ngFor="let item of items" [class.selected]="sel_item == item">
-      <a class="pre_badge" (click)="select(item); slist.close()">
-        <span class="badge badge_id left_tab">{{item.obj.id}}</span>
-        {{item.obj.title}}
-      </a>
-      <button class="mybtn delete" title="delete item type" (click)="remove(item)">x</button>
-    </li>
+    <ng-container *ngFor="let item of items">
+      <li *ngIf="item.state !== changeState.Delete" [class.selected]="sel_item == item">
+        <a class="pre_badge" (click)="select(item); slist.close()">
+          <span class="badge badge_id left_tab">{{item.obj.id}}</span>
+          {{item.obj.title}}
+        </a>
+        <button class="mybtn delete" title="delete item type" (click)="remove(item)">x</button>
+      </li>
+    </ng-container>
   </ul>
 </mat-expansion-panel>
 <mat-expansion-panel expanded hideToggle *ngIf="sel_item">
