@@ -1,15 +1,190 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { HouseService } from "../../house.service";
 import { ItemType, SignType, GroupType, ParamItem, Status } from "../../house";
 
+import { ByteTools, WebSocketBytesService } from "../../../web-socket.service";
+
+import { StructType, ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
+
 @Component({
   selector: 'app-group-types',
   templateUrl: './group-types.component.html',
-  styleUrls: ['../../../houses/list/list.component.css', './group-types.component.css']
+  styleUrls: ['../settings.css', './group-types.component.css']
 })
-export class GroupTypesComponent implements OnInit {
+export class GroupTypesComponent extends ChangeTemplate<GroupType> implements OnInit {
+  constructor(
+    wsbService: WebSocketBytesService,
+    houseService: HouseService,
+  ) {
+    super(StructType.GroupTypes, wsbService, houseService, GroupType);
+  }
+
+  getObjects(): GroupType[] {
+    return this.houseService.house.groupTypes;
+  }
+
+  ngOnInit() {
+    this.fillItems();
+  }
+
+  saveObject(obj: GroupType): Uint8Array {
+    let name = ByteTools.saveQString(obj.name);
+    let title = ByteTools.saveQString(obj.title);
+    let desc = ByteTools.saveQString(obj.description);
+    let view = new Uint8Array(8 + name.length + title.length + desc.length);
+    ByteTools.saveInt32(obj.id, view);
+    view.set(name, 4);
+    view.set(title, 4 + name.length);
+    ByteTools.saveInt32(obj.code_id, view, 4 + name.length + title.length);
+    view.set(desc, 8 + name.length + title.length);
+    return view;
+  }
+}
+
+@Component({
+  selector: 'app-item-types',
+  templateUrl: './item-types.component.html',
+  styleUrls: ['../settings.css', './group-types.component.css']
+})
+export class ItemTypesComponent extends ChangeTemplate<ItemType> implements OnInit {
+  @Input() grouptype: GroupType;
+
   signTypes: SignType[];
+
+  constructor(
+    wsbService: WebSocketBytesService,
+    houseService: HouseService,
+  ) {
+    super(StructType.DeviceItemTypes, wsbService, houseService, ItemType);
+  }
+
+  getObjects(): ItemType[] {
+    return this.houseService.house.itemTypes.filter(obj => obj.groupType_id === this.grouptype.id);
+  }
+
+  ngOnInit() {
+    console.log(this.grouptype);
+    this.signTypes = this.houseService.house.signTypes;
+    this.fillItems();
+  }
+
+  initItem(obj: ItemType): void {
+    obj.name = '';
+    obj.title = '';
+    obj.groupType_id = this.grouptype.id;
+  }
+
+  saveObject(obj: ItemType): Uint8Array {
+    let name = ByteTools.saveQString(obj.name);
+    let title = ByteTools.saveQString(obj.title);
+    let view = new Uint8Array(16 + name.length + title.length);
+    let pos = 0;
+    ByteTools.saveInt32(obj.id, view); pos += 4;
+    view.set(name, pos); pos += name.length;
+    view.set(title, pos); pos += title.length;
+    ByteTools.saveInt32(obj.groupType_id, view, pos); pos += 4;
+    view[pos] = obj.groupDisplay ? 1 : 0; pos += 1;
+    view[pos] = obj.isRaw ? 1 : 0; pos += 1;
+    ByteTools.saveInt32(obj.sign_id, view, pos); pos += 4;
+    view[pos] = obj.registerType; pos += 1;
+    view[pos] = obj.saveAlgorithm; pos += 1;
+    return view;
+  }
+}
+
+@Component({
+  selector: 'app-param-types',
+  templateUrl: './param-types.component.html',
+  styleUrls: ['../settings.css', './group-types.component.css']
+})
+export class ParamTypesComponent extends ChangeTemplate<ParamItem> implements OnInit {
+  @Input() grouptype: GroupType;
+
+  constructor(
+    wsbService: WebSocketBytesService,
+    houseService: HouseService,
+  ) {
+    super(StructType.GroupParamTypes, wsbService, houseService, ParamItem);
+  }
+
+  getObjects(): ParamItem[] {
+    return this.houseService.house.params;
+  }
+
+  ngOnInit() {
+    this.fillItems();
+  }
+
+  initItem(obj: ParamItem): void {
+    obj.name = '';
+    obj.title = '';
+    obj.groupType_id = this.grouptype.id;
+  }
+
+  saveObject(obj: ParamItem): Uint8Array {
+    let name = ByteTools.saveQString(obj.name);
+    let title = ByteTools.saveQString(obj.title);
+    let desc = ByteTools.saveQString(obj.description);
+    let view = new Uint8Array(13 + name.length + title.length + desc.length);
+    let pos = 0;
+    ByteTools.saveInt32(obj.id, view); pos += 4;
+    view.set(name, pos); pos += name.length;
+    view.set(title, pos); pos += title.length;
+    view.set(desc, pos); pos += desc.length;
+    view[pos] = obj.type; pos += 1;
+    ByteTools.saveInt32(obj.groupType_id, view, pos); pos += 4;
+    ByteTools.saveInt32(obj.parent_id, view, pos); pos += 4;
+    return view;
+  }
+}
+
+@Component({
+  selector: 'app-statuses',
+  templateUrl: './statuses.component.html',
+  styleUrls: ['../settings.css', './group-types.component.css']
+})
+export class StatusesComponent extends ChangeTemplate<Status> implements OnInit {
+  @Input() grouptype: GroupType;
+
+  constructor(
+    wsbService: WebSocketBytesService,
+    houseService: HouseService,
+  ) {
+    super(StructType.GroupStatuses, wsbService, houseService, Status);
+  }
+
+  getObjects(): Status[] {
+    return this.houseService.house.statuses;
+  }
+
+  ngOnInit() {
+    this.fillItems();
+  }
+
+  initItem(obj: Status): void {
+    obj.name = '';
+    obj.groupType_id = this.grouptype.id;
+  }
+
+  saveObject(obj: Status): Uint8Array {
+    let name = ByteTools.saveQString(obj.name);
+    let title = ByteTools.saveQString(obj.text);
+    let view = new Uint8Array(18 + name.length + title.length);
+    let pos = 0;
+    ByteTools.saveInt32(obj.id, view); pos += 4;
+    view.set(name, pos); pos += name.length;
+    view.set(title, pos); pos += title.length;
+    ByteTools.saveInt32(obj.type_id, view, pos); pos += 4;
+    view[pos] = obj.isMultiValue ? 1 : 0; pos += 1;
+    ByteTools.saveInt32(obj.value, view, pos); pos += 4;
+    ByteTools.saveInt32(obj.groupType_id, view, pos); pos += 4;
+    view[pos] = obj.inform ? 1 : 0; pos += 1;
+    return view;
+  }
+}
+
+export class OtherTypesComponent implements OnInit {
   paramItems: ParamItem[];
   itemTypes: ItemType[];
   groupTypes: GroupType[];
@@ -25,7 +200,6 @@ export class GroupTypesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.signTypes = this.houseService.house.signTypes;
     this.paramItems = this.houseService.house.params;
     this.groupTypes = this.houseService.house.groupTypes;
     this.statuses = [];

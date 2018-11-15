@@ -28,6 +28,7 @@ export enum ItemTypeRegister { // Тип данных элемента
   Coils,            // Булевы значения чтение/запись
   InputRegisters,   // Значения только для чтения
   HoldingRegisters, // Значения чтение/запись
+  File,             // Передача файла
 }
 
 export enum SaveAlgorithmType { // Алгоритм сохранения изменений значения
@@ -68,9 +69,34 @@ export class DeviceItem { // Элемент устройства
   name: string;       // Имя
   type_id: number;    // ID типа
   type: ItemType;     // Тип
+  extra: any;         // Пользовательские параметры
 
   value: any;         // Отображаемое значение
   raw_value: any;     // Сырое значение
+}
+
+export class StatusType {
+  id: number;     // ID
+  name: string;
+  title: string;
+  color: string;
+}
+
+export class Status {
+  id: number;           // ID
+  groupType_id: number;
+  type_id: number;
+  type: StatusType;
+  name: string;
+  text: string;
+  isMultiValue: boolean;
+  value: number;
+  inform: boolean;
+}
+
+export class GroupStatus {
+  status: Status;
+  args: string;
 }
 
 export class Group {  // Группа
@@ -82,7 +108,14 @@ export class Group {  // Группа
   items: DeviceItem[] = []; // Элементы в группе
   params: ParamValue[] = [];// Уставки
   status: number;           // Состояние
+  statuses: GroupStatus[] = [];
 }
+
+export class View {  // Представление
+  id: number;
+  name: string;
+  types: ItemType[] = [];
+} 
 
 export enum ParamType { // Тип значения уставки
   Unknown,
@@ -121,6 +154,7 @@ export class Device { // Устройство
   address: number;    // Адрес
   name: string;       // Имя
   checker_id: number; // ID используемого плагина
+  extra: any;         // Пользовательские параметры
   items: DeviceItem[];// Массив элементов
 }
 
@@ -130,6 +164,7 @@ export class Logs { // Запись журнала изменений значе
   item_id: number;  // ID элемент
   raw_value: string;// Значение
   value: string;    // Отображаемое значение
+  user_id: number;  // Пользователь
 }
 
 export enum EventLogType { // Тип события в журнале событий
@@ -147,6 +182,7 @@ export class EventLog { // Запись в журнале событий
   who: string;        // Категория
   msg: string;        // Сообщение
   type: number;       // Тип события
+  user_id: number;    // Пользователь
   color: string = ''; // Цвет?
 
 /*
@@ -166,24 +202,6 @@ export class Settings {
   value: string;
 }
 
-export class StatusType {
-  id: number;     // ID
-  name: string;
-  title: string;
-  color: string;
-}
-
-export class Status {
-  id: number;           // ID
-  groupType_id: number;
-  type_id: number;
-  name: string;
-  text: string;
-  isMultiValue: boolean;
-  value: number;
-  inform: boolean;
-}
-
 export class HouseDetail {
   id: number;             // ID проекта
   name: string;           // Имя проекта
@@ -194,5 +212,7 @@ export class HouseDetail {
   groupTypes: GroupType[];// Типы групп
   itemTypes: ItemType[];  // Типы элементов
   signTypes: SignType[];  // Еденицы измерения
+  statusTypes: StatusType[];  // Типы состояний
+  statuses: Status[];  // Состояния
 }
 

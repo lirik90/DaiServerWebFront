@@ -1,4 +1,23 @@
-import { ByteTools } from "../../web-socket.service";
+import { Cmd } from "../control.service";
+import { ByteTools, WebSocketBytesService } from "../../web-socket.service";
+import { HouseService } from "../house.service";
+
+export enum StructType {
+  Unknown,
+  Devices,
+  CheckerType,
+  DeviceItems,
+  DeviceItemTypes,
+  Sections,
+  Groups,
+  GroupTypes,
+  GroupParams,
+  GroupParamTypes,
+  GroupStatuses,
+  GroupStatusTypes,
+  Signs,
+  Scripts,
+}
 
 export enum ChangeState {
   NoChange,
@@ -17,7 +36,11 @@ export abstract class ChangeTemplate<T> {
 
   items: ChangeInfo<T>[];
   sel_item: ChangeInfo<T>;
-  constructor() {}
+  constructor(
+    private cmd: number,
+    private wsbService: WebSocketBytesService,
+    public houseService: HouseService,
+    private itemType: new () => T) {}
 
   abstract getObjects(): T[];
 
@@ -43,10 +66,29 @@ export abstract class ChangeTemplate<T> {
     }
   }
 
-  cancel(): void {
+  save(evnt: any = undefined): void {
+    if (evnt !== undefined)
+      evnt.stopPropagation();
+    let data = this.getChangedData();
+    this.wsbService.send(Cmd.StructModify, this.houseService.house.id, data);
+  }
+
+  cancel(evnt: any = undefined): void {
+    if (evnt !== undefined)
+      evnt.stopPropagation();
     if (this.sel_item !== undefined)
       this.select(this.sel_item);
     this.fillItems();
+  }
+
+  initItem(obj: T): void {}
+
+  create(): void {
+    this.changed = true;
+    let obj: T = new this.itemType();
+    (<any>obj).id = 0;
+    this.initItem(obj);
+    this.addItem(obj);
   }
 
   addItem(obj: T, select: boolean = true): void {
@@ -86,10 +128,12 @@ export abstract class ChangeTemplate<T> {
       }
     }
 
-    let view = new Uint8Array(12 + updateSize + insertSize + (deleteList.length * 4));
+    let view = new Uint8Array(13 + updateSize + insertSize + (deleteList.length * 4));
+    view[0] = this.cmd;
 
-    ByteTools.saveInt32(updateList.length, view);
-    let pos = 4;
+    let pos = 1;
+    ByteTools.saveInt32(updateList.length, view, pos);
+    pos += 4;
     for (const data of updateList) {
       view.set(data, pos);
       pos += data.length;
@@ -111,5 +155,4 @@ export abstract class ChangeTemplate<T> {
 
     return view;
   }
-
 }

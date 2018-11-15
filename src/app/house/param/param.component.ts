@@ -50,6 +50,27 @@ export class ParamComponent implements OnInit {
     }
   }
 
+  getTimeString(p: ParamValue): string {
+    let pad = (val: number) => {
+      return ('0' + val.toFixed(0)).slice(-2);
+    };
+    let secs = parseInt(p.value);
+    let h = pad(secs / 3600);
+    secs %= 3600;
+    let m = pad(secs / 60);
+    return h + ':' + m + ':' + pad(secs % 60);
+  }
+
+  setTimeParam(p: ParamValue, val: string): void {
+    let arr = val.split(':').reverse();
+    if (!arr.length) return;
+
+    let new_value = parseInt(arr[0]);
+    if (arr.length > 1) new_value += parseInt(arr[1]) * 60;
+    if (arr.length > 2) new_value += parseInt(arr[2]) * 3600;
+    p.value = new_value.toString();
+  }
+
   onSubmit() {
     let params: ParamValue[] = [];
     for (const data of this.group.params)

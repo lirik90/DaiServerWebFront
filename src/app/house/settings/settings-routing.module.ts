@@ -11,6 +11,7 @@ import { GroupTypesComponent } from "./group-types/group-types.component";
 import { StatusTypesComponent } from "./status-types/status-types.component";
 import { SignTypesComponent } from "./sign-types/sign-types.component";
 import { CodeComponent, CodesComponent } from "./code/code.component";
+import { CheckerTypesComponent } from "./checker-types/checker-types.component";
 
 const settingsRoutes: Routes = [
   {
@@ -36,6 +37,7 @@ const settingsRoutes: Routes = [
       { path: 'grouptypes', component: GroupTypesComponent },
       { path: 'statustypes', component: StatusTypesComponent },
       { path: 'signtypes', component: SignTypesComponent },
+      { path: 'checkertypes', component: CheckerTypesComponent },
       { 
         path: 'code', 
         children: [

@@ -2,18 +2,21 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+import { MaterialModule } from "../../material.module";
+
 import { SettingsRoutingModule } from './settings-routing.module';
 import { SettingsService } from './settings.service';
 
 import { SettingsComponent } from './settings.component';
 import { DevicesComponent, DeviceItemsComponent } from './devices/devices.component';
-import { SectionsComponent } from './sections/sections.component';
-import { GroupTypesComponent } from './group-types/group-types.component';
+import { SectionsComponent, GroupsComponent } from './sections/sections.component';
+import { GroupTypesComponent, ItemTypesComponent, ParamTypesComponent, StatusesComponent } from './group-types/group-types.component';
 import { StatusTypesComponent } from './status-types/status-types.component';
 import { SignTypesComponent } from './sign-types/sign-types.component';
 import { CodeComponent, CodesComponent } from './code/code.component';
 
 import { MonacoEditorModule, NgxMonacoEditorConfig, NGX_MONACO_EDITOR_CONFIG } from 'ngx-monaco-editor';
+import { CheckerTypesComponent } from './checker-types/checker-types.component';
 const monacoConfig: NgxMonacoEditorConfig = {
   baseUrl: 'static', // configure base path for monaco editor
   defaultOptions: { scrollBeyondLastLine: false }, // pass deafult options to be used
@@ -26,6 +29,7 @@ const monacoConfig: NgxMonacoEditorConfig = {
     FormsModule,
     ReactiveFormsModule,
     SettingsRoutingModule,
+    MaterialModule,
     MonacoEditorModule, // use forRoot() in main app module only.
   ],
   declarations: [
@@ -33,11 +37,13 @@ const monacoConfig: NgxMonacoEditorConfig = {
     DevicesComponent, 
     DeviceItemsComponent,
     SectionsComponent, 
-    GroupTypesComponent, 
+    GroupsComponent,
+    GroupTypesComponent, ItemTypesComponent, ParamTypesComponent, StatusesComponent , 
     StatusTypesComponent, 
     SignTypesComponent, 
     CodesComponent,
     CodeComponent,
+    CheckerTypesComponent,
   ],
   entryComponents: [
   ],

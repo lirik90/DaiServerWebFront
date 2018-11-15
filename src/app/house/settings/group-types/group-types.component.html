@@ -1,113 +1,49 @@
-<h2>Типы групп</h2>
-<button (click)="add()">Добавить тип группы</button>
-<ul class="houses">
-  <li *ngFor="let gtype of groupTypes" [class.selected]="sel_gtype == gtype">
-    <a class="pre_badge" (click)="select(gtype)">
-      <span class="badge">{{gtype.id}}</span> {{gtype.title}}
-    </a>
-    <button class="delete" title="delete item type"
-      (click)="remove(gtype)">x</button>
-  </li>
-</ul>
-
-<div class="house_form" *ngIf="sel_gtype">Тип группы:
-  <label>Имя: <input [(ngModel)]="sel_gtype.name" placeholder="Name" /></label>
-  <label>Заголовок: <input [(ngModel)]="sel_gtype.title" placeholder="Title" /></label>
-  <label>Скрипт: <input [(ngModel)]="sel_gtype.code_id" placeholder="Code ID" /></label>
-  <label>Описание: <textarea [(ngModel)]="sel_gtype.description" placeholder="description"></textarea></label>
-  <button (click)="save()">Сохранить тип группы</button>
-
-  <h2>Типы элементов в группе</h2>
-  <button (click)="add_it()">Добавить тип элемента</button>
-  <ul class="houses">
-    <li *ngFor="let itype of itemTypes" [class.selected]="sel_itype == itype">
-      <a class="pre_badge" (click)="select_it(itype)">
-        <span class="badge">{{itype.id}}</span> {{itype.title}}
-      </a>
-      <button class="delete" title="delete item type"
-                             (click)="remove_it(itype)">x</button>
-    </li>
-  </ul>
-
-  <div class="house_form" *ngIf="sel_itype">Тип элемента:
-    <label>Имя: <input [(ngModel)]="sel_itype.name" placeholder="Name" /></label>
-    <label>Заголовок: <input [(ngModel)]="sel_itype.title" placeholder="Title" /></label>
-    <label>Тип данных: <select [(ngModel)]="sel_itype.registerType">
-        <option value="1">DiscreteInputs</option>
-        <option value="2">Coils</option>
-        <option value="3">InputRegisters</option>
-        <option value="4">HoldingRegisters</option>
-      </select>
-    </label>
-    <label>Еденицы измерения: <select [(ngModel)]="sel_itype.sign_id">
-        <option value="0">Нет</option>
-        <option *ngFor="let sign of signTypes" [value]="sign.id">{{sign.name}}</option>
-      </select>
-    </label>
-    <label><input type="checkbox" [(ngModel)]="sel_itype.isRaw"/> Требует нормализации</label>
-    <label><input type="checkbox" [(ngModel)]="sel_itype.groupDisplay"/> Виден в группе</label>
-    <label>Алгоритм сохранения изменений: <select [(ngModel)]="sel_itype.saveAlgorithm">
-        <option value="1">Не сохранять автоматически</option>
-        <option value="2">Сохранять немедленно</option>
-        <option value="3">Сохранять по таймеру</option>
-      </select>
-    </label>
-
-    <button (click)="save_it()">Сохранить тип элемента</button>
-  </div>
-
-  <h2>Типы уставок в группе</h2>
-  <button (click)="add_param()">Добавить тип уставки</button>
-  <ul class="houses">
-    <li *ngFor="let item of paramItems" [class.selected]="param == item">
-      <a class="pre_badge" (click)="select_param(item)">
-        <span class="badge">{{item.id}}</span> {{item.title}}
-      </a>
-      <button class="delete" title="delete param type" (click)="remove_param(item)">x</button>
-    </li>
-  </ul>
-
-  <div class="house_form" *ngIf="param">Тип уставки:
-    <label>Имя: <input [(ngModel)]="param.name" placeholder="Name"/></label>
-    <label>Заголовок: <input [(ngModel)]="param.title" placeholder="Title"/></label>
-    <label>Описание: <input [(ngModel)]="param.description" placeholder="Description"/></label>
-    <label>Предок: <input [(ngModel)]="param.parent_id" placeholder="Parent ID"/></label>
-    <label>Тип данных: <select [(ngModel)]="param.type">
-        <option value="0">Unknown</option>
-        <option value="1">Int</option>
-        <option value="2">Bool</option>
-        <option value="3">Float</option>
-        <option value="4">String</option>
-        <option value="5">Bytes</option>
-        <option value="6">TimeType</option>
-        <option value="7">RangeType</option>
-        <option value="8">ComboType</option>
-      </select>
-    </label>
-    <button (click)="save_it()">Сохранить тип уставки</button>
-  </div>
-
-  <h2>Состояния группы</h2>
-  <button (click)="add_status()">Добавить состояние</button>
-  <ul class="houses">
-    <li *ngFor="let item of statuses" [class.selected]="status == item">
-      <a class="pre_badge" (click)="select_status(item)">
-        <span class="badge">{{item.id}}</span> {{item.name}}
-      </a>
-      <button class="delete" title="delete group status" (click)="remove_status(item)">x</button>
-    </li>
-  </ul>
-  <div class="house_form" *ngIf="status">Состояние группы:
-    <label>Имя: <input [(ngModel)]="status.name" placeholder="Name"/></label>
-    <label>Тип: <select [(ngModel)]="status.type_id">
-        <option value="0">Нет</option>
-        <option *ngFor="let item of statusTypes" [value]="item.id">{{item.title}}</option>
-      </select>
-    </label>
-    <label>Текст: <input [(ngModel)]="param.text" placeholder="Text"/></label>
-    <label>Значение: <input [(ngModel)]="param.value" placeholder="Value"/></label>
-    <label><input type="checkbox" [(ngModel)]="param.isMultiValue"/>Мульти-значение</label>
-    <label><input type="checkbox" [(ngModel)]="param.inform"/>Посылать уведомление</label>
-    <button (click)="save_param()">Сохранить состояние группы</button>
-  </div>
-</div>
+<mat-accordion class="example-headers-align" multi>
+  <mat-expansion-panel hideToggle [expanded]="1" #slist>
+    <mat-expansion-panel-header>
+      <mat-panel-title><p>Типы групп</p></mat-panel-title>
+      <mat-panel-description>
+        Всего: {{items.length}}
+        <span *ngIf="changed">
+          <button mat-icon-button (click)="save($event)"><mat-icon>save</mat-icon></button>
+          <button mat-icon-button (click)="cancel($event)"><mat-icon>cancel</mat-icon></button>
+        </span>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <button class="mybtn" (click)="create(); slist.close()">Добавить тип группы</button>
+    <ul class="houses">
+      <ng-container *ngFor="let item of items">
+        <li *ngIf="item.state !== changeState.Delete" [class.selected]="sel_item == item">
+          <a class="pre_badge" (click)="select(item); slist.close()">
+            <span class="badge badge_id">{{item.obj.id}}</span>
+            {{item.obj.title}}
+          </a>
+          <button class="mybtn delete" title="delete group type" (click)="remove(item)">x</button>
+        </li>
+      </ng-container>
+    </ul>
+  </mat-expansion-panel>
+  <mat-expansion-panel expanded hideToggle *ngIf="sel_item">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Детали</mat-panel-title>
+      <mat-panel-description>
+        {{sel_item.obj.title}}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <mat-form-field>
+      <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.name" placeholder="Имя" />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.title" placeholder="Заголовок" />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.code_id" placeholder="Скрипт" type="number" min="0" />
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.description" placeholder="Описание"></textarea>
+    </mat-form-field>
+  </mat-expansion-panel>
+  <app-item-types *ngIf="!changed && sel_item" [grouptype]="sel_item.obj"></app-item-types>
+  <app-param-types *ngIf="!changed && sel_item" [grouptype]="sel_item.obj"></app-param-types>
+  <app-statuses *ngIf="!changed && sel_item" [grouptype]="sel_item.obj"></app-statuses>
+</mat-accordion>
