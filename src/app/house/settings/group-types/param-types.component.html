@@ -32,15 +32,15 @@
   <mat-form-field><input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.description" placeholder="Описание"/></mat-form-field>
   <mat-form-field><input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.parent_id" placeholder="Предок"/></mat-form-field>
   <mat-form-field><mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.type" placeholder="Тип данных">
-      <mat-option value="0">Unknown</mat-option>
-      <mat-option value="1">Int</mat-option>
-      <mat-option value="2">Bool</mat-option>
-      <mat-option value="3">Float</mat-option>
-      <mat-option value="4">String</mat-option>
-      <mat-option value="5">Bytes</mat-option>
-      <mat-option value="6">TimeType</mat-option>
-      <mat-option value="7">RangeType</mat-option>
-      <mat-option value="8">ComboType</mat-option>
+      <mat-option [value]="0">Unknown</mat-option>
+      <mat-option [value]="1">Int</mat-option>
+      <mat-option [value]="2">Bool</mat-option>
+      <mat-option [value]="3">Float</mat-option>
+      <mat-option [value]="4">String</mat-option>
+      <mat-option [value]="5">Bytes</mat-option>
+      <mat-option [value]="6">TimeType</mat-option>
+      <mat-option [value]="7">RangeType</mat-option>
+      <mat-option [value]="8">ComboType</mat-option>
     </mat-select>
   </mat-form-field>
 </mat-expansion-panel>
