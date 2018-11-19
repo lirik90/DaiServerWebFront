@@ -6,7 +6,7 @@
     <ng-container *ngFor="let data of group.params">
       <p *ngIf="!canShowIt(data.param.type)">{{data.param.title}}</p>
       <ng-container *ngIf="canShowIt(data.param.type)" [ngSwitch]="data.param.type">
-        <mat-checkbox name="{{data.id}}" [(ngModel)]="data.value" *ngSwitchCase="paramTypes.Bool">
+        <mat-checkbox name="{{data.id}}" [ngModel]="data.value == true" (ngModelChange)="data.value = $event" *ngSwitchCase="paramTypes.Bool">
           {{data.param.title}} ({{data.param.name}}) {{data.param.description}}
         </mat-checkbox>
         <mat-form-field class="example-full-width" *ngSwitchCase="paramTypes.TimeType">
