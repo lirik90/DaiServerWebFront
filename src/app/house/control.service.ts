@@ -10,7 +10,7 @@ import 'rxjs/add/operator/filter';
 
 import { HouseService } from "./house.service";
 import { WebSocketBytesService, ByteMessage, ByteTools } from '../web-socket.service';
-import { DeviceItem, Codes, EventLog, ParamValue } from './house';
+import { DeviceItem, Group, Codes, EventLog, ParamValue } from './house';
 
 export enum Cmd {
   ConnectInfo = 3, // WebSockCmd.UserCmd
@@ -105,6 +105,45 @@ export class ControlService {
 
         if (idx != msg.data.byteLength)
           console.warn(`BAD PARSE POSITION ${idx} NEED ${msg.data.byteLength} ${JSON.stringify(view)}`);
+      } else if (msg.cmd == Cmd.ChangeParamValues) {
+        let set_param_impl = (group: Group, prm_id: number, value: string) => {
+          if (group !== undefined && group.params !== undefined)
+            for (let param of group.params) {
+              if (param.id == prm_id) {
+                param.value = value;
+                return true;
+              }
+            }
+          return false;
+        };
+
+        let last_group: Group = undefined;
+        let set_param = (prm_id: number, value: string) => {
+          if (set_param_impl(last_group, prm_id, value))
+            return;
+          for (let sct of this.houseService.house.sections) {
+            for (let group of sct.groups) {
+              if (set_param_impl(group, prm_id, value)) {
+                if (last_group !== group)
+                  last_group = group;
+                return;
+              }
+            }
+          }
+        };
+
+        let view = new Uint8Array(msg.data);
+        let [idx, count] = ByteTools.parseUInt32(view);
+        let param_id: number;
+        while (count--) {
+          param_id = ByteTools.parseUInt32(view, idx)[1];
+          idx += 4;
+
+          const [ last_pos, value ] = ByteTools.parseQString(view, idx);
+          idx = last_pos;
+
+          set_param(param_id, value);
+        }
       } else {
         this.byte_msg.next(msg);
       }
