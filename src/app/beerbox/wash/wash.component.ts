@@ -31,27 +31,31 @@ export class WashComponent implements OnInit {
         is_first = false;
         continue;
       }
+      let clean: any = { sct };
       for (let group of sct.groups) {
         if (group.type.id == 16) { // api.HeadGroup
-          let clean: any = { sct };
           for (let item of group.items) {
             switch(item.type.id) {
-              case 62: // api.PouringItem
-                clean.pouring = item;
-                break;
-              case 102: // api.CleanTypeItem
-                clean.type = item;
-                break;
-              case 105: // api.CleanStepItem
-                clean.step = item;
-                break;
+              case 62:  clean.pouring = item;    break; // api.PouringItem
+              case 102: clean.type = item;       break; // api.CleanTypeItem
+              case 105: clean.step = item;       break; // api.CleanStepItem
+              case 71:  clean.cur_volume = item; break; // api.type.item.volume
+              case 99:  clean.pause = item;      break; // api.type.item.pause
+            }
+
+            if (clean.type !== undefined && clean.step !== undefined && clean.pouring !== undefined && clean.cur_volume !== undefined && clean.pause !== undefined)
+              break;
+          }
+        } else if (group.type.id == 17) { // api.type.group.params
+          for (let item of group.items) {
+            if (item.type.id == 96) { // api.type.item.setVol3
+              clean.full_volume = item;
             }
           }
-          if (clean.type !== undefined && clean.step !== undefined)
-            items.push(clean);
-          break;
         }
       }
+      if (clean.type !== undefined && clean.step !== undefined && clean.pouring !== undefined && clean.cur_volume !== undefined && clean.pause !== undefined && clean.full_volume !== undefined)
+        items.push(clean);
     }
 
     this.items = items;

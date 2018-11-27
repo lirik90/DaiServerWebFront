@@ -25,6 +25,7 @@
           </ng-container>
           <ng-container *ngIf="clean.pouring.raw_value == 1">
             <h5>Идёт промывка, пожалуйста ждите!</h5>
+            <h5>Осталось: {{clean.full_volume.value-clean.cur_volume.value}} мл.<span *ngIf="clean.pause.value == 1"> Пауза!</span></h5>
             <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
           </ng-container>
         </ng-container>
