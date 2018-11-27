@@ -14,33 +14,28 @@ export class GroupStatusComponent implements OnInit {
 
   @ViewChild(MatTooltip) tooltip;
 
-  status_name: string;
-  text: string;
-  short_text: string;
+  get color(): string {
+    if (this.group.status_info === undefined)
+      return 'gray';
+    return this.group.status_info.color;
+  }
+
+  get text(): string {
+    if (this.group.status_info === undefined)
+      return '?';
+    return this.group.status_info.text;
+  }
+
+  get short_text(): string {
+    if (this.group.status_info === undefined)
+      return '?';
+    return this.group.status_info.short_text;
+  }
 
   constructor(
   ) { }
 
   ngOnInit() {
-    this.setStatus(1);
-  }
-
-  setStatus(status_code: number): void {
-    let postfix: string;
-    switch(status_code) {
-    case 1:
-      this.status_name = 'success';
-      this.short_text = 'Ok';
-      postfix = 'is ok!';
-      break;
-    default:
-      this.status_name = 'unknown';
-      this.short_text = '?';
-      postfix = 'is unknown.';
-      break;
-    }
-
-    this.text = this.group.type.name + ' ' + postfix;
   }
 
   showStatusText(evnt: any): void {

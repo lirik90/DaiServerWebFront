@@ -96,7 +96,13 @@ export class Status {
 
 export class GroupStatus {
   status: Status;
-  args: string;
+  args: string[];
+}
+
+export class GroupStatusInfo {
+  color: string;
+  text: string;
+  short_text: string;
 }
 
 export class Group {  // Группа
@@ -109,6 +115,7 @@ export class Group {  // Группа
   params: ParamValue[] = [];// Уставки
   status: number;           // Состояние
   statuses: GroupStatus[] = [];
+  status_info: GroupStatusInfo;
 }
 
 export class View {  // Представление
