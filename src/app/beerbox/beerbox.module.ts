@@ -7,6 +7,7 @@ import { BeerboxRoutingModule } from "./beerbox-routing.module";
 import { WashComponent } from './wash/wash.component';
 import { ReplaceKegComponent, ConfirmDialogReplaceKegComponent } from './replace-keg/replace-keg.component';
 import { CalibrationComponent } from './calibration/calibration.component';
+import { CheckHeadStandComponent } from './check-head-stand/check-head-stand.component';
 
 @NgModule({
   imports: [
@@ -17,7 +18,7 @@ import { CalibrationComponent } from './calibration/calibration.component';
     BeerboxRoutingModule,
   ],
   declarations: [
-    WashComponent, ReplaceKegComponent, ConfirmDialogReplaceKegComponent, CalibrationComponent,
+    WashComponent, ReplaceKegComponent, ConfirmDialogReplaceKegComponent, CalibrationComponent, CheckHeadStandComponent    
   ],
   entryComponents: [
     ConfirmDialogReplaceKegComponent,

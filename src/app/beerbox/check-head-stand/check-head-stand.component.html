@@ -1,0 +1,47 @@
+<h2>Проверка голов</h2>
+<div class="grid grid-pad">
+  <ng-container *ngFor="let item of items; index as i">
+    <div class="col-1-3">
+      <div class="module house">
+        <h3>{{item.sct.name}}</h3>        
+		  
+        <ng-container *ngIf="item.clean_type.raw_value > 0 && item.clean_type.raw_value < 11; else no_clean_type">
+          <h5>Идёт промыка, пожалуйста ждите!</h5>
+          <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
+        </ng-container>
+
+        <ng-template #no_clean_type>
+
+          <ng-container *ngIf="item.pouring.raw_value == 1 && item.clean_type.raw_value < 11; else no_pouring">
+            <h5>Идёт налив, пожалуйста ждите!</h5>
+            <h5>Осталось: {{item.full_volume.value-item.cur_volume.value}} мл.<span *ngIf="item.pause.value == 1"> Пауза!</span></h5>
+            <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
+          </ng-container>	
+
+          <ng-template #no_pouring>
+            
+            <ng-container *ngIf="item.clean_type.raw_value == 0">
+              <button mat-button class="button" (click)="click_start_check(i, 11)" title="Наполнение магистрали водой">Наполнение магистрали водой</button>
+              <button mat-button class="button" (click)="click_start_check(i, 12)" title="Проверка">Проверка</button>
+              <button mat-button class="button" (click)="click_start_check(i, 13)" title="Промывка ">Промывка </button>
+            </ng-container>
+            
+            <ng-container *ngIf="item.clean_type.raw_value >= 11">
+              <h4>{{get_type_text(item)}}</h4>
+              <ng-container *ngIf="item.pouring.raw_value == 0">                
+                <p>Установите бутылку. И нажмите кнопку на аппарате.</p>
+              </ng-container>
+              <ng-container *ngIf="item.pouring.raw_value == 1">
+                <h5>Идёт проверка, пожалуйста ждите!</h5>
+                <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
+              </ng-container>
+            </ng-container>
+            
+          </ng-template>                  				
+
+        </ng-template>		  			 
+		  		  
+      </div>
+    </div>
+  </ng-container>
+</div>
