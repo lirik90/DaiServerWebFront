@@ -34,6 +34,34 @@ h4 {
   margin: auto;
 }
 
+button {
+  background-color: rgba(0,0,0,.26) !important;
+  color: white;  
+  border: none;  
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.button_2 {
+  background-color: rgba(0,0,0,.26) !important;
+  color: white;
+  border: none;
+  width: 100%;
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.button_3 {
+  background-color: rgba(99, 2, 2, 0.78) !important;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
 
 @media (max-width: 600px) {
   .module {
@@ -53,12 +81,4 @@ h4 {
   }
 }
 
-button {
-  background-color: rgba(0,0,0,.26) !important;
-  color: white;
-  border: none;
-  width: 100%;
-  padding: 5px 10px;
-  border-radius: 4px;
-  margin-top: 10px;
-}
+
