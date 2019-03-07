@@ -22,8 +22,8 @@
             
             <ng-container *ngIf="item.clean_type.raw_value == 0">
               <button mat-button class="button_2" (click)="click_start_check_button(item, 11)" title="Наполнение магистрали водой">Наполнение магистрали водой</button>
-              <button mat-button class="button_2" (click)="click_start_check_button(item, 12)" title="Проверка">Проверка пивом</button>
-              <button mat-button class="button_2" (click)="click_start_check_button(item, 13)" title="Промывка ">Промывка водой</button>
+              <button mat-button class="button_2" (click)="click_start_check_button(item, 12)" title="Проверка пивом">Проверка пивом</button>
+              <button mat-button class="button_2" (click)="click_start_check_button(item, 13)" title="Промывка водой">Промывка водой</button>
             </ng-container>
             
             <ng-container *ngIf="item.clean_type.raw_value >= 11">
@@ -32,27 +32,27 @@
                 
                 <p>Установите бутылку. И нажмите кнопку на аппарате.</p>
                 
-                <ng-container *ngIf="item.clean_type.raw_value != 12">
-                  <p>Перед запуском можно изменить значение объема по умолчанию:</p>
-                
-                  <mat-form-field>
-                    <label>
-                      <input matInput [(ngModel)]="volume_input" (keypress)="check_number_only($event)" placeholder="Объем (мл):"/>
-                    </label>
-                  </mat-form-field>
-                  <button mat-button (click)="click_apply_button(item)">Изменить</button>                               
-                </ng-container>                
-                
+                <label> Заданный объем: <b>{{item.volume_input}} мл. </b>
+                  <button mat-button (click)="click_change_button(item)">Изменить</button>                               
+                </label>
+
                 <p>
                 <button mat-button class="button_2" (click)="click_cancel_check_button(item)" title="Промывка ">Отмена </button>
                 </p>
+                                
               </ng-container>
               
-              <ng-container *ngIf="item.pouring.raw_value == 1">
+              <ng-container *ngIf="item.pouring.raw_value == 1 && item.block_pouring.value == 0">
                 <h5>Идёт проверка, пожалуйста ждите!</h5>
                 <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
-                <button mat-button class="button" (click)="click_stop_check_button(item)" title="Промывка ">Остановить </button>
+                <button mat-button class="button_3" (click)="click_stop_check_button(item)" title="Промывка ">Остановить </button>
               </ng-container>
+              
+              <ng-container *ngIf="item.block_pouring.value == 1">
+                <h5>Остановка налива, пожалуйста ждите!</h5>
+                <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
+              </ng-container>
+              
             </ng-container>
             
           </ng-template>                  				

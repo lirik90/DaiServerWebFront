@@ -53,6 +53,15 @@ button {
   margin-top: 10px;
 }
 
+.button_3 {
+  background-color: rgba(99, 2, 2, 0.78) !important;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
 
 @media (max-width: 600px) {
   .module {
