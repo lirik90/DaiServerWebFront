@@ -106,7 +106,7 @@ export class CheckHeadStandComponent implements OnInit
         }
         if (current.pouring !== undefined && current.step !== undefined && current.cur_volume !== undefined && current.pause !== undefined && current.clean_type !== undefined && current.block_pouring !== undefined && current.full_volume !== undefined)
         {
-          if (current.pouring.value != null)
+          if (current.pouring.value != null && check_head_fill_water_volume !== undefined)
           {
             current.check_head_fill_water_volume = check_head_fill_water_volume;
             current.check_head_wash_volume = check_head_wash_volume;
