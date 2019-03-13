@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject, Observable, Subscription }    from 'rxjs/Rx';
 import { map } from 'rxjs/operators';
 import { WebSocketSubject, WebSocketSubjectConfig } from "rxjs/observable/dom/WebSocketSubject";
+import { webSocket } from 'rxjs/webSocket';
 
 import { Observer } from "rxjs/Observer";
 import { Subscriber } from 'rxjs';
@@ -297,14 +298,16 @@ export class WebSocketBytesService {
   }
 
   public start(url: string): void {
-    let webSockConf: WebSocketSubjectConfig = {
+    let webSockConf: WebSocketSubjectConfig<any> = {
       url: url, 
       binaryType: 'arraybuffer',
       resultSelector: (e: MessageEvent) => e.data,
       openObserver: Subscriber.create((e: Event) => this.sendAuth()),
       closeObserver: Subscriber.create((e: CloseEvent) => {
-        // console.log('ByteWebSocket close');
+        console.log('ByteWebSocket close');
       }),
+      deserializer: function (e) { return e.data; },
+      serializer: function (value) { return value; },
     };
     this.ws = Observable.webSocket(webSockConf);
 
@@ -331,7 +334,7 @@ export class WebSocketBytesService {
         }
       },
       error: (err_text: any) => {
-        // console.log('WebSocketBytest error'); console.log(err_text);
+        console.log('WebSocketBytest error'); console.log(err_text);
         this.opened.next(false);
 
         this.socket.unsubscribe();

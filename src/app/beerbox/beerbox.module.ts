@@ -8,6 +8,7 @@ import { WashComponent } from './wash/wash.component';
 import { ReplaceKegComponent, ConfirmDialogReplaceKegComponent } from './replace-keg/replace-keg.component';
 import { CalibrationComponent } from './calibration/calibration.component';
 import { CheckHeadStandComponent, CheckHeadStandDialogComponent } from './check-head-stand/check-head-stand.component';
+import { ReplaceLabelsComponent } from './replace-labels/replace-labels.component';
 
 @NgModule({
   imports: [
@@ -18,11 +19,11 @@ import { CheckHeadStandComponent, CheckHeadStandDialogComponent } from './check-
     BeerboxRoutingModule,
   ],
   declarations: [
-    WashComponent, ReplaceKegComponent, ConfirmDialogReplaceKegComponent, CalibrationComponent, CheckHeadStandComponent, CheckHeadStandDialogComponent
+    WashComponent, ReplaceKegComponent, ConfirmDialogReplaceKegComponent, CalibrationComponent, CheckHeadStandComponent, CheckHeadStandDialogComponent, ReplaceLabelsComponent
   ],
   entryComponents: [
     ConfirmDialogReplaceKegComponent,
-	CheckHeadStandDialogComponent,
+	  CheckHeadStandDialogComponent,
   ],
 })
 export class BeerboxModule { }
