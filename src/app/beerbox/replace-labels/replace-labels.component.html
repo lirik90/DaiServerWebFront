@@ -1,0 +1,25 @@
+<div class="module house">
+  <ng-container>
+    <h2>Замена этикеток</h2>
+    <ng-container *ngIf="!is_changed_; else labels_are_changed">
+      <h4>Вставте ленту с этикетками в устройство</h4>
+      <h4>Введите количество этикеток, которое указано на ленте</h4>
+      <mat-form-field>
+        <label>
+          <input matInput type="number" [(ngModel)]="labels_num_full_.value" placeholder="Введите количество этикеток:"/>
+        </label>
+      </mat-form-field>
+      <button class="button2" mat-button (click)="click_apply_button()">Применить</button>
+    </ng-container>
+    
+    <ng-template #labels_are_changed>
+      <ng-container>
+        <h4>Изменения успешно применены</h4>
+        <p>
+          <button mat-button (click)="is_changed_ = false">Назад</button>
+        </p>
+      </ng-container>
+    </ng-template>
+    
+  </ng-container>
+</div>
