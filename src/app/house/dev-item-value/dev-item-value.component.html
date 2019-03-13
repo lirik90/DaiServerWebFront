@@ -1,4 +1,12 @@
 <ng-container (click)="openDialog()">
+  <button *ngIf="is_button" mat-button class="button" (click)="click_button()" title="Click">{{text_value}}</button>
+  <!-- <button *ngIf="is_file" mat-button class="button" (click)="click_open_file()" title="Open File">Open File</button> -->
+  <ng-container *ngIf="is_file">    
+    <input type="file"
+           id="file"
+           (change)="handleFileInput($event.target.files)">
+	<!--<label for="file">Choose File</label>-->
+  </ng-container>
   <mat-slide-toggle *ngIf="is_toggle"
                   color="primary" 
                   [checked]="item.value == 1" 
@@ -6,7 +14,7 @@
                   (change)="write($event.checked)">
   </mat-slide-toggle>
   <div [class.holding]="is_holding">
-    <span *ngIf="!is_toggle">{{text_value}}</span>
+    <span *ngIf="!is_toggle && !is_button && !is_file">{{text_value}}</span>
     <span *ngIf="sign_available">{{item.type.sign.name}}</span>
   </div>
 </ng-container>
