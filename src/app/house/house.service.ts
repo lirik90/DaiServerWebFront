@@ -156,9 +156,9 @@ export class HouseService extends IHouseService {
     return this.patchPiped(url, { text: code.text }, `updated code id=${code.id}`, 'updateCode');
   }
 	
-  upload_file(head_id: number, file: File): void
+  upload_file(item_id: number, file: File): Observable<any>
   {
-	  const url = `/api/v1/upload/firmware/?id=${this.house.id}`;
+	  const url = `/api/v1/upload/firmware/?id=${this.house.id}&item_id=${item_id}`;
 	  
 	  const formData: FormData = new FormData();
 	  formData.append('fileKey', file, file.name);
@@ -168,12 +168,8 @@ export class HouseService extends IHouseService {
 	  
 	  let options = { headers: headers };
 	  
-	  this.http.post(url, formData, options).map(res => console.log(res))
-            .catch(error => Observable.throw(error))
-            .subscribe(
-                data => console.log('success'),
-                error => console.log(error)
-            )
+	  return this.http.post(url, formData, options)
+            .catch(error => Observable.throw(error));
   }
 
   getLogs(date_from: string, date_to: string, group_type: number, itemtypes: string, items: string, limit: number = 1000, offset: number = 0): Observable<PaginatorApi<Logs>> {

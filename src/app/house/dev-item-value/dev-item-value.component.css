@@ -16,3 +16,7 @@ button {
   border: none;  
   border-radius: 4px;
 }
+
+input[type="file"] {
+    display: none;
+}
