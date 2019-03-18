@@ -65,11 +65,10 @@ export class DeviceItem { // Элемент устройства
   device_id: number;  // ID устройства
   group_id: number;   // ID группы
 
-  unit: number;       // Порядковый номер в протоколе
   name: string;       // Имя
   type_id: number;    // ID типа
   type: ItemType;     // Тип
-  extra: any;         // Пользовательские параметры
+  extra: string;      // Пользовательские параметры
 
   value: any;         // Отображаемое значение
   raw_value: any;     // Сырое значение
@@ -96,7 +95,13 @@ export class Status {
 
 export class GroupStatus {
   status: Status;
-  args: string;
+  args: string[];
+}
+
+export class GroupStatusInfo {
+  color: string;
+  text: string;
+  short_text: string;
 }
 
 export class Group {  // Группа
@@ -109,6 +114,7 @@ export class Group {  // Группа
   params: ParamValue[] = [];// Уставки
   status: number;           // Состояние
   statuses: GroupStatus[] = [];
+  status_info: GroupStatusInfo;
 }
 
 export class View {  // Представление
