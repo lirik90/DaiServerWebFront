@@ -29,6 +29,7 @@ export enum ItemTypeRegister { // Тип данных элемента
   InputRegisters,   // Значения только для чтения
   HoldingRegisters, // Значения чтение/запись
   File,             // Передача файла
+  SimpleButton,		// Обычная кнопка. Передает всегда значение 1
 }
 
 export enum SaveAlgorithmType { // Алгоритм сохранения изменений значения

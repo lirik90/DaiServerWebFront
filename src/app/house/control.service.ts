@@ -213,7 +213,11 @@ export class ControlService {
       }
     });
 
-    this.wsbService.start("wss://" + document.location.hostname + "/wss/");
+    const domain_zone = document.location.hostname.split('.').pop();
+    let proto = 'ws';
+    if (domain_zone !== 'local')
+      proto += 's'; 
+    this.wsbService.start(proto + '://' + document.location.hostname + '/' + proto + '/');
 	}
 
   private calculateStatusInfo(group: Group): void {
