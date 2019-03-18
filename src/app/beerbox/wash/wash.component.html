@@ -8,7 +8,7 @@
         <ng-container *ngIf="clean.step.raw_value == 0">
           <h4>Выберите вид промывки:</h4>
           <mat-form-field>
-            <mat-select [value]="clean.type.raw_value.toString()" (change)="onChange(clean.type, $event.value)">
+            <mat-select [value]="clean.type.raw_value.toString()" (selectionChange)="onChange(clean.type, $event.value)">
               <mat-option *ngFor="let title of clean.type.value; index as i" value="{{i}}">{{title}}</mat-option>
             </mat-select>
           </mat-form-field>
