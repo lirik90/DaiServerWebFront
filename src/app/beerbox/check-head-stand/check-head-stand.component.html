@@ -1,0 +1,116 @@
+<h2>Проверка голов</h2>
+<div class="grid grid-pad">
+  <ng-container *ngFor="let item of items">
+    <div class="col-1-3">
+      <div class="module house">
+        <h3>{{item.sct.name}}</h3>        
+		  
+        <ng-container *ngIf="item.clean_type.raw_value > 0 && item.clean_type.raw_value < 11; else no_clean_type">
+          <h5>Идёт промыка, пожалуйста ждите!</h5>
+          <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
+        </ng-container>
+
+        <ng-template #no_clean_type >
+
+          <ng-container *ngIf="item.pouring.raw_value == 1 && item.clean_type.raw_value < 11; else no_pouring">
+            <h5>Идёт налив, пожалуйста ждите!</h5>
+            <h5>Осталось: {{item.full_volume.value-item.cur_volume.value}} мл.<span *ngIf="item.pause.value == 1"> Пауза!</span></h5>
+            <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
+          </ng-container>	
+
+          <ng-template #no_pouring>
+            
+            <ng-container *ngIf="item.clean_type.raw_value == 0">
+              <button mat-button class="button_2" (click)="click_start_check_button(item, 11)" title="Наполнение магистрали водой">Наполнение магистрали водой</button>
+              <button mat-button class="button_2" (click)="click_start_check_button(item, 12)" title="Проверка пивом">Проверка пивом</button>
+              <button mat-button class="button_2" (click)="click_start_check_button(item, 13)" title="Промывка водой">Промывка водой</button>
+              <button mat-button class="button_2" (click)="click_start_check_button(item, 14)" title="Проверка поджима">Проверка поджима</button>
+            </ng-container>
+            
+            <ng-container *ngIf="item.clean_type.raw_value >= 11 && item.clean_type.raw_value != 14">
+              <h4>{{get_type_text(item)}}</h4>
+              <ng-container *ngIf="item.pouring.raw_value == 0">          
+                
+                <p>Установите бутылку. И нажмите кнопку на аппарате.</p>
+                
+                <label>Заданный объем: <b>{{item.value_input}} мл. </b>
+                  <button mat-button class="button_4" (click)="click_change_button(item)">Изменить</button>                               
+                </label>
+
+                <p>
+                  <button mat-button class="button_2" (click)="click_cancel_check_button(item)" title="Отмена ">Отмена </button>
+                </p>
+                                
+              </ng-container>
+              
+              <ng-container *ngIf="item.pouring.raw_value == 1 && item.block_pouring.value == 0">
+                <h5>Идёт проверка, пожалуйста ждите!</h5>
+                <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
+                <button mat-button class="button_3" (click)="click_stop_check_button(item)" title="Остановить ">Остановить </button>
+              </ng-container>
+              
+              <ng-container *ngIf="item.block_pouring.value == 1">
+                <h5>Остановка налива, пожалуйста ждите!</h5>
+                <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
+              </ng-container>
+              
+            </ng-container>
+            
+            <ng-container *ngIf="item.clean_type.raw_value == 14 && !is_canceling_">
+              <h4>{{get_type_text(item)}}</h4>
+              <ng-container *ngIf="!is_clamp_">
+                <p>
+                  Установите бутылку. И нажмите кнопку <b>"Поджатие бутылки"</b>
+                </p>
+                <p>
+                  <b>Во время проверки не обновляй страницу!</b>
+                </p>
+                
+                
+                <label>Время тестирования: <b>{{item.value_input}} мин. </b>
+                  <button mat-button class="button_4" (click)="click_change_button(item)">Изменить</button>                               
+                </label>
+
+                <p>
+                  <button mat-button  (click)="click_clamp_check(item)" title="Поджатие бутылки">Поджатие бутылки</button>
+                </p>
+                
+                <p>
+                  <button mat-button (click)="click_cancel_check_button(item)" title="Отмена ">Отмена </button>
+                </p>
+              </ng-container>
+              
+              <ng-container *ngIf="is_clamp_">                
+                <p *ngIf="!is_releasing_">
+                  Дождитесь окончания тестирования. <b>Осталось: {{timer_time_}} сек.</b>
+                </p>
+                <p *ngIf="is_releasing_">
+                  Проверьте усилие поджатия бутылки и нажмите кнопку <b>"Отпускание бутылки"</b>
+                </p>
+                <p>
+                  <b>Во время проверки не обновляй страницу!</b>
+                </p>
+
+                <p>
+                  <button mat-button [disabled]="!is_releasing_" (click)="click_release_check(item)" title="Отпускание бутылки" >Отпускание бутылки</button>
+                </p>
+                
+                <p *ngIf="!is_releasing_">
+                  <button mat-button (click)="click_cancel_check_button(item)" title="Отмена ">Отмена </button>
+                </p>
+              </ng-container>
+              
+            </ng-container>
+            
+            <ng-container *ngIf="item.clean_type.raw_value == 14 && is_canceling_">
+              <p>Идет остановка. Подождите.</p>
+            </ng-container>
+            
+          </ng-template>                  				
+
+        </ng-template>		  			 
+		  		  
+      </div>
+    </div>
+  </ng-container>
+</div>

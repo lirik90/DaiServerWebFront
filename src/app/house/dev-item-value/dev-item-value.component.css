@@ -10,3 +10,13 @@ mat-slider {
 	color: #6A9D80;
 	border-radius: 16px;
 }
+button {
+  background-color: rgba(0,0,0,.26) !important;
+  color: white;  
+  border: none;  
+  border-radius: 4px;
+}
+
+input[type="file"] {
+    display: none;
+}
