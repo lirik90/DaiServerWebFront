@@ -1,4 +1,9 @@
 /* HouseSearch private styles */
+.search-edit {
+  margin-left: 16px;
+  width: 97%;
+}
+
 .search-result li {
   border-bottom: 1px solid gray;
   border-left: 1px solid gray;

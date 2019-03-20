@@ -1,7 +1,7 @@
 <div id="search-component">
-  <h4>Поиск проекта</h4>
-
-  <input #searchBox id="search-box" (keyup)="search(searchBox.value)" />
+  <mat-form-field class="search-edit">
+    <input matInput #searchBox placeholder="Поиск" id="search-box" (keyup)="search(searchBox.value)" />
+  </mat-form-field>
 
   <ul class="search-result">
     <li *ngFor="let house of houses$ | async" >

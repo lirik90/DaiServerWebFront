@@ -45,6 +45,14 @@
       <mat-cell #dateCell *matCellDef="let row" [style.color]="row.color">{{ row.date | date:dateFormat(dateCell) }}</mat-cell>
     </ng-container>
 
+    <!-- User Column -->
+    <ng-container matColumnDef="user">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-icon [matTooltip]="getUserName(row.user_id)">{{row.user_id?'person':'computer'}}</mat-icon>
+      </mat-cell>
+    </ng-container>
+
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
