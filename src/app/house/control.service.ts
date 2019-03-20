@@ -17,7 +17,6 @@ export enum Cmd {
   WriteToDevItem,
   ChangeGroupMode,
   ChangeParamValues,
-  ChangeCode,
   ExecScript,
   Restart,
   DevItemValues,
@@ -269,18 +268,26 @@ export class ControlService {
     return { connected, ip, time, time_zone };
   }
 
-  parseEventMessage(data: ArrayBuffer): EventLog {
+  parseEventMessage(data: ArrayBuffer): EventLog[]
+  {
     if (data === undefined)
       return;
 
+    let items: EventLog[] = [];
     let view = new Uint8Array(data);
-    const [start, id] = ByteTools.parseUInt32(view);
-    const [start1, type] = ByteTools.parseUInt32(view, start);
-    const [start2, date] = ByteTools.parseQString(view, start1);
-    const [start3, who] = ByteTools.parseQString(view, start2);
-    const [start4, msg] = ByteTools.parseQString(view, start3);
-
-    return { id, date, who, msg, type, color: '' } as EventLog;
+    let [start, count] = ByteTools.parseUInt32(view);
+    while (count--)
+    {
+      const [start1, id] = ByteTools.parseUInt32(view, start);
+      const [start2, user_id] = ByteTools.parseUInt32(view, start1);
+      const [start3, type] = ByteTools.parseUInt32(view, start2);
+      const [start4, time_ms] = ByteTools.parseInt64(view, start3);
+      const [start5, who] = ByteTools.parseQString(view, start4);
+      const [start6, msg] = ByteTools.parseQString(view, start5);
+      start = start6;
+      items.push({ id, date: new Date(time_ms), who, msg, type, user_id, color: '' } as EventLog);
+    }
+    return items;
   }
 
   getConnectInfo(): void {
@@ -338,7 +345,7 @@ export class ControlService {
     let view = new Uint8Array(4 + code_buf.length);
     ByteTools.saveInt32(code.id, view);
     view.set(code_buf, 4);
-    this.wsbService.send(Cmd.ChangeCode, this.houseService.house.id, view);
+    // this.wsbService.send(Cmd.ChangeCode, this.houseService.house.id, view);
   }
 
   restart(): void {

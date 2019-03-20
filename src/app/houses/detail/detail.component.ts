@@ -27,16 +27,16 @@ export class HouseDetailComponent implements OnInit {
     this.getHouse();
   }
 
-  private getProjId(): number {
-    const id_str: string = 'id';
-    if (this.route.snapshot.paramMap.has(id_str))
-      return +this.route.snapshot.paramMap.get(id_str); 
-    return +this.route.parent.snapshot.paramMap.get(id_str);
+  private getProjName(): string {
+    const p_str: string = 'name';
+    if (this.route.snapshot.paramMap.has(p_str))
+      return this.route.snapshot.paramMap.get(p_str); 
+    return this.route.parent.snapshot.paramMap.get(p_str);
   }
 
   getHouse(): void {
-    const id = this.getProjId();
-    this.housesService.getHouse(id)
+    const name = this.getProjName();
+    this.housesService.getHouse(name)
       .subscribe(house => this.house = house);
   }
 

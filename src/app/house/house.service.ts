@@ -6,7 +6,7 @@ import { switchMap, catchError, map, tap, finalize } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 
 import { HouseDetail, Section, DeviceItem, Group, Codes, Logs } from './house';
-import { PaginatorApi } from '../user';
+import { TeamMember, PaginatorApi } from '../user';
 import { MessageService } from '../message.service';
 import { IHouseService } from '../ihouse.service';
 
@@ -45,13 +45,13 @@ export class HouseService extends IHouseService {
     this.house = undefined;
   }
 
-  loadHouse(house_id: number): Observable<boolean> {
-    if (this.house && this.house.id == house_id)
+  loadHouse(house_name: string): Observable<boolean> {
+    if (this.house && this.house.name == house_name)
       return of(true);
 
     this.house = undefined; // If comment need compare hash of detail
 
-    return this.get<HouseDetail>(`detail/?id=${house_id}`).pipe(
+    return this.get<HouseDetail>(`detail/?project_name=${house_name}`).pipe(
       switchMap(detail => {
         for (let param of detail.params) {
           if (param.parent_id) {
@@ -141,6 +141,11 @@ export class HouseService extends IHouseService {
     if (id !== undefined)
       url += '/' + id.toString();
     return url + '/?id=' + this.house.id.toString();
+  }
+
+  getMembers(): Observable<PaginatorApi<TeamMember>>
+  {
+    return this.getPiped<PaginatorApi<TeamMember>>(this.url('team'), 'fetched team list', 'getMembers');
   }
 
   getCodes(): Observable<Codes[]> {

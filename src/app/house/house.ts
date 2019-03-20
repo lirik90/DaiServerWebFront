@@ -185,7 +185,7 @@ export enum EventLogType { // Тип события в журнале событ
 
 export class EventLog { // Запись в журнале событий
   id: number;         // ID
-  date: string;       // Время события
+  date: Date;       // Время события
   who: string;        // Категория
   msg: string;        // Сообщение
   type: number;       // Тип события
