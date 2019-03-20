@@ -1,4 +1,11 @@
 <h1 mat-dialog-title>Подтверждение замены кеги</h1>
+
+<p>Установите дату изготовления:</p>
+<mat-form-field class="example-full-width">  
+  <input matInput [matDatepicker]="picker" placeholder="Дата изготовления" [formControl]="date">
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker touchUi #picker></mat-datepicker>
+</mat-form-field>
 <div mat-dialog-content>
   <p>После замены кеги вам нужно это подтвердить. Вы уверены что хотите сделать это?</p>
 </div>

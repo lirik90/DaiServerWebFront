@@ -5,6 +5,9 @@ import { Section, DeviceItem } from "../../house/house";
 import { HouseService } from "../../house/house.service";
 import { ControlService } from "../../house/control.service";
 
+import {FormControl} from '@angular/forms';
+import {MAT_DATE_LOCALE} from '@angular/material/core';
+
 interface Keg {
   parent_id: number;
   item: DeviceItem;
@@ -19,9 +22,13 @@ interface ReplaceKegSection {
 @Component({
   selector: 'app-replace-keg',
   templateUrl: './replace-keg.component.html',
-  styleUrls: ['../../sections.css', './replace-keg.component.css']
+  styleUrls: ['../../sections.css', './replace-keg.component.css'],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'en-AU'},
+  ],
 })
-export class ReplaceKegComponent implements OnInit {
+export class ReplaceKegComponent implements OnInit 
+{  
   items: ReplaceKegSection[];
 
   have_empty: boolean = false;
@@ -33,7 +40,7 @@ export class ReplaceKegComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getSections();
+    this.getSections();    
   }
 
   checkEmpty(): void {
@@ -128,6 +135,11 @@ export class ReplaceKegComponent implements OnInit {
         this.toggle(keg);
     });
   }
+  
+  openDialog2(): void {
+    this.dialog.open(ConfirmDialogReplaceKegComponent, {width: '80%'})
+    .afterClosed();
+  }
 }
 
 @Component({
@@ -135,7 +147,9 @@ export class ReplaceKegComponent implements OnInit {
   templateUrl: './confirm-dialog-replace-keg.component.html',
   styleUrls: ['./replace-keg.component.css']
 })
-export class ConfirmDialogReplaceKegComponent {
+export class ConfirmDialogReplaceKegComponent 
+{
+  date = new FormControl(new Date());
   constructor(
     public dialogRef: MatDialogRef<ConfirmDialogReplaceKegComponent>,
   ) {}
