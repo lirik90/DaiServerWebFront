@@ -10,20 +10,21 @@ import 'rxjs/add/operator/filter';
 
 import { HouseService } from "./house.service";
 import { WebSocketBytesService, ByteMessage, ByteTools } from '../web-socket.service';
-import { DeviceItem, Group, Codes, EventLog, ParamValue } from './house';
+import { DeviceItem, Group, Status, Codes, EventLog, ParamValue } from './house';
 
 export enum Cmd {
   ConnectInfo = 3, // WebSockCmd.UserCmd
   WriteToDevItem,
   ChangeGroupMode,
   ChangeParamValues,
-  ChangeCode,
   ExecScript,
   Restart,
   DevItemValues,
   Eventlog,
   GroupMode,
   StructModify,
+  GroupStatusAdded,
+  GroupStatusRemoved,
 }
 
 export interface ConnectInfo {
@@ -144,13 +145,102 @@ export class ControlService {
 
           set_param(param_id, value);
         }
+      } else if (msg.cmd == Cmd.GroupStatusAdded) {
+        let view = new Uint8Array(msg.data);
+        let group_id = ByteTools.parseUInt32(view)[1];
+        let info_id = ByteTools.parseUInt32(view, 4)[1];
+        let [idx, args_count] = ByteTools.parseUInt32(view, 8);
+        let args: string[] = [];
+
+        while(args_count--) {
+          const [ last_pos, value ] = ByteTools.parseQString(view, idx);
+          idx = last_pos;
+          args.push(value);
+        }
+
+        for (let sct of this.houseService.house.sections) {
+          for (let group of sct.groups) {
+            if (group.id == group_id) {
+              if (group.statuses === undefined)
+                group.statuses = [];
+              for (let gsts of group.statuses) {
+                if (gsts.status.id == info_id)
+                  return;
+              }
+    
+              let status_item: Status = undefined;
+              for (let sts of this.houseService.house.statuses) {
+                if (sts.id == info_id) {
+                  status_item = sts;
+                }
+              }
+
+              if (status_item === undefined)
+                console.warn(`Status id ${info_id} not found`);
+              else {
+                group.statuses.push({ status: status_item, args: args });
+                this.calculateStatusInfo(group);
+              }
+              return;
+            }
+          }
+        }
+
+      } else if (msg.cmd == Cmd.GroupStatusRemoved) {
+        let view = new Uint8Array(msg.data);
+        let group_id = ByteTools.parseUInt32(view)[1];
+        let info_id = ByteTools.parseUInt32(view, 4)[1];
+        for (let sct of this.houseService.house.sections) {
+          for (let group of sct.groups) {
+            if (group.id == group_id) {
+              if (group.statuses === undefined)
+                group.statuses = [];
+              let l = group.statuses.length;
+              while (l--) {
+                if (group.statuses[l].status.id == info_id) {
+                  group.statuses.slice(l, 1);
+                  this.calculateStatusInfo(group);
+                  return;
+                }
+              }
+              return;
+            }
+          }
+        }
       } else {
         this.byte_msg.next(msg);
       }
     });
 
-    this.wsbService.start("wss://" + document.location.hostname + "/wss/");
+    const domain_zone = document.location.hostname.split('.').pop();
+    let proto = 'ws';
+    if (domain_zone !== 'local')
+      proto += 's'; 
+    this.wsbService.start(proto + '://' + document.location.hostname + '/' + proto + '/');
 	}
+
+  private calculateStatusInfo(group: Group): void {
+    let strings: string[] = [];
+    let str;
+    let color = 'green';
+    let short_text = 'Ok';
+    let last_error_level = 0;
+
+    for (let sts of group.statuses) {
+      if (sts.status.type_id > last_error_level) {
+        last_error_level = sts.status.type_id;
+        color = sts.status.type.color;
+        short_text = sts.status.type.name;
+      }
+      str = sts.status.text;
+      let l = sts.args !== undefined ? sts.args.length : 0;
+      while (l--)
+        str = str.replace('%' + (l + 1), sts.args[l]);
+      strings.push(str);
+    }
+
+    group.status_info = { color, short_text, text: strings.join('\n') };
+  }
 
   close(): void {
     this.bmsg_sub.unsubscribe();
@@ -178,18 +268,26 @@ export class ControlService {
     return { connected, ip, time, time_zone };
   }
 
-  parseEventMessage(data: ArrayBuffer): EventLog {
+  parseEventMessage(data: ArrayBuffer): EventLog[]
+  {
     if (data === undefined)
       return;
 
+    let items: EventLog[] = [];
     let view = new Uint8Array(data);
-    const [start, id] = ByteTools.parseUInt32(view);
-    const [start1, type] = ByteTools.parseUInt32(view, start);
-    const [start2, date] = ByteTools.parseQString(view, start1);
-    const [start3, who] = ByteTools.parseQString(view, start2);
-    const [start4, msg] = ByteTools.parseQString(view, start3);
-
-    return { id, date, who, msg, type, color: '' } as EventLog;
+    let [start, count] = ByteTools.parseUInt32(view);
+    while (count--)
+    {
+      const [start1, id] = ByteTools.parseUInt32(view, start);
+      const [start2, user_id] = ByteTools.parseUInt32(view, start1);
+      const [start3, type] = ByteTools.parseUInt32(view, start2);
+      const [start4, time_ms] = ByteTools.parseInt64(view, start3);
+      const [start5, who] = ByteTools.parseQString(view, start4);
+      const [start6, msg] = ByteTools.parseQString(view, start5);
+      start = start6;
+      items.push({ id, date: new Date(time_ms), who, msg, type, user_id, color: '' } as EventLog);
+    }
+    return items;
   }
 
   getConnectInfo(): void {
@@ -247,7 +345,7 @@ export class ControlService {
     let view = new Uint8Array(4 + code_buf.length);
     ByteTools.saveInt32(code.id, view);
     view.set(code_buf, 4);
-    this.wsbService.send(Cmd.ChangeCode, this.houseService.house.id, view);
+    // this.wsbService.send(Cmd.ChangeCode, this.houseService.house.id, view);
   }
 
   restart(): void {

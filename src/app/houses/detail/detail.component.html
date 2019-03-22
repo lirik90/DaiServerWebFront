@@ -15,6 +15,6 @@
   </div>
 </div>
 <button (click)="goBack()">Назад</button>
-<button *ngIf="house" routerLink="/house/{{house.id}}/manage">Открыть</button>
+<button *ngIf="house" routerLink="/house/{{house.name}}/manage">Открыть</button>
 <button *ngIf="can_save" (click)="save()">Сохранить</button>
 

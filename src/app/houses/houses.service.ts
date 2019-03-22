@@ -26,9 +26,9 @@ export class HousesService extends IHouseService {
       `fetched client devices`, 'getHousees', {} as PaginatorApi<House>);
   }
 
-  getHouse(id: number): Observable<House> {
-    const url = `${this.houseUrl}${id}/`;
-    return this.getPiped<House>(url, `fetched client device id=${id}`, `getHouse id=${id}`);
+  getHouse(name: string): Observable<House> {
+    const url = `${this.houseUrl}${name}/`;
+    return this.getPiped<House>(url, `fetched client device name=${name}`, `getHouse name=${name}`);
   }
 
   /** PUT: update the house on the server */

@@ -1,9 +1,8 @@
-<h2>Проекты</h2>
 <app-house-search></app-house-search>
 
 <ul class="houses">
   <li *ngFor="let house of houses">
-    <a class="pre_badge" routerLink="/house/{{house.id}}/view">
+    <a class="pre_badge" routerLink="/house/{{house.name}}/view">
       <span class="badge">{{house.id}}</span> {{house.title}}
     </a>
    <button class="delete" title="detail project"
