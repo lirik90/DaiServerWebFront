@@ -93,7 +93,7 @@ export class HouseComponent implements OnInit, OnDestroy {
 	  if (this.can_edit)
       this.fillerNav.push({link: 'beerbox/check-head-stand', text: 'Стенд', icon: 'settings_input_component'});
 	  if (this.can_edit)
-      this.fillerNav.push({link: 'beerbox/replace_labels', text: 'Замена этикеток', icon: 'layers'});
+      this.fillerNav.push({link: 'beerbox/replace_labels', text: 'Замена ленты', icon: 'layers'});
 
     this.getHouseInfo();
   }
