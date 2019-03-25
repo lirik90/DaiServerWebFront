@@ -6,6 +6,7 @@ import { WashComponent } from "./wash/wash.component";
 import { CalibrationComponent } from "./calibration/calibration.component"
 import { CheckHeadStandComponent } from "./check-head-stand/check-head-stand.component";
 import { ReplaceLabelsComponent } from "./replace-labels/replace-labels.component";
+import { UpdateBeerInfoComponent } from "./update-beer-info/update-beer-info.component";
 
 const beerboxRoutes: Routes = [
   { 
@@ -16,6 +17,7 @@ const beerboxRoutes: Routes = [
       { path: 'calibration', component: CalibrationComponent },
 	    { path: 'check-head-stand', component: CheckHeadStandComponent },
 	    { path: 'replace_labels', component: ReplaceLabelsComponent },
+	    { path: 'update_beer_info', component: UpdateBeerInfoComponent },
     ]
   }
 ];
