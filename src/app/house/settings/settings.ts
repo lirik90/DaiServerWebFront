@@ -11,12 +11,16 @@ export enum StructType {
   Sections,
   Groups,
   GroupTypes,
+  GroupModes,
   GroupParams,
   GroupParamTypes,
-  GroupStatuses,
+  GroupStatus,
+  GroupStatusInfo,
   GroupStatusTypes,
   Signs,
   Scripts,
+  View,
+  ViewItem
 }
 
 export enum ChangeState {
@@ -34,7 +38,7 @@ export abstract class ChangeTemplate<T> {
   changeState = ChangeState;
   changed: boolean;
 
-  items: ChangeInfo<T>[];
+  items: ChangeInfo<T>[] = [];
   sel_item: ChangeInfo<T>;
   constructor(
     private cmd: number,
@@ -71,6 +75,8 @@ export abstract class ChangeTemplate<T> {
       evnt.stopPropagation();
     let data = this.getChangedData();
     this.wsbService.send(Cmd.StructModify, this.houseService.house.id, data);
+    this.items = [];
+    this.sel_item = null;
   }
 
   cancel(evnt: any = undefined): void {

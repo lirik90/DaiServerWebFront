@@ -4,6 +4,8 @@
     <mat-icon [matTooltip]="status_desc" [ngClass]="status_class"></mat-icon>
     <app-drag-scroll *ngIf="houseService.house">{{houseService.house.title}}</app-drag-scroll>
     <span *ngIf="!mobileQuery.matches && connected" matTooltip="Время на устройстве">{{dt_text}} {{dt_tz_name}}</span>
+
+    <button mat-icon-button *ngIf="can_edit" (click)="restart()"><mat-icon>replay</mat-icon></button>
   </mat-toolbar>
 
   <mat-sidenav-container class="house-sidenav-container"

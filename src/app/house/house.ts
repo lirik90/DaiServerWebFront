@@ -2,6 +2,7 @@ export class Codes { // Скрипт автоматизации
   id: number;   // ID
   name: string; // Имя
   text: string; // Скрипт
+  global_id: number; // Global id
 }
 
 export class GroupType { // Тип группы
@@ -45,7 +46,6 @@ export class ItemType { // Тип элемента
   title: string;            // Отображаемое имя элемента по-умолчанию
   isRaw: boolean;           // Флаг необходимости нармализации значения
   groupType_id: number;     // ID типа группы к которой может принадлежать элемент (Плохой?)
-  groupDisplay: boolean;    // Флаг отображения в Обзоре
   sign_id: number;          // ID еденицы измерения
   sign: SignType;           // Еденица измерения
   registerType: number;     // Тип данных элемента
@@ -161,7 +161,7 @@ export class Device { // Устройство
   address: number;    // Адрес
   name: string;       // Имя
   checker_id: number; // ID используемого плагина
-  extra: any;         // Пользовательские параметры
+  extra: string;         // Пользовательские параметры
   items: DeviceItem[];// Массив элементов
 }
 

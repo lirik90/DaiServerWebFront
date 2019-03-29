@@ -14,7 +14,7 @@
     <ng-container *ngFor="let item of items">
       <li *ngIf="item.state !== changeState.Delete" [class.selected]="sel_item == item">
         <a class="pre_badge" (click)="select(item); slist.close()">
-          <span class="badge badge_id left_tab">{{item.obj.id}}</span>
+          <span class="badge badge_id left_tab" [class.badge_changed]="item.state === changeState.Upsert">{{item.obj.id}}</span>
           {{item.obj.title}}
         </a>
         <button class="mybtn delete" title="delete item type" (click)="remove(item)">x</button>

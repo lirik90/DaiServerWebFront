@@ -90,8 +90,27 @@ export class ByteTools {
     let variant_type: number;
     let data: Uint8Array;
 
+    if (!is_null)
+      is_null = value === undefined || value === null;
+
     if (Array.isArray(value)) {
       variant_type = 9; // 9 QVariantList
+      let total_size = 0;
+      let items = [];
+      for (const item of value)
+      {
+        let val = ByteTools.saveQVariant(item);
+        total_size += val.length;
+        items.push(val);
+      }
+
+      data = new Uint8Array(4 + total_size);
+      let pos = 0;
+      ByteTools.saveInt32(items.length, data, pos); pos += 4;
+      for (const item of items)
+      {
+        data.set(item, pos); pos += item.length;
+      }
     } else {
       const t_str = typeof value;
       if (t_str === 'string') {
@@ -114,10 +133,13 @@ export class ByteTools {
         data[0] = value ? 1 : 0;
       }
       else if (t_str === 'object') {
+        console.log(value);
         variant_type = 8; // 8 QVariantMap
+        data = ByteTools.saveQVariantMap(value);
       }
       else {
         variant_type = 0; // 0 Invalid
+        is_null = true;
       }
     }
 
@@ -128,6 +150,34 @@ export class ByteTools {
       view.set(data, 5);
     return view;
   }
+
+  static saveQVariantMap(obj: any): Uint8Array
+  {
+    if (typeof obj === 'string')
+      obj = JSON.parse(obj);
+    let total_size = 0;
+    let items = [];
+    for (const key in obj)
+    {
+      let key_view = ByteTools.saveQString(key);
+      let value_view = ByteTools.saveQVariant(obj[key]);
+      total_size += key_view.length + value_view.length;
+      items.push([key_view,value_view]);
+    }
+  
+    let view = new Uint8Array(4 + total_size);
+    let pos = 0;
+    ByteTools.saveInt32(items.length, view, pos); pos += 4;
+  
+    for (const item of items)
+    {
+      view.set(item[0], pos); pos += item[0].length;
+      view.set(item[1], pos); pos += item[1].length;
+    }
+  
+    return view;
+  }
+
 
   static parseQString(view: Uint8Array, init_start: number = 0): [number, string] {
     const [start, bytes] = ByteTools.parseUInt32(view, init_start);

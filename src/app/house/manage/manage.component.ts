@@ -16,7 +16,7 @@ export class ManageComponent implements OnInit {
 
   constructor(
     private houseService: HouseService,
-    private controlService: ControlService,
+    //private controlService: ControlService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -52,9 +52,5 @@ export class ManageComponent implements OnInit {
   getSections(): void {
     this.houseId = this.houseService.house.id;
     this.sections = this.houseService.house.sections;
-  }
-
-  restart(): void {
-    this.controlService.restart();
   }
 }

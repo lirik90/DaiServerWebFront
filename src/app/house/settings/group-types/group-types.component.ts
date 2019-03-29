@@ -84,7 +84,6 @@ export class ItemTypesComponent extends ChangeTemplate<ItemType> implements OnIn
     view.set(name, pos); pos += name.length;
     view.set(title, pos); pos += title.length;
     ByteTools.saveInt32(obj.groupType_id, view, pos); pos += 4;
-    view[pos] = obj.groupDisplay ? 1 : 0; pos += 1;
     view[pos] = obj.isRaw ? 1 : 0; pos += 1;
     ByteTools.saveInt32(obj.sign_id, view, pos); pos += 4;
     view[pos] = obj.registerType; pos += 1;
@@ -151,7 +150,7 @@ export class StatusesComponent extends ChangeTemplate<Status> implements OnInit 
     wsbService: WebSocketBytesService,
     houseService: HouseService,
   ) {
-    super(StructType.GroupStatuses, wsbService, houseService, Status);
+    super(StructType.GroupStatusInfo, wsbService, houseService, Status);
   }
 
   getObjects(): Status[] {

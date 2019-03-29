@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { switchMap, catchError, map, tap, finalize } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 
-import { HouseDetail, Section, DeviceItem, Group, Codes, Logs } from './house';
+import { HouseDetail, Section, DeviceItem, Group, Logs } from './house';
 import { TeamMember, PaginatorApi } from '../user';
 import { MessageService } from '../message.service';
 import { IHouseService } from '../ihouse.service';
@@ -146,19 +146,6 @@ export class HouseService extends IHouseService {
   getMembers(): Observable<PaginatorApi<TeamMember>>
   {
     return this.getPiped<PaginatorApi<TeamMember>>(this.url('team'), 'fetched team list', 'getMembers');
-  }
-
-  getCodes(): Observable<Codes[]> {
-    return this.getPiped<Codes[]>(this.url('code'), `fetched code list`, 'getCodes', []);
-  }
-
-  getCode(code_id: number): Observable<Codes> {
-    return this.getPiped<Codes>(this.url('code', code_id), `fetched code ${code_id}`, 'getCode', {} as Codes);
-  }
-
-  updateCode(code: Codes): Observable<any> {
-    const url = this.url('code', code.id);
-    return this.patchPiped(url, { text: code.text }, `updated code id=${code.id}`, 'updateCode');
   }
 	
   upload_file(item_id: number, file: File): Observable<any>
