@@ -150,17 +150,14 @@ export class HouseService extends IHouseService {
 	
   upload_file(item_id: number, file: File): Observable<any>
   {
-	  const url = `/api/v1/upload/firmware/?id=${this.house.id}&item_id=${item_id}`;
-	  
-	  const formData: FormData = new FormData();
-	  formData.append('fileKey', file, file.name);
-	  
-	  let headers = new HttpHeaders();
-      headers.append('Content-Type', 'multipart/form-data');
-	  
-	  let options = { headers: headers };
-	  
-	  return this.http.post(url, formData, options)
+    const formData: FormData = new FormData();
+    formData.append('fileKey', file, file.name);
+    
+    let options = { headers: new HttpHeaders() };
+    options.headers.append('Content-Type', 'multipart/form-data');
+    
+    const url = this.apiUrl + `write_item_file/?id=${this.house.id}&item_id=${item_id}`;
+    return this.http.put(url, formData, options)
             .catch(error => Observable.throw(error));
   }
 
