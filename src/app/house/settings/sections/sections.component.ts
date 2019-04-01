@@ -1,7 +1,7 @@
 import { Input, Component, OnInit } from '@angular/core';
 
 import { HouseService } from "../../house.service";
-import { Section, Group, GroupType } from "../../house";
+import { Section, Group, GroupType, ParamItem, ParamValue } from "../../house";
 import { ByteTools, WebSocketBytesService } from "../../../web-socket.service";
 import { SettingsService } from "../settings.service";
 import { StructType, ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
@@ -90,6 +90,50 @@ export class GroupsComponent extends ChangeTemplate<Group> implements OnInit {
     ByteTools.saveInt32(obj.section_id, view, pos); pos += 4;
     ByteTools.saveInt32(obj.type_id, view, pos); pos += 4;
     ByteTools.saveInt32(obj.mode_id, view, pos); pos += 4;
+    return view;
+  }
+}
+
+@Component({
+  selector: 'app-params-in-group',
+  templateUrl: './params-in-group.component.html',
+  styleUrls: ['../settings.css', './sections.component.css']
+})
+export class ParamsInGroupComponent extends ChangeTemplate<ParamValue> implements OnInit {
+  @Input() group: Group;
+
+  constructor(
+    wsbService: WebSocketBytesService,
+    houseService: HouseService,
+  ) {
+    super(StructType.GroupParamTypes, wsbService, houseService, ParamValue);
+  }
+
+  getObjects(): ParamValue[] 
+  { 
+    return this.group.params;
+  }
+
+  ngOnInit() 
+  {
+    this.fillItems();
+  }
+
+  initItem(obj: ParamValue): void 
+  {
+    obj.param = new ParamItem();
+    obj.group_id = this.group.id;
+  }
+
+  saveObject(obj: ParamValue): Uint8Array 
+  {
+    let value = ByteTools.saveQString("");
+    let view = new Uint8Array(12 + value.length);
+    let pos = 0;
+    ByteTools.saveInt32(obj.id, view); pos += 4;
+    view.set(value, pos); pos += value.length;
+    ByteTools.saveInt32(obj.group_id, view, pos); pos += 4;
+    ByteTools.saveInt32(obj.param.id, view, pos); pos += 4;
     return view;
   }
 }
