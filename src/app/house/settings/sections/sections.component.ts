@@ -99,8 +99,11 @@ export class GroupsComponent extends ChangeTemplate<Group> implements OnInit {
   templateUrl: './params-in-group.component.html',
   styleUrls: ['../settings.css', './sections.component.css']
 })
-export class ParamsInGroupComponent extends ChangeTemplate<ParamValue> implements OnInit {
+export class ParamsInGroupComponent extends ChangeTemplate<ParamValue> implements OnInit 
+{
   @Input() group: Group;
+  
+  params: ParamItem[];
 
   constructor(
     wsbService: WebSocketBytesService,
@@ -117,6 +120,7 @@ export class ParamsInGroupComponent extends ChangeTemplate<ParamValue> implement
   ngOnInit() 
   {
     this.fillItems();
+    this.params = this.houseService.house.params.filter(obj => obj.groupType_id === this.group.type_id);
   }
 
   initItem(obj: ParamValue): void 

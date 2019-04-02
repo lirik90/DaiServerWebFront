@@ -118,7 +118,7 @@ export class ParamTypesComponent extends ChangeTemplate<ParamItem> implements On
   }
 
   getObjects(): ParamItem[] {
-    return this.houseService.house.params;
+    return this.houseService.house.params.filter(obj => obj.groupType_id === this.grouptype.id);
   }
 
   ngOnInit() {
@@ -164,12 +164,11 @@ export class StatusesComponent extends ChangeTemplate<Status> implements OnInit 
   }
 
   getObjects(): Status[] {
-    return this.houseService.house.statuses;
+    return this.houseService.house.statuses.filter(obj => obj.groupType_id === this.grouptype.id);
   }
 
   ngOnInit() {
     this.fillItems();
-    console.log(this.items);
   }
 
   initItem(obj: Status): void {
@@ -185,7 +184,7 @@ export class StatusesComponent extends ChangeTemplate<Status> implements OnInit 
     ByteTools.saveInt32(obj.id, view); pos += 4;
     view.set(name, pos); pos += name.length;
     view.set(title, pos); pos += title.length;
-    ByteTools.saveInt32(obj.type, view, pos); pos += 4;
+    ByteTools.saveInt32(obj.type_id, view, pos); pos += 4;
     ByteTools.saveInt32(obj.groupType_id, view, pos); pos += 4;
     view[pos] = obj.inform ? 1 : 0; pos += 1;
     return view;

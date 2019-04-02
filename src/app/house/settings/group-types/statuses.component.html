@@ -28,7 +28,7 @@
     <mat-panel-description>{{sel_item.obj.name}}</mat-panel-description>
   </mat-expansion-panel-header>
   <mat-form-field><input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.name" placeholder="Имя"/></mat-form-field>
-  <mat-form-field><mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.type" placeholder="Тип">
+  <mat-form-field><mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.type_id" placeholder="Тип">
       <mat-option value="0">Нет</mat-option>
       <mat-option *ngFor="let item of this.houseService.house.statusTypes" [value]="item.id">{{item.title}}</mat-option>
     </mat-select>
