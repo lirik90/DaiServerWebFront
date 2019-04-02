@@ -111,23 +111,31 @@ export abstract class ChangeTemplate<T> {
 
   abstract saveObject(obj: T): Uint8Array;
 
-  getChangedData(): Uint8Array {
+  getChangedData(): Uint8Array 
+  {
     let data;
     let updateSize = 0;
     let insertSize = 0;
     let updateList = [];
     let insertList = [];
     let deleteList = [];
-    for (const item of this.items) {
-      if (item.state === ChangeState.Delete) {
+    for (const item of this.items) 
+    {
+      if (item.state === ChangeState.Delete) 
+      {
         deleteList.push((<any>item.obj).id);
-      } else if (item.state === ChangeState.Upsert) {
+      } 
+      else if (item.state === ChangeState.Upsert) 
+      {
         data = this.saveObject(item.obj);
 
-        if ((<any>item.obj).id > 0) {
+        if ((<any>item.obj).id > 0) 
+        {
           updateSize += data.length;
           updateList.push(data);
-        } else {
+        } 
+        else 
+        {
           insertSize += data.length;
           insertList.push(data);
         }

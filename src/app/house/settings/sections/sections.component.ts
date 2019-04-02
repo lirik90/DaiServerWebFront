@@ -106,7 +106,7 @@ export class ParamsInGroupComponent extends ChangeTemplate<ParamValue> implement
     wsbService: WebSocketBytesService,
     houseService: HouseService,
   ) {
-    super(StructType.GroupParamTypes, wsbService, houseService, ParamValue);
+    super(StructType.GroupParams, wsbService, houseService, ParamValue);
   }
 
   getObjects(): ParamValue[] 
@@ -127,13 +127,15 @@ export class ParamsInGroupComponent extends ChangeTemplate<ParamValue> implement
 
   saveObject(obj: ParamValue): Uint8Array 
   {
+    console.log(obj);
     let value = ByteTools.saveQString("");
     let view = new Uint8Array(12 + value.length);
     let pos = 0;
     ByteTools.saveInt32(obj.id, view); pos += 4;
     view.set(value, pos); pos += value.length;
-    ByteTools.saveInt32(obj.group_id, view, pos); pos += 4;
     ByteTools.saveInt32(obj.param.id, view, pos); pos += 4;
+    ByteTools.saveInt32(obj.group_id, view, pos); pos += 4;
+    console.log(view);
     return view;
   }
 }

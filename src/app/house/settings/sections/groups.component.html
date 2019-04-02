@@ -37,7 +37,7 @@
 <mat-expansion-panel *ngIf="sel_item">
   <mat-expansion-panel-header>
     <mat-panel-title>Элементы в группе</mat-panel-title>
-    <mat-panel-description>Всего: {{sel_item.obj.params.length}}</mat-panel-description>
+    <mat-panel-description>Всего: {{sel_item.obj.items.length}}</mat-panel-description>
   </mat-expansion-panel-header>
   <ul class="houses">
     <li *ngFor="let item of sel_item.obj.items">
@@ -48,16 +48,3 @@
   </ul>
 </mat-expansion-panel>
 <app-params-in-group *ngIf="!changed && sel_item" [group]="sel_item.obj"></app-params-in-group>
-<!--<mat-expansion-panel *ngIf="sel_item">
-  <mat-expansion-panel-header>
-    <mat-panel-title>Уставки в группе</mat-panel-title>
-    <mat-panel-description>Всего: {{sel_item.obj.params.length}}</mat-panel-description>
-  </mat-expansion-panel-header>
-  <ul class="houses">
-    <li *ngFor="let data of sel_item.obj.params">
-      <a class="pre_badge">
-        <span class="badge">{{data.id}}</span> {{data.param.title}}        
-      </a>
-    </li>
-  </ul>
-</mat-expansion-panel>-->
