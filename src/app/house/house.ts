@@ -89,8 +89,6 @@ export class Status {
   type: StatusType;
   name: string;
   text: string;
-  isMultiValue: boolean;
-  value: number;
   inform: boolean;
 }
 

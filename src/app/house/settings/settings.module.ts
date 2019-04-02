@@ -9,7 +9,7 @@ import { SettingsService } from './settings.service';
 
 import { SettingsComponent } from './settings.component';
 import { DevicesComponent, DeviceItemsComponent } from './devices/devices.component';
-import { SectionsComponent, GroupsComponent } from './sections/sections.component';
+import { SectionsComponent, GroupsComponent, ParamsInGroupComponent } from './sections/sections.component';
 import { GroupTypesComponent, ItemTypesComponent, ParamTypesComponent, StatusesComponent } from './group-types/group-types.component';
 import { StatusTypesComponent } from './status-types/status-types.component';
 import { SignTypesComponent } from './sign-types/sign-types.component';
@@ -37,7 +37,7 @@ const monacoConfig: NgxMonacoEditorConfig = {
     DevicesComponent, 
     DeviceItemsComponent,
     SectionsComponent, 
-    GroupsComponent,
+    GroupsComponent, ParamsInGroupComponent,
     GroupTypesComponent, ItemTypesComponent, ParamTypesComponent, StatusesComponent , 
     StatusTypesComponent, 
     SignTypesComponent, 

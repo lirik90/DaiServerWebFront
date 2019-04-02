@@ -116,6 +116,16 @@ export class HouseService extends IHouseService {
             }
           }
         }
+        
+        for (let status of detail.statuses) {
+          for (let status_type of detail.statusTypes) {
+            if (status_type.id === status.type_id)
+            {
+              status.type = status_type;
+              break;
+            }
+          }
+        }
 
         this.house = detail;
         localStorage.setItem(this.house_s, JSON.stringify(detail));
