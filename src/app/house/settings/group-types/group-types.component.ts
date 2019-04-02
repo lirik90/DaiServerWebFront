@@ -1,21 +1,28 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { HouseService } from "../../house.service";
-import { ItemType, SignType, GroupType, ParamItem, Status } from "../../house";
+import { ItemType, SignType, GroupType, ParamItem, Status, Codes } from "../../house";
 
 import { ByteTools, WebSocketBytesService } from "../../../web-socket.service";
 
 import { StructType, ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
+
+import { SettingsService } from "../settings.service";
 
 @Component({
   selector: 'app-group-types',
   templateUrl: './group-types.component.html',
   styleUrls: ['../settings.css', './group-types.component.css']
 })
-export class GroupTypesComponent extends ChangeTemplate<GroupType> implements OnInit {
+export class GroupTypesComponent extends ChangeTemplate<GroupType> implements OnInit 
+{
+  
+  codes: Codes[];
+  
   constructor(
     wsbService: WebSocketBytesService,
     houseService: HouseService,
+    private settingsService: SettingsService,
   ) {
     super(StructType.GroupTypes, wsbService, houseService, GroupType);
   }
@@ -25,7 +32,11 @@ export class GroupTypesComponent extends ChangeTemplate<GroupType> implements On
   }
 
   ngOnInit() {
-    this.fillItems();
+    //this.fillItems();
+    this.settingsService.getCodes().subscribe(codes => {
+      this.codes = codes;
+      this.fillItems();
+    });
   }
 
   saveObject(obj: GroupType): Uint8Array {
@@ -64,7 +75,6 @@ export class ItemTypesComponent extends ChangeTemplate<ItemType> implements OnIn
   }
 
   ngOnInit() {
-    console.log(this.grouptype);
     this.signTypes = this.houseService.house.signTypes;
     this.fillItems();
   }
@@ -159,6 +169,7 @@ export class StatusesComponent extends ChangeTemplate<Status> implements OnInit 
 
   ngOnInit() {
     this.fillItems();
+    console.log(this.items);
   }
 
   initItem(obj: Status): void {
@@ -169,21 +180,20 @@ export class StatusesComponent extends ChangeTemplate<Status> implements OnInit 
   saveObject(obj: Status): Uint8Array {
     let name = ByteTools.saveQString(obj.name);
     let title = ByteTools.saveQString(obj.text);
-    let view = new Uint8Array(18 + name.length + title.length);
+    let view = new Uint8Array(13 + name.length + title.length); 
     let pos = 0;
     ByteTools.saveInt32(obj.id, view); pos += 4;
     view.set(name, pos); pos += name.length;
     view.set(title, pos); pos += title.length;
-    ByteTools.saveInt32(obj.type_id, view, pos); pos += 4;
-    view[pos] = obj.isMultiValue ? 1 : 0; pos += 1;
-    ByteTools.saveInt32(obj.value, view, pos); pos += 4;
+    ByteTools.saveInt32(obj.type, view, pos); pos += 4;
     ByteTools.saveInt32(obj.groupType_id, view, pos); pos += 4;
     view[pos] = obj.inform ? 1 : 0; pos += 1;
     return view;
   }
 }
 
-export class OtherTypesComponent implements OnInit {
+// Deprecated
+export class OtherTypesComponent implements OnInit { 
   paramItems: ParamItem[];
   itemTypes: ItemType[];
   groupTypes: GroupType[];
