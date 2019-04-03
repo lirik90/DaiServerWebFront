@@ -51,6 +51,7 @@ export class ChangeControllerAddressComponent implements OnInit
         break
       }
     }
+    
   }
   
   click_start_button(): void
@@ -94,11 +95,11 @@ export class ChangeControllerAddressComponent implements OnInit
   
   is_address_writed(): boolean
   {
-    if (this.items_.controller_address_1 != undefined && this.items_.controller_address_2 != undefined)
+    if (this.items_.controller_address_1 != undefined && this.items_.controller_address_2 != undefined && this.items_.controller_address_1 != null && this.items_.controller_address_2 != null)
     {
-      let address = this.items_.controller_address_1.raw_value & 0xff
-      let speed = ((this.items_.controller_address_1.raw_value << 8) & 0xff0000) | this.items_.controller_address_2.raw_value;
-    
+      let address = +this.items_.controller_address_1.raw_value & 0xff
+      let speed = ((+this.items_.controller_address_1.raw_value << 8) & 0xff0000) | +this.items_.controller_address_2.raw_value;   
+      
       let res = (address == this.address_) && (speed == this.speed_);
       if (res)
       {
@@ -111,7 +112,7 @@ export class ChangeControllerAddressComponent implements OnInit
   
   is_controller_connected(): boolean
   {
-    if (this.items.controller_address_1.raw_value == undefined)
+    if (this.items.controller_address_1.raw_value == undefined || this.items.controller_address_1.raw_value == null)
     {
       this.address_ = 0;
       this.speed_ = 0;
