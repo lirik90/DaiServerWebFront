@@ -78,14 +78,16 @@ export class GroupsComponent extends ChangeTemplate<Group> implements OnInit {
     return item.type ? item.type.title : '';
   }
 
-  initItem(obj: Group): void {
-    obj.section_id = this.sct.id;
+  initItem(obj: Group): void 
+  {
+    //obj.section_id = this.sct.id;
   }
 
   saveObject(obj: Group): Uint8Array {
     let view = new Uint8Array(16);
     let pos = 0;
 
+    obj.section_id = this.sct.id;
     ByteTools.saveInt32(obj.id, view, pos); pos += 4;
     ByteTools.saveInt32(obj.section_id, view, pos); pos += 4;
     ByteTools.saveInt32(obj.type_id, view, pos); pos += 4;
