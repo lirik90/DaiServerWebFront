@@ -1,3 +1,47 @@
-<p>
-  change-controller-address works!
-</p>
+<div class="module house">
+  <ng-container *ngIf="items != undefined">
+    <h2>Замена адреса контроллера</h2>
+    <ng-container *ngIf="items.change_controller_address.value == 0; else change_address_mode">
+      <h4>Подготовьте перемычку и плату где хотите изменить адрес</h4>
+      <h4>Нажмите кнопку "Начать"</h4>           
+    </ng-container>
+    
+    <ng-template #change_address_mode>
+      <ng-container *ngIf="!is_controller_connected(); else controller_address_undefined">
+        <h4>Поиск устройства. Вставьте перемычку в плату</h4>
+      </ng-container>
+      
+      <ng-template #controller_address_undefined>        
+        <ng-container *ngIf="!is_writing_ && !is_address_writed()">
+          <h4>Устройство обнаружено</h4>
+          <mat-form-field>
+            <label>
+              <input matInput type="number" min=0 [(ngModel)]="address_" placeholder="Введите новый адрес контроллера:"/>
+            </label>
+          </mat-form-field><br>
+          <mat-form-field>
+            <label>
+              <input matInput type="number" min=0 [(ngModel)]="speed_" placeholder="Введите скорость:"/>
+            </label>
+          </mat-form-field>
+          <button class="button2" mat-button (click)="click_write_button()">Записать</button>
+        </ng-container>
+                
+        <ng-container *ngIf="is_writing_ ">
+          <h4>Идет запись</h4>
+        </ng-container>
+        
+        <ng-container *ngIf="!is_writing_ && is_address_writed()">
+          <h4>Адрес контроллера записан. Вставьте перемычку в следующее устройство</h4>
+        </ng-container>
+      </ng-template>
+      
+    </ng-template>
+    
+    <button class="button2" mat-button (click)="click_start_button()">{{items.change_controller_address.value === 0 ? 'Начать' : 'Завершить'}}</button>
+    
+  </ng-container> 
+  <ng-container *ngIf="items == undefined">
+    <h2>Замена адресса контроллеров на данном устройстве невозможно</h2>
+  </ng-container>
+</div>
