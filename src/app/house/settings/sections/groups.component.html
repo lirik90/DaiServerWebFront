@@ -33,6 +33,13 @@
       <mat-option *ngFor="let gtype of groupTypes" [value]="gtype.id">{{gtype.title}}</mat-option>
     </mat-select>
   </mat-form-field>
+  <mat-form-field>
+    <mat-select placeholder="Режим" [(ngModel)]="sel_item.obj.mode_id" (ngModelChange)="itemChanged()">      
+      <mat-option [value]="0">Не выбран</mat-option>
+      <mat-option [value]="1">Ручной</mat-option>
+      <mat-option [value]="2">Автоматический</mat-option>
+    </mat-select>
+  </mat-form-field>
 </mat-expansion-panel>
 <mat-expansion-panel *ngIf="sel_item">
   <mat-expansion-panel-header>
