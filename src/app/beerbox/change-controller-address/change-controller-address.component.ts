@@ -29,16 +29,7 @@ export class ChangeControllerAddressComponent implements OnInit
 
   ngOnInit()
   {
-    this.get_info();
-    
-    this.address_ = 1;
-    this.speed_ = 115200;
-    
-    let res: number = 0b0000;
-    console.log(res);
-    
-    console.log((this.address_ << 8) & (this.speed_ >> 8));
-    console.log(this.speed_ << 8);
+    this.get_info();    
   }
   
   get_info(): void
@@ -74,8 +65,7 @@ export class ChangeControllerAddressComponent implements OnInit
     else
     {
       this.controlService.writeToDevItem(this.items.change_controller_address.id, 0);
-    }
-    
+    }    
   }
   
   click_write_button(): void
