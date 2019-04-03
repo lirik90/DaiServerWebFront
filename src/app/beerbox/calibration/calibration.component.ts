@@ -34,56 +34,56 @@ export class CalibrationComponent implements OnInit
     let items: any[] = [];
     let is_first: boolean = true;
     for (let sct of this.houseService.house.sections) 
-	{
-      if (is_first) 
 	  {
+      if (is_first) 
+	    {
         is_first = false;
         continue;
       }
       let clean: any = { sct };
       for (let group of sct.groups) 
-	  {
-        if (group.type.id == 16) 
-		{ // api.HeadGroup
+	    {
+        if (group.type.name == 'head') 
+		    { // api.HeadGroup
           for (let item of group.items) 
-		  {
-            switch(item.type.id) 
-			{
-              case 62:  clean.pouring = item;    break; // api.PouringItem
-              case 71:  clean.cur_volume = item; break; // api.type.item.volume
-              case 99:  clean.pause = item;      break; // api.type.item.pause
-			  case 102: clean.clean_type = item; break;
+		      {
+            switch(item.type.name) 
+			      {
+              case 'pouring':  clean.pouring = item;    break; // api.type.item.pouring
+              case 'volume':  clean.volume = item; break; // api.type.item.volume
+              case 'pause':  clean.pause = item;      break; // api.type.item.pause
+			        case 'cleanType': clean.clean_type = item; break; // api.type.item.cleanType
             }
 
-            if (clean.pouring !== undefined && clean.cur_volume !== undefined && clean.pause !== undefined)
-			{
+            if (clean.pouring !== undefined && clean.volume !== undefined && clean.pause !== undefined)
+			      {
               break;
-			}
+			      }
           }
         } 
-		else if (group.type.id == 17) 
-		{ // api.type.group.params
+        else if (group.type.name == 'params') 
+        { // api.type.group.params
           for (let item of group.items) 
-		  {
-            if (item.type.id == 96)
-			{ // api.type.item.setVol3
+          {
+            if (item.type.name == 'setVol3')
+            { // api.type.item.setVol3
               clean.full_volume = item;
             }
           }
-		  for (let param of group.params)
-		  {
-		    if (param.param.name == "ratioVolume")
-			{
-			  clean.ratio_volume_param = param;
-			  break;
-			}
-		  }
+          for (let param of group.params)
+          {
+            if (param.param.name == "ratioVolume")
+            {
+              clean.ratio_volume_param = param;
+              break;
+            }
+          }
         }
       }
-      if (clean.ratio_volume_param !== undefined && clean.pouring !== undefined && clean.cur_volume !== undefined && clean.pause !== undefined && clean.full_volume !== undefined)
-	  {
+      if (clean.ratio_volume_param !== undefined && clean.pouring !== undefined && clean.volume !== undefined && clean.pause !== undefined && clean.full_volume !== undefined)
+	    {
         items.push(clean);
-	  }
+	    }
     }
 
     this.items = items;
@@ -127,8 +127,8 @@ export class CalibrationComponent implements OnInit
       this.items[index].ratio_volume_param.value = result_coeff.toString();	
 
       let params: ParamValue[] = [];
-        params.push(this.items[index].ratio_volume_param);
-        this.controlService.changeParamValues(params);
+      params.push(this.items[index].ratio_volume_param);
+      this.controlService.changeParamValues(params);
     }
   }
 	

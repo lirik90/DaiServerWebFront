@@ -12,7 +12,7 @@
       </ng-container>
       
       <ng-template #controller_address_undefined>        
-        <ng-container *ngIf="!is_writing_ && !is_address_writed()">
+        <ng-container *ngIf="!is_address_writed() && !is_writing_">
           <h4>Устройство обнаружено</h4>
           <mat-form-field>
             <label>
@@ -31,14 +31,14 @@
           <h4>Идет запись</h4>
         </ng-container>
         
-        <ng-container *ngIf="!is_writing_ && is_address_writed()">
+        <ng-container *ngIf="is_address_writed() && !is_writing_">
           <h4>Адрес контроллера записан. Вставьте перемычку в следующее устройство</h4>
         </ng-container>
       </ng-template>
       
     </ng-template>
     
-    <button class="button2" mat-button (click)="click_start_button()">{{items.change_controller_address.value === 0 ? 'Начать' : 'Завершить'}}</button>
+    <button class="button2" mat-button (click)="click_start_button()">{{items.change_controller_address.value == 0 ? 'Начать' : 'Завершить'}}</button>
     
   </ng-container> 
   <ng-container *ngIf="items == undefined">
