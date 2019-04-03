@@ -128,6 +128,7 @@ export class HouseService extends IHouseService {
         }
 
         this.house = detail;
+        this.house.name = house_name;
         localStorage.setItem(this.house_s, JSON.stringify(detail));
         this.log('fetched house detail'); 
         return of(true);

@@ -9,7 +9,7 @@
           <ng-container *ngFor="let group of sct.groups">
             <tr>
               <td colspan="2">
-                <h4 routerLink="/house/{{houseId}}/group/{{group.id}}/param">{{group.type.title}}</h4>
+                <h4 routerLink="/house/{{houseName}}/group/{{group.id}}/param">{{group.type.title}}</h4>
                 <app-group-status [group]="group"></app-group-status>
                 <mat-form-field>
                   <mat-select placeholder="Режим" [value]="group.mode_id ? group.mode_id.toString() : '0'"
