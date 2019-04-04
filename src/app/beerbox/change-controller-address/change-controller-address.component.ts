@@ -21,7 +21,13 @@ export class ChangeControllerAddressComponent implements OnInit
   
   address_: number = 0;
   speed_: number = 0;
+  
+  last_address_: number = 0;
+  last_speed_: number = 0;
+  
   is_writing_: boolean = false;
+  
+  is_found_: boolean = false;
   
   constructor(
     private houseService: HouseService,
@@ -61,6 +67,9 @@ export class ChangeControllerAddressComponent implements OnInit
       this.is_writing_ = false;
       this.address_ = 0;
       this.speed_ = 0;
+      this.last_address_ = -1;
+      this.last_speed_ = -1;
+      this.is_found_ = false;
       this.controlService.writeToDevItem(this.items.change_controller_address.id, 1);
     }
     else
@@ -71,6 +80,9 @@ export class ChangeControllerAddressComponent implements OnInit
   
   click_write_button(): void
   {
+    this.last_address_ = this.address_;
+    this.last_speed_ = this.speed_;
+    
     this.is_writing_ = true;
     
     let holding_register_1: number = 0;
@@ -80,44 +92,45 @@ export class ChangeControllerAddressComponent implements OnInit
     holding_register_2 = this.speed_ & 0xffff;
     
     this.controlService.writeToDevItem(this.items.controller_address_1.id, holding_register_1);
-    this.controlService.writeToDevItem(this.items.controller_address_2.id, holding_register_2);        
-    
-    /*console.log(holding_register_1);
-    console.log(holding_register_2);
-    
-    this.address_ = holding_register_1 & 0xff
-    this.speed_ = ((holding_register_1 << 8) & 0xff0000) | holding_register_2;
-    
-    console.log(this.address_);
-    console.log(this.speed_);*/
-    
+    this.controlService.writeToDevItem(this.items.controller_address_2.id, holding_register_2);            
   }
   
-  is_address_writed(): boolean
+  get_status(): number
   {
     if (this.items_.controller_address_1 != undefined && this.items_.controller_address_2 != undefined && this.items_.controller_address_1 != null && this.items_.controller_address_2 != null)
     {
       let address = +this.items_.controller_address_1.raw_value & 0xff
-      let speed = ((+this.items_.controller_address_1.raw_value << 8) & 0xff0000) | +this.items_.controller_address_2.raw_value;   
-      
-      let res = (address == this.address_) && (speed == this.speed_);
-      if (res)
+      let speed = ((+this.items_.controller_address_1.raw_value << 8) & 0xff0000) | +this.items_.controller_address_2.raw_value; 
+      if ((address == this.last_address_) && (speed == this.last_speed_))
       {
         this.is_writing_ = false;
+        return 2;
       }
-      return res;
+      else
+      {
+        return this.is_writing_ ? 1 : 0
+      }
     }
-    return false;
+    return -1;
   }
   
   is_controller_connected(): boolean
   {
     if (this.items.controller_address_1.raw_value == undefined || this.items.controller_address_1.raw_value == null)
     {
+      this.last_address_ = -1;
+      this.last_speed_ = -1;
       this.address_ = 0;
       this.speed_ = 0;
+      this.is_found_ = false;
       return false;
     }
+    if (!this.is_found_)
+    {
+      this.address_ = +this.items_.controller_address_1.raw_value & 0xff
+      this.speed_ = ((+this.items_.controller_address_1.raw_value << 8) & 0xff0000) | +this.items_.controller_address_2.raw_value;        
+      this.is_found_ = true;
+    }    
     return true;
   }
 

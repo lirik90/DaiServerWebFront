@@ -7,12 +7,12 @@
     </ng-container>
     
     <ng-template #change_address_mode>
-      <ng-container *ngIf="!is_controller_connected(); else controller_address_undefined">
+      <ng-container *ngIf="!is_controller_connected(); else controller_address_connected">
         <h4>Поиск устройства. Вставьте перемычку в плату</h4>
       </ng-container>
       
-      <ng-template #controller_address_undefined>        
-        <ng-container *ngIf="!is_address_writed() && !is_writing_">
+      <ng-template #controller_address_connected>        
+        <ng-container *ngIf="get_status() == 0">
           <h4>Устройство обнаружено</h4>
           <mat-form-field>
             <label>
@@ -27,11 +27,11 @@
           <button class="button2" mat-button (click)="click_write_button()">Записать</button>
         </ng-container>
                 
-        <ng-container *ngIf="is_writing_ ">
+        <ng-container *ngIf="get_status() == 1">
           <h4>Идет запись</h4>
         </ng-container>
         
-        <ng-container *ngIf="is_address_writed() && !is_writing_">
+        <ng-container *ngIf="get_status() == 2">
           <h4>Адрес контроллера записан. Вставьте перемычку в следующее устройство</h4>
         </ng-container>
       </ng-template>
