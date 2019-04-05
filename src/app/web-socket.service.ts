@@ -151,6 +151,31 @@ export class ByteTools {
     return view;
   }
 
+  static saveQVariantList(obj: any): Uint8Array
+  {
+    if (typeof obj === 'string')
+      obj = JSON.parse(obj);
+    let total_size = 0;
+    let items = [];
+    for (const value of obj)
+    {
+      let value_view = ByteTools.saveQVariant(value);
+      total_size += value_view.length;
+      items.push(value_view);
+    }
+  
+    let view = new Uint8Array(4 + total_size);
+    let pos = 0;
+    ByteTools.saveInt32(items.length, view, pos); pos += 4;
+  
+    for (const item of items)
+    {
+      view.set(item, pos); pos += item.length;
+    }
+  
+    return view;
+ }
+
   static saveQVariantMap(obj: any): Uint8Array
   {
     if (typeof obj === 'string')

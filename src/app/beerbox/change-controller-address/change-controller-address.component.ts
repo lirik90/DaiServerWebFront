@@ -43,7 +43,7 @@ export class ChangeControllerAddressComponent implements OnInit
     console.log(this.houseService.house.devices);
     for (let device of this.houseService.house.devices)
     {
-      if (device.address == 247)
+      if (device.extra.indexOf("247") != -1)
       {
         for (let item of device.items)
         {
@@ -116,7 +116,8 @@ export class ChangeControllerAddressComponent implements OnInit
   
   is_controller_connected(): boolean
   {
-    if (this.items.controller_address_1.raw_value == undefined || this.items.controller_address_1.raw_value == null)
+    if (this.items.controller_address_1.raw_value == undefined || this.items.controller_address_1.raw_value == null ||
+        this.items.controller_address_2.raw_value == undefined || this.items.controller_address_2.raw_value == null)
     {
       this.last_address_ = -1;
       this.last_speed_ = -1;
@@ -128,7 +129,7 @@ export class ChangeControllerAddressComponent implements OnInit
     if (!this.is_found_)
     {
       this.address_ = +this.items_.controller_address_1.raw_value & 0xff
-      this.speed_ = ((+this.items_.controller_address_1.raw_value << 8) & 0xff0000) | +this.items_.controller_address_2.raw_value;        
+      this.speed_ = ((+this.items_.controller_address_1.raw_value << 8) & 0xff0000) | +this.items_.controller_address_2.raw_value;
       this.is_found_ = true;
     }    
     return true;

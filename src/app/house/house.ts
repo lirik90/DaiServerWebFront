@@ -156,9 +156,9 @@ export class ParamValue { // Уставка
 
 export class Device { // Устройство
   id: number;         // ID
-  address: number;    // Адрес
   name: string;       // Имя
   checker_id: number; // ID используемого плагина
+  check_interval: number; // Интервал запуска проверки плагина
   extra: string;         // Пользовательские параметры
   items: DeviceItem[];// Массив элементов
 }
