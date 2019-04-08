@@ -101,9 +101,7 @@ export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements 
   saveObject(obj: DeviceItem): Uint8Array {
     let name = ByteTools.saveQString(obj.name);
     let extra = ByteTools.saveQVariantList(obj.extra.split('|'));
-    let raw_value = ByteTools.saveQVariant(obj.raw_value);
-    let value = ByteTools.saveQVariant(obj.value);
-    let view = new Uint8Array(20 + name.length + extra.length + raw_value.length + value.length);
+    let view = new Uint8Array(20 + name.length + extra.length);
     let pos = 0;
     ByteTools.saveInt32(obj.id, view); pos += 4;
     view.set(name, pos); pos += name.length;
@@ -112,8 +110,6 @@ export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements 
     ByteTools.saveInt32(obj.parent_id, view, pos); pos += 4;
     ByteTools.saveInt32(obj.device_id, view, pos); pos += 4;
     ByteTools.saveInt32(obj.group_id, view, pos); pos += 4;
-    view.set(raw_value, pos); pos += raw_value.length;
-    view.set(value, pos); pos += value.length;
     return view;
   }
 }

@@ -88,7 +88,7 @@ export class ItemTypesComponent extends ChangeTemplate<ItemType> implements OnIn
   saveObject(obj: ItemType): Uint8Array {
     let name = ByteTools.saveQString(obj.name);
     let title = ByteTools.saveQString(obj.title);
-    let view = new Uint8Array(15 + name.length + title.length);
+    let view = new Uint8Array(19 + name.length + title.length);
     let pos = 0;
     ByteTools.saveInt32(obj.id, view); pos += 4;
     view.set(name, pos); pos += name.length;
@@ -98,6 +98,7 @@ export class ItemTypesComponent extends ChangeTemplate<ItemType> implements OnIn
     ByteTools.saveInt32(obj.sign_id, view, pos); pos += 4;
     view[pos] = obj.registerType; pos += 1;
     view[pos] = obj.saveAlgorithm; pos += 1;
+    ByteTools.saveInt32(obj.save_timer_id, view, pos); pos += 4;
     return view;
   }
 }
