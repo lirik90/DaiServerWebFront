@@ -8,19 +8,24 @@ export enum StructType {
   CheckerType,
   DeviceItems,
   DeviceItemTypes,
+  SaveTimers,
   Sections,
   Groups,
   GroupTypes,
-  GroupModes,
-  GroupParams,
+  GroupModeTypes,
   GroupParamTypes,
-  GroupStatus,
   GroupStatusInfo,
   GroupStatusTypes,
   Signs,
   Scripts,
   View,
-  ViewItem
+  ViewItem,
+
+  // Часто изменяемые
+  DeviceItemValues,
+  GroupMode,
+  GroupStatus,
+  GroupParams,
 }
 
 export enum ChangeState {
