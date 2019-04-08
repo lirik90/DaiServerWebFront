@@ -53,7 +53,7 @@ export class ReplaceKegComponent implements OnInit
     for (let item of this.items) {
       let have_empty: boolean = false;
       for (let keg of item.kegs) {
-        if (keg.item.raw_value == 0) {
+        if (keg.item.val.raw == 0) {
           have_empty = true;
           if (!empty)
             empty = true;
@@ -192,7 +192,7 @@ export class ReplaceKegComponent implements OnInit
     {
       if (item.parent_id == keg.parent_id)
       {
-        manufacturer_info_item = item.value;
+        manufacturer_info_item = item.val.display;
         break;
       }
     }    

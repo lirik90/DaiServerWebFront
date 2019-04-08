@@ -10,7 +10,7 @@ import { SectionsComponent } from "./sections/sections.component";
 import { GroupTypesComponent } from "./group-types/group-types.component";
 import { StatusTypesComponent } from "./status-types/status-types.component";
 import { SignTypesComponent } from "./sign-types/sign-types.component";
-import { CodeComponent, CodesComponent } from "./code/code.component";
+import { CodesComponent } from "./codes/codes.component";
 import { CheckerTypesComponent } from "./checker-types/checker-types.component";
 
 const settingsRoutes: Routes = [
@@ -38,13 +38,7 @@ const settingsRoutes: Routes = [
       { path: 'statustypes', component: StatusTypesComponent },
       { path: 'signtypes', component: SignTypesComponent },
       { path: 'checkertypes', component: CheckerTypesComponent },
-      { 
-        path: 'code', 
-        children: [
-          { path: '', component: CodeComponent, pathMatch: 'full' },
-          { path: ':codeId', component: CodeComponent }
-        ]
-      },
+      { path: 'codes', component: CodesComponent },
     ]
   }
 ];

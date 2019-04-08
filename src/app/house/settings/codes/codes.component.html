@@ -1,24 +1,24 @@
 <mat-accordion class="example-headers-align" multi>
   <mat-expansion-panel hideToggle [expanded]="1" #slist>
     <mat-expansion-panel-header>
-      <mat-panel-title><p>Еденицы измерения</p></mat-panel-title>
+      <mat-panel-title><p>Скрипты</p></mat-panel-title>
       <mat-panel-description>
         Всего: {{items.length}}
         <span *ngIf="changed">
-          <button mat-icon-button (click)="save($event)"><mat-icon>save</mat-icon></button>
+          <button mat-icon-button (click)="code_save($event)"><mat-icon>save</mat-icon></button>
           <button mat-icon-button (click)="cancel($event)"><mat-icon>cancel</mat-icon></button>
         </span>
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <button class="mybtn" (click)="create(); slist.close()">Добавить еденицу измерения</button>
+    <button class="mybtn" (click)="create(); slist.close()">Добавить скрипт</button>
     <ul class="houses">
       <ng-container *ngFor="let item of items">
         <li *ngIf="item.state !== changeState.Delete" [class.selected]="sel_item == item">
-          <a class="pre_badge" (click)="select(item); slist.close()">
+          <a class="pre_badge" (click)="code_select(item); slist.close()">
             <span class="badge badge_id" [class.badge_changed]="item.state === changeState.Upsert">{{item.obj.id}}</span>
-            {{item.obj.name}}
+            {{name(item.obj)}}
           </a>
-          <button class="mybtn delete" title="delete sign" (click)="remove(item)">x</button>
+          <button class="mybtn delete" title="delete script" (click)="remove(item)">x</button>
         </li>
       </ng-container>
     </ul>
@@ -27,11 +27,15 @@
     <mat-expansion-panel-header>
       <mat-panel-title>Детали</mat-panel-title>
       <mat-panel-description>
-        {{sel_item.obj.name}}
+        {{name(sel_item.obj)}}
       </mat-panel-description>
     </mat-expansion-panel-header>
     <mat-form-field>
       <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.name" placeholder="Имя"/>
     </mat-form-field>
+    <mat-form-field>
+      <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.global_id" placeholder="Общий"/>
+    </mat-form-field>
+    <ngx-monaco-editor class="codes-editor" (change)="itemChanged()" [(ngModel)]="sel_item.obj.text" [options]="editorOptions" (onInit)="onEditorInit($event)"></ngx-monaco-editor>
   </mat-expansion-panel>
 </mat-accordion>

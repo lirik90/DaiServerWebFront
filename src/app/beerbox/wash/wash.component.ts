@@ -62,7 +62,7 @@ export class WashComponent implements OnInit {
   }
 
   onChange(clean_type_item: DeviceItem, value: any): void {
-    clean_type_item.raw_value = +value;
+    clean_type_item.val.raw = +value;
   }
 
   start(clean: any): void {

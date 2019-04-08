@@ -1,6 +1,6 @@
 <mat-expansion-panel class="example-headers-align" hideToggle #slist>
   <mat-expansion-panel-header>
-    <mat-panel-title><p>Состояния группы</p></mat-panel-title>
+    <mat-panel-title><p>Уставки в группе</p></mat-panel-title>
     <mat-panel-description>
       Всего: {{items.length}}
       <span *ngIf="changed">
@@ -9,15 +9,15 @@
       </span>
     </mat-panel-description>
   </mat-expansion-panel-header>
-  <button class="mybtn" (click)="create(); slist.close()">Добавить состояние</button>
+  <button class="mybtn" (click)="create(); slist.close()">Добавить уставку</button>
   <ul class="houses">
     <ng-container *ngFor="let item of items">
       <li *ngIf="item.state !== changeState.Delete" [class.selected]="sel_item == item">
         <a class="pre_badge" (click)="select(item); slist.close()">
           <span class="badge badge_id left_tab" [class.badge_changed]="item.state === changeState.Upsert">{{item.obj.id}}</span>
-          {{item.obj.name}}
+          {{item.obj.param.title}}
         </a>
-        <button class="mybtn delete" title="delete status" (click)="remove(item)">x</button>
+        <button class="mybtn delete" title="delete item type" (click)="remove(item)">x</button>
       </li>
     </ng-container>
   </ul>
@@ -25,14 +25,13 @@
 <mat-expansion-panel expanded hideToggle *ngIf="sel_item">
   <mat-expansion-panel-header>
     <mat-panel-title>Детали</mat-panel-title>
-    <mat-panel-description>{{sel_item.obj.name}}</mat-panel-description>
+    <mat-panel-description>{{sel_item.obj.param.title}}</mat-panel-description>
   </mat-expansion-panel-header>
-  <mat-form-field><input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.name" placeholder="Имя"/></mat-form-field>
-  <mat-form-field><mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.type_id" placeholder="Тип">
-      <mat-option value="0">Нет</mat-option>
-      <mat-option *ngFor="let item of this.houseService.house.statusTypes" [value]="item.id">{{item.title}}</mat-option>
+  <mat-form-field>
+    <mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.param" placeholder="Тип данных">
+      <mat-option *ngFor="let item of this.params" [value]="item">
+        {{item.title}}
+      </mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field><input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.text" placeholder="Текст"/></mat-form-field>
-  <mat-checkbox (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.inform">Посылать уведомление</mat-checkbox>
 </mat-expansion-panel>
