@@ -72,15 +72,18 @@ export class GroupsComponent extends ChangeTemplate<Group> implements OnInit {
     this.fillItems();
   }
 
-  title(item: Group = undefined): string {
+  title(item: Group = undefined): string 
+  {
     if (item === undefined)
+    {
       item = this.sel_item.obj;
-    return item.type ? item.type.title : '';
+    }
+    return item.title ? item.title : (item.type ? item.type.title : '');
   }
 
   initItem(obj: Group): void 
   {
-    //obj.section_id = this.sct.id;
+    obj.section_id = this.sct.id;
   }
 
   saveObject(obj: Group): Uint8Array 
@@ -90,9 +93,10 @@ export class GroupsComponent extends ChangeTemplate<Group> implements OnInit {
     let pos = 0;
 
     obj.section_id = this.sct.id;
+    console.log(obj.section_id);
+    console.log(this.sct);
     ByteTools.saveInt32(obj.id, view, pos); pos += 4;
     view.set(title, pos); pos += title.length;
-    ByteTools.saveInt32(obj.id, view, pos); pos += 4;
     ByteTools.saveInt32(obj.section_id, view, pos); pos += 4;
     ByteTools.saveInt32(obj.type_id, view, pos); pos += 4;
     return view;

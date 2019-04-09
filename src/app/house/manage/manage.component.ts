@@ -16,7 +16,7 @@ export class ManageComponent implements OnInit {
 
   constructor(
     private houseService: HouseService,
-    //private controlService: ControlService,
+    private controlService: ControlService,
     private snackBar: MatSnackBar
   ) {}
 
