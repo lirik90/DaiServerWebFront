@@ -1,0 +1,24 @@
+<h2>Информация о пиве</h2>
+<div class="grid grid-pad">
+  <ng-container *ngFor="let item of items">
+    <div class="col-1-3">
+      <div class="module house">
+        <h3>{{item.sct.name}}</h3>
+          <ng-container>
+            <p><b>Заголовок:</b></p>
+            <p>{{item.title.value}}</p>
+            <p><b>Условия хранения (t):</b> {{item.storage_conditions.value}}</p>
+            <p><b>Состав:</b></p>
+            <p>{{item.product_composition.value}}</p>
+            <p><b>Дополнительная информация:</b></p>
+            <p>{{item.description.value}}</p>
+            <p><b>Код продукта:</b></p>
+            <p>{{item.product_code.value}}</p>
+            <p><b>Тип кода:</b> {{item.product_code_type.value}}</p>
+            <button mat-button (click)="click_edit(item)" title="Редактировать">Редактировать</button>
+            <button mat-button (click)="click_print_sample(item)" title="Пробная печать">Пробная печать</button>
+          </ng-container>
+      </div>
+    </div>
+  </ng-container>
+</div>

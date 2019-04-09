@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { switchMap, catchError, map, tap, finalize } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 
-import { HouseDetail, Section, DeviceItem, Group, Codes, Logs } from './house';
+import { HouseDetail, Section, DeviceItem, Group, Logs } from './house';
 import { TeamMember, PaginatorApi } from '../user';
 import { MessageService } from '../message.service';
 import { IHouseService } from '../ihouse.service';
@@ -78,6 +78,9 @@ export class HouseService extends IHouseService {
         let dev_items: DeviceItem[] = [];
         for (let dev of detail.devices) {
           for (let item of dev.items) {
+            if (!item.val)
+              item.val = { raw: null, display: null};
+
             for (let itemType of detail.itemTypes) {
               if (itemType.id === item.type_id) {
                 item.type = itemType;
@@ -116,8 +119,19 @@ export class HouseService extends IHouseService {
             }
           }
         }
+        
+        for (let status of detail.statuses) {
+          for (let status_type of detail.statusTypes) {
+            if (status_type.id === status.type_id)
+            {
+              status.type = status_type;
+              break;
+            }
+          }
+        }
 
         this.house = detail;
+        this.house.name = house_name;
         localStorage.setItem(this.house_s, JSON.stringify(detail));
         this.log('fetched house detail'); 
         return of(true);
@@ -147,33 +161,17 @@ export class HouseService extends IHouseService {
   {
     return this.getPiped<PaginatorApi<TeamMember>>(this.url('team'), 'fetched team list', 'getMembers');
   }
-
-  getCodes(): Observable<Codes[]> {
-    return this.getPiped<Codes[]>(this.url('code'), `fetched code list`, 'getCodes', []);
-  }
-
-  getCode(code_id: number): Observable<Codes> {
-    return this.getPiped<Codes>(this.url('code', code_id), `fetched code ${code_id}`, 'getCode', {} as Codes);
-  }
-
-  updateCode(code: Codes): Observable<any> {
-    const url = this.url('code', code.id);
-    return this.patchPiped(url, { text: code.text }, `updated code id=${code.id}`, 'updateCode');
-  }
 	
   upload_file(item_id: number, file: File): Observable<any>
   {
-	  const url = `/api/v1/upload/firmware/?id=${this.house.id}&item_id=${item_id}`;
-	  
-	  const formData: FormData = new FormData();
-	  formData.append('fileKey', file, file.name);
-	  
-	  let headers = new HttpHeaders();
-      headers.append('Content-Type', 'multipart/form-data');
-	  
-	  let options = { headers: headers };
-	  
-	  return this.http.post(url, formData, options)
+    const formData: FormData = new FormData();
+    formData.append('fileKey', file, file.name);
+    
+    let options = { headers: new HttpHeaders() };
+    options.headers.append('Content-Type', 'multipart/form-data');
+    
+    const url = this.apiUrl + `write_item_file/?id=${this.house.id}&item_id=${item_id}`;
+    return this.http.put(url, formData, options)
             .catch(error => Observable.throw(error));
   }
 

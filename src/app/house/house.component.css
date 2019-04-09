@@ -18,6 +18,10 @@ div > h2 {
   right: 0;
 }
 
+.status_modified:after {
+  color: darkBlue;
+  content: "edit";
+}
 .status_ok:after {
   color: green;
   content: "check_circle";

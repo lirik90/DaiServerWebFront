@@ -10,7 +10,7 @@ import 'rxjs/add/operator/filter';
 
 import { HouseService } from "./house.service";
 import { WebSocketBytesService, ByteMessage, ByteTools } from '../web-socket.service';
-import { DeviceItem, Group, Status, Codes, EventLog, ParamValue } from './house';
+import { DeviceItem, Group, Status, EventLog, ParamValue } from './house';
 
 export enum Cmd {
   ConnectInfo = 3, // WebSockCmd.UserCmd
@@ -32,6 +32,7 @@ export interface ConnectInfo {
   ip: string;
   time: number;
   time_zone: string;
+  modified: boolean;
 }
 
 @Injectable()
@@ -68,7 +69,7 @@ export class ControlService {
         for (let sct of this.houseService.house.sections) {
           for (let group of sct.groups) {
             if (group.id == group_id) {
-              group.mode_id = mode_id;
+              group.mode = mode_id;
               return;
             }
           }
@@ -214,7 +215,7 @@ export class ControlService {
 
     const domain_zone = document.location.hostname.split('.').pop();
     let proto = 'ws';
-    if (domain_zone !== 'local')
+    if (domain_zone !== 'local' && domain_zone != parseInt(domain_zone).toString())
       proto += 's'; 
     this.wsbService.start(proto + '://' + document.location.hostname + '/' + proto + '/');
 	}
@@ -249,9 +250,15 @@ export class ControlService {
 
   private procDevItemValue(item_id: number, raw_value: any, value: any): void {
     let item: DeviceItem = this.houseService.devItemById(item_id);
-    if (item) {
-      item.raw_value = raw_value;
-      item.value = value;
+    if (item) 
+    {
+      if (!item.val)
+        item.val = { raw: raw_value, display: value };
+      else
+      {
+        item.val.raw = raw_value;
+        item.val.display = value;
+      }
     }
   }
 
@@ -264,8 +271,8 @@ export class ControlService {
     const [start, ip] = ByteTools.parseQString(view, 1);
     const [start1, time] = ByteTools.parseInt64(view, start);
     const [start2, time_zone] = ByteTools.parseQString(view, start1);
-
-    return { connected, ip, time, time_zone };
+    const modified: boolean = view[start2] == 1;
+    return { connected, ip, time, time_zone, modified };
   }
 
   parseEventMessage(data: ArrayBuffer): EventLog[]
@@ -279,9 +286,9 @@ export class ControlService {
     while (count--)
     {
       const [start1, id] = ByteTools.parseUInt32(view, start);
-      const [start2, user_id] = ByteTools.parseUInt32(view, start1);
-      const [start3, type] = ByteTools.parseUInt32(view, start2);
-      const [start4, time_ms] = ByteTools.parseInt64(view, start3);
+      const [start2, time_ms] = ByteTools.parseInt64(view, start1);
+      const [start3, user_id] = ByteTools.parseUInt32(view, start2);
+      const [start4, type] = ByteTools.parseUInt32(view, start3);
       const [start5, who] = ByteTools.parseQString(view, start4);
       const [start6, msg] = ByteTools.parseQString(view, start5);
       start = start6;
@@ -338,14 +345,6 @@ export class ControlService {
     }
 
     this.wsbService.send(Cmd.ChangeParamValues, this.houseService.house.id, view);
-  }
-
-  changeCode(code: Codes): void {
-    const code_buf = ByteTools.saveQString(code.text);
-    let view = new Uint8Array(4 + code_buf.length);
-    ByteTools.saveInt32(code.id, view);
-    view.set(code_buf, 4);
-    // this.wsbService.send(Cmd.ChangeCode, this.houseService.house.id, view);
   }
 
   restart(): void {

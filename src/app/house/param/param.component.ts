@@ -13,7 +13,6 @@ import { Group, ParamType, ParamValue } from '../house';
   styleUrls: ['./param.component.css']
 })
 export class ParamComponent implements OnInit {
-  houseId: number;
   group: Group;
 
   cantChange: boolean;
@@ -29,7 +28,6 @@ export class ParamComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.houseId = this.houseService.house.id;
     this.getGroupParams();
     this.cantChange = !this.authService.canChangeParam();
   }

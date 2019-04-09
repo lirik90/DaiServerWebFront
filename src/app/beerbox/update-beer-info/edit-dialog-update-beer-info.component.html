@@ -1,0 +1,37 @@
+<h1 mat-dialog-title>Редактирование информации о пиве</h1>
+<div mat-dialog-content>
+  <div>
+    <mat-form-field class="input-full-width">
+	    <input matInput required [(ngModel)]="item.title" placeholder="Заголовок"/>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="input-full-width">
+	    <input matInput required [(ngModel)]="item.storage_conditions" placeholder="Условия хранения"/>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="input-full-width">
+	    <textarea matInput required [(ngModel)]="item.product_composition" placeholder="Состав"></textarea>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="input-full-width">
+	    <textarea matInput required [(ngModel)]="item.description" placeholder="Дополнительная информация"></textarea>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="input-full-width">
+	    <input matInput required [(ngModel)]="item.product_code" placeholder="Код продукта"/>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="input-full-width">
+	    <input matInput type="number" required [(ngModel)]="item.product_code_type" placeholder="Тип кода EAN-13 (0, 1, 2), Code-128 (3, 4), QR code (5, 6)" />
+    </mat-form-field>
+  </div> 
+</div> 
+<div mat-dialog-actions>
+  <button mat-button type="button" (click)="dialogRef.close()">Отмена</button>
+  <button mat-button [mat-dialog-close]="item" cdkFocusInitial>Сохранить</button>
+</div>

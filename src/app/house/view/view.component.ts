@@ -9,7 +9,7 @@ import { Section } from "../house";
   styleUrls: ['../../sections.css', './view.component.css']
 })
 export class ViewComponent implements OnInit {
-  houseId: number;
+  houseName: string;
   sections: Section[];
 
   constructor(
@@ -21,7 +21,7 @@ export class ViewComponent implements OnInit {
   }
 
   getSections(): void {
-    this.houseId = this.houseService.house.id;
+    this.houseName = this.houseService.house.name;
     this.sections = this.houseService.house.sections;
   }
 }

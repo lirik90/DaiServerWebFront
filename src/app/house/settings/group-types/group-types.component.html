@@ -15,7 +15,7 @@
       <ng-container *ngFor="let item of items">
         <li *ngIf="item.state !== changeState.Delete" [class.selected]="sel_item == item">
           <a class="pre_badge" (click)="select(item); slist.close()">
-            <span class="badge badge_id">{{item.obj.id}}</span>
+            <span class="badge badge_id" [class.badge_changed]="item.state === changeState.Upsert">{{item.obj.id}}</span>
             {{item.obj.title}}
           </a>
           <button class="mybtn delete" title="delete group type" (click)="remove(item)">x</button>
@@ -37,11 +37,16 @@
       <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.title" placeholder="Заголовок" />
     </mat-form-field>
     <mat-form-field>
-      <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.code_id" placeholder="Скрипт" type="number" min="0" />
+      <mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.code_id" placeholder="Скрипт">
+        <mat-option>Не выбран</mat-option>
+        <mat-option *ngFor="let item of this.codes" [value]="item.id">
+          {{item.id}} {{item.name}}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
     <mat-form-field>
       <textarea matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.description" placeholder="Описание"></textarea>
-    </mat-form-field>
+    </mat-form-field>    
   </mat-expansion-panel>
   <app-item-types *ngIf="!changed && sel_item" [grouptype]="sel_item.obj"></app-item-types>
   <app-param-types *ngIf="!changed && sel_item" [grouptype]="sel_item.obj"></app-param-types>
