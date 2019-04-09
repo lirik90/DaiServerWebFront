@@ -36,11 +36,11 @@ export class ReplaceLabelsComponent implements OnInit
       {
         for (let group of sct.groups)
         {
-          if (group.type.name == "label")
+          if (group.type.name == 'label')
           {            
             for (let item of group.items)
             {
-              if (item.type.name == "change_tape")
+              if (item.type.name == 'tape_nonempty')
               {
                 this.labels_handle_ = item;
               }
@@ -48,7 +48,7 @@ export class ReplaceLabelsComponent implements OnInit
             
             for (let param of group.params)
             {
-              if (param.param.name == "labels_num_full")
+              if (param.param.name == 'labels_num_full')
               {
                 this.labels_num_full_ = param;
                 this.labels_num_full_.value = +this.labels_num_full_.value + 10;
