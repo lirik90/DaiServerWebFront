@@ -110,6 +110,7 @@ export class GroupStatusInfo {
 
 export class Group {  // Группа
   id: number;               // ID
+  title: string;
   section_id: number;       // ID секции
   type_id: number;          // ID типа группы
   mode: number;          // ID режима автоматизации
