@@ -16,7 +16,6 @@ interface Keg {
   parent_id: number;
   item: DeviceItem;
   bad_clean: DeviceItem;
-  manufacture_date: DeviceItem;
 }
 interface ReplaceKegSection {
   sct: Section;
@@ -32,8 +31,8 @@ interface ReplaceKegSection {
 export class ReplaceKegComponent implements OnInit 
 {  
   items: ReplaceKegSection[];
-  manufacture_date_list_: DeviceItem[] = [];
-  manufacturers_list_: DeviceItem[] = [];
+  manufacture_date_list_: ParamValue[] = [];
+  manufacturers_list_: ParamValue[] = [];
 
   have_empty: boolean = false;
   is_printer_set: boolean = false;
@@ -91,7 +90,7 @@ export class ReplaceKegComponent implements OnInit
 
     let add_keg: boolean = false;
     if (!keg_item) {
-      keg_item = { parent_id: dev_item.parent_id, item: undefined, bad_clean: undefined, manufacture_date: undefined } as Keg;
+      keg_item = { parent_id: dev_item.parent_id, item: undefined, bad_clean: undefined } as Keg;
       add_keg = true;
     }
 
@@ -109,32 +108,43 @@ export class ReplaceKegComponent implements OnInit
   getSections(): void {
     this.items = [];
     let is_first: boolean = true;    
-    for (let sct of this.houseService.house.sections) {
+    for (let sct of this.houseService.house.sections) 
+    {
       if (is_first) {
         is_first = false;
         continue;
       }
-            
+                        
       for (let group of sct.groups) 
       {
-        if (group.type.id == 19) 
+        if (group.type.name == 'takeHead') 
         { // api.TakeHeadGroup
           for (let item of group.items) 
           {
-            if (item.type.id == 100) // api.KegNotEmptyItem
+            if (item.type.name == 'kegNotEmpty') // api.KegNotEmptyItem
+            {
               this.addKeg(sct, item, true);
-            if (item.type.id == 103) // api.badClean
-              this.addKeg(sct, item, false);
-            if (item.type.name == 'manufacture_date')
-            {
-              this.manufacture_date_list_.push(item);
             }
-            if (item.type.name == 'manufacturer_info')
+            if (item.type.name == 'badClean') // api.badClean
             {
-              this.manufacturers_list_.push(item);
+              this.addKeg(sct, item, false);
+            }            
+          }
+        }
+        else if (group.type.name == 'label') 
+        {
+          for (let param of group.params) 
+          {
+            if (param.param.name.indexOf('manufacture_date') >= 0)
+            {
+              this.manufacture_date_list_.push(param);
+            }
+            if (param.param.name.indexOf('manufacturer_info') >= 0)
+            {
+              this.manufacturers_list_.push(param);
             }
           }
-        }        
+        }
       }
     }
     
@@ -144,6 +154,10 @@ export class ReplaceKegComponent implements OnInit
     }
     
     this.checkEmpty();
+    
+    console.log(this.manufacture_date_list_);
+    console.log(this.manufacturers_list_);
+    console.log(this.items);
   }
 
   toggle(keg: DeviceItem): void 
@@ -151,59 +165,32 @@ export class ReplaceKegComponent implements OnInit
     this.controlService.writeToDevItem(keg.id, true);
   }
   
-  set_manufacture_date(keg: DeviceItem, date: string): void
+  set_manufacture(keg: DeviceItem, date: string, manufacturer_info: string, i: number): void
   {
     if (date == undefined || date.length == 0)
     {
       return;
     }
-    
-    for (let item of this.manufacture_date_list_)
-    {
-      if (item.parent_id == keg.parent_id)
-      {
-        this.controlService.writeToDevItem(item.id, date);
-        break;
-      }
-    }
-  }
-  
-  set_manufacturer_info(keg: DeviceItem, manufacturer_info: string): void
-  {
-    if (manufacturer_info == undefined || manufacturer_info.length == 0)
-    {
-      return;
-    }
-    
-    for (let item of this.manufacturers_list_)
-    {
-      if (item.parent_id == keg.parent_id)
-      {
-        this.controlService.writeToDevItem(item.id, manufacturer_info);
-        break;
-      }
-    }
+
+    this.manufacture_date_list_[i].value = date;
+    this.manufacturers_list_[i].value = manufacturer_info;
+    let params: ParamValue[] = [];
+    params.push(this.manufacture_date_list_[i])
+    params.push(this.manufacturers_list_[i])
+    this.controlService.changeParamValues(params);
   }
 
-  openDialog(keg: DeviceItem,): void 
+  openDialog(keg: DeviceItem, i: number): void 
   {    
     let manufacturer_info_item: string;
-    for (let item of this.manufacturers_list_)
-    {
-      if (item.parent_id == keg.parent_id)
-      {
-        manufacturer_info_item = item.val.display;
-        break;
-      }
-    }    
+    manufacturer_info_item = this.manufacturers_list_[i].value;    
     
     this.dialog.open(ConfirmDialogReplaceKegComponent, {width: '80%', data: {info: manufacturer_info_item, is_printer: this.is_printer_set}})
     .afterClosed().pipe(
       filter(name => name)
     ).subscribe(res => { 
       this.toggle(keg);
-      this.set_manufacture_date(keg, res.date);
-      this.set_manufacturer_info(keg, res.info);
+      this.set_manufacture(keg, res.date, res.info, i);
     });
   }
 }
