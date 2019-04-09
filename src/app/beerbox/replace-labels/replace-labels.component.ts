@@ -36,7 +36,7 @@ export class ReplaceLabelsComponent implements OnInit
       {
         for (let group of sct.groups)
         {
-          if (group.type.name == 'label')
+          if (group.type.name == 'printer')
           {            
             for (let item of group.items)
             {
