@@ -5,27 +5,27 @@
       <div class="module house">
         <h3>{{clean.sct.name}}</h3>
 
-        <ng-container *ngIf="clean.step.raw_value == 0">
+        <ng-container *ngIf="clean.step.val.raw == 0">
           <h4>Выберите вид промывки:</h4>
           <mat-form-field>
-            <mat-select [value]="clean.type.raw_value.toString()" (selectionChange)="onChange(clean.type, $event.value)">
-              <mat-option *ngFor="let title of clean.type.value; index as i" value="{{i}}">{{title}}</mat-option>
+            <mat-select [value]="clean.type.val.raw.toString()" (selectionChange)="onChange(clean.type, $event.value)">
+              <mat-option *ngFor="let title of clean.type.val.display; index as i" value="{{i}}">{{title}}</mat-option>
             </mat-select>
           </mat-form-field>
 
           <button mat-button (click)="start(clean)">Начать промывку</button>
         </ng-container>
 
-        <ng-container *ngIf="clean.step.raw_value != 0">
+        <ng-container *ngIf="clean.step.val.raw != 0">
           <h4>Текущий этап: {{stepText(clean)}}</h4>
-          <ng-container *ngIf="clean.pouring.raw_value == 0">
+          <ng-container *ngIf="clean.pouring.val.raw == 0">
             <h4>К промывке готов!</h4>
             <p>Промывочное средство: {{cleanAgent(clean)}}</p>
             <p>Опустошите дренажную ёмкость. Подключите промывочный кег к обеим заборным головкам. И нажмите кнопку на аппарате.</p>
           </ng-container>
-          <ng-container *ngIf="clean.pouring.raw_value == 1">
+          <ng-container *ngIf="clean.pouring.val.raw == 1">
             <h5>Идёт промывка, пожалуйста ждите!</h5>
-            <h5>Осталось: {{clean.full_volume.value-clean.cur_volume.value}} мл.<span *ngIf="clean.pause.value == 1"> Пауза!</span></h5>
+            <h5>Осталось: {{clean.full_volume.val.display-clean.cur_volume.val.display}} мл.<span *ngIf="clean.pause.val.display == 1"> Пауза!</span></h5>
             <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
           </ng-container>
         </ng-container>
