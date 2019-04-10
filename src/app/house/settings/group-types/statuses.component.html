@@ -14,7 +14,7 @@
     <ng-container *ngFor="let item of items">
       <li *ngIf="item.state !== changeState.Delete" [class.selected]="sel_item == item">
         <a class="pre_badge" (click)="select(item); slist.close()">
-          <span class="badge badge_id left_tab">{{item.obj.id}}</span>
+          <span class="badge badge_id left_tab" [class.badge_changed]="item.state === changeState.Upsert">{{item.obj.id}}</span>
           {{item.obj.name}}
         </a>
         <button class="mybtn delete" title="delete status" (click)="remove(item)">x</button>
@@ -27,14 +27,12 @@
     <mat-panel-title>Детали</mat-panel-title>
     <mat-panel-description>{{sel_item.obj.name}}</mat-panel-description>
   </mat-expansion-panel-header>
-  <mat-form-field><input matInput (ngModelChange)="itemChanged()" [(ngModel)]="status.name" placeholder="Имя"/></mat-form-field>
-  <mat-form-field><mat-select (ngModelChange)="itemChanged()" [(ngModel)]="status.type_id" placeholder="Тип">
+  <mat-form-field><input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.name" placeholder="Имя"/></mat-form-field>
+  <mat-form-field><mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.type_id" placeholder="Тип">
       <mat-option value="0">Нет</mat-option>
-      <mat-option *ngFor="let item of statusTypes" [value]="item.id">{{item.title}}</mat-option>
+      <mat-option *ngFor="let item of this.houseService.house.statusTypes" [value]="item.id">{{item.title}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field><input matInput (ngModelChange)="itemChanged()" [(ngModel)]="param.text" placeholder="Текст"/></mat-form-field>
-  <mat-form-field><input matInput (ngModelChange)="itemChanged()" [(ngModel)]="param.value" placeholder="Значение"/></mat-form-field>
-  <mat-checkbox (ngModelChange)="itemChanged()" [(ngModel)]="param.isMultiValue">Мульти-значение</mat-checkbox>
-  <mat-checkbox (ngModelChange)="itemChanged()" [(ngModel)]="param.inform">Посылать уведомление</mat-checkbox>
+  <mat-form-field><input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.text" placeholder="Текст"/></mat-form-field>
+  <mat-checkbox (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.inform">Посылать уведомление</mat-checkbox>
 </mat-expansion-panel>

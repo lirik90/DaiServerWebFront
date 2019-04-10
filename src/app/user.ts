@@ -5,6 +5,11 @@ export interface PaginatorApi<T> {
   previous: string;
 }
 
+export class TeamMember {
+  id: number;
+  name: string;
+}
+
 export class User {
     id: number;
     username: string;

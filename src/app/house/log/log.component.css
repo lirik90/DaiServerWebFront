@@ -47,6 +47,9 @@
 }
 
 /* Column Widths */
+.mat-column-user {
+  max-width: 30px;
+}
 .mat-column-category {
   max-width: 110px;
 }

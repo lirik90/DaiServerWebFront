@@ -15,7 +15,7 @@
       <ng-container *ngFor="let item of items">
         <li *ngIf="item.state !== changeState.Delete" [class.selected]="sel_item == item">
           <a class="pre_badge" (click)="select(item); slist.close()">
-            <span class="badge badge_id">{{item.obj.id}}</span>
+            <span class="badge badge_id" [class.badge_changed]="item.state === changeState.Upsert">{{item.obj.id}}</span>
             <span class="badge badge_adr">ADR {{item.obj.address}}</span>
             {{item.obj.name}}
           </a>
@@ -35,10 +35,13 @@
       <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.name" placeholder="Имя"/>
     </mat-form-field>
     <mat-form-field>
-      <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.address" placeholder="Адрес" type="number" min="0"/>
+      <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.checker_id" placeholder="Плагин" type="number" min="0"/>
     </mat-form-field>
     <mat-form-field>
-      <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.checker_id" placeholder="Плагин" type="number" min="0"/>
+      <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.check_interval" placeholder="Интервал проверки (мс)" type="number" min="50"/>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.extra" placeholder="Экстра" />
     </mat-form-field>
   </mat-expansion-panel>
   <app-deviceitems *ngIf="!changed && sel_item" [dev]="sel_item.obj"></app-deviceitems>

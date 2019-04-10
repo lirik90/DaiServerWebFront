@@ -2,6 +2,7 @@ export class Codes { // Скрипт автоматизации
   id: number;   // ID
   name: string; // Имя
   text: string; // Скрипт
+  global_id: number; // Global id
 }
 
 export class GroupType { // Тип группы
@@ -45,11 +46,11 @@ export class ItemType { // Тип элемента
   title: string;            // Отображаемое имя элемента по-умолчанию
   isRaw: boolean;           // Флаг необходимости нармализации значения
   groupType_id: number;     // ID типа группы к которой может принадлежать элемент (Плохой?)
-  groupDisplay: boolean;    // Флаг отображения в Обзоре
   sign_id: number;          // ID еденицы измерения
   sign: SignType;           // Еденица измерения
   registerType: number;     // Тип данных элемента
   saveAlgorithm: number;    // Алгоритм сохранения изменений значения
+  save_timer_id: number;    // ID таймера если выбран такой алгоритм сохранения
 }
 
 export class Section {
@@ -60,20 +61,23 @@ export class Section {
   groups: Group[];  // Группы
 }
 
+export class Device_Item_Value {
+  raw: any;      // Сырое значение
+  display: any;  // Отображаемое значение
+}
+
 export class DeviceItem { // Элемент устройства
   id: number;         // ID
   parent_id: number;  // ID родителя
   device_id: number;  // ID устройства
   group_id: number;   // ID группы
 
-  unit: number;       // Порядковый номер в протоколе
   name: string;       // Имя
   type_id: number;    // ID типа
   type: ItemType;     // Тип
-  extra: any;         // Пользовательские параметры
+  extra: string;      // Пользовательские параметры
 
-  value: any;         // Отображаемое значение
-  raw_value: any;     // Сырое значение
+  val: Device_Item_Value;
 }
 
 export class StatusType {
@@ -90,26 +94,32 @@ export class Status {
   type: StatusType;
   name: string;
   text: string;
-  isMultiValue: boolean;
-  value: number;
   inform: boolean;
 }
 
 export class GroupStatus {
   status: Status;
-  args: string;
+  args: string[];
+}
+
+export class GroupStatusInfo {
+  color: string;
+  text: string;
+  short_text: string;
 }
 
 export class Group {  // Группа
   id: number;               // ID
+  title: string;
   section_id: number;       // ID секции
   type_id: number;          // ID типа группы
-  mode_id: number;          // ID режима автоматизации
+  mode: number;          // ID режима автоматизации
   type: GroupType;          // Тип группы
   items: DeviceItem[] = []; // Элементы в группе
   params: ParamValue[] = [];// Уставки
   status: number;           // Состояние
   statuses: GroupStatus[] = [];
+  status_info: GroupStatusInfo;
 }
 
 export class View {  // Представление
@@ -152,10 +162,10 @@ export class ParamValue { // Уставка
 
 export class Device { // Устройство
   id: number;         // ID
-  address: number;    // Адрес
   name: string;       // Имя
   checker_id: number; // ID используемого плагина
-  extra: any;         // Пользовательские параметры
+  check_interval: number; // Интервал запуска проверки плагина
+  extra: string;         // Пользовательские параметры
   items: DeviceItem[];// Массив элементов
 }
 
@@ -179,7 +189,7 @@ export enum EventLogType { // Тип события в журнале событ
 
 export class EventLog { // Запись в журнале событий
   id: number;         // ID
-  date: string;       // Время события
+  date: Date;       // Время события
   who: string;        // Категория
   msg: string;        // Сообщение
   type: number;       // Тип события

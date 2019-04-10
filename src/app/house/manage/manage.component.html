@@ -9,10 +9,10 @@
           <ng-container *ngFor="let group of sct.groups">
             <tr>
               <td colspan="2">
-                <h4 routerLink="/house/{{houseId}}/group/{{group.id}}/param">{{group.type.title}}</h4>
-                <button mat-icon-button><mat-icon>settings</mat-icon></button>
+                <h4 routerLink="/house/{{houseName}}/group/{{group.id}}/param">{{group.title ? group.title : group.type.title}}</h4>
+                <app-group-status [group]="group"></app-group-status>
                 <mat-form-field>
-                  <mat-select placeholder="Режим" [value]="group.mode_id ? group.mode_id.toString() : '0'"
+                  <mat-select placeholder="Режим" [value]="group.mode ? group.mode.toString() : '0'"
                     (selectionChange)="controlService.changeGroupMode($event.value, group.id)"
                     (click)="$event.stopPropagation()">
                     <mat-option>Не выбран</mat-option>
@@ -32,4 +32,3 @@
     </div>
   </ng-container>
 </div>
-<button mat-button (click)="restart()">restart</button>

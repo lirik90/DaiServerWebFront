@@ -14,7 +14,7 @@
     <ng-container *ngFor="let item of items">
       <li *ngIf="item.state !== changeState.Delete" [class.selected]="sel_item == item">
         <a class="pre_badge" (click)="select(item); slist.close()">
-          <span class="badge badge_id left_tab">{{item.obj.id}}</span>
+          <span class="badge badge_id left_tab" [class.badge_changed]="item.state === changeState.Upsert">{{item.obj.id}}</span>
           {{title(item.obj)}}
         </a>
         <button class="mybtn delete" title="delete device item" (click)="remove(item)">x</button>
@@ -31,7 +31,7 @@
     <input matInput [(ngModel)]="sel_item.obj.name" placeholder="Имя" (ngModelChange)="itemChanged()" />
   </mat-form-field>
   <mat-form-field>
-    <input matInput type="number" min="-1" [(ngModel)]="sel_item.obj.unit" placeholder="Юнит" (ngModelChange)="itemChanged()" />
+    <input matInput [(ngModel)]="sel_item.obj.extra" placeholder="Экстра" (ngModelChange)="itemChanged()" />
   </mat-form-field>
   <mat-form-field>
     <input matInput [(ngModel)]="sel_item.obj.parent_id" placeholder="Предок" (ngModelChange)="itemChanged()" />
@@ -47,7 +47,7 @@
       <mat-optgroup *ngFor="let sct of sections" [label]="sct.name">
         <ng-container *ngFor="let grp of sct.groups">
   
-          <mat-option *ngIf="sel_item.obj.type_id == 0 || sel_item.obj.type.groupType_id == grp.type_id" [value]="grp.id">{{grp.type.title}}</mat-option>
+          <mat-option *ngIf="sel_item.obj.type_id == 0 || sel_item.obj.type.groupType_id == grp.type_id" [value]="grp.id">{{grp.title ? grp.title : grp.type.title}}</mat-option>
         </ng-container>
       </mat-optgroup>
     </mat-select>

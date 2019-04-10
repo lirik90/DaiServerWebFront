@@ -57,6 +57,10 @@
   border-radius: 4px 0 0 4px;
 }
 
+.houses .badge_changed {
+  background-color: #FF8024;
+}
+
 button.mybtn {
   background-color: #eee;
   border: none;
@@ -108,4 +112,12 @@ mat-card section {
 .example-headers-align .mat-expansion-panel-header-description {
   justify-content: space-between;
   align-items: center;
+}
+
+mat-form-field {
+	margin-right: 10px;
+}
+
+mat-checkbox {
+	margin-right: 10px;
 }
