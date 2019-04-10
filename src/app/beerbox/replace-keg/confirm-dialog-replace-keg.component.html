@@ -2,13 +2,13 @@
 <div mat-dialog-content>
   <p>После замены кеги вам нужно это подтвердить. Вы уверены что хотите сделать это?</p>
 </div>
-<p *ngIf="is_printer_set">Установите дату изготовления:</p>
-<mat-form-field *ngIf="is_printer_set">  
+<p>Установите дату изготовления:</p>
+<mat-form-field>  
   <input matInput (dateChange)="change($event)" [matDatepicker]="picker" placeholder="Дата изготовления" [formControl]="date">
   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
   <mat-datepicker touchUi #picker></mat-datepicker>
 </mat-form-field>
-<div *ngIf="is_printer_set">
+<div>
   <p>Укажите завод изготовитель:</p>
   <mat-form-field class="input-full-width">
 	  <textarea matInput [(ngModel)]="manufacturer_info_" placeholder="Изготовитель:"> </textarea>
