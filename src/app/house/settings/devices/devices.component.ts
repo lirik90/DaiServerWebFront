@@ -67,6 +67,7 @@ export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements 
     this.itemtypes = this.houseService.house.itemTypes;
     this.sections = this.houseService.house.sections;
     this.fillItems();
+    this.parse_extra();
   }
 
   title(item: DeviceItem = undefined): string {
@@ -100,7 +101,7 @@ export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements 
 
   saveObject(obj: DeviceItem): Uint8Array {
     let name = ByteTools.saveQString(obj.name);
-    let extra = ByteTools.saveQVariantList(obj.extra.split('|'));
+    let extra = ByteTools.saveQVariantList(obj.extra.trim().split(','));
     let view = new Uint8Array(20 + name.length + extra.length);
     let pos = 0;
     ByteTools.saveInt32(obj.id, view); pos += 4;
@@ -111,5 +112,17 @@ export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements 
     ByteTools.saveInt32(obj.device_id, view, pos); pos += 4;
     ByteTools.saveInt32(obj.group_id, view, pos); pos += 4;
     return view;
+  }
+  
+  parse_extra(): void
+  {
+    for (let item of this.items)
+    {
+      if (item.obj.extra != null)
+      {
+        let parsed_array = JSON.parse(item.obj.extra);
+        item.obj.extra = parsed_array.join(", ");
+      }
+    }
   }
 }
