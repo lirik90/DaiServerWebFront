@@ -39,15 +39,15 @@ export class DevItemValueComponent implements OnInit {
   }
 
   get sign_available(): boolean {
-    return !this.is_toggle && this.item.value !== null && this.item.type.sign !== undefined && this.item.type.sign.name.length > 0;
+    return !this.is_toggle && this.item.val && this.item.val.display !== null && this.item.type.sign !== undefined && this.item.type.sign.name.length > 0;
   }
 
   get text_value(): string {
-    const val = this.item.value;
+    const val = this.item.val ? this.item.val.display : null;
     if (val === undefined || val === null)
       return 'Не подключено';
     if (typeof(val) === 'object') {
-      return val[this.item.raw_value];
+      return val[this.item.val.raw];
     }
     return val;
   }
@@ -71,8 +71,8 @@ export class DevItemValueComponent implements OnInit {
 	
   click_button(): void
   {
-	  let value = this.item.raw_value;
-    if (value !== undefined)
+	  let value = this.item.val ? this.item.val.raw : null;
+    if (value !== null && value !== undefined)
 	  {
       this.controlService.writeToDevItem(this.item.id, value);
 	  }
@@ -112,12 +112,14 @@ export class HoldingRegisterDialogComponent {
     public dialogRef: MatDialogRef<HoldingRegisterDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DeviceItem) 
   {
-    if (typeof(data.value) === 'object') {
-      this.value = data.raw_value;
-      this.values = data.value;
+    if (!data.val)
+      return;
+    if (typeof(data.val.display) === 'object') {
+      this.value = data.val.raw;
+      this.values = data.val.display;
     }
     else
-      this.value = data.value;
+      this.value = data.val.display;
   }
 
   onNoClick(): void {
