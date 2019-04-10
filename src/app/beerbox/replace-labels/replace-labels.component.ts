@@ -16,7 +16,7 @@ export class ReplaceLabelsComponent implements OnInit
 
   is_changed_ = false;
   labels_num_full_: any;
-  labels_handle_: any;
+  labels_current_num_: any;
   
   constructor(
     private route: ActivatedRoute,
@@ -36,19 +36,19 @@ export class ReplaceLabelsComponent implements OnInit
       {
         for (let group of sct.groups)
         {
-          if (group.type.name == "label")
+          if (group.type.name == 'printer')
           {            
             for (let item of group.items)
             {
-              if (item.type.name == "change_tape")
+              if (item.type.name == 'labels_num')
               {
-                this.labels_handle_ = item;
+                this.labels_current_num_ = item;
               }
             }
             
             for (let param of group.params)
             {
-              if (param.param.name == "labels_num_full")
+              if (param.param.name == 'labels_num_full')
               {
                 this.labels_num_full_ = param;
                 this.labels_num_full_.value = +this.labels_num_full_.value + 10;
@@ -69,7 +69,7 @@ export class ReplaceLabelsComponent implements OnInit
       this.labels_num_full_.value = +this.labels_num_full_.value - 10;
       params.push(this.labels_num_full_);
       this.controlService.changeParamValues(params);      
-      this.controlService.writeToDevItem(this.labels_handle_.id, 1);
+      this.controlService.writeToDevItem(this.labels_current_num_.id, this.labels_num_full_.value);
       
       this.labels_num_full_.value = +this.labels_num_full_.value + 10;
     }

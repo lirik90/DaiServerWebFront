@@ -69,7 +69,7 @@ export class ControlService {
         for (let sct of this.houseService.house.sections) {
           for (let group of sct.groups) {
             if (group.id == group_id) {
-              group.mode_id = mode_id;
+              group.mode = mode_id;
               return;
             }
           }
@@ -215,7 +215,7 @@ export class ControlService {
 
     const domain_zone = document.location.hostname.split('.').pop();
     let proto = 'ws';
-    if (domain_zone !== 'local')
+    if (domain_zone !== 'local' && domain_zone != parseInt(domain_zone).toString())
       proto += 's'; 
     this.wsbService.start(proto + '://' + document.location.hostname + '/' + proto + '/');
 	}
@@ -250,9 +250,15 @@ export class ControlService {
 
   private procDevItemValue(item_id: number, raw_value: any, value: any): void {
     let item: DeviceItem = this.houseService.devItemById(item_id);
-    if (item) {
-      item.raw_value = raw_value;
-      item.value = value;
+    if (item) 
+    {
+      if (!item.val)
+        item.val = { raw: raw_value, display: value };
+      else
+      {
+        item.val.raw = raw_value;
+        item.val.display = value;
+      }
     }
   }
 

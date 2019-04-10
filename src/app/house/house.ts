@@ -50,6 +50,7 @@ export class ItemType { // Тип элемента
   sign: SignType;           // Еденица измерения
   registerType: number;     // Тип данных элемента
   saveAlgorithm: number;    // Алгоритм сохранения изменений значения
+  save_timer_id: number;    // ID таймера если выбран такой алгоритм сохранения
 }
 
 export class Section {
@@ -58,6 +59,11 @@ export class Section {
   dayStart: number; // Время начала дня в секундах
   dayEnd: number;   // Время конца для в секундах
   groups: Group[];  // Группы
+}
+
+export class Device_Item_Value {
+  raw: any;      // Сырое значение
+  display: any;  // Отображаемое значение
 }
 
 export class DeviceItem { // Элемент устройства
@@ -71,8 +77,7 @@ export class DeviceItem { // Элемент устройства
   type: ItemType;     // Тип
   extra: string;      // Пользовательские параметры
 
-  value: any;         // Отображаемое значение
-  raw_value: any;     // Сырое значение
+  val: Device_Item_Value;
 }
 
 export class StatusType {
@@ -105,9 +110,10 @@ export class GroupStatusInfo {
 
 export class Group {  // Группа
   id: number;               // ID
+  title: string;
   section_id: number;       // ID секции
   type_id: number;          // ID типа группы
-  mode_id: number;          // ID режима автоматизации
+  mode: number;          // ID режима автоматизации
   type: GroupType;          // Тип группы
   items: DeviceItem[] = []; // Элементы в группе
   params: ParamValue[] = [];// Уставки
@@ -156,9 +162,9 @@ export class ParamValue { // Уставка
 
 export class Device { // Устройство
   id: number;         // ID
-  address: number;    // Адрес
   name: string;       // Имя
   checker_id: number; // ID используемого плагина
+  check_interval: number; // Интервал запуска проверки плагина
   extra: string;         // Пользовательские параметры
   items: DeviceItem[];// Массив элементов
 }

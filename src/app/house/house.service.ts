@@ -78,6 +78,9 @@ export class HouseService extends IHouseService {
         let dev_items: DeviceItem[] = [];
         for (let dev of detail.devices) {
           for (let item of dev.items) {
+            if (!item.val)
+              item.val = { raw: null, display: null};
+
             for (let itemType of detail.itemTypes) {
               if (itemType.id === item.type_id) {
                 item.type = itemType;
@@ -128,6 +131,7 @@ export class HouseService extends IHouseService {
         }
 
         this.house = detail;
+        this.house.name = house_name;
         localStorage.setItem(this.house_s, JSON.stringify(detail));
         this.log('fetched house detail'); 
         return of(true);

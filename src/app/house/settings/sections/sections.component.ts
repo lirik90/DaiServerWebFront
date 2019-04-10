@@ -72,24 +72,33 @@ export class GroupsComponent extends ChangeTemplate<Group> implements OnInit {
     this.fillItems();
   }
 
-  title(item: Group = undefined): string {
+  title(item: Group = undefined): string 
+  {
     if (item === undefined)
+    {
       item = this.sel_item.obj;
-    return item.type ? item.type.title : '';
+    }
+    return item.title ? item.title : (item.type ? item.type.title : '');
   }
 
-  initItem(obj: Group): void {
+  initItem(obj: Group): void 
+  {
     obj.section_id = this.sct.id;
   }
 
-  saveObject(obj: Group): Uint8Array {
-    let view = new Uint8Array(16);
+  saveObject(obj: Group): Uint8Array 
+  {
+    let title = ByteTools.saveQString(obj.title);
+    let view = new Uint8Array(12 + title.length);
     let pos = 0;
 
+    obj.section_id = this.sct.id;
+    console.log(obj.section_id);
+    console.log(this.sct);
     ByteTools.saveInt32(obj.id, view, pos); pos += 4;
+    view.set(title, pos); pos += title.length;
     ByteTools.saveInt32(obj.section_id, view, pos); pos += 4;
     ByteTools.saveInt32(obj.type_id, view, pos); pos += 4;
-    ByteTools.saveInt32(obj.mode_id, view, pos); pos += 4;
     return view;
   }
 }
@@ -99,8 +108,11 @@ export class GroupsComponent extends ChangeTemplate<Group> implements OnInit {
   templateUrl: './params-in-group.component.html',
   styleUrls: ['../settings.css', './sections.component.css']
 })
-export class ParamsInGroupComponent extends ChangeTemplate<ParamValue> implements OnInit {
+export class ParamsInGroupComponent extends ChangeTemplate<ParamValue> implements OnInit 
+{
   @Input() group: Group;
+  
+  params: ParamItem[];
 
   constructor(
     wsbService: WebSocketBytesService,
@@ -117,6 +129,7 @@ export class ParamsInGroupComponent extends ChangeTemplate<ParamValue> implement
   ngOnInit() 
   {
     this.fillItems();
+    this.params = this.houseService.house.params.filter(obj => obj.groupType_id === this.group.type_id);
   }
 
   initItem(obj: ParamValue): void 

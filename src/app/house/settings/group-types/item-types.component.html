@@ -51,4 +51,9 @@
       <mat-option [value]="3">Сохранять по таймеру</mat-option>
     </mat-select>
   </mat-form-field>
+  <mat-form-field><mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.save_timer_id" placeholder="Таймер сохранения">
+      <mat-option [value]="0">Нет</mat-option>
+      <mat-option *ngFor="let sign of signTypes" [value]="sign.id">{{sign.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
 </mat-expansion-panel>

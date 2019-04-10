@@ -70,6 +70,10 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit {
     this.editorApi = api_lines.join('\n');
   }
 
+  initItem(obj: Codes): void {
+    obj.name = "";
+  }
+
   saveObject(obj: Codes): Uint8Array {
     let name = ByteTools.saveQString(obj.name);
     let text = ByteTools.saveQString(obj.text);

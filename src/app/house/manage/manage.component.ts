@@ -11,12 +11,12 @@ import { ControlService } from "../control.service";
   styleUrls: ['../../sections.css', './manage.component.css']
 })
 export class ManageComponent implements OnInit {
-  houseId: number;
+  houseName: string;
   sections: Section[];
 
   constructor(
     private houseService: HouseService,
-    //private controlService: ControlService,
+    private controlService: ControlService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -50,7 +50,7 @@ export class ManageComponent implements OnInit {
   }
 
   getSections(): void {
-    this.houseId = this.houseService.house.id;
+    this.houseName = this.houseService.house.name;
     this.sections = this.houseService.house.sections;
   }
 }

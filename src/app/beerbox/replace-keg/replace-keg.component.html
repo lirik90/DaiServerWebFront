@@ -6,7 +6,10 @@
       <div class="module house">
         <h3>{{item.sct.name}}</h3>
         <ng-container *ngFor="let keg of item.kegs; index as i">
-          <h4 *ngIf="keg.item.raw_value == 0" (click)="openDialog(keg.item)">Кег №{{(sct_i*2)+1+i}} пуст.<br>Нажмите здесь если заменили его.<span *ngIf="keg.bad_clean.raw_value == 1"><br>Не выполнено вытеснение пивом. После замены не забудьте сделать это.</span></h4>
+          <h4 *ngIf="keg.item.val.raw == 0" (click)="openDialog(keg)">Кег №{{(sct_i*2)+1+i}} пуст.
+            <br>Нажмите здесь если заменили его.<span *ngIf="keg.bad_clean !== undefined && keg.bad_clean.val.raw == 1">
+            <br>Не выполнено вытеснение пивом. После замены не забудьте сделать это.</span>
+          </h4>
         </ng-container>
       </div>
     </div>
