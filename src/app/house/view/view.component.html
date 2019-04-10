@@ -6,7 +6,7 @@
       <div class="module house">
         <h3>{{sct.name}}</h3>
         <fieldset *ngFor="let group of sct.groups">
-          <legend><span routerLink="/house/{{houseName}}/group/{{group.id}}/param">{{group.type.title}}</span><app-group-status [group]="group"></app-group-status></legend>
+          <legend><span routerLink="/house/{{houseName}}/group/{{group.id}}/param">{{group.title ? group.title : group.type.title}}</span><app-group-status [group]="group"></app-group-status></legend>
         	<ul>
             <ng-container *ngFor="let item of group.items">
               <li>

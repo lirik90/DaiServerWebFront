@@ -47,7 +47,7 @@
       <mat-optgroup *ngFor="let sct of sections" [label]="sct.name">
         <ng-container *ngFor="let grp of sct.groups">
   
-          <mat-option *ngIf="sel_item.obj.type_id == 0 || sel_item.obj.type.groupType_id == grp.type_id" [value]="grp.id">{{grp.type.title}}</mat-option>
+          <mat-option *ngIf="sel_item.obj.type_id == 0 || sel_item.obj.type.groupType_id == grp.type_id" [value]="grp.id">{{grp.title ? grp.title : grp.type.title}}</mat-option>
         </ng-container>
       </mat-optgroup>
     </mat-select>
