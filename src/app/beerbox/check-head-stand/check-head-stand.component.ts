@@ -50,7 +50,7 @@ export class CheckHeadStandComponent implements OnInit
         
         for (let group of sct.groups) 
         {          
-          if (group.type.id == 20) 
+          if (group.type.name == 'clean') 
           {            
             for (let param of group.params) 
             {         
@@ -75,21 +75,21 @@ export class CheckHeadStandComponent implements OnInit
         let current: any = { sct };
         for (let group of sct.groups) 
         {
-          if (group.type.id == 16) 
+          if (group.type.name == 'head') 
           { // api.HeadGroup
             for (let item of group.items) 
             {              	              
-              switch(item.type.id) 
+              switch(item.type.name) 
               {
-                case 62:  current.pouring = item;    break; // api.PouringItem
-                case 105: current.step = item;       break; // api.CleanStepItem
-                case 71:  current.cur_volume = item; break; // api.type.item.volume
-                case 99:  current.pause = item;      break; // api.type.item.pause
-                case 70:  current.block_pouring = item; break;              
-                case 102: current.clean_type = item; break;
-                case 94:  current.head_mode = item; break;
-                case 66:  current.clamp = item; break;
-                case 67:  current.release = item; break;
+                case 'pouring':  current.pouring = item;    break; // api.PouringItem
+                case 'cleanStep': current.step = item;       break; // api.CleanStepItem
+                case 'volume':  current.cur_volume = item; break; // api.type.item.volume
+                case 'pause':  current.pause = item;      break; // api.type.item.pause
+                case 'block':  current.block_pouring = item; break;              
+                case 'cleanType': current.clean_type = item; break;
+                case 'setMode':  current.head_mode = item; break;
+                case 'clamp':  current.clamp = item; break;
+                case 'release':  current.release = item; break;
               }
 
               if (current.pouring !== undefined && 
@@ -106,11 +106,11 @@ export class CheckHeadStandComponent implements OnInit
               }
             }
           } 
-          else if (group.type.id == 17) 
+          else if (group.type.name == 'params') 
           { // api.type.group.params
             for (let item of group.items) 
             {
-              if (item.type.id == 96)
+              if (item.type.name == 'setVol3')
               { // api.type.item.setVol3
                 current.full_volume = item;
               }
