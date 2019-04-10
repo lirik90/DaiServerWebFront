@@ -70,6 +70,7 @@ export class UpdateBeerInfoComponent implements OnInit
               case 'more_details':         label.more_details = param;            break;
               case 'product_code':         label.product_code = param;           break;
               case 'product_code_type':    label.product_code_type = param;      break;
+              case 'volume':               label.volume = param;      break;
             }
 		      }
         } 		    
@@ -79,7 +80,8 @@ export class UpdateBeerInfoComponent implements OnInit
           label.product_composition !== undefined &&
           label.more_details !== undefined &&
           label.product_code !== undefined &&
-          label.product_code_type !== undefined)
+          label.product_code_type !== undefined&&
+          label.volume !== undefined)
 	    {
         this.items.push(label);
 	    }
@@ -106,7 +108,8 @@ export class UpdateBeerInfoComponent implements OnInit
                                            product_composition: item.product_composition.value,
                                            more_details: item.more_details.value,
                                            product_code: item.product_code.value,
-                                           product_code_type: item.product_code_type.value}})
+                                           product_code_type: item.product_code_type.value,
+                                           volume: item.volume.value}})
     .afterClosed().pipe(
       filter(name => name)
     ).subscribe(res => {
@@ -116,6 +119,7 @@ export class UpdateBeerInfoComponent implements OnInit
       item.more_details.value = res.more_details;
       item.product_code.value = res.product_code;
       item.product_code_type.value = res.product_code_type;
+      item.volume.value = res.volume;
       
       let params: ParamValue[] = [];
       params.push(item.title);
@@ -124,6 +128,7 @@ export class UpdateBeerInfoComponent implements OnInit
       params.push(item.more_details);
       params.push(item.product_code);
       params.push(item.product_code_type);
+      params.push(item.volume);
       this.controlService.changeParamValues(params);
       
     });
