@@ -22,6 +22,11 @@
   </div>
   <div>
     <mat-form-field class="input-full-width">
+	    <input matInput required [(ngModel)]="item.volume" placeholder="Объем налива (отображается на чеке)"/>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="input-full-width">
 	    <input matInput required [(ngModel)]="item.product_code" placeholder="Код продукта"/>
     </mat-form-field>
   </div>
