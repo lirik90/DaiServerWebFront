@@ -89,7 +89,6 @@ export class WashComponent implements OnInit
     }
 
     this.items = items;
-    console.log(this.items);
   }
 
   onChange(clean_type_item: DeviceItem, value: any): void {
