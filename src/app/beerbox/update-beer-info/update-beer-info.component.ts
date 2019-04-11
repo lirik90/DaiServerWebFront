@@ -12,7 +12,7 @@ export interface DialogData
   title: string;
   storage_conditions: string;
   product_composition: string;
-  description: string;
+  more_details: string;
   product_code: string;
   product_code_type: number;
 }
@@ -67,9 +67,10 @@ export class UpdateBeerInfoComponent implements OnInit
               case 'title':                label.title = param;                  break;
               case 'storage_conditions':   label.storage_conditions = param;     break;
               case 'product_composition':  label.product_composition = param;    break;
-              case 'description':          label.description = param;            break;
+              case 'more_details':         label.more_details = param;            break;
               case 'product_code':         label.product_code = param;           break;
               case 'product_code_type':    label.product_code_type = param;      break;
+              case 'volume':               label.volume = param;      break;
             }
 		      }
         } 		    
@@ -77,9 +78,10 @@ export class UpdateBeerInfoComponent implements OnInit
       if (label.title !== undefined &&
           label.storage_conditions !== undefined &&
           label.product_composition !== undefined &&
-          label.description !== undefined &&
+          label.more_details !== undefined &&
           label.product_code !== undefined &&
-          label.product_code_type !== undefined)
+          label.product_code_type !== undefined&&
+          label.volume !== undefined)
 	    {
         this.items.push(label);
 	    }
@@ -104,26 +106,29 @@ export class UpdateBeerInfoComponent implements OnInit
                      {width: '80%', data: {title: item.title.value,
                                            storage_conditions: item.storage_conditions.value,
                                            product_composition: item.product_composition.value,
-                                           description: item.description.value,
+                                           more_details: item.more_details.value,
                                            product_code: item.product_code.value,
-                                           product_code_type: item.product_code_type.value}})
+                                           product_code_type: item.product_code_type.value,
+                                           volume: item.volume.value}})
     .afterClosed().pipe(
       filter(name => name)
     ).subscribe(res => {
       item.title.value = res.title;
       item.storage_conditions.value = res.storage_conditions;
       item.product_composition.value = res.product_composition;
-      item.description.value = res.description;
+      item.more_details.value = res.more_details;
       item.product_code.value = res.product_code;
       item.product_code_type.value = res.product_code_type;
+      item.volume.value = res.volume;
       
       let params: ParamValue[] = [];
       params.push(item.title);
       params.push(item.storage_conditions);
       params.push(item.product_composition);
-      params.push(item.description);
+      params.push(item.more_details);
       params.push(item.product_code);
       params.push(item.product_code_type);
+      params.push(item.volume);
       this.controlService.changeParamValues(params);
       
     });
