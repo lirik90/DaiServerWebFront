@@ -38,10 +38,11 @@ export class CheckerTypesComponent extends ChangeTemplate<CheckerType> implement
   saveObject(obj: CheckerType): Uint8Array {
     let name = ByteTools.saveQString(obj.name);
     let view = new Uint8Array(12 + name.length);
-    ByteTools.saveInt32(obj.id, view);
-    view.set(name, 4);
-    ByteTools.saveInt32(0, view);
-    ByteTools.saveInt32(0, view);
+    let pos = 0;
+    ByteTools.saveInt32(obj.id, view, pos); pos += 4;
+    view.set(name, pos); pos += name.length; 
+    ByteTools.saveInt32(0, view, pos); pos += 4;
+    ByteTools.saveInt32(0, view, pos); pos += 4;
     return view;
   }
 }
