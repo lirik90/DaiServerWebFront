@@ -4,7 +4,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 
 import { HouseService } from '../house.service';
-import { Section, Codes, CheckerType, ViewItem } from '../house';
+import { Section, Codes, CheckerType, ViewItem, SaveTimer } from '../house';
 import { PaginatorApi } from "../../user";
 
 @Injectable()
@@ -20,8 +20,12 @@ export class SettingsService {
     return this.hServ.getPiped<PaginatorApi<CheckerType>>(url, 'fetched checkers', 'getCheckers', {} as PaginatorApi<CheckerType>);
   }
 
-  getViewItems(view_id: number): Observable<ViewItem[]> {
-    return this.hServ.getPiped<ViewItem[]>(this.hServ.url('viewitem') + `&view_id=${view_id}`, `fetched ViewItem list`, 'getViewItems', []);
+  getViewItems(view_id: number): Observable<PaginatorApi<ViewItem>> {
+    return this.hServ.getPiped<PaginatorApi<ViewItem>>(this.hServ.url('viewitem') + `&view_id=${view_id}`, `fetched ViewItem list`, 'getViewItems', {} as PaginatorApi<ViewItem>);
+  }
+
+  getSaveTimers(): Observable<PaginatorApi<SaveTimer>> {
+    return this.hServ.getPiped<PaginatorApi<SaveTimer>>(this.hServ.url('savetimer'), `fetched save timer list`, 'getSaveTimers', {} as PaginatorApi<SaveTimer>);
   }
 
   getCodes(): Observable<Codes[]> {

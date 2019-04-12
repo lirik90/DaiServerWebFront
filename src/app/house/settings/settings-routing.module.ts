@@ -12,6 +12,8 @@ import { StatusTypesComponent } from "./status-types/status-types.component";
 import { SignTypesComponent } from "./sign-types/sign-types.component";
 import { CodesComponent } from "./codes/codes.component";
 import { CheckerTypesComponent } from "./checker-types/checker-types.component";
+import { ViewsComponent } from "./views/views.component";
+import { SaveTimersComponent } from "./save-timers/save-timers.component";
 
 const settingsRoutes: Routes = [
   {
@@ -38,6 +40,8 @@ const settingsRoutes: Routes = [
       { path: 'statustypes', component: StatusTypesComponent },
       { path: 'signtypes', component: SignTypesComponent },
       { path: 'checkertypes', component: CheckerTypesComponent },
+      { path: 'views', component: ViewsComponent },
+      { path: 'savetimers', component: SaveTimersComponent },
       { path: 'codes', component: CodesComponent },
     ]
   }

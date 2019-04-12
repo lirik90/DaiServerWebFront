@@ -65,6 +65,23 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit {
     '  status: {}, checker: [],',
     '  mng: { sections: [], devices: [] },',
     '  type: ' + JSON.stringify(types) + ',',
+    '  handlers: {',
+    '      changed: {',
+    '          mode: undefined,',
+    '          item: undefined,',
+    '          sensor: undefined,',
+    '          control: undefined,',
+    '          day_part: undefined,',
+    '      },',
+    '      database: { initialized: undefined },',
+    '      section: { initialized: undefined },',
+    '      group: { initialized: {}, changed: {} },',
+    '      control_change_check: undefined,',
+    '      normalize: undefined,',
+    '      check_value: undefined,',
+    '      group_status: undefined,',
+    '      initialized: undefined,',
+    '  },',
     '};',];
 
     this.editorApi = api_lines.join('\n');

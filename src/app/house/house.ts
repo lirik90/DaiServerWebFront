@@ -134,6 +134,11 @@ export class ViewItem {
   item_id: number;
 }
 
+export class SaveTimer {
+  id: number;
+  interval: number;
+}
+
 export enum ParamType { // Тип значения уставки
   Unknown,
   Int,

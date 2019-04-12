@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { HouseService } from "../../house.service";
-import { ItemType, SignType, GroupType, ParamItem, Status, Codes } from "../../house";
+import { ItemType, SignType, GroupType, ParamItem, Status, Codes, SaveTimer } from "../../house";
 
 import { ByteTools, WebSocketBytesService } from "../../../web-socket.service";
 
@@ -62,10 +62,12 @@ export class ItemTypesComponent extends ChangeTemplate<ItemType> implements OnIn
   @Input() grouptype: GroupType;
 
   signTypes: SignType[];
+  save_timers: SaveTimer[];
 
   constructor(
     wsbService: WebSocketBytesService,
     houseService: HouseService,
+    private settingsService: SettingsService
   ) {
     super(StructType.DeviceItemTypes, wsbService, houseService, ItemType);
   }
@@ -75,8 +77,11 @@ export class ItemTypesComponent extends ChangeTemplate<ItemType> implements OnIn
   }
 
   ngOnInit() {
-    this.signTypes = this.houseService.house.signTypes;
-    this.fillItems();
+    this.settingsService.getSaveTimers().subscribe(api => {
+      this.save_timers = api.results;
+      this.signTypes = this.houseService.house.signTypes;
+      this.fillItems();
+    });
   }
 
   initItem(obj: ItemType): void {
