@@ -93,7 +93,7 @@ export class UpdateBeerInfoComponent implements OnInit
   {
     if (item.print_sample != undefined)
     {
-      let value = item.print_sample.raw_value;
+      let value = item.print_sample.val.raw;
       if (value !== undefined)
 	    {
         this.controlService.writeToDevItem(item.print_sample.id, value);
