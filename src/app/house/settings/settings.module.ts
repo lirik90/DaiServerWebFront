@@ -17,6 +17,10 @@ import { CodesComponent } from './codes/codes.component';
 
 import { MonacoEditorModule, NgxMonacoEditorConfig, NGX_MONACO_EDITOR_CONFIG } from 'ngx-monaco-editor';
 import { CheckerTypesComponent } from './checker-types/checker-types.component';
+import { ViewsComponent, ViewItemsComponent } from './views/views.component';
+import { SaveTimersComponent } from './save-timers/save-timers.component';
+
+
 const monacoConfig: NgxMonacoEditorConfig = {
   baseUrl: 'static', // configure base path for monaco editor
   defaultOptions: { scrollBeyondLastLine: false }, // pass deafult options to be used
@@ -43,6 +47,7 @@ const monacoConfig: NgxMonacoEditorConfig = {
     SignTypesComponent, 
     CodesComponent,
     CheckerTypesComponent,
+    ViewsComponent, ViewItemsComponent, SaveTimersComponent,
   ],
   entryComponents: [
   ],

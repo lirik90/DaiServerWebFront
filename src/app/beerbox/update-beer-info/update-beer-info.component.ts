@@ -86,7 +86,6 @@ export class UpdateBeerInfoComponent implements OnInit
         this.items.push(label);
 	    }
     }
-    console.log(this.items);
   }
 
   click_print_sample(item: any): void

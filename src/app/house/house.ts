@@ -125,8 +125,19 @@ export class Group {  // Группа
 export class View {  // Представление
   id: number;
   name: string;
-  types: ItemType[] = [];
+  items: DeviceItem[] = [];
 } 
+
+export class ViewItem {
+  id: number;
+  view_id: number;
+  item_id: number;
+}
+
+export class SaveTimer {
+  id: number;
+  interval: number;
+}
 
 export enum ParamType { // Тип значения уставки
   Unknown,
@@ -225,5 +236,6 @@ export class HouseDetail {
   signTypes: SignType[];  // Еденицы измерения
   statusTypes: StatusType[];  // Типы состояний
   statuses: Status[];  // Состояния
+  views: View[];
 }
 
