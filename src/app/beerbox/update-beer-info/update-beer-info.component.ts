@@ -86,13 +86,14 @@ export class UpdateBeerInfoComponent implements OnInit
         this.items.push(label);
 	    }
     }
+    console.log(this.items);
   }
 
   click_print_sample(item: any): void
   {
     if (item.print_sample != undefined)
     {
-      let value = item.print_sample.raw_value;
+      let value = item.print_sample.val.raw;
       if (value !== undefined)
 	    {
         this.controlService.writeToDevItem(item.print_sample.id, value);
@@ -109,7 +110,8 @@ export class UpdateBeerInfoComponent implements OnInit
                                            more_details: item.more_details.value,
                                            product_code: item.product_code.value,
                                            product_code_type: item.product_code_type.value,
-                                           volume: item.volume.value}})
+                                           volume: item.volume.value,
+                                           item: item}})
     .afterClosed().pipe(
       filter(name => name)
     ).subscribe(res => {
