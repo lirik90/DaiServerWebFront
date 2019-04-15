@@ -29,6 +29,7 @@ export class ParamComponent implements OnInit {
 
   ngOnInit() {
     this.getGroupParams();
+    console.log(this.group.params);
     this.cantChange = !this.authService.canChangeParam();
   }
 
@@ -69,11 +70,12 @@ export class ParamComponent implements OnInit {
     p.value = new_value.toString();
   }
 
-  onSubmit() {
+  onSubmit() 
+  {
     let params: ParamValue[] = [];
     for (const data of this.group.params)
       if (this.canShowIt(data.param.type))
-        params.push(data);
+        params.push(data);    
     this.controlService.changeParamValues(params);
     this.goBack();
   }
