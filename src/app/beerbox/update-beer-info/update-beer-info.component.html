@@ -5,22 +5,22 @@
       <div class="module house">
         <h3>{{item.sct.name}}</h3>
           <ng-container>
-            <p><b>Заголовок:</b></p>
+            <p><b>{{item.title.param.title}}:</b></p>
             <p>{{item.title.value}}</p>
             
-            <p><b>Условия хранения (t):</b> {{item.storage_conditions.value}}</p>
+            <p><b>{{item.storage_conditions.param.title}}:</b> {{item.storage_conditions.value}}</p>
             
-            <p><b>Состав:</b></p>
+            <p><b>{{item.product_composition.param.title}}:</b></p>
             <p>{{item.product_composition.value}}</p>
             
-            <p><b>Дополнительная информация:</b></p>
+            <p><b>{{item.more_details.param.title}}:</b></p>
             <p>{{item.more_details.value}}</p>
             
-            <p><b>Объем налива:</b> {{item.volume.value}}</p>
+            <p><b>{{item.volume.param.title}}:</b> {{item.volume.value}}</p>
             
-            <p><b>Код продукта:</b></p>
+            <p><b>{{item.product_code.param.title}}:</b></p>
             <p>{{item.product_code.value}}</p>
-            <p><b>Тип кода:</b> {{item.product_code_type.value}}</p>
+            <p><b>{{item.product_code_type.param.title}}:</b> {{item.product_code_type.value}}</p>
             <button mat-button (click)="click_edit(item)" title="Редактировать">Редактировать</button>
             <button mat-button (click)="click_print_sample(item)" title="Пробная печать">Пробная печать</button>
           </ng-container>
