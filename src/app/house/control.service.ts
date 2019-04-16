@@ -355,4 +355,28 @@ export class ControlService {
     const view = ByteTools.saveQString(script);
     this.wsbService.send(Cmd.ExecScript, this.houseService.house.id, view);
   }
+
+  exec_function(func_name: string, args: any[]): void
+  {
+    let arg_list: any[] = [];
+    let args_size = 0;
+    for (const arg of args)
+    {
+      const arg_var = ByteTools.saveQVariant(arg);
+      args_size += arg_var.length;
+      arg_list.push(arg_var);
+    }
+  
+    const func_name_view = ByteTools.saveQString(func_name);
+    let view = new Uint8Array(func_name_view.length + 4 + args_size);
+    let pos = 0;
+    view.set(func_name_view, pos); pos += func_name_view.length;
+    ByteTools.saveInt32(args_size, view, pos); pos += 4;
+    for (const data of arg_list)
+    {
+      view.set(data, pos);
+      pos += data.length;
+    }
+    this.wsbService.send(Cmd.ExecScript, this.houseService.house.id, view);
+  }
 } // end class ControlService
