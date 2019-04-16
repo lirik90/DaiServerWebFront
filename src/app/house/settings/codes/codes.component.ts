@@ -93,7 +93,7 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit {
 
   saveObject(obj: Codes): Uint8Array {
     let name = ByteTools.saveQString(obj.name);
-    let text = ByteTools.saveQString(obj.text);
+    let text = ByteTools.saveQString(obj.text, false);
     let view = new Uint8Array(8 + name.length + text.length);
     let pos = 0;
     ByteTools.saveInt32(obj.id, view, pos); pos += 4;

@@ -52,19 +52,20 @@ export class ByteTools {
     return data;
   }
 
-  static saveQString(value: string): Uint8Array {
-    let is_null: boolean = false;
-    if (!value)
-      is_null = true;
-    let view = new Uint8Array(4 + (is_null ? 0 : value.length * 2));
+  static saveQString(value: string, is_null: boolean = undefined): Uint8Array 
+	{    
+    if (is_null === undefined)
+      is_null = !value;
+    let length = (is_null || !value) ? 0 : value.length;
+    let view = new Uint8Array(4 + (length * 2));
 
     if (is_null)
       ByteTools.saveInt32(0xFFFFFFFF, view);
     else {
-      ByteTools.saveInt32(value.length * 2, view);
+      ByteTools.saveInt32(length * 2, view);
 
       let code: number;
-      for (let i = 0; i < value.length; ++i)
+      for (let i = 0; i < length; ++i)
         ByteTools.saveInt16(value.charCodeAt(i), view, 4 + (i * 2));
     }
 
