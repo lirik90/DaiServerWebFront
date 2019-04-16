@@ -5,15 +5,15 @@
       <div class="module house">
         <h3>{{clean.sct.name}}</h3>		  
 	    		  		  
-          <ng-container *ngIf="clean.clean_type.raw_value > 0; else no_clean_type">
+          <ng-container *ngIf="clean.clean_type.val.raw > 0; else no_clean_type">
             <h5>Идёт промыка, пожалуйста ждите!</h5>
             <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
           </ng-container>
 		 
           <ng-template #no_clean_type>
-            <ng-container *ngIf="clean.pouring.raw_value == 1; else no_pouring">
+            <ng-container *ngIf="clean.pouring.val.raw == 1; else no_pouring">
               <h5>Идёт налив, пожалуйста ждите!</h5>
-              <h5>Осталось: {{clean.full_volume.value-clean.volume.value}} мл.<span *ngIf="clean.pause.value == 1"> Пауза!</span></h5>
+              <h5>Осталось: {{clean.full_volume.val.display-clean.volume.val.display}} мл.<span *ngIf="clean.pause.val.display == 1"> Пауза!</span></h5>
               <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
             </ng-container>	
 			

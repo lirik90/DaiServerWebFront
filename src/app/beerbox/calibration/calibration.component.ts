@@ -52,7 +52,6 @@ export class CalibrationComponent implements OnInit
               case 'pouring':  clean.pouring = item;    break; // api.type.item.pouring
               case 'volume':  clean.volume = item; break; // api.type.item.volume
               case 'pause':  clean.pause = item;      break; // api.type.item.pause
-			        case 'cleanType': clean.clean_type = item; break; // api.type.item.cleanType
             }
 
             if (clean.pouring !== undefined && clean.volume !== undefined && clean.pause !== undefined)
@@ -61,6 +60,21 @@ export class CalibrationComponent implements OnInit
 			      }
           }
         } 
+        else if (group.type.name == 'cleanTakehead') 
+        {
+          for (let item of group.items) 
+          {
+            switch(item.type.name) 
+            {
+              case 'cleanType': clean.clean_type = item;              break; // api.CleanTypeItem
+            }
+
+            if (clean.type !== undefined)
+            {
+              break;
+            }
+          }
+        }
         else if (group.type.name == 'params') 
         { // api.type.group.params
           for (let item of group.items) 
@@ -118,10 +132,6 @@ export class CalibrationComponent implements OnInit
     {
       let result_coeff: number = 0.;
 
-      console.log(this.items[index].ratio_volume_param.value);
-      console.log(this.items[index].full_volume.value);
-      console.log(+this.full_bottle_mass_[index]);
-      console.log(+this.empty_bottle_mass_[index]);
       result_coeff = this.items[index].ratio_volume_param.value * this.items[index].full_volume.value * 1.03 / ((+this.full_bottle_mass_[index]) - (+this.empty_bottle_mass_[index]));	
 
       this.items[index].ratio_volume_param.value = result_coeff.toString();	
