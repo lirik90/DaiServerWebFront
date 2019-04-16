@@ -7,17 +7,26 @@ import { HouseService } from "../house.service";
 import { ControlService } from "../control.service";
 import { Group, ParamType, ParamValue } from '../house';
 
+interface Param_Item
+{
+  param_: ParamValue;
+  has_childs_: boolean;
+  childs_params_: Param_Item[];
+}
+
 @Component({
   selector: 'app-param',
   templateUrl: './param.component.html',
   styleUrls: ['./param.component.css']
 })
-export class ParamComponent implements OnInit {
-  group: Group;
 
+export class ParamComponent implements OnInit 
+{
+  group: Group = undefined;
   cantChange: boolean;
-
-  public paramTypes = ParamType;
+  public paramTypes = ParamType;   
+  
+  params_: Param_Item[];
 
   constructor(
     private route: ActivatedRoute,
@@ -28,7 +37,7 @@ export class ParamComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getGroupParams();
+    this.getGroup();
     console.log(this.group.params);
     this.cantChange = !this.authService.canChangeParam();
   }
@@ -37,16 +46,43 @@ export class ParamComponent implements OnInit {
     return param_type !== ParamType.RangeType;
   }
 
-  getGroupParams(): void {
+  getGroup(): void 
+  {
     const groupId = +this.route.snapshot.paramMap.get('groupId');
-    for (let sct of this.houseService.house.sections) {
-      for (let group of sct.groups) {
-        if (group.id === groupId) {
+    for (let sct of this.houseService.house.sections) 
+    {
+      for (let group of sct.groups) 
+      {
+        if (group.id === groupId) 
+        {
           this.group = group;
+          this.getGroupParams(this.params_);
           return;
         }
       }
     }
+  }
+  
+  getGroupParams(item: Param_Item[]): void
+  {
+    /*for (let param of this.group)
+    {
+      if (param.type == ParamType.Unknown)
+      {
+        if (param.childs !== undefined)
+        {
+          //todo parent parameter
+        }
+      }
+      else
+      {
+        if (param.parent_id == null)
+        {
+          let has_childs
+          item.push({param_: param, has_childs_: has_childs, })
+        }
+      }
+    }*/
   }
 
   getTimeString(p: ParamValue): string {
