@@ -288,8 +288,8 @@ export class ControlService {
       const [start1, id] = ByteTools.parseUInt32(view, start);
       const [start2, time_ms] = ByteTools.parseInt64(view, start1);
       const [start3, user_id] = ByteTools.parseUInt32(view, start2);
-      const [start4, type] = ByteTools.parseUInt32(view, start3);
-      const [start5, who] = ByteTools.parseQString(view, start4);
+      const type = view[start3] & ~0x80;
+      const [start5, who] = ByteTools.parseQString(view, start3 + 1);
       const [start6, msg] = ByteTools.parseQString(view, start5);
       start = start6;
       items.push({ id, date: new Date(time_ms), who, msg, type, user_id, color: '' } as EventLog);

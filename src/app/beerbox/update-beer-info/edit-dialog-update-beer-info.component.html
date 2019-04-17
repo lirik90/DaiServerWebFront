@@ -2,50 +2,50 @@
 <div mat-dialog-content>
   <div>
     <mat-form-field class="input-full-width">
-	    <input matInput required [(ngModel)]="item.title" placeholder="{{item.item.title.param.title}}"/>
-      <mat-hint *ngIf="item.item.title.param.description">{{item.item.title.param.description}}</mat-hint>
+	    <input matInput required [(ngModel)]="item.title.value" placeholder="{{item.title.param.title}}"/>
+      <mat-hint *ngIf="item.title.param.description">{{item.title.param.description}}</mat-hint>
     </mat-form-field>
   </div>
   <p></p>
   <div>
     <mat-form-field class="input-full-width">
-	    <input matInput required [(ngModel)]="item.storage_conditions" placeholder="{{item.item.storage_conditions.param.title}}"/>
-      <mat-hint *ngIf="item.item.storage_conditions.param.description">{{item.item.storage_conditions.param.description}}</mat-hint>
+	    <input matInput required [(ngModel)]="item.storage_conditions.value" placeholder="{{item.storage_conditions.param.title}}"/>
+      <mat-hint *ngIf="item.storage_conditions.param.description">{{item.storage_conditions.param.description}}</mat-hint>
     </mat-form-field>
   </div>
   <p></p>
   <div>
     <mat-form-field class="input-full-width">
-	    <textarea matInput required [(ngModel)]="item.product_composition" placeholder="{{item.item.product_composition.param.title}}"></textarea>
-      <mat-hint *ngIf="item.item.product_composition.param.description">{{item.item.product_composition.param.description}}</mat-hint>
+	    <textarea matInput required [(ngModel)]="item.product_composition.value" placeholder="{{item.product_composition.param.title}}"></textarea>
+      <mat-hint *ngIf="item.product_composition.param.description">{{item.product_composition.param.description}}</mat-hint>
     </mat-form-field>
   </div>
   <p></p>
   <div>
     <mat-form-field class="input-full-width">
-	    <textarea matInput required [(ngModel)]="item.more_details" placeholder="{{item.item.more_details.param.title}}"></textarea>
-      <mat-hint *ngIf="item.item.more_details.param.description">{{item.item.more_details.param.description}}</mat-hint>
+	    <textarea matInput required [(ngModel)]="item.more_details.value" placeholder="{{item.more_details.param.title}}"></textarea>
+      <mat-hint *ngIf="item.more_details.param.description">{{item.more_details.param.description}}</mat-hint>
     </mat-form-field>
   </div>
   <p></p>
   <div>
     <mat-form-field class="input-full-width">
-	    <input matInput required [(ngModel)]="item.volume" placeholder="{{item.item.volume.param.title}}"/>
-		  <mat-hint *ngIf="item.item.volume.param.description">{{item.item.volume.param.description}}</mat-hint>
+	    <input matInput required [(ngModel)]="item.volume.value" placeholder="{{item.volume.param.title}}"/>
+		  <mat-hint *ngIf="item.volume.param.description">{{item.volume.param.description}}</mat-hint>
     </mat-form-field>
   </div>
 	<p></p>
   <div>
     <mat-form-field class="input-full-width">
-	    <input matInput required [(ngModel)]="item.product_code" placeholder="{{item.item.product_code.param.title}}"/>
-      <mat-hint *ngIf="item.item.product_code.param.description">{{item.item.product_code.param.description}}</mat-hint>
+	    <input matInput required [(ngModel)]="item.product_code.value" placeholder="{{item.product_code.param.title}}"/>
+      <mat-hint *ngIf="item.product_code.param.description">{{item.product_code.param.description}}</mat-hint>
     </mat-form-field>
   </div>
   <p></p>
   <div>
     <mat-form-field class="input-full-width">
-	    <input matInput type="number" required [(ngModel)]="item.product_code_type" placeholder="{{item.item.product_code_type.param.title}}" />
-      <mat-hint *ngIf="item.item.product_code_type.param.description">{{item.item.product_code_type.param.description}}</mat-hint>
+	    <input matInput type="number" required [(ngModel)]="item.product_code_type.value" placeholder="{{item.product_code_type.param.title}}" />
+      <mat-hint *ngIf="item.product_code_type.param.description">{{item.product_code_type.param.description}}</mat-hint>
     </mat-form-field>
   </div> 
 </div> 

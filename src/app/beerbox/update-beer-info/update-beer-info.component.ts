@@ -9,12 +9,20 @@ import { filter } from 'rxjs/operators';
 
 export interface DialogData 
 {
-  title: string;
-  storage_conditions: string;
-  product_composition: string;
-  more_details: string;
-  product_code: string;
-  product_code_type: number;
+  title: ParamValue;
+  storage_conditions: ParamValue;
+  product_composition: ParamValue;
+  more_details: ParamValue;
+  product_code: ParamValue;
+  product_code_type: ParamValue;
+  volume: ParamValue;
+}
+
+export interface UpdateBeerInfo
+{
+  sct: Section;
+  print_sample: DeviceItem;
+  data: DialogData;
 }
 
 @Component({
@@ -24,7 +32,7 @@ export interface DialogData
 })
 export class UpdateBeerInfoComponent implements OnInit 
 {
-  items: any[] = [];
+  items: UpdateBeerInfo[] = [];
   
   constructor(
     public dialog: MatDialog,
@@ -47,7 +55,7 @@ export class UpdateBeerInfoComponent implements OnInit
         is_first = false;
         continue;
       }
-      let label: any = { sct };
+      let label: UpdateBeerInfo = { sct } as UpdateBeerInfo;
       for (let group of sct.groups) 
 	    {
         if (group.type.name == 'label') 
@@ -59,36 +67,36 @@ export class UpdateBeerInfoComponent implements OnInit
               label.print_sample = item;
               break;
             }
-          }
+        }
           for (let param of group.params)
 		      {
             switch(param.param.name) 
 			      {
-              case 'title':                label.title = param;                  break;
-              case 'storage_conditions':   label.storage_conditions = param;     break;
-              case 'product_composition':  label.product_composition = param;    break;
-              case 'more_details':         label.more_details = param;            break;
-              case 'product_code':         label.product_code = param;           break;
-              case 'product_code_type':    label.product_code_type = param;      break;
-              case 'volume':               label.volume = param;      break;
+              case 'title':                label.data.title = param;                  break;
+              case 'storage_conditions':   label.data.storage_conditions = param;     break;
+              case 'product_composition':  label.data.product_composition = param;    break;
+              case 'more_details':         label.data.more_details = param;            break;
+              case 'product_code':         label.data.product_code = param;           break;
+              case 'product_code_type':    label.data.product_code_type = param;      break;
+              case 'volume':               label.data.volume = param;      break;
             }
 		      }
         } 		    
       }
-      if (label.title !== undefined &&
-          label.storage_conditions !== undefined &&
-          label.product_composition !== undefined &&
-          label.more_details !== undefined &&
-          label.product_code !== undefined &&
-          label.product_code_type !== undefined&&
-          label.volume !== undefined)
+      if (label.data.title !== undefined &&
+          label.data.storage_conditions !== undefined &&
+          label.data.product_composition !== undefined &&
+          label.data.more_details !== undefined &&
+          label.data.product_code !== undefined &&
+          label.data.product_code_type !== undefined&&
+          label.data.volume !== undefined)
 	    {
         this.items.push(label);
 	    }
     }
   }
 
-  click_print_sample(item: any): void
+  click_print_sample(item: UpdateBeerInfo): void
   {
     if (item.print_sample != undefined)
     {
@@ -100,36 +108,40 @@ export class UpdateBeerInfoComponent implements OnInit
     }    
   }
   
-  click_edit(item: any): void
+  click_edit(item: UpdateBeerInfo): void
   {
+
+    let dialog_data: DialogData = {
+      title: Object.assign({}, item.data.title),
+      storage_conditions: Object.assign({}, item.data.storage_conditions),
+      product_composition: Object.assign({}, item.data.product_composition),
+      more_details: Object.assign({}, item.data.more_details),
+      product_code: Object.assign({}, item.data.product_code),
+      product_code_type: Object.assign({}, item.data.product_code_type),
+      volume: Object.assign({}, item.data.volume),
+    } as DialogData;
+
     this.dialog.open(EditDialogUpdateBeerInfoComponent, 
-                     {width: '80%', data: {title: item.title.value,
-                                           storage_conditions: item.storage_conditions.value,
-                                           product_composition: item.product_composition.value,
-                                           more_details: item.more_details.value,
-                                           product_code: item.product_code.value,
-                                           product_code_type: item.product_code_type.value,
-                                           volume: item.volume.value,
-                                           item: item}})
+                     {width: '80%', data: dialog_data})
     .afterClosed().pipe(
       filter(name => name)
     ).subscribe(res => {
-      item.title.value = res.title;
-      item.storage_conditions.value = res.storage_conditions;
-      item.product_composition.value = res.product_composition;
-      item.more_details.value = res.more_details;
-      item.product_code.value = res.product_code;
-      item.product_code_type.value = res.product_code_type;
-      item.volume.value = res.volume;
+      item.data.title.value = res.title.value;
+      item.data.storage_conditions.value = res.storage_conditions.value;
+      item.data.product_composition.value = res.product_composition.value;
+      item.data.more_details.value = res.more_details.value;
+      item.data.product_code.value = res.product_code.value;
+      item.data.product_code_type.value = res.product_code_type.value;
+      item.data.volume.value = res.volume.value;
       
       let params: ParamValue[] = [];
-      params.push(item.title);
-      params.push(item.storage_conditions);
-      params.push(item.product_composition);
-      params.push(item.more_details);
-      params.push(item.product_code);
-      params.push(item.product_code_type);
-      params.push(item.volume);
+      params.push(item.data.title);
+      params.push(item.data.storage_conditions);
+      params.push(item.data.product_composition);
+      params.push(item.data.more_details);
+      params.push(item.data.product_code);
+      params.push(item.data.product_code_type);
+      params.push(item.data.volume);
       this.controlService.changeParamValues(params);
       
     });
