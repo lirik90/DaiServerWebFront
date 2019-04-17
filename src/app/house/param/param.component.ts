@@ -7,17 +7,26 @@ import { HouseService } from "../house.service";
 import { ControlService } from "../control.service";
 import { Group, ParamType, ParamValue } from '../house';
 
+interface Param_Item
+{
+  param_: ParamValue;
+  has_childs_: boolean;
+  childs_params_: ParamValue[];
+}
+
 @Component({
   selector: 'app-param',
   templateUrl: './param.component.html',
   styleUrls: ['./param.component.css']
 })
-export class ParamComponent implements OnInit {
-  group: Group;
 
+export class ParamComponent implements OnInit 
+{
+  group: Group = undefined;
   cantChange: boolean;
-
-  public paramTypes = ParamType;
+  public paramTypes = ParamType;   
+  
+  params_: Param_Item[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -28,8 +37,7 @@ export class ParamComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getGroupParams();
-    console.log(this.group.params);
+    this.getGroup();
     this.cantChange = !this.authService.canChangeParam();
   }
 
@@ -37,13 +45,47 @@ export class ParamComponent implements OnInit {
     return param_type !== ParamType.RangeType;
   }
 
-  getGroupParams(): void {
+  getGroup(): void 
+  {
     const groupId = +this.route.snapshot.paramMap.get('groupId');
-    for (let sct of this.houseService.house.sections) {
-      for (let group of sct.groups) {
-        if (group.id === groupId) {
+    for (let sct of this.houseService.house.sections) 
+    {
+      for (let group of sct.groups) 
+      {
+        if (group.id === groupId) 
+        {
           this.group = group;
+          this.getGroupParams(this.params_);
           return;
+        }
+      }
+    }    
+  }
+  
+  getGroupParams(param_items: Param_Item[]): void
+  {    
+    for (let item of this.group.params)
+    {
+      if (item.param.type == ParamType.Unknown)
+      {
+        if (item.param.childs !== undefined)
+        {
+          let childs_params: ParamValue[] = [];
+          for (let item2 of this.group.params)
+          {
+            if (item2.param.parent_id == item.param.id)
+            {              
+              childs_params.push(item2);
+            }
+          }
+          param_items.push({param_: item, has_childs_: true, childs_params_: childs_params});
+        }
+      }
+      else
+      {
+        if (item.param.parent_id == null)
+        {
+          param_items.push({param_: item, has_childs_: false, childs_params_:[]});
         }
       }
     }
@@ -73,9 +115,25 @@ export class ParamComponent implements OnInit {
   onSubmit() 
   {
     let params: ParamValue[] = [];
-    for (const data of this.group.params)
-      if (this.canShowIt(data.param.type))
-        params.push(data);    
+    
+    for (const data of this.params_)
+    {
+      if (this.canShowIt(data.param_.param.type))
+      {
+        params.push(data.param_);
+      }
+      if (data.has_childs_)
+      {
+        for (const child of data.childs_params_)
+        {
+          if (this.canShowIt(child.param.type))
+          {
+            params.push(child);
+          }
+        }
+      }
+    }   
+    
     this.controlService.changeParamValues(params);
     this.goBack();
   }

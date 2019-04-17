@@ -11,3 +11,12 @@
 .custom_hint {
 	font-size: 75%;
 }
+
+.custom_button {
+	margin-right: 10px;
+}
+
+mat-card {
+	width: 100%;
+	margin-bottom: 10px;
+}

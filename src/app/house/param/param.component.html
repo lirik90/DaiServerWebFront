@@ -3,9 +3,69 @@
   <p *ngIf="description">{{group.type.description}}</p>
 
   <form class="example-form" (ngSubmit)="onSubmit()" #paramForm="ngForm">
-    <ng-container *ngFor="let data of group.params">
+    
+    <ng-container *ngFor="let data of params_">      
+      <p *ngIf="!canShowIt(data.param_.param.type)">{{data.param_.param.title}}</p>
+      
+      <ng-container *ngIf="canShowIt(data.param_.param.type)" [ngSwitch]="data.param_.param.type">        
+          
+        <ng-container *ngIf="data.has_childs_ == true">
+          <mat-card>{{data.param_.param.title}}:<br><br>
+            <ng-container *ngFor="let child of data.childs_params_"> 
+              <p *ngIf="!canShowIt(child.param.type)">{{child.param.title}}</p>
+              <ng-container *ngIf="canShowIt(child.param.type)" [ngSwitch]="child.param.type">
+                <div class="example-full-width" *ngSwitchCase="paramTypes.Bool">
+                  <mat-checkbox name="{{child.id}}" [ngModel]="child.value" (ngModelChange)="child.value = $event" *ngSwitchCase="paramTypes.Bool">
+                    {{child.param.title}} ({{child.param.name}})
+                  </mat-checkbox>        
+                  <div><mat-hint class ="custom_hint" *ngIf="child.param.description">{{child.param.description}}</mat-hint></div>
+                </div>
+
+                <mat-form-field class="example-full-width" *ngSwitchCase="paramTypes.TimeType">
+                  <input matInput placeholder="{{child.param.title}} ({{child.param.name}})" 
+                       name="{{child.id}}" [ngModel]="getTimeString(child)" (ngModelChange)="setTimeParam(child, $event)" type="time" step="1">
+                  <mat-hint *ngIf="child.param.description">{{child.param.description}}</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width" *ngSwitchDefault>
+                  <input matInput placeholder="{{child.param.title}} ({{child.param.name}})" 
+                       name="{{child.id}}" [(ngModel)]="child.value">
+                  <mat-hint *ngIf="child.param.description">{{child.param.description}}</mat-hint>
+                </mat-form-field>
+              </ng-container>              
+            </ng-container>
+          </mat-card>
+        </ng-container>
+          
+        <mat-card *ngIf="data.has_childs_ == false">
+          <div class="example-full-width" *ngSwitchCase="paramTypes.Bool">
+            <mat-checkbox name="{{data.param_.id}}" [ngModel]="data.param_.value" (ngModelChange)="data.param_.value = $event" *ngSwitchCase="paramTypes.Bool">
+              {{data.param_.param.title}} ({{data.param_.param.name}})
+            </mat-checkbox>        
+            <div><mat-hint class ="custom_hint" *ngIf="data.param_.param.description">{{data.param_.param.description}}</mat-hint></div>
+          </div>
+
+          <mat-form-field class="example-full-width" *ngSwitchCase="paramTypes.TimeType">
+            <input matInput placeholder="{{data.param_.param.title}} ({{data.param_.param.name}})" 
+                 name="{{data.param_.id}}" [ngModel]="getTimeString(data.param_)" (ngModelChange)="setTimeParam(data.param_, $event)" type="time" step="1">
+            <mat-hint *ngIf="data.param_.param.description">{{data.param_.param.description}}</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width" *ngSwitchDefault>
+            <input matInput placeholder="{{data.param_.param.title}} ({{data.param_.param.name}})" 
+                 name="{{data.param_.id}}" [(ngModel)]="data.param_.value">
+            <mat-hint *ngIf="data.param_.param.description">{{data.param_.param.description}}</mat-hint>
+          </mat-form-field>  
+        </mat-card>
+          
+      </ng-container>
+    </ng-container>
+    
+    
+    <!-- <ng-container *ngFor="let data of group.params">      
       <p *ngIf="!canShowIt(data.param.type)">{{data.param.title}}</p>
-      <ng-container *ngIf="canShowIt(data.param.type)" [ngSwitch]="data.param.type">
+      
+      <ng-container *ngIf="canShowIt(data.param.type) && data.param.parent_id == null" [ngSwitch]="data.param.type">                        
         
         <div class="example-full-width" *ngSwitchCase="paramTypes.Bool">
           <mat-checkbox name="{{data.id}}" [ngModel]="data.value" (ngModelChange)="data.value = $event" *ngSwitchCase="paramTypes.Bool">
@@ -24,14 +84,16 @@
           <input matInput placeholder="{{data.param.title}} ({{data.param.name}})" 
                name="{{data.id}}" [(ngModel)]="data.value">
           <mat-hint *ngIf="data.param.description">{{data.param.description}}</mat-hint>
-        </mat-form-field>
+        </mat-form-field>                              
         
       </ng-container>
-    </ng-container>
-    <button mat-raised-button color="primary" [disabled]="cantChange || !paramForm.form.valid" type="submit">Сохранить</button>
-
-    <button mat-raised-button *ngIf="group.type.code_id" routerLink="../settings/code/{{group.type.code_id}}">Edit code</button>
-    <button mat-raised-button (click)="goBack()">go back</button>
+      
+    </ng-container> -->
+    
+    <button mat-raised-button class="custom_button" color="primary" [disabled]="cantChange || !paramForm.form.valid" type="submit">Сохранить</button>
+    <!-- <button mat-raised-button class="custom_button" *ngIf="group.type.code_id" routerLink="../settings/code/{{group.type.code_id}}">Edit code</button> -->
+    <button mat-raised-button class="custom_button" (click)="goBack()">go back</button>
+    
   </form>
 </ng-container>
 <button mat-raised-button *ngIf="!group" (click)="goBack()">go back</button>
