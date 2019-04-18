@@ -8,6 +8,7 @@ import { HouseDetailComponent } from '../houses/detail/detail.component';
 
 import { HouseComponent } from './house.component';
 import { ViewComponent } from './view/view.component';
+import { ViewItemComponent } from "./view-item/view-item.component";
 import { ManageComponent } from "./manage/manage.component";
 import { LogComponent } from "./log/log.component";
 import { ParamComponent } from "./param/param.component";
@@ -27,7 +28,11 @@ const houseRoutes: Routes = [
           { path: 'detail', component: HouseDetailComponent },
           {
             path: 'view', 
-            component: ViewComponent, data: { is_edit: true }
+            component: ViewComponent,
+            children: [
+              { path: '', pathMatch: 'full' },
+              { path: ':view_id', component: ViewItemComponent, data: { is_edit: true } }
+            ]
           },
           { path: 'manage', component: ManageComponent, data: { is_edit: true }},
           { path: 'log', component: LogComponent },

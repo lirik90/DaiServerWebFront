@@ -1,0 +1,97 @@
+/* ViewComponent's private CSS styles */
+.detail {
+  float: right;
+  margin-right: 3px;
+  margin-top: 3px;
+  text-decoration: none;
+  background-color: #cfd8dc;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 16px;
+  font-family: Arial;
+  color: black;
+  font-weight: bold;
+}
+ 
+.detail:hover {
+  background-color: #eee;
+}
+
+h2 {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+nav {
+  display: inline-block;
+}
+
+h3 {
+  text-align: center; margin-bottom: 0;
+}
+h4 {
+  position: relative;
+}
+.grid {
+  margin: 0;
+  display: flex;
+}
+.module {
+  padding: 4px 20px 20px 20px;
+  text-align: center;
+  color: #eee;
+/*  max-height: 120px; */
+  min-width: 120px;
+  background-color: #6A9D80;
+  border-radius: 16px;
+}
+.grid-pad {
+  padding: 10px 0;
+}
+FIELDSET > ul {
+  text-align: left;
+  list-style-type: none;
+  padding-left: 0px;
+}
+FIELDSET > ul > li {
+  white-space: nowrap;
+}
+
+FIELDSET {
+  margin: 8px;
+  border: 1px solid white;
+  padding: 8px;    
+  border-radius: 4px;
+  text-align: left;
+  display: inline-block;
+  width: 45%;
+}
+FIELDSET:hover {
+  background-color: #F7F7F7;
+  color: #6A9D80;
+  cursor: pointer;
+}
+LEGEND{
+  padding: 2px;    
+}
+
+@media (max-width: 600px) {
+  .module {
+    font-size: 16px;
+/*    max-height: 75px; */
+  }
+  .grid {
+    display: unset;
+  }
+  FIELDSET {
+    width: 100%;
+  }
+}
+@media (max-width: 1024px) {
+  .grid {
+    margin: 0;
+  }
+  .module {
+    min-width: 60px;
+  }
+}
