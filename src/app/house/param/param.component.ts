@@ -27,6 +27,7 @@ export class ParamComponent implements OnInit
   public paramTypes = ParamType;   
   
   params_: Param_Item[] = [];
+  changed_values: ParamValue[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -39,10 +40,6 @@ export class ParamComponent implements OnInit
   ngOnInit() {
     this.getGroup();
     this.cantChange = !this.authService.canChangeParam();
-  }
-
-  canShowIt(param_type: number): boolean {
-    return param_type !== ParamType.RangeType;
   }
 
   getGroup(): void 
@@ -66,7 +63,7 @@ export class ParamComponent implements OnInit
   {    
     for (let item of this.group.params)
     {
-      if (item.param.type == ParamType.Unknown)
+      if (item.param.type == ParamType.Unknown || item.param.type == ParamType.RangeType)
       {
         if (item.param.childs !== undefined)
         {
@@ -112,29 +109,32 @@ export class ParamComponent implements OnInit
     p.value = new_value.toString();
   }
 
+  change(item: ParamValue, new_value: any): void
+  {
+    for (let param_value of this.changed_values)
+    {
+      if (param_value.id === item.id)
+      {
+        if (param_value.param.type === ParamType.TimeType)
+        {
+          this.setTimeParam(param_value, new_value);
+        }
+        else if (param_value.value !== new_value)
+        {
+          param_value.value = new_value;
+        }
+        return;
+      }
+    }
+
+    item.value = new_value;
+    this.changed_values.push(item);
+  }
+
   onSubmit() 
   {
-    let params: ParamValue[] = [];
-    
-    for (const data of this.params_)
-    {
-      if (this.canShowIt(data.param_.param.type))
-      {
-        params.push(data.param_);
-      }
-      if (data.has_childs_)
-      {
-        for (const child of data.childs_params_)
-        {
-          if (this.canShowIt(child.param.type))
-          {
-            params.push(child);
-          }
-        }
-      }
-    }   
-    
-    this.controlService.changeParamValues(params);
+    if (this.changed_values)
+      this.controlService.changeParamValues(this.changed_values);
     this.goBack();
   }
 

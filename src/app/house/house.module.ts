@@ -19,6 +19,7 @@ import { ParamComponent } from './param/param.component';
 import { GroupStatusComponent } from './group-status/group-status.component';
 import { DevItemValueComponent, HoldingRegisterDialogComponent } from './dev-item-value/dev-item-value.component';
 import { DragScrollComponent } from './drag-scroll.component';
+import { ViewItemComponent } from './view-item/view-item.component';
 
 @NgModule({
   imports: [
@@ -39,6 +40,7 @@ import { DragScrollComponent } from './drag-scroll.component';
     GroupStatusComponent,
     DevItemValueComponent,
     DragScrollComponent,
+    ViewItemComponent,
   ],
   entryComponents: [
     HoldingRegisterDialogComponent,

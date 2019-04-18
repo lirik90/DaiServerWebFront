@@ -20,10 +20,6 @@ export class SettingsService {
     return this.hServ.getPiped<PaginatorApi<CheckerType>>(url, 'fetched checkers', 'getCheckers', {} as PaginatorApi<CheckerType>);
   }
 
-  getViewItems(view_id: number): Observable<PaginatorApi<ViewItem>> {
-    return this.hServ.getPiped<PaginatorApi<ViewItem>>(this.hServ.url('viewitem') + `&view_id=${view_id}`, `fetched ViewItem list`, 'getViewItems', {} as PaginatorApi<ViewItem>);
-  }
-
   getSaveTimers(): Observable<PaginatorApi<SaveTimer>> {
     return this.hServ.getPiped<PaginatorApi<SaveTimer>>(this.hServ.url('savetimer'), `fetched save timer list`, 'getSaveTimers', {} as PaginatorApi<SaveTimer>);
   }
