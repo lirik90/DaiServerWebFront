@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { switchMap, catchError, map, tap, finalize } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 
-import { HouseDetail, Section, DeviceItem, Group, Logs } from './house';
+import { HouseDetail, ViewItem, Section, DeviceItem, Group, Logs } from './house';
 import { TeamMember, PaginatorApi } from '../user';
 import { MessageService } from '../message.service';
 import { IHouseService } from '../ihouse.service';
@@ -173,6 +173,10 @@ export class HouseService extends IHouseService {
     const url = this.apiUrl + `write_item_file/?id=${this.house.id}&item_id=${item_id}`;
     return this.http.put(url, formData, options)
             .catch(error => Observable.throw(error));
+  }
+
+  getViewItems(view_id: number): Observable<PaginatorApi<ViewItem>> {
+    return this.getPiped<PaginatorApi<ViewItem>>(this.url('viewitem') + `&view_id=${view_id}`, `fetched ViewItem list`, 'getViewItems', {} as PaginatorApi<ViewItem>);
   }
 
   getLogs(date_from: string, date_to: string, group_type: number, itemtypes: string, items: string, limit: number = 1000, offset: number = 0): Observable<PaginatorApi<Logs>> {

@@ -25,7 +25,10 @@ const houseRoutes: Routes = [
         children: [
           { path: '', redirectTo: '/house/:name/view', pathMatch: 'full' },
           { path: 'detail', component: HouseDetailComponent },
-          { path: 'view', component: ViewComponent, data: { is_edit: true }},
+          {
+            path: 'view', 
+            component: ViewComponent, data: { is_edit: true }
+          },
           { path: 'manage', component: ManageComponent, data: { is_edit: true }},
           { path: 'log', component: LogComponent },
           { path: 'group/:groupId/param', component: ParamComponent },

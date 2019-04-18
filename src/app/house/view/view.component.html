@@ -1,22 +1,5 @@
-<h2>Обзор проекта</h2>
-<div class="grid grid-pad">
-  <ng-container *ngFor="let sct of sections">
-    <div *ngIf="sct.groups.length" class="col-1-3">
-      <a class="detail" routerLink="/detail/{{sct.id}}">?</a>
-      <div class="module house">
-        <h3>{{sct.name}}</h3>
-        <fieldset *ngFor="let group of sct.groups">
-          <legend><span routerLink="/house/{{houseName}}/group/{{group.id}}/param">{{group.title ? group.title : group.type.title}}</span><app-group-status [group]="group"></app-group-status></legend>
-        	<ul>
-            <ng-container *ngFor="let item of group.items">
-              <li>
-                <span>{{item.name || item.type.title}}:</span><app-dev-item-value [item]="item"></app-dev-item-value>
-		          </li>
-            </ng-container>
-          </ul>
-        </fieldset>
-      </div>
-    </div>
-  </ng-container>
-</div>
-
+<h2>Обзор</h2>
+<nav>
+  <a *ngFor="let view of views" [routerLink]="view.id" routerLinkActive="active">{{view.name}}</a>
+</nav>
+<router-outlet></router-outlet>

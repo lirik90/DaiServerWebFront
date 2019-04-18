@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { HouseService } from "../house.service";
-import { Section } from "../house";
+import { View } from "../house";
 
 @Component({
   selector: 'app-view',
@@ -9,19 +9,17 @@ import { Section } from "../house";
   styleUrls: ['../../sections.css', './view.component.css']
 })
 export class ViewComponent implements OnInit {
-  houseName: string;
-  sections: Section[];
+  views: View[];
 
   constructor(
     private houseService: HouseService
   ) {}
 
   ngOnInit() {
-    this.getSections();
+    this.get_views();
   }
 
-  getSections(): void {
-    this.houseName = this.houseService.house.name;
-    this.sections = this.houseService.house.sections;
+  get_views(): void {
+    this.views = this.houseService.house.views;
   }
 }

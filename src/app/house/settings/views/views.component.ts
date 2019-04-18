@@ -63,7 +63,7 @@ export class ViewItemsComponent extends ChangeTemplate<ViewItem> implements OnIn
 
   ngOnInit() {
     this.fill_device_items();
-    this.settingsService.getViewItems(this.view.id).subscribe(api => {
+    this.houseService.getViewItems(this.view.id).subscribe(api => {
       this.view_items = api.results;
       for (let view_item of this.view_items)
       {
