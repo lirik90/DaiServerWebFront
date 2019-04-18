@@ -55,7 +55,8 @@ export class UpdateBeerInfoComponent implements OnInit
         is_first = false;
         continue;
       }
-      let label: UpdateBeerInfo = { sct } as UpdateBeerInfo;
+      let data: DialogData = {} as DialogData;
+      let label: UpdateBeerInfo = { sct: sct, data: data } as UpdateBeerInfo;
       for (let group of sct.groups) 
 	    {
         if (group.type.name == 'label') 

@@ -40,7 +40,7 @@ export class CalibrationComponent implements OnInit
         is_first = false;
         continue;
       }
-      let clean: any = { sct };
+      let it: any = { sct };
       for (let group of sct.groups) 
 	    {
         if (group.type.name == 'head') 
@@ -49,12 +49,12 @@ export class CalibrationComponent implements OnInit
 		      {
             switch(item.type.name) 
 			      {
-              case 'pouring':  clean.pouring = item;    break; // api.type.item.pouring
-              case 'volume':  clean.volume = item; break; // api.type.item.volume
-              case 'pause':  clean.pause = item;      break; // api.type.item.pause
+              case 'pouring':  it.pouring = item;    break; // api.type.item.pouring
+              case 'volume':  it.volume = item; break; // api.type.item.volume
+              case 'pause':  it.pause = item;      break; // api.type.item.pause
             }
 
-            if (clean.pouring !== undefined && clean.volume !== undefined && clean.pause !== undefined)
+            if (it.pouring !== undefined && it.volume !== undefined && it.pause !== undefined)
 			      {
               break;
 			      }
@@ -66,10 +66,10 @@ export class CalibrationComponent implements OnInit
           {
             switch(item.type.name) 
             {
-              case 'cleanType': clean.clean_type = item;              break; // api.CleanTypeItem
+              case 'cleanType': it.clean_type = item;              break; // api.CleanTypeItem
             }
 
-            if (clean.type !== undefined)
+            if (it.clean_type !== undefined)
             {
               break;
             }
@@ -81,22 +81,22 @@ export class CalibrationComponent implements OnInit
           {
             if (item.type.name == 'setVol3')
             { // api.type.item.setVol3
-              clean.full_volume = item;
+              it.full_volume = item;
             }
           }
           for (let param of group.params)
           {
             if (param.param.name == "ratioVolume")
             {
-              clean.ratio_volume_param = param;
+              it.ratio_volume_param = param;
               break;
             }
           }
         }
       }
-      if (clean.ratio_volume_param !== undefined && clean.pouring !== undefined && clean.volume !== undefined && clean.pause !== undefined && clean.full_volume !== undefined)
+      if (it.ratio_volume_param !== undefined && it.pouring !== undefined && it.volume !== undefined && it.pause !== undefined && it.full_volume !== undefined)
 	    {
-        items.push(clean);
+        items.push(it);
 	    }
     }
 
@@ -132,7 +132,7 @@ export class CalibrationComponent implements OnInit
     {
       let result_coeff: number = 0.;
 
-      result_coeff = this.items[index].ratio_volume_param.value * this.items[index].full_volume.value * 1.03 / ((+this.full_bottle_mass_[index]) - (+this.empty_bottle_mass_[index]));	
+      result_coeff = (+this.items[index].ratio_volume_param.value) * (+this.items[index].full_volume.val.display) * 1.03 / ((+this.full_bottle_mass_[index]) - (+this.empty_bottle_mass_[index]));	
 
       this.items[index].ratio_volume_param.value = result_coeff.toString();	
 

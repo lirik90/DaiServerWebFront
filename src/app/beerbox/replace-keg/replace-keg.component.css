@@ -23,7 +23,7 @@ h4 > span {
   padding: 10px 0;
 }
 .grid-pad > [class*='col-']:last-of-type {
-  padding-right: 20px;
+  margin-right: 20px;
 }
 .module {
   padding: 4px 20px 20px 20px;
