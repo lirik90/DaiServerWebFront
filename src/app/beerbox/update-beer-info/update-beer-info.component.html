@@ -5,22 +5,22 @@
       <div class="module house">
         <h3>{{item.sct.name}}</h3>
           <ng-container>
-            <p><b>{{item.title.param.title}}:</b></p>
-            <p>{{item.title.value}}</p>
+            <p><b>{{item.data.title.param.title}}:</b></p>
+            <p>{{item.data.title.value}}</p>
             
-            <p><b>{{item.storage_conditions.param.title}}:</b> {{item.storage_conditions.value}}</p>
+            <p><b>{{item.data.storage_conditions.param.title}}:</b> {{item.data.storage_conditions.value}}</p>
             
-            <p><b>{{item.product_composition.param.title}}:</b></p>
-            <p>{{item.product_composition.value}}</p>
+            <p><b>{{item.data.product_composition.param.title}}:</b></p>
+            <p>{{item.data.product_composition.value}}</p>
             
-            <p><b>{{item.more_details.param.title}}:</b></p>
-            <p>{{item.more_details.value}}</p>
+            <p><b>{{item.data.more_details.param.title}}:</b></p>
+            <p>{{item.data.more_details.value}}</p>
             
-            <p><b>{{item.volume.param.title}}:</b> {{item.volume.value}}</p>
+            <p><b>{{item.data.volume.param.title}}:</b> {{item.data.volume.value}}</p>
             
-            <p><b>{{item.product_code.param.title}}:</b></p>
-            <p>{{item.product_code.value}}</p>
-            <p><b>{{item.product_code_type.param.title}}:</b> {{item.product_code_type.value}}</p>
+            <p><b>{{item.data.product_code.param.title}}:</b></p>
+            <p>{{item.data.product_code.value}}</p>
+            <p><b>{{item.data.product_code_type.param.title}}:</b> {{item.data.product_code_type.value}}</p>
             <button mat-button (click)="click_edit(item)" title="Редактировать">Редактировать</button>
             <button mat-button (click)="click_print_sample(item)" title="Пробная печать">Пробная печать</button>
           </ng-container>
