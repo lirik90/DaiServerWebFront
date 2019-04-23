@@ -169,6 +169,7 @@ export class ParamValue { // Уставка
   param_id: number; // ID типа уставки
   value: string;    // Значение
   param: ParamItem; // Тип уставки
+  childs: ParamValue[] = [];
 }
 
 export class Device { // Устройство
