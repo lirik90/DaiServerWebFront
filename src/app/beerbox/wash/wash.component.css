@@ -25,6 +25,11 @@ h4 {
   background-color: #6A9D80;
   border-radius: 16px;
 }
+.progress_in_center {
+  width: 100px;
+  height: 100px;
+  margin: auto;
+}
 
 @media (max-width: 600px) {
   .module {

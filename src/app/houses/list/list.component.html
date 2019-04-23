@@ -18,14 +18,15 @@
 </mat-paginator>
 
 <hr>
-<div class="house_form">Проект:
-  <label>Имя: <input [(ngModel)]="new_house.name" placeholder="Name" /></label>
-  <label>Заголовок: <input [(ngModel)]="new_house.title" placeholder="Display name" /></label>
-  <label>Описание: <input [(ngModel)]="new_house.description" placeholder="Description" /></label>
-  <label>Уникальный номер: <input [(ngModel)]="new_house.device" placeholder="Device UUID" /></label>
+<div class="house_form"><span i18n="@@DETAILS.PROJECT">Проект</span>:
+  <label><span i18n="@@DETAILS.NAME">Имя</span>: <input [(ngModel)]="new_house.name" i18n-placeholder="@@DETAILS.NAME" placeholder="Имя" /></label>
+  
+  <label><span i18n="@@DETAILS.TITLE">Заголовок</span>: <input [(ngModel)]="new_house.title" i18n-placeholder="@@DETAILS.HINT.NAME" placeholder="Display name" /></label>
+  
+  <label><span i18n="@@DETAILS.DESCRIPTION">Описание</span>: <input [(ngModel)]="new_house.description" i18n-placeholder="@@DETAILS.DESCRIPTION" placeholder="Описание" /></label>
+  
+  <label><span i18n="@@DETAILS.UUID">Уникальный номер</span>: <input [(ngModel)]="new_house.device" i18n-placeholder="@@DETAILS.HINT.UUID" placeholder="Device UUID" /></label>
   <!-- (click) passes input value to add() and then clears the input -->
-  <button (click)="add()">
-    Добавить
-  </button>
+  <button (click)="add()" i18n="@@CONTROL.ADD">Добавить</button>
 </div>
 

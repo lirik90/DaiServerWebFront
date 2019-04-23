@@ -1,28 +1,27 @@
 <div class="module house">
   <ng-container *ngIf="labels_num_full_ != undefined">
-    <h2>Замена этикеток</h2>
+    <h2 i18n="@@BEERBOX.REPLACE_LABEL.TITLE">Замена этикеток</h2>
     <ng-container *ngIf="!is_changed_; else labels_are_changed">
-      <h4>Вставте ленту с этикетками в устройство</h4>
-      <h4>Введите количество этикеток, которое указано на ленте</h4>
+      <h4><p i18n="@@BEERBOX.REPLACE_LABEL.TEXT">Вставте ленту с этикетками в устройство<br><br>Введите количество этикеток, которое указано на ленте</p></h4>
       <mat-form-field>
         <label>
-          <input matInput type="number" [(ngModel)]="labels_num_full_.value" placeholder="Введите количество этикеток:"/>
+          <input matInput type="number" [(ngModel)]="labels_num_full_.value" i18n-placeholder="@@BEERBOX.REPLACE_LABEL.INPUT" placeholder="Введите количество этикеток"/>
         </label>
       </mat-form-field>
-      <button class="button2" mat-button (click)="click_apply_button()">Применить</button>
+      <button class="button2" mat-button (click)="click_apply_button()" i18n="@@CONTROL.APPLY">Применить</button>
     </ng-container>
     
     <ng-template #labels_are_changed>
       <ng-container>
-        <h4>Изменения успешно применены</h4>
+        <h4 i18n="@@BEERBOX.REPLACE_LABEL.CONFIRM">Изменения успешно применены</h4>
         <p>
-          <button mat-button (click)="is_changed_ = false">Назад</button>
+          <button mat-button (click)="is_changed_ = false" i18n="@@CONTROL.BACK">Назад</button>
         </p>
       </ng-container>
     </ng-template>
     
   </ng-container>
   <ng-container *ngIf="labels_num_full_ == undefined">
-    <h2>Принтер не установлен</h2>
+    <h2 i18n="@@BEERBOX.REPLACE_LABEL.WARNING">Принтер не установлен</h2>
   </ng-container>
 </div>

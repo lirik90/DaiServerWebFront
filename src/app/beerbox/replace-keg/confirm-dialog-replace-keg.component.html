@@ -1,20 +1,20 @@
-<h1 mat-dialog-title>Подтверждение замены кеги</h1>
+<h1 mat-dialog-title i18n="@@BEERBOX.REPLACE_KEG.DIALOG.TITLE">Подтверждение замены кеги</h1>
 <div mat-dialog-content>
-  <p>После замены кеги вам нужно это подтвердить. Вы уверены что хотите сделать это?</p>
+  <p i18n="@@BEERBOX.REPLACE_KEG.DIALOG.TEXT">После замены кеги вам нужно это подтвердить. Вы уверены что хотите сделать это?</p>
 </div>
-<p>Установите дату изготовления:</p>
+<p i18n="@@BEERBOX.REPLACE_KEG.DIALOG.DATE">Установите дату изготовления</p>
 <mat-form-field>  
-  <input matInput (dateChange)="change($event)" [matDatepicker]="picker" placeholder="Дата изготовления" [formControl]="date">
+  <input matInput (dateChange)="change($event)" [matDatepicker]="picker" i18n-placeholder="@@BEERBOX.REPLACE_KEG.DIALOG.DATE_HINT" placeholder="Дата изготовления" [formControl]="date">
   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
   <mat-datepicker touchUi #picker></mat-datepicker>
 </mat-form-field>
 <div>
-  <p>Укажите завод изготовитель:</p>
+  <p i18n="@@BEERBOX.REPLACE_KEG.DIALOG.MANUFACTORER">Укажите завод изготовитель</p>
   <mat-form-field class="input-full-width">
-	  <textarea matInput [(ngModel)]="manufacturer_info_" placeholder="Изготовитель:"> </textarea>
+	  <textarea matInput [(ngModel)]="manufacturer_info_" i18n-placeholder="@@BEERBOX.REPLACE_KEG.DIALOG.MANUFACTORER_HINT" placeholder="Изготовитель"> </textarea>
   </mat-form-field>
 </div>  
 <div mat-dialog-actions>
-  <button mat-button type="button" (click)="dialogRef.close()">Нет</button>
-  <button mat-button (click)="confirm()" cdkFocusInitial>Я заменил кегу</button>
+  <button mat-button type="button" (click)="dialogRef.close()" i18n="@@CONTROL.NO">Нет</button>
+  <button mat-button (click)="confirm()" cdkFocusInitial i18n="@@BEERBOX.REPLACE_KEG.DIALOG.CONFIRM">Я заменил кегу</button>
 </div>

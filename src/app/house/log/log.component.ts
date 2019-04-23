@@ -14,6 +14,7 @@ import { EventLog, EventLogType } from "../house";
 import { TeamMember, PaginatorApi } from '../../user';
 import { HouseService } from "../house.service";
 import { ControlService, Cmd } from "../control.service";
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-log',
@@ -37,6 +38,7 @@ export class LogComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
+	  public translate: TranslateService,
     private controlService: ControlService,
     private houseService: HouseService,
     private http: HttpClient) {}
@@ -108,7 +110,7 @@ export class LogComponent implements OnInit, OnDestroy {
     for (const user of this.members)
       if (user.id === id)
         return user.name;
-    return 'Unknown user id: ' + String(id);
+    return this.translate.instant("LOG.UNKNOWN_USER") + ' ' + String(id);
   }
 
   ngOnDestroy() {
