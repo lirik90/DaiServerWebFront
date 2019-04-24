@@ -1,5 +1,5 @@
 <button 
   mat-mini-fab 
-  [color]="color" 
+  [ngStyle]="{'background': color}"
   [matTooltip]="text" 
   (click)="showStatusText($event)">{{short_text}}</button>

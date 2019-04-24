@@ -99,6 +99,7 @@ export class Status {
 
 export class GroupStatus {
   status: Status;
+  status_id: number;
   args: string[];
 }
 
@@ -169,6 +170,7 @@ export class ParamValue { // Уставка
   param_id: number; // ID типа уставки
   value: string;    // Значение
   param: ParamItem; // Тип уставки
+  childs: ParamValue[] = [];
 }
 
 export class Device { // Устройство
@@ -224,6 +226,13 @@ export class Settings {
   value: string;
 }
 
+export class GroupMode {
+  id: number;
+  name: string;
+  title: string;
+  group_type_id: number;
+}
+
 export class HouseDetail {
   id: number;             // ID проекта
   name: string;           // Имя проекта
@@ -237,5 +246,6 @@ export class HouseDetail {
   statusTypes: StatusType[];  // Типы состояний
   statuses: Status[];  // Состояния
   views: View[];
+  groupModes: GroupMode[];
 }
 

@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { MediaMatcher } from '@angular/cdk/layout';
+import { MatDialog, MatDialogRef } from '@angular/material';
+
 import { ISubscription } from "rxjs/Subscription";
 
 import { HouseService } from "./house.service";
@@ -39,6 +41,8 @@ export class HouseComponent implements OnInit, OnDestroy {
   {
     return this.connect_state != Connect_State.Disconnected;
   }
+
+  private page_reload_dialog_ref: MatDialogRef<PageReloadDialogComponent> = undefined;
 
   dt_offset: number = 0;
   dt_tz_name: string = '';
@@ -89,6 +93,7 @@ export class HouseComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private controlService: ControlService,
     private authService: AuthenticationService,
+    private dialog: MatDialog,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher
   ) { 
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
@@ -188,8 +193,25 @@ export class HouseComponent implements OnInit, OnDestroy {
       }
       else if (msg.cmd == Cmd.StructModify)
       {
+        let view = new Uint8Array(msg.data);
+        const structure_type = view[8];
+        switch (structure_type)
+        {
+          case 19: // STRUCT_TYPE_GROUP_STATUS
+            return;
+        }
+
         this.connect_state = Connect_State.Modified;
-        window.location.reload();
+
+        if (!this.page_reload_dialog_ref)
+        {
+          this.page_reload_dialog_ref = this.dialog.open(PageReloadDialogComponent, { width: '80%', });
+          this.page_reload_dialog_ref.afterClosed().subscribe(result => {
+            if (result)
+              window.location.reload();
+            this.page_reload_dialog_ref = undefined;
+          });
+        }
       }
     });
 
@@ -211,4 +233,13 @@ export class HouseComponent implements OnInit, OnDestroy {
     if (this.can_edit)
       this.controlService.restart();
   }
+}
+
+@Component({
+  templateUrl: './page-reload-dialog.component.html',
+})
+export class PageReloadDialogComponent {
+  constructor(
+    public dialogRef: MatDialogRef<PageReloadDialogComponent>
+  ) {}
 }

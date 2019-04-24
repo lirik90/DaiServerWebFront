@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar, MatSlideToggleChange } from '@angular/material';
 
 import { HouseService } from "../house.service";
-import { Section, DeviceItem, EventLogType } from "../house";
+import { Section, DeviceItem, EventLogType, GroupMode } from "../house";
 import { ControlService } from "../control.service";
 
 @Component({
@@ -13,6 +13,7 @@ import { ControlService } from "../control.service";
 export class ManageComponent implements OnInit {
   houseName: string;
   sections: Section[];
+  groupModes: GroupMode[];
 
   constructor(
     private houseService: HouseService,
@@ -52,5 +53,6 @@ export class ManageComponent implements OnInit {
   getSections(): void {
     this.houseName = this.houseService.house.name;
     this.sections = this.houseService.house.sections;
+    this.groupModes = this.houseService.house.groupModes;
   }
 }

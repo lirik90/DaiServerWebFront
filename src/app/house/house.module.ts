@@ -6,7 +6,7 @@ import { MaterialModule } from '../material.module';
 import { HousesDetailModule } from '../houses/houses-detail.module';
 
 import { HouseRoutingModule  } from './house-routing.module';
-import { HouseComponent } from './house.component';
+import { HouseComponent, PageReloadDialogComponent } from './house.component';
 
 import { ProjectLoadGuard } from "./project-load.guard";
 import { ControlService } from "./control.service";
@@ -20,6 +20,7 @@ import { GroupStatusComponent } from './group-status/group-status.component';
 import { DevItemValueComponent, HoldingRegisterDialogComponent } from './dev-item-value/dev-item-value.component';
 import { DragScrollComponent } from './drag-scroll.component';
 import { ViewItemComponent } from './view-item/view-item.component';
+import { ParamItemComponent } from './param-item/param-item.component';
 
 import { HttpClient } from '@angular/common/http';
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
@@ -47,6 +48,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   ],
   declarations: [
     HouseComponent,
+    PageReloadDialogComponent,
     ViewComponent,
     ManageComponent,
     HoldingRegisterDialogComponent,
@@ -57,8 +59,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DragScrollComponent,
     DragScrollComponent,
     ViewItemComponent,
+    ParamItemComponent,
   ],
   entryComponents: [
+    PageReloadDialogComponent,
     HoldingRegisterDialogComponent,
   ],
   providers: [
