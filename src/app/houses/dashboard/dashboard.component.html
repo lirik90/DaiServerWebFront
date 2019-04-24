@@ -1,6 +1,6 @@
 <app-house-search></app-house-search>
 
-<h3>Часто посещаемые проекты</h3>
+<h3 i18n="@@DASHBOARD.TITLE">Часто посещаемые проекты</h3>
 <div class="grid grid-pad">
   <a *ngFor="let house of houses" class="col-1-4"
 	routerLink="/house/{{house.name}}/view">

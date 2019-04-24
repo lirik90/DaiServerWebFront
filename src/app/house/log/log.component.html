@@ -1,19 +1,19 @@
-<h2>Журнал</h2>
+<h2 i18n="@@LOG.TITLE">Журнал</h2>
 <div class="example-container mat-elevation-z8">
   <div class="example-loading-shade"
        *ngIf="isLoadingResults || isRateLimitReached">
     <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-    <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+    <div class="example-rate-limit-reached" *ngIf="isRateLimitReached" i18n="@@LOG.WARNING">
       EventLog's API rate limit has been reached. It will be reset in one minute.
     </div>
   </div>
 
   <div class="example-header">
     <mat-form-field>
-      <input matInput (keyup.enter)="execScript($event.target.value)" placeholder="Console command">
+      <input matInput (keyup.enter)="execScript($event.target.value)" i18n-placeholder="@@LOG.CMD" placeholder="Консольная команда">
     </mat-form-field>
     <mat-form-field>
-      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+      <input matInput (keyup)="applyFilter($event.target.value)" i18n-placeholder="@@LOG.FILTER" placeholder="Фильтр">
     </mat-form-field>
   </div>
 
@@ -25,13 +25,13 @@
 
     <!-- Message Column -->
     <ng-container matColumnDef="message">
-      <mat-header-cell *matHeaderCellDef>Message</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef i18n="@@LOG.TABLE.MESSAGE">Сообщение</mat-header-cell>
       <mat-cell *matCellDef="let row" [style.color]="row.color">{{ row.msg }}</mat-cell>
     </ng-container>
 
     <!-- Category Column -->
     <ng-container matColumnDef="category">
-      <mat-header-cell *matHeaderCellDef>Category</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef i18n="@@LOG.TABLE.CATEGORY">Категория</mat-header-cell>
       <mat-cell *matCellDef="let row" [style.color]="row.color">{{ row.who }}</mat-cell>
     </ng-container>
 
@@ -39,8 +39,8 @@
     <ng-container matColumnDef="date">
       <mat-header-cell *matHeaderCellDef
                        mat-sort-header
-                       disableClear="true">
-        Date
+                       disableClear="true" i18n="@@LOG.TABLE.DATE">
+        Дата
       </mat-header-cell>
       <mat-cell #dateCell *matCellDef="let row" [style.color]="row.color">{{ row.date | date:dateFormat(dateCell) }}</mat-cell>
     </ng-container>

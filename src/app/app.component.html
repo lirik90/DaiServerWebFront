@@ -1,27 +1,27 @@
 <div class="main-container" [class.main-is-mobile]="mobileQuery.matches">
   <mat-toolbar class="main-toolbar">
     <img src="assets/img/logo.png">
-    <h1 class="main-app-name" *ngIf="!authService.currentUser || !mobileQuery.matches">Device Access</h1>
+    <h1 class="main-app-name" *ngIf="!authService.currentUser || !mobileQuery.matches" i18n="@@CONTROL.EXIT">Выйти</h1>
 
     <ng-container *ngIf="authService.currentUser">
       <div class="top-menu">
         <ul role="navigation">
           <li>
             <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
-              <mat-icon>dashboard</mat-icon><span *ngIf="!mobileQuery.matches"> Панель</span>
+              <mat-icon>dashboard</mat-icon><span *ngIf="!mobileQuery.matches" i18n="@@HOME.PANEL"> Панель</span>
             </a>
           </li>
           <li>
             <a class="nav-link" routerLink="/list" routerLinkActive="active">
-              <mat-icon>view_list</mat-icon><span *ngIf="!mobileQuery.matches"> Проекты</span>
+              <mat-icon>view_list</mat-icon><span *ngIf="!mobileQuery.matches" i18n="@@HOME.PROJECTS"> Проекты</span>
             </a>
           </li>
         </ul>
       </div>
       <span class="main-spacer"></span>
 
-      <h3 *ngIf="!mobileQuery.matches">Привет, <strong>{{authService.currentUser.username}}</strong>!</h3>
-      <button mat-icon-button matTooltip="Выйти" [routerLink]="['/login']"><mat-icon>exit_to_app</mat-icon></button>
+      <h3 *ngIf="!mobileQuery.matches"><span i18n="@@HOME.GREETING">Привет</span>, <strong>{{authService.currentUser.username}}</strong>!</h3>
+      <button mat-icon-button i18n-matTooltip="@@CONTROL.EXIT" matTooltip="Выйти" [routerLink]="['/login']"><mat-icon>exit_to_app</mat-icon></button>
     </ng-container>
   </mat-toolbar>
 

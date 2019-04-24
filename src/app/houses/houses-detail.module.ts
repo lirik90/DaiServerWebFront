@@ -5,11 +5,12 @@ import { RouterModule } from "@angular/router";
 
 import { HouseDetailComponent } from './detail/detail.component';
 
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    RouterModule,
+    RouterModule    
   ],
   declarations: [
     HouseDetailComponent

@@ -1,4 +1,4 @@
-<h2>Информация о пиве</h2>
+<h2 i18n="@@BEERBOX.BEER_INFO.TITLE">Информация о пиве</h2>
 <div class="grid grid-pad">
   <ng-container *ngFor="let item of items">
     <div class="col-1-3">
@@ -21,8 +21,8 @@
             <p><b>{{item.data.product_code.param.title}}:</b></p>
             <p>{{item.data.product_code.value}}</p>
             <p><b>{{item.data.product_code_type.param.title}}:</b> {{item.data.product_code_type.value}}</p>
-            <button mat-button (click)="click_edit(item)" title="Редактировать">Редактировать</button>
-            <button mat-button (click)="click_print_sample(item)" title="Пробная печать">Пробная печать</button>
+            <button mat-button (click)="click_edit(item)" i18n="@@CONTROL.EDIT">Редактировать</button>
+            <button mat-button (click)="click_print_sample(item)" i18n="@@BEERBOX.BEER_INFO.PRINT">Пробная печать</button>
           </ng-container>
       </div>
     </div>

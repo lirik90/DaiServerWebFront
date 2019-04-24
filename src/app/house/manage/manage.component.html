@@ -1,4 +1,4 @@
-<h2>Управление проектом</h2>
+<h2 i18n="@@MANAGEMENT.TITLE">Управление проектом</h2>
 
 <div class="grid grid-pad">
   <ng-container *ngFor="let sct of sections">
@@ -15,12 +15,10 @@
                 <h4 routerLink="/house/{{houseName}}/group/{{group.id}}/param">{{group.title ? group.title : group.type.title}}</h4>
                 <app-group-status [group]="group"></app-group-status>
                 <mat-form-field>
-                  <mat-select placeholder="Режим" [value]="group.mode ? group.mode.toString() : '0'"
+                  <mat-select i18n-placeholder="@@MANAGEMENT.MODE" placeholder="Режим" [(ngModel)]="group.mode"
                     (selectionChange)="controlService.changeGroupMode($event.value, group.id)"
                     (click)="$event.stopPropagation()">
-                    <mat-option>Не выбран</mat-option>
-                    <mat-option value="1">Ручной</mat-option>
-                    <mat-option value="2">Автоматический</mat-option>
+                    <mat-option *ngFor="let mode of groupModes" [value]="mode.id">{{mode.title}}</mat-option>
                   </mat-select>
                 </mat-form-field>
               </td>

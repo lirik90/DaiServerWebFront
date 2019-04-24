@@ -8,6 +8,7 @@ import { ISubscription } from "rxjs/Subscription";
 import { HouseService } from "./house.service";
 import { ControlService, Cmd } from "./control.service";
 import { AuthenticationService } from "../authentication.service";
+import {TranslateService} from '@ngx-translate/core';
 
 interface NavLink {
   link: string;
@@ -30,7 +31,7 @@ export class HouseComponent implements OnInit, OnDestroy {
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
-  fillerNav: NavLink[] = [{link: 'detail', text: 'Сведения', icon: 'perm_device_information'}];
+  fillerNav: NavLink[] = [];
 
   status_checked: boolean = false;
   connection_str: string = ' '; // HouseComponent.getConnectionString(false);
@@ -54,8 +55,8 @@ export class HouseComponent implements OnInit, OnDestroy {
   private bytes_sub: ISubscription;
   private opened_sub: ISubscription;
 
-  private static getConnectionString(connected: boolean): string {
-    return connected ? undefined : "Нет соединения с сервером";
+  private getConnectionString(connected: boolean): string {
+    return connected ? undefined : this.translate.instant("CONNECTION_PROBLEM");
   }
   
 	get status_class(): string {
@@ -78,15 +79,16 @@ export class HouseComponent implements OnInit, OnDestroy {
 	  if (this.status_checked)
     {
       switch (this.connect_state) {
-        case Connect_State.Disconnected: return 'Не на связи';
-        case Connect_State.Connected: return 'На связи';
-        case Connect_State.Modified: return 'Структура изменена. Требуется перезагрузка.';
+        case Connect_State.Disconnected: return this.translate.instant("OFFLINE");
+        case Connect_State.Connected: return this.translate.instant("ONLINE");
+        case Connect_State.Modified: return this.translate.instant("MODIFIED");
       }
     }
-		return "Подождите...";
+		return this.translate.instant("WAIT") + '...';
   }
 
   constructor(
+	  public translate: TranslateService,
     public houseService: HouseService,
     private route: ActivatedRoute,
     private controlService: ControlService,
@@ -103,29 +105,31 @@ export class HouseComponent implements OnInit, OnDestroy {
     this.can_see_more = this.authService.canChangeHouse();
     this.can_edit = this.authService.canChangeItemState();
 
+    this.fillerNav.push({link: 'detail', text: this.translate.instant("NAVIGATION_TAB.INFO"), icon: 'perm_device_information'});
+    
     if (this.can_see_more) {
-      this.fillerNav.push({link: 'view', text: 'Обзор', icon: 'home'});
-      this.fillerNav.push({link: 'manage', text: 'Управление', icon: 'build'});
-      this.fillerNav.push({link: 'log', text: 'Журнал', icon: 'event_note'});
-      this.fillerNav.push({link: 'settings', text: 'Структура', icon: 'settings'});
+      this.fillerNav.push({link: 'view', text: this.translate.instant("NAVIGATION_TAB.OVERVIEW"), icon: 'home'});
+      this.fillerNav.push({link: 'manage', text: this.translate.instant("NAVIGATION_TAB.MANAGEMENT"), icon: 'build'});
+      this.fillerNav.push({link: 'log', text: this.translate.instant("NAVIGATION_TAB.LOG"), icon: 'event_note'});
+      this.fillerNav.push({link: 'settings', text: this.translate.instant("NAVIGATION_TAB.STRUCTURE"), icon: 'settings'});
     }
-    this.fillerNav.push({link: 'reports', text: 'Отчёты', icon: 'show_chart'});
+    this.fillerNav.push({link: 'reports', text: this.translate.instant("NAVIGATION_TAB.REPORTS"), icon: 'show_chart'});
 
     // For Beerbox
     if (this.can_see_more)
-      this.fillerNav.push({link: 'beerbox/wash', text: 'Промывка', icon: 'opacity'});
+      this.fillerNav.push({link: 'beerbox/wash', text: this.translate.instant("NAVIGATION_TAB.WASH"), icon: 'opacity'});
     if (this.can_edit)
-      this.fillerNav.push({link: 'beerbox/replace_keg', text: 'Замена кег', icon: 'repeat'});
+      this.fillerNav.push({link: 'beerbox/replace_keg', text: this.translate.instant("NAVIGATION_TAB.REPLACE_KEG"), icon: 'repeat'});
 	  if (this.can_edit)
-      this.fillerNav.push({link: 'beerbox/calibration', text: 'Калибровка', icon: 'compass_calibration'});
+      this.fillerNav.push({link: 'beerbox/calibration', text: this.translate.instant("NAVIGATION_TAB.CALIBRATION"), icon: 'compass_calibration'});
 	  if (this.can_edit)
-      this.fillerNav.push({link: 'beerbox/check-head-stand', text: 'Стенд', icon: 'category'});
+      this.fillerNav.push({link: 'beerbox/check-head-stand', text: this.translate.instant("NAVIGATION_TAB.STAND"), icon: 'category'});
 	  if (this.can_edit)
-      this.fillerNav.push({link: 'beerbox/replace_labels', text: 'Замена ленты', icon: 'layers'});
+      this.fillerNav.push({link: 'beerbox/replace_labels', text: this.translate.instant("NAVIGATION_TAB.REPLACE_LABEL"), icon: 'layers'});
 	  if (this.can_edit)
-      this.fillerNav.push({link: 'beerbox/update_beer_info', text: 'Информация о пиве', icon: 'receipt'});
+      this.fillerNav.push({link: 'beerbox/update_beer_info', text: this.translate.instant("NAVIGATION_TAB.BEER_INFO"), icon: 'receipt'});
     if (this.can_edit)
-      this.fillerNav.push({link: 'beerbox/change_controller_address', text: 'Aдрес контроллера', icon: 'settings_input_component'});
+      this.fillerNav.push({link: 'beerbox/change_controller_address', text: this.translate.instant("NAVIGATION_TAB.CONTROLLER"), icon: 'settings_input_component'});
 
     this.getHouseInfo();
   }
@@ -170,13 +174,13 @@ export class HouseComponent implements OnInit, OnDestroy {
               let dt = new Date();
               dt.setTime(dt.getTime() - this.dt_offset);
 
-              const months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+              const months = this.translate.instant("MONTHS");
               let t_num = (num: number): string => {
                 return (num < 10 ? '0' : '') + num.toString();
               };
 
               this.dt_text = t_num(dt.getHours()) + ':' + t_num(dt.getMinutes()) + ':' + t_num(dt.getSeconds()) + ', ' +
-                t_num(dt.getDate()) + ' ' + months[dt.getMonth()] + ' ' + dt.getFullYear();
+                t_num(dt.getDate()) + ' ' + (months.length == 12 ? months[dt.getMonth()] : dt.getMonth()) + ' ' + dt.getFullYear();
                 
             };
             gen_time_string();
@@ -212,7 +216,7 @@ export class HouseComponent implements OnInit, OnDestroy {
     });
 
     this.opened_sub = this.controlService.opened.subscribe(opened => {
-      this.connection_str = HouseComponent.getConnectionString(opened);
+      this.connection_str = this.getConnectionString(opened);
 
       if (opened)
         this.controlService.getConnectInfo();
@@ -232,16 +236,7 @@ export class HouseComponent implements OnInit, OnDestroy {
 }
 
 @Component({
-  template: `
-    <h1 mat-dialog-title>Изменён</h1>
-    <mat-dialog-content>
-      Есть изменения. Хотите обновить страницу?
-    </mat-dialog-content>
-    <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Обновить</button>
-      <button mat-button (click)="dialogRef.close()">Отмена</button>
-    </mat-dialog-actions>
-  `
+  templateUrl: './page-reload-dialog.component.html',
 })
 export class PageReloadDialogComponent {
   constructor(

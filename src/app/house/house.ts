@@ -226,6 +226,13 @@ export class Settings {
   value: string;
 }
 
+export class GroupMode {
+  id: number;
+  name: string;
+  title: string;
+  group_type_id: number;
+}
+
 export class HouseDetail {
   id: number;             // ID проекта
   name: string;           // Имя проекта
@@ -239,5 +246,6 @@ export class HouseDetail {
   statusTypes: StatusType[];  // Типы состояний
   statuses: Status[];  // Состояния
   views: View[];
+  groupModes: GroupMode[];
 }
 
