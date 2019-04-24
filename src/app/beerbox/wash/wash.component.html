@@ -1,4 +1,4 @@
-<h2>Промывка</h2>
+<h2 i18n="@@BEERBOX.WASH.TITLE">Промывка</h2>
 <div class="grid grid-pad">
   <ng-container *ngFor="let clean of items">
     <div class="col-1-3">
@@ -6,27 +6,29 @@
         <h3>{{clean.sct.name}}</h3>
 
         <ng-container *ngIf="clean.step.val.raw == 0">
-          <h4>Выберите вид промывки:</h4>
+          <h4 i18n="@@BEERBOX.WASH.TYPE">Выберите вид промывки</h4>
           <mat-form-field>
             <mat-select [value]="clean.type.val.raw.toString()" (selectionChange)="onChange(clean.type, $event.value)">
               <mat-option *ngFor="let title of clean.type.val.display; index as i" value="{{i}}">{{title}}</mat-option>
             </mat-select>
           </mat-form-field>
 
-          <button mat-button (click)="start(clean)">Начать промывку</button>
+          <button mat-button (click)="start(clean)" i18n="@@BEERBOX.WASH.START">Начать промывку</button>
         </ng-container>
 
         <ng-container *ngIf="clean.step.val.raw != 0">
-          <h4>Текущий этап: {{stepText(clean)}}</h4>
+          <h4><span i18n="@@BEERBOX.WASH.STEP">Текущий этап</span>: {{stepText(clean)}}</h4>
           <ng-container *ngIf="clean.pouring.val.raw == 0">
-            <h4>К промывке готов!</h4>
-            <p>Промывочное средство: {{cleanAgent(clean)}}</p>
-            <p>Опустошите дренажную ёмкость. Подключите промывочный кег к обеим заборным головкам. И нажмите кнопку на аппарате.</p>
+            <h4 i18n="@@BEERBOX.WASH.READY">К промывке готов!</h4>
+            <p><span i18n="@@BEERBOX.WASH.AGENT">Промывочное средство</span>: {{cleanAgent(clean)}}</p>
+            <p i18n="@@BEERBOX.WASH.TEXT">Опустошите дренажную ёмкость. Подключите промывочный кег к обеим заборным головкам. И нажмите кнопку на аппарате.</p>
           </ng-container>
           <ng-container *ngIf="clean.pouring.val.raw == 1">
-            <h5>Идёт промывка, пожалуйста ждите!</h5>
-            <h5>Осталось: {{clean.full_volume.val.display-clean.cur_volume.val.display}} мл.<span *ngIf="clean.pause.val.display == 1"> Пауза!</span></h5>
-            <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+            <h5 i18n="@@BEERBOX.EVENT.WASH_PROCESS">Идёт промыка, пожалуйста ждите!</h5>
+            <h5><span i18n="@@BEERBOX.EVENT.LEFT">Осталось</span>: {{(clean.full_volume.val.display-clean.cur_volume.val.display).toFixed(1)}} 
+              <span i18n="@@BEERBOX.ML">мл.</span>
+              <span *ngIf="clean.pause.val.display == 1" i18n="@@CONTROL.PAUSE"> Пауза</span></h5>
+            <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
           </ng-container>
         </ng-container>
       </div>

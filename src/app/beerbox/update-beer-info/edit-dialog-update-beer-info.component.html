@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Редактирование информации о пиве</h1>
+<h1 mat-dialog-title i18n="@@BEERBOX.BEER_INFO.DIALOG">Редактирование информации о пиве</h1>
 <div mat-dialog-content>
   <div>
     <mat-form-field class="input-full-width">
@@ -50,6 +50,6 @@
   </div> 
 </div> 
 <div mat-dialog-actions>
-  <button mat-button type="button" (click)="dialogRef.close()">Отмена</button>
-  <button mat-button [mat-dialog-close]="item" cdkFocusInitial>Сохранить</button>
+  <button mat-button type="button" (click)="dialogRef.close()" i18n="@@CONTROL.CANCEL">Отмена</button>
+  <button mat-button [mat-dialog-close]="item" cdkFocusInitial i18n="@@CONTROL.SAVE">Сохранить</button>
 </div>

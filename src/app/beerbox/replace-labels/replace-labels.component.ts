@@ -5,7 +5,6 @@ import { Section, DeviceItem, ParamValue } from "../../house/house";
 import { HouseService } from "../../house/house.service";
 import { ControlService } from "../../house/control.service"
 
-
 @Component({
   selector: 'app-replace-labels',
   templateUrl: './replace-labels.component.html',

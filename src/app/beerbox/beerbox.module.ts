@@ -12,6 +12,14 @@ import { ReplaceLabelsComponent } from './replace-labels/replace-labels.componen
 import { UpdateBeerInfoComponent, EditDialogUpdateBeerInfoComponent } from './update-beer-info/update-beer-info.component';
 import { ChangeControllerAddressComponent } from './change-controller-address/change-controller-address.component';
 
+import { HttpClient } from '@angular/common/http';
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+
+export function createTranslateLoader(http: HttpClient) {
+    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
 @NgModule({
   imports: [
     CommonModule,
@@ -19,6 +27,13 @@ import { ChangeControllerAddressComponent } from './change-controller-address/ch
     ReactiveFormsModule,
     MaterialModule,
     BeerboxRoutingModule,
+	  TranslateModule.forChild({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: (createTranslateLoader),
+                deps: [HttpClient]
+            }
+        })
   ],
   declarations: [
     WashComponent, ReplaceKegComponent, ConfirmDialogReplaceKegComponent, CalibrationComponent, CheckHeadStandComponent, CheckHeadStandDialogComponent, ReplaceLabelsComponent, UpdateBeerInfoComponent, EditDialogUpdateBeerInfoComponent, ChangeControllerAddressComponent

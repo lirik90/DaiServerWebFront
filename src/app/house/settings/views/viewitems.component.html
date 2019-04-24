@@ -1,15 +1,15 @@
 <mat-expansion-panel class="example-headers-align" hideToggle #slist>
   <mat-expansion-panel-header>
-    <mat-panel-title><p>Элементы представления</p></mat-panel-title>
+    <mat-panel-title><p i18n="@@SETTINGS.VIEW_ITEMS.TITLE">Элементы представления</p></mat-panel-title>
     <mat-panel-description>
-      Всего: {{items.length}}
+      <span i18n="@@CONTROL.TOTAL">Всего</span>: {{items.length}}
       <span *ngIf="changed">
         <button mat-icon-button (click)="save($event)"><mat-icon>save</mat-icon></button>
         <button mat-icon-button (click)="cancel($event)"><mat-icon>cancel</mat-icon></button>
       </span>
     </mat-panel-description>
   </mat-expansion-panel-header>
-  <button class="mybtn" (click)="create(); slist.close()">Добавить элемент</button>
+  <button class="mybtn" (click)="create(); slist.close()" i18n="@@SETTINGS.VIEW_ITEMS.ADD">Добавить элемент</button>
   <ul class="houses">
     <ng-container *ngFor="let item of items">
       <li *ngIf="item.state !== changeState.Delete" [class.selected]="sel_item == item">
@@ -17,18 +17,18 @@
           <span class="badge badge_id left_tab" [class.badge_changed]="item.state === changeState.Upsert">{{item.obj.id}}</span>
           {{item.obj.title ? item.obj.title : 'Unknown'}}
         </a>
-        <button class="mybtn delete" title="delete device item" (click)="remove(item)">x</button>
+        <button class="mybtn delete" i18n-title="@@SETTINGS.VIEW_ITEMS.DELETE" title="Удалить элемент" (click)="remove(item)">x</button>
       </li>
     </ng-container>
   </ul>
 </mat-expansion-panel>
 <mat-expansion-panel expanded hideToggle *ngIf="sel_item">
   <mat-expansion-panel-header>
-    <mat-panel-title>Детали</mat-panel-title>
+    <mat-panel-title i18n="@@SETTINGS.DETAILS">Детали</mat-panel-title>
     <mat-panel-description>{{sel_item.obj.title ? sel_item.obj.title : 'Unknown'}}</mat-panel-description>
   </mat-expansion-panel-header>
   <mat-form-field>
-    <mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.item_id" placeholder="Элемент">
+    <mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.item_id" i18n-placeholder="@@SETTINGS.VIEW_ITEMS.ELEMENT" placeholder="Элемент">
       <mat-option *ngFor="let dev_item of dev_items" [value]="dev_item.id">{{title(dev_item)}}</mat-option>
     </mat-select>
   </mat-form-field>

@@ -9,6 +9,14 @@ import { ReportsComponent } from './reports.component';
 import { ChartsComponent } from './charts/charts.component';
 import { ExportComponent } from './export/export.component';
 
+import { HttpClient } from '@angular/common/http';
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+
+export function HttpLoaderFactory(httpClient: HttpClient) {
+  return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
+}
+
 @NgModule({
   imports: [
     CommonModule,
@@ -16,6 +24,13 @@ import { ExportComponent } from './export/export.component';
     ReactiveFormsModule,
     ReportsRoutingModule,
     MaterialModule,
+	  TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]        
+      }
+    })
   ],
   declarations: [
     ReportsComponent,

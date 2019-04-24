@@ -1,4 +1,4 @@
-<h2>Калибровка объёма налива</h2>
+<h2 i18n="@@BEERBOX.CALIBRATION.TITLE">Калибровка объёма налива</h2>
 <div class="grid grid-pad">
   <ng-container *ngFor="let it of items; index as i">
     <div class="col-1-3">
@@ -6,40 +6,41 @@
         <h3>{{it.sct.name}}</h3>		  
 	    		  		  
           <ng-container *ngIf="it.clean_type.val.raw > 0; else no_clean_type">
-            <h5>Идёт промыка, пожалуйста ждите!</h5>
+            <h5 i18n="@@BEERBOX.EVENT.WASH_PROCESS">Идёт промыка, пожалуйста ждите!</h5>
             <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
           </ng-container>
 		 
           <ng-template #no_clean_type>
             <ng-container *ngIf="it.pouring.val.raw == 1; else no_pouring">
-              <h5>Идёт налив, пожалуйста ждите!</h5>
-              <h5>Осталось: {{it.full_volume.val.display-it.volume.val.display}} мл.<span *ngIf="it.pause.val.display == 1"> Пауза!</span></h5>
+              <h5 i18n="@@BEERBOX.EVENT.POURING_PROCESS">Идёт налив, пожалуйста ждите!</h5>
+              <h5><span i18n="@@BEERBOX.EVENT.LEFT">Осталось</span>: {{(it.full_volume.val.display-it.volume.val.display).toFixed(1)}} <span i18n="@@BEERBOX.ML">мл.</span>
+                <span *ngIf="it.pause.val.display == 1" i18n="@@CONTROL.PAUSE"> Пауза</span></h5>
               <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
             </ng-container>	
 			
 		        <ng-template #no_pouring>
               <ng-container *ngIf="step_[i] == 0">
-  			        <h4>Взвесьте пустую бутылку и введите массу бутылки в граммах</h4>
+  			        <h4 i18n="@@BEERBOX.CALIBRATION.STEP_1">Взвесьте пустую бутылку и введите массу бутылки в граммах</h4>
   			        <mat-form-field>
-  				        <input matInput [(ngModel)]="empty_bottle_mass_[i]" (keypress)="check_number_only($event)" placeholder="Введите массу бутылки:"/>
+  				        <input matInput [(ngModel)]="empty_bottle_mass_[i]" (keypress)="check_number_only($event)" i18n-placeholder="@@BEERBOX.CALIBRATION.STEP_1_HINT" placeholder="Введите массу бутылки"/>
 			          </mat-form-field>
-			          <button mat-button (click)="click_next(i)">Продолжить</button>
+			          <button mat-button (click)="click_next(i)" i18n="@@CONTROL.NEXT">Продолжить</button>
 			        </ng-container>
 
               <ng-container *ngIf="step_[i] == 1">
-                <h4>Налейте бутылку через аппарат, взвесьте бутылку с напитком и введите массу бутылки в граммах</h4>
+                <h4 i18n="@@BEERBOX.CALIBRATION.STEP_2">Налейте бутылку через аппарат, взвесьте бутылку с напитком и введите массу бутылки в граммах</h4>
                 <mat-form-field>
                 <label>
-                  <input matInput [(ngModel)]="full_bottle_mass_[i]" (keypress)="check_number_only($event)" placeholder="Введите массу бутылки с напитком:"/>
+                  <input matInput [(ngModel)]="full_bottle_mass_[i]" (keypress)="check_number_only($event)" i18n-placeholder="@@BEERBOX.CALIBRATION.STEP_2_HINT" placeholder="Введите массу бутылки с напитком"/>
                 </label>
                 </mat-form-field>
-                <button mat-button (click)="click_next(i)">Продолжить</button>
+                <button mat-button (click)="click_next(i)" i18n="@@CONTROL.NEXT">Продолжить</button>
               </ng-container>
 
               <ng-container *ngIf="step_[i] > 1">
-                <h4>Калибровка налива завершена!</h4>          
-                <h4>Произведите контрольный налив и взвесьте бутылку с напитком, если точность налива Вас не устраивает, произведите калибровку повторно</h4>  
-                <button mat-button (click)="click_restart(i)">Начать сначала</button>
+                <h4 i18n="@@BEERBOX.CALIBRATION.STEP_3">Калибровка налива завершена! <br> 
+                  Произведите контрольный налив и взвесьте бутылку с напитком, если точность налива Вас не устраивает, произведите калибровку повторно</h4>          
+                <button mat-button (click)="click_restart(i)" i18n="@@CONTROL.REPEAT">Начать сначала</button>
               </ng-container>
 		        </ng-template>
 			

@@ -62,7 +62,7 @@ export class ChangeControllerAddressComponent implements OnInit
   
   click_start_button(): void
   {
-    if (this.items.change_controller_address.value == 0)
+    if (this.items.change_controller_address.val.display == 0)
     {
       this.is_writing_ = false;
       this.address_ = 0;
@@ -99,8 +99,8 @@ export class ChangeControllerAddressComponent implements OnInit
   {
     if (this.items_.controller_address_1 != undefined && this.items_.controller_address_2 != undefined && this.items_.controller_address_1 != null && this.items_.controller_address_2 != null)
     {
-      let address = +this.items_.controller_address_1.raw_value & 0xff
-      let speed = ((+this.items_.controller_address_1.raw_value << 8) & 0xff0000) | +this.items_.controller_address_2.raw_value; 
+      let address = +this.items_.controller_address_1.val.raw & 0xff
+      let speed = ((+this.items_.controller_address_1.val.raw << 8) & 0xff0000) | +this.items_.controller_address_2.val.raw; 
       if ((address == this.last_address_) && (speed == this.last_speed_))
       {
         this.is_writing_ = false;
@@ -116,8 +116,8 @@ export class ChangeControllerAddressComponent implements OnInit
   
   is_controller_connected(): boolean
   {
-    if (this.items.controller_address_1.raw_value == undefined || this.items.controller_address_1.raw_value == null ||
-        this.items.controller_address_2.raw_value == undefined || this.items.controller_address_2.raw_value == null)
+    if (this.items.controller_address_1.val.raw == undefined || this.items.controller_address_1.val.raw == null ||
+        this.items.controller_address_2.val.raw == undefined || this.items.controller_address_2.val.raw == null)
     {
       this.last_address_ = -1;
       this.last_speed_ = -1;
@@ -128,8 +128,8 @@ export class ChangeControllerAddressComponent implements OnInit
     }
     if (!this.is_found_)
     {
-      this.address_ = +this.items_.controller_address_1.raw_value & 0xff
-      this.speed_ = ((+this.items_.controller_address_1.raw_value << 8) & 0xff0000) | +this.items_.controller_address_2.raw_value;
+      this.address_ = +this.items_.controller_address_1.val.raw & 0xff
+      this.speed_ = ((+this.items_.controller_address_1.val.raw << 8) & 0xff0000) | +this.items_.controller_address_2.val.raw;
       this.is_found_ = true;
     }    
     return true;
