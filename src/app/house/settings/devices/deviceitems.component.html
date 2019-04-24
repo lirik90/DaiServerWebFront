@@ -1,15 +1,15 @@
 <mat-expansion-panel class="example-headers-align" hideToggle #slist>
   <mat-expansion-panel-header>
-    <mat-panel-title><p>Элементы устройства</p></mat-panel-title>
+    <mat-panel-title><p i18n="@@SETTINGS.DEVICES_ITEMS.TITLE">Элементы устройства</p></mat-panel-title>
     <mat-panel-description>
-      Всего: {{items.length}}
+      <span i18n="@@CONTROL.TOTAL">Всего</span>: {{items.length}}
       <span *ngIf="changed">
         <button mat-icon-button (click)="save($event)"><mat-icon>save</mat-icon></button>
         <button mat-icon-button (click)="cancel($event)"><mat-icon>cancel</mat-icon></button>
       </span>
     </mat-panel-description>
   </mat-expansion-panel-header>
-  <button class="mybtn" (click)="create(); slist.close()">Добавить элемент</button>
+  <button class="mybtn" (click)="create(); slist.close()" i18n="@@SETTINGS.DEVICES_ITEMS.ADD">Добавить элемент</button>
   <ul class="houses">
     <ng-container *ngFor="let item of items">
       <li *ngIf="item.state !== changeState.Delete" [class.selected]="sel_item == item">
@@ -17,33 +17,33 @@
           <span class="badge badge_id left_tab" [class.badge_changed]="item.state === changeState.Upsert">{{item.obj.id}}</span>
           {{title(item.obj)}}
         </a>
-        <button class="mybtn delete" title="delete device item" (click)="remove(item)">x</button>
+        <button class="mybtn delete" i18n-title="@@SETTINGS.DEVICES_ITEMS.DELETE" title="Удалить элемент" (click)="remove(item)">x</button>
       </li>
     </ng-container>
   </ul>
 </mat-expansion-panel>
 <mat-expansion-panel expanded hideToggle *ngIf="sel_item">
   <mat-expansion-panel-header>
-    <mat-panel-title>Детали</mat-panel-title>
+    <mat-panel-title i18n="@@SETTINGS.DETAILS">Детали</mat-panel-title>
     <mat-panel-description>{{title()}}</mat-panel-description>
   </mat-expansion-panel-header>
   <mat-form-field>
-    <input matInput [(ngModel)]="sel_item.obj.name" placeholder="Имя" (ngModelChange)="itemChanged()" />
+    <input matInput [(ngModel)]="sel_item.obj.name" i18n-placeholder="@@SETTINGS.NAME" placeholder="Имя" (ngModelChange)="itemChanged()" />
   </mat-form-field>
   <mat-form-field>
-    <input matInput [(ngModel)]="sel_item.obj.extra" placeholder="Экстра" (ngModelChange)="itemChanged()" />
+    <input matInput [(ngModel)]="sel_item.obj.extra"  i18n-placeholder="@@SETTINGS.EXTRA"placeholder="Экстра" (ngModelChange)="itemChanged()" />
   </mat-form-field>
   <mat-form-field>
-    <input matInput [(ngModel)]="sel_item.obj.parent_id" placeholder="Предок" (ngModelChange)="itemChanged()" />
+    <input matInput [(ngModel)]="sel_item.obj.parent_id" i18n-placeholder="@@SETTINGS.PARENT" placeholder="Предок" (ngModelChange)="itemChanged()" />
   </mat-form-field>
   <mat-form-field>
-    <mat-select [(ngModel)]="sel_item.obj.type_id" placeholder="Тип" (ngModelChange)="typeChanged()">
+    <mat-select [(ngModel)]="sel_item.obj.type_id" i18n-placeholder="@@SETTINGS.TYPE" placeholder="Тип" (ngModelChange)="typeChanged()">
       <mat-option *ngFor="let type of itemtypes" [value]="type.id">{{type.title}}</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field>
-    <mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.group_id" placeholder="Группа">
-      <mat-option>-- Нет --</mat-option>
+    <mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.group_id" i18n-placeholder="@@SETTINGS.GROUP" placeholder="Группа">
+      <mat-option>-- <span i18n-placeholder="@@CONTROL.NO">Нет</span> --</mat-option>
       <mat-optgroup *ngFor="let sct of sections" [label]="sct.name">
         <ng-container *ngFor="let grp of sct.groups">
   

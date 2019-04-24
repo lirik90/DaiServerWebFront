@@ -1,20 +1,19 @@
 <div *ngIf="house">
-  <h2>Подробнее о проекте: «{{ house.title | uppercase }}»</h2>
-  <div><span>Ид: </span>{{house.id}}</div>
-  <div><span>Имя: </span>{{house.name}}</div>
-  <div><span>Уникальный номер: </span>{{house.device}}</div>
+  <h2><span i18n="@@DETAILS.HEAD">Подробнее о проекте</span>: «{{ house.title | uppercase }}»</h2>
+  <div><span i18n="@@DETAILS.ID">Ид</span>: {{house.id}}</div>
+  <div><span i18n="@@DETAILS.NAME">Имя</span>: {{house.name}}</div>
+  <div><span i18n="@@DETAILS.UUID">Уникальный номер</span>: {{house.device}}</div>
   <div>
-    <label>Заголовок:
+    <label i18n="@@DETAILS.TITLE">Заголовок:
       <input [(ngModel)]="house.title" placeholder="title">
     </label>
   </div>
   <div>
-    <label class="desc_label">Описание:
-      <textarea [(ngModel)]="house.description" placeholder="description"></textarea>
+    <label class="desc_label"><span i18n="@@DETAILS.DESCRIPTION">Описание</span>:
+      <textarea [(ngModel)]="house.description" i18n-placeholder="@@DETAILS.DESCRIPTION" placeholder="Описание"></textarea>
     </label>
   </div>
 </div>
-<button (click)="goBack()">Назад</button>
-<button *ngIf="house" routerLink="/house/{{house.name}}/manage">Открыть</button>
-<button *ngIf="can_save" (click)="save()">Сохранить</button>
-
+<button (click)="goBack()" i18n="@@CONTROL.BACK">Назад</button>
+<button *ngIf="house" routerLink="/house/{{house.name}}/manage" i18n="@@CONTROL.OPEN">Открыть</button>
+<button *ngIf="can_save" (click)="save()" i18n="@@CONTROL.SAVE">Сохранить</button>

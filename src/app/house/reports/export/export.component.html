@@ -1,61 +1,61 @@
-<h2>Экспорт данных</h2>
-<h3 *ngIf="loading">Подождите! Идёт генерация отчёта...</h3>
+<h2 i18n="@@REPORTS.EXPORT.TITLE">Экспорт данных</h2>
+<h3 *ngIf="loading" i18n="@@REPORTS.EXPORT.WAITING">Подождите! Идёт генерация отчёта...</h3>
 <mat-vertical-stepper linear *ngIf="!loading">
   <mat-step [stepControl]="firstFormGroup">
     <form [formGroup]="firstFormGroup">
-      <ng-template matStepLabel>Выберите проект</ng-template>
-      <mat-checkbox #current_only (change)="fillHouses($event.checked)" [checked]="true">Только этот проект</mat-checkbox><br><br>
+      <ng-template matStepLabel i18n="@@REPORTS.EXPORT.SELECT_PROJECT">Выберите проект</ng-template>
+      <mat-checkbox #current_only (change)="fillHouses($event.checked)" [checked]="true" i18n="@@REPORTS.EXPORT.SELECT_THIS">Только этот проект</mat-checkbox><br><br>
       <mat-form-field *ngIf="!current_only.checked">
         <mat-select placeholder="Проекты" formControlName="projects" multiple required>
-					<mat-select-trigger>Выбрано: {{firstFormGroup.controls.projects.value?.length}}</mat-select-trigger>
+					<mat-select-trigger><span i18n="@@REPORTS.EXPORT.SELECTED">Выбрано</span>: {{firstFormGroup.controls.projects.value?.length}}</mat-select-trigger>
           <mat-option *ngFor="let house of houses" [value]="house.id">{{house.title}}</mat-option>
         </mat-select>
       </mat-form-field>
       <div>
-        <button mat-button matStepperNext>Дальше</button>
+        <button mat-button matStepperNext i18n="@@CONTROL.NEXT2">Дальше</button>
       </div>
     </form>
   </mat-step>
   <mat-step [stepControl]="secondFormGroup">
     <form [formGroup]="secondFormGroup">
-      <ng-template matStepLabel>Укажите период</ng-template>
+      <ng-template matStepLabel i18n="@@REPORTS.EXPORT.SELECT_TIME">Укажите период</ng-template>
       <mat-form-field>
-        <input matInput [matDatepicker]="picker_from" formControlName="date_from" placeholder="Дата от" required>
+        <input matInput [matDatepicker]="picker_from" formControlName="date_from" i18n-placeholder="@@REPORTS.DATE_FROM" placeholder="Дата от" required>
         <mat-datepicker-toggle matSuffix [for]="picker_from"></mat-datepicker-toggle>
         <mat-datepicker #picker_from></mat-datepicker>
       </mat-form-field>
       <mat-form-field>
-        <input matInput [matDatepicker]="picker_to" formControlName="date_to" placeholder="Дата до" required>
+        <input matInput [matDatepicker]="picker_to" formControlName="date_to" i18n-placeholder="@@REPORTS.DATE_TO" placeholder="Дата до" required>
         <mat-datepicker-toggle matSuffix [for]="picker_to"></mat-datepicker-toggle>
         <mat-datepicker #picker_to></mat-datepicker>
       </mat-form-field>
       <div>
-        <button mat-button matStepperPrevious>Назад</button>
-        <button mat-button matStepperNext>Дальше</button>
+        <button mat-button matStepperPrevious i18n="@@CONTROL.BACK">Назад</button>
+        <button mat-button matStepperNext i18n="@@CONTROL.NEXT2">Дальше</button>
       </div>
     </form>
   </mat-step>
   <mat-step [stepControl]="dataFormGroup">
     <form [formGroup]="dataFormGroup">
-      <ng-template matStepLabel>Выберите данные</ng-template>
-      <mat-checkbox formControlName="hide_null">Не экспортировать нулевые значения</mat-checkbox><br><br>
+      <ng-template matStepLabel i18n="@@REPORTS.EXPORT.SELECT_DATA">Выберите данные</ng-template>
+      <mat-checkbox formControlName="hide_null" i18n="@@REPORTS.EXPORT.NOT_EXPORT_NULL">Не экспортировать нулевые значения</mat-checkbox><br><br>
       <mat-form-field>
         <mat-select placeholder="Типы элементов" formControlName="items" multiple required>
-					<mat-select-trigger>Выбрано: {{dataFormGroup.controls.items.value?.length}}</mat-select-trigger>
+					<mat-select-trigger><span i18n="@@REPORTS.EXPORT.SELECTED">Выбрано</span>: {{dataFormGroup.controls.items.value?.length}}</mat-select-trigger>
           <mat-option *ngFor="let t of types" [value]="t.id">{{t.title}}</mat-option>
         </mat-select>
       </mat-form-field>
       <div>
-        <button mat-button matStepperPrevious>Назад</button>
-        <button mat-button matStepperNext>Дальше</button>
+        <button mat-button matStepperPrevious i18n="@@CONTROL.BACK">Назад</button>
+        <button mat-button matStepperNext i18n="@@CONTROL.NEXT2">Дальше</button>
       </div>
     </form>
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel>Готово</ng-template>
-    Для генерации отчёта всё готово.
+    <ng-template matStepLabel i18n="@@CONTROL.READY">Готово</ng-template>
+    <span i18n="@@REPORTS.EXPORT.READY">Для генерации отчёта всё готово.</span>
     <div>
-      <button mat-button (click)="onSubmit()">Скачать</button>
+      <button mat-button (click)="onSubmit()" i18n="@@CONTROL.DOWNLOAD">Скачать</button>
     </div>
   </mat-step>
 </mat-vertical-stepper>

@@ -1,30 +1,30 @@
-<h2>Графики</h2>
+<h2 i18n="@@REPORTS.CHARTS.TITLE">Графики</h2>
 
 <div class="group_nav">
   <mat-form-field>
-    <input type="time" matInput placeholder="Время от" [(ngModel)]="time_from" required>
+    <input type="time" matInput i18n-placeholder="@@REPORTS.TIME_FROM" placeholder="Время от" [(ngModel)]="time_from" required>
   </mat-form-field>
   <mat-form-field>
-    <input matInput [matDatepicker]="picker_from" [formControl]="date_from" placeholder="Дата от" required>
+    <input matInput [matDatepicker]="picker_from" [formControl]="date_from" i18n-placeholder="@@REPORTS.DATE_FROM" placeholder="Дата от" required>
     <mat-datepicker-toggle matSuffix [for]="picker_from"></mat-datepicker-toggle>
     <mat-datepicker #picker_from></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field>
-    <input type="time" matInput placeholder="Время до" [(ngModel)]="time_to" required>
+    <input type="time" matInput i18n-placeholder="@@REPORTS.TIME_TO" placeholder="Время до" [(ngModel)]="time_to" required>
   </mat-form-field>
   <mat-form-field>
-    <input matInput [matDatepicker]="picker_to" [formControl]="date_to" placeholder="Дата до" required>
+    <input matInput [matDatepicker]="picker_to" [formControl]="date_to" i18n-placeholder="@@REPORTS.DATE_TO" placeholder="Дата до" required>
     <mat-datepicker-toggle matSuffix [for]="picker_to"></mat-datepicker-toggle>
     <mat-datepicker #picker_to></mat-datepicker>
   </mat-form-field>
 
   <br>
-  Разложить:
+  <span i18n="@@REPORTS.CHARTS.DECOMPOSE">Разложить</span>:
   <mat-radio-group class="charts-type-group" [(ngModel)]="charts_type">
-    <mat-radio-button class="charts-type-button" [value]="0" checked>По группам элементов</mat-radio-button>
-    <mat-radio-button class="charts-type-button" [value]="1">По типам элементов</mat-radio-button>
-    <mat-radio-button class="charts-type-button" [value]="2">По элементам</mat-radio-button>
+    <mat-radio-button class="charts-type-button" [value]="0" checked i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_GROUPS">По группам элементов</mat-radio-button>
+    <mat-radio-button class="charts-type-button" [value]="1" i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_TYPES">По типам элементов</mat-radio-button>
+    <mat-radio-button class="charts-type-button" [value]="2" i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_ITEMS">По элементам</mat-radio-button>
   </mat-radio-group>
 
   <div *ngIf="charts_type == 0">
@@ -33,39 +33,39 @@
       (click)="selectGroup(item)">{{item.title}}</a>
   </div>
   <div *ngIf="charts_type == 1">
-    <button (click)="add_item_type()">Добавить тип элемента</button><br>
+    <button (click)="add_item_type()" i18n="@@REPORTS.CHARTS.ADD_TYPE">Добавить тип элемента</button><br>
     <table>
       <tbody>
         <tr *ngFor="let item of selected_item_types">
           <td>
             <select required [(ngModel)]="item.id">
-              <option value="0">Выберите тип элемента</option>
+              <option value="0" i18n="@@REPORTS.CHARTS.SELECT_TYPE">Выберите тип элемента</option>
               <option *ngFor="let t of item_types" value="{{t.id}}">{{t.title}}</option>
             </select>
           </td>
-          <td><button type="button" (click)="del_item_type(item)">Удалить</button></td>
+          <td><button type="button" (click)="del_item_type(item)" i18n="@@CONTROL.DELETE">Удалить</button></td>
         </tr>
       </tbody>
     </table>
   </div>
   <div *ngIf="charts_type == 2">
-    <button (click)="add_devitem()">Добавить элемент</button><br>
+    <button (click)="add_devitem()" i18n="@@REPORTS.CHARTS.ADD_ITEM">Добавить элемент</button><br>
     <table>
       <tbody>
         <tr *ngFor="let item of selected_devitems">
           <td>
             <select required [(ngModel)]="item.id">
-              <option value="0">Выберите элемент</option>
+              <option value="0" i18n="@@REPORTS.CHARTS.SELECT_ITEM">Выберите элемент</option>
               <option *ngFor="let t of devitems" value="{{t.id}}">{{t.name}}</option>
             </select>
           </td>
-          <td><button type="button" (click)="del_devitem(item)">Удалить</button></td>
+          <td><button type="button" (click)="del_devitem(item)" i18n="@@CONTROL.DELETE">Удалить</button></td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <button mat-raise-button (click)="initCharts()">Показать</button>
+  <button mat-raise-button (click)="initCharts()" i18n="@@CONTROL.SHOW">Показать</button>
 </div>
 
 <ng-container *ngIf="initialized">

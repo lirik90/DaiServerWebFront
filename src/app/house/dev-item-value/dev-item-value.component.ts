@@ -5,6 +5,7 @@ import { ControlService } from "../control.service";
 import { AuthenticationService } from "../../authentication.service";
 import { DeviceItem, ItemTypeRegister } from '../house';
 import { HouseService } from "../house.service";
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dev-item-value',
@@ -23,6 +24,7 @@ export class DevItemValueComponent implements OnInit {
   is_loading: boolean;
 
   constructor(
+	  public translate: TranslateService,
     public dialog: MatDialog,
     private controlService: ControlService,
     private authService: AuthenticationService,
@@ -45,7 +47,7 @@ export class DevItemValueComponent implements OnInit {
   get text_value(): string {
     const val = this.item.val ? this.item.val.display : null;
     if (val === undefined || val === null)
-      return 'Не подключено';
+      return this.translate.instant("NOT_CONNECTED");
     if (typeof(val) === 'object') {
       return val[this.item.val.raw];
     }

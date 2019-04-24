@@ -1,18 +1,18 @@
-<h2>Замена кег</h2>
-<h2>При замене кегов устанавливать кеги строго на соответствующие пронумерованные места!!!</h2>
+<h2 i18n="@@BEERBOX.REPLACE_KEG.TITLE">Замена кег<br>При замене кегов устанавливать кеги строго на соответствующие пронумерованные места!!!</h2>
 <div class="grid grid-pad">
   <ng-container *ngFor="let item of items; index as sct_i">
     <div class="col-1-3" *ngIf="item.have_empty">
       <div class="module house">
         <h3>{{item.sct.name}}</h3>
         <ng-container *ngFor="let keg of item.kegs; index as i">
-          <h4 *ngIf="keg.item.val.raw == 0" (click)="openDialog(keg)">Кег №{{(sct_i*2)+1+i}} пуст.
-            <br>Нажмите здесь если заменили его.<span *ngIf="keg.bad_clean !== undefined && keg.bad_clean.val.raw == 1">
-            <br>Не выполнено вытеснение пивом. После замены не забудьте сделать это.</span>
+          <h4 *ngIf="keg.item.val.raw == 0" (click)="openDialog(keg)">
+            <div i18n="@@BEERBOX.REPLACE_KEG.EMPTY">Кег №{{ (sct_i*2)+1+i }} пуст</div>
+            <div i18n="@@BEERBOX.REPLACE_KEG.TEXT">Нажмите здесь если заменили его</div>
+            <span *ngIf="keg.bad_clean !== undefined && keg.bad_clean.val.raw == 1" i18n="@@BEERBOX.REPLACE_KEG.WARNING">Не выполнено вытеснение пивом. После замены не забудьте сделать это</span>
           </h4>
         </ng-container>
       </div>
     </div>
   </ng-container>
-  <h3 *ngIf="items && !have_empty">Пустых кег нет</h3>
+  <h3 *ngIf="items && !have_empty" i18n="@@BEERBOX.REPLACE_KEG.NONEMPTY">Пустых кег нет</h3>
 </div>

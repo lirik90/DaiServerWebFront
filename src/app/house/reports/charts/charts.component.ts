@@ -4,6 +4,7 @@ import { FormControl } from '@angular/forms';
 import { HouseService, ExportConfig, ExportItem } from "../../house.service";
 import { ItemType, GroupType, Section, DeviceItem, Logs } from "../../house";
 import { PaginatorApi } from "../../../user";
+import {TranslateService} from '@ngx-translate/core';
 
 interface DevItemTypeItem {
   id: number;
@@ -116,6 +117,7 @@ export class ChartsComponent implements OnInit {
   initialized: boolean = false;
 
   constructor(
+	  public translate: TranslateService,
     private houseService: HouseService,
   ) { }
 
@@ -283,7 +285,7 @@ export class ChartsComponent implements OnInit {
           }
         }
       }
-      this.addChart('выбранные элементы', datasets);
+      this.addChart(this.translate.instant("REPORTS.CHARTS_ELEMENTS"), datasets);
       this.houseService.getLogs(date_from, date_to, undefined, undefined, devitems_str).subscribe(fillData);
     }
   }
