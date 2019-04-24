@@ -45,7 +45,7 @@ h4 {
 	background-color: #eee;
   border-radius: 16px;
 	color: #6A9D80;
-	cursor: pointer;
+	cursor: pointer; 
 }
 .eqTable td:not([colspan]) {
 	padding-top: 12px;

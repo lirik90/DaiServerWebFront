@@ -34,11 +34,15 @@ export class AppComponent implements OnInit, OnDestroy {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
-      
+    
+    translate.addLangs(['ru', 'en', 'fr', 'es']);          
     // this language will be used as a fallback when a translation isn't found in the current language
-    translate.setDefaultLang('en');
+    translate.setDefaultLang('ru');
     // the lang to use, if the lang isn't available, it will use the current loader to get them
-    translate.use('ru');
+    //translate.use('ru');          
+
+    const browserLang = translate.getBrowserLang();
+    translate.use(browserLang.match(/ru|en|fr|es/) ? browserLang : 'ru');
   }
 
   ngOnInit() {
