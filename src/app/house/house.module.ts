@@ -6,7 +6,7 @@ import { MaterialModule } from '../material.module';
 import { HousesDetailModule } from '../houses/houses-detail.module';
 
 import { HouseRoutingModule  } from './house-routing.module';
-import { HouseComponent } from './house.component';
+import { HouseComponent, PageReloadDialogComponent } from './house.component';
 
 import { ProjectLoadGuard } from "./project-load.guard";
 import { ControlService } from "./control.service";
@@ -33,6 +33,7 @@ import { ParamItemComponent } from './param-item/param-item.component';
   ],
   declarations: [
     HouseComponent,
+    PageReloadDialogComponent,
     ViewComponent,
     ManageComponent,
     HoldingRegisterDialogComponent,
@@ -45,6 +46,7 @@ import { ParamItemComponent } from './param-item/param-item.component';
     ParamItemComponent,
   ],
   entryComponents: [
+    PageReloadDialogComponent,
     HoldingRegisterDialogComponent,
   ],
   providers: [

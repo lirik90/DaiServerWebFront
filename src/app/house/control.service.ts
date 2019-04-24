@@ -164,9 +164,13 @@ export class ControlService {
             if (group.id == group_id) {
               if (group.statuses === undefined)
                 group.statuses = [];
-              for (let gsts of group.statuses) {
+              for (let gsts of group.statuses)
+              {
                 if (gsts.status.id == info_id)
+                {
+                  gsts.args = args;
                   return;
+                }
               }
     
               let status_item: Status = undefined;
@@ -179,8 +183,8 @@ export class ControlService {
               if (status_item === undefined)
                 console.warn(`Status id ${info_id} not found`);
               else {
-                group.statuses.push({ status: status_item, args: args });
-                this.calculateStatusInfo(group);
+                group.statuses.push({ status: status_item, args: args, status_id: info_id });
+                this.houseService.calculateStatusInfo(group);
               }
               return;
             }
@@ -199,8 +203,8 @@ export class ControlService {
               let l = group.statuses.length;
               while (l--) {
                 if (group.statuses[l].status.id == info_id) {
-                  group.statuses.slice(l, 1);
-                  this.calculateStatusInfo(group);
+                  group.statuses.splice(l, 1);
+                  this.houseService.calculateStatusInfo(group);
                   return;
                 }
               }
@@ -219,29 +223,6 @@ export class ControlService {
       proto += 's'; 
     this.wsbService.start(proto + '://' + document.location.hostname + '/' + proto + '/');
 	}
-
-  private calculateStatusInfo(group: Group): void {
-    let strings: string[] = [];
-    let str;
-    let color = 'green';
-    let short_text = 'Ok';
-    let last_error_level = 0;
-
-    for (let sts of group.statuses) {
-      if (sts.status.type_id > last_error_level) {
-        last_error_level = sts.status.type_id;
-        color = sts.status.type.color;
-        short_text = sts.status.type.name;
-      }
-      str = sts.status.text;
-      let l = sts.args !== undefined ? sts.args.length : 0;
-      while (l--)
-        str = str.replace('%' + (l + 1), sts.args[l]);
-      strings.push(str);
-    }
-
-    group.status_info = { color, short_text, text: strings.join('\n') };
-  }
 
   close(): void {
     this.bmsg_sub.unsubscribe();

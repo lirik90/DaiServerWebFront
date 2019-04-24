@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { AuthenticationService } from "../../authentication.service";
 import { HouseService } from "../house.service";
 import { ControlService } from "../control.service";
-import { Group, ParamValue } from '../house';
+import { Group, ParamValue, Section } from '../house';
 
 @Component({
   selector: 'app-param',
@@ -14,6 +14,7 @@ import { Group, ParamValue } from '../house';
 })
 export class ParamComponent implements OnInit 
 {
+  sct: Section;
   group: Group = undefined;
   cantChange: boolean;
   
@@ -41,6 +42,7 @@ export class ParamComponent implements OnInit
       {
         if (group.id === groupId) 
         {
+          this.sct = sct;
           this.group = group;
           return;
         }

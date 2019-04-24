@@ -100,6 +100,16 @@ export class HouseService extends IHouseService {
             }
           }
         }
+ 
+        for (let status of detail.statuses) {
+          for (let status_type of detail.statusTypes) {
+            if (status_type.id === status.type_id)
+            {
+              status.type = status_type;
+              break;
+            }
+          }
+        }
 
         let dev_items: DeviceItem[] = [];
         for (let dev of detail.devices) {
@@ -135,20 +145,22 @@ export class HouseService extends IHouseService {
                 group.items.push(item);
             }
 
+            for (let gsts of group.statuses)
+            {
+              for (let sts of detail.statuses)
+              {
+                if (sts.id == gsts.status_id)
+                {
+                  gsts.status = sts;
+                  break;
+                }
+              }
+            }
+            this.calculateStatusInfo(group);
             parse_param_value_childs(group, detail.params);
           }
         }
-        
-        for (let status of detail.statuses) {
-          for (let status_type of detail.statusTypes) {
-            if (status_type.id === status.type_id)
-            {
-              status.type = status_type;
-              break;
-            }
-          }
-        }
-
+       
         this.house = detail;
         this.house.name = house_name;
         localStorage.setItem(this.house_s, JSON.stringify(detail));
@@ -157,6 +169,32 @@ export class HouseService extends IHouseService {
       }),
       catchError(this.handleError('checkCurrentHouse', false))
     );
+  }
+
+  public calculateStatusInfo(group: Group): void {
+    let strings: string[] = [];
+    let str;
+    let color = 'green';
+    let short_text = 'Ok';
+    let last_error_level = 0;
+
+    if (group.statuses === undefined)
+      group.statuses = [];
+
+    for (let sts of group.statuses) {
+      if (sts.status.type_id > last_error_level) {
+        last_error_level = sts.status.type_id;
+        color = sts.status.type.color;
+        short_text = sts.status.type.name;
+      }
+      str = sts.status.text;
+      let l = sts.args !== undefined ? sts.args.length : 0;
+      while (l--)
+        str = str.replace('%' + (l + 1), sts.args[l]);
+      strings.push(str);
+    }
+
+    group.status_info = { color, short_text, text: strings.join('\n') };
   }
 
   public devItemById(item_id: number): DeviceItem {

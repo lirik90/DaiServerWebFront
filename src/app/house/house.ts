@@ -99,6 +99,7 @@ export class Status {
 
 export class GroupStatus {
   status: Status;
+  status_id: number;
   args: string[];
 }
 
