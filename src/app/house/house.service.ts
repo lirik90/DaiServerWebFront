@@ -4,6 +4,8 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { switchMap, catchError, map, tap, finalize } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
+import { TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 import { HouseDetail, ViewItem, Section, DeviceItem, Group, Logs, ParamValue, ParamItem } from './house';
 import { TeamMember, PaginatorApi } from '../user';
@@ -33,6 +35,8 @@ export class HouseService extends IHouseService {
   private house_s = 'house';
 
   constructor(
+          public translate: TranslateService,
+          private router: Router,
           http: HttpClient,
           messageService: MessageService) 
   { 
@@ -45,7 +49,7 @@ export class HouseService extends IHouseService {
     this.house = undefined;
   }
 
-  loadHouse(house_name: string): Observable<boolean> {
+  loadHouse(house_name: string, lang: string): Observable<boolean> {
     if (this.house && this.house.name == house_name)
       return of(true);
 
@@ -76,8 +80,14 @@ export class HouseService extends IHouseService {
         }
       }
     };
-
-    return this.get<HouseDetail>(`detail/?project_name=${house_name}`).pipe(
+    
+    if (lang === undefined)
+    {
+      const browserLang = this.translate.getBrowserLang();
+      lang = browserLang.match(/ru|en|fr|es/) ? browserLang : 'ru';
+    }
+    
+    return this.get<HouseDetail>(`detail/?project_name=${house_name}&lang=${lang}`).pipe(
       switchMap(detail => {
         for (let param of detail.params) {
           if (param.parent_id) {

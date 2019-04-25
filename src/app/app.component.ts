@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import {
-  Router, Event as RouterEvent,
+  Router, Event as RouterEvent, ActivatedRoute,
   NavigationStart,
   NavigationEnd,
   NavigationCancel,
@@ -26,6 +26,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     public translate: TranslateService,
     public authService: AuthenticationService,
+    private route: ActivatedRoute,
     private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher
   ) {
@@ -41,8 +42,14 @@ export class AppComponent implements OnInit, OnDestroy {
     // the lang to use, if the lang isn't available, it will use the current loader to get them
     //translate.use('ru');          
 
-    const browserLang = translate.getBrowserLang();
-    translate.use(browserLang.match(/ru|en|fr|es/) ? browserLang : 'ru');
+    let lang = this.route.snapshot.queryParams['lang'] || undefined;
+    
+    if (lang === undefined)
+    {
+      const browserLang = translate.getBrowserLang();
+      lang = browserLang.match(/ru|en|fr|es/) ? browserLang : 'ru';
+    }
+    translate.use(lang);
   }
 
   ngOnInit() {
