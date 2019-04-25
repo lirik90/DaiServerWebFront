@@ -86,11 +86,11 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/param/param.component.html</context>
-          <context context-type="linenumber">61</context>
+          <context context-type="linenumber">9</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/param/param.component.html</context>
-          <context context-type="linenumber">65</context>
+          <context context-type="linenumber">13</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
@@ -120,18 +120,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/param/param.component.html</context>
-          <context context-type="linenumber">59</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="CONTROL.EXIT" datatype="html">
-        <source>Выйти</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/app.component.html</context>
-          <context context-type="linenumber">4</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/app.component.html</context>
-          <context context-type="linenumber">24</context>
+          <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
       <trans-unit id="HOME.PANEL" datatype="html">
@@ -153,6 +142,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/app.component.html</context>
           <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.EXIT" datatype="html">
+        <source>Выйти</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">24</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DASHBOARD.TITLE" datatype="html">
@@ -342,6 +338,10 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/update-beer-info/edit-dialog-update-beer-info.component.html</context>
           <context context-type="linenumber">53</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/page-reload-dialog.component.html</context>
+          <context context-type="linenumber">7</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BEERBOX.REPLACE_KEG.TITLE" datatype="html">
@@ -781,6 +781,29 @@
           <context context-type="linenumber">6</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="HOME.DIALOG.TITLE" datatype="html">
+        <source>Изменён</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/page-reload-dialog.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="HOME.DIALOG.TEXT" datatype="html">
+        <source>
+  Есть изменения. Хотите обновить страницу?
+</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/page-reload-dialog.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.REFRESH" datatype="html">
+        <source>Обновить</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/page-reload-dialog.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="OVERVIEW.TITLE" datatype="html">
         <source>Обзор</source>
         <context-group purpose="location">
@@ -795,32 +818,11 @@
           <context context-type="linenumber">1</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="MANAGEMENT.MODE.NONE" datatype="html">
-        <source>Не выбран</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/house/manage/manage.component.html</context>
-          <context context-type="linenumber">18</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="MANAGEMENT.MODE.MANUAL" datatype="html">
-        <source>Ручной</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/house/manage/manage.component.html</context>
-          <context context-type="linenumber">19</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="MANAGEMENT.MODE.AUTO" datatype="html">
-        <source>Автоматический</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/house/manage/manage.component.html</context>
-          <context context-type="linenumber">20</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="MANAGEMENT.MODE" datatype="html">
         <source>Режим</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/manage/manage.component.html</context>
-          <context context-type="linenumber">15</context>
+          <context context-type="linenumber">18</context>
         </context-group>
       </trans-unit>
       <trans-unit id="LOG.TITLE" datatype="html">

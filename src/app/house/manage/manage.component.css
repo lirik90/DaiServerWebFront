@@ -29,6 +29,7 @@ h4 {
 .eqTable {
 	text-align: center;
 	width: 100%;
+  empty-cells: hide;
 }
 .eqTable td[colspan] {
   border-top-width: 2px;
