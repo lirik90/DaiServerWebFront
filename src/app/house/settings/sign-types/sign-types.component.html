@@ -3,7 +3,7 @@
     <mat-expansion-panel-header>
       <mat-panel-title><p i18n="@@SETTINGS.SIGN_TYPES.TITLE">Еденицы измерения</p></mat-panel-title>
       <mat-panel-description>
-      <span i18n="@@CONTROL.TOTAL">Всего</span>: {{items.length}}
+      <ng-container i18n="@@CONTROL.TOTAL">Всего</ng-container>: {{items.length}}
         <span *ngIf="changed">
           <button mat-icon-button (click)="save($event)"><mat-icon>save</mat-icon></button>
           <button mat-icon-button (click)="cancel($event)"><mat-icon>cancel</mat-icon></button>

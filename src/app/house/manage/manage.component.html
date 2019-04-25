@@ -5,8 +5,8 @@
     <div *ngIf="sct.groups.length" class="col-1-3">
       <div class="module house">
         <h3>{{sct.name}} <button mat-icon-button><mat-icon>settings</mat-icon></button></h3>
-        <table class="eqTable">
-          <ng-container *ngFor="let group of sct.groups">
+        <table cellspacing="0" cellpadding="0" class="eqTable">
+          <ng-container *ngFor="let group of sct.groups;  index as i">
             <tr>
               <td colspan="2" 
                   [ngStyle]="{'border-color': group.status_info.color}"
@@ -36,6 +36,7 @@
                 <app-dev-item-value #itemValue [item]="item"></app-dev-item-value>
               </td>
             </tr>
+            <tr *ngIf="i < sct.groups.length - 1"><td></td></tr>
           </ng-container>
         </table>
       </div>

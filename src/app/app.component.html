@@ -1,7 +1,7 @@
 <div class="main-container" [class.main-is-mobile]="mobileQuery.matches">
   <mat-toolbar class="main-toolbar">
     <img src="assets/img/logo.png">
-    <h1 class="main-app-name" *ngIf="!authService.currentUser || !mobileQuery.matches" i18n="@@CONTROL.EXIT">Выйти</h1>
+    <h1 class="main-app-name" *ngIf="!authService.currentUser || !mobileQuery.matches">BeerBox</h1>
 
     <ng-container *ngIf="authService.currentUser">
       <div class="top-menu">
