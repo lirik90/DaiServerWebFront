@@ -42,13 +42,19 @@ export class AppComponent implements OnInit, OnDestroy {
     // the lang to use, if the lang isn't available, it will use the current loader to get them
     //translate.use('ru');          
 
-    let lang = this.route.snapshot.queryParams['lang'] || undefined;
-    
-    if (lang === undefined)
+    let lang;
+    let match = document.location.pathname.match(/\/(ru|en|fr|es)\//);
+	console.log(document.location.pathname);
+    if (match === null)
     {
       const browserLang = translate.getBrowserLang();
       lang = browserLang.match(/ru|en|fr|es/) ? browserLang : 'ru';
     }
+    else
+    {
+      lang = match[1];
+    }
+      
     translate.use(lang);
   }
 

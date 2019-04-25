@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="DETAILS.HEAD" datatype="html">
+        <source>Подробнее о проекте</source>
+        <target>About project</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DETAILS.ID" datatype="html">
+        <source>Ид</source>
+        <target>ID</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DETAILS.NAME" datatype="html">
+        <source>Имя</source>
+        <target>Name</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DETAILS.UUID" datatype="html">
+        <source>Уникальный номер</source>
+        <target>UUID</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DETAILS.TITLE" datatype="html">
+        <source>Заголовок</source>
+        <target>Title</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DETAILS.DESCRIPTION" datatype="html">
+        <source>Описание</source>
+        <target>Description</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.BACK" datatype="html">
+        <source>Назад</source>
+        <target>Back</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/replace-labels/replace-labels.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/param/param.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/param/param.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.OPEN" datatype="html">
+        <source>Открыть</source>
+        <target>Open</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.SAVE" datatype="html">
+        <source>Сохранить</source>
+        <target>Save</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/update-beer-info/edit-dialog-update-beer-info.component.html</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/param/param.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="HOME.PANEL" datatype="html">
+        <source> Панель</source>
+        <target> Panel</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="HOME.PROJECTS" datatype="html">
+        <source> Проекты</source>
+        <target> Projects</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="HOME.GREETING" datatype="html">
+        <source>Привет</source>
+        <target>Hi</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.EXIT" datatype="html">
+        <source>Выйти</source>
+        <target>Exit</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>      
+    </body>
+  </file>
+</xliff>

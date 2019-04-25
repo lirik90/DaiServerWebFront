@@ -43,9 +43,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="DETAILS.TITLE" datatype="html">
-        <source>Заголовок:
-      <x id="TAG_INPUT" ctype="x-input" equiv-text="&lt;input/&gt;"/>
-    </source>
+        <source>Заголовок</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
           <context context-type="linenumber">7</context>
