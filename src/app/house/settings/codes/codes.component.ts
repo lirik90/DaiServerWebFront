@@ -11,7 +11,7 @@ import { SettingsService } from "../settings.service";
 @Component({
   selector: 'app-codes',
   templateUrl: './codes.component.html',
-  styleUrls: ['../settings.css', './codes.component.css']
+  styleUrls: ['../settings.css', '../../../../assets/anonymous/stylesheet.css', './codes.component.css']
 })
 export class CodesComponent extends ChangeTemplate<Codes> implements OnInit {
   codes: Codes[];

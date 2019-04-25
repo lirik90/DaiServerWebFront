@@ -1,3 +1,7 @@
 ngx-monaco-editor {
   height: 700px;
 }
+::ng-deep .codes-editor * {
+  font-family: 'Anonymous Pro';
+  font-size: 13pt;
+}
