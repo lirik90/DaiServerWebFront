@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy, LOCALE_ID, Inject } from '@angular/core';
 import {
   Router, Event as RouterEvent, ActivatedRoute,
   NavigationStart,
@@ -10,7 +10,7 @@ import {
 import { MediaMatcher } from '@angular/cdk/layout';
 
 import { AuthenticationService } from "./authentication.service";
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +23,17 @@ export class AppComponent implements OnInit, OnDestroy {
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
+  languages = [
+    { code: 'ru', label: 'Русский', icon: 'flag-icon flag-icon-ru'},
+    { code: 'en', label: 'English', icon: 'flag-icon flag-icon-gb'},
+    { code: 'fr', label: 'Français', icon: 'flag-icon flag-icon-fr'},
+    { code: 'es', label: 'Español', icon: 'flag-icon flag-icon-es'},
+  ];
+  
+  current_lang_: any;
+  
   constructor(
+    @Inject(LOCALE_ID) protected localeId: string,
     public translate: TranslateService,
     public authService: AuthenticationService,
     private route: ActivatedRoute,
@@ -43,8 +53,7 @@ export class AppComponent implements OnInit, OnDestroy {
     //translate.use('ru');          
 
     let lang;
-    let match = document.location.pathname.match(/\/(ru|en|fr|es)\//);
-	console.log(document.location.pathname);
+    let match = document.location.pathname.match(/\/(ru|en|fr|es)\//);	
     if (match === null)
     {
       const browserLang = translate.getBrowserLang();
@@ -56,6 +65,27 @@ export class AppComponent implements OnInit, OnDestroy {
     }
       
     translate.use(lang);
+      
+    for (let item of this.languages)
+    {
+      if (item.code == lang)
+      {
+        this.current_lang_ = item;
+      }
+    }
+  }
+  
+  
+  change_language(): void
+  {
+    console.log(this.current_lang_);
+    let current = document.location.href;
+    let match = document.location.pathname.match(/\/(ru|en|fr|es)\//);	
+    if (match !== null)
+    {
+      let result = current.replace(match[0], ('\/' + this.current_lang_.code + '\/'));
+      window.open(result, '_self');
+    }
   }
 
   ngOnInit() {

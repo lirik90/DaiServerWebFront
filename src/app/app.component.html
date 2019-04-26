@@ -20,8 +20,21 @@
       </div>
       <span class="main-spacer"></span>
 
+        <button mat-icon-button (click)=select.open()> <mat-icon *ngIf="current_lang_ === undefined">language</mat-icon><span *ngIf="current_lang_ !== undefined" class="{{current_lang_.icon}}"></span><!--</span><mat-icon *ngIf="current_lang_ !== undefined">{{ current_lang_.icon }}</mat-icon>-->
+          <mat-select #select class="langSelect" [(ngModel)]="current_lang_" (ngModelChange)="change_language()">
+            <mat-option *ngFor="let lang of languages" [value]="lang">
+              <span class="{{lang.icon}}"></span> {{ lang.label }}
+            </mat-option>
+            
+            <!--<mat-option [value]="'ru'"><span class="flag-icon flag-icon-ru"></span> Русский</mat-option>
+            <mat-option [value]="'en'"><span class="flag-icon flag-icon-gb"></span> English</mat-option>
+            <mat-option [value]="'fr'"><span class="flag-icon flag-icon-fr"></span> Français</mat-option>
+            <mat-option [value]="'es'"><span class="flag-icon flag-icon-es"></span> Español</mat-option>-->
+          </mat-select>
+        </button>
+      
       <h3 *ngIf="!mobileQuery.matches"><span i18n="@@HOME.GREETING">Привет</span>, <strong>{{authService.currentUser.username}}</strong>!</h3>
-      <button mat-icon-button i18n-matTooltip="@@CONTROL.EXIT" matTooltip="Выйти" [routerLink]="['/login']"><mat-icon>exit_to_app</mat-icon></button>
+      <button mat-icon-button i18n-matTooltip="@@CONTROL.EXIT" matTooltip="Выйти" [routerLink]="['/login']"><mat-icon>exit_to_app</mat-icon></button>            
     </ng-container>
   </mat-toolbar>
 
