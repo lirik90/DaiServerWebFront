@@ -33,7 +33,6 @@ export class AppComponent implements OnInit, OnDestroy {
   current_lang_: any;
   
   constructor(
-    @Inject(LOCALE_ID) protected localeId: string,
     public translate: TranslateService,
     public authService: AuthenticationService,
     private route: ActivatedRoute,
@@ -78,11 +77,10 @@ export class AppComponent implements OnInit, OnDestroy {
   
   change_language(): void
   {
-    console.log(this.current_lang_);
-    let current = document.location.href;
     let match = document.location.pathname.match(/\/(ru|en|fr|es)\//);	
     if (match !== null)
     {
+      let current = document.location.href;
       let result = current.replace(match[0], ('\/' + this.current_lang_.code + '\/'));
       window.open(result, '_self');
     }

@@ -6,7 +6,7 @@
       <div class="module house">
         <h3>{{sct.name}} <button mat-icon-button><mat-icon>settings</mat-icon></button></h3>
         <table cellspacing="0" cellpadding="0" class="eqTable">
-          <ng-container *ngFor="let group of sct.groups;  index as i">
+          <ng-container *ngFor="let group of sct.groups; let group_last = last">
             <tr>
               <td colspan="2" 
                   [ngStyle]="{'border-color': group.status_info.color}"
@@ -36,7 +36,7 @@
                 <app-dev-item-value #itemValue [item]="item"></app-dev-item-value>
               </td>
             </tr>
-            <tr *ngIf="i < sct.groups.length - 1"><td></td></tr>
+            <tr *ngIf="!group_last" class="between-group"><td colspan="2"></td></tr>
           </ng-container>
         </table>
       </div>
