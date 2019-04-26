@@ -49,7 +49,7 @@ export class HouseService extends IHouseService {
     this.house = undefined;
   }
 
-  loadHouse(house_name: string, lang: string): Observable<boolean> {
+  loadHouse(house_name: string): Observable<boolean> {
     if (this.house && this.house.name == house_name)
       return of(true);
 
@@ -81,10 +81,16 @@ export class HouseService extends IHouseService {
       }
     };
     
-    if (lang === undefined)
+    let lang;
+    let match = document.location.pathname.match(/\/(ru|en|fr|es)\//);	
+    if (match === null)
     {
       const browserLang = this.translate.getBrowserLang();
       lang = browserLang.match(/ru|en|fr|es/) ? browserLang : 'ru';
+    }
+    else
+    {
+      lang = match[1];
     }
     
     return this.get<HouseDetail>(`detail/?project_name=${house_name}&lang=${lang}`).pipe(

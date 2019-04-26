@@ -131,8 +131,14 @@ export class CalibrationComponent implements OnInit
     if (this.items[index].ratio_volume_param != undefined)
     {
       let result_coeff: number = 0.;
-
-      result_coeff = (+this.items[index].ratio_volume_param.value) * (+this.items[index].full_volume.val.display) * 1.03 / ((+this.full_bottle_mass_[index]) - (+this.empty_bottle_mass_[index]));	
+      let ratio = +this.items[index].ratio_volume_param.value;
+      let volume = +this.items[index].full_volume.val.display;
+      let full_bottle = +this.full_bottle_mass_[index];
+      let empty_bottle = +this.empty_bottle_mass_[index];
+      
+      ratio = (ratio <= 0 ? 1 : ratio);
+      
+      result_coeff = (ratio * volume * 1.03) / (full_bottle - empty_bottle);	
 
       this.items[index].ratio_volume_param.value = result_coeff.toString();	
 

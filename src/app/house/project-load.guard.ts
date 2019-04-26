@@ -25,7 +25,7 @@ export class ProjectLoadGuard implements CanActivate, CanActivateChild {
       return true;
 
     const name = next.paramMap.get('name');
-    return this.projService.loadHouse(name, next.queryParams['lang'] || undefined);
+    return this.projService.loadHouse(name);
   }
 
   canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
