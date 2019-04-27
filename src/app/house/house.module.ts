@@ -19,12 +19,11 @@ import { ParamComponent } from './param/param.component';
 import { GroupStatusComponent } from './group-status/group-status.component';
 import { DevItemValueComponent, HoldingRegisterDialogComponent } from './dev-item-value/dev-item-value.component';
 import { DragScrollComponent } from './drag-scroll.component';
-import { ViewItemComponent } from './view-item/view-item.component';
 import { ParamItemComponent } from './param-item/param-item.component';
 
 import { HttpClient } from '@angular/common/http';
-import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -58,7 +57,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DevItemValueComponent,
     DragScrollComponent,
     DragScrollComponent,
-    ViewItemComponent,
     ParamItemComponent,
   ],
   entryComponents: [
