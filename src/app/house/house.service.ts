@@ -59,8 +59,10 @@ export class HouseService extends IHouseService {
     {
       for (let param_value of group.params)
       {
-        for (let param of param_items) {
-          if (param.id === param_value.param_id) {
+        for (let param of param_items) 
+        {
+          if (param.id === param_value.param_id) 
+          {
             param_value.param = param;
             break;
           }
@@ -72,13 +74,24 @@ export class HouseService extends IHouseService {
             if (param_value.param.parent_id == param_value2.param.id)
             {
               if (!param_value2.childs)
+              {
                 param_value2.childs = [];
+              }
               param_value2.childs.push(param_value);
               break;
             }
           }
         }
       }
+      
+      for (let index = 0; index < group.params.length; ++index)
+      {
+        if (group.params[index].param.parent_id)
+        {
+          group.params.splice(index, 1);
+          -- index;
+        }
+      }      
     };
     
     let lang;
