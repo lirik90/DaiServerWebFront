@@ -17,8 +17,8 @@
 		"CALIBRATION": "Калибровка",
 		"STAND": "Стенд",
 		"REPLACE_LABEL": "Замена ленты",
-		"BEER_INFO": "Информация о пиве",
-		"CONTROLLER": "Aдрес контроллера"
+		"BEER_INFO": "Текст этикетки",
+		"CONTROLLER": "Настройка контроллера"
 	},
 	"LOG": {
 		"UNKNOWN_USER": "Неизвестный ID пользователя:"

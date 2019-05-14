@@ -75,10 +75,6 @@
             "ru": {
               "outputPath": "dist/ru/",
               "baseHref": "/ru/",
-              "i18nFile": "src/locale/messages.ru.xlf",
-              "i18nFormat": "xlf",
-              "i18nLocale": "ru",
-              "i18nMissingTranslation": "warning",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,

@@ -1,5 +1,44 @@
-{
+{	
+	"CONNECTION_PROBLEM": "No connection with server",
+	"OFFLINE": "Offline",
+	"ONLINE": "Online",
+	"MODIFIED": "The device structure has been modified. Please restart the device.",
+	"WAIT": "Please wait",
+	"NOT_CONNECTED": "Not connected",
 	"NAVIGATION_TAB": {
-		"INFO": "Information"
+		"INFO": "Info",
+		"OVERVIEW": "View",
+		"MANAGEMENT": "Management",
+		"LOG": "Log",
+		"STRUCTURE": "Project structure",
+		"REPORTS": "Reports",
+		"WASH": "Cleaning",
+		"REPLACE_KEG": "Replacing keg",
+		"CALIBRATION": "Calibrating",
+		"STAND": "Stand",
+		"REPLACE_LABEL": "Replacing sticker roll",
+		"BEER_INFO": "Sticker text",
+		"CONTROLLER": "Controller configure"
+	},
+	"LOG": {
+		"UNKNOWN_USER": "Unknow user ID:"
+	},
+	"REPORTS": {
+		"CHARTS_ELEMENTS": "Selected items"
+	},
+	"MONTHS": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+	"BEERBOX": {		
+		"WASH_STEPS": {
+			"STEP_1": "Washing with water",
+			"STEP_2": "Cleaning with a cleaning material",
+			"STEP_3": "Rinsing with potable water",
+			"STEP_4": "Replacing potable water with beer. Keg coupler Nr."
+		},
+		"WASH_AGENTS": {
+			"AGENT_1": "Potable water",
+			"AGENT_2": "Beer",
+			"AGENT_3": "Alkaline-based solution of the cleaning material FT-89 CIP or similar",
+			"AGENT_4": "Acid-based solution of the cleaning material FINK Acid kombi or similar"
+		}		
 	}
 }

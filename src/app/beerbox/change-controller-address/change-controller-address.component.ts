@@ -43,7 +43,7 @@ export class ChangeControllerAddressComponent implements OnInit
     console.log(this.houseService.house.devices);
     for (let device of this.houseService.house.devices)
     {
-      if (device.extra.indexOf("247") != -1)
+      if (device.extra != null && device.extra.indexOf("247") != -1)
       {
         for (let item of device.items)
         {

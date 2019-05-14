@@ -1,7 +1,7 @@
 <div class="module house">
-  <ng-container *ngIf="items != undefined">
+  <ng-container *ngIf="items_ != undefined">
     <h2 i18n="@@BEERBOX.CONTROLLER.TITLE">Замена адреса контроллера</h2>
-    <ng-container *ngIf="items.change_controller_address.val.display == 0; else change_address_mode">
+    <ng-container *ngIf="items_.change_controller_address.val.display == 0; else change_address_mode">
      <h4> <span i18n="@@BEERBOX.CONTROLLER.STEP_1">Подготовьте перемычку и плату где хотите изменить адрес<br><br>Нажмите кнопку </span>
        "<span i18n="@@CONTROL.BEGIN">Начать</span>"</h4>
     </ng-container>
@@ -38,11 +38,11 @@
       
     </ng-template>
     
-    <button class="button2" mat-button (click)="click_start_button()" *ngIf="items.change_controller_address.val.display == 0" i18n="@@CONTROL.BEGIN">Начать</button>
-    <button class="button2" mat-button (click)="click_start_button()" *ngIf="items.change_controller_address.val.display == 1" i18n="@@CONTROL.END">Завершить</button>
+    <button class="button2" mat-button (click)="click_start_button()" *ngIf="items_.change_controller_address.val.display == 0" i18n="@@CONTROL.BEGIN">Начать</button>
+    <button class="button2" mat-button (click)="click_start_button()" *ngIf="items_.change_controller_address.val.display == 1" i18n="@@CONTROL.END">Завершить</button>
     
   </ng-container> 
-  <ng-container *ngIf="items == undefined">
+  <ng-container *ngIf="items_ == undefined">
     <h2 i18n="@@BEERBOX.CONTROLLER.WARNING">Замена адресса контроллеров на данном устройстве невозможно</h2>
   </ng-container>
 </div>

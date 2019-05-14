@@ -657,7 +657,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="BEERBOX.BEER_INFO.TITLE" datatype="html">
-        <source>Информация о пиве</source>
+        <source>Текст этикетки</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/update-beer-info/update-beer-info.component.html</context>
           <context context-type="linenumber">1</context>
@@ -678,7 +678,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="BEERBOX.BEER_INFO.DIALOG" datatype="html">
-        <source>Редактирование информации о пиве</source>
+        <source>Редактирование текст этикетки</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/update-beer-info/edit-dialog-update-beer-info.component.html</context>
           <context context-type="linenumber">1</context>
