@@ -16,6 +16,7 @@ export enum StructType {
   GroupParamTypes,
   GroupStatusInfo,
   GroupStatusTypes,
+  Group_Param,
   Signs,
   Scripts,
   View,
@@ -25,7 +26,7 @@ export enum StructType {
   DeviceItemValues,
   GroupMode,
   GroupStatus,
-  GroupParams,
+  Group_Param_Value,
 }
 
 export enum ChangeState {
