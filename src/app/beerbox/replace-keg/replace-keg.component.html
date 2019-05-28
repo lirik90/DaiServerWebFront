@@ -1,7 +1,7 @@
 <h2 i18n="@@BEERBOX.REPLACE_KEG.TITLE">Замена кег<br>При замене кегов устанавливать кеги строго на соответствующие пронумерованные места!!!</h2>
 <div class="grid grid-pad">
   <ng-container *ngFor="let item of items; index as sct_i">
-    <div class="col-1-3" *ngIf="item.have_empty">
+    <div class="col-1-3" *ngIf="item.has_empty">
       <div class="module house">
         <h3>{{item.sct.name}}</h3>
         <ng-container *ngFor="let keg of item.kegs; index as i">
@@ -14,5 +14,5 @@
       </div>
     </div>
   </ng-container>
-  <h3 *ngIf="items && !have_empty" i18n="@@BEERBOX.REPLACE_KEG.NONEMPTY">Пустых кег нет</h3>
+  <h3 *ngIf="items && !has_empty" i18n="@@BEERBOX.REPLACE_KEG.NONEMPTY">Пустых кег нет</h3>
 </div>

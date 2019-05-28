@@ -24,7 +24,7 @@ interface ReplaceKegSection
 {
   sct: Section;
   kegs: Keg[];
-  have_empty: boolean;
+  has_empty: boolean;
 }
 
 @Component({
@@ -37,8 +37,6 @@ export class ReplaceKegComponent implements OnInit
 {  
   items: ReplaceKegSection[];
 
-  have_empty: boolean = false;
-
   constructor(
     public dialog: MatDialog,
     private houseService: HouseService,
@@ -50,27 +48,21 @@ export class ReplaceKegComponent implements OnInit
     this.get_data();    
   }
 
-  check_is_empty(): void 
+  has_empty_keg(item: ReplaceKegSection): boolean
   {
-    let empty: boolean = false;
+    for (let keg of item.kegs) 
+      if (keg.item.val.raw == 0) 
+        return item.has_empty = true;
+    return item.has_empty = false;
+  }
+ 
+  get has_empty(): boolean
+  {
+    let empty = false;
     for (let item of this.items) 
-    {
-      let have_empty: boolean = false;
-      for (let keg of item.kegs) 
-      {
-        if (keg.item.val.raw == 0) 
-        {
-          have_empty = true;
-          if (!empty)
-          {
-            empty = true; // wtf??
-          }
-          break;
-        }
-      }
-      item.have_empty = have_empty;
-    }
-    this.have_empty = empty;
+      if (this.has_empty_keg(item) && !empty)
+        empty = true;
+    return empty;
   }
 
   get_data(): void
@@ -85,7 +77,7 @@ export class ReplaceKegComponent implements OnInit
         continue;
       }
             
-      let sct_item: ReplaceKegSection = {sct, kegs: [], have_empty: false};
+      let sct_item: ReplaceKegSection = {sct, kegs: [], has_empty: false};
       
       for (let group of sct.groups) 
       {                
@@ -132,9 +124,6 @@ export class ReplaceKegComponent implements OnInit
         this.items.push(sct_item);
       }      
     }
-    
-    this.check_is_empty();
-    
   }
 
   toggle(keg: DeviceItem): void 
