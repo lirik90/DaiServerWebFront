@@ -197,7 +197,10 @@ export class HouseComponent implements OnInit, OnDestroy {
         const structure_type = view[8];
         switch (structure_type)
         {
-          case 19: // STRUCT_TYPE_GROUP_STATUS
+          case 23: // STRUCT_TYPE_DEVICE_ITEM_VALUES
+          case 24: // STRUCT_TYPE_GROUP_MODE
+          case 25: // STRUCT_TYPE_GROUP_STATUS
+          case 26: // STRUCT_TYPE_GROUP_PARAM_VALUE
             return;
         }
 
