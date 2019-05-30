@@ -16,6 +16,8 @@ export class ManageComponent implements OnInit {
   sections: Section[] = [];
   groupModes: GroupMode[];
 
+  is_view: boolean;
+
   constructor(
     private route: ActivatedRoute,
     private houseService: HouseService,
@@ -27,7 +29,8 @@ export class ManageComponent implements OnInit {
     this.houseName = this.houseService.house.name;
     this.groupModes = this.houseService.house.groupModes;
 
-    if (this.route.snapshot.data['is_view'])
+    this.is_view = this.route.snapshot.data['is_view'];
+    if (this.is_view)
     {
       this.route.params.subscribe(params => {
         const view_id = params['view_id'];

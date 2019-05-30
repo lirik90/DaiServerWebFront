@@ -1,4 +1,4 @@
-<h2 i18n="@@MANAGEMENT.TITLE">Управление проектом</h2>
+<h2 *ngIf="!is_view" i18n="@@MANAGEMENT.TITLE">Управление проектом</h2>
 
 <div class="grid grid-pad">
   <ng-container *ngFor="let sct of sections">

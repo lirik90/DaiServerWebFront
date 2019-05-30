@@ -110,9 +110,25 @@ export class HoldingRegisterDialogComponent {
     return this._max;
   }
 
+  check_is_string(): boolean
+  {
+    return typeof this.value == "string" && parseFloat(this.value).toString() != this.value;
+  }
+
+  get input_type(): string
+  {
+    if (!this.auto_detect || this.check_is_string())
+    {
+      return "text";
+    }
+    return "number";
+  }
+
+  auto_detect: boolean = true;
+
   constructor(
     public dialogRef: MatDialogRef<HoldingRegisterDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DeviceItem) 
+    @Inject(MAT_DIALOG_DATA) public data: DeviceItem)
   {
     if (!data.val)
       return;
@@ -122,9 +138,19 @@ export class HoldingRegisterDialogComponent {
     }
     else
       this.value = data.val.display;
+
+    if (this.check_is_string())
+    {
+      this.auto_detect = false;
+    }
   }
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  set_string_type(): void
+  {
+    this.auto_detect = false;
   }
 }

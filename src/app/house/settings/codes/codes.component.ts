@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { forkJoin } from 'rxjs';
 
 import { HouseService } from "../../house.service";
 import { Codes } from '../../house';
@@ -143,19 +145,37 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit {
 
   code_save(evnt): void
   {
+    let code_arr: Observable<any>[] = [];
+
     for (const item of this.items)
     {
       if (item.state === ChangeState.Upsert)
       {
-        this.code_item_save(item.obj);
+        if (item.obj.id)
+        {
+          code_arr.push(this.settingsService.updateCode(item.obj));
+        }
+        else
+        {
+          console.error("Insert code isn't implemented");
+        }
+      }
+      else if (item.state === ChangeState.Delete)
+      {
+        console.error("Delete code isn't implemented");
       }
     }
-    this.save(evnt);
-  }
-  
-  code_item_save(code: Codes): void {
-    this.settingsService.updateCode(code).subscribe(() => {
-      console.log('code saved ' + code.id.toString());
-    });
+
+    if (code_arr.length)
+    {
+      forkJoin(...code_arr).subscribe(() => {
+        this.save(evnt);
+      });
+    }
+    else
+    {
+      console.warn('code_arr empty');
+      this.save(evnt);
+    }
   }
 }

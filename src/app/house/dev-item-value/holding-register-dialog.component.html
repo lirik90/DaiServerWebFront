@@ -16,11 +16,12 @@
     [(ngModel)]="value">
   </mat-slider>
   <mat-form-field>
-    <input type="number" matInput i18n-placeholder="@@DEVICE_ITEM.VALUE" placeholder="Значение" [(ngModel)]="value">
+    <input [type]="input_type" matInput i18n-placeholder="@@DEVICE_ITEM.VALUE" placeholder="Значение" [(ngModel)]="value">
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()" i18n="@@CONTROL.CANCEL2">Нет спасибо</button>
   <button mat-button [mat-dialog-close]="value" cdkFocusInitial i18n="@@CONTROL.OK">Ok</button>
+  <h6 *ngIf="auto_detect" class="text_mode_link"><a (click)="set_string_type()" i18n="@@DEVICE_ITEM.HOLDING_TYPE_MODE">Нажмите если нужно ввести текст</a></h6>
 </div>
 

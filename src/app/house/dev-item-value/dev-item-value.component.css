@@ -20,3 +20,7 @@ button {
 input[type="file"] {
     display: none;
 }
+
+.text_mode_link {
+  margin: 8px;
+}
