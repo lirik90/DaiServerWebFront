@@ -27,7 +27,7 @@
 		"CHARTS_ELEMENTS": "Selected items"
 	},
 	"MONTHS": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-	"BEERBOX": {		
+	"BEERBOX": {
 		"WASH_STEPS": {
 			"STEP_1": "Washing with water",
 			"STEP_2": "Cleaning with a cleaning material",
