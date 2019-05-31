@@ -6,7 +6,8 @@
         <h3>{{item.sct.name}}</h3>
         <ng-container *ngFor="let keg of item.kegs; index as i">
           <h4 *ngIf="keg.item.val.raw == 0" (click)="openDialog(keg)">
-            <div i18n="@@BEERBOX.REPLACE_KEG.EMPTY">Кег №{{ (sct_i*2)+1+i }} пуст</div>
+            <!--<div i18n="@@BEERBOX.REPLACE_KEG.EMPTY">Кег №{{ (sct_i*2)+1+i }} пуст</div>-->
+            <div>{{keg.title}} <ng-container i18n="@@BEERBOX.REPLACE_KEG.EMPTY">пуст</ng-container></div>
             <div i18n="@@BEERBOX.REPLACE_KEG.TEXT">Нажмите здесь если заменили его</div>
             <span *ngIf="keg.bad_clean !== undefined && keg.bad_clean.val.raw == 1" i18n="@@BEERBOX.REPLACE_KEG.WARNING">Не выполнено вытеснение пивом. После замены не забудьте сделать это</span>
           </h4>

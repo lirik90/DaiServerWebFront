@@ -14,6 +14,7 @@ import * as _moment from 'moment';
 
 interface Keg 
 {
+  title: string;
   item: DeviceItem;
   bad_clean: DeviceItem;
   manufacture_date_: ParamValue;
@@ -80,13 +81,14 @@ export class ReplaceKegComponent implements OnInit
       let sct_item: ReplaceKegSection = {sct, kegs: [], has_empty: false};
       
       for (let group of sct.groups) 
-      {                
+      {
         if (group.type.name == 'takeHead') 
         { 
           let kegNotEmpty: DeviceItem;
           let badClean: DeviceItem;
           let name: ParamValue;
           let date: ParamValue;
+          let title = group.title;
           for (let item of group.items) 
           {
             if (item.type.name == 'kegNotEmpty')
@@ -99,21 +101,27 @@ export class ReplaceKegComponent implements OnInit
             }            
           }
           
-          for (let param of group.params) 
+          for (let parent of group.params) 
           {
-            if (param.param.name == 'name')
+            if (parent.param.name == 'manufacturer')
             {
-              name = param;
-            }
-            if (param.param.name == 'date')
-            {
-              date = param;
-            }
+              for (let param of parent.childs) 
+              {
+                if (param.param.name == 'name')
+                {
+                  name = param;
+                }
+                if (param.param.name == 'date')
+                {
+                  date = param;
+                }
+              }              
+            }            
           }
           
           if (kegNotEmpty !== undefined && kegNotEmpty != null)
           {
-            let keg_item: Keg = {item: kegNotEmpty, bad_clean: badClean, manufacture_date_: date, manufacturer_name_: name};
+            let keg_item: Keg = {title: title, item: kegNotEmpty, bad_clean: badClean, manufacture_date_: date, manufacturer_name_: name};
             sct_item.kegs.push(keg_item);
           }          
         }

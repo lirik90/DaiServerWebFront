@@ -225,24 +225,24 @@
       <context-group purpose="location"><context context-type="linenumber">1</context></context-group>
     </trans-unit>
     <trans-unit id="BEERBOX.REPLACE_KEG.EMPTY" approved="yes">
-      <source>Кег №<x id="INTERPOLATION" equiv-text="{{ (sct_i*2)+1+i }}"/> пуст</source>
-      <target xml:space="preserve">Keg Nr.<x id="INTERPOLATION" equiv-text="{{ (sct_i*2)+1+i }}"/> empty</target>
-      <context-group purpose="location"><context context-type="linenumber">9</context></context-group>
+      <source>пуст</source>
+      <target>empty</target>
+      <context-group purpose="location"><context context-type="linenumber">10</context></context-group>
     </trans-unit>
     <trans-unit id="BEERBOX.REPLACE_KEG.TEXT" approved="yes">
       <source xml:space="preserve">Нажмите здесь если заменили его</source>
       <target xml:space="preserve">Press here if you have replaced the keg</target>
-      <context-group purpose="location"><context context-type="linenumber">10</context></context-group>
+      <context-group purpose="location"><context context-type="linenumber">11</context></context-group>
     </trans-unit>
     <trans-unit id="BEERBOX.REPLACE_KEG.WARNING" approved="yes">
       <source xml:space="preserve">Не выполнено вытеснение пивом. После замены не забудьте сделать это</source>
       <target xml:space="preserve">You have not replaced the potable water inside of the beer line with the beer. Please do not forget to do it after connecting a keg.</target>
-      <context-group purpose="location"><context context-type="linenumber">11</context></context-group>
+      <context-group purpose="location"><context context-type="linenumber">12</context></context-group>
     </trans-unit>
     <trans-unit id="BEERBOX.REPLACE_KEG.NONEMPTY" approved="yes">
       <source xml:space="preserve">Пустых кег нет</source>
       <target xml:space="preserve">There are no empty kegs</target>
-      <context-group purpose="location"><context context-type="linenumber">17</context></context-group>
+      <context-group purpose="location"><context context-type="linenumber">18</context></context-group>
     </trans-unit>
   </body></file>
   <file original="app/beerbox/replace-keg/confirm-dialog-replace-keg.component.html" datatype="plaintext" source-language="ru" target-language="en"><body>
