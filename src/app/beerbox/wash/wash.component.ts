@@ -38,7 +38,7 @@ export class WashComponent implements OnInit
         is_first = false;
         continue;
       }
-      let clean: any = { sct };
+      let clean: any = { sct, takehead_count: 0 };
       for (let group of sct.groups) 
       {
         if (group.type.name == 'head') 
@@ -58,6 +58,10 @@ export class WashComponent implements OnInit
             }
           }
         } 
+        else if (group.type.name == 'takeHead') 
+        { 
+			++clean.takehead_count;
+		}
         else if (group.type.name == 'params') 
         { // api.type.group.params
           for (let item of group.items) 
@@ -112,8 +116,14 @@ export class WashComponent implements OnInit
       case 2: return this.translate.instant("BEERBOX.WASH_STEPS.STEP_2");
       case 3: return this.translate.instant("BEERBOX.WASH_STEPS.STEP_3");
       case 4: case 5: case 6:
-        let sct_i = ((clean === this.items[0] ? 0 : 1) * 2 ) + 1;
-        return this.translate.instant("BEERBOX.WASH_STEPS.STEP_4") + (sct_i + (clean.step.val.raw == 6 ? 1 : 0));
+        {
+          let sct_i = ((clean === this.items[0] ? 0 : 1) * 2 ) + 1;
+          if (clean.takehead_count > 1)
+          {
+            sct_i += (clean.step.val.raw == 6 ? 1 : 0);
+          }
+          return this.translate.instant("BEERBOX.WASH_STEPS.STEP_4") + sct_i;
+        }        
     }
     return "";
   }
