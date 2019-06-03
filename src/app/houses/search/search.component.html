@@ -5,7 +5,7 @@
 
   <ul class="search-result">
     <li *ngFor="let house of houses$ | async" >
-      <a routerLink="/house/{{house.id}}/view" i18n="@@CONTROL.SEARCH"> Поиск </a>
+      <a routerLink="/house/{{house.id}}/view">{{house.title}}</a>
     </li>
   </ul>
 </div>
