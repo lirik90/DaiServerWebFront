@@ -1,0 +1,44 @@
+{	
+	"CONNECTION_PROBLEM": "Pas de connexion avec le serveur",
+	"OFFLINE": "Hors ligne",
+	"ONLINE": "En ligne",
+	"MODIFIED": "La structure de l'appareil a été modifiée. Veuillez redémarrer l'appareil.",
+	"WAIT": "S'il vous plaît, attendez",
+	"NOT_CONNECTED": "Pas connecté",
+	"NAVIGATION_TAB": {
+		"INFO": "Info",
+		"OVERVIEW": "Vue",
+		"MANAGEMENT": "La gestion",
+		"LOG": "Journal des événements",
+		"STRUCTURE": "Structure de projet",
+		"REPORTS": "Les rapports",
+		"WASH": "Nettoyage",
+		"REPLACE_KEG": "Remplacement du fût",
+		"CALIBRATION": "Étalonner",
+		"STAND": "Stand",
+		"REPLACE_LABEL": "Remplacement du rouleau d'autocollant",
+		"BEER_INFO": "Texte autocollant",
+		"CONTROLLER": "Contrôleur configure"
+	},
+	"LOG": {
+		"UNKNOWN_USER": "Identifiant utilisateur inconnu:"
+	},
+	"REPORTS": {
+		"CHARTS_ELEMENTS": "Articles sélectionnés"
+	},
+	"MONTHS": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
+	"BEERBOX": {		
+		"WASH_STEPS": {
+			"STEP_1": "Laver à l'eau",
+			"STEP_2": "Nettoyage avec un produit de nettoyage",
+			"STEP_3": "Rinçage à l'eau potable",
+			"STEP_4": "Remplacement de l'eau potable par de la bière. Tête de débit No."
+		},
+		"WASH_AGENTS": {
+			"AGENT_1": "Eau potable",
+			"AGENT_2": "La bière",
+			"AGENT_3": "Solution alcaline du produit de nettoyage FT-89 CIP ou similaire",
+			"AGENT_4": "Solution à base acide du produit de nettoyage FINK Acid kombi ou similaire"
+		}		
+	}
+}
