@@ -33,7 +33,7 @@ export class HousesService extends IHouseService {
 
   /** PUT: update the house on the server */
   updateHouse (house: House): Observable<any> {
-    return this.putPiped(`${this.houseUrl}${house.id}/`, house, `updated client device id=${house.id}`, 'updateHouse');
+    return this.putPiped(`${this.houseUrl}${house.name}/`, house, `updated client device id=${house.id}`, 'updateHouse');
   }
 
   /** POST: add a new house to the server */
