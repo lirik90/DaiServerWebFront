@@ -17,10 +17,10 @@ h4 {
   display: flex;
 }
 .grid-pad {
-  padding: 10px 0;
+ /* padding: 10px 0;*/
 }
 .grid-pad > [class*='col-']:last-of-type {
-  margin-right: 20px; 
+  /*margin-right: 20px; */
 }
 .module {
   padding: 4px 20px 20px 20px;

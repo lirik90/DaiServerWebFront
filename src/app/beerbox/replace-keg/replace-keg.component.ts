@@ -37,6 +37,8 @@ interface ReplaceKegSection
 export class ReplaceKegComponent implements OnInit 
 {  
   items: ReplaceKegSection[];
+  manufacturers_: string[];
+  is_printer_auto_: boolean;
 
   constructor(
     public dialog: MatDialog,
@@ -74,6 +76,34 @@ export class ReplaceKegComponent implements OnInit
     {
       if (is_first) 
       {
+        for (let group of sct.groups) 
+        {
+          if (group.type.name == 'label_general') 
+          {
+            for (let param of group.params) 
+            {
+              if (param.param.name == 'manufacturers')
+              {
+                if (param.value !== undefined && param.value !== null && param.value.length)
+                {
+                  this.manufacturers_ = param.value.split("|");
+                }                
+              }
+            }
+          }
+          else if (group.type.name == 'printer')
+          {
+            if (group.mode == 2) // automatic
+            {
+              this.is_printer_auto_ = true;
+            }
+            else
+            {
+              this.is_printer_auto_ = false;
+            }
+          }
+        }
+        
         is_first = false;
         continue;
       }
@@ -140,12 +170,7 @@ export class ReplaceKegComponent implements OnInit
   }
   
   set_manufacture(keg: Keg, date: string, manufacturer_info: string): void
-  {
-    if (date == undefined || date.length == 0)
-    {
-      return;
-    }
-
+  {        
     if (keg.manufacture_date_ !== undefined && keg.manufacture_date_ != null)
     {
       keg.manufacture_date_.value = date;
@@ -159,18 +184,12 @@ export class ReplaceKegComponent implements OnInit
     let params: ParamValue[] = [];
     params.push(keg.manufacture_date_)
     params.push(keg.manufacturer_name_)
-    this.controlService.changeParamValues(params);
+    this.controlService.changeParamValues(params);        
   }
 
   openDialog(keg: Keg): void 
-  {    
-    let manufacturer_info_item: string;
-    if (keg.manufacturer_name_ !== undefined && keg.manufacturer_name_ != null)
-    {
-      manufacturer_info_item = keg.manufacturer_name_.value;    
-    }
-    
-    this.dialog.open(ConfirmDialogReplaceKegComponent, {width: '80%', data: {info: manufacturer_info_item}})
+  {
+    this.dialog.open(ConfirmDialogReplaceKegComponent, {width: '80%', data: { manufacturers: this.manufacturers_, is_printer_auto: this.is_printer_auto_}})
     .afterClosed().pipe(
       filter(name => name)
     ).subscribe(res => { 
@@ -207,21 +226,31 @@ export const CUSTOM_FORMATS = {
 
 export class ConfirmDialogReplaceKegComponent 
 {
-  date = new FormControl(moment());
+  //date = new FormControl(moment());
   input_date_: string;
   manufacturer_info_: string;
+  manufacturers_: string[];
+  is_printer_auto_: boolean;
   
   constructor(
     public dialogRef: MatDialogRef<ConfirmDialogReplaceKegComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) 
   {
-    this.input_date_ = this.date.value.format('DD.MM.YYYY');
-    this.manufacturer_info_ = data.info;
+    //this.input_date_ = this.date.value.format('DD.MM.YYYY');
+    this.manufacturers_ = data.manufacturers
+    this.manufacturer_info_ = "";
+    this.is_printer_auto_ = data.is_printer_auto
   }
   
   confirm(): void
   {
+    if (this.is_printer_auto_ && (this.input_date_ === undefined || !this.input_date_.length || this.manufacturer_info_ === undefined || !this.manufacturer_info_.length))
+    {
+      // alarm!
+      console.log("alarm!");
+      return;
+    }
     this.dialogRef.close({date: this.input_date_, info: this.manufacturer_info_});
   }
 

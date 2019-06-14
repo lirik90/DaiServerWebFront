@@ -33,6 +33,8 @@ export interface UpdateBeerInfo
 export class UpdateBeerInfoComponent implements OnInit 
 {
   items: UpdateBeerInfo[] = [];
+  manufacturers_: string[] = [];
+  manufacturers_param_: ParamValue;
   
   constructor(
     public dialog: MatDialog,
@@ -51,10 +53,29 @@ export class UpdateBeerInfoComponent implements OnInit
     for (let sct of this.houseService.house.sections) 
 	  {
       if (is_first) 
-	    {
+      {
+        for (let group of sct.groups) 
+        {
+          if (group.type.name == 'label_general') 
+          {
+            for (let param of group.params) 
+            {
+              if (param.param.name == 'manufacturers')
+              {
+                if (param.value !== undefined && param.value !== null && param.value.length)
+                {
+                  this.manufacturers_ = param.value.split("|");                                    
+                }
+                this.manufacturers_param_ = param;
+              }
+            }
+          }
+        }
+        
         is_first = false;
         continue;
-      }
+      }      
+      
       let data: DialogData = {} as DialogData;
       let label: UpdateBeerInfo = { sct: sct, data: data } as UpdateBeerInfo;
       for (let group of sct.groups) 
@@ -147,6 +168,44 @@ export class UpdateBeerInfoComponent implements OnInit
       
     });
   }
+  
+  click_edit_manufacturers(): void
+  {
+    this.dialog.open(EditDialogManufacturersListComponent, 
+                     {width: '80%', data: this.manufacturers_.join("\n")})
+    .afterClosed().subscribe(res => {      
+      if (this.manufacturers_param_ !== undefined)
+      {
+        let params: ParamValue[] = [];
+        if (res.length)
+        {
+          this.manufacturers_ = res.split("\n");
+          this.manufacturers_ = this.clean_array(this.manufacturers_);
+          //this.manufacturers_param_.value = res.replace(new RegExp("\n", 'g'), "|");
+          this.manufacturers_param_.value = this.manufacturers_.join("|");                  
+        } 
+        else
+        {
+          this.manufacturers_ = [];
+          this.manufacturers_param_.value = "";
+        }
+        params.push(this.manufacturers_param_);
+        this.controlService.changeParamValues(params);
+      }      
+    });
+  }
+  
+  clean_array(actual): any
+  {
+    var newArray = new Array();
+    for (var i = 0; i < actual.length; i++) 
+    {
+      if (actual[i]) {
+        newArray.push(actual[i]);
+      }
+    }
+    return newArray;
+  }
 }
 
 @Component({
@@ -165,5 +224,24 @@ export class EditDialogUpdateBeerInfoComponent
   ) 
   {
     this.item = data;
+  }
+}
+
+@Component({
+  selector: 'app-edit-dialog-manufacturers-list',
+  templateUrl: './edit-dialog-manufacturers-list.component.html',
+  styleUrls: ['./update-beer-info.component.css'],
+})
+
+export class EditDialogManufacturersListComponent
+{
+  manufacturers_: string;
+  
+  constructor(
+    public dialogRef: MatDialogRef<EditDialogManufacturersListComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: string
+  ) 
+  {
+    this.manufacturers_ = data;
   }
 }

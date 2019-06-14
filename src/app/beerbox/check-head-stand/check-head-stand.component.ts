@@ -82,21 +82,17 @@ export class CheckHeadStandComponent implements OnInit
               switch(item.type.name) 
               {
                 case 'pouring':  current.pouring = item;    break; // api.PouringItem
-                case 'cleanStep': current.step = item;       break; // api.CleanStepItem
                 case 'volume':  current.cur_volume = item; break; // api.type.item.volume
                 case 'pause':  current.pause = item;      break; // api.type.item.pause
-                case 'block':  current.block_pouring = item; break;              
-                case 'cleanType': current.clean_type = item; break;
+                case 'block':  current.block_pouring = item; break;   
                 case 'setMode':  current.head_mode = item; break;
                 case 'clamp':  current.clamp = item; break;
                 case 'release':  current.release = item; break;
               }
 
               if (current.pouring !== undefined && 
-                  current.step !== undefined && 
                   current.cur_volume !== undefined && 
                   current.pause !== undefined && 
-                  current.clean_type !== undefined && 
                   current.block_pouring !== undefined && 
                   current.head_mode !== undefined &&
                   current.clamp !== undefined &&
@@ -106,6 +102,22 @@ export class CheckHeadStandComponent implements OnInit
               }
             }
           } 
+          else if (group.type.name == 'cleanTakehead') 
+          {
+            for (let item of group.items) 
+            {
+              switch(item.type.name) 
+              {
+                case 'cleanType': current.step = item;               break; // api.CleanTypeItem
+                case 'cleanStep': current.clean_type = item;              break; // api.CleanStepItem
+              }
+
+              if (current.step !== undefined && current.clean_type !== undefined)
+              {
+                break;
+              }
+            }
+          }
           else if (group.type.name == 'params') 
           { // api.type.group.params
             for (let item of group.items) 
@@ -136,16 +148,16 @@ export class CheckHeadStandComponent implements OnInit
             current.clamp !== undefined &&
             current.release !== undefined)
         {
-          if (current.pouring.value != null && check_head_fill_water_volume !== undefined)
+          if (current.pouring.val.display != null && check_head_fill_water_volume !== undefined)
           {
             current.check_head_fill_water_volume = check_head_fill_water_volume;
             current.check_head_wash_volume = check_head_wash_volume;
             current.check_head_clamp_check_time = check_head_clamp_check_time;
-            current.value_input = current.clean_type.raw_value == 11 ? current.check_head_fill_water_volume.value : current.clean_type.raw_value == 12 ? 
-            current.volume3.value : current.clean_type.raw_value == 13 ? current.check_head_wash_volume.value : current.check_head_clamp_check_time.value;
+            current.value_input = current.clean_type.val.raw == 11 ? current.check_head_fill_water_volume.value : current.clean_type.val.raw == 12 ? 
+            current.volume3.value : current.clean_type.val.raw == 13 ? current.check_head_wash_volume.value : current.check_head_clamp_check_time.value;
             items.push(current);            
           }
-        }  
+        }
       }            
     }
 
@@ -186,7 +198,7 @@ export class CheckHeadStandComponent implements OnInit
       value.value_input = value.value_to_edit;
      
       let params: ParamValue[] = [];
-      switch(+value.clean_type.raw_value) 
+      switch(+value.clean_type.val.raw) 
       {
         case 11:
           value.check_head_fill_water_volume.value = value.value_input;
@@ -222,7 +234,7 @@ export class CheckHeadStandComponent implements OnInit
   
   click_cancel_check_button(item: any): void
   {    
-    if (item.clean_type.raw_value == 14)
+    if (item.clean_type.val.raw == 14)
     {
       this.click_release_check(item);
     }
@@ -240,7 +252,7 @@ export class CheckHeadStandComponent implements OnInit
   
   get_type_text(item: any): string 
   {
-    switch(+item.clean_type.raw_value) 
+    switch(+item.clean_type.val.raw) 
     {
       case 11: return "Наполнение магистрали водой - налив со второй кеги (вода)";
       case 12: return "Проверка пивом - обычный налив пива с настройкой по умолчанию с первой кеги (пиво)";

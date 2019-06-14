@@ -5,31 +5,31 @@
       <div class="module house">
         <h3>{{item.sct.name}}</h3>        
 		  
-        <ng-container *ngIf="item.clean_type.raw_value > 0 && item.clean_type.raw_value < 11; else no_clean_type">
+        <ng-container *ngIf="item.clean_type.val.raw > 0 && item.clean_type.val.raw < 11; else no_clean_type">
           <h5>Идёт промыка, пожалуйста ждите!</h5>
           <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
         </ng-container>
 
         <ng-template #no_clean_type >
 
-          <ng-container *ngIf="item.pouring.raw_value == 1 && item.clean_type.raw_value < 11; else no_pouring">
+          <ng-container *ngIf="item.pouring.val.raw == 1 && item.clean_type.val.raw < 11; else no_pouring">
             <h5>Идёт налив, пожалуйста ждите!</h5>
-            <h5>Осталось: {{item.full_volume.value-item.cur_volume.value}} мл.<span *ngIf="item.pause.value == 1"> Пауза!</span></h5>
+            <h5>Осталось: {{item.full_volume.val.display-item.cur_volume.val.display}} мл.<span *ngIf="item.pause.val.display == 1"> Пауза!</span></h5>
             <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
           </ng-container>	
 
           <ng-template #no_pouring>
             
-            <ng-container *ngIf="item.clean_type.raw_value == 0">
+            <ng-container *ngIf="item.clean_type.val.raw == 0">
               <button mat-button class="button_2" (click)="click_start_check_button(item, 11)" title="Наполнение магистрали водой">Наполнение магистрали водой</button>
               <button mat-button class="button_2" (click)="click_start_check_button(item, 12)" title="Проверка пивом">Проверка пивом</button>
               <button mat-button class="button_2" (click)="click_start_check_button(item, 13)" title="Промывка водой">Промывка водой</button>
               <button mat-button class="button_2" (click)="click_start_check_button(item, 14)" title="Проверка поджима">Проверка поджима</button>
             </ng-container>
             
-            <ng-container *ngIf="item.clean_type.raw_value >= 11 && item.clean_type.raw_value != 14">
+            <ng-container *ngIf="item.clean_type.val.raw >= 11 && item.clean_type.val.raw != 14">
               <h4>{{get_type_text(item)}}</h4>
-              <ng-container *ngIf="item.pouring.raw_value == 0">          
+              <ng-container *ngIf="item.pouring.val.raw == 0">          
                 
                 <p>Установите бутылку. И нажмите кнопку на аппарате.</p>
                 
@@ -43,20 +43,20 @@
                                 
               </ng-container>
               
-              <ng-container *ngIf="item.pouring.raw_value == 1 && item.block_pouring.value == 0">
+              <ng-container *ngIf="item.pouring.val.raw == 1 && item.block_pouring.val.display == 0">
                 <h5>Идёт проверка, пожалуйста ждите!</h5>
                 <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
                 <button mat-button class="button_3" (click)="click_stop_check_button(item)" title="Остановить ">Остановить </button>
               </ng-container>
               
-              <ng-container *ngIf="item.block_pouring.value == 1">
+              <ng-container *ngIf="item.block_pouring.val.display == 1">
                 <h5>Остановка налива, пожалуйста ждите!</h5>
                 <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
               </ng-container>
               
             </ng-container>
             
-            <ng-container *ngIf="item.clean_type.raw_value == 14 && !is_canceling_">
+            <ng-container *ngIf="item.clean_type.val.raw == 14 && !is_canceling_">
               <h4>{{get_type_text(item)}}</h4>
               <ng-container *ngIf="!is_clamp_">
                 <p>
@@ -102,7 +102,7 @@
               
             </ng-container>
             
-            <ng-container *ngIf="item.clean_type.raw_value == 14 && is_canceling_">
+            <ng-container *ngIf="item.clean_type.val.raw == 14 && is_canceling_">
               <p>Идет остановка. Подождите.</p>
             </ng-container>
             

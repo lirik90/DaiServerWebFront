@@ -27,7 +27,7 @@ export class AppComponent implements OnInit, OnDestroy {
     { code: 'ru', label: 'Русский', icon: 'flag-icon flag-icon-ru'},
     { code: 'en', label: 'English', icon: 'flag-icon flag-icon-gb'},
     { code: 'fr', label: 'Français', icon: 'flag-icon flag-icon-fr'},
-    { code: 'es', label: 'Español', icon: 'flag-icon flag-icon-es'},
+    //{ code: 'es', label: 'Español', icon: 'flag-icon flag-icon-es'},
   ];
   
   current_lang_: any;

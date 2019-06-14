@@ -141,12 +141,12 @@ export class ParamsInGroupComponent extends ChangeTemplate<ParamValue> implement
   saveObject(obj: ParamValue): Uint8Array 
   {
     console.log(obj);
-    let view = new Uint8Array(12);
+    let view = new Uint8Array(16);
     let pos = 0;
     ByteTools.saveInt32(obj.id, view); pos += 4;
     ByteTools.saveInt32(obj.param.id, view, pos); pos += 4;
     ByteTools.saveInt32(obj.group_id, view, pos); pos += 4;
-    console.log(view);
+    ByteTools.saveInt32(0, view, pos); pos += 4;
     return view;
   }
 }

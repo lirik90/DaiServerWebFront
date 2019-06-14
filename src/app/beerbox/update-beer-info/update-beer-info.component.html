@@ -28,3 +28,14 @@
     </div>
   </ng-container>
 </div>
+<div class="grid grid-pad">
+  <ng-container *ngIf="manufacturers_ !== undefined">  
+    <div class="module house">
+      <h3><p i18n="@@BEERBOX.BEER_INFO.MANUFACTURERS_LIST">Список производителей</p></h3>
+      <ng-container *ngFor="let title of manufacturers_;">
+        <p>{{title}}</p>
+      </ng-container>
+      <button mat-button (click)="click_edit_manufacturers()" i18n="@@CONTROL.EDIT">Редактировать</button>
+    </div>  
+  </ng-container>
+</div>
