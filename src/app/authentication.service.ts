@@ -51,7 +51,14 @@ export class AuthenticationService {
       this.currentUser = user;
 
       clearTimeout(this.timeout_handle);
-      this.timeout_handle = setTimeout(() => this.refreshToken(), 14.7 * 60000);
+      this.timeout_handle = setTimeout(() => {
+        this.http.head<any>('/get_csrf').pipe(
+          catchError(error => { 
+            this.goToLogin();
+            return of();
+          })
+        ).subscribe(() => this.refreshToken());
+      }, 14.7 * 60000);
     }
     return user;
   }

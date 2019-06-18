@@ -1,30 +1,13 @@
 <ng-container *ngIf="group">
-  <h2>Параметры: {{group.type.title}}</h2>
+  <h2><span i18n="@@PARAMS.TITLE">Параметры</span>: {{sct.name}} - {{group.type.title}}</h2>
   <p *ngIf="description">{{group.type.description}}</p>
 
   <form class="example-form" (ngSubmit)="onSubmit()" #paramForm="ngForm">
-    <ng-container *ngFor="let data of group.params">
-      <p *ngIf="!canShowIt(data.param.type)">{{data.param.title}}</p>
-      <ng-container *ngIf="canShowIt(data.param.type)" [ngSwitch]="data.param.type">
-        <mat-checkbox name="{{data.id}}" [ngModel]="data.value == true" (ngModelChange)="data.value = $event" *ngSwitchCase="paramTypes.Bool">
-          {{data.param.title}} ({{data.param.name}}) {{data.param.description}}
-        </mat-checkbox>
-        <mat-form-field class="example-full-width" *ngSwitchCase="paramTypes.TimeType">
-          <input matInput placeholder="{{data.param.title}} ({{data.param.name}})" 
-               name="{{data.id}}" [ngModel]="getTimeString(data)" (ngModelChange)="setTimeParam(data, $event)" type="time" step="1">
-          <mat-hint *ngIf="data.param.description">{{data.param.description}}</mat-hint>
-        </mat-form-field>
-        <mat-form-field class="example-full-width" *ngSwitchDefault>
-          <input matInput placeholder="{{data.param.title}} ({{data.param.name}})" 
-               name="{{data.id}}" [(ngModel)]="data.value">
-          <mat-hint *ngIf="data.param.description">{{data.param.description}}</mat-hint>
-        </mat-form-field>
-      </ng-container>
-    </ng-container>
-    <button mat-raised-button color="primary" [disabled]="cantChange || !paramForm.form.valid" type="submit">Сохранить</button>
-
-    <button mat-raised-button *ngIf="group.type.code_id" routerLink="../settings/code/{{group.type.code_id}}">Edit code</button>
-    <button mat-raised-button (click)="goBack()">go back</button>
+    <app-param-item [values]="group.params" [changed]="changed_values"></app-param-item>
+    
+    <button mat-raised-button class="custom_button" color="primary" [disabled]="cantChange || !paramForm.form.valid" type="submit" i18n="@@CONTROL.SAVE">Сохранить</button>
+    <button mat-raised-button class="custom_button" (click)="goBack()" i18n="@@CONTROL.BACK">Назад</button>
+    
   </form>
 </ng-container>
-<button mat-raised-button *ngIf="!group" (click)="goBack()">go back</button>
+<button mat-raised-button *ngIf="!group" (click)="goBack()" i18n="@@CONTROL.BACK">Назад</button>

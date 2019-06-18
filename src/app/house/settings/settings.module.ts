@@ -9,18 +9,22 @@ import { SettingsService } from './settings.service';
 
 import { SettingsComponent } from './settings.component';
 import { DevicesComponent, DeviceItemsComponent } from './devices/devices.component';
-import { SectionsComponent, GroupsComponent } from './sections/sections.component';
+import { SectionsComponent, GroupsComponent, ParamsInGroupComponent } from './sections/sections.component';
 import { GroupTypesComponent, ItemTypesComponent, ParamTypesComponent, StatusesComponent } from './group-types/group-types.component';
 import { StatusTypesComponent } from './status-types/status-types.component';
 import { SignTypesComponent } from './sign-types/sign-types.component';
-import { CodeComponent, CodesComponent } from './code/code.component';
+import { CodesComponent } from './codes/codes.component';
 
 import { MonacoEditorModule, NgxMonacoEditorConfig, NGX_MONACO_EDITOR_CONFIG } from 'ngx-monaco-editor';
 import { CheckerTypesComponent } from './checker-types/checker-types.component';
+import { ViewsComponent, ViewItemsComponent } from './views/views.component';
+import { SaveTimersComponent } from './save-timers/save-timers.component';
+
+
 const monacoConfig: NgxMonacoEditorConfig = {
   baseUrl: 'static', // configure base path for monaco editor
   defaultOptions: { scrollBeyondLastLine: false }, // pass deafult options to be used
-//  onMonacoLoad: () => { console.log((<any>window).monaco); } // here monaco object will be avilable as window.monaco use this function to extend monaco editor functionalities.
+  //onMonacoLoad: () => {} // here monaco object will be avilable as window.monaco use this function to extend monaco editor functionalities.
 };
 
 @NgModule({
@@ -37,13 +41,13 @@ const monacoConfig: NgxMonacoEditorConfig = {
     DevicesComponent, 
     DeviceItemsComponent,
     SectionsComponent, 
-    GroupsComponent,
+    GroupsComponent, ParamsInGroupComponent,
     GroupTypesComponent, ItemTypesComponent, ParamTypesComponent, StatusesComponent , 
     StatusTypesComponent, 
     SignTypesComponent, 
     CodesComponent,
-    CodeComponent,
     CheckerTypesComponent,
+    ViewsComponent, ViewItemsComponent, SaveTimersComponent,
   ],
   entryComponents: [
   ],

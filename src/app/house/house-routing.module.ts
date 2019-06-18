@@ -18,14 +18,21 @@ const houseRoutes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { 
-        path: ':id', 
+        path: ':name', 
         component: HouseComponent,
         canActivate: [ProjectLoadGuard],
         canActivateChild: [AuthGuard, ProjectLoadGuard],
         children: [
-          { path: '', redirectTo: '/house/:id/view', pathMatch: 'full' },
+          { path: '', redirectTo: '/house/:name/view', pathMatch: 'full' },
           { path: 'detail', component: HouseDetailComponent },
-          { path: 'view', component: ViewComponent, data: { is_edit: true }},
+          {
+            path: 'view', 
+            component: ViewComponent,
+            children: [
+              { path: '', pathMatch: 'full' },
+              { path: ':view_id', component: ManageComponent, data: { is_edit: true, is_view: true } }
+            ]
+          },
           { path: 'manage', component: ManageComponent, data: { is_edit: true }},
           { path: 'log', component: LogComponent },
           { path: 'group/:groupId/param', component: ParamComponent },

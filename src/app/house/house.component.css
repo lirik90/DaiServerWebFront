@@ -18,6 +18,10 @@ div > h2 {
   right: 0;
 }
 
+.status_modified:after {
+  color: darkBlue;
+  content: "edit";
+}
 .status_ok:after {
   color: green;
   content: "check_circle";
@@ -122,4 +126,9 @@ h2.house-name {
 
 .house-is-mobile .house-sidenav-container {
   flex: 1 0 auto;
+}
+
+.house-is-mobile .house-content {
+  padding-left: 0px;
+  padding-right: 0px;
 }

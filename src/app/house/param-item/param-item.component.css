@@ -1,0 +1,12 @@
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.custom_hint {
+	font-size: 75%;
+}
+
+mat-card {
+	margin-bottom: 10px;
+}

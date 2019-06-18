@@ -1,0 +1,23 @@
+{	
+	"CONNECTION_PROBLEM": "No connection with server",
+	"OFFLINE": "Offline",
+	"ONLINE": "Online",
+	"MODIFIED": "The device structure has been modified. Please restart the device.",
+	"WAIT": "Please wait",
+	"NOT_CONNECTED": "Not connected",
+	"NAVIGATION_TAB": {
+		"INFO": "Info",
+		"OVERVIEW": "View",
+		"MANAGEMENT": "Management",
+		"LOG": "Log",
+		"STRUCTURE": "Project structure",
+		"REPORTS": "Reports"
+	},
+	"LOG": {
+		"UNKNOWN_USER": "Unknow user ID:"
+	},
+	"REPORTS": {
+		"CHARTS_ELEMENTS": "Selected items"
+	},
+	"MONTHS": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+}

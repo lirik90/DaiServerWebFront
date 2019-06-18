@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router, ActivatedRoute, RouterOutlet } from "@angular/router";
 
 import { HouseService } from "../house.service";
-import { Section } from "../house";
+import { View } from "../house";
 
 @Component({
   selector: 'app-view',
@@ -9,19 +10,26 @@ import { Section } from "../house";
   styleUrls: ['../../sections.css', './view.component.css']
 })
 export class ViewComponent implements OnInit {
-  houseId: number;
-  sections: Section[];
+  @ViewChild(RouterOutlet) outlet: RouterOutlet;
+  views: View[];
 
   constructor(
+    private router: Router,
+    private route: ActivatedRoute,
     private houseService: HouseService
   ) {}
 
   ngOnInit() {
-    this.getSections();
+    this.get_views();
   }
 
-  getSections(): void {
-    this.houseId = this.houseService.house.id;
-    this.sections = this.houseService.house.sections;
+  get_views(): void {
+    this.views = this.houseService.house.views;
+    
+    if (!this.outlet.isActivated)
+    {
+      Promise.resolve(null).then(() => this.router.navigate([this.views[0].id], {relativeTo: this.route}));
+    }
   }
+
 }

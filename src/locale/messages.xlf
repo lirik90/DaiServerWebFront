@@ -1,0 +1,1569 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="DETAILS.HEAD" datatype="html">
+        <source>Подробнее о проекте</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DETAILS.ID" datatype="html">
+        <source>Ид</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DETAILS.NAME" datatype="html">
+        <source>Имя</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DETAILS.UUID" datatype="html">
+        <source>Уникальный номер</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DETAILS.TITLE" datatype="html">
+        <source>Заголовок</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DETAILS.DESCRIPTION" datatype="html">
+        <source>Описание</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.BACK" datatype="html">
+        <source>Назад</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/param/param.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/param/param.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.OPEN" datatype="html">
+        <source>Открыть</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.SAVE" datatype="html">
+        <source>Сохранить</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/param/param.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="HOME.PANEL" datatype="html">
+        <source> Панель</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="HOME.PROJECTS" datatype="html">
+        <source> Проекты</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="HOME.GREETING" datatype="html">
+        <source>Привет</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.EXIT" datatype="html">
+        <source>Выйти</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DASHBOARD.TITLE" datatype="html">
+        <source>Часто посещаемые проекты</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DETAILS.PROJECT" datatype="html">
+        <source>Проект</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DETAILS.HINT.NAME" datatype="html">
+        <source>Display name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DETAILS.HINT.UUID" datatype="html">
+        <source>Device UUID</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.ADD" datatype="html">
+        <source>Добавить</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SYSTEM.MSG.TITLE" datatype="html">
+        <source>Системные сообщения:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/messages/messages.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.CLEAR" datatype="html">
+        <source>Очистить</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/messages/messages.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.SEARCH" datatype="html">
+        <source>Поиск</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/search/search.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LOGIN.TITLE" datatype="html">
+        <source>Вход</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/login/login.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LOGIN.USERNAME" datatype="html">
+        <source>Имя пользователя</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/login/login.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/register/register.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LOGIN.USERNAME_HINT" datatype="html">
+        <source>Имя пользователя нужно ввести</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/login/login.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/register/register.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LOGIN.PASSWORD" datatype="html">
+        <source>Пароль</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/login/login.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/register/register.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LOGIN.PASSWORD_HINT" datatype="html">
+        <source>Пароль нужно ввести обязательно</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/login/login.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/register/register.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LOGIN.SIGNIN" datatype="html">
+        <source>Войти</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/login/login.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LOGIN.SIGNUP" datatype="html">
+        <source>Регистрация</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/login/login.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/register/register.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REGISTER.TITLE" datatype="html">
+        <source>Регистрация</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/register/register.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REGISTER.EMAIL" datatype="html">
+        <source>Email</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/register/register.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REGISTER.EMAIL_HINT" datatype="html">
+        <source>Email обязателен</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/register/register.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REGISTER.FIRST_NAME" datatype="html">
+        <source>Имя</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/register/register.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REGISTER.FIRST_NAME_HINT" datatype="html">
+        <source>Имя нужно ввести обязательно</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/register/register.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REGISTER.LAST_NAME" datatype="html">
+        <source>Фамилия</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/register/register.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REGISTER.LAST_NAME_HINT" datatype="html">
+        <source>Фамилию нужно ввести обязательно</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/register/register.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.CANCEL" datatype="html">
+        <source>Отмена</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/register/register.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/page-reload-dialog.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.NO" datatype="html">
+        <source>Нет</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/groups.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+          <context context-type="linenumber">55</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/statuses.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DEVICE_TIME" datatype="html">
+        <source>Время на устройстве</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/house.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="HOME.DIALOG.TITLE" datatype="html">
+        <source>Изменён</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/page-reload-dialog.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="HOME.DIALOG.TEXT" datatype="html">
+        <source>
+  Есть изменения. Хотите обновить страницу?
+</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/page-reload-dialog.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.REFRESH" datatype="html">
+        <source>Обновить</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/page-reload-dialog.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="OVERVIEW.TITLE" datatype="html">
+        <source>Обзор</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/view/view.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="MANAGEMENT.TITLE" datatype="html">
+        <source>Управление проектом</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/manage/manage.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="MANAGEMENT.MODE" datatype="html">
+        <source>Режим</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/manage/manage.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LOG.TITLE" datatype="html">
+        <source>Журнал</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log/log.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LOG.WARNING" datatype="html">
+        <source>
+      EventLog&apos;s API rate limit has been reached. It will be reset in one minute.
+    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log/log.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LOG.CMD" datatype="html">
+        <source>Консольная команда</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log/log.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LOG.FILTER" datatype="html">
+        <source>Фильтр</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log/log.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LOG.TABLE.MESSAGE" datatype="html">
+        <source>Сообщение</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log/log.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LOG.TABLE.CATEGORY" datatype="html">
+        <source>Категория</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log/log.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LOG.TABLE.DATE" datatype="html">
+        <source>
+        Дата
+      </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log/log.component.html</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PARAMS.TITLE" datatype="html">
+        <source>Параметры</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/param/param.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.LOAD" datatype="html">
+        <source>Загрузить</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/dev-item-value/dev-item-value.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DEVICE_ITEM.LOADING" datatype="html">
+        <source>Загрузка</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/dev-item-value/dev-item-value.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/dev-item-value/holding-register-dialog.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DEVICE_ITEM.VALUE" datatype="html">
+        <source>Значение</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/dev-item-value/holding-register-dialog.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.CANCEL2" datatype="html">
+        <source>Нет спасибо</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/dev-item-value/holding-register-dialog.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.OK" datatype="html">
+        <source>Ok</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/dev-item-value/holding-register-dialog.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DEVICE_ITEM.HOLDING_TYPE_MODE" datatype="html">
+        <source>Нажмите если нужно ввести текст</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/dev-item-value/holding-register-dialog.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.TITLE" datatype="html">
+        <source>Отчёты</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/reports.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.CHARTS" datatype="html">
+        <source>Графики</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/reports.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.EXPORT" datatype="html">
+        <source>Экспорт</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/reports.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.CHARTS.TITLE" datatype="html">
+        <source>Графики</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.TIME_FROM" datatype="html">
+        <source>Время от</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.DATE_FROM" datatype="html">
+        <source>Дата от</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.TIME_TO" datatype="html">
+        <source>Время до</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.DATE_TO" datatype="html">
+        <source>Дата до</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.CHARTS.DECOMPOSE" datatype="html">
+        <source>Разложить</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.CHARTS.DECOMPOSE_BY_GROUPS" datatype="html">
+        <source>По группам элементов</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.CHARTS.DECOMPOSE_BY_TYPES" datatype="html">
+        <source>По типам элементов</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.CHARTS.DECOMPOSE_BY_ITEMS" datatype="html">
+        <source>По элементам</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.CHARTS.ADD_TYPE" datatype="html">
+        <source>Добавить тип элемента</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.CHARTS.SELECT_TYPE" datatype="html">
+        <source>Выберите тип элемента</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.DELETE" datatype="html">
+        <source>Удалить</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+          <context context-type="linenumber">62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.CHARTS.ADD_ITEM" datatype="html">
+        <source>Добавить элемент</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.CHARTS.SELECT_ITEM" datatype="html">
+        <source>Выберите элемент</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.SHOW" datatype="html">
+        <source>Показать</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+          <context context-type="linenumber">68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.EXPORT.TITLE" datatype="html">
+        <source>Экспорт данных</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.EXPORT.WAITING" datatype="html">
+        <source>Подождите! Идёт генерация отчёта...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.EXPORT.SELECT_PROJECT" datatype="html">
+        <source>Выберите проект</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.EXPORT.SELECT_THIS" datatype="html">
+        <source>Только этот проект</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.EXPORT.SELECTED" datatype="html">
+        <source>Выбрано</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.NEXT2" datatype="html">
+        <source>Дальше</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.EXPORT.SELECT_TIME" datatype="html">
+        <source>Укажите период</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.EXPORT.SELECT_DATA" datatype="html">
+        <source>Выберите данные</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.EXPORT.NOT_EXPORT_NULL" datatype="html">
+        <source>Не экспортировать нулевые значения</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.READY" datatype="html">
+        <source>Готово</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">55</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.EXPORT.READY" datatype="html">
+        <source>Для генерации отчёта всё готово.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.DOWNLOAD" datatype="html">
+        <source>Скачать</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.TITLE" datatype="html">
+        <source>Настройки</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/settings.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.ITEM.DEVICES" datatype="html">
+        <source>Устройства и элементы</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/settings.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.ITEM.SECTIONS" datatype="html">
+        <source>Секции и группы</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/settings.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.ITEM.GROUPTYPES" datatype="html">
+        <source>Типы групп и элементов</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/settings.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.ITEM.STATUSTYPES" datatype="html">
+        <source>Типы состояний</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/settings.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.ITEM.SIGNTYPES" datatype="html">
+        <source>Еденицы измерения</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/settings.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.ITEM.PLUGINS" datatype="html">
+        <source>Плагины</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/settings.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.ITEM.VIEWS" datatype="html">
+        <source>Представления</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/settings.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.ITEM.TIMERS" datatype="html">
+        <source>Таймеры</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/settings.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.ITEM.CODES" datatype="html">
+        <source>Скрипты</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/settings.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.DEVICES.TITLE" datatype="html">
+        <source>Устройства</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/devices/devices.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.TOTAL" datatype="html">
+        <source>Всего</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/devices/devices.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/devices/deviceitems.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/sections.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/groups.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/groups.component.html</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/params-in-group.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/group-types.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/param-types.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/statuses.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/status-types/status-types.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sign-types/sign-types.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/codes/codes.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/checker-types/checker-types.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/views/views.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/views/viewitems.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/save-timers/save-timers.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.DEVICES.ADD" datatype="html">
+        <source>Добавить устройство</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/devices/devices.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.DEVICES.DELETE" datatype="html">
+        <source>Удалить устройство</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/devices/devices.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.DETAILS" datatype="html">
+        <source>Детали</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/devices/devices.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/devices/deviceitems.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/sections.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/groups.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/params-in-group.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/group-types.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/param-types.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/statuses.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/status-types/status-types.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sign-types/sign-types.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/codes/codes.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/checker-types/checker-types.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/views/views.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/views/viewitems.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/save-timers/save-timers.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.NAME" datatype="html">
+        <source>Имя</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/devices/devices.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/devices/deviceitems.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/sections.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/group-types.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/param-types.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/statuses.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/status-types/status-types.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sign-types/sign-types.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/codes/codes.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/checker-types/checker-types.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/views/views.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.PLUGIN" datatype="html">
+        <source>Плагин</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/devices/devices.component.html</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.INTERVAL" datatype="html">
+        <source>Интервал проверки (мс)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/devices/devices.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.EXTRA" datatype="html">
+        <source>Экстра</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/devices/devices.component.html</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/devices/deviceitems.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.DEVICES_ITEMS.TITLE" datatype="html">
+        <source>Элементы устройства</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/devices/deviceitems.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.DEVICES_ITEMS.ADD" datatype="html">
+        <source>Добавить элемент</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/devices/deviceitems.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.DEVICES_ITEMS.DELETE" datatype="html">
+        <source>Удалить элемент</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/devices/deviceitems.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.PARENT" datatype="html">
+        <source>Предок</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/devices/deviceitems.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/param-types.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.TYPE" datatype="html">
+        <source>Тип</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/devices/deviceitems.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/statuses.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.GROUP" datatype="html">
+        <source>Группа</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/devices/deviceitems.component.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.SECTIONS.TITLE" datatype="html">
+        <source>Секции</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/sections.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.SECTIONS.ADD" datatype="html">
+        <source>Добавить секцию</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/sections.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.SECTIONS.DELETE" datatype="html">
+        <source>Удалить секцию</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/sections.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.SECTIONS.DAY" datatype="html">
+        <source>День</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/sections.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.SECTIONS.NIGHT" datatype="html">
+        <source>Ночь</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/sections.component.html</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.GROUPS.TITLE" datatype="html">
+        <source>Группы в секции</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/groups.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.GROUPS.ADD" datatype="html">
+        <source>Добавить группу</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/groups.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.GROUPS.DELETE" datatype="html">
+        <source>Удалить группу</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/groups.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.NAME2" datatype="html">
+        <source>Название</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/groups.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.GROUP_TYPE" datatype="html">
+        <source>Тип группы</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/groups.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.PARAMS_IN_GROUP.TITLE" datatype="html">
+        <source>Уставки в группе</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/params-in-group.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.PARAMS_IN_GROUP.ADD" datatype="html">
+        <source>Добавить уставку</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/params-in-group.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.PARAMS_IN_GROUP.DELETE" datatype="html">
+        <source>Удалить уставку</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/params-in-group.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.DATA_TYPE" datatype="html">
+        <source>Тип данных</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sections/params-in-group.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/param-types.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.GROUP_TYPES.TITLE" datatype="html">
+        <source>Типы групп</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/group-types.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.GROUP_TYPES.ADD" datatype="html">
+        <source>Добавить тип группы</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/group-types.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.GROUP_TYPES.DELETE" datatype="html">
+        <source>Удалить тип группы</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/group-types.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.HEADER" datatype="html">
+        <source>Заголовок</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/group-types.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/param-types.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/status-types/status-types.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.NONE" datatype="html">
+        <source>Не выбран</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/group-types.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.CODE" datatype="html">
+        <source>Скрипт</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/group-types.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.DESCRIPTION" datatype="html">
+        <source>Описание</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/group-types.component.html</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/param-types.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.ITEM_TYPES.TITLE" datatype="html">
+        <source>Типы элементов в группе</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.ITEM_TYPES.ADD" datatype="html">
+        <source>Добавить тип элемента</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.ITEM_TYPES.DELETE" datatype="html">
+        <source>Удалить тип элемента</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.ITEM_TYPES.NEED_NORMALIZE" datatype="html">
+        <source>Требует нормализации</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.ALG_SAVE.NOT_SAVE" datatype="html">
+        <source>Не сохранять автоматически</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.ALG_SAVE.SAVE_NOW" datatype="html">
+        <source>Сохранять немедленно</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.ALG_SAVE.SAVE_LATER" datatype="html">
+        <source>Сохранять по таймеру</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.ALG_SAVE.TITLE" datatype="html">
+        <source>Алгоритм сохранения изменений</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.SAVE_TIMER" datatype="html">
+        <source>Таймер сохранения</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.PARAM_TYPES.TITLE" datatype="html">
+        <source>Типы уставок в группе</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/param-types.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.PARAM_TYPES.ADD" datatype="html">
+        <source>Добавить тип уставки</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/param-types.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.PARAM_TYPES.DELETE" datatype="html">
+        <source>Удалить тип уставки</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/param-types.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.STATUSES.TITLE" datatype="html">
+        <source>Состояния группы</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/statuses.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.STATUSES.ADD" datatype="html">
+        <source>Добавить состояние</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/statuses.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.STATUSES.DELETE" datatype="html">
+        <source>Удалить статус</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/statuses.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.STATUSES.TEXT" datatype="html">
+        <source>Текст</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/statuses.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.STATUSES.NOTIFICATION" datatype="html">
+        <source>Посылать уведомление</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/group-types/statuses.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.STATUS_TYPE.TITLE" datatype="html">
+        <source>Типы состояний</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/status-types/status-types.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.STATUS_TYPE.ADD" datatype="html">
+        <source>Добавить тип состояния</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/status-types/status-types.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.STATUS_TYPE.DELETE" datatype="html">
+        <source>Удалить тип состояния</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/status-types/status-types.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.COLOR" datatype="html">
+        <source>Цвет</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/status-types/status-types.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.SIGN_TYPES.TITLE" datatype="html">
+        <source>Еденицы измерения</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sign-types/sign-types.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.SIGN_TYPES.ADD" datatype="html">
+        <source>Добавить еденицу измерения</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sign-types/sign-types.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.SIGN_TYPES.DELETE" datatype="html">
+        <source>Удалить единицу измерения</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/sign-types/sign-types.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.CODES.TITLE" datatype="html">
+        <source>Скрипты</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/codes/codes.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.CODES.ADD" datatype="html">
+        <source>Добавить скрипт</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/codes/codes.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.CODES.DELETE" datatype="html">
+        <source>Удалить скрипт</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/codes/codes.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.GENERAL" datatype="html">
+        <source>Общий</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/codes/codes.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.PLUGINS.TITLE" datatype="html">
+        <source>Плагины</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/checker-types/checker-types.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.PLUGINS.ADD" datatype="html">
+        <source>Добавить плагин</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/checker-types/checker-types.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.PLUGINS.DELETE" datatype="html">
+        <source>Удалить плагин</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/checker-types/checker-types.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.VIEWS.TITLE" datatype="html">
+        <source>Представления</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/views/views.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.VIEWS.ADD" datatype="html">
+        <source>Добавить представление</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/views/views.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.VIEWS.DELETE" datatype="html">
+        <source>Удалить представление</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/views/views.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.VIEW_ITEMS.TITLE" datatype="html">
+        <source>Элементы представления</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/views/viewitems.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.VIEW_ITEMS.ADD" datatype="html">
+        <source>Добавить элемент</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/views/viewitems.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.VIEW_ITEMS.DELETE" datatype="html">
+        <source>Удалить элемент</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/views/viewitems.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.VIEW_ITEMS.ELEMENT" datatype="html">
+        <source>Элемент</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/views/viewitems.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.SAVE_TIMERS.TITLE" datatype="html">
+        <source>Таймеры сохранения</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/save-timers/save-timers.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.SAVE_TIMERS.ADD" datatype="html">
+        <source>Добавить таймер</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/save-timers/save-timers.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.SAVE_TIMERS.DELETE" datatype="html">
+        <source>Удалить таймер</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/save-timers/save-timers.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SETTINGS.SAVE_TIMERS.INTERVAL" datatype="html">
+        <source>Интервал</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/settings/save-timers/save-timers.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,23 @@
+{	
+	"CONNECTION_PROBLEM": "Pas de connexion avec le serveur",
+	"OFFLINE": "Hors ligne",
+	"ONLINE": "En ligne",
+	"MODIFIED": "La structure de l'appareil a été modifiée. Veuillez redémarrer l'appareil.",
+	"WAIT": "S'il vous plaît, attendez",
+	"NOT_CONNECTED": "Pas connecté",
+	"NAVIGATION_TAB": {
+		"INFO": "Info",
+		"OVERVIEW": "Vue",
+		"MANAGEMENT": "La gestion",
+		"LOG": "Journal des événements",
+		"STRUCTURE": "Structure de projet",
+		"REPORTS": "Les rapports"
+  },
+	"LOG": {
+		"UNKNOWN_USER": "Identifiant utilisateur inconnu:"
+	},
+	"REPORTS": {
+		"CHARTS_ELEMENTS": "Articles sélectionnés"
+	},
+	"MONTHS": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
+}

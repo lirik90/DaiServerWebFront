@@ -4,9 +4,11 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { switchMap, catchError, map, tap, finalize } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
+import { TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
-import { HouseDetail, Section, DeviceItem, Group, Codes, Logs } from './house';
-import { PaginatorApi } from '../user';
+import { HouseDetail, ViewItem, Section, DeviceItem, Group, Logs, ParamValue, ParamItem } from './house';
+import { TeamMember, PaginatorApi } from '../user';
 import { MessageService } from '../message.service';
 import { IHouseService } from '../ihouse.service';
 
@@ -33,6 +35,8 @@ export class HouseService extends IHouseService {
   private house_s = 'house';
 
   constructor(
+          public translate: TranslateService,
+          private router: Router,
           http: HttpClient,
           messageService: MessageService) 
   { 
@@ -45,13 +49,64 @@ export class HouseService extends IHouseService {
     this.house = undefined;
   }
 
-  loadHouse(house_id: number): Observable<boolean> {
-    if (this.house && this.house.id == house_id)
+  loadHouse(house_name: string): Observable<boolean> {
+    if (this.house && this.house.name == house_name)
       return of(true);
 
     this.house = undefined; // If comment need compare hash of detail
 
-    return this.get<HouseDetail>(`detail/?id=${house_id}`).pipe(
+    let parse_param_value_childs = (group: Group, param_items: ParamItem[]) => 
+    {
+      for (let param_value of group.params)
+      {
+        for (let param of param_items) 
+        {
+          if (param.id === param_value.param_id) 
+          {
+            param_value.param = param;
+            break;
+          }
+        }
+        if (param_value.param.parent_id)
+        {
+          for (let param_value2 of group.params)
+          {
+            if (param_value.param.parent_id == param_value2.param.id)
+            {
+              if (!param_value2.childs)
+              {
+                param_value2.childs = [];
+              }
+              param_value2.childs.push(param_value);
+              break;
+            }
+          }
+        }
+      }
+      
+      for (let index = 0; index < group.params.length; ++index)
+      {
+        if (group.params[index].param.parent_id)
+        {
+          group.params.splice(index, 1);
+          -- index;
+        }
+      }      
+    };
+    
+    let lang;
+    let match = document.location.pathname.match(/\/(ru|en|fr|es)\//);	
+    if (match === null)
+    {
+      const browserLang = this.translate.getBrowserLang();
+      lang = browserLang.match(/ru|en|fr|es/) ? browserLang : 'ru';
+    }
+    else
+    {
+      lang = match[1];
+    }
+    
+    return this.get<HouseDetail>(`detail/?project_name=${house_name}&lang=${lang}`).pipe(
       switchMap(detail => {
         for (let param of detail.params) {
           if (param.parent_id) {
@@ -74,10 +129,23 @@ export class HouseService extends IHouseService {
             }
           }
         }
+ 
+        for (let status of detail.statuses) {
+          for (let status_type of detail.statusTypes) {
+            if (status_type.id === status.type_id)
+            {
+              status.type = status_type;
+              break;
+            }
+          }
+        }
 
         let dev_items: DeviceItem[] = [];
         for (let dev of detail.devices) {
           for (let item of dev.items) {
+            if (!item.val)
+              item.val = { raw: null, display: null};
+
             for (let itemType of detail.itemTypes) {
               if (itemType.id === item.type_id) {
                 item.type = itemType;
@@ -106,24 +174,56 @@ export class HouseService extends IHouseService {
                 group.items.push(item);
             }
 
-            for (let param_val of group.params) {
-              for (let param of detail.params) {
-                if (param.id === param_val.param_id) {
-                  param_val.param = param;
+            for (let gsts of group.statuses)
+            {
+              for (let sts of detail.statuses)
+              {
+                if (sts.id == gsts.status_id)
+                {
+                  gsts.status = sts;
                   break;
                 }
               }
             }
+            this.calculateStatusInfo(group);
+            parse_param_value_childs(group, detail.params);
           }
         }
-
+       
         this.house = detail;
+        this.house.name = house_name;
         localStorage.setItem(this.house_s, JSON.stringify(detail));
         this.log('fetched house detail'); 
         return of(true);
       }),
       catchError(this.handleError('checkCurrentHouse', false))
     );
+  }
+
+  public calculateStatusInfo(group: Group): void {
+    let strings: string[] = [];
+    let str;
+    let color = 'green';
+    let short_text = 'Ok';
+    let last_error_level = 0;
+
+    if (group.statuses === undefined)
+      group.statuses = [];
+
+    for (let sts of group.statuses) {
+      if (sts.status.type_id > last_error_level) {
+        last_error_level = sts.status.type_id;
+        color = sts.status.type.color;
+        short_text = sts.status.type.name;
+      }
+      str = sts.status.text;
+      let l = sts.args !== undefined ? sts.args.length : 0;
+      while (l--)
+        str = str.replace('%' + (l + 1), sts.args[l]);
+      strings.push(str);
+    }
+
+    group.status_info = { color, short_text, text: strings.join('\n') };
   }
 
   public devItemById(item_id: number): DeviceItem {
@@ -143,17 +243,26 @@ export class HouseService extends IHouseService {
     return url + '/?id=' + this.house.id.toString();
   }
 
-  getCodes(): Observable<Codes[]> {
-    return this.getPiped<Codes[]>(this.url('code'), `fetched code list`, 'getCodes', []);
+  getMembers(): Observable<PaginatorApi<TeamMember>>
+  {
+    return this.getPiped<PaginatorApi<TeamMember>>(this.url('team'), 'fetched team list', 'getMembers');
+  }
+	
+  upload_file(item_id: number, file: File): Observable<any>
+  {
+    const formData: FormData = new FormData();
+    formData.append('fileKey', file, file.name);
+    
+    let options = { headers: new HttpHeaders() };
+    options.headers.append('Content-Type', 'multipart/form-data');
+    
+    const url = this.apiUrl + `write_item_file/?id=${this.house.id}&item_id=${item_id}`;
+    return this.http.put(url, formData, options)
+            .catch(error => Observable.throw(error));
   }
 
-  getCode(code_id: number): Observable<Codes> {
-    return this.getPiped<Codes>(this.url('code', code_id), `fetched code ${code_id}`, 'getCode', {} as Codes);
-  }
-
-  updateCode(code: Codes): Observable<any> {
-    const url = this.url('code', code.id);
-    return this.patchPiped(url, { text: code.text }, `updated code id=${code.id}`, 'updateCode');
+  getViewItems(view_id: number): Observable<PaginatorApi<ViewItem>> {
+    return this.getPiped<PaginatorApi<ViewItem>>(this.url('viewitem') + `&view_id=${view_id}`, `fetched ViewItem list`, 'getViewItems', {} as PaginatorApi<ViewItem>);
   }
 
   getLogs(date_from: string, date_to: string, group_type: number, itemtypes: string, items: string, limit: number = 1000, offset: number = 0): Observable<PaginatorApi<Logs>> {
@@ -167,7 +276,8 @@ export class HouseService extends IHouseService {
     return this.getPiped<PaginatorApi<Logs>>(url, `fetched logs list`, 'getLogs');
   }
 
-  exportExcel(conf: ExportConfig): Observable<HttpResponse<Blob>> {
+  exportExcel(conf: ExportConfig): Observable<HttpResponse<Blob>> 
+  {
     const url = `/export/excel/?id=${this.house.id}`;
     const opts = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),

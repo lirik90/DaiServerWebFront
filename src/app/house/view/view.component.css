@@ -17,6 +17,15 @@
   background-color: #eee;
 }
 
+h2 {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+nav {
+  display: inline-block;
+}
+
 h3 {
   text-align: center; margin-bottom: 0;
 }

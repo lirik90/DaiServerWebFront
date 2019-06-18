@@ -1,16 +1,25 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { MediaMatcher } from '@angular/cdk/layout';
+import { MatDialog, MatDialogRef } from '@angular/material';
+
 import { ISubscription } from "rxjs/Subscription";
 
 import { HouseService } from "./house.service";
 import { ControlService, Cmd } from "./control.service";
 import { AuthenticationService } from "../authentication.service";
+import {TranslateService} from '@ngx-translate/core';
 
 interface NavLink {
   link: string;
   text: string;
   icon: string;
+}
+
+enum Connect_State {
+  Disconnected,
+  Connected,
+  Modified
 }
 
 @Component({
@@ -22,11 +31,18 @@ export class HouseComponent implements OnInit, OnDestroy {
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
-  fillerNav: NavLink[] = [{link: 'detail', text: 'Сведения', icon: 'perm_device_information'}];
+  fillerNav: NavLink[] = [];
 
   status_checked: boolean = false;
   connection_str: string = ' '; // HouseComponent.getConnectionString(false);
-  connected: boolean = false;
+
+  connect_state: Connect_State = Connect_State.Disconnected;
+  get connected(): boolean
+  {
+    return this.connect_state != Connect_State.Disconnected;
+  }
+
+  private page_reload_dialog_ref: MatDialogRef<PageReloadDialogComponent> = undefined;
 
   dt_offset: number = 0;
   dt_tz_name: string = '';
@@ -39,15 +55,21 @@ export class HouseComponent implements OnInit, OnDestroy {
   private bytes_sub: ISubscription;
   private opened_sub: ISubscription;
 
-  private static getConnectionString(connected: boolean): string {
-    return connected ? undefined : "Нет соединения с сервером";
+  private getConnectionString(connected: boolean): string {
+    return connected ? undefined : this.translate.instant("CONNECTION_PROBLEM");
   }
   
 	get status_class(): string {
 	  if (this.connection_str !== undefined && this.connection_str != ' ')
 		  return "status_fail";
 	  if (this.status_checked)
-			return this.connected ? "status_ok" : "status_bad";
+    {
+      switch(this.connect_state) {
+        case Connect_State.Disconnected: return 'status_bad';
+        case Connect_State.Connected: return 'status_ok';
+        case Connect_State.Modified: return 'status_modified';
+      }
+    }
 		return "status_check";
 	}
 
@@ -55,15 +77,23 @@ export class HouseComponent implements OnInit, OnDestroy {
 	  if (this.connection_str !== undefined && this.connection_str != ' ')
 		  return this.connection_str;
 	  if (this.status_checked)
-			return this.connected ? "На связи" : "Не на связи";
-		return "Подождите...";
+    {
+      switch (this.connect_state) {
+        case Connect_State.Disconnected: return this.translate.instant("OFFLINE");
+        case Connect_State.Connected: return this.translate.instant("ONLINE");
+        case Connect_State.Modified: return this.translate.instant("MODIFIED");
+      }
+    }
+		return this.translate.instant("WAIT") + '...';
   }
 
   constructor(
+	  public translate: TranslateService,
     public houseService: HouseService,
     private route: ActivatedRoute,
     private controlService: ControlService,
     private authService: AuthenticationService,
+    private dialog: MatDialog,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher
   ) { 
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
@@ -75,14 +105,15 @@ export class HouseComponent implements OnInit, OnDestroy {
     this.can_see_more = this.authService.canChangeHouse();
     this.can_edit = this.authService.canChangeItemState();
 
+    this.fillerNav.push({link: 'detail', text: this.translate.instant("NAVIGATION_TAB.INFO"), icon: 'perm_device_information'});
+    
     if (this.can_see_more) {
-      this.fillerNav.push({link: 'view', text: 'Обзор', icon: 'home'});
-      this.fillerNav.push({link: 'manage', text: 'Управление', icon: 'build'});
-      this.fillerNav.push({link: 'log', text: 'Журнал', icon: 'event_note'});
-      this.fillerNav.push({link: 'settings', text: 'Структура', icon: 'settings'});
+      this.fillerNav.push({link: 'view', text: this.translate.instant("NAVIGATION_TAB.OVERVIEW"), icon: 'home'});
+      this.fillerNav.push({link: 'manage', text: this.translate.instant("NAVIGATION_TAB.MANAGEMENT"), icon: 'build'});
+      this.fillerNav.push({link: 'log', text: this.translate.instant("NAVIGATION_TAB.LOG"), icon: 'event_note'});
+      this.fillerNav.push({link: 'settings', text: this.translate.instant("NAVIGATION_TAB.STRUCTURE"), icon: 'settings'});
     }
-    this.fillerNav.push({link: 'reports', text: 'Отчёты', icon: 'show_chart'});
-
+    this.fillerNav.push({link: 'reports', text: this.translate.instant("NAVIGATION_TAB.REPORTS"), icon: 'show_chart'});
     this.getHouseInfo();
   }
 
@@ -104,6 +135,7 @@ export class HouseComponent implements OnInit, OnDestroy {
 
   getHouseInfo(): void {
     this.bytes_sub = this.controlService.byte_msg.subscribe(msg => {
+
       if (msg.cmd == Cmd.ConnectInfo) {
 
         if (msg.data === undefined) {
@@ -112,9 +144,12 @@ export class HouseComponent implements OnInit, OnDestroy {
         }
         const info = this.controlService.parseConnectInfo(msg.data);
 
-        this.connected = info.connected;
+        if (info.connected)
+          this.connect_state = info.modified ? Connect_State.Modified : Connect_State.Connected;
+        else
+          this.connect_state = Connect_State.Disconnected;
 
-        if (this.connected && info.time && info.time_zone) {
+        if (info.connected && info.time && info.time_zone) {
           this.dt_offset = new Date().getTime() - info.time;
           this.dt_tz_name = info.time_zone.replace(', стандартное время', '');
           if (!this.dt_interval) {
@@ -122,13 +157,13 @@ export class HouseComponent implements OnInit, OnDestroy {
               let dt = new Date();
               dt.setTime(dt.getTime() - this.dt_offset);
 
-              const months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+              const months = this.translate.instant("MONTHS");
               let t_num = (num: number): string => {
                 return (num < 10 ? '0' : '') + num.toString();
               };
 
               this.dt_text = t_num(dt.getHours()) + ':' + t_num(dt.getMinutes()) + ':' + t_num(dt.getSeconds()) + ', ' +
-                t_num(dt.getDate()) + ' ' + months[dt.getMonth()] + ' ' + dt.getFullYear();
+                t_num(dt.getDate()) + ' ' + (months.length == 12 ? months[dt.getMonth()] : dt.getMonth()) + ' ' + dt.getFullYear();
                 
             };
             gen_time_string();
@@ -139,19 +174,58 @@ export class HouseComponent implements OnInit, OnDestroy {
         if (!this.status_checked)
           this.status_checked = true;
       }
+      else if (msg.cmd == Cmd.StructModify)
+      {
+        let view = new Uint8Array(msg.data);
+        const structure_type = view[8];
+        switch (structure_type)
+        {
+          case 23: // STRUCT_TYPE_DEVICE_ITEM_VALUES
+          case 24: // STRUCT_TYPE_GROUP_MODE
+          case 25: // STRUCT_TYPE_GROUP_STATUS
+          case 26: // STRUCT_TYPE_GROUP_PARAM_VALUE
+            return;
+        }
+
+        this.connect_state = Connect_State.Modified;
+
+        if (!this.page_reload_dialog_ref)
+        {
+          this.page_reload_dialog_ref = this.dialog.open(PageReloadDialogComponent, { width: '80%', });
+          this.page_reload_dialog_ref.afterClosed().subscribe(result => {
+            if (result)
+              window.location.reload();
+            this.page_reload_dialog_ref = undefined;
+          });
+        }
+      }
     });
 
     this.opened_sub = this.controlService.opened.subscribe(opened => {
-      this.connection_str = HouseComponent.getConnectionString(opened);
+      this.connection_str = this.getConnectionString(opened);
 
       if (opened)
         this.controlService.getConnectInfo();
       else {
         this.clearTime();
-        this.connected = false;
+        this.connect_state = Connect_State.Disconnected;
       }
     });
 
     this.controlService.open();
   }
+
+  restart(): void {
+    if (this.can_edit)
+      this.controlService.restart();
+  }
+}
+
+@Component({
+  templateUrl: './page-reload-dialog.component.html',
+})
+export class PageReloadDialogComponent {
+  constructor(
+    public dialogRef: MatDialogRef<PageReloadDialogComponent>
+  ) {}
 }

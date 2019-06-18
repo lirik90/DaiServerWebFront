@@ -8,15 +8,25 @@ export enum StructType {
   CheckerType,
   DeviceItems,
   DeviceItemTypes,
+  SaveTimers,
   Sections,
   Groups,
   GroupTypes,
-  GroupParams,
+  GroupModeTypes,
   GroupParamTypes,
-  GroupStatuses,
+  GroupStatusInfo,
   GroupStatusTypes,
+  Group_Param,
   Signs,
   Scripts,
+  View,
+  ViewItem,
+
+  // Часто изменяемые
+  DeviceItemValues,
+  GroupMode,
+  GroupStatus,
+  Group_Param_Value,
 }
 
 export enum ChangeState {
@@ -34,7 +44,7 @@ export abstract class ChangeTemplate<T> {
   changeState = ChangeState;
   changed: boolean;
 
-  items: ChangeInfo<T>[];
+  items: ChangeInfo<T>[] = [];
   sel_item: ChangeInfo<T>;
   constructor(
     private cmd: number,
@@ -71,6 +81,8 @@ export abstract class ChangeTemplate<T> {
       evnt.stopPropagation();
     let data = this.getChangedData();
     this.wsbService.send(Cmd.StructModify, this.houseService.house.id, data);
+    this.items = [];
+    this.sel_item = null;
   }
 
   cancel(evnt: any = undefined): void {
@@ -105,23 +117,31 @@ export abstract class ChangeTemplate<T> {
 
   abstract saveObject(obj: T): Uint8Array;
 
-  getChangedData(): Uint8Array {
+  getChangedData(): Uint8Array 
+  {
     let data;
     let updateSize = 0;
     let insertSize = 0;
     let updateList = [];
     let insertList = [];
     let deleteList = [];
-    for (const item of this.items) {
-      if (item.state === ChangeState.Delete) {
+    for (const item of this.items) 
+    {
+      if (item.state === ChangeState.Delete) 
+      {
         deleteList.push((<any>item.obj).id);
-      } else if (item.state === ChangeState.Upsert) {
+      } 
+      else if (item.state === ChangeState.Upsert) 
+      {
         data = this.saveObject(item.obj);
 
-        if ((<any>item.obj).id > 0) {
+        if ((<any>item.obj).id > 0) 
+        {
           updateSize += data.length;
           updateList.push(data);
-        } else {
+        } 
+        else 
+        {
           insertSize += data.length;
           insertList.push(data);
         }

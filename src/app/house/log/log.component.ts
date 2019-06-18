@@ -11,9 +11,10 @@ import { startWith } from 'rxjs/operators/startWith';
 import { switchMap } from 'rxjs/operators/switchMap';
 
 import { EventLog, EventLogType } from "../house";
-import { PaginatorApi } from '../../user';
+import { TeamMember, PaginatorApi } from '../../user';
 import { HouseService } from "../house.service";
 import { ControlService, Cmd } from "../control.service";
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-log',
@@ -21,7 +22,7 @@ import { ControlService, Cmd } from "../control.service";
   styleUrls: ['./log.component.css']
 })
 export class LogComponent implements OnInit, OnDestroy {
-  displayedColumns = ['date', 'category', 'message'];
+  displayedColumns = ['user', 'date', 'category', 'message'];
   logDatabase: LogHttpDao | null;
   dataSource = new MatTableDataSource();
 
@@ -31,16 +32,21 @@ export class LogComponent implements OnInit, OnDestroy {
 
   sub: ISubscription;
 
+  members: TeamMember[] = [];
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
+	  public translate: TranslateService,
     private controlService: ControlService,
     private houseService: HouseService,
     private http: HttpClient) {}
 
   ngOnInit() {
     const houseId = this.houseService.house.id;
+
+    this.houseService.getMembers().subscribe(members => this.members = members.results);
 
     this.logDatabase = new LogHttpDao(this.http);
 
@@ -61,7 +67,7 @@ export class LogComponent implements OnInit, OnDestroy {
           this.isRateLimitReached = false;
           this.resultsLength = data.count;
 
-          console.log(JSON.stringify(data.results[0]));
+          //console.log(JSON.stringify(data.results[0]));
           for (let item of data.results) {
             item.color = this.getColor(item.type);
           }
@@ -87,11 +93,24 @@ export class LogComponent implements OnInit, OnDestroy {
       if (!(this.paginator.pageIndex == 0 && this.sort.active == 'date' && this.sort.direction == 'desc'))
         return;
 
-      let row = this.controlService.parseEventMessage(msg.data);
-      row.color = this.getColor(row.type);
-      this.dataSource.data.pop();
-      this.dataSource.data = [row, ...this.dataSource.data];
+      let rows = this.controlService.parseEventMessage(msg.data);
+      for (let row of rows)
+      {
+        row.color = this.getColor(row.type);
+        this.dataSource.data.pop(); // For table row count is stay setted
+      }
+      this.dataSource.data = [...rows, ...this.dataSource.data];
     });
+  }
+
+  getUserName(id: number): string
+  {
+    if (id === null || id === 0)
+      return '';
+    for (const user of this.members)
+      if (user.id === id)
+        return user.name;
+    return this.translate.instant("LOG.UNKNOWN_USER") + ' ' + String(id);
   }
 
   ngOnDestroy() {

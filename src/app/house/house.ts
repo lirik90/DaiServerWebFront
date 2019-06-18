@@ -2,6 +2,7 @@ export class Codes { // Скрипт автоматизации
   id: number;   // ID
   name: string; // Имя
   text: string; // Скрипт
+  global_id: number; // Global id
 }
 
 export class GroupType { // Тип группы
@@ -29,6 +30,7 @@ export enum ItemTypeRegister { // Тип данных элемента
   InputRegisters,   // Значения только для чтения
   HoldingRegisters, // Значения чтение/запись
   File,             // Передача файла
+  SimpleButton,		// Обычная кнопка. Передает всегда значение 1
 }
 
 export enum SaveAlgorithmType { // Алгоритм сохранения изменений значения
@@ -44,11 +46,11 @@ export class ItemType { // Тип элемента
   title: string;            // Отображаемое имя элемента по-умолчанию
   isRaw: boolean;           // Флаг необходимости нармализации значения
   groupType_id: number;     // ID типа группы к которой может принадлежать элемент (Плохой?)
-  groupDisplay: boolean;    // Флаг отображения в Обзоре
   sign_id: number;          // ID еденицы измерения
   sign: SignType;           // Еденица измерения
   registerType: number;     // Тип данных элемента
   saveAlgorithm: number;    // Алгоритм сохранения изменений значения
+  save_timer_id: number;    // ID таймера если выбран такой алгоритм сохранения
 }
 
 export class Section {
@@ -57,6 +59,11 @@ export class Section {
   dayStart: number; // Время начала дня в секундах
   dayEnd: number;   // Время конца для в секундах
   groups: Group[];  // Группы
+}
+
+export class Device_Item_Value {
+  raw: any;      // Сырое значение
+  display: any;  // Отображаемое значение
 }
 
 export class DeviceItem { // Элемент устройства
@@ -70,8 +77,7 @@ export class DeviceItem { // Элемент устройства
   type: ItemType;     // Тип
   extra: string;      // Пользовательские параметры
 
-  value: any;         // Отображаемое значение
-  raw_value: any;     // Сырое значение
+  val: Device_Item_Value;
 }
 
 export class StatusType {
@@ -88,13 +94,12 @@ export class Status {
   type: StatusType;
   name: string;
   text: string;
-  isMultiValue: boolean;
-  value: number;
   inform: boolean;
 }
 
 export class GroupStatus {
   status: Status;
+  status_id: number;
   args: string[];
 }
 
@@ -106,9 +111,10 @@ export class GroupStatusInfo {
 
 export class Group {  // Группа
   id: number;               // ID
+  title: string;
   section_id: number;       // ID секции
   type_id: number;          // ID типа группы
-  mode_id: number;          // ID режима автоматизации
+  mode: number;          // ID режима автоматизации
   type: GroupType;          // Тип группы
   items: DeviceItem[] = []; // Элементы в группе
   params: ParamValue[] = [];// Уставки
@@ -120,8 +126,19 @@ export class Group {  // Группа
 export class View {  // Представление
   id: number;
   name: string;
-  types: ItemType[] = [];
+  items: DeviceItem[] = [];
 } 
+
+export class ViewItem {
+  id: number;
+  view_id: number;
+  item_id: number;
+}
+
+export class SaveTimer {
+  id: number;
+  interval: number;
+}
 
 export enum ParamType { // Тип значения уставки
   Unknown,
@@ -153,14 +170,15 @@ export class ParamValue { // Уставка
   param_id: number; // ID типа уставки
   value: string;    // Значение
   param: ParamItem; // Тип уставки
+  childs: ParamValue[] = [];
 }
 
 export class Device { // Устройство
   id: number;         // ID
-  address: number;    // Адрес
   name: string;       // Имя
   checker_id: number; // ID используемого плагина
-  extra: any;         // Пользовательские параметры
+  check_interval: number; // Интервал запуска проверки плагина
+  extra: string;         // Пользовательские параметры
   items: DeviceItem[];// Массив элементов
 }
 
@@ -184,7 +202,7 @@ export enum EventLogType { // Тип события в журнале событ
 
 export class EventLog { // Запись в журнале событий
   id: number;         // ID
-  date: string;       // Время события
+  date: Date;       // Время события
   who: string;        // Категория
   msg: string;        // Сообщение
   type: number;       // Тип события
@@ -208,6 +226,13 @@ export class Settings {
   value: string;
 }
 
+export class GroupMode {
+  id: number;
+  name: string;
+  title: string;
+  group_type_id: number;
+}
+
 export class HouseDetail {
   id: number;             // ID проекта
   name: string;           // Имя проекта
@@ -220,5 +245,7 @@ export class HouseDetail {
   signTypes: SignType[];  // Еденицы измерения
   statusTypes: StatusType[];  // Типы состояний
   statuses: Status[];  // Состояния
+  views: View[];
+  groupModes: GroupMode[];
 }
 

@@ -1,4 +1,7 @@
 /* ManageComponent's private CSS styles */
+h2 {
+  margin-left: 8px;
+}
 h3, h4 {
   text-align: center; 
   margin-top: 0px;
@@ -17,7 +20,7 @@ h4 {
   padding: 10px 0;
 }
 .module {
-  padding: 4px 20px 20px 20px;
+  padding: 4px 8px 12px 8px;
   text-align: center;
   color: #eee;
 /*  max-height: 120px; */
@@ -29,20 +32,60 @@ h4 {
 .eqTable {
 	text-align: center;
 	width: 100%;
+  empty-cells: hide;
 }
+.between-group {
+  padding: 0px;
+  height: 8px;
+}
+.eqTable td[colspan] {
+  border-top-width: 2px;
+  border-top-style: solid;
+  border-left-width: 2px;
+  border-left-style: solid;
+  border-right-width: 2px;
+  border-right-style: solid;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
 .eqTable td[colspan] h4:hover {
 	background-color: #eee;
   border-radius: 16px;
 	color: #6A9D80;
-	cursor: pointer;
+	cursor: pointer; 
 }
 .eqTable td:not([colspan]) {
 	padding-top: 12px;
 	padding-bottom: 12px;
-  border-bottom: 1px groove #000;
+  /* border-bottom: 1px groove #000 !important; */
 }
 .eqTable td:not([colspan]):first-child {
+  border-left-width: 2px;
+  border-left-style: solid;
   text-align: left;
+  padding-left: 8px;
+}
+.eqTable td:not([colspan]):last-child {
+  border-right-width: 2px;
+  border-right-style: solid;
+}
+
+.td-bottom-border {
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+}
+.td-bottom-border-left {
+  border-bottom-left-radius: 16px;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+}
+.td-bottom-border-right {
+  border-bottom-right-radius: 16px;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
 }
 
 mat-select {
@@ -75,6 +118,8 @@ h2 .mat-icon {
 @media (max-width: 600px) {
   .module {
     font-size: 16px;
+    padding-left: 2px;
+    padding-right: 2px;
 /*    max-height: 75px; */
   }
   .grid {
