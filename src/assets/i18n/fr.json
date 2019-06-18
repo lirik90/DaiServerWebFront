@@ -7,8 +7,8 @@
 	"NOT_CONNECTED": "Pas connecté",
 	"NAVIGATION_TAB": {
 		"INFO": "Info",
-		"OVERVIEW": "Vue",
 		"MANAGEMENT": "La gestion",
+		"ELEMENTS": "Éléments",
 		"LOG": "Journal des événements",
 		"STRUCTURE": "Structure de projet",
 		"REPORTS": "Les rapports",
