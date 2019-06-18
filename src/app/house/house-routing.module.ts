@@ -26,14 +26,14 @@ const houseRoutes: Routes = [
           { path: '', redirectTo: '/house/:name/view', pathMatch: 'full' },
           { path: 'detail', component: HouseDetailComponent },
           {
-            path: 'view', 
+            path: 'manage', 
             component: ViewComponent,
             children: [
               { path: '', pathMatch: 'full' },
               { path: ':view_id', component: ManageComponent, data: { is_edit: true, is_view: true } }
             ]
           },
-          { path: 'manage', component: ManageComponent, data: { is_edit: true }},
+          { path: 'elements', component: ManageComponent, data: { is_edit: true }},
           { path: 'log', component: LogComponent },
           { path: 'group/:groupId/param', component: ParamComponent },
           { 
