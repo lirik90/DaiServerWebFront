@@ -13,10 +13,8 @@ import { UpdateBeerInfoComponent, EditDialogUpdateBeerInfoComponent, EditDialogM
 import { ChangeControllerAddressComponent } from './change-controller-address/change-controller-address.component';
 
 import { HttpClient } from '@angular/common/http';
-import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-
-import { TextareaAutosizeModule } from 'ngx-textarea-autosize';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -29,7 +27,6 @@ export function createTranslateLoader(http: HttpClient) {
     ReactiveFormsModule,
     MaterialModule,
     BeerboxRoutingModule,
-    TextareaAutosizeModule,
     TranslateModule.forChild({
         loader: {
             provide: TranslateLoader,
