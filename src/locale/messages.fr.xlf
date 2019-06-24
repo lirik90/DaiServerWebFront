@@ -57,8 +57,18 @@
       <source xml:space="preserve">Сохранить</source>
       <target xml:space="preserve">Sauvegarder</target>
       <context-group purpose="location"><context context-type="linenumber">19</context></context-group>
-      <context-group purpose="location"><context context-type="sourcefile">app/beerbox/update-beer-info/edit-dialog-update-beer-info.component.html</context><context context-type="linenumber">54</context></context-group>
-      <context-group purpose="location"><context context-type="sourcefile">app/house/param/param.component.html</context><context context-type="linenumber">8</context></context-group>
+      <context-group purpose="location">
+        <context context-type="sourcefile">app/beerbox/update-beer-info/edit-dialog-update-beer-info.component.html</context>
+        <context context-type="linenumber">54</context>
+      </context-group>
+      <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/update-beer-info/edit-dialog-manufacturers-list.component.html</context>
+          <context context-type="linenumber">9</context>
+      </context-group>
+      <context-group purpose="location">
+        <context context-type="sourcefile">app/house/param/param.component.html</context>
+        <context context-type="linenumber">8</context>
+      </context-group>
     </trans-unit>
   </body></file>
   <file original="app/app.component.html" datatype="plaintext" source-language="ru" target-language="en"><body>
@@ -214,6 +224,10 @@
       <target xml:space="preserve">Annuler</target>
       <context-group purpose="location"><context context-type="linenumber">32</context></context-group>
       <context-group purpose="location"><context context-type="sourcefile">app/beerbox/update-beer-info/edit-dialog-update-beer-info.component.html</context><context context-type="linenumber">53</context></context-group>
+      <context-group purpose="location">
+        <context context-type="sourcefile">app/beerbox/update-beer-info/edit-dialog-manufacturers-list.component.html</context>
+        <context context-type="linenumber">8</context>
+      </context-group>
       <context-group purpose="location"><context context-type="sourcefile">app/house/page-reload-dialog.component.html</context><context context-type="linenumber">7</context></context-group>
     </trans-unit>
   </body></file>
@@ -278,7 +292,7 @@
     <trans-unit id="CONTROL.NO" approved="yes">
       <source xml:space="preserve">Нет</source>
       <target xml:space="preserve">Non</target>
-      <context-group purpose="location"><context context-type="linenumber">18</context></context-group>
+      <context-group purpose="location"><context context-type="sourcefile">app/beerbox/replace-keg/confirm-dialog-replace-keg.component.html</context><context context-type="linenumber">21</context></context-group>
       <context-group purpose="location"><context context-type="sourcefile">app/house/settings/sections/groups.component.html</context><context context-type="linenumber">35</context></context-group>
       <context-group purpose="location"><context context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context><context context-type="linenumber">33</context></context-group>
       <context-group purpose="location"><context context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context><context context-type="linenumber">43</context></context-group>
@@ -288,7 +302,7 @@
     <trans-unit id="BEERBOX.REPLACE_KEG.DIALOG.CONFIRM" approved="yes">
       <source xml:space="preserve">Я заменил кегу</source>
       <target xml:space="preserve">J'ai remplacé un fût</target>
-      <context-group purpose="location"><context context-type="linenumber">19</context></context-group>
+      <context-group purpose="location"><context context-type="linenumber">22</context></context-group>
     </trans-unit>
   </body></file>
   <file original="app/beerbox/wash/wash.component.html" datatype="plaintext" source-language="ru" target-language="en"><body>
@@ -332,14 +346,6 @@
       <context-group purpose="location">
         <context context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
         <context context-type="linenumber">16</context>
-      </context-group>
-    </trans-unit>
-    <trans-unit id="BEERBOX.WASH.TYPE.4" datatype="html">
-      <source>Вытеснение</source>
-      <target>Remplacement de l'eau potable par de la bière</target>
-      <context-group purpose="location">
-        <context context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
-        <context context-type="linenumber">17</context>
       </context-group>
     </trans-unit>
     <trans-unit id="BEERBOX.WASH.START" approved="yes">
@@ -483,11 +489,23 @@
       <source xml:space="preserve">Редактировать</source>
       <target xml:space="preserve">Modifier</target>
       <context-group purpose="location"><context context-type="linenumber">24</context></context-group>
+      <context-group purpose="location">
+        <context context-type="sourcefile">app/beerbox/update-beer-info/update-beer-info.component.html</context>
+        <context context-type="linenumber">38</context>
+      </context-group>
     </trans-unit>
     <trans-unit id="BEERBOX.BEER_INFO.PRINT" approved="yes">
       <source xml:space="preserve">Пробная печать</source>
       <target xml:space="preserve">Test d'impression</target>
       <context-group purpose="location"><context context-type="linenumber">25</context></context-group>
+    </trans-unit>
+    <trans-unit id="BEERBOX.BEER_INFO.MANUFACTURERS_LIST" datatype="html">
+      <source>Список производителей</source>
+      <target>Liste des fabricants</target>
+      <context-group purpose="location">
+        <context context-type="sourcefile">app/beerbox/update-beer-info/update-beer-info.component.html</context>
+        <context context-type="linenumber">34</context>
+      </context-group>
     </trans-unit>
   </body></file>
   <file original="app/beerbox/update-beer-info/edit-dialog-update-beer-info.component.html" datatype="plaintext" source-language="ru" target-language="en"><body>
@@ -495,6 +513,16 @@
       <source xml:space="preserve">Редактирование текст этикетки</source>
       <target xml:space="preserve">Édition de texte d'autocollant</target>
       <context-group purpose="location"><context context-type="linenumber">1</context></context-group>
+    </trans-unit>
+  </body></file>
+  <file original="app/beerbox/update-beer-info/edit-dialog-manufacturers-list.component.html" datatype="plaintext" source-language="ru" target-language="en"><body>
+    <trans-unit id="BEERBOX.BEER_INFO.MANUFACTURERS_LIST.DIALOG" datatype="html">
+      <source>Редактирование список производителей</source>
+      <target>Modification de la liste de fabricants</target>
+      <context-group purpose="location">
+        <context context-type="sourcefile">app/beerbox/update-beer-info/edit-dialog-manufacturers-list.component.html</context>
+        <context context-type="linenumber">1</context>
+      </context-group>
     </trans-unit>
   </body></file>
   <file original="app/beerbox/change-controller-address/change-controller-address.component.html" datatype="plaintext" source-language="ru" target-language="en"><body>
@@ -588,8 +616,8 @@
   </body></file>
   <file original="app/house/view/view.component.html" datatype="plaintext" source-language="ru" target-language="en"><body>
     <trans-unit id="OVERVIEW.TITLE" approved="yes">
-      <source xml:space="preserve">Обзор</source>
-      <target xml:space="preserve">Vue d'ensemble</target>
+      <source xml:space="preserve">Управление</source>
+      <target xml:space="preserve">La gestion</target>
       <context-group purpose="location"><context context-type="linenumber">1</context></context-group>
     </trans-unit>
   </body></file>
@@ -1136,6 +1164,14 @@
       <source xml:space="preserve">Не выбран</source>
       <target xml:space="preserve">Pas choisi</target>
       <context-group purpose="location"><context context-type="linenumber">41</context></context-group>
+      <context-group purpose="location">
+        <context context-type="sourcefile">app/beerbox/replace-keg/confirm-dialog-replace-keg.component.html</context>
+        <context context-type="linenumber">15</context>
+      </context-group>
+      <context-group purpose="location">
+        <context context-type="sourcefile">app/house/settings/group-types/group-types.component.html</context>
+        <context context-type="linenumber">41</context>
+      </context-group>
     </trans-unit>
     <trans-unit id="SETTINGS.CODE" approved="yes">
       <source xml:space="preserve">Скрипт</source>
