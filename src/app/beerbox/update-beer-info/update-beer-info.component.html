@@ -18,9 +18,12 @@
             
             <p><b>{{item.data.volume.param.title}}:</b> {{item.data.volume.value}}</p>
             
+            <p><b>{{item.data.product_code_type.param.title}}:</b> {{item.data.product_code_type.value}}</p>
             <p><b>{{item.data.product_code.param.title}}:</b></p>
             <p>{{item.data.product_code.value}}</p>
-            <p><b>{{item.data.product_code_type.param.title}}:</b> {{item.data.product_code_type.value}}</p>
+            <p><b>{{item.data.product_code_type_2.param.title}}:</b> {{item.data.product_code_type_2.value}}</p>
+            <p><b>{{item.data.product_code_2.param.title}}:</b></p>
+            <p>{{item.data.product_code_2.value}}</p>
             <button mat-button (click)="click_edit(item)" i18n="@@CONTROL.EDIT">Редактировать</button>
             <button mat-button (click)="click_print_sample(item)" i18n="@@BEERBOX.BEER_INFO.PRINT">Пробная печать</button>
           </ng-container>

@@ -180,10 +180,10 @@ export class ReplaceKegComponent implements OnInit
     {
       keg.manufacturer_name_.value = manufacturer_info;
     }
-    
+
     let params: ParamValue[] = [];
-    params.push(keg.manufacture_date_)
-    params.push(keg.manufacturer_name_)
+    params.push(keg.manufacture_date_);
+    params.push(keg.manufacturer_name_);
     this.controlService.changeParamValues(params);        
   }
 

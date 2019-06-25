@@ -34,6 +34,13 @@
 		  <mat-hint *ngIf="item.volume.param.description">{{item.volume.param.description}}</mat-hint>
     </mat-form-field>
   </div>
+  <p></p>
+  <div>
+    <mat-form-field class="input-full-width">
+	    <input matInput type="number" min="1" max="4" required [(ngModel)]="item.product_code_type.value" placeholder="{{item.product_code_type.param.title}}" />
+      <mat-hint *ngIf="item.product_code_type.param.description">{{item.product_code_type.param.description}}</mat-hint>
+    </mat-form-field>
+  </div> 
 	<p></p>
   <div>
     <mat-form-field class="input-full-width">
@@ -44,10 +51,17 @@
   <p></p>
   <div>
     <mat-form-field class="input-full-width">
-	    <input matInput type="number" required [(ngModel)]="item.product_code_type.value" placeholder="{{item.product_code_type.param.title}}" />
-      <mat-hint *ngIf="item.product_code_type.param.description">{{item.product_code_type.param.description}}</mat-hint>
+	    <input matInput type="number" min="1" max="4" [(ngModel)]="item.product_code_type_2.value" placeholder="{{item.product_code_type_2.param.title}}" />
+      <mat-hint *ngIf="item.product_code_type_2.param.description">{{item.product_code_type_2.param.description}}</mat-hint>
     </mat-form-field>
   </div> 
+	<p></p>
+  <div>
+    <mat-form-field class="input-full-width">
+	    <input matInput [(ngModel)]="item.product_code_2.value" placeholder="{{item.product_code_2.param.title}}"/>
+      <mat-hint *ngIf="item.product_code_2.param.description">{{item.product_code_2.param.description}}</mat-hint>
+    </mat-form-field>
+  </div>
 </div> 
 <div mat-dialog-actions>
   <button mat-button type="button" (click)="dialogRef.close()" i18n="@@CONTROL.CANCEL">Отмена</button>

@@ -1,0 +1,34 @@
+<div class="module house">
+  <ng-container *ngIf="day_start_ !== undefined && day_end_ !== undefined">
+    <h2 i18n="@@BEERBOX.OPERATION_TIME.TITLE">Установка времени работы</h2>
+    <ng-container *ngIf="!is_changed_; else time_is_changed">
+      <h4><p i18n="@@BEERBOX.OPERATION_TIME.TEXT">Установите время работы устройства. Время старта и время остановки</p></h4>
+      <mat-form-field>
+        <label>
+          <input [disabled]= "is_around_the_clock_" matInput type="time" [(ngModel)]="time_start_" i18n-placeholder="@@BEERBOX.OPERATION_TIME.START" placeholder="Время старта"/>
+        </label>
+      </mat-form-field>
+      <mat-form-field>
+        <label>
+          <input [disabled]= "is_around_the_clock_" matInput type="time" [(ngModel)]="time_stop_" i18n-placeholder="@@BEERBOX.OPERATION_TIME.STOP" placeholder="Время остановки"/>
+        </label>
+      </mat-form-field>
+      <p>
+      <mat-slide-toggle [checked]="is_around_the_clock_" (change)="set_value($event)" color="primary">
+      </mat-slide-toggle>
+      <label i18n="@@BEERBOX.OPERATION_TIME.AROUND_CLOCK"> Круглосуточно</label>
+      </p>
+      <button class="button2" mat-button (click)="click_apply_button()" i18n="@@CONTROL.APPLY">Применить</button>
+    </ng-container>
+    
+    <ng-template #time_is_changed>
+      <ng-container>
+        <h4 i18n="@@BEERBOX.OPERATION_TIME.CONFIRM">Изменения успешно применены. Необходимо перезагрузить устройство</h4>
+        <p>
+          <button mat-button (click)="is_changed_ = false" i18n="@@CONTROL.BACK">Назад</button>
+        </p>
+      </ng-container>
+    </ng-template>
+    
+  </ng-container>
+</div>
