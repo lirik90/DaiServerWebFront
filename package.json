@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --proxy-config proxy.conf.js",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
@@ -61,6 +61,6 @@
     "protractor": "~5.4.0",
     "ts-node": "~8.0.3",
     "tslint": "~5.14.0",
-    "typescript": "^3.2.4"
+    "typescript": "<3.3.0"
   }
 }
