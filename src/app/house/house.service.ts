@@ -262,7 +262,7 @@ export class HouseService extends IHouseService {
   }
 
   getViewItems(view_id: number): Observable<PaginatorApi<ViewItem>> {
-    return this.getPiped<PaginatorApi<ViewItem>>(this.url('viewitem') + `&view_id=${view_id}`, `fetched ViewItem list`, 'getViewItems', {} as PaginatorApi<ViewItem>);
+    return this.getPiped<PaginatorApi<ViewItem>>(this.url('viewitem') + `&limit=500&view_id=${view_id}`, `fetched ViewItem list`, 'getViewItems', {} as PaginatorApi<ViewItem>);
   }
 
   getLogs(date_from: string, date_to: string, group_type: number, itemtypes: string, items: string, limit: number = 1000, offset: number = 0): Observable<PaginatorApi<Logs>> {
