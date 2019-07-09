@@ -1,5 +1,6 @@
 const protractor = require('./protractor.conf.js')
 
+const proxy_remote_server_address = 'https://beerbox.npmgroup.ru';
 const PROXY_CONFIG = [
     {
         context: [
@@ -20,7 +21,7 @@ const PROXY_CONFIG = [
             '/api',
             '/get_csrf'
         ],
-        target: 'https://deviceaccess.ru',
+        target: proxy_remote_server_address,
         secure: false,
         changeOrigin: true
     },
@@ -29,7 +30,7 @@ const PROXY_CONFIG = [
         pathRewrite: {
             '^/ws*': '/wss',
         },
-        target: 'https://deviceaccess.ru',
+        target: proxy_remote_server_address,
         secure: false,
         ws: true,
         changeOrigin: true
