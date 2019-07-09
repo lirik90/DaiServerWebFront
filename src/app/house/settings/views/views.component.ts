@@ -1,6 +1,7 @@
-import { ByteTools } from "../../../web-socket.service";
 import { Component, OnInit, Input } from '@angular/core';
-import { View, ViewItem, DeviceItem } from "../../house";
+
+import { ByteTools } from "../../../web-socket.service";
+import { View, ViewItem, DeviceItem, Section } from "../../house";
 import { ChangeTemplate, StructType } from "../settings";
 import { SettingsService } from "../settings.service";
 import { WebSocketBytesService } from "../../../web-socket.service";
@@ -46,7 +47,7 @@ export class ViewsComponent extends ChangeTemplate<View> implements OnInit {
 export class ViewItemsComponent extends ChangeTemplate<ViewItem> implements OnInit {
   @Input() view: View;
 
-  dev_items: DeviceItem[];
+  sections: Section[];
   view_items: ViewItem[] = [];
 
   constructor(
@@ -65,31 +66,37 @@ export class ViewItemsComponent extends ChangeTemplate<ViewItem> implements OnIn
     this.fill_device_items();
     this.houseService.getViewItems(this.view.id).subscribe(api => {
       this.view_items = api.results;
-      for (let view_item of this.view_items)
-      {
-        for (const dev_item of this.dev_items)
-        {
-          if (view_item.item_id == dev_item.id)
-          {
-            (<any>view_item).title = this.title(dev_item);
-            break;
-          }
-        }
-      }
       this.fillItems();
     });
   }
 
   fill_device_items(): void
   {
-    this.dev_items = [];
+    this.sections = this.houseService.house.sections;
+    /*this.dev_items = [];
     for (const dev of this.houseService.house.devices)
     {
       for (const item of dev.items)
       {
         this.dev_items.push(item);
       }
+    }*/
+  }
+
+  view_title(view_item: ViewItem): string
+  {
+    if ((<any>view_item).title === undefined)
+    {
+      for (const sct of this.houseService.house.sections)
+        for (const grp of sct.groups)
+          for (const dev_item of grp.items)
+            if (view_item.item_id == dev_item.id)
+            {
+              (<any>view_item).title = sct.name + ' * ' + (grp.title ? grp.title : grp.type.title) + ' * ' + this.title(dev_item);
+              return (<any>view_item).title;
+            }
     }
+    return (<any>view_item).title ? (<any>view_item).title : 'Unknown';
   }
 
   title(item: DeviceItem = undefined): string {
@@ -98,6 +105,18 @@ export class ViewItemsComponent extends ChangeTemplate<ViewItem> implements OnIn
     else if (item.type && item.type.title.length)
       return item.type.title;
     return '';
+  }
+
+  is_not_in_view(item: DeviceItem): boolean
+  {
+    for (const view_item of this.items)
+    {
+      if (view_item.obj.item_id == item.id)
+      {
+        return false;
+      }
+    }
+    return true;
   }
 
   initItem(obj: ViewItem): void {

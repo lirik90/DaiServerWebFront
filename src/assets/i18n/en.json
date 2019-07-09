@@ -7,8 +7,8 @@
 	"NOT_CONNECTED": "Not connected",
 	"NAVIGATION_TAB": {
 		"INFO": "Info",
-		"OVERVIEW": "View",
 		"MANAGEMENT": "Management",
+		"ELEMENTS": "Elements",
 		"LOG": "Log",
 		"STRUCTURE": "Project structure",
 		"REPORTS": "Reports"
