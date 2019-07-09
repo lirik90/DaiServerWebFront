@@ -42,7 +42,7 @@ export class ParamItemComponent implements OnInit {
       new_value = parseInt(arr[0]);
       new_value += parseInt(arr[1]) * 60;
       new_value += parseInt(arr[2]) * 3600;
-    }
+    }   
     else if (arr.length > 1)
     {
       new_value += parseInt(arr[0]) * 60;
@@ -64,14 +64,14 @@ export class ParamItemComponent implements OnInit {
     {
       if (param_value.id === item.id)
       {
-        if (param_value.param.type === ParamType.TimeType)
-        {
-          this.setTimeParam(param_value, new_value);
-        }
-        else if (param_value.value !== new_value)
-        {
+//        if (param_value.param.type === ParamType.TimeType)          
+//        {
+//          this.setTimeParam(param_value, new_value);
+//        }
+//        else if (param_value.value !== new_value)
+//        {
           param_value.value = new_value;
-        }
+//        }
         return;
       }
     }

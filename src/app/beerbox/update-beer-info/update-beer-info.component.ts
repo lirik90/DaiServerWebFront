@@ -15,6 +15,8 @@ export interface DialogData
   more_details: ParamValue;
   product_code: ParamValue;
   product_code_type: ParamValue;
+  product_code_2: ParamValue;
+  product_code_type_2: ParamValue;
   volume: ParamValue;
 }
 
@@ -97,10 +99,12 @@ export class UpdateBeerInfoComponent implements OnInit
               case 'title':                label.data.title = param;                  break;
               case 'storage_conditions':   label.data.storage_conditions = param;     break;
               case 'product_composition':  label.data.product_composition = param;    break;
-              case 'more_details':         label.data.more_details = param;            break;
+              case 'more_details':         label.data.more_details = param;           break;
               case 'product_code':         label.data.product_code = param;           break;
               case 'product_code_type':    label.data.product_code_type = param;      break;
-              case 'volume':               label.data.volume = param;      break;
+              case 'product_code_2':       label.data.product_code_2 = param;         break;
+              case 'product_code_type_2':  label.data.product_code_type_2 = param;    break;
+              case 'volume':               label.data.volume = param;                 break;
             }
 		      }
         } 		    
@@ -140,6 +144,8 @@ export class UpdateBeerInfoComponent implements OnInit
       more_details: Object.assign({}, item.data.more_details),
       product_code: Object.assign({}, item.data.product_code),
       product_code_type: Object.assign({}, item.data.product_code_type),
+      product_code_2: Object.assign({}, item.data.product_code_2),
+      product_code_type_2: Object.assign({}, item.data.product_code_type_2),
       volume: Object.assign({}, item.data.volume),
     } as DialogData;
 
@@ -154,6 +160,8 @@ export class UpdateBeerInfoComponent implements OnInit
       item.data.more_details.value = res.more_details.value;
       item.data.product_code.value = res.product_code.value;
       item.data.product_code_type.value = res.product_code_type.value;
+      item.data.product_code_2.value = res.product_code_2.value;
+      item.data.product_code_type_2.value = res.product_code_type_2.value;
       item.data.volume.value = res.volume.value;
       
       let params: ParamValue[] = [];
@@ -161,9 +169,18 @@ export class UpdateBeerInfoComponent implements OnInit
       params.push(item.data.storage_conditions);
       params.push(item.data.product_composition);
       params.push(item.data.more_details);
+      params.push(item.data.volume);
       params.push(item.data.product_code);
       params.push(item.data.product_code_type);
-      params.push(item.data.volume);
+      if (item.data.product_code_2 !== undefined)
+      {        
+        params.push(item.data.product_code_2);
+      }
+      if (item.data.product_code_type_2 !== undefined)
+      {        
+        params.push(item.data.product_code_type_2);
+      }
+
       this.controlService.changeParamValues(params);
       
     });

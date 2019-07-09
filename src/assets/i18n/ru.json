@@ -18,7 +18,8 @@
 		"STAND": "Стенд",
 		"REPLACE_LABEL": "Замена ленты",
 		"BEER_INFO": "Текст этикетки",
-		"CONTROLLER": "Настройка контроллера"
+		"CONTROLLER": "Настройка контроллера",
+    "OPERATION_HOURS": "Часы работы"
 	},
 	"LOG": {
 		"UNKNOWN_USER": "Неизвестный ID пользователя:"

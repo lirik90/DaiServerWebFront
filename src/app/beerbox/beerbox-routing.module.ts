@@ -8,6 +8,7 @@ import { CheckHeadStandComponent } from "./check-head-stand/check-head-stand.com
 import { ReplaceLabelsComponent } from "./replace-labels/replace-labels.component";
 import { UpdateBeerInfoComponent } from "./update-beer-info/update-beer-info.component";
 import { ChangeControllerAddressComponent } from "./change-controller-address/change-controller-address.component";
+import { OperationHoursComponent } from "./operation-hours/operation-hours.component";
 
 const beerboxRoutes: Routes = [
   { 
@@ -19,7 +20,8 @@ const beerboxRoutes: Routes = [
 	    { path: 'check-head-stand', component: CheckHeadStandComponent },
 	    { path: 'replace_labels', component: ReplaceLabelsComponent },
 	    { path: 'update_beer_info', component: UpdateBeerInfoComponent },
-	    { path: 'change_controller_address', component: ChangeControllerAddressComponent },
+      { path: 'change_controller_address', component: ChangeControllerAddressComponent },
+      { path: 'operation_hours', component: OperationHoursComponent },
     ]
   }
 ];
