@@ -7,8 +7,8 @@
 	"NOT_CONNECTED": "Не подключено",
 	"NAVIGATION_TAB": {
 		"INFO": "Сведения",
-		"OVERVIEW": "Обзор",
 		"MANAGEMENT": "Управление",
+		"ELEMENTS": "Элементы",
 		"LOG": "Журнал",
 		"STRUCTURE": "Структура",
 		"REPORTS": "Отчёты"

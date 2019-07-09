@@ -15,7 +15,7 @@
       <li *ngIf="item.state !== changeState.Delete" [class.selected]="sel_item == item">
         <a class="pre_badge" (click)="select(item); slist.close()">
           <span class="badge badge_id left_tab" [class.badge_changed]="item.state === changeState.Upsert">{{item.obj.id}}</span>
-          {{item.obj.title ? item.obj.title : 'Unknown'}}
+          {{view_title(item.obj)}}
         </a>
         <button class="mybtn delete" i18n-title="@@SETTINGS.VIEW_ITEMS.DELETE" title="Удалить элемент" (click)="remove(item)">x</button>
       </li>
@@ -25,11 +25,17 @@
 <mat-expansion-panel expanded hideToggle *ngIf="sel_item">
   <mat-expansion-panel-header>
     <mat-panel-title i18n="@@SETTINGS.DETAILS">Детали</mat-panel-title>
-    <mat-panel-description>{{sel_item.obj.title ? sel_item.obj.title : 'Unknown'}}</mat-panel-description>
+    <mat-panel-description>{{view_title(sel_item.obj)}}</mat-panel-description>
   </mat-expansion-panel-header>
   <mat-form-field>
     <mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.item_id" i18n-placeholder="@@SETTINGS.VIEW_ITEMS.ELEMENT" placeholder="Элемент">
-      <mat-option *ngFor="let dev_item of dev_items" [value]="dev_item.id">{{title(dev_item)}}</mat-option>
+      <mat-optgroup *ngFor="let sct of sections" [label]="sct.name">
+        <ng-container *ngFor="let grp of sct.groups">
+          <ng-container *ngFor="let dev_item of grp.items">
+            <mat-option *ngIf="is_not_in_view(dev_item) || sel_item.obj.item_id == dev_item.id" [value]="dev_item.id">{{grp.title ? grp.title : grp.type.title}} * {{title(dev_item)}}</mat-option>
+          </ng-container>
+        </ng-container>
+      </mat-optgroup>
     </mat-select>
   </mat-form-field>
 </mat-expansion-panel>

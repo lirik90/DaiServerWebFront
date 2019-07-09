@@ -19,7 +19,8 @@ export class ParamItemComponent implements OnInit {
   ngOnInit() {
   }
 
-  getTimeString(p: ParamValue): string {
+  getTimeString(p: ParamValue): string 
+  {
     let pad = (val: number) => {
       return ('0' + val.toFixed(0)).slice(-2);
     };
@@ -30,13 +31,30 @@ export class ParamItemComponent implements OnInit {
     return h + ':' + m + ':' + pad(secs % 60);
   }
 
-  setTimeParam(p: ParamValue, val: string): void {
+  setTimeParam(p: ParamValue, val: string): void 
+  {
     let arr = val.split(':').reverse();
     if (!arr.length) return;
 
-    let new_value = parseInt(arr[0]);
-    if (arr.length > 1) new_value += parseInt(arr[1]) * 60;
-    if (arr.length > 2) new_value += parseInt(arr[2]) * 3600;
+    let new_value = 0;
+    if (arr.length > 2)
+    {
+      new_value = parseInt(arr[0]);
+      new_value += parseInt(arr[1]) * 60;
+      new_value += parseInt(arr[2]) * 3600;
+    }
+    else if (arr.length > 1)
+    {
+      new_value += parseInt(arr[0]) * 60;
+      new_value += parseInt(arr[1]) * 3600;
+    }
+    else
+    {
+      new_value += parseInt(arr[0]) * 3600;
+    }
+        
+    /*if (arr.length > 1) new_value += parseInt(arr[1]) * 60;
+    if (arr.length > 2) new_value += parseInt(arr[2]) * 3600;*/
     p.value = new_value.toString();
   }
 
