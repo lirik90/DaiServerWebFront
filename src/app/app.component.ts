@@ -112,6 +112,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   firstInitialization(): void {
-    this.authService.refreshToken();
+    this.authService.getCsrf();
   }
 }

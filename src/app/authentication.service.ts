@@ -42,6 +42,15 @@ export class AuthenticationService {
     if (!this.currentUser || !this.currentUser.permissions) return false;
     return this.currentUser.permissions.indexOf(item) > -1;
   }
+  
+  getCsrf(): void {
+    this.http.head<any>('/get_csrf').pipe(
+      catchError(error => { 
+        this.goToLogin();
+        return of();
+      })
+    ).subscribe(() => this.refreshToken());
+  }
 
   private setCurrentUser(user: any): User {
     // login successful if there's a jwt token in the response
