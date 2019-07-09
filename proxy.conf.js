@@ -23,6 +23,16 @@ const PROXY_CONFIG = [
         target: 'https://deviceaccess.ru',
         secure: false,
         changeOrigin: true
+    },
+    {
+        context: '/ws/',
+        pathRewrite: {
+            '^/ws*': '/wss',
+        },
+        target: 'https://deviceaccess.ru',
+        secure: false,
+        ws: true,
+        changeOrigin: true
     }
 ]
 

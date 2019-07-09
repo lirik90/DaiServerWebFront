@@ -217,11 +217,10 @@ export class ControlService {
       }
     });
 
-    const domain_zone = document.location.hostname.split('.').pop();
-    let proto = 'ws';
-    if (domain_zone !== 'local' && domain_zone != parseInt(domain_zone).toString())
-      proto += 's'; 
-    this.wsbService.start(proto + '://' + document.location.hostname + '/' + proto + '/');
+    const protocol = window.location.protocol.replace('http', 'ws'); // http: -> ws: , https: -> wss:
+    const host = window.location.host; // With port -> localhost:4200
+    let ws_url = `${protocol}//${host}/${protocol}`;
+    this.wsbService.start(ws_url.replace(/:$/,"/"));
 	}
 
   close(): void {
