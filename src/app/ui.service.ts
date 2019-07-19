@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 export class UIService {
 
   scrollTop_ = 0;
+  toolBarHidden_ = false;
 
   constructor() { }
 
@@ -16,6 +17,14 @@ export class UIService {
   }
 
   isToolbarHidden(): boolean {
-    return this.scrollTop > 48; // TODO: Toolbar has different height on different window.width's
+    if(this.scrollTop > 48 ) {
+      this.toolBarHidden_ = true;
+    }
+
+    if(this.scrollTop === 0) {
+      this.toolBarHidden_ = false;
+    }
+
+    return this.toolBarHidden_; // TODO: Toolbar has different height on different window.width's
   }
 }
