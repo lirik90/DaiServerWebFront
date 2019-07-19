@@ -12,6 +12,8 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { AuthenticationService } from "./authentication.service";
 import { TranslateService } from '@ngx-translate/core';
 
+import { UIService } from "./ui.service";
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -39,6 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public authService: AuthenticationService,
     private route: ActivatedRoute,
     private router: Router,
+    private uiService: UIService,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher
   ) {
     this.router.events.subscribe((event: RouterEvent) => this.navigationInterceptor(event));

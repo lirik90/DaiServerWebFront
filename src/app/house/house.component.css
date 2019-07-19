@@ -132,3 +132,7 @@ h2.house-name {
   padding-left: 0px;
   padding-right: 0px;
 }
+
+.hide-main-toolbar .mat-sidenav {
+  top: 48px !important;
+}

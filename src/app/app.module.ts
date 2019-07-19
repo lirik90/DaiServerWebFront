@@ -24,6 +24,7 @@ import { AuthenticationService } from './authentication.service';
 import { JwtInterceptor } from './jwt.interceptor';
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {UIService} from './ui.service';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -64,6 +65,7 @@ export function createTranslateLoader(http: HttpClient) {
     HousesService, 
     MessageService,
     AuthenticationService,
+    UIService,
     WebSocketBytesService,
     {
     	provide: HTTP_INTERCEPTORS,

@@ -11,7 +11,7 @@
   <mat-sidenav-container class="house-sidenav-container"
                          [style.marginTop.px]="mobileQuery.matches ? 48 : 0">
     <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
-                 [fixedInViewport]="mobileQuery.matches" [fixedTopGap]="mobileQuery.matches ? 96 : 48" [opened]="!mobileQuery.matches">
+                 [fixedInViewport]="mobileQuery.matches" [fixedTopGap]="mobileQuery.matches && !uiService.isToolbarHidden() ? 96 : 48" [opened]="!mobileQuery.matches">
 
       <mat-nav-list>
         <a *ngFor="let nav of fillerNav" mat-list-item routerLink="{{nav.link}}" routerLinkActive="active" (click)="mobileQuery.matches && snav.close()"><mat-icon>{{nav.icon}}</mat-icon>{{nav.text}}</a>

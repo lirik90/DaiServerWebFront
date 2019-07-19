@@ -24,7 +24,7 @@ h2 {
   transition: height 0.4s ease;
 }
 
-.main-toolbar--hidden {
+.hide-main-toolbar .main-toolbar {
   height: 0;
 }
 

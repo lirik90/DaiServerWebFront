@@ -9,6 +9,7 @@ import { HouseService } from "./house.service";
 import { ControlService, Cmd } from "./control.service";
 import { AuthenticationService } from "../authentication.service";
 import {TranslateService} from '@ngx-translate/core';
+import {UIService} from '../ui.service';
 
 interface NavLink {
   link: string;
@@ -94,6 +95,7 @@ export class HouseComponent implements OnInit, OnDestroy {
     private controlService: ControlService,
     private authService: AuthenticationService,
     private dialog: MatDialog,
+    private uiService: UIService,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher
   ) { 
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
