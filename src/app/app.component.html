@@ -1,5 +1,5 @@
 <div class="main-container" [class.main-is-mobile]="mobileQuery.matches">
-  <mat-toolbar class="main-toolbar">
+  <mat-toolbar class="main-toolbar" [class.main-toolbar--hidden]="scrollTop > 48 && mobileQuery.matches">
     <img src="assets/img/logo.png">
     <h1 class="main-app-name" *ngIf="!authService.currentUser || !mobileQuery.matches">BeerBox</h1>
 
@@ -35,9 +35,8 @@
     </ng-container>
   </mat-toolbar>
 
-  <mat-sidenav-container class="main-sidenav-container"
-                         [style.marginTop.px]="mobileQuery.matches ? 48 : 0">
-    <mat-sidenav-content>
+  <mat-sidenav-container class="main-sidenav-container">
+    <mat-sidenav-content (scroll)="onScroll($event)">
       <mat-spinner *ngIf="loading"></mat-spinner>
       <div [style.display]="loading ? 'none' : 'block'">
         <router-outlet></router-outlet>

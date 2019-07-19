@@ -23,6 +23,8 @@ export class AppComponent implements OnInit, OnDestroy {
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
+  scrollTop = 0;
+
   languages = [
     { code: 'ru', label: 'Русский', icon: 'flag-icon flag-icon-ru'},
     { code: 'en', label: 'English', icon: 'flag-icon flag-icon-gb'},
@@ -113,5 +115,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   firstInitialization(): void {
     this.authService.getCsrf();
+  }
+
+  onScroll($event) {
+    this.scrollTop = $event.target.scrollTop;
   }
 }
