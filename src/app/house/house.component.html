@@ -2,6 +2,9 @@
   <mat-toolbar class="house-toolbar">
     <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
     <mat-icon [matTooltip]="status_desc" [ngClass]="status_class"></mat-icon>
+
+    <app-house-state></app-house-state>
+
     <app-drag-scroll *ngIf="houseService.house">{{houseService.house.title}}</app-drag-scroll>
     <span *ngIf="!mobileQuery.matches && connected" i18n-matTooltip="@@DEVICE_TIME" matTooltip="Время на устройстве">{{dt_text}} {{dt_tz_name}}</span>
 

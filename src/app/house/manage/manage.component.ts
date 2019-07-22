@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import { MatSnackBar, MatSlideToggleChange } from '@angular/material';
 
 import { HouseService } from "../house.service";
@@ -18,12 +18,25 @@ export class ManageComponent implements OnInit {
 
   is_view: boolean;
 
+  private fragment: string;
+
   constructor(
     private route: ActivatedRoute,
     private houseService: HouseService,
     private controlService: ControlService,
-    private snackBar: MatSnackBar
-  ) {}
+    private snackBar: MatSnackBar,
+    private router: Router
+  ) {
+    router.events.subscribe(s => {
+      if (s instanceof NavigationEnd) {
+        const tree = router.parseUrl(router.url);
+        if (tree.fragment) {
+          this.fragment = tree.fragment;
+          this.scrollToAnchor(this.fragment);
+        }
+      }
+    });
+  }
 
   ngOnInit() {
     this.houseName = this.houseService.house.name;
@@ -67,6 +80,18 @@ export class ManageComponent implements OnInit {
         });
       }
     });*/
+
+    this.route.fragment.subscribe(fragment => { this.fragment = fragment; });
+  }
+
+  ngAfterViewInit(): void {
+    this.scrollToAnchor(this.fragment);
+  }
+
+  scrollToAnchor(anchor: string) {
+    try {
+      document.querySelector('#' + this.fragment).scrollIntoView({block: 'start', inline: 'center', behavior: 'smooth'});
+    } catch (e) { }
   }
 
   get_view_item(view_id: number): void

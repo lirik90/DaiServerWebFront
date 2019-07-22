@@ -135,3 +135,7 @@ h2 .mat-icon {
   }
 }
 
+.invisible-anchor {
+  position: relative;
+  top: -3em;
+}
