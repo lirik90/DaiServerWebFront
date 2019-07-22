@@ -1,10 +1,25 @@
-<div>
-  <ng-container *ngFor="let msg of messages">
-    <a routerLink="elements" fragment="house-group-{{msg.group_id}}" class="house-state-msg"
-       [class.house-state-msg--warn]="msg.status === 'Warn'"
-       [class.house-state-msg--err]="msg.status === 'Error'">
-      <div class="house-state-msg__title">{{msg.status}}: {{msg.section}} {{msg.group}}</div>
-      <div class="house-state-msg__text">{{msg.text}}</div>
-    </a>
-  </ng-container>
+<div class="house-state">
+  <button class="house-state-icon house-state-icon--{{status_class[state.most_bad_status]}}" (click)="toggleModal()">
+    <div class="house-state-icon__num">{{state.messagesCount}}</div>
+  </button>
+
+  <div class="house-state-modal" *ngIf="isModalOpen">
+    <div class="hosue-state-modal__tooblar">
+      <div class="hosue-state-modal__tooblar-spacer"></div>
+      <button class="house-state-modal__close-btn" (click)="closeModal()">Закрыть</button>
+    </div>
+
+    <div class="house-state-msgs-list">
+      <ng-container *ngFor="let msg of state.messages">
+        <a routerLink="elements" fragment="house-group-{{msg.group_id}}" class="house-state-msg
+           house-state-msg--{{status_class[msg.status]}}" (click)="closeModal()">
+          <div class="house-state-msg__title">{{msg.status}}: {{msg.section}} {{msg.group}}</div>
+          <div class="house-state-msg__text">{{msg.text}}</div>
+        </a>
+      </ng-container>
+      <div class="house-state-alright" *ngIf="state.messagesCount === 0">
+        Всё хорошо
+      </div>
+    </div>
+  </div>
 </div>

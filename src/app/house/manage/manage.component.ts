@@ -18,6 +18,8 @@ export class ManageComponent implements OnInit {
 
   is_view: boolean;
 
+  private fragment: string;
+
   constructor(
     private route: ActivatedRoute,
     private houseService: HouseService,
@@ -29,10 +31,8 @@ export class ManageComponent implements OnInit {
       if (s instanceof NavigationEnd) {
         const tree = router.parseUrl(router.url);
         if (tree.fragment) {
-          const element = document.querySelector("#" + tree.fragment);
-          if (element) {
-            element.scrollIntoView({block: 'start', behavior: 'smooth'});
-          }
+          this.fragment = tree.fragment;
+          this.scrollToAnchor(this.fragment);
         }
       }
     });
@@ -80,6 +80,18 @@ export class ManageComponent implements OnInit {
         });
       }
     });*/
+
+    this.route.fragment.subscribe(fragment => { this.fragment = fragment; });
+  }
+
+  ngAfterViewInit(): void {
+    this.scrollToAnchor(this.fragment);
+  }
+
+  scrollToAnchor(anchor: string) {
+    try {
+      document.querySelector('#' + this.fragment).scrollIntoView({block: 'start', inline: 'center', behavior: 'smooth'});
+    } catch (e) { }
   }
 
   get_view_item(view_id: number): void

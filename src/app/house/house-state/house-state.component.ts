@@ -11,6 +11,22 @@ import {HouseService} from '../house.service';
 })
 export class HouseStateComponent implements OnInit {
 
+  status_weight = {
+    'Ok': 0,
+    'Undefined': 1,
+    'Warn': 2,
+    'Error': 3
+  };
+
+  status_class = {
+    'Ok': 'ok',
+    'Undefined': 'undef',
+    'Warn': 'warn',
+    'Error': 'err'
+  };
+
+  isModalOpen = false;
+
   constructor(
     public houseService: HouseService,
   ) { }
@@ -18,12 +34,26 @@ export class HouseStateComponent implements OnInit {
   ngOnInit() {
   }
 
-  get messages() {
+  toggleModal() {
+    this.isModalOpen = !this.isModalOpen;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+  }
+
+  openModal() {
+    this.isModalOpen = false;
+  }
+
+  get state() {
     const msgArray = [];
+
+    let most_bad_status = 'Ok';
 
     for (const sect of this.houseService.house.sections) {
       for (const grp of sect.groups) {
-        let status = 'undefined',
+        let status = 'Undefined',
             status_text = '';
 
         if (grp.status_info !== undefined) {
@@ -33,6 +63,10 @@ export class HouseStateComponent implements OnInit {
 
         if (status === 'Ok') {
           continue;
+        }
+
+        if(this.status_weight[status] > this.status_weight[most_bad_status]) {
+          most_bad_status = status;
         }
 
         msgArray.push({
@@ -46,6 +80,6 @@ export class HouseStateComponent implements OnInit {
     }
 
 
-    return msgArray;
+    return { messagesCount: msgArray.length, most_bad_status: most_bad_status, messages: msgArray};
   }
 }
