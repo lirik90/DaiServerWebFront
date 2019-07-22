@@ -41,5 +41,10 @@
 			"AGENT_3": "Alkaline-based solution of the cleaning material FT-89 CIP or similar",
 			"AGENT_4": "Acid-based solution of the cleaning material FINK Acid kombi or similar"
 		}		
-	}
+	},
+  "USER": {
+    "NOTIFICATIONS": {
+      "TITLE": "Notifications"
+    }
+  }
 }

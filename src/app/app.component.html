@@ -29,9 +29,14 @@
             </mat-option>
           </mat-select>
         </button>
-      
-      <h3 *ngIf="!mobileQuery.matches"><span i18n="@@HOME.GREETING">Привет</span>, <strong>{{authService.currentUser.username}}</strong>!</h3>
-      <button mat-icon-button i18n-matTooltip="@@CONTROL.EXIT" matTooltip="Выйти" [routerLink]="['/login']"><mat-icon>exit_to_app</mat-icon></button>            
+
+      <a routerLink="user">
+        <mat-icon class="centered">person</mat-icon>
+        <h3 *ngIf="!mobileQuery.matches" class="centered">
+          <span i18n="@@HOME.GREETING">Привет</span>, <strong>{{authService.currentUser.username}}</strong>!
+        </h3>
+      </a>
+      <button mat-icon-button i18n-matTooltip="@@CONTROL.EXIT" matTooltip="Выйти" [routerLink]="['/login']"><mat-icon>exit_to_app</mat-icon></button>
     </ng-container>
   </mat-toolbar>
 

@@ -41,5 +41,10 @@
 			"AGENT_3": "Solution alcaline du produit de nettoyage FT-89 CIP ou similaire",
 			"AGENT_4": "Solution à base acide du produit de nettoyage FINK Acid kombi ou similaire"
 		}		
-	}
+	},
+  "USER": {
+    "NOTIFICATIONS": {
+      "TITLE": "Notifications"
+    }
+  }
 }
