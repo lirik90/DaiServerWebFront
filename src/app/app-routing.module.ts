@@ -7,6 +7,7 @@ import { HouseDetailComponent } from './houses/detail/detail.component';
 import { AuthGuard } from './auth.guard';
 import { RegisterComponent } from "./register/register.component";
 import { LoginComponent } from "./login/login.component";
+import {UserSettingsComponent} from './user-settings/user-settings.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full'},
@@ -20,6 +21,10 @@ const routes: Routes = [
     path: 'house', 
     loadChildren: 'app/house/house.module#HouseModule',
     canLoad: [AuthGuard]
+  },
+
+  {
+    path: 'user', loadChildren: 'app/user-settings/user-settings.module#UserSettingsModule', canActivate: [AuthGuard]
   },
 
   // otherwise redirect to home

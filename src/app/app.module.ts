@@ -22,9 +22,11 @@ import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './auth.guard';
 import { AuthenticationService } from './authentication.service';
 import { JwtInterceptor } from './jwt.interceptor';
-import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateModule, TranslateLoader, TranslateService} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {UIService} from './ui.service';
+import {UserSettingsComponent} from './user-settings/user-settings.component';
+import {UserSettingsModule} from './user-settings/user-settings.module';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -58,7 +60,8 @@ export function createTranslateLoader(http: HttpClient) {
                 deps: [HttpClient]
             }
         }),
-    MaterialModule
+    MaterialModule,
+    UserSettingsModule,
   ],
   providers: [ 
     AuthGuard,
@@ -66,6 +69,7 @@ export function createTranslateLoader(http: HttpClient) {
     MessageService,
     AuthenticationService,
     UIService,
+    TranslateService,
     WebSocketBytesService,
     {
     	provide: HTTP_INTERCEPTORS,

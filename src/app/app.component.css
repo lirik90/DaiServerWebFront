@@ -121,3 +121,12 @@ h1.main-app-name {
   display: inline;
 }
 
+.centered {
+  vertical-align: middle;
+  display: inline-block;
+}
+
+
+a h3 {
+  text-decoration: underline;
+}
