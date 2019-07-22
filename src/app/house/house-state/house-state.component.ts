@@ -38,6 +38,7 @@ export class HouseStateComponent implements OnInit {
         msgArray.push({
           section: sect.name,
           group: grp.title ? grp.title : grp.type.title, // TODO: Why there are 'title' and 'type.title'?
+          group_id: grp.id,
           status: status,
           text: status_text,
         });

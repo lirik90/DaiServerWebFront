@@ -1,8 +1,10 @@
 <div>
   <ng-container *ngFor="let msg of messages">
-    <div>
-      {{msg.status}}: {{msg.section}} {{msg.group}}<br>
-      {{msg.text}}
-    </div>
+    <a routerLink="elements" fragment="house-group-{{msg.group_id}}" class="house-state-msg"
+       [class.house-state-msg--warn]="msg.status === 'Warn'"
+       [class.house-state-msg--err]="msg.status === 'Error'">
+      <div class="house-state-msg__title">{{msg.status}}: {{msg.section}} {{msg.group}}</div>
+      <div class="house-state-msg__text">{{msg.text}}</div>
+    </a>
   </ng-container>
 </div>

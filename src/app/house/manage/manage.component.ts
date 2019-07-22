@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import { MatSnackBar, MatSlideToggleChange } from '@angular/material';
 
 import { HouseService } from "../house.service";
@@ -22,8 +22,21 @@ export class ManageComponent implements OnInit {
     private route: ActivatedRoute,
     private houseService: HouseService,
     private controlService: ControlService,
-    private snackBar: MatSnackBar
-  ) {}
+    private snackBar: MatSnackBar,
+    private router: Router
+  ) {
+    router.events.subscribe(s => {
+      if (s instanceof NavigationEnd) {
+        const tree = router.parseUrl(router.url);
+        if (tree.fragment) {
+          const element = document.querySelector("#" + tree.fragment);
+          if (element) {
+            element.scrollIntoView({block: 'start', behavior: 'smooth'});
+          }
+        }
+      }
+    });
+  }
 
   ngOnInit() {
     this.houseName = this.houseService.house.name;

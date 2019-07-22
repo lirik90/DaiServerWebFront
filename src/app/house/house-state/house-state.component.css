@@ -1,0 +1,29 @@
+.house-state-msg {
+  display: block;
+  background: #ccc;
+  margin-bottom: 0.5em;
+  padding: 1em;
+  border-radius: 3px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.house-state-msg--warn {
+  background: #f39c11;
+}
+
+.house-state-msg--err {
+  background: #e84c3d;
+}
+
+.house-state-msg__title {
+  display: block;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 0.6em;
+}
+
+.house-state-msg__text {
+  font-size: 16px;
+  font-weight: 400;
+}
