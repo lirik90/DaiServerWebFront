@@ -1,0 +1,25 @@
+<div class="user-container">
+  <mat-toolbar class="user-toolbar">
+    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+
+    <div *ngIf="authService.currentUser">{{authService.currentUser.username}}</div>
+
+  </mat-toolbar>
+
+  <mat-sidenav-container class="user-sidenav-container">
+    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
+                 [fixedInViewport]="mobileQuery.matches" [fixedTopGap]="mobileQuery.matches? 64 : 48" [opened]="!mobileQuery.matches">
+
+      <mat-nav-list>
+        <a *ngFor="let nav of fillerNav" mat-list-item routerLink="{{nav.link}}" routerLinkActive="active" (click)="mobileQuery.matches && snav.close()">
+          <mat-icon>{{nav.icon}}</mat-icon>
+          {{nav.text}}
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="user-content">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
