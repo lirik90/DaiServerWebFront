@@ -53,6 +53,7 @@
   border: 1px solid #aaa;
   z-index: 15;
   min-width: 320px;
+  box-sizing: border-box;
 }
 
 .house-state-msg__title {
