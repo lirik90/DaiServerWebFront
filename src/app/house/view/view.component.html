@@ -2,4 +2,4 @@
 <nav>
   <a *ngFor="let view of views" [routerLink]="view.id" routerLinkActive="active">{{view.name}}</a>
 </nav>
-<router-outlet></router-outlet>
+<router-outlet (deactivate)="onDeactivate($event)"></router-outlet>

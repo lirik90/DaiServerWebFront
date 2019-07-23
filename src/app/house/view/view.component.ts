@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute, RouterOutlet } from "@angular/router";
+import {Router, ActivatedRoute, RouterOutlet } from '@angular/router';
 
-import { HouseService } from "../house.service";
-import { View } from "../house";
+import { HouseService } from '../house.service';
+import { View } from '../house';
 
 @Component({
   selector: 'app-view',
@@ -17,7 +17,7 @@ export class ViewComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private houseService: HouseService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.get_views();
@@ -25,11 +25,13 @@ export class ViewComponent implements OnInit {
 
   get_views(): void {
     this.views = this.houseService.house.views;
-    
-    if (!this.outlet.isActivated)
-    {
+
+    if (!this.outlet.isActivated) {
       Promise.resolve(null).then(() => this.router.navigate([this.views[0].id], {relativeTo: this.route}));
     }
   }
 
+  onDeactivate($event: any) {
+    Promise.resolve(null).then(() => this.router.navigate([this.views[0].id], {relativeTo: this.route}));
+  }
 }

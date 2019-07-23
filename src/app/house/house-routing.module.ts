@@ -1,24 +1,24 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AuthGuard } from "../auth.guard";
-import { ProjectLoadGuard } from "./project-load.guard";
+import { AuthGuard } from '../auth.guard';
+import { ProjectLoadGuard } from './project-load.guard';
 
 import { HouseDetailComponent } from '../houses/detail/detail.component';
 
 import { HouseComponent } from './house.component';
 import { ViewComponent } from './view/view.component';
-import { ManageComponent } from "./manage/manage.component";
-import { LogComponent } from "./log/log.component";
-import { ParamComponent } from "./param/param.component";
+import { ManageComponent } from './manage/manage.component';
+import { LogComponent } from './log/log.component';
+import { ParamComponent } from './param/param.component';
 
 const houseRoutes: Routes = [
   {
     path: '',
     canActivate: [AuthGuard],
     children: [
-      { 
-        path: ':name', 
+      {
+        path: ':name',
         component: HouseComponent,
         canActivate: [ProjectLoadGuard],
         canActivateChild: [AuthGuard, ProjectLoadGuard],
@@ -26,7 +26,7 @@ const houseRoutes: Routes = [
           { path: '', redirectTo: '/house/:name/view', pathMatch: 'full' },
           { path: 'detail', component: HouseDetailComponent },
           {
-            path: 'manage', 
+            path: 'manage',
             component: ViewComponent,
             children: [
               { path: '', pathMatch: 'full' },
@@ -36,19 +36,19 @@ const houseRoutes: Routes = [
           { path: 'elements', component: ManageComponent, data: { is_edit: true }},
           { path: 'log', component: LogComponent },
           { path: 'group/:groupId/param', component: ParamComponent },
-          { 
-            path: 'reports', 
+          {
+            path: 'reports',
             loadChildren: 'app/house/reports/reports.module#ReportsModule',
             canLoad: [AuthGuard]
           },
-          { 
-            path: 'settings', 
+          {
+            path: 'settings',
             loadChildren: 'app/house/settings/settings.module#SettingsModule',
             canLoad: [AuthGuard]
           },
           { path: 'beerbox', loadChildren: 'app/beerbox/beerbox.module#BeerboxModule', canLoad: [AuthGuard] },
         ]
-      } 
+      }
     ]
   }
 ];
