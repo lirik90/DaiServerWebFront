@@ -71,3 +71,7 @@ nav > div {
   }
 }
 
+.cdk-overlay-pane {
+  overflow-y: scroll;
+}
+
