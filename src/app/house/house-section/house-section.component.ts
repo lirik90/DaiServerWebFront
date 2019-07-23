@@ -10,6 +10,15 @@ import {BreakpointState} from '@angular/cdk/layout';
 export class HouseSectionComponent implements OnInit {
   @Input() title: string;
 
+  @Input() set forceExpand(isForceExpand: boolean) {
+    if(isForceExpand) {
+      this.isExpanded = isForceExpand;
+    }
+    this._isForceExpanded = isForceExpand;
+  }
+
+  _isForceExpanded: boolean;
+
   isExpanded = false;
 
   constructor(private uiService: UIService) { }
@@ -22,12 +31,13 @@ export class HouseSectionComponent implements OnInit {
         this.isExpanded = true;
       } else {
         // mobile
-        this.isExpanded = false;
+        this.isExpanded = this._isForceExpanded;
       }
     });
   }
 
   toggleExpand() {
     this.isExpanded = !this.isExpanded;
+    this._isForceExpanded = false;
   }
 }

@@ -7,5 +7,7 @@
     </button>
   </header>
 
-  <ng-content *ngIf="isExpanded"></ng-content>
+  <div class="house-section__content" [class.expanded]="isExpanded">
+    <ng-content></ng-content>
+  </div>
 </section>

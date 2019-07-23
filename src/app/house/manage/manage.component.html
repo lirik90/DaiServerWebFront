@@ -3,7 +3,7 @@
 <div class="grid grid-pad">
   <ng-container *ngFor="let sct of sections">
     <div *ngIf="sct.groups.length" class="col-1-3">
-      <app-house-section [title]="sct.name">
+      <app-house-section [title]="sct.name" [forceExpand]="currentSection === sct.id">
         <div class="module house">
           <table cellspacing="0" cellpadding="0" class="eqTable">
             <ng-container *ngFor="let group of sct.groups; let group_last = last">

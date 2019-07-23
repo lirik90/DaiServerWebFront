@@ -11,7 +11,7 @@
 
     <div class="house-state-msgs-list">
       <ng-container *ngFor="let msg of state.messages">
-        <a routerLink="elements" fragment="house-group-{{msg.group_id}}" class="house-state-msg
+        <a routerLink="elements" fragment="section-{{msg.section_id}}-group-{{msg.group_id}}" class="house-state-msg
            house-state-msg--{{status_class[msg.status]}}" (click)="closeModal()">
           <div class="house-state-msg__title">{{msg.status}}: {{msg.section}} {{msg.group}}</div>
           <div class="house-state-msg__text">{{msg.text}}</div>

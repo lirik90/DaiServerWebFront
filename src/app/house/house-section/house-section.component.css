@@ -23,3 +23,11 @@
 .house-section__header .mat-icon {
   color: #fff;
 }
+
+.house-section__content {
+  display: none;
+}
+
+.house-section__content.expanded {
+  display: block;
+}

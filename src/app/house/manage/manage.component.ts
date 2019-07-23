@@ -1,38 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
-import { MatSnackBar, MatSlideToggleChange } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
-import { HouseService } from "../house.service";
-import { Section, DeviceItem, EventLogType, Group, GroupMode } from "../house";
-import { ControlService } from "../control.service";
+import { HouseService } from '../house.service';
+import { Section, DeviceItem, Group, GroupMode } from '../house';
+import { ControlService } from '../control.service';
 
 @Component({
   selector: 'app-manage',
   templateUrl: './manage.component.html',
   styleUrls: ['../../sections.css', './manage.component.css']
 })
-export class ManageComponent implements OnInit {
+export class ManageComponent implements OnInit, AfterViewInit {
   houseName: string;
   sections: Section[] = [];
   groupModes: GroupMode[];
 
   is_view: boolean;
 
-  private fragment: string;
+  currentSection: number;
+  currentGroup: number;
 
   constructor(
     private route: ActivatedRoute,
     private houseService: HouseService,
     private controlService: ControlService,
-    private snackBar: MatSnackBar,
     private router: Router
   ) {
     router.events.subscribe(s => {
       if (s instanceof NavigationEnd) {
         const tree = router.parseUrl(router.url);
         if (tree.fragment) {
-          this.fragment = tree.fragment;
-          this.scrollToAnchor(this.fragment);
+          const parsed = tree.fragment.match(/^section-(\d+)-group-(\d+)$/);
+          if (parsed) {
+            this.currentSection = parseInt(parsed[1], 10);
+            this.currentGroup = parseInt(parsed[2], 10);
+
+            this.scrollToGroup(this.currentGroup);
+          }
         }
       }
     });
@@ -43,75 +48,41 @@ export class ManageComponent implements OnInit {
     this.groupModes = this.houseService.house.groupModes;
 
     this.is_view = this.route.snapshot.data['is_view'];
-    if (this.is_view)
-    {
+    if (this.is_view) {
       this.route.params.subscribe(params => {
         const view_id = params['view_id'];
         this.get_view_item(view_id);
       });
-    }
-    else
-    {
+    } else {
       this.sections = this.houseService.house.sections;
     }
-
-    /*
-    this.controlService.other.subscribe(msg => {
-      if (msg.cmd == "eventlog") {
-        let event_type: string;
-        switch(msg.data.type) {
-          case EventLogType.DebugEvent: event_type = 'debug'; break;
-          case EventLogType.WarningEvent: event_type = 'warning'; break;
-          case EventLogType.CriticalEvent: event_type = 'critical'; break;
-          case EventLogType.FatalEvent: event_type = 'fatal'; break;
-          case EventLogType.InfoEvent: event_type = 'info'; break;
-          case EventLogType.UserEvent: event_type = 'user'; break;
-        }
-
-        let panelClass: string[] = ['eventbar'];
-        if (event_type)
-          panelClass.push(panelClass[0] + '_' + event_type);
-
-        this.snackBar.open(msg.data.text, /*'Don\'t show'* /'', {
-          duration: 2000,
-          panelClass: panelClass
-        }).onAction().subscribe(() => {
-          console.log('The snack-bar action was triggered!');
-        });
-      }
-    });*/
-
-    this.route.fragment.subscribe(fragment => { this.fragment = fragment; });
   }
 
   ngAfterViewInit(): void {
-    this.scrollToAnchor(this.fragment);
+    this.scrollToGroup(this.currentGroup);
   }
 
-  scrollToAnchor(anchor: string) {
-    try {
-      document.querySelector('#' + this.fragment).scrollIntoView({block: 'start', inline: 'center', behavior: 'smooth'});
-    } catch (e) { }
+  scrollToGroup(group_id: number) {
+    const el = document.querySelector('#house-group-' + group_id);
+
+    if (el) {
+      setTimeout(() => {
+        el.scrollIntoView({block: 'start', inline: 'center', behavior: 'smooth'});
+      }, 200);
+    }
   }
 
-  get_view_item(view_id: number): void
-  {
+  get_view_item(view_id: number): void {
     this.sections = [];
-    this.houseService.getViewItems(view_id).subscribe(api =>
-    {
-      for (const sct of this.houseService.house.sections)
-      {
-        for (const group of sct.groups)
-        {
-          for (const dev_item of group.items)
-          {
-            for (let i in api.results)
-            {
+    this.houseService.getViewItems(view_id).subscribe(api => {
+      for (const sct of this.houseService.house.sections) {
+        for (const group of sct.groups) {
+          for (const dev_item of group.items) {
+            for (const i in api.results) {
               const view_item = api.results[i];
-              if (view_item.item_id == dev_item.id)
-              {
+              if (view_item.item_id === dev_item.id) {
                 this.add_device_item(sct, group, dev_item);
-                api.results.splice(parseInt(i), 1);
+                api.results.splice(parseInt(i, 10), 1);
                 break;
               }
             }
@@ -121,37 +92,30 @@ export class ManageComponent implements OnInit {
     });
   }
 
-  add_device_item(sct: Section, grp: Group, dev_item: DeviceItem): void
-  {
-    let section: Section = undefined;
-    for (const sct_item of this.sections)
-    {
-      if (sct_item.id == sct.id)
-      {
+  add_device_item(sct: Section, grp: Group, dev_item: DeviceItem): void {
+    let section: Section;
+    for (const sct_item of this.sections) {
+      if (sct_item.id === sct.id) {
         section = sct_item;
         break;
       }
     }
 
-    if (!section)
-    {
+    if (!section) {
       section = Object.assign({}, sct);
       section.groups = [];
       this.sections.push(section);
     }
 
-    let group: Group = undefined;
-    for (const grp_item of section.groups)
-    {
-      if (grp_item.id == grp.id)
-      {
+    let group: Group;
+    for (const grp_item of section.groups) {
+      if (grp_item.id === grp.id) {
         group = grp_item;
         break;
       }
     }
 
-    if (!group)
-    {
+    if (!group) {
       group = Object.assign({}, grp);
       group.items = [];
       section.groups.push(group);
