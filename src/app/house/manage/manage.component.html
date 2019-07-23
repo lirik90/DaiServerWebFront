@@ -3,44 +3,45 @@
 <div class="grid grid-pad">
   <ng-container *ngFor="let sct of sections">
     <div *ngIf="sct.groups.length" class="col-1-3">
-      <div class="module house">
-        <h3>{{sct.name}} <button mat-icon-button><mat-icon>settings</mat-icon></button></h3>
-        <table cellspacing="0" cellpadding="0" class="eqTable">
-          <ng-container *ngFor="let group of sct.groups; let group_last = last">
-            <tr>
-              <td colspan="2" 
-                  [ngStyle]="{'border-color': group.status_info.color}"
-                  [class.td-bottom-border]="group.items.length == 0"
-                >
-                <div class="invisible-anchor" id="house-group-{{group.id}}" ></div>
-                <h4 routerLink="/house/{{houseName}}/group/{{group.id}}/param">{{group.title ? group.title : group.type.title}}</h4>
-                <app-group-status [group]="group"></app-group-status>
-                <mat-form-field>
-                  <mat-select i18n-placeholder="@@MANAGEMENT.MODE" placeholder="Режим" [(ngModel)]="group.mode"
-                    (selectionChange)="controlService.changeGroupMode($event.value, group.id)"
-                    (click)="$event.stopPropagation()">
-                    <mat-option *ngFor="let mode of groupModes" [value]="mode.id">{{mode.title}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </td>
-            </tr>
+      <app-house-section [title]="sct.name">
+        <div class="module house">
+          <table cellspacing="0" cellpadding="0" class="eqTable">
+            <ng-container *ngFor="let group of sct.groups; let group_last = last">
+              <tr>
+                <td colspan="2"
+                    [ngStyle]="{'border-color': group.status_info.color}"
+                    [class.td-bottom-border]="group.items.length == 0"
+                  >
+                  <div class="invisible-anchor" id="house-group-{{group.id}}" ></div>
+                  <h4 routerLink="/house/{{houseName}}/group/{{group.id}}/param">{{group.title ? group.title : group.type.title}}</h4>
+                  <app-group-status [group]="group"></app-group-status>
+                  <mat-form-field>
+                    <mat-select i18n-placeholder="@@MANAGEMENT.MODE" placeholder="Режим" [(ngModel)]="group.mode"
+                      (selectionChange)="controlService.changeGroupMode($event.value, group.id)"
+                      (click)="$event.stopPropagation()">
+                      <mat-option *ngFor="let mode of groupModes" [value]="mode.id">{{mode.title}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </td>
+              </tr>
 
-            <tr *ngFor="let item of group.items; let last = last">
-              <td
-                  [ngStyle]="{'border-color': group.status_info.color}"
-                  [class.td-bottom-border-left]="last"
-                >{{item.name || item.type.title}}</td>
-              <td (click)="itemValue.openDialog()"
-                  [ngStyle]="{'border-color': group.status_info.color}"
-                  [class.td-bottom-border-right]="last"
-                >
-                <app-dev-item-value #itemValue [item]="item"></app-dev-item-value>
-              </td>
-            </tr>
-            <tr *ngIf="!group_last" class="between-group"><td colspan="2"></td></tr>
-          </ng-container>
-        </table>
-      </div>
+              <tr *ngFor="let item of group.items; let last = last">
+                <td
+                    [ngStyle]="{'border-color': group.status_info.color}"
+                    [class.td-bottom-border-left]="last"
+                  >{{item.name || item.type.title}}</td>
+                <td (click)="itemValue.openDialog()"
+                    [ngStyle]="{'border-color': group.status_info.color}"
+                    [class.td-bottom-border-right]="last"
+                  >
+                  <app-dev-item-value #itemValue [item]="item"></app-dev-item-value>
+                </td>
+              </tr>
+              <tr *ngIf="!group_last" class="between-group"><td colspan="2"></td></tr>
+            </ng-container>
+          </table>
+        </div>
+      </app-house-section>
     </div>
   </ng-container>
 </div>

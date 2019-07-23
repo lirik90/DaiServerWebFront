@@ -26,6 +26,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import {UIService} from '../ui.service';
 import { HouseStateComponent } from './house-state/house-state.component';
+import {HouseSectionComponent} from './house-section/house-section.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -61,6 +62,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DragScrollComponent,
     ParamItemComponent,
     HouseStateComponent,
+    HouseSectionComponent,
   ],
   entryComponents: [
     PageReloadDialogComponent,

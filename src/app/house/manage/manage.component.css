@@ -20,13 +20,13 @@ h4 {
   padding: 10px 0;
 }
 .module {
-  padding: 4px 8px 12px 8px;
+  /*padding: 4px 8px 12px 8px;*/
   text-align: center;
   color: #eee;
 /*  max-height: 120px; */
   min-width: 120px;
-  background-color: #6A9D80;
-  border-radius: 16px;
+  /*background-color: #6A9D80;*/
+  /*border-radius: 16px;*/
 }
 
 .eqTable {
@@ -95,13 +95,6 @@ mat-form-field {
   width: 50%;
 }
 
-@mixin md-icon-size($size: 24px) {
-  font-size: $size;
-  height: $size;
-  width: $size;
-  line-height: $size;
-}
-
 td .mat-icon {
   font-size: 16px;
   height: 16px;
@@ -120,7 +113,6 @@ h2 .mat-icon {
     font-size: 16px;
     padding-left: 2px;
     padding-right: 2px;
-/*    max-height: 75px; */
   }
   .grid {
     display: unset;

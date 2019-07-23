@@ -1,0 +1,11 @@
+<section class="house-section">
+  <header class="house-section__header">
+    <h3>{{ title }}</h3>
+    <div class="house-section__spacer"></div>
+    <button mat-icon-button (click)="toggleExpand()">
+      <mat-icon>{{isExpanded? 'expand_less' : 'expand_more'}}</mat-icon>
+    </button>
+  </header>
+
+  <ng-content *ngIf="isExpanded"></ng-content>
+</section>

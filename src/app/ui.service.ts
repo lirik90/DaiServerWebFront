@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import {BreakpointObserver, BreakpointState} from '@angular/cdk/layout';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class UIService {
@@ -6,7 +8,9 @@ export class UIService {
   scrollTop_ = 0;
   toolBarHidden_ = false;
 
-  constructor() { }
+  constructor(
+    public breakpointObserver: BreakpointObserver
+  ) { }
 
   get scrollTop(): number {
     return this.scrollTop_;
@@ -26,5 +30,10 @@ export class UIService {
     }
 
     return this.toolBarHidden_; // TODO: Toolbar has different height on different window.width's
+  }
+
+  mobileBreakpointObserver(): Observable<BreakpointState> {
+    return this.breakpointObserver
+      .observe(['(min-width: 600px)'])
   }
 }

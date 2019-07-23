@@ -1,0 +1,25 @@
+.house-section {
+  padding: 0 16px 16px;
+  border-radius: 4px;
+  box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+  background: #6A9D80;
+}
+
+.house-section__header {
+  display: flex;
+  align-items: center;
+}
+
+.house-section__spacer {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+.house-section__header h3 {
+  margin: 16px 0;
+  color: #fff;
+}
+
+.house-section__header .mat-icon {
+  color: #fff;
+}
