@@ -6,7 +6,7 @@
         <app-param-item [values]="value.childs" [changed]="changed" [parent_param]="value.param"></app-param-item>
       </mat-card>
     </ng-template>
-    
+
     <ng-template #no_childs>
       <ng-container *ngIf="!parent_param == (value.param.parent_id == null)" [ngSwitch]="value.param.type">
         <div class="full-width" *ngSwitchCase="paramTypes.Bool">
@@ -17,17 +17,20 @@
         </div>
 
 <!--        <mat-form-field class="full-width" *ngSwitchCase="paramTypes.TimeType">
-          <input matInput placeholder="{{value.param.title}} ({{value.param.name}})" 
+          <input matInput placeholder="{{value.param.title}} ({{value.param.name}})"
                name="{{value.id}}" [ngModel]="getTimeString(value)" (ngModelChange)="change(value, $event)" type="time" step="1">
           <mat-hint *ngIf="value.param.description">{{value.param.description}}</mat-hint>
         </mat-form-field>
 -->
         <mat-form-field class="full-width" *ngSwitchDefault>
-          <input matInput placeholder="{{value.param.title}} ({{value.param.name}})" 
+          <input matInput placeholder="{{value.param.title}} ({{value.param.name}})"
                name="{{value.id}}" [(ngModel)]="value.value" (ngModelChange)="change(value, $event)">
           <mat-hint *ngIf="value.param.description">{{value.param.description}}</mat-hint>
         </mat-form-field>
       </ng-container>
     </ng-template>
   </ng-container>
+</ng-container>
+<ng-container *ngIf="!values.length">
+  <div class="gray-text">В этом разделе нет настроек</div>
 </ng-container>

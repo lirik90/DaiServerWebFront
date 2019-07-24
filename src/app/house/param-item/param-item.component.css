@@ -10,3 +10,9 @@
 mat-card {
 	margin-bottom: 10px;
 }
+
+.gray-text {
+  margin: 2em 1em;
+  font-size: 19px;
+  color: #888;
+}
