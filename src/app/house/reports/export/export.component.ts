@@ -9,6 +9,7 @@ import { ItemType, GroupType, Section, DeviceItem, Logs } from "../../house";
 import { HouseService, ExportConfig, ExportItem } from "../../house.service";
 import { HousesService } from '../../../houses/houses.service';
 import { House } from "../../../user";
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-export',
@@ -36,10 +37,13 @@ export class ExportComponent implements OnInit {
 
   loading: boolean = false;
 
+  dataPreselected: number[] = [];
+
   constructor(
     private _formBuilder: FormBuilder,
     private houseService: HouseService,
     private housesService: HousesService,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
@@ -70,6 +74,9 @@ export class ExportComponent implements OnInit {
     });
 
     this.types = this.houseService.house.itemTypes;
+
+    this.dataPreselected = this.route.snapshot.data['dataPreselected'];
+    this.dataFormGroup.get('items').setValue(this.dataPreselected);
   }
 
   fillHouses(current_only: boolean): void {

@@ -1,4 +1,4 @@
-{	
+{
 	"CONNECTION_PROBLEM": "Pas de connexion avec le serveur",
 	"OFFLINE": "Hors ligne",
 	"ONLINE": "En ligne",
@@ -12,6 +12,7 @@
 		"LOG": "Journal des événements",
 		"STRUCTURE": "Structure de projet",
 		"REPORTS": "Les rapports",
+    "EXPORT": "Exportation",
 		"WASH": "Nettoyage",
 		"REPLACE_KEG": "Remplacement du fût",
 		"CALIBRATION": "Étalonner",
@@ -28,7 +29,7 @@
 		"CHARTS_ELEMENTS": "Articles sélectionnés"
 	},
 	"MONTHS": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
-	"BEERBOX": {		
+	"BEERBOX": {
 		"WASH_STEPS": {
 			"STEP_1": "Laver à l'eau",
 			"STEP_2": "Nettoyage avec un produit de nettoyage",
@@ -40,7 +41,7 @@
 			"AGENT_2": "La bière",
 			"AGENT_3": "Solution alcaline du produit de nettoyage FT-89 CIP ou similaire",
 			"AGENT_4": "Solution à base acide du produit de nettoyage FINK Acid kombi ou similaire"
-		}		
+		}
 	},
   "USER": {
     "NOTIFICATIONS": {

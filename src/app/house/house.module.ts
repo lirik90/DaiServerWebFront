@@ -27,6 +27,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import {UIService} from '../ui.service';
 import { HouseStateComponent } from './house-state/house-state.component';
 import {HouseSectionComponent} from './house-section/house-section.component';
+import {ReportsModule} from './reports/reports.module';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -44,9 +45,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
-        deps: [HttpClient]        
+        deps: [HttpClient]
       }
-    })
+    }),
   ],
   declarations: [
     HouseComponent,

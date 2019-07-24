@@ -10,9 +10,11 @@ import {ControlService, Cmd} from './control.service';
 import {AuthenticationService} from '../authentication.service';
 import {TranslateService} from '@ngx-translate/core';
 import {UIService} from '../ui.service';
+import {Router} from '@angular/router';
 
 interface NavLink {
   link: string;
+  query?: any;
   text: string;
   icon: string;
 }
@@ -102,6 +104,7 @@ export class HouseComponent implements OnInit, OnDestroy {
     private authService: AuthenticationService,
     private dialog: MatDialog,
     public uiService: UIService,
+    private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
@@ -122,6 +125,7 @@ export class HouseComponent implements OnInit, OnDestroy {
       this.fillerNav.push({link: 'settings', text: this.translate.instant('NAVIGATION_TAB.STRUCTURE'), icon: 'settings'});
     }
     this.fillerNav.push({link: 'reports', text: this.translate.instant('NAVIGATION_TAB.REPORTS'), icon: 'show_chart'});
+    this.fillerNav.push({link: 'export', query: {data: [107]}, text: this.translate.instant('NAVIGATION_TAB.EXPORT'), icon: 'subject'});
 
     // For Beerbox
     if (this.can_see_more) {

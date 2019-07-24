@@ -11,6 +11,8 @@ import { ViewComponent } from './view/view.component';
 import { ManageComponent } from './manage/manage.component';
 import { LogComponent } from './log/log.component';
 import { ParamComponent } from './param/param.component';
+import {ExportComponent} from './reports/export/export.component';
+import {ReportsModule} from './reports/reports.module';
 
 const houseRoutes: Routes = [
   {
@@ -42,6 +44,11 @@ const houseRoutes: Routes = [
             canLoad: [AuthGuard]
           },
           {
+            path: 'export',
+            component: ExportComponent,
+            data: {dataPreselected: [107]}
+          },
+          {
             path: 'settings',
             loadChildren: 'app/house/settings/settings.module#SettingsModule',
             canLoad: [AuthGuard]
@@ -54,7 +61,7 @@ const houseRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [ RouterModule.forChild(houseRoutes) ],
+  imports: [ ReportsModule, RouterModule.forChild(houseRoutes) ],
   exports: [ RouterModule ]
 })
 export class HouseRoutingModule {}

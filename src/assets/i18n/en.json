@@ -1,4 +1,4 @@
-{	
+{
 	"CONNECTION_PROBLEM": "No connection with server",
 	"OFFLINE": "Offline",
 	"ONLINE": "Online",
@@ -12,6 +12,7 @@
 		"LOG": "Log",
 		"STRUCTURE": "Project structure",
 		"REPORTS": "Reports",
+    "EXPORT": "Export",
 		"WASH": "Cleaning",
 		"REPLACE_KEG": "Replacing keg",
 		"CALIBRATION": "Calibrating",
@@ -40,7 +41,7 @@
 			"AGENT_2": "Beer",
 			"AGENT_3": "Alkaline-based solution of the cleaning material FT-89 CIP or similar",
 			"AGENT_4": "Acid-based solution of the cleaning material FINK Acid kombi or similar"
-		}		
+		}
 	},
   "USER": {
     "NOTIFICATIONS": {
