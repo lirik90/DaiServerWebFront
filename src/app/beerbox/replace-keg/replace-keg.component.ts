@@ -12,7 +12,7 @@ import { filter } from 'rxjs/operators';
 import * as _moment from 'moment';
 //import { default as _rollupMoment } from 'moment';
 
-interface Keg 
+interface Keg
 {
   title: string;
   item: DeviceItem;
@@ -21,7 +21,7 @@ interface Keg
   manufacturer_name_: ParamValue;
 }
 
-interface ReplaceKegSection 
+interface ReplaceKegSection
 {
   sct: Section;
   kegs: Keg[];
@@ -34,8 +34,8 @@ interface ReplaceKegSection
   styleUrls: ['../../sections.css', './replace-keg.component.css'],
 })
 
-export class ReplaceKegComponent implements OnInit 
-{  
+export class ReplaceKegComponent implements OnInit
+{
   items: ReplaceKegSection[];
   manufacturers_: string[];
   is_printer_auto_: boolean;
@@ -46,23 +46,23 @@ export class ReplaceKegComponent implements OnInit
     private controlService: ControlService
   ) { }
 
-  ngOnInit() 
+  ngOnInit()
   {
-    this.get_data();    
+    this.get_data();
   }
 
   has_empty_keg(item: ReplaceKegSection): boolean
   {
-    for (let keg of item.kegs) 
-      if (keg.item.val.raw == 0) 
+    for (let keg of item.kegs)
+      if (keg.item.val.raw == 0)
         return item.has_empty = true;
     return item.has_empty = false;
   }
- 
+
   get has_empty(): boolean
   {
     let empty = false;
-    for (let item of this.items) 
+    for (let item of this.items)
       if (this.has_empty_keg(item) && !empty)
         empty = true;
     return empty;
@@ -71,23 +71,23 @@ export class ReplaceKegComponent implements OnInit
   get_data(): void
   {
     this.items = [];
-    let is_first: boolean = true;    
-    for (let sct of this.houseService.house.sections) 
+    let is_first: boolean = true;
+    for (let sct of this.houseService.house.sections)
     {
-      if (is_first) 
+      if (is_first)
       {
-        for (let group of sct.groups) 
+        for (let group of sct.groups)
         {
-          if (group.type.name == 'label_general') 
+          if (group.type.name == 'label_general')
           {
-            for (let param of group.params) 
+            for (let param of group.params)
             {
               if (param.param.name == 'manufacturers')
               {
                 if (param.value !== undefined && param.value !== null && param.value.length)
                 {
                   this.manufacturers_ = param.value.split("|");
-                }                
+                }
               }
             }
           }
@@ -103,23 +103,23 @@ export class ReplaceKegComponent implements OnInit
             }
           }
         }
-        
+
         is_first = false;
         continue;
       }
-            
+
       let sct_item: ReplaceKegSection = {sct, kegs: [], has_empty: false};
-      
-      for (let group of sct.groups) 
+
+      for (let group of sct.groups)
       {
-        if (group.type.name == 'takeHead') 
-        { 
+        if (group.type.name == 'takeHead')
+        {
           let kegNotEmpty: DeviceItem;
           let badClean: DeviceItem;
           let name: ParamValue;
           let date: ParamValue;
           let title = group.title;
-          for (let item of group.items) 
+          for (let item of group.items)
           {
             if (item.type.name == 'kegNotEmpty')
             {
@@ -128,14 +128,14 @@ export class ReplaceKegComponent implements OnInit
             if (item.type.name == 'badClean')
             {
               badClean = item;
-            }            
+            }
           }
-          
-          for (let parent of group.params) 
+
+          for (let parent of group.params)
           {
             if (parent.param.name == 'manufacturer')
             {
-              for (let param of parent.childs) 
+              for (let param of parent.childs)
               {
                 if (param.param.name == 'name')
                 {
@@ -145,37 +145,37 @@ export class ReplaceKegComponent implements OnInit
                 {
                   date = param;
                 }
-              }              
-            }            
+              }
+            }
           }
-          
+
           if (kegNotEmpty !== undefined && kegNotEmpty != null)
           {
             let keg_item: Keg = {title: title, item: kegNotEmpty, bad_clean: badClean, manufacture_date_: date, manufacturer_name_: name};
             sct_item.kegs.push(keg_item);
-          }          
+          }
         }
       }
-      
+
       if (sct_item.kegs.length > 0)
       {
         this.items.push(sct_item);
-      }      
+      }
     }
   }
 
-  toggle(keg: DeviceItem): void 
+  toggle(keg: DeviceItem): void
   {
     this.controlService.writeToDevItem(keg.id, true);
   }
-  
+
   set_manufacture(keg: Keg, date: string, manufacturer_info: string): void
-  {        
+  {
     if (keg.manufacture_date_ !== undefined && keg.manufacture_date_ != null)
     {
       keg.manufacture_date_.value = date;
     }
-    
+
     if (keg.manufacturer_name_ !== undefined && keg.manufacturer_name_ != null)
     {
       keg.manufacturer_name_.value = manufacturer_info;
@@ -184,15 +184,15 @@ export class ReplaceKegComponent implements OnInit
     let params: ParamValue[] = [];
     params.push(keg.manufacture_date_);
     params.push(keg.manufacturer_name_);
-    this.controlService.changeParamValues(params);        
+    this.controlService.changeParamValues(params);
   }
 
-  openDialog(keg: Keg): void 
+  openDialog(keg: Keg): void
   {
     this.dialog.open(ConfirmDialogReplaceKegComponent, {width: '80%', data: { manufacturers: this.manufacturers_, is_printer_auto: this.is_printer_auto_}})
     .afterClosed().pipe(
       filter(name => name)
-    ).subscribe(res => { 
+    ).subscribe(res => {
       this.toggle(keg.item);
       this.set_manufacture(keg, res.date, res.info);
     });
@@ -224,25 +224,28 @@ export const CUSTOM_FORMATS = {
   ],
 })
 
-export class ConfirmDialogReplaceKegComponent 
+export class ConfirmDialogReplaceKegComponent
 {
   //date = new FormControl(moment());
   input_date_: string;
   manufacturer_info_: string;
   manufacturers_: string[];
   is_printer_auto_: boolean;
-  
+  maxDate: Date;
+
   constructor(
     public dialogRef: MatDialogRef<ConfirmDialogReplaceKegComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) 
+  )
   {
     //this.input_date_ = this.date.value.format('DD.MM.YYYY');
     this.manufacturers_ = data.manufacturers
     this.manufacturer_info_ = "";
-    this.is_printer_auto_ = data.is_printer_auto
+    this.is_printer_auto_ = data.is_printer_auto;
+
+    this.maxDate = new Date();
   }
-  
+
   confirm(): void
   {
     if (this.is_printer_auto_ && (this.input_date_ === undefined || !this.input_date_.length || this.manufacturer_info_ === undefined || !this.manufacturer_info_.length))
@@ -254,7 +257,7 @@ export class ConfirmDialogReplaceKegComponent
     this.dialogRef.close({date: this.input_date_, info: this.manufacturer_info_});
   }
 
-  change(dateEvent) 
+  change(dateEvent)
   {
     this.input_date_ = dateEvent.value.format('DD.MM.YYYY');
   }
