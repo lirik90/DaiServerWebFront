@@ -1,19 +1,19 @@
 <ng-container (click)="openDialog()">
   <button *ngIf="is_button" mat-button class="button" (click)="click_button()">{{text_value}}</button>
 
-  <ng-container *ngIf="is_file"> 
+  <ng-container *ngIf="is_file">
     <div *ngIf="!is_loading">
       <input type="file" (change)="handleFileInput($event.target.files)" #photoInput/>
-      <button mat-button class="button" (click)="photoInput.click()" i18n="@@CONTROL.LOAD">Загрузить</button>  
+      <button mat-button class="button" (click)="photoInput.click()" i18n="@@CONTROL.LOAD">Загрузить</button>
     </div>
     <div *ngIf="is_loading" class="progress_in_center">
       <label i18n="@@DEVICE_ITEM.LOADING">Загрузка</label>
     </div>
   </ng-container>
-  
+
   <mat-slide-toggle *ngIf="is_toggle"
-                  color="primary" 
-                  [checked]="item.val && item.val.display == 1" 
+                  color="primary"
+                  [checked]="item.val && item.val.display == 1"
                   [disabled]="(!item.val || item.val.display == null) || cantChange"
                   (change)="write($event.checked)">
   </mat-slide-toggle>

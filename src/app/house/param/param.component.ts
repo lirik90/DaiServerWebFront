@@ -12,12 +12,12 @@ import { Group, ParamValue, Section } from '../house';
   templateUrl: './param.component.html',
   styleUrls: ['./param.component.css']
 })
-export class ParamComponent implements OnInit 
+export class ParamComponent implements OnInit
 {
   sct: Section;
   group: Group = undefined;
   cantChange: boolean;
-  
+
   changed_values: ParamValue[] = [];
 
   constructor(
@@ -33,14 +33,14 @@ export class ParamComponent implements OnInit
     this.cantChange = !this.authService.canChangeParam();
   }
 
-  getGroup(): void 
+  getGroup(): void
   {
     const groupId = +this.route.snapshot.paramMap.get('groupId');
-    for (let sct of this.houseService.house.sections) 
+    for (let sct of this.houseService.house.sections)
     {
-      for (let group of sct.groups) 
+      for (let group of sct.groups)
       {
-        if (group.id === groupId) 
+        if (group.id === groupId)
         {
           this.sct = sct;
           this.group = group;
@@ -50,7 +50,7 @@ export class ParamComponent implements OnInit
     }
   }
 
-  onSubmit() 
+  onSubmit()
   {
     console.log(this.changed_values);
     if (this.changed_values)
@@ -59,6 +59,7 @@ export class ParamComponent implements OnInit
   }
 
   goBack(): void {
+    console.log('BACK!');
     this.location.back();
   }
 }
