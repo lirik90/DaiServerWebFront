@@ -3,6 +3,7 @@
  */
 import {Component, Input, OnInit} from '@angular/core';
 import {HouseService} from '../house.service';
+import {UIService} from '../../ui.service';
 
 @Component({
   selector: 'app-house-state',
@@ -29,6 +30,7 @@ export class HouseStateComponent implements OnInit {
 
   constructor(
     public houseService: HouseService,
+    public uiService: UIService,
   ) { }
 
   ngOnInit() {

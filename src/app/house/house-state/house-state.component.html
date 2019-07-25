@@ -3,7 +3,7 @@
     <div class="house-state-icon__num">{{state.messagesCount}}</div>
   </button>
 
-  <div class="house-state-modal" *ngIf="isModalOpen">
+  <div class="house-state-modal" *ngIf="isModalOpen" [style.top.px]="uiService.isToolbarHidden() ? 0 : 48">
     <div class="hosue-state-modal__tooblar">
       <div class="hosue-state-modal__tooblar-spacer"></div>
       <button class="house-state-modal__close-btn" (click)="closeModal()">Закрыть</button>
