@@ -3,7 +3,8 @@
 <ul class="houses">
   <li *ngFor="let house of houses">
     <a class="pre_badge" routerLink="/house/{{house.name}}/manage">
-      <span class="badge">{{house.id}}</span> {{house.title}}
+      <span class="badge">{{house.id}}</span>
+      <span class="house-title">{{house.title}}</span>
     </a>
    <button class="delete" title="detail project"
       (click)="detail(house)">?</button>
@@ -20,11 +21,11 @@
 <hr>
 <div class="house_form"><span i18n="@@DETAILS.PROJECT">Проект</span>:
   <label><span i18n="@@DETAILS.NAME">Имя</span>: <input [(ngModel)]="new_house.name" i18n-placeholder="@@DETAILS.NAME" placeholder="Имя" /></label>
-  
+
   <label><span i18n="@@DETAILS.TITLE">Заголовок</span>: <input [(ngModel)]="new_house.title" i18n-placeholder="@@DETAILS.HINT.NAME" placeholder="Display name" /></label>
-  
+
   <label><span i18n="@@DETAILS.DESCRIPTION">Описание</span>: <input [(ngModel)]="new_house.description" i18n-placeholder="@@DETAILS.DESCRIPTION" placeholder="Описание" /></label>
-  
+
   <label><span i18n="@@DETAILS.UUID">Уникальный номер</span>: <input [(ngModel)]="new_house.device" i18n-placeholder="@@DETAILS.HINT.UUID" placeholder="Device UUID" /></label>
   <!-- (click) passes input value to add() and then clears the input -->
   <button (click)="add()" i18n="@@CONTROL.ADD">Добавить</button>

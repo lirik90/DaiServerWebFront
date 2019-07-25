@@ -21,11 +21,21 @@ h2 {
 }
 
 .main-toolbar {
-  transition: height 0.4s ease;
+  position: fixed;
+  z-index: 10;
+  height: 48px;
 }
 
 .hide-main-toolbar .main-toolbar {
-  height: 0;
+  display: none;
+}
+
+.mat-sidenav-container {
+  margin-top: 48px;
+}
+
+.hide-main-toolbar .mat-sidenav-container {
+  margin-top: 0;
 }
 
 .main-spacer {
@@ -54,7 +64,7 @@ mat-spinner {
 }
 .top-menu a.nav-link {
     margin: 0;
-    padding: 24px 16px;
+    padding: 0 16px;
     cursor: pointer;
 	font-size: 16px;
 	font-weight: 400;
@@ -64,8 +74,14 @@ mat-spinner {
   display: inline-block;
 }
 .nav-link > span {
-  vertical-align: super;
+  vertical-align: baseline;
 }
+
+.nav-link > .mat-icon {
+  position: relative;
+  top: 6px;
+}
+
 .top-menu a.nav-link:hover {
   color: #039be5;
   background-color: #CFD8DC;

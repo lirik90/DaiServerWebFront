@@ -1,7 +1,11 @@
 /* HouseSearch private styles */
+#search-component {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
 .search-edit {
-  margin-left: 16px;
-  width: 97%;
+  width: 100%;
 }
 
 .search-result li {

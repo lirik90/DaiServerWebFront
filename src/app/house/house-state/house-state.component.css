@@ -5,7 +5,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1px;
+  padding: 2px;
   box-sizing: border-box;
   position: relative;
 }
@@ -13,8 +13,8 @@
 .house-state-icon {
   background: #ccc;
   border: 0;
-  height: 100%;
-  width: 100%;
+  height: 21px;
+  width: 21px;
   display: inline-block;
   border-radius: 100%;
   color: #fff;
@@ -22,6 +22,9 @@
   font-size: 14px;
   cursor: pointer;
   outline: none;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 .house-state-msg {

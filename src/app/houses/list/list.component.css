@@ -14,6 +14,8 @@
   height: 1.6em;
   border-radius: 4px;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
 }
 
 .houses li.selected {
@@ -21,21 +23,27 @@
   background-color: #DDD;
   left: .1em;
 }
- 
+
 .houses li:hover {
   color: #607D8B;
   background-color: #DDD;
   left: .1em;
 }
- 
+
 .houses .pre_badge {
   color: #888;
   text-decoration: none;
   position: relative;
-  display: block;
-  width: 250px;
+  /* display: block; */
+  /* width: 250px; */
+  flex-grow: 1;
+  flex-shrink: 1;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  margin-right: 8px;
 }
- 
+
 .houses .pre_badge:hover {
   color:#607D8B;
 }
@@ -49,7 +57,7 @@
   line-height: 1em;
   position: relative;
   left: -1px;
-  top: -4px;
+  /*top: -4px;*/
   height: 1.8em;
   min-width: 16px;
   text-align: right;
@@ -66,7 +74,7 @@ button {
   cursor: hand;
   font-family: Arial;
 }
- 
+
 button:hover {
   background-color: #cfd8dc;
 }
@@ -74,11 +82,13 @@ button:hover {
 button.delete {
   position: relative;
   /*left: 162px;*/
-  top: -33px;
+  /*top: -33px;*/
   background-color: gray;
   color: white;
-  float: right;
+  /*float: right;*/
   margin-right: 5px;
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 
 button.delete:hover {
