@@ -3,13 +3,28 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 //import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter} from '@angular/material/core';
 
 import { ItemType, GroupType, Section, DeviceItem, Logs } from "../../house";
 import { HouseService, ExportConfig, ExportItem } from "../../house.service";
 import { HousesService } from '../../../houses/houses.service';
 import { House } from "../../../user";
 import {ActivatedRoute} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
+
+export class RussianDateAdapter extends NativeDateAdapter {
+  parse(value: any): Date | null {
+    if ((typeof value === 'string') && (value.indexOf('/') > -1)) {
+      const str = value.split('.');
+      if (str.length < 2 || isNaN(+str[0]) || isNaN(+str[1]) || isNaN(+str[2])) {
+        return null;
+      }
+      return new Date(Number(str[2]), Number(str[1]) - 1, Number(str[0]), 12);
+    }
+    const timestamp = typeof value === 'number' ? value : Date.parse(value);
+    return isNaN(timestamp) ? null : new Date(timestamp);
+  }
+}
 
 @Component({
   selector: 'app-export',
@@ -39,12 +54,20 @@ export class ExportComponent implements OnInit {
 
   dataPreselected: number[] = [];
 
+  locale: string;
+
   constructor(
     private _formBuilder: FormBuilder,
     private houseService: HouseService,
     private housesService: HousesService,
     private route: ActivatedRoute,
-  ) {}
+    private dateAdapter: DateAdapter<Date>,
+    public translate: TranslateService
+  ) {
+      this.locale = this.translate.currentLang;
+      this.dateAdapter.setLocale(this.locale);
+      this.dateAdapter.getFirstDayOfWeek = () => 1;
+  }
 
   ngOnInit() {
     this.loading = false;

@@ -38,8 +38,8 @@ export class HouseService extends IHouseService {
           public translate: TranslateService,
           private router: Router,
           http: HttpClient,
-          messageService: MessageService) 
-  { 
+          messageService: MessageService)
+  {
     super( http, messageService );
     // this.house = JSON.parse(localStorage.getItem(this.house_s));
   }
@@ -55,13 +55,13 @@ export class HouseService extends IHouseService {
 
     this.house = undefined; // If comment need compare hash of detail
 
-    let parse_param_value_childs = (group: Group, param_items: ParamItem[]) => 
+    let parse_param_value_childs = (group: Group, param_items: ParamItem[]) =>
     {
       for (let param_value of group.params)
       {
-        for (let param of param_items) 
+        for (let param of param_items)
         {
-          if (param.id === param_value.param_id) 
+          if (param.id === param_value.param_id)
           {
             param_value.param = param;
             break;
@@ -83,7 +83,7 @@ export class HouseService extends IHouseService {
           }
         }
       }
-      
+
       for (let index = 0; index < group.params.length; ++index)
       {
         if (group.params[index].param.parent_id)
@@ -91,11 +91,11 @@ export class HouseService extends IHouseService {
           group.params.splice(index, 1);
           -- index;
         }
-      }      
+      }
     };
-    
+
     let lang;
-    let match = document.location.pathname.match(/\/(ru|en|fr|es)\//);	
+    let match = document.location.pathname.match(/\/(ru|en|fr|es)\//);
     if (match === null)
     {
       const browserLang = this.translate.getBrowserLang();
@@ -105,7 +105,7 @@ export class HouseService extends IHouseService {
     {
       lang = match[1];
     }
-    
+
     return this.get<HouseDetail>(`detail/?project_name=${house_name}&lang=${lang}`).pipe(
       switchMap(detail => {
         for (let param of detail.params) {
@@ -129,7 +129,7 @@ export class HouseService extends IHouseService {
             }
           }
         }
- 
+
         for (let status of detail.statuses) {
           for (let status_type of detail.statusTypes) {
             if (status_type.id === status.type_id)
@@ -189,11 +189,11 @@ export class HouseService extends IHouseService {
             parse_param_value_childs(group, detail.params);
           }
         }
-       
+
         this.house = detail;
         this.house.name = house_name;
         localStorage.setItem(this.house_s, JSON.stringify(detail));
-        this.log('fetched house detail'); 
+        this.log('fetched house detail');
         return of(true);
       }),
       catchError(this.handleError('checkCurrentHouse', false))
@@ -247,15 +247,15 @@ export class HouseService extends IHouseService {
   {
     return this.getPiped<PaginatorApi<TeamMember>>(this.url('team'), 'fetched team list', 'getMembers');
   }
-	
+
   upload_file(item_id: number, file: File): Observable<any>
   {
     const formData: FormData = new FormData();
     formData.append('fileKey', file, file.name);
-    
+
     let options = { headers: new HttpHeaders() };
     options.headers.append('Content-Type', 'multipart/form-data');
-    
+
     const url = this.apiUrl + `write_item_file/?id=${this.house.id}&item_id=${item_id}`;
     return this.http.put(url, formData, options)
             .catch(error => Observable.throw(error));
@@ -276,7 +276,7 @@ export class HouseService extends IHouseService {
     return this.getPiped<PaginatorApi<Logs>>(url, `fetched logs list`, 'getLogs');
   }
 
-  exportExcel(conf: ExportConfig): Observable<HttpResponse<Blob>> 
+  exportExcel(conf: ExportConfig): Observable<HttpResponse<Blob>>
   {
     const url = `/export/excel/?id=${this.house.id}`;
     const opts = {
@@ -284,7 +284,9 @@ export class HouseService extends IHouseService {
       observe: 'response' as 'response',
       responseType: 'blob' as 'blob'
     };
-    
+
+    console.log(conf);
+
     return this.http.post(url, conf, opts).pipe(
       tap(_ => this.log('Export sucessfull')),
       catchError(this.handleError<HttpResponse<Blob>>('exportExcel', undefined))

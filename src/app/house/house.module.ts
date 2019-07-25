@@ -24,11 +24,8 @@ import { ParamItemComponent } from './param-item/param-item.component';
 import { HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import {UIService} from '../ui.service';
 import { HouseStateComponent } from './house-state/house-state.component';
 import {HouseSectionComponent} from './house-section/house-section.component';
-import {ReportsModule} from './reports/reports.module';
-import { KegsComponent } from './kegs/kegs.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -65,7 +62,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ParamItemComponent,
     HouseStateComponent,
     HouseSectionComponent,
-    KegsComponent,
   ],
   entryComponents: [
     PageReloadDialogComponent,

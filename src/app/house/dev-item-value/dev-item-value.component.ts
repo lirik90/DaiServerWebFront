@@ -55,7 +55,7 @@ export class DevItemValueComponent implements OnInit {
     }
 
     if (this.item.type.registerType === ItemTypeRegister.DiscreteInputs) {
-      console.log(val);
+      //console.log(val);
 
       if (val == 0) {
         return '0';
