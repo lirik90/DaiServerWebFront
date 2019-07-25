@@ -46,17 +46,22 @@ export class DevItemValueComponent implements OnInit {
 
   get text_value(): string {
     const val = this.item.val ? this.item.val.display : null;
-
     if (val === undefined || val === null) {
       return this.translate.instant("NOT_CONNECTED");
     }
 
+    if (typeof(val) === 'object') {
+      return val[this.item.val.raw];
+    }
+
     if (this.item.type.registerType === ItemTypeRegister.DiscreteInputs) {
-      if(val === '0' || val === 'false') {
+      console.log(val);
+
+      if (val == 0) {
         return '0';
       }
 
-      if (val === '1' || val === 'true') {
+      if (val == 1) {
         return '1';
       }
     }
