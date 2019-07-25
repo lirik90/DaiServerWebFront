@@ -135,6 +135,9 @@ export class HouseComponent implements OnInit, OnDestroy {
       this.fillerNav.push({link: 'beerbox/replace_keg', text: this.translate.instant('NAVIGATION_TAB.REPLACE_KEG'), icon: 'repeat'});
     }
     if (this.can_edit) {
+      //this.fillerNav.push({link: 'beerbox/kegs', text: 'Кеги', icon: 'local_drink'});
+    }
+    if (this.can_edit) {
       this.fillerNav.push({
         link: 'beerbox/calibration',
         text: this.translate.instant('NAVIGATION_TAB.CALIBRATION'),

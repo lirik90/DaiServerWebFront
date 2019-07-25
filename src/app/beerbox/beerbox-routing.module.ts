@@ -9,12 +9,14 @@ import { ReplaceLabelsComponent } from "./replace-labels/replace-labels.componen
 import { UpdateBeerInfoComponent } from "./update-beer-info/update-beer-info.component";
 import { ChangeControllerAddressComponent } from "./change-controller-address/change-controller-address.component";
 import { OperationHoursComponent } from "./operation-hours/operation-hours.component";
+import {KegsComponent} from './kegs/kegs.component';
 
 const beerboxRoutes: Routes = [
-  { 
-    path: '', 
+  {
+    path: '',
     children: [
       { path: 'replace_keg', component: ReplaceKegComponent },
+      { path: 'kegs', component: KegsComponent },
       { path: 'wash', component: WashComponent },
       { path: 'calibration', component: CalibrationComponent },
 	    { path: 'check-head-stand', component: CheckHeadStandComponent },

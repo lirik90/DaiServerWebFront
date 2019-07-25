@@ -146,3 +146,20 @@ h1.main-app-name {
 a h3 {
   text-decoration: underline;
 }
+
+.cookie-notes {
+  position: fixed;
+  bottom: 0;
+  z-index: 9999;
+  background: #f5e29c;
+  padding: 1em;
+  border-top: 1px solid #888;
+  right: 0;
+  left: 0;
+  text-align: center;
+}
+
+.cookie-notes > span {
+  margin: 4px 8px;
+  display: inline-block;
+}

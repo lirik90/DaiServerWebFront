@@ -27,6 +27,7 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {UIService} from './ui.service';
 import {UserSettingsComponent} from './user-settings/user-settings.component';
 import {UserSettingsModule} from './user-settings/user-settings.module';
+import { CookieService } from 'ngx-cookie-service';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -63,14 +64,15 @@ export function createTranslateLoader(http: HttpClient) {
     MaterialModule,
     UserSettingsModule,
   ],
-  providers: [ 
+  providers: [
     AuthGuard,
-    HousesService, 
+    HousesService,
     MessageService,
     AuthenticationService,
     UIService,
     TranslateService,
     WebSocketBytesService,
+    CookieService,
     {
     	provide: HTTP_INTERCEPTORS,
     	useClass: JwtInterceptor,

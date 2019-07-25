@@ -13,6 +13,7 @@ import { AuthenticationService } from "./authentication.service";
 import { TranslateService } from '@ngx-translate/core';
 
 import { UIService } from "./ui.service";
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-root',
@@ -35,6 +36,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ];
 
   current_lang_: any;
+  private cookieGot;
 
   constructor(
     public translate: TranslateService,
@@ -42,8 +44,11 @@ export class AppComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     public uiService: UIService,
+    public cookie: CookieService,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher
   ) {
+    this.cookieGot = this.cookie.get('cookie-agree') === 'true';
+
     this.router.events.subscribe((event: RouterEvent) => this.navigationInterceptor(event));
 
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
@@ -122,5 +127,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onScroll($event) {
     this.scrollTop = $event.target.scrollTop;
+  }
+
+  cookieAgree() {
+    this.cookie.set('cookie-agree', 'true');
+    this.cookieGot = true;
   }
 }

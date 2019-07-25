@@ -51,3 +51,11 @@
   </mat-sidenav-container>
 </div>
 
+<div class="cookie-notes" *ngIf="!cookieGot">
+  <span>
+    Этот сайт использует <a href="https://ru.wikipedia.org/wiki/Cookie">куки</a>
+  </span>
+  <span>
+    <button mat-stroked-button class="got-it-btn" (click)="cookieAgree()">Закрыть</button>
+  </span>
+</div>
