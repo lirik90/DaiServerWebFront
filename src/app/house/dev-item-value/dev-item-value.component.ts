@@ -46,12 +46,17 @@ export class DevItemValueComponent implements OnInit {
 
   get text_value(): string {
     const val = this.item.val ? this.item.val.display : null;
-    if (val === undefined || val === null)
+
+    if (val === undefined || val === null) {
       return this.translate.instant("NOT_CONNECTED");
-    if (typeof(val) === 'object') {
-      return val[this.item.val.raw];
     }
-    return val;
+
+    if (this.item.type.registerType === ItemTypeRegister.DiscreteInputs) {
+      // Bool & Read-Only
+      return this.item.val.raw ? '1' : '0';
+    }
+
+    return this.item.val.raw;
   }
 
   write(value: number | boolean): void {
@@ -70,7 +75,7 @@ export class DevItemValueComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => this.write(result));
   }
-	
+
   click_button(): void
   {
 	  let value = this.item.val ? this.item.val.raw : null;
@@ -78,7 +83,7 @@ export class DevItemValueComponent implements OnInit {
 	  {
       this.controlService.writeToDevItem(this.item.id, value);
 	  }
-  }	
+  }
 
   handleFileInput(files: FileList): void
   {
@@ -88,11 +93,11 @@ export class DevItemValueComponent implements OnInit {
         console.log("success");
         this.is_loading = false
       },
-      error => { 
+      error => {
         console.log(error);
         this.is_loading = false
       });
-  }	 
+  }
 }
 
 @Component({
