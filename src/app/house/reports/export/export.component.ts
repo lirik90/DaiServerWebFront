@@ -12,6 +12,9 @@ import { House } from "../../../user";
 import {ActivatedRoute} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 
+import moment from 'moment-timezone';
+import { Moment } from 'moment';
+
 export class RussianDateAdapter extends NativeDateAdapter {
   parse(value: any): Date | null {
     if ((typeof value === 'string') && (value.indexOf('/') > -1)) {
@@ -24,6 +27,12 @@ export class RussianDateAdapter extends NativeDateAdapter {
     const timestamp = typeof value === 'number' ? value : Date.parse(value);
     return isNaN(timestamp) ? null : new Date(timestamp);
   }
+}
+
+interface TimeZone {
+  title: string;
+  offset: string;
+  value: string;
 }
 
 @Component({
@@ -55,6 +64,7 @@ export class ExportComponent implements OnInit {
   dataPreselected: number[] = [];
 
   locale: string;
+  tzs: TimeZone[];
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -64,9 +74,19 @@ export class ExportComponent implements OnInit {
     private dateAdapter: DateAdapter<Date>,
     public translate: TranslateService
   ) {
-      this.locale = this.translate.currentLang;
-      this.dateAdapter.setLocale(this.locale);
-      this.dateAdapter.getFirstDayOfWeek = () => 1;
+    this.locale = this.translate.currentLang;
+    this.dateAdapter.setLocale(this.locale);
+    this.dateAdapter.getFirstDayOfWeek = () => 1;
+
+    const tzNames = moment.tz.names();
+    this.tzs = tzNames.map((tzname) => {
+      const offset = moment.tz(tzname).format('Z');
+      return {
+          title: `${tzname} (UTC${offset})`,
+          offset: offset,
+          value: tzname
+        };
+      });
   }
 
   ngOnInit() {
@@ -84,12 +104,15 @@ export class ExportComponent implements OnInit {
     date_to_d.setSeconds(59);
     date_to_d.setMilliseconds(0);
 
+    const usrTz = moment.tz.guess();
+
     this.firstFormGroup = this._formBuilder.group({
       projects: [[this.houseService.house.id], Validators.required],
     });
     this.secondFormGroup = this._formBuilder.group({
       date_from: [date_from_d, Validators.required],
       date_to: [date_to_d, Validators.required],
+      timezone: [usrTz, Validators.required]
     });
     this.dataFormGroup = this._formBuilder.group({
       hide_null: [true],

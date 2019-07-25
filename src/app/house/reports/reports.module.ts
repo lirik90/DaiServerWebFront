@@ -24,13 +24,13 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ReactiveFormsModule,
     ReportsRoutingModule,
     MaterialModule,
-	  TranslateModule.forChild({
+    TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
-        deps: [HttpClient]        
+        deps: [HttpClient]
       }
-    })
+    }),
   ],
   declarations: [
     ReportsComponent,

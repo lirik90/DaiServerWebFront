@@ -29,6 +29,13 @@
         <mat-datepicker-toggle matSuffix [for]="picker_to"></mat-datepicker-toggle>
         <mat-datepicker #picker_to></mat-datepicker>
       </mat-form-field>
+
+      <mat-form-field class="timezone-field">
+        <mat-select placeholder="Часовой пояс" formControlName="timezone" required>
+          <mat-option *ngFor="let tz of tzs" [value]="tz.value">{{tz.title}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
       <div>
         <button mat-button matStepperPrevious i18n="@@CONTROL.BACK">Назад</button>
         <button mat-button matStepperNext i18n="@@CONTROL.NEXT2">Дальше</button>
@@ -45,6 +52,7 @@
           <mat-option *ngFor="let t of types" [value]="t.id">{{t.title}}</mat-option>
         </mat-select>
       </mat-form-field>
+
       <div>
         <button mat-button matStepperPrevious i18n="@@CONTROL.BACK">Назад</button>
         <button mat-button matStepperNext i18n="@@CONTROL.NEXT2">Дальше</button>
