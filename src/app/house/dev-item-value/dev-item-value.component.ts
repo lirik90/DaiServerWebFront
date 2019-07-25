@@ -52,11 +52,16 @@ export class DevItemValueComponent implements OnInit {
     }
 
     if (this.item.type.registerType === ItemTypeRegister.DiscreteInputs) {
-      // Bool & Read-Only
-      return this.item.val.raw ? '1' : '0';
+      if(val === '0' || val === 'false') {
+        return '0';
+      }
+
+      if (val === '1' || val === 'true') {
+        return '1';
+      }
     }
 
-    return this.item.val.raw;
+    return val;
   }
 
   write(value: number | boolean): void {
