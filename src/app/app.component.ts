@@ -36,7 +36,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ];
 
   current_lang_: any;
-  private cookieGot;
+  cookieGot: boolean;
 
   constructor(
     public translate: TranslateService,

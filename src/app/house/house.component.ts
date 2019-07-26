@@ -40,6 +40,7 @@ export class HouseComponent implements OnInit, OnDestroy {
   connection_str: string = ' '; // HouseComponent.getConnectionString(false);
 
   connect_state: Connect_State = Connect_State.Disconnected;
+  private can_wash: boolean;
 
   get connected(): boolean {
     return this.connect_state != Connect_State.Disconnected;
@@ -115,6 +116,7 @@ export class HouseComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.can_see_more = this.authService.canChangeHouse();
     this.can_edit = this.authService.canChangeItemState();
+    this.can_wash = this.authService.canAddDeviceItem();
 
     this.fillerNav.push({link: 'detail', text: this.translate.instant('NAVIGATION_TAB.INFO'), icon: 'perm_device_information'});
 
@@ -128,7 +130,7 @@ export class HouseComponent implements OnInit, OnDestroy {
     this.fillerNav.push({link: 'export', query: {data: [107]}, text: this.translate.instant('NAVIGATION_TAB.EXPORT'), icon: 'subject'});
 
     // For Beerbox
-    if (this.can_see_more) {
+    if (this.can_see_more || this.can_wash) {
       this.fillerNav.push({link: 'beerbox/wash', text: this.translate.instant('NAVIGATION_TAB.WASH'), icon: 'opacity'});
     }
     if (this.can_edit) {
@@ -144,7 +146,7 @@ export class HouseComponent implements OnInit, OnDestroy {
         icon: 'compass_calibration'
       });
     }
-    if (this.can_edit) {
+    if (this.can_see_more) {
       this.fillerNav.push({link: 'beerbox/check-head-stand', text: this.translate.instant('NAVIGATION_TAB.STAND'), icon: 'category'});
     }
     if (this.can_edit) {

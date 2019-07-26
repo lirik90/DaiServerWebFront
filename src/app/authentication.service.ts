@@ -22,7 +22,7 @@ export class AuthenticationService {
     private http: HttpClient,
     private router: Router,
     @Inject(DOCUMENT) document: any
-  ) { 
+  ) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
@@ -38,14 +38,21 @@ export class AuthenticationService {
     return this.checkPermission('change_house');
   }
 
+  canAddDeviceItem(): boolean {
+    return this.checkPermission('add_deviceitem');
+  }
+
   checkPermission(item: string): boolean {
-    if (!this.currentUser || !this.currentUser.permissions) return false;
+    if (!this.currentUser || !this.currentUser.permissions) {
+      return false;
+    }
+
     return this.currentUser.permissions.indexOf(item) > -1;
   }
-  
+
   getCsrf(): void {
     this.http.head<any>('/get_csrf').pipe(
-      catchError(error => { 
+      catchError(error => {
         this.goToLogin();
         return of();
       })
@@ -62,7 +69,7 @@ export class AuthenticationService {
       clearTimeout(this.timeout_handle);
       this.timeout_handle = setTimeout(() => {
         this.http.head<any>('/get_csrf').pipe(
-          catchError(error => { 
+          catchError(error => {
             this.goToLogin();
             return of();
           })
@@ -77,7 +84,7 @@ export class AuthenticationService {
       user = this.currentUser;
     if (user && user.token) {
       this.http.post<any>(this.tokenUrl + 'refresh/', { token: user.token }).pipe(
-        catchError(error => { 
+        catchError(error => {
           this.goToLogin();
           return of();
         })
@@ -94,7 +101,7 @@ export class AuthenticationService {
     return this.http.post<any>(this.tokenUrl + 'auth/', { username: username, password: password })
         .map(user => { return this.setCurrentUser(user); });
   }
- 
+
   logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
@@ -103,7 +110,7 @@ export class AuthenticationService {
       clearTimeout(this.timeout_handle);
     }
   }
-  
+
   createUser(user: any) {
     return this.http.post('/api/v1/users/', user);
   }
