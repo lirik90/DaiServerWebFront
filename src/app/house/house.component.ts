@@ -28,7 +28,7 @@ enum Connect_State {
 @Component({
   selector: 'app-house',
   templateUrl: './house.component.html',
-  styleUrls: ['./house.component.css']
+  styleUrls: ['./house.component.css'],
 })
 export class HouseComponent implements OnInit, OnDestroy {
   mobileQuery: MediaQueryList;

@@ -8,14 +8,14 @@ div > h2 {
   color: red;
 }
 
+:host{
+  height: 100%;
+}
+
 .house-container {
   display: flex;
   flex-direction: column;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  height: 100%;
 }
 
 .status_modified:after {
@@ -47,12 +47,17 @@ mat-sidenav-content {
 }
 .house-toolbar {
   height: 48px;
-  padding: 0 4px;
+  padding: 0 8px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
+/*
 .house-is-mobile .house-toolbar {
   position: fixed;
   z-index: 2;
 }
+ */
 
 .house-spacer {
   flex: 1 1 auto;

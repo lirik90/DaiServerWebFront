@@ -1,3 +1,4 @@
+<!--
 <div class="main-container" [class.main-is-mobile]="mobileQuery.matches" [class.hide-main-toolbar]="mobileQuery.matches && uiService.isToolbarHidden()">
   <mat-toolbar class="main-toolbar">
     <img src="assets/img/logo.png">
@@ -46,7 +47,6 @@
       <div [style.display]="loading ? 'none' : 'block'">
         <router-outlet></router-outlet>
       </div>
-      <!--<app-messages></app-messages>-->
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
@@ -59,3 +59,64 @@
     <button mat-stroked-button class="got-it-btn" (click)="cookieAgree()">Закрыть</button>
   </span>
 </div>
+-->
+<aside class="cookie-notes" *ngIf="!cookieGot">
+  <span>
+    Этот сайт использует <a href="https://ru.wikipedia.org/wiki/Cookie">куки</a>
+  </span>
+  <span>
+    <button mat-stroked-button class="got-it-btn" (click)="cookieAgree()">Закрыть</button>
+  </span>
+</aside>
+
+<header class="app-toolbar">
+  <div class="branding">
+    <img class="branding__logo" src="/assets/img/logo.png">
+    <h1 class="branding__text" *ngIf="!authService.currentUser || !mobileQuery.matches">BEERBOX</h1>
+  </div>
+
+  <ng-container *ngIf="authService.currentUser">
+    <nav class="app-toolbar__menu" role="navigation">
+      <ul class="app-toolbar__menu-list">
+        <li class="app-toolbar__menu-list-item">
+          <a class="app-toolbar__menu-link" routerLink="/dashboard" routerLinkActive="active">
+            <mat-icon>star</mat-icon> <span *ngIf="!mobileQuery.matches" i18n="@@HOME.PANEL">Избранное</span>
+          </a>
+        </li>
+        <li class="app-toolbar__menu-list-item">
+          <a class="app-toolbar__menu-link" routerLink="/list" routerLinkActive="active">
+            <mat-icon>list</mat-icon> <span *ngIf="!mobileQuery.matches" i18n="@@HOME.PROJECTS">Список</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <span class="spacer"></span>
+
+    <div class="app-toolbar__lang-select">
+      <button mat-icon-button (click)=select.open()>
+        <mat-icon *ngIf="current_lang_ === undefined">language</mat-icon>
+        <span *ngIf="current_lang_ !== undefined" [class]="current_lang_.icon"></span>
+        <mat-select #select class="langSelect" [(ngModel)]="current_lang_" (ngModelChange)="change_language()">
+          <mat-option *ngFor="let lang of languages" [value]="lang">
+            <span class="{{lang.icon}}"></span> {{ lang.label }}
+          </mat-option>
+        </mat-select>
+      </button>
+    </div>
+
+    <a routerLink="/user" class="app-toolbar__user app-toolbar__user-link">
+      <mat-icon class="app-toolbar__user-icon">person</mat-icon>
+      <span class="app-toolbar__user-name" *ngIf="!mobileQuery.matches" >
+        <span i18n="@@HOME.GREETING">Привет,</span> <strong>{{authService.currentUser.username}}</strong>!
+      </span>
+    </a>
+    <button mat-icon-button i18n-matTooltip="@@CONTROL.EXIT" matTooltip="Выйти" [routerLink]="['/login']"><mat-icon>exit_to_app</mat-icon></button>
+  </ng-container>
+</header>
+
+<main>
+  <mat-spinner *ngIf="loading"></mat-spinner>
+  <div class="router-outlet-wrap" [style.display]="loading ? 'none' : 'block'">
+    <router-outlet></router-outlet>
+  </div>
+</main>

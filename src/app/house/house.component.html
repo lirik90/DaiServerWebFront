@@ -11,8 +11,7 @@
     <button mat-icon-button *ngIf="can_edit" (click)="restart()"><mat-icon>replay</mat-icon></button>
   </mat-toolbar>
 
-  <mat-sidenav-container class="house-sidenav-container"
-                         [style.marginTop.px]="mobileQuery.matches ? 48 : 0">
+  <mat-sidenav-container class="house-sidenav-container">
     <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                  [fixedInViewport]="mobileQuery.matches" [fixedTopGap]="mobileQuery.matches && !uiService.isToolbarHidden() ? 96 : 48" [opened]="!mobileQuery.matches">
 

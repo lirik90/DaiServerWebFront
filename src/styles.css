@@ -1,9 +1,56 @@
-@import "~@angular/material/prebuilt-themes/indigo-pink.css"; 
+/* You can add global styles to this file, and also import other style files */
+/* Application-wide Styles */
+
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans&display=swap&subset=cyrillic');
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+html {
+  color: #333;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 17px;
+  line-height: 1.47059;
+}
+
+/* Ugly, rewrite! */
+
+nav a {
+  padding: 5px 10px;
+  text-decoration: none;
+  margin-top: 10px;
+  margin-right: 4px;
+  display: inline-block;
+  background-color: #eee;
+  border-radius: 4px;
+}
+nav a:visited, a:link {
+  color: #607D8B;
+}
+nav a:hover {
+  color: #039be5;
+  background-color: #CFD8DC;
+}
+nav a.active {
+  color: #039be5;
+}
+nav > div {
+  display: inline-block;
+}
+
+
+/* Fixes for material */
+
+.cdk-overlay-pane {
+  overflow-y: auto;
+}
+
+.mat-drawer-content {
+  box-sizing: border-box;
+}
+
 /* @import "~@angular/material/prebuilt-themes/purple-green.css"; */
 /* @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';*/
 
-/* You can add global styles to this file, and also import other style files */
-/* Application-wide Styles */
+/*
 h1 {
   color: #369;
   font-family: Arial, Helvetica, sans-serif;
@@ -13,15 +60,17 @@ h2, h3 {
   color: #444;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: lighter;
-}
+}*/
+/*
 body {
   margin: 2em;
-}
+}*//*
 body, input[text], button {
-  color: #888;
+  color: #333333;;
   font-family: Cambria, Georgia;
-}
+}*/
 /* everywhere else */
+/*
 * {
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -50,6 +99,7 @@ nav > div {
 }
 .eventbar {
 /*  width: 85%; */
+/*
   max-width: unset !important;
 }
 .eventbar_debug {
@@ -66,7 +116,7 @@ nav > div {
 }
 
 @media (max-width: 600px) {
-  body { 
+  body {
     margin: 8px;
   }
 }
@@ -75,3 +125,4 @@ nav > div {
   overflow-y: auto;
 }
 
+*/
