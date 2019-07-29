@@ -25,6 +25,7 @@ h2 {
   padding: 8px;
   border: 1px solid #d6d6d6;
   border-radius: 7px;
+  height: 1.5em;
 }
 
 .form-control:focus {
@@ -55,4 +56,13 @@ h2 {
   /* display: none; */
   font-size: 14px;
   color: #ff3b30;
+}
+
+.has-error .form-control {
+  border-color: #ff3b30;
+}
+
+.btn-primary {
+  margin-top: 8px;
+  font-size: 17px;
 }
