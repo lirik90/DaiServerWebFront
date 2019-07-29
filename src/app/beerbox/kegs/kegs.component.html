@@ -3,22 +3,36 @@
   <ng-container *ngFor="let tap of taps">
     <div class="col-1-3">
       <div class="tap-pane">
-        {{ tap.name }}
+        <div class="tap-name">{{ tap.name }}</div>
 
         <div class="tap-pane__content">
           <mat-card class="head-pane" *ngFor="let head of tap.heads">
-            <mat-card-title>{{head.title}}</mat-card-title>
-            <mat-card-content>
-              Дата: {{ head.date_installed.value }}<br>
-              Объём кеги: {{ kegVolume.value }}<br>
-              Налито: {{ head.volume_poured.val.display }}<br>
-              Осталось пива в кеге: {{ kegVolume.value - head.volume_poured.val.display }}<br>
-              Не пуста: {{ head.is_not_empty.val.display }}<br>
-              Активна: {{ head.is_active.val.display }}<br>
+            <mat-card-title>{{head.title}}{{ head.is_not_empty.val.display == 0? ' &mdash; пуст' : ''}}</mat-card-title>
+            <mat-card-content class="head-pane__content">
+              <div class="info">
+                Дата: {{ head.date_installed.value }}<br>
+                Объём кеги: {{ kegVolume.value }} мл<br>
+                Налито: {{ head.volume_poured.val.display }} мл<br>
+                Осталось пива в кеге: {{ kegVolume.value - head.volume_poured.val.display }} мл<br>
+                Не пуст: {{ head.is_not_empty.val.display? '1' : '0' }}<br>
+                Заборная головка: {{ head.is_active.val.display? '1' : '0' }}<br>
+              </div>
+              <div class="graph">
+                <div class="graph__filled" [style.height.%]="getPercentFilled(head)"></div>
+                <div class="graph_label">
+                  {{ round(getPercentFilled(head)) }}%
+                </div>
+              </div>
             </mat-card-content>
             <mat-card-actions>
-              <button mat-stroked-button [disabled]="head.is_not_empty.val.display === 1 || head.is_not_empty.val.display === false">Заменить</button>
+              <button mat-stroked-button [disabled]="head.is_not_empty.val.display != 0"
+                      (click)="openDialog(head)">Заменить</button>
             </mat-card-actions>
+            <mat-card-footer>
+              <span *ngIf="head.bad_clean !== undefined && head.bad_clean.val.raw == 1" i18n="@@BEERBOX.REPLACE_KEG.WARNING" class="bad-clean">
+                Не выполнено вытеснение пивом. После замены не забудьте сделать это
+              </span>
+            </mat-card-footer>
           </mat-card>
         </div>
       </div>
