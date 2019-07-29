@@ -1,0 +1,58 @@
+:host {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+
+}
+
+.login-form__wrap {
+  text-align: center;
+  margin-top: 15vh;
+}
+
+h2 {
+  margin: 0;
+  margin-bottom: 1rem;
+  font-weight: normal;
+  font-size: 21px;
+}
+
+.form-group {
+  margin-bottom: 8px;
+}
+
+.form-control {
+  padding: 8px;
+  border: 1px solid #d6d6d6;
+  border-radius: 7px;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #0070c9;
+}
+
+.other {
+  margin-top: 16px;
+}
+
+.other a {
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.separator {
+  background: url('/assets/img/HR_gradient_dark.png') top center no-repeat;
+  width: 100%;
+  max-width: 328px;
+  margin: auto;
+  height: 1px;
+  margin-bottom: 16px;
+}
+
+.help-block {
+  margin: 16px 0;
+  /* display: none; */
+  font-size: 14px;
+  color: #ff3b30;
+}

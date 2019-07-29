@@ -11,6 +11,10 @@ html {
   line-height: 1.47059;
 }
 
+a {
+  color: #0070c9;
+}
+
 /* Ugly, rewrite! */
 
 nav a {

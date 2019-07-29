@@ -14,6 +14,8 @@ export class LoginComponent implements OnInit {
   loading = false;
   returnUrl: string;
 
+  badPassword = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -32,15 +34,19 @@ export class LoginComponent implements OnInit {
   login(): void {
     this.loading = true;
     this.authenticationService.login(this.model.username, this.model.password)
-	  .subscribe(
-	    data => {
-	      this.router.navigate([this.returnUrl]);
-	    },
-	    error => {
-	      this.messageService.add('Error: ' + error);
-	      this.loading = false;
-	    }
-	  );
-	  
+      .subscribe(
+        data => {
+          this.router.navigate([this.returnUrl]);
+        },
+        error => {
+          const nfe = error.error && error.error.non_field_errors; // TODO: Optional chaining once the proposal is adopted by TypeScript
+
+          this.badPassword = nfe.some(x => x === 'Unable to log in with provided credentials.');
+
+          this.messageService.add('Error: ' + error);
+          this.loading = false;
+        }
+      );
+
   }
 }

@@ -17,6 +17,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { OperationHoursComponent } from './operation-hours/operation-hours.component';
 import { KegsComponent } from './kegs/kegs.component';
+import {HouseModule} from '../house/house.module';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -42,7 +43,7 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   entryComponents: [
     ConfirmDialogReplaceKegComponent,
-	CheckHeadStandDialogComponent,
+	  CheckHeadStandDialogComponent,
     EditDialogUpdateBeerInfoComponent,
     EditDialogManufacturersListComponent,
   ],
