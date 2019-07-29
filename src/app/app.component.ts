@@ -130,7 +130,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   cookieAgree() {
-    this.cookie.set('cookie-agree', 'true');
+    this.cookie.set('cookie-agree', 'true', 365, '/');
     this.cookieGot = true;
   }
 }
