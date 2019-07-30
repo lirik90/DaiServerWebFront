@@ -1,5 +1,4 @@
-<div class="module house">
-  <ng-container *ngIf="day_start_ !== undefined && day_end_ !== undefined">
+ <div *ngIf="day_start_ !== undefined && day_end_ !== undefined" class="operation-hours">
     <h2 i18n="@@BEERBOX.OPERATION_TIME.TITLE">Установка времени работы</h2>
     <ng-container *ngIf="!is_changed_; else time_is_changed">
       <h4><p i18n="@@BEERBOX.OPERATION_TIME.TEXT">Установите время работы устройства. Время старта и время остановки</p></h4>
@@ -30,5 +29,5 @@
       </ng-container>
     </ng-template>
 
-  </ng-container>
-</div>
+  </div>
+

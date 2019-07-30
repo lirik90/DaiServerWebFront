@@ -6,7 +6,7 @@ import {MatDialog, MatDialogRef} from '@angular/material';
 import {ISubscription} from 'rxjs/Subscription';
 
 import {HouseService} from './house.service';
-import {ControlService, Cmd} from './control.service';
+import {ControlService, Cmd, ConnectInfo} from './control.service';
 import {AuthenticationService} from '../authentication.service';
 import {TranslateService} from '@ngx-translate/core';
 import {UIService} from '../ui.service';
@@ -25,6 +25,16 @@ enum Connect_State {
   Modified
 }
 
+enum Connection_State {
+  CS_DISCONNECTED,
+  CS_DISCONNECTED_JUST_NOW,
+  CS_CONNECTED_JUST_NOW,
+  CS_CONNECTED_SYNC_TIMEOUT,
+  CS_CONNECTED,
+
+  CS_CONNECTED_MODIFIED = 0x80
+}
+
 @Component({
   selector: 'app-house',
   templateUrl: './house.component.html',
@@ -36,22 +46,22 @@ export class HouseComponent implements OnInit, OnDestroy {
 
   fillerNav: NavLink[] = [];
 
-  status_checked: boolean = false;
-  connection_str: string = ' '; // HouseComponent.getConnectionString(false);
+  status_checked = false;
+  connection_str = ' '; // HouseComponent.getConnectionString(false);
 
-  connect_state: Connect_State = Connect_State.Disconnected;
+  connect_state: Connection_State = Connection_State.CS_DISCONNECTED;
   private can_wash: boolean;
 
   get connected(): boolean {
-    return this.connect_state != Connect_State.Disconnected;
+    return this.connect_state !== Connection_State.CS_DISCONNECTED;
   }
 
   private page_reload_dialog_ref: MatDialogRef<PageReloadDialogComponent> = undefined;
 
-  dt_offset: number = 0;
-  dt_tz_name: string = '';
+  dt_offset = 0;
+  dt_tz_name = '';
   dt_interval: any;
-  dt_text: string = '';
+  dt_text = '';
 
   can_see_more: boolean;
   can_edit: boolean;
@@ -64,33 +74,36 @@ export class HouseComponent implements OnInit, OnDestroy {
   }
 
   get status_class(): string {
-    if (this.connection_str !== undefined && this.connection_str != ' ') {
+    if (this.connection_str !== undefined && this.connection_str !== ' ') {
       return 'status_fail';
     }
-    if (this.status_checked) {
-      switch (this.connect_state) {
-        case Connect_State.Disconnected:
-          return 'status_bad';
-        case Connect_State.Connected:
-          return 'status_ok';
-        case Connect_State.Modified:
-          return 'status_modified';
-      }
+
+    if (!this.status_checked) {
+      return 'status_check';
     }
-    return 'status_check';
+
+    switch (this.connect_state) {
+      case Connection_State.CS_DISCONNECTED:
+        return 'status_bad';
+      case Connection_State.CS_CONNECTED:
+        return 'status_ok';
+      case Connection_State.CS_CONNECTED_MODIFIED:
+        return 'status_modified';
+    }
   }
 
   get status_desc(): string {
-    if (this.connection_str !== undefined && this.connection_str != ' ') {
+    if (this.connection_str !== undefined && this.connection_str !== ' ') {
       return this.connection_str;
     }
+
     if (this.status_checked) {
       switch (this.connect_state) {
-        case Connect_State.Disconnected:
+        case Connection_State.CS_DISCONNECTED:
           return this.translate.instant('OFFLINE');
-        case Connect_State.Connected:
+        case Connection_State.CS_CONNECTED:
           return this.translate.instant('ONLINE');
-        case Connect_State.Modified:
+        case Connection_State.CS_CONNECTED_MODIFIED:
           return this.translate.instant('MODIFIED');
       }
     }
@@ -189,38 +202,48 @@ export class HouseComponent implements OnInit, OnDestroy {
     }
   }
 
+  getConnectionState(info:  ConnectInfo) {
+    if (!info.connected) {
+      return Connection_State.CS_DISCONNECTED;
+    }
+
+    if (info.modified) {
+      return Connection_State.CS_CONNECTED_MODIFIED;
+    }
+
+    return Connection_State.CS_CONNECTED;
+  }
+
   getHouseInfo(): void {
     this.bytes_sub = this.controlService.byte_msg.subscribe(msg => {
 
-      if (msg.cmd == Cmd.ConnectInfo) {
+      if (msg.cmd === Cmd.ConnectInfo) {
 
         if (msg.data === undefined) {
           console.log('ConnectInfo without data');
           return;
         }
+
         const info = this.controlService.parseConnectInfo(msg.data);
 
-        if (info.connected) {
-          this.connect_state = info.modified ? Connect_State.Modified : Connect_State.Connected;
-        } else {
-          this.connect_state = Connect_State.Disconnected;
-        }
+        /* get connecton state */
+        this.connect_state = this.getConnectionState(info);
 
         if (info.connected && info.time && info.time_zone) {
           this.dt_offset = new Date().getTime() - info.time;
           this.dt_tz_name = info.time_zone.replace(', стандартное время', '');
           if (!this.dt_interval) {
-            let gen_time_string = () => {
-              let dt = new Date();
+            const gen_time_string = () => {
+              const dt = new Date();
               dt.setTime(dt.getTime() - this.dt_offset);
 
               const months = this.translate.instant('MONTHS');
-              let t_num = (num: number): string => {
+              const t_num = (num: number): string => {
                 return (num < 10 ? '0' : '') + num.toString();
               };
 
               this.dt_text = t_num(dt.getHours()) + ':' + t_num(dt.getMinutes()) + ':' + t_num(dt.getSeconds()) + ', ' +
-                t_num(dt.getDate()) + ' ' + (months.length == 12 ? months[dt.getMonth()] : dt.getMonth()) + ' ' + dt.getFullYear();
+                t_num(dt.getDate()) + ' ' + (months.length === 12 ? months[dt.getMonth()] : dt.getMonth()) + ' ' + dt.getFullYear();
 
             };
             gen_time_string();
@@ -231,8 +254,8 @@ export class HouseComponent implements OnInit, OnDestroy {
         if (!this.status_checked) {
           this.status_checked = true;
         }
-      } else if (msg.cmd == Cmd.StructModify) {
-        let view = new Uint8Array(msg.data);
+      } else if (msg.cmd === Cmd.StructModify) {
+        const view = new Uint8Array(msg.data);
         const structure_type = view[8];
         switch (structure_type) {
           case 23: // STRUCT_TYPE_DEVICE_ITEM_VALUES
@@ -242,10 +265,10 @@ export class HouseComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.connect_state = Connect_State.Modified;
+        this.connect_state = Connection_State.CS_CONNECTED_MODIFIED;
 
         if (!this.page_reload_dialog_ref) {
-          this.page_reload_dialog_ref = this.dialog.open(PageReloadDialogComponent, {width: '80%',});
+          this.page_reload_dialog_ref = this.dialog.open(PageReloadDialogComponent, {width: '80%', });
           this.page_reload_dialog_ref.afterClosed().subscribe(result => {
             if (result) {
               window.location.reload();
@@ -263,7 +286,7 @@ export class HouseComponent implements OnInit, OnDestroy {
         this.controlService.getConnectInfo();
       } else {
         this.clearTime();
-        this.connect_state = Connect_State.Disconnected;
+        this.connect_state = Connection_State.CS_DISCONNECTED;
       }
     });
 

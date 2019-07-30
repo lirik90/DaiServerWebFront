@@ -18,11 +18,15 @@ div > h2 {
   height: 100%;
 }
 
+.mat-icon {
+  position: relative;
+}
+
 .status_modified:after {
   color: darkBlue;
   content: "edit";
 }
-.status_ok:after {
+.status_ok:before {
   color: green;
   content: "check_circle";
 }
@@ -43,7 +47,7 @@ mat-sidenav {
   width: 148px;
 }
 mat-sidenav-content {
-  padding: 0.5em 0.5em 0em 0.5em;
+  padding: 8px;
 }
 .house-toolbar {
   height: 48px;
@@ -131,11 +135,6 @@ h2.house-name {
 
 .house-is-mobile .house-sidenav-container {
   flex: 1 0 auto;
-}
-
-.house-is-mobile .house-content {
-  padding-left: 0px;
-  padding-right: 0px;
 }
 
 .hide-main-toolbar .mat-sidenav {

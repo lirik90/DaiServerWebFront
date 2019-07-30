@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit, QueryList, ViewChildren} from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import { HouseService, ExportConfig, ExportItem } from "../../house.service";
 import { ItemType, GroupType, Section, DeviceItem, Logs } from "../../house";
 import { PaginatorApi } from "../../../user";
 import {TranslateService} from '@ngx-translate/core';
+import {ChartComponent} from 'angular2-chartjs';
 
 interface DevItemTypeItem {
   id: number;
@@ -12,12 +13,19 @@ interface DevItemTypeItem {
 interface DevItemItem extends DevItemTypeItem {  name: string;
 }
 
+interface Chart {
+  name: string;
+  data: {
+    datasets: any[]
+  };
+}
+
 @Component({
   selector: 'app-charts',
   templateUrl: './charts.component.html',
   styleUrls: ['./charts.component.css']
 })
-export class ChartsComponent implements OnInit {
+export class ChartsComponent implements OnInit, AfterViewInit {
   date_from = new FormControl(new Date());
   time_from: string = '00:00:00';
   date_to = new FormControl(new Date());
@@ -34,12 +42,16 @@ export class ChartsComponent implements OnInit {
   devitems: DevItemItem[] = [];
   selected_devitems: DevItemTypeItem[] = [];
 
-  charts: any[] = [];
+  charts: Chart[] = [];
 
   type = 'line';
   options = {
     responsive: true,
-    //    maintainAspectRatio: false,
+    legend: {
+      display: false,
+      //position: 'bottom',
+    },
+    maintainAspectRatio: false,
     tooltips: {
       mode: 'label',
       callbacks: {
@@ -107,7 +119,7 @@ export class ChartsComponent implements OnInit {
           // max: new Date({{ year }}, {{ month }} - 1, {{ day }}, 23, 59, 59),
           // callback: function(value) {
           // console.log(value);
-          // return value; 
+          // return value;
           // },
         },
       }],
@@ -115,6 +127,9 @@ export class ChartsComponent implements OnInit {
   };
 
   initialized: boolean = false;
+
+  ngAfterViewInit() {
+  }
 
   constructor(
 	  public translate: TranslateService,
@@ -136,6 +151,7 @@ export class ChartsComponent implements OnInit {
     }
 
     this.initCharts();
+
   }
 
   selectGroup(group_type: GroupType): void {

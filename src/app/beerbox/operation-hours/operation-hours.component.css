@@ -57,17 +57,24 @@ mat-form-field {
 
 button {
   background-color: rgba(0,0,0,.26) !important;
-  color: white;  
-  border: none;    
+  color: white;
+  border: none;
   border-radius: 4px;
   margin-top: 10px;
 }
 
 .button2 {
   background-color: rgba(0,0,0,.26) !important;
-  color: white;  
-  border: none; 
+  color: white;
+  border: none;
   width: 100%;
   border-radius: 4px;
   margin-top: 10px;
+}
+
+@media (min-width: 601px) {
+  .operation-hours {
+    max-width: 480px;
+    margin: 0 auto;
+  }
 }
