@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Section, DeviceItem, ParamValue } from '../../house/house';
 import { HouseService } from '../../house/house.service';
 import { ControlService } from '../../house/control.service';
+import {AuthenticationService} from '../../authentication.service';
 
 @Component({
   selector: 'app-operation-hours',
@@ -19,13 +20,17 @@ export class OperationHoursComponent implements OnInit {
   time_stop_ = '00:00' as string;
   is_around_the_clock_ = false;
 
+  can_edit: boolean;
+
   constructor(
     private route: ActivatedRoute,
     private houseService: HouseService,
-    private controlService: ControlService) { }
+    private controlService: ControlService,
+    private authService: AuthenticationService) { }
 
   ngOnInit() {
     this.get_info();
+    this.can_edit = this.authService.canChangeItemState();
   }
 
   get_info(): void {
@@ -102,5 +107,16 @@ export class OperationHoursComponent implements OnInit {
     params.push(this.day_end_);
     this.controlService.changeParamValues(params);
     this.is_changed_ = true;
+  }
+
+  restart(): void {
+    if (this.can_edit) {
+      this.controlService.restart();
+    }
+  }
+
+  reloadBtnClick() {
+    this.is_changed_ = false;
+    this.restart();
   }
 }

@@ -20,15 +20,15 @@
       </p>
       <button class="button2" mat-button (click)="click_apply_button()" i18n="@@CONTROL.APPLY">Применить</button>
     </ng-container>
-    
+
     <ng-template #time_is_changed>
       <ng-container>
         <h4 i18n="@@BEERBOX.OPERATION_TIME.CONFIRM">Изменения успешно применены. Необходимо перезагрузить устройство</h4>
         <p>
-          <button mat-button (click)="is_changed_ = false" i18n="@@CONTROL.BACK">Назад</button>
+          <button mat-button (click)="reloadBtnClick()" i18n="@@CONTROL.BACK">Перезагрузить</button>
         </p>
       </ng-container>
     </ng-template>
-    
+
   </ng-container>
 </div>
