@@ -72,8 +72,11 @@
   <div *ngFor="let chart of charts">
     <h2>{{chart.name}}</h2>
     <chart [type]="type" [data]="chart.data" [options]="options"></chart>
-    <div *ngFor="let dataset of chart.data.datasets">
-      {{ dataset.label }}
+
+    <div class="legend">
+      <div class="legend__item" *ngFor="let dataset of chart.data.datasets">
+        <div class="legend__item-color" [style.background-color]="dataset.pointBorderColor"></div><div class="legend__item-label">{{ dataset.label }}</div>
+      </div>
     </div>
   </div>
 </ng-container>

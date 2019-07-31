@@ -321,15 +321,17 @@ export class ChartsComponent implements OnInit, AfterViewInit {
   }
 
   genDataset(item: DeviceItem, add_sct_name: boolean = false): Object {
+    const rndRGB = `${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()}`;
+
     return {
       item_id: item.id,
       label: item.name.length ? item.name : item.type.title,
       data: [],
 
-      borderColor: this.randomColor(0.4),
-      backgroundColor: this.randomColor(0.5),
-      pointBorderColor: this.randomColor(0.7),
-      pointBackgroundColor: this.randomColor(0.5),
+      borderColor: `rgba(${rndRGB},0.4)`,
+      backgroundColor: `rgba(${rndRGB},0.5)`,
+      pointBorderColor: `rgba(${rndRGB},0.7)`,
+      pointBackgroundColor: `rgba(${rndRGB},0.5)`,
       pointBorderWidth: 1,
 
       hidden: true,
