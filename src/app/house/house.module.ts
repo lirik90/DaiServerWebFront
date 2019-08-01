@@ -13,7 +13,7 @@ import { ControlService } from "./control.service";
 import { HouseService } from "./house.service";
 
 import { ViewComponent } from './view/view.component';
-import { ManageComponent } from './manage/manage.component';
+import {ManageComponent, ParamsDialogComponent} from './manage/manage.component';
 import { LogComponent } from './log/log.component';
 import { ParamComponent } from './param/param.component';
 import { GroupStatusComponent } from './group-status/group-status.component';
@@ -62,10 +62,12 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ParamItemComponent,
     HouseStateComponent,
     HouseSectionComponent,
+    ParamsDialogComponent,
   ],
   entryComponents: [
     PageReloadDialogComponent,
     HoldingRegisterDialogComponent,
+    ParamsDialogComponent,
   ],
   providers: [
     ProjectLoadGuard,

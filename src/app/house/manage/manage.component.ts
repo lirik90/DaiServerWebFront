@@ -1,10 +1,13 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Inject, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
-import { MatSnackBar } from '@angular/material';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar} from '@angular/material';
 
 import { HouseService } from '../house.service';
-import { Section, DeviceItem, Group, GroupMode } from '../house';
+import {Section, DeviceItem, Group, GroupMode, ParamValue} from '../house';
 import { ControlService } from '../control.service';
+import {filter} from 'rxjs/operators';
+import {AuthenticationService} from '../../authentication.service';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-manage',
@@ -25,7 +28,8 @@ export class ManageComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private houseService: HouseService,
     private controlService: ControlService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {
     router.events.subscribe(s => {
       if (s instanceof NavigationEnd) {
@@ -78,6 +82,7 @@ export class ManageComponent implements OnInit, AfterViewInit {
       for (const sct of this.houseService.house.sections) {
         for (const group of sct.groups) {
           for (const dev_item of group.items) {
+            // tslint:disable-next-line:forin
             for (const i in api.results) {
               const view_item = api.results[i];
               if (view_item.item_id === dev_item.id) {
@@ -122,5 +127,76 @@ export class ManageComponent implements OnInit, AfterViewInit {
     }
 
     group.items.push(dev_item);
+  }
+
+  openParamsDialog(groupId) {
+    this.dialog.open(ParamsDialogComponent, {width: '80%', data: { groupId: groupId }})
+      .afterClosed().pipe(
+      filter(name => name)
+    ).subscribe(res => {
+    });
+  }
+}
+
+@Component({
+  selector: 'app-params-dialog',
+  templateUrl: './params-dialog.component.html',
+  styleUrls: ['./manage.component.css'],
+})
+
+export class ParamsDialogComponent implements OnInit{
+  groupId: number;
+
+  sct: Section;
+  group: Group = undefined;
+  cantChange: boolean;
+
+  changed_values: ParamValue[] = [];
+
+  constructor(
+    private route: ActivatedRoute,
+    private houseService: HouseService,
+    private authService: AuthenticationService,
+    private controlService: ControlService,
+    private location: Location,
+    public dialogRef: MatDialogRef<ParamsDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.groupId = data.groupId;
+  }
+
+  ngOnInit() {
+    this.getGroup();
+    this.cantChange = !this.authService.canChangeParam();
+  }
+
+  getGroup(): void {
+    const groupId = this.groupId;
+    for (const sct of this.houseService.house.sections) {
+      for (const group of sct.groups) {
+        if (group.id === groupId) {
+          this.sct = sct;
+          this.group = group;
+          return;
+        }
+      }
+    }
+  }
+
+  onSubmit() {
+    console.log(this.changed_values);
+    if (this.changed_values) {
+      this.controlService.changeParamValues(this.changed_values);
+    }
+    this.close();
+  }
+
+  goBack(): void {
+    console.log('BACK!');
+    this.location.back();
+  }
+
+  close() {
+    this.dialogRef.close();
   }
 }

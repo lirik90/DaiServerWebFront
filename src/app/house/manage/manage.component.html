@@ -13,7 +13,7 @@
                     [class.td-bottom-border]="group.items.length == 0"
                   >
                   <div class="invisible-anchor" id="house-group-{{group.id}}" ></div>
-                  <h4 routerLink="/house/{{houseName}}/group/{{group.id}}/param">{{group.title ? group.title : group.type.title}}</h4>
+                  <h4 (click)="openParamsDialog(group.id)">{{group.title ? group.title : group.type.title}}</h4>
                   <app-group-status [group]="group"></app-group-status>
                   <mat-form-field>
                     <mat-select i18n-placeholder="@@MANAGEMENT.MODE" placeholder="Режим" [(ngModel)]="group.mode"
