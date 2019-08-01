@@ -3,13 +3,13 @@ h2 {
   margin-left: 8px;
 }
 h3, h4 {
-  text-align: center; 
+  text-align: center;
   margin-top: 0px;
   margin-bottom: 0px;
 }
 h4 {
   display: inline-block;
-  width: 100px; 
+  width: 100px;
   word-wrap: break-word;
 }
 .grid {
@@ -49,11 +49,19 @@ h4 {
   border-top-right-radius: 16px;
 }
 
-.eqTable td[colspan] h4:hover {
+.eqTable td[colspan] a  {
+  color: #fff;
+}
+
+.eqTable td[colspan] a h4 {
+  text-decoration: underline;
+}
+
+.eqTable td[colspan] a h4:hover {
 	background-color: #eee;
   border-radius: 16px;
 	color: #6A9D80;
-	cursor: pointer; 
+	cursor: pointer;
 }
 .eqTable td:not([colspan]) {
 	padding-top: 12px;

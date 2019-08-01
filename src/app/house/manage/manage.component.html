@@ -13,7 +13,10 @@
                     [class.td-bottom-border]="group.items.length == 0"
                   >
                   <div class="invisible-anchor" id="house-group-{{group.id}}" ></div>
-                  <h4 (click)="openParamsDialog(group.id)">{{group.title ? group.title : group.type.title}}</h4>
+                  <a (click)="openParamsDialog(group.id)" *ngIf="group.params.length !== 0">
+                    <h4>{{group.title ? group.title : group.type.title}}</h4>
+                  </a>
+                  <h4 *ngIf="group.params.length === 0">{{group.title ? group.title : group.type.title}}</h4>
                   <app-group-status [group]="group"></app-group-status>
                   <mat-form-field>
                     <mat-select i18n-placeholder="@@MANAGEMENT.MODE" placeholder="Режим" [(ngModel)]="group.mode"
