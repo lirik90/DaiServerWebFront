@@ -42,6 +42,20 @@ div > h2 {
   color: red;
   content: "error";
 }
+.status_bad_just:after {
+  color: orange;
+  content: "watch_later";
+}
+
+.status_sync:after {
+  color: dodgerblue;
+  content: "sync";
+}
+
+.status_sync_fail:after {
+  color: orange;
+  content: "sync_problem";
+}
 
 mat-sidenav {
   width: 148px;
