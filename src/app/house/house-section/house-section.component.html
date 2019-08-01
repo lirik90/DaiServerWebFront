@@ -1,8 +1,8 @@
 <section class="house-section">
-  <header class="house-section__header">
+  <header class="house-section__header" (click)="toggleExpand()">
     <h3>{{ title }}</h3>
     <div class="house-section__spacer"></div>
-    <button mat-icon-button (click)="toggleExpand()">
+    <button mat-icon-button>
       <mat-icon>{{isExpanded? 'expand_less' : 'expand_more'}}</mat-icon>
     </button>
   </header>
