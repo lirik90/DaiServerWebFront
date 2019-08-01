@@ -24,16 +24,29 @@
         <ng-container *ngIf="clean.step.val.raw != 0">
           <h4><span i18n="@@BEERBOX.WASH.STEP">Текущий этап</span>: {{stepText(clean)}}</h4>
           <ng-container *ngIf="clean.pouring.val.raw == 0">
-            <h4 i18n="@@BEERBOX.WASH.READY">К промывке готов!</h4>
-            <p><span i18n="@@BEERBOX.WASH.AGENT">Промывочное средство</span>: {{cleanAgent(clean)}}</p>
-            <p i18n="@@BEERBOX.WASH.TEXT">Опустошите дренажную ёмкость. Подключите промывочный кег к обеим заборным головкам. И нажмите кнопку на аппарате.</p>
+
+            <ng-container *ngIf="clean.step.val.raw <= 3">
+              <h4 i18n="@@BEERBOX.WASH.READY">К промывке готов!</h4>
+              <p><span i18n="@@BEERBOX.WASH.AGENT">Промывочное средство</span>: {{cleanAgent(clean)}}</p>
+              <p i18n="@@BEERBOX.WASH.TEXT">Опустошите дренажную ёмкость. Подключите промывочный кег к обеим заборным
+                головкам. И нажмите кнопку на аппарате.</p>
+            </ng-container>
+
+            <ng-container *ngIf="clean.step.val.raw > 3">
+              <h4 i18n="@@BEERBOX.WASH.READY">К вытеснению готов!</h4>
+              <p i18n="@@BEERBOX.WASH.TEXT">Опустошите дренажную ёмкость. Подключите пиво к обеим заборным головкам. И
+                  нажмите кнопку на аппарате.</p>
+            </ng-container>
+
           </ng-container>
           <ng-container *ngIf="clean.pouring.val.raw == 1">
             <h5 i18n="@@BEERBOX.EVENT.WASH_PROCESS">Идёт промыка, пожалуйста ждите!</h5>
-            <h5><span i18n="@@BEERBOX.EVENT.LEFT">Осталось</span>: {{(clean.full_volume.val.display-clean.cur_volume.val.display).toFixed(1)}} 
+            <h5><span
+              i18n="@@BEERBOX.EVENT.LEFT">Осталось</span>: {{(clean.full_volume.val.display - clean.cur_volume.val.display).toFixed(1)}}
               <span i18n="@@BEERBOX.ML">мл.</span>
               <span *ngIf="clean.pause.val.display == 1" i18n="@@CONTROL.PAUSE"> Пауза</span></h5>
-            <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
+            <mat-progress-spinner class="progress_in_center" color="primary"
+                                  mode="indeterminate"></mat-progress-spinner>
           </ng-container>
         </ng-container>
       </div>

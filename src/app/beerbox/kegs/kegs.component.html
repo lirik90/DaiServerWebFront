@@ -7,15 +7,23 @@
 
         <div class="tap-pane__content">
           <mat-card class="head-pane" *ngFor="let head of tap.heads">
-            <mat-card-title>{{head.title}}{{ head.is_not_empty.val.display == 0? ' &mdash; пуст' : ''}}</mat-card-title>
+            <mat-card-title>
+              <div>{{head.title}}{{ !head.is_not_empty.val.display? ' &mdash; пуст' : ''}}</div>
+              <div class="separator"></div>
+              <div class="icons">
+                <mat-icon class="empty-icon" *ngIf="!head.is_not_empty.val.display">cancel</mat-icon>
+                <ng-container *ngIf="head.is_not_empty.val.display">
+                  <mat-icon class="unused-icon" *ngIf="!head.is_active.val.display">radio_button_unchecked</mat-icon>
+                  <mat-icon class="unused-icon" *ngIf="head.is_active.val.display">radio_button_checked</mat-icon>
+                </ng-container>
+              </div>
+            </mat-card-title>
             <mat-card-content class="head-pane__content">
               <div class="info">
                 Дата: {{ head.date_installed.value }}<br>
                 Объём кеги: {{ kegVolume.value }} мл<br>
                 Налито: {{ head.volume_poured.val.display }} мл<br>
                 Осталось пива в кеге: {{ kegVolume.value - head.volume_poured.val.display }} мл<br>
-                Не пуст: {{ head.is_not_empty.val.display? '1' : '0' }}<br>
-                Заборная головка: {{ head.is_active.val.display? '1' : '0' }}<br>
               </div>
               <div class="graph">
                 <div class="graph__filled" [style.height.%]="getPercentFilled(head)"></div>

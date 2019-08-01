@@ -34,6 +34,7 @@
   flex-grow: 0;
   position: relative;
   overflow: hidden;
+  height: 100px;
 }
 
 .graph__filled {
@@ -72,4 +73,17 @@
   padding: 0 16px 8px;
   display: inline-block;
   color: #ff3b30;
+}
+
+
+.mat-card-title {
+  display: flex;
+}
+
+.separator {
+  flex: 1;
+}
+
+.empty-icon {
+  color: #e84c3d;
 }

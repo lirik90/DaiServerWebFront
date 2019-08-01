@@ -13,7 +13,7 @@ import { WebSocketBytesService, ByteMessage, ByteTools } from '../web-socket.ser
 import { DeviceItem, Group, Status, EventLog, ParamValue } from './house';
 
 export enum Cmd {
-  ConnectInfo = 3, // WebSockCmd.UserCmd
+  ConnectInfo = 3, // W3ebSockCmd.UserCmd
   WriteToDevItem,
   ChangeGroupMode,
   ChangeParamValues,
@@ -172,7 +172,7 @@ export class ControlService {
                   return;
                 }
               }
-    
+
               let status_item: Status = undefined;
               for (let sts of this.houseService.house.statuses) {
                 if (sts.id == info_id) {
@@ -230,7 +230,7 @@ export class ControlService {
 
   private procDevItemValue(item_id: number, raw_value: any, value: any): void {
     let item: DeviceItem = this.houseService.devItemById(item_id);
-    if (item) 
+    if (item)
     {
       if (!item.val)
         item.val = { raw: raw_value, display: value };
@@ -346,7 +346,7 @@ export class ControlService {
       args_size += arg_var.length;
       arg_list.push(arg_var);
     }
-  
+
     const func_name_view = ByteTools.saveQString(func_name);
     let view = new Uint8Array(func_name_view.length + 4 + args_size);
     let pos = 0;
