@@ -131,6 +131,8 @@ h2.house-name {
 
 .house-sidenav-container {
   flex: 1;
+  display: flex;
+  overflow: unset;
 }
 
 .house-is-mobile .house-sidenav-container {
@@ -139,4 +141,17 @@ h2.house-name {
 
 .hide-main-toolbar .mat-sidenav {
   top: 48px !important;
+}
+
+.mat-drawer-side {
+  position: sticky;
+  top: 48px;
+  height: calc(100vh - 48px);
+  flex-grow: 0;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+.mat-sidenav-content {
+  margin-left: 0 !important;
 }

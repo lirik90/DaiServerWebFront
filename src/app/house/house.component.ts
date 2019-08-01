@@ -1,7 +1,7 @@
-import {Component, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
+import {Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {MediaMatcher} from '@angular/cdk/layout';
-import {MatDialog, MatDialogRef} from '@angular/material';
+import {MatDialog, MatDialogRef, MatSidenav} from '@angular/material';
 
 import {ISubscription} from 'rxjs/Subscription';
 
@@ -68,6 +68,8 @@ export class HouseComponent implements OnInit, OnDestroy {
 
   private bytes_sub: ISubscription;
   private opened_sub: ISubscription;
+
+  @ViewChild('snav') snav !: MatSidenav;
 
   private getConnectionString(connected: boolean): string {
     return connected ? undefined : this.translate.instant('CONNECTION_PROBLEM');
@@ -297,6 +299,13 @@ export class HouseComponent implements OnInit, OnDestroy {
     if (this.can_edit) {
       this.controlService.restart();
     }
+  }
+
+  sidebarToggle() {
+    this.snav.toggle();
+    document.body.style.overflow = this.snav.opened? 'hidden' : 'auto';
+    const rect = document.getElementsByClassName('house-toolbar')[0].getBoundingClientRect();
+    this.snav.fixedTopGap = rect.bottom;
   }
 }
 

@@ -1,6 +1,6 @@
 <div class="house-container" [class.house-is-mobile]="mobileQuery.matches">
   <mat-toolbar class="house-toolbar">
-    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+    <button mat-icon-button (click)="sidebarToggle()"><mat-icon>menu</mat-icon></button>
     <mat-icon [matTooltip]="status_desc" [ngClass]="status_class"></mat-icon>
 
     <app-house-state></app-house-state>
