@@ -1,6 +1,6 @@
-<div class="module house">
-  <ng-container *ngIf="labels_num_full_ != undefined">
-    <h2 i18n="@@BEERBOX.REPLACE_LABEL.TITLE">Замена этикеток</h2>
+<div class="replace-labels">
+<ng-container *ngIf="labels_num_full_ != undefined">
+    <h2 i18n="@@BEERBOX.REPLACE_LABEL.TITLE">Замена ленты</h2>
     <ng-container *ngIf="!is_changed_; else labels_are_changed">
       <h4><p i18n="@@BEERBOX.REPLACE_LABEL.TEXT">Вставте ленту с этикетками в устройство<br><br>Введите количество этикеток, которое указано на ленте</p></h4>
       <mat-form-field>
@@ -10,16 +10,19 @@
       </mat-form-field>
       <button class="button2" mat-button (click)="click_apply_button()" i18n="@@CONTROL.APPLY">Применить</button>
     </ng-container>
-    
+
     <ng-template #labels_are_changed>
-      <ng-container>
-        <h4 i18n="@@BEERBOX.REPLACE_LABEL.CONFIRM">Изменения успешно применены</h4>
-        <p>
-          <button mat-button (click)="is_changed_ = false" i18n="@@CONTROL.BACK">Назад</button>
-        </p>
-      </ng-container>
+      <mat-card>
+        <mat-card-title><div>Лента</div></mat-card-title>
+        <mat-card-content>
+          Осталось этикеток: {{ labelsRemain }}<br>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-stroked-button (click)="openOkDialog()">Заменить</button>
+        </mat-card-actions>
+      </mat-card>
     </ng-template>
-    
+
   </ng-container>
   <ng-container *ngIf="labels_num_full_ == undefined">
     <h2 i18n="@@BEERBOX.REPLACE_LABEL.WARNING">Принтер не установлен</h2>

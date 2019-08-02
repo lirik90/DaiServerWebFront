@@ -154,4 +154,23 @@ h2.house-name {
 
 .mat-sidenav-content {
   margin-left: 0 !important;
+  flex: 1;
+}
+
+.mat-sidenav-fixed {
+  position: absolute;
+  top: 0 !important;
+}
+
+.mat-drawer-side {
+  position: sticky;
+  top: 48px;
+  height: calc(100vh - 48px);
+  flex-grow: 0;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+.mat-sidenav-content {
+  margin-left: 0 !important;
 }

@@ -8,7 +8,7 @@ import { WashComponent } from './wash/wash.component';
 import { ReplaceKegComponent, ConfirmDialogReplaceKegComponent } from './replace-keg/replace-keg.component';
 import { CalibrationComponent } from './calibration/calibration.component';
 import { CheckHeadStandComponent, CheckHeadStandDialogComponent } from './check-head-stand/check-head-stand.component';
-import { ReplaceLabelsComponent } from './replace-labels/replace-labels.component';
+import {OkDialogComponent, ReplaceLabelsComponent} from './replace-labels/replace-labels.component';
 import { UpdateBeerInfoComponent, EditDialogUpdateBeerInfoComponent, EditDialogManufacturersListComponent } from './update-beer-info/update-beer-info.component';
 import { ChangeControllerAddressComponent } from './change-controller-address/change-controller-address.component';
 
@@ -39,13 +39,14 @@ export function createTranslateLoader(http: HttpClient) {
     })
   ],
   declarations: [
-    WashComponent, ReplaceKegComponent, ConfirmDialogReplaceKegComponent, CalibrationComponent, CheckHeadStandComponent, CheckHeadStandDialogComponent, ReplaceLabelsComponent, UpdateBeerInfoComponent, EditDialogUpdateBeerInfoComponent, EditDialogManufacturersListComponent, ChangeControllerAddressComponent, OperationHoursComponent, KegsComponent
+    WashComponent, ReplaceKegComponent, ConfirmDialogReplaceKegComponent, CalibrationComponent, CheckHeadStandComponent, CheckHeadStandDialogComponent, ReplaceLabelsComponent, UpdateBeerInfoComponent, EditDialogUpdateBeerInfoComponent, EditDialogManufacturersListComponent, ChangeControllerAddressComponent, OperationHoursComponent, KegsComponent, OkDialogComponent
   ],
   entryComponents: [
     ConfirmDialogReplaceKegComponent,
 	  CheckHeadStandDialogComponent,
     EditDialogUpdateBeerInfoComponent,
     EditDialogManufacturersListComponent,
+    OkDialogComponent
   ],
 })
 export class BeerboxModule { }

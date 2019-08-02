@@ -6,6 +6,11 @@ h4 {
 /*  display: inline-block;
   width: 48%; */
 }
+
+h2 {
+  margin-bottom: 24px;
+}
+
 .grid {
   margin: 0;
   display: flex;
@@ -51,19 +56,32 @@ h4 {
   }
 }
 
+/*
 button {
   background-color: rgba(0,0,0,.26) !important;
-  color: white;  
-  border: none;    
+  color: white;
+  border: none;
   border-radius: 4px;
   margin-top: 10px;
 }
 
 .button2 {
   background-color: rgba(0,0,0,.26) !important;
-  color: white;  
-  border: none; 
+  color: white;
+  border: none;
   width: 100%;
   border-radius: 4px;
   margin-top: 10px;
+}
+*/
+
+@media (min-width: 601px) {
+  .replace-labels {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+}
+
+.btn-wrap {
+  text-align: center;
 }
