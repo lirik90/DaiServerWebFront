@@ -9,12 +9,30 @@ import { Subscriber } from 'rxjs';
 
 import { AuthenticationService } from "./authentication.service";
 
-export enum Cmd {
-  Unknown,
-  Auth,
-  Welcome,
+enum WebSockCmd {
+  WS_UNKNOWN,
+  WS_AUTH,
+  WS_WELCOME,
 
-  UserCmd
+  WS_CONNECTION_STATE,
+  WS_WRITE_TO_DEV_ITEM,
+  WS_CHANGE_GROUP_MODE,
+  WS_CHANGE_GROUP_PARAM_VALUES,
+  WS_EXEC_SCRIPT,
+  WS_RESTART,
+
+  WS_DEV_ITEM_VALUES,
+  WS_EVENT_LOG,
+  WS_GROUP_MODE,
+
+  WS_STRUCT_MODIFY,
+
+  WS_GROUP_STATUS_ADDED,
+  WS_GROUP_STATUS_REMOVED,
+  WS_TIME_INFO,
+  WS_IP_ADDRESS,
+
+  WEB_SOCK_CMD_COUNT
 }
 
 export interface ByteMessage {
@@ -52,8 +70,8 @@ export class ByteTools {
     return data;
   }
 
-  static saveQString(value: string, is_null: boolean = undefined): Uint8Array 
-	{    
+  static saveQString(value: string, is_null: boolean = undefined): Uint8Array
+	{
     if (is_null === undefined)
       is_null = !value;
     let length = (is_null || !value) ? 0 : value.length;
@@ -164,16 +182,16 @@ export class ByteTools {
       total_size += value_view.length;
       items.push(value_view);
     }
-  
+
     let view = new Uint8Array(4 + total_size);
     let pos = 0;
     ByteTools.saveInt32(items.length, view, pos); pos += 4;
-  
+
     for (const item of items)
     {
       view.set(item, pos); pos += item.length;
     }
-  
+
     return view;
  }
 
@@ -190,17 +208,17 @@ export class ByteTools {
       total_size += key_view.length + value_view.length;
       items.push([key_view,value_view]);
     }
-  
+
     let view = new Uint8Array(4 + total_size);
     let pos = 0;
     ByteTools.saveInt32(items.length, view, pos); pos += 4;
-  
+
     for (const item of items)
     {
       view.set(item[0], pos); pos += item[0].length;
       view.set(item[1], pos); pos += item[1].length;
     }
-  
+
     return view;
   }
 
@@ -267,7 +285,7 @@ export class ByteTools {
   static parseFloat(view: Uint8Array, start: number = 0): [number, number] {
     return ByteTools.parseFloatImpl(view, start, 4);
   }
-  
+
   static parseDouble(view: Uint8Array, start: number = 0): [number, number] {
     return ByteTools.parseFloatImpl(view, start, 8);
   }
@@ -304,7 +322,7 @@ export class ByteTools {
 
       case 2: // Int
         return ByteTools.parseInt32(view, start);
-      case 3: // UInt 
+      case 3: // UInt
         return ByteTools.parseUInt32(view, start);
 
       case 4: // Longlong
@@ -375,7 +393,7 @@ export class WebSocketBytesService {
 
   public start(url: string): void {
     let webSockConf: WebSocketSubjectConfig<any> = {
-      url: url, 
+      url: url,
       binaryType: 'arraybuffer',
       resultSelector: (e: MessageEvent) => e.data,
       openObserver: Subscriber.create((e: Event) => this.sendAuth()),
@@ -400,10 +418,10 @@ export class WebSocketBytesService {
         const proj_id = info[1] << 24 | info[2] << 16 | info[3] << 8 | info[4];
         const data = msg.slice(5);
 
-        if (cmd == Cmd.Auth) {
+        if (cmd == WebSockCmd.WS_AUTH) {
           this.sendAuth();
         } else {
-          if (cmd == Cmd.Welcome)
+          if (cmd == WebSockCmd.WS_WELCOME)
             this.opened.next(true);
 
           this.message.next({ cmd, proj_id, data });
@@ -440,7 +458,7 @@ export class WebSocketBytesService {
     const user = this.authService.currentUser;
 
     if (user && user.token)
-      this.send(Cmd.Auth, 0, ByteTools.saveByteArray(user.token));
+      this.send(WebSockCmd.WS_AUTH, 0, ByteTools.saveByteArray(user.token));
     else
       this.close();
 

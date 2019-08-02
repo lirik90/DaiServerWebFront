@@ -6,7 +6,7 @@ import {MatDialog, MatDialogRef, MatSidenav} from '@angular/material';
 import {ISubscription} from 'rxjs/Subscription';
 
 import {HouseService} from './house.service';
-import {ControlService, Cmd, ConnectInfo} from './control.service';
+import {ControlService, ConnectInfo, WebSockCmd} from './control.service';
 import {AuthenticationService} from '../authentication.service';
 import {TranslateService} from '@ngx-translate/core';
 import {UIService} from '../ui.service';
@@ -25,7 +25,7 @@ enum Connect_State {
   Modified
 }
 
-enum Connection_State {
+export enum Connection_State {
   CS_DISCONNECTED,
   CS_DISCONNECTED_JUST_NOW,
   CS_CONNECTED_JUST_NOW,
@@ -91,6 +91,12 @@ export class HouseComponent implements OnInit, OnDestroy {
         return 'status_ok';
       case Connection_State.CS_CONNECTED_MODIFIED:
         return 'status_modified';
+      case Connection_State.CS_DISCONNECTED_JUST_NOW:
+        return 'status_bad_just';
+      case Connection_State.CS_CONNECTED_JUST_NOW:
+        return 'status_sync';
+      case Connection_State.CS_CONNECTED_SYNC_TIMEOUT:
+        return 'status_sync_fail';
     }
   }
 
@@ -107,6 +113,12 @@ export class HouseComponent implements OnInit, OnDestroy {
           return this.translate.instant('ONLINE');
         case Connection_State.CS_CONNECTED_MODIFIED:
           return this.translate.instant('MODIFIED');
+        case Connection_State.CS_DISCONNECTED_JUST_NOW:
+          return 'status_bad_just';
+        case Connection_State.CS_CONNECTED_JUST_NOW:
+          return 'status_sync';
+        case Connection_State.CS_CONNECTED_SYNC_TIMEOUT:
+          return 'status_sync_fail';
       }
     }
     return this.translate.instant('WAIT') + '...';
@@ -204,59 +216,31 @@ export class HouseComponent implements OnInit, OnDestroy {
     }
   }
 
-  getConnectionState(info:  ConnectInfo) {
-    if (!info.connected) {
-      return Connection_State.CS_DISCONNECTED;
-    }
-
-    if (info.modified) {
-      return Connection_State.CS_CONNECTED_MODIFIED;
-    }
-
-    return Connection_State.CS_CONNECTED;
-  }
-
   getHouseInfo(): void {
     this.bytes_sub = this.controlService.byte_msg.subscribe(msg => {
 
-      if (msg.cmd === Cmd.ConnectInfo) {
+      if (msg.cmd === WebSockCmd.WS_CONNECTION_STATE) {
 
         if (msg.data === undefined) {
           console.log('ConnectInfo without data');
           return;
         }
 
-        const info = this.controlService.parseConnectInfo(msg.data);
+        let connState = this.controlService.parseConnectState(msg.data);
+
+        //mock
+        //connState = Connection_State.CS_CONNECTED_MODIFIED;
+
+        console.log(msg);
 
         /* get connecton state */
-        this.connect_state = this.getConnectionState(info);
-
-        if (info.connected && info.time && info.time_zone) {
-          this.dt_offset = new Date().getTime() - info.time;
-          this.dt_tz_name = info.time_zone.replace(', стандартное время', '');
-          if (!this.dt_interval) {
-            const gen_time_string = () => {
-              const dt = new Date();
-              dt.setTime(dt.getTime() - this.dt_offset);
-
-              const months = this.translate.instant('MONTHS');
-              const t_num = (num: number): string => {
-                return (num < 10 ? '0' : '') + num.toString();
-              };
-
-              this.dt_text = t_num(dt.getHours()) + ':' + t_num(dt.getMinutes()) + ':' + t_num(dt.getSeconds()) + ', ' +
-                t_num(dt.getDate()) + ' ' + (months.length === 12 ? months[dt.getMonth()] : dt.getMonth()) + ' ' + dt.getFullYear();
-
-            };
-            gen_time_string();
-            this.dt_interval = setInterval(gen_time_string, 1000);
-          }
-        }
+        this.connect_state = connState;
 
         if (!this.status_checked) {
           this.status_checked = true;
         }
-      } else if (msg.cmd === Cmd.StructModify) {
+      }
+      else if (msg.cmd === WebSockCmd.WS_STRUCT_MODIFY) {
         const view = new Uint8Array(msg.data);
         const structure_type = view[8];
         switch (structure_type) {
@@ -277,6 +261,33 @@ export class HouseComponent implements OnInit, OnDestroy {
             }
             this.page_reload_dialog_ref = undefined;
           });
+        }
+      }
+      else if (msg.cmd === WebSockCmd.WS_TIME_INFO) {
+        console.log(msg);
+
+        const info = this.controlService.parseTimeInfo(msg.data);
+
+        if (info.time && info.time_zone) {
+          this.dt_offset = new Date().getTime() - info.time;
+          this.dt_tz_name = info.time_zone.replace(', стандартное время', '');
+          if (!this.dt_interval) {
+            const gen_time_string = () => {
+              const dt = new Date();
+              dt.setTime(dt.getTime() - this.dt_offset);
+
+              const months = this.translate.instant('MONTHS');
+              const t_num = (num: number): string => {
+                return (num < 10 ? '0' : '') + num.toString();
+              };
+
+              this.dt_text = t_num(dt.getHours()) + ':' + t_num(dt.getMinutes()) + ':' + t_num(dt.getSeconds()) + ', ' +
+                t_num(dt.getDate()) + ' ' + (months.length === 12 ? months[dt.getMonth()] : dt.getMonth()) + ' ' + dt.getFullYear();
+
+            };
+            gen_time_string();
+            this.dt_interval = setInterval(gen_time_string, 1000);
+          }
         }
       }
     });

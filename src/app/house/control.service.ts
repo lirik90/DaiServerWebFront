@@ -11,25 +11,43 @@ import 'rxjs/add/operator/filter';
 import { HouseService } from "./house.service";
 import { WebSocketBytesService, ByteMessage, ByteTools } from '../web-socket.service';
 import { DeviceItem, Group, Status, EventLog, ParamValue } from './house';
+import {Connection_State} from './house.component';
 
-export enum Cmd {
-  ConnectInfo = 3, // W3ebSockCmd.UserCmd
-  WriteToDevItem,
-  ChangeGroupMode,
-  ChangeParamValues,
-  ExecScript,
-  Restart,
-  DevItemValues,
-  Eventlog,
-  GroupMode,
-  StructModify,
-  GroupStatusAdded,
-  GroupStatusRemoved,
+export enum WebSockCmd {
+  WS_UNKNOWN,
+  WS_AUTH,
+  WS_WELCOME,
+
+  WS_CONNECTION_STATE,
+  WS_WRITE_TO_DEV_ITEM,
+  WS_CHANGE_GROUP_MODE,
+  WS_CHANGE_GROUP_PARAM_VALUES,
+  WS_EXEC_SCRIPT,
+  WS_RESTART,
+
+  WS_DEV_ITEM_VALUES,
+  WS_EVENT_LOG,
+  WS_GROUP_MODE,
+
+  WS_STRUCT_MODIFY,
+
+  WS_GROUP_STATUS_ADDED,
+  WS_GROUP_STATUS_REMOVED,
+  WS_TIME_INFO,
+  WS_IP_ADDRESS,
+
+  WEB_SOCK_CMD_COUNT
 }
 
 export interface ConnectInfo {
   connected: boolean;
   ip: string;
+  time: number;
+  time_zone: string;
+  modified: boolean;
+}
+
+class TimeInfo {
   time: number;
   time_zone: string;
   modified: boolean;
@@ -56,7 +74,7 @@ export class ControlService {
         return;
       }
 
-      if (msg.cmd == Cmd.GroupMode) {
+      if (msg.cmd == WebSockCmd.WS_GROUP_MODE) {
         if (msg.data === undefined) {
           console.log('GroupMode without data');
           return;
@@ -74,7 +92,7 @@ export class ControlService {
             }
           }
         }
-      } else if (msg.cmd == Cmd.DevItemValues) {
+      } else if (msg.cmd == WebSockCmd.WS_DEV_ITEM_VALUES) {
         if (msg.data === undefined) {
           console.log('DevItemValues without data');
           return;
@@ -107,7 +125,7 @@ export class ControlService {
 
         if (idx != msg.data.byteLength)
           console.warn(`BAD PARSE POSITION ${idx} NEED ${msg.data.byteLength} ${JSON.stringify(view)}`);
-      } else if (msg.cmd == Cmd.ChangeParamValues) {
+      } else if (msg.cmd == WebSockCmd.WS_CHANGE_GROUP_PARAM_VALUES) {
         let set_param_impl = (group: Group, prm_id: number, value: string) => {
           if (group !== undefined && group.params !== undefined)
             for (let param of group.params) {
@@ -146,7 +164,7 @@ export class ControlService {
 
           set_param(param_id, value);
         }
-      } else if (msg.cmd == Cmd.GroupStatusAdded) {
+      } else if (msg.cmd == WebSockCmd.WS_GROUP_STATUS_ADDED) {
         let view = new Uint8Array(msg.data);
         let group_id = ByteTools.parseUInt32(view)[1];
         let info_id = ByteTools.parseUInt32(view, 4)[1];
@@ -191,7 +209,7 @@ export class ControlService {
           }
         }
 
-      } else if (msg.cmd == Cmd.GroupStatusRemoved) {
+      } else if (msg.cmd == WebSockCmd.WS_GROUP_STATUS_REMOVED) {
         let view = new Uint8Array(msg.data);
         let group_id = ByteTools.parseUInt32(view)[1];
         let info_id = ByteTools.parseUInt32(view, 4)[1];
@@ -242,6 +260,31 @@ export class ControlService {
     }
   }
 
+  parseConnectState(data: ArrayBuffer): Connection_State {
+    if (data === undefined) {
+      return;
+    }
+
+    let view = new Uint8Array(data);
+
+    const connState = view[0];
+
+    return connState;
+  }
+
+  parseTimeInfo(data: ArrayBuffer): TimeInfo {
+    if (data === undefined)
+      return;
+
+    let view = new Uint8Array(data);
+
+    const [start1, time] = ByteTools.parseInt64(view, 0);
+    const [start2, time_zone] = ByteTools.parseQString(view, start1);
+    const modified: boolean = view[start2] == 1;
+    return { time, time_zone, modified };
+  }
+
+  /* DEPRECATED */
   parseConnectInfo(data: ArrayBuffer): ConnectInfo {
     if (data === undefined)
       return;
@@ -278,7 +321,7 @@ export class ControlService {
   }
 
   getConnectInfo(): void {
-    this.wsbService.send(Cmd.ConnectInfo, this.houseService.house.id);
+    this.wsbService.send(WebSockCmd.WS_CONNECTION_STATE, this.houseService.house.id);
   }
 
   writeToDevItem(item_id: number, value: any): void {
@@ -288,7 +331,7 @@ export class ControlService {
     ByteTools.saveInt32(item_id, view);
     view.set(value_buf, 4);
 
-    this.wsbService.send(Cmd.WriteToDevItem, this.houseService.house.id, view);
+    this.wsbService.send(WebSockCmd.WS_WRITE_TO_DEV_ITEM, this.houseService.house.id, view);
   }
 
   changeGroupMode(value: any, group_id: number): void {
@@ -296,7 +339,7 @@ export class ControlService {
     ByteTools.saveInt32(+value, view);
     ByteTools.saveInt32(group_id, view, 4);
     console.log(`MODE ${value} GROUP ${group_id}`);
-    this.wsbService.send(Cmd.ChangeGroupMode, this.houseService.house.id, view);
+    this.wsbService.send(WebSockCmd.WS_CHANGE_GROUP_MODE, this.houseService.house.id, view);
   }
 
   changeParamValues(params: ParamValue[]): void {
@@ -324,16 +367,16 @@ export class ControlService {
       start += data.length;
     }
 
-    this.wsbService.send(Cmd.ChangeParamValues, this.houseService.house.id, view);
+    this.wsbService.send(WebSockCmd.WS_CHANGE_GROUP_PARAM_VALUES, this.houseService.house.id, view);
   }
 
   restart(): void {
-    this.wsbService.send(Cmd.Restart, this.houseService.house.id);
+    this.wsbService.send(WebSockCmd.WS_RESTART, this.houseService.house.id);
   }
 
   execScript(script: string) {
     const view = ByteTools.saveQString(script);
-    this.wsbService.send(Cmd.ExecScript, this.houseService.house.id, view);
+    this.wsbService.send(WebSockCmd.WS_EXEC_SCRIPT, this.houseService.house.id, view);
   }
 
   exec_function(func_name: string, args: any[]): void
@@ -357,6 +400,6 @@ export class ControlService {
       view.set(data, pos);
       pos += data.length;
     }
-    this.wsbService.send(Cmd.ExecScript, this.houseService.house.id, view);
+    this.wsbService.send(WebSockCmd.WS_EXEC_SCRIPT, this.houseService.house.id, view);
   }
 } // end class ControlService

@@ -13,7 +13,7 @@ import { switchMap } from 'rxjs/operators/switchMap';
 import { EventLog, EventLogType } from "../house";
 import { TeamMember, PaginatorApi } from '../../user';
 import { HouseService } from "../house.service";
-import { ControlService, Cmd } from "../control.service";
+import { ControlService, WebSockCmd } from "../control.service";
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
@@ -82,9 +82,9 @@ export class LogComponent implements OnInit, OnDestroy {
       ).subscribe(data => this.dataSource.data = data);
 
     this.sub = this.controlService.byte_msg.subscribe(msg => {
-      if (msg.cmd != Cmd.Eventlog)
+      if (msg.cmd != WebSockCmd.WS_EVENT_LOG)
         return;
-      
+
       if (msg.data === undefined) {
         console.warn('EventLog without data');
         return;
