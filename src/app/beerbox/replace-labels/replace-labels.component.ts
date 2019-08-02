@@ -20,7 +20,7 @@ export class ReplaceLabelsComponent implements OnInit
   is_changed_ = true;
   labels_num_full_: any;
   labels_current_num_: any;
-  labelsRemain: ParamValue;;
+  labelsRemain: DeviceItem;
 
   constructor(
     private route: ActivatedRoute,
@@ -47,7 +47,7 @@ export class ReplaceLabelsComponent implements OnInit
             {
               if (item.type.name == 'labels_num')
               {
-                this.labelsRemain = item.val.display;
+                this.labelsRemain = item;
               }
             }
 
@@ -107,9 +107,9 @@ export class ReplaceLabelsComponent implements OnInit
   styleUrls: ['./replace-labels.component.css'],
 })
 
-export class OkDialogComponent implements OnInit{
-  private labels_current_num_: ParamValue;
-  private labels_num_full_: any;
+export class OkDialogComponent implements OnInit {
+  labels_current_num_: DeviceItem;
+  labels_num_full_: any;
 
   constructor(
     public dialogRef: MatDialogRef<OkDialogComponent>,
@@ -118,14 +118,47 @@ export class OkDialogComponent implements OnInit{
     private houseService: HouseService,
     private controlService: ControlService,
   ) {
-    this.labels_current_num_ = data.curNum;
-    this.labels_num_full_ = data.fullNum;
-  }
 
-  ngOnInit() { }
+  }
 
   close() {
     this.dialogRef.close();
+  }
+
+  ngOnInit() {
+    this.get_info();
+  }
+
+  get_info(): void
+  {
+    for (let sct of this.houseService.house.sections)
+    {
+      if (sct.id == 1)
+      {
+        for (let group of sct.groups)
+        {
+          if (group.type.name == 'printer')
+          {
+            for (let item of group.items)
+            {
+              if (item.type.name == 'labels_num')
+              {
+                this.labels_current_num_ = item;
+              }
+            }
+
+            for (let param of group.params)
+            {
+              if (param.param.name == 'labels_num_full')
+              {
+                this.labels_num_full_ = param;
+                this.labels_num_full_.value = +this.labels_num_full_.value + 10;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   click_apply_button() {
@@ -134,7 +167,7 @@ export class OkDialogComponent implements OnInit{
       this.labels_num_full_.value = +this.labels_num_full_.value - 10;
       params.push(this.labels_num_full_);
       this.controlService.changeParamValues(params);
-      this.controlService.writeToDevItem(this.labels_num_full_.id, this.labels_num_full_.value);
+      this.controlService.writeToDevItem(this.labels_current_num_.id, this.labels_num_full_.value);
 
       this.labels_num_full_.value = +this.labels_num_full_.value + 10;
 
