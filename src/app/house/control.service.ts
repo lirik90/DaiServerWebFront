@@ -1,17 +1,14 @@
-import { Injectable, Inject } from '@angular/core';
-import { DOCUMENT } from '@angular/platform-browser';
-import { ISubscription } from "rxjs/Subscription";
-import { Subject } from 'rxjs/Subject';
-import { empty } from 'rxjs/observable/empty';
-import { catchError, map, tap, startWith, switchMap } from 'rxjs/operators';
+import {Inject, Injectable} from '@angular/core';
+import {DOCUMENT} from '@angular/platform-browser';
+import {ISubscription} from 'rxjs/Subscription';
+import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
-// import { QByteArray } from 'qtdatastream/src/types';
+import {HouseService} from './house.service';
+import {ByteMessage, ByteTools, WebSocketBytesService} from '../web-socket.service';
+import {DeviceItem, EventLog, Group, ParamValue, Status} from './house';
 
-import { HouseService } from "./house.service";
-import { WebSocketBytesService, ByteMessage, ByteTools } from '../web-socket.service';
-import { DeviceItem, Group, Status, EventLog, ParamValue } from './house';
-import {Connection_State} from './house.component';
+// import { QByteArray } from 'qtdatastream/src/types';
 
 export enum WebSockCmd {
   WS_UNKNOWN,
@@ -37,6 +34,17 @@ export enum WebSockCmd {
   WS_IP_ADDRESS,
 
   WEB_SOCK_CMD_COUNT
+}
+
+export enum Connection_State {
+  CS_SERVER_DOWN,
+  CS_DISCONNECTED,
+  CS_DISCONNECTED_JUST_NOW,
+  CS_CONNECTED_JUST_NOW,
+  CS_CONNECTED_SYNC_TIMEOUT,
+  CS_CONNECTED,
+
+  CS_CONNECTED_MODIFIED = 0x80
 }
 
 export interface ConnectInfo {
@@ -70,7 +78,12 @@ export class ControlService {
 
   open(): void {
     this.bmsg_sub = this.wsbService.message.subscribe((msg: ByteMessage) => {
-      if (!this.houseService.house || msg.proj_id != this.houseService.house.id) {
+      /*
+      console.log(msg);
+      console.log(this.houseService);
+      */
+
+      if (!this.houseService.house || (msg.proj_id != this.houseService.house.id && msg.proj_id != 0 )) {
         return;
       }
 
@@ -260,16 +273,24 @@ export class ControlService {
     }
   }
 
-  parseConnectState(data: ArrayBuffer): Connection_State {
+  parseConnectState(data: ArrayBuffer): any[] {
     if (data === undefined) {
       return;
     }
 
     let view = new Uint8Array(data);
 
-    const connState = view[0];
+    let connState = view[0] & ~Connection_State.CS_CONNECTED_MODIFIED;
+    let modState = (view[0] & Connection_State.CS_CONNECTED_MODIFIED) == Connection_State.CS_CONNECTED_MODIFIED;
 
-    return connState;
+    /*
+    console.log(view[0]);
+
+    console.log(connState);
+    console.log(modState);
+     */
+
+    return [connState, modState];
   }
 
   parseTimeInfo(data: ArrayBuffer): TimeInfo {

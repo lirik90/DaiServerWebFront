@@ -1,10 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
 
-import { Device, DeviceItem, ItemType, Section } from "../../house";
-import { HouseService } from "../../house.service";
-import { ByteTools, WebSocketBytesService } from "../../../web-socket.service";
+import {Device, DeviceItem, ItemType, Section} from '../../house';
+import {HouseService} from '../../house.service';
+import {ByteTools, WebSocketBytesService} from '../../../web-socket.service';
 
-import { StructType, ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
+import {StructType, ChangeTemplate} from '../settings';
 
 @Component({
   selector: 'app-devices',
@@ -28,33 +28,34 @@ export class DevicesComponent extends ChangeTemplate<Device> implements OnInit {
     this.parse_extra();
   }
 
-  initItem(obj: Device): void
-  {
+  initItem(obj: Device): void {
     obj.extra = null;
     obj.check_interval = 0;
   }
 
   saveObject(obj: Device): Uint8Array {
-    let name = ByteTools.saveQString(obj.name);
-    let extra = ByteTools.saveQVariantList(obj.extra ? obj.extra.trim().split(',') : []);
-    let view = new Uint8Array(12 + name.length + extra.length);
+    const name = ByteTools.saveQString(obj.name);
+    const extra = ByteTools.saveQVariantList(obj.extra ? obj.extra.trim().split(',') : []);
+    const view = new Uint8Array(12 + name.length + extra.length);
     let pos = 0;
-    ByteTools.saveInt32(obj.id, view, pos); pos += 4;
-    view.set(name, pos); pos += name.length;
-    view.set(extra, pos); pos += extra.length;
-    ByteTools.saveInt32(obj.checker_id, view, pos); pos += 4;
-    ByteTools.saveInt32(obj.check_interval, view, pos); pos += 4;
+    ByteTools.saveInt32(obj.id, view, pos);
+    pos += 4;
+    view.set(name, pos);
+    pos += name.length;
+    view.set(extra, pos);
+    pos += extra.length;
+    ByteTools.saveInt32(obj.checker_id, view, pos);
+    pos += 4;
+    ByteTools.saveInt32(obj.check_interval, view, pos);
+    // pos += 4;
     return view;
   }
 
-  parse_extra(): void
-  {
-    for (let item of this.items)
-    {
-      if (item.obj.extra != null)
-      {
-        let parsed_array = JSON.parse(item.obj.extra);
-        item.obj.extra = parsed_array.join(", ");
+  parse_extra(): void {
+    for (const item of this.items) {
+      if (item.obj.extra != null) {
+        const parsed_array = JSON.parse(item.obj.extra);
+        item.obj.extra = parsed_array.join(', ');
       }
     }
   }
@@ -89,13 +90,15 @@ export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements 
     this.parse_extra();
   }
 
-  title(item: DeviceItem = undefined): string {
-    if (!item)
+  title(item: DeviceItem): string {
+    if (!item) {
       item = this.sel_item.obj;
-    if (item.name.length)
+    }
+    if (item.name.length) {
       return item.name;
-    else if (item.type && item.type.title.length)
+    } else if (item.type && item.type.title.length) {
       return item.type.title;
+    }
     return '';
   }
 
@@ -104,7 +107,7 @@ export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements 
     this.sel_item.obj.group_id = 0;
     if (this.sel_item.obj.type_id > 0) {
       for (const itemtype of this.itemtypes) {
-        if (this.sel_item.obj.type_id == itemtype.id) {
+        if (this.sel_item.obj.type_id === itemtype.id) {
           this.sel_item.obj.type = itemtype;
           break;
         }
@@ -120,28 +123,32 @@ export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements 
   }
 
   saveObject(obj: DeviceItem): Uint8Array {
-    let name = ByteTools.saveQString(obj.name);
-    let extra = ByteTools.saveQVariantList(obj.extra ? obj.extra.trim().split(',') : []);
-    let view = new Uint8Array(20 + name.length + extra.length);
+    const name = ByteTools.saveQString(obj.name);
+    const extra = ByteTools.saveQVariantList(obj.extra ? obj.extra.trim().split(',') : []);
+    const view = new Uint8Array(20 + name.length + extra.length);
     let pos = 0;
-    ByteTools.saveInt32(obj.id, view); pos += 4;
-    view.set(name, pos); pos += name.length;
-    ByteTools.saveInt32(obj.type_id, view, pos); pos += 4;
-    view.set(extra, pos); pos += extra.length;
-    ByteTools.saveInt32(obj.parent_id, view, pos); pos += 4;
-    ByteTools.saveInt32(obj.device_id, view, pos); pos += 4;
-    ByteTools.saveInt32(obj.group_id, view, pos); pos += 4;
+    ByteTools.saveInt32(obj.id, view);
+    pos += 4;
+    view.set(name, pos);
+    pos += name.length;
+    ByteTools.saveInt32(obj.type_id, view, pos);
+    pos += 4;
+    view.set(extra, pos);
+    pos += extra.length;
+    ByteTools.saveInt32(obj.parent_id, view, pos);
+    pos += 4;
+    ByteTools.saveInt32(obj.device_id, view, pos);
+    pos += 4;
+    ByteTools.saveInt32(obj.group_id, view, pos);
+    pos += 4;
     return view;
   }
-  
-  parse_extra(): void
-  {
-    for (let item of this.items)
-    {
-      if (item.obj.extra != null)
-      {
-        let parsed_array = JSON.parse(item.obj.extra);
-        item.obj.extra = parsed_array.join(", ");
+
+  parse_extra(): void {
+    for (const item of this.items) {
+      if (item.obj.extra != null) {
+        const parsed_array = JSON.parse(item.obj.extra);
+        item.obj.extra = parsed_array.join(', ');
       }
     }
   }

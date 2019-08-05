@@ -47,6 +47,11 @@ div > h2 {
   content: "watch_later";
 }
 
+.status_server_down:after {
+  content: 'cancel';
+  color: orangered;
+}
+
 .status_sync:after {
   color: dodgerblue;
   content: "sync";

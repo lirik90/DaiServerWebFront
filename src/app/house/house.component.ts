@@ -1,16 +1,15 @@
-import {Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {MatDialog, MatDialogRef, MatSidenav} from '@angular/material';
 
 import {ISubscription} from 'rxjs/Subscription';
 
 import {HouseService} from './house.service';
-import {ControlService, ConnectInfo, WebSockCmd} from './control.service';
+import {Connection_State, ControlService, WebSockCmd} from './control.service';
 import {AuthenticationService} from '../authentication.service';
 import {TranslateService} from '@ngx-translate/core';
 import {UIService} from '../ui.service';
-import {Router} from '@angular/router';
 
 interface NavLink {
   link: string;
@@ -23,16 +22,6 @@ enum Connect_State {
   Disconnected,
   Connected,
   Modified
-}
-
-export enum Connection_State {
-  CS_DISCONNECTED,
-  CS_DISCONNECTED_JUST_NOW,
-  CS_CONNECTED_JUST_NOW,
-  CS_CONNECTED_SYNC_TIMEOUT,
-  CS_CONNECTED,
-
-  CS_CONNECTED_MODIFIED = 0x80
 }
 
 @Component({
@@ -51,6 +40,7 @@ export class HouseComponent implements OnInit, OnDestroy {
 
   connect_state: Connection_State = Connection_State.CS_DISCONNECTED;
   private can_wash: boolean;
+  private mod_state: boolean;
 
   get connected(): boolean {
     return this.connect_state !== Connection_State.CS_DISCONNECTED;
@@ -84,7 +74,13 @@ export class HouseComponent implements OnInit, OnDestroy {
       return 'status_check';
     }
 
+    if (this.mod_state) {
+      return 'status_modified';
+    }
+
     switch (this.connect_state) {
+      case Connection_State.CS_SERVER_DOWN:
+        return 'status_server_down';
       case Connection_State.CS_DISCONNECTED:
         return 'status_bad';
       case Connection_State.CS_CONNECTED:
@@ -105,20 +101,28 @@ export class HouseComponent implements OnInit, OnDestroy {
       return this.connection_str;
     }
 
+    let result = '';
+
+    if (this.mod_state) {
+      result += this.translate.instant('MODIFIED') + '. ';
+    }
+
     if (this.status_checked) {
       switch (this.connect_state) {
+        case Connection_State.CS_SERVER_DOWN:
+          return 'Основной сервер не доступен';
         case Connection_State.CS_DISCONNECTED:
-          return this.translate.instant('OFFLINE');
+          return result + this.translate.instant('OFFLINE');
         case Connection_State.CS_CONNECTED:
-          return this.translate.instant('ONLINE');
+          return result + this.translate.instant('ONLINE');
         case Connection_State.CS_CONNECTED_MODIFIED:
-          return this.translate.instant('MODIFIED');
+          return result + this.translate.instant('MODIFIED');
         case Connection_State.CS_DISCONNECTED_JUST_NOW:
-          return 'status_bad_just';
+          return result + 'Связь недавно была прервана';
         case Connection_State.CS_CONNECTED_JUST_NOW:
-          return 'status_sync';
+          return result + 'Синхронизация';
         case Connection_State.CS_CONNECTED_SYNC_TIMEOUT:
-          return 'status_sync_fail';
+          return result + 'Ошибка синхронизации';
       }
     }
     return this.translate.instant('WAIT') + '...';
@@ -221,20 +225,37 @@ export class HouseComponent implements OnInit, OnDestroy {
 
       if (msg.cmd === WebSockCmd.WS_CONNECTION_STATE) {
 
+        /*
+        console.log(msg);
+         */
+
         if (msg.data === undefined) {
           console.log('ConnectInfo without data');
           return;
         }
 
-        let connState = this.controlService.parseConnectState(msg.data);
+        if (msg.proj_id == 0) {
+          console.log('PROJECT_ID == 0');
+          this.connect_state = Connection_State.CS_SERVER_DOWN;
+          return;
+        }
+
+        let [connState, modState] = this.controlService.parseConnectState(msg.data);
 
         //mock
         //connState = Connection_State.CS_CONNECTED_MODIFIED;
 
+        /*
         console.log(msg);
+        console.log(connState);
+        console.log(modState);
+        */
+
+        //modState = true;
 
         /* get connecton state */
         this.connect_state = connState;
+        this.mod_state = modState;
 
         if (!this.status_checked) {
           this.status_checked = true;
