@@ -335,7 +335,7 @@ export class HouseComponent implements OnInit, OnDestroy {
 
   sidebarToggle() {
     this.snav.toggle();
-    document.body.style.overflow = this.snav.opened && this.mobileQuery.matches? 'hidden' : 'auto';
+    //document.body.style.overflow = this.snav.opened && this.mobileQuery.matches? 'hidden' : 'auto';
     const rect = document.getElementsByClassName('house-toolbar')[0].getBoundingClientRect();
     this.snav.fixedTopGap = rect.bottom;
   }
