@@ -36,7 +36,7 @@ export class HouseSearchComponent implements OnInit {
         const nextUrl = new URL(resp.next);
         const nextQuery = nextUrl.search; // ?search=[QUERY]&limit=35&offset=[XX]
 
-        this.recursiveSearch(nextQuery, nextQuery);
+        this.recursiveSearch(query, nextQuery);
       }
     });
   }
