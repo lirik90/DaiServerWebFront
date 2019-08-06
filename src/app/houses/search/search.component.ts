@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
@@ -14,7 +14,7 @@ import {HttpClient} from '@angular/common/http';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
-export class HouseSearchComponent implements OnInit {
+export class HouseSearchComponent implements OnInit, OnDestroy {
   private searchTerms = new Subject<string>();
 
   houses: House[] = [];
@@ -52,5 +52,9 @@ export class HouseSearchComponent implements OnInit {
       this.houses = []; // new search!
       this.recursiveSearch(term);
     });
+  }
+
+  ngOnDestroy() {
+    this.searchTerms.unsubscribe();
   }
 }

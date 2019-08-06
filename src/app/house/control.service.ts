@@ -415,7 +415,7 @@ export class ControlService {
     let view = new Uint8Array(func_name_view.length + 4 + args_size);
     let pos = 0;
     view.set(func_name_view, pos); pos += func_name_view.length;
-    ByteTools.saveInt32(args_size, view, pos); pos += 4;
+    ByteTools.saveInt32(args.length, view, pos); pos += 4;
     for (const data of arg_list)
     {
       view.set(data, pos);
