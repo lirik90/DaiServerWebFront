@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { pipe } from 'rxjs/util/pipe';
-import { UnaryFunction } from "rxjs/interfaces";
-import { catchError, map, tap } from 'rxjs/operators';
+import { UnaryFunction } from 'rxjs/interfaces';
+import { catchError, tap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 
 import { MessageService } from './message.service';
@@ -27,7 +27,7 @@ export class IHouseService {
 
   protected pipe<T> (succes_string: string, operation: string, result?: T): UnaryFunction<Observable<T>, Observable<T>> {
     return pipe(
-      tap(_ => this.log(succes_string)),
+      tap(() => this.log(succes_string)),
       catchError(this.handleError(operation, result))
     );
   }
