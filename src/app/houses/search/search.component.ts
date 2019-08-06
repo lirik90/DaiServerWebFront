@@ -1,16 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject }    from 'rxjs/Subject';
-import { of }         from 'rxjs/observable/of';
+import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 
-import {
-   debounceTime, distinctUntilChanged, switchMap
- } from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
-import { House } from '../../user';
-import { HousesService } from '../houses.service';
+import {House} from '../../user';
+import {HousesService} from '../houses.service';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-house-search',
@@ -18,27 +15,42 @@ import { HousesService } from '../houses.service';
   styleUrls: ['./search.component.css']
 })
 export class HouseSearchComponent implements OnInit {
-
-  houses$: Observable<House[]>;
   private searchTerms = new Subject<string>();
 
-  constructor(private housesService: HousesService) { }
+  houses: House[] = [];
+
+  constructor(private housesService: HousesService,
+              protected http: HttpClient) {
+  }
 
   // Push a search term into the observable stream.
   search(term: string): void {
     this.searchTerms.next(term);
   }
 
+  recursiveSearch(query: string, next?: string) {
+    this.housesService.searchHouses(query, next).subscribe((resp) => {
+      this.houses = this.houses.concat(resp.results); // append houses
+
+      if (resp.next) { // if has next
+        const nextUrl = new URL(resp.next);
+        const nextQuery = nextUrl.search; // ?search=[QUERY]&limit=35&offset=[XX]
+
+        this.recursiveSearch(query, nextQuery);
+      }
+    });
+  }
+
   ngOnInit() {
-    this.houses$ = this.searchTerms.pipe(
+    this.searchTerms.pipe(
       // wait 300ms after each keystroke before considering the term
       debounceTime(300),
 
       // ignore new term if same as previous term
       distinctUntilChanged(),
-
-      // switch to new search observable each time the term changes
-      switchMap((term: string) => this.housesService.searchHouses(term).map((data: any) => data.results)),
-    );
+    ).subscribe((term) => {
+      this.houses = []; // new search!
+      this.recursiveSearch(term);
+    });
   }
 }
