@@ -3,10 +3,13 @@
     <input matInput #searchBox i18n-placeholder="@@CONTROL.SEARCH" placeholder="Поиск" id="search-box" (keyup)="search(searchBox.value)" />
   </mat-form-field>
 
-  <ul class="search-result">
-    <li *ngFor="let house of houses$ | async" >
-      <a routerLink="/house/{{house.name}}/manage">{{house.title}}</a>
-    </li>
-  </ul>
+  <div class="search-result-wrap">
+    Найдено: {{houses.length}}
+    <ul class="search-result" *ngIf="houses.length > 0">
+      <li *ngFor="let house of houses" >
+        <a routerLink="/house/{{house.name}}/manage">{{house.title}}</a>
+      </li>
+    </ul>
+  </div>
 </div>
 
