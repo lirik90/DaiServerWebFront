@@ -1,27 +1,21 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation} from '@angular/core';
+
+
 
 @Component({
   selector: 'app-label-configurator',
   templateUrl: './label-configurator.component.html',
-  styleUrls: ['./label-configurator.component.css']
+  styleUrls: ['./label-configurator.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class LabelConfiguratorComponent implements OnInit {
+  taps = [1, 2];
 
-  @ViewChild('canvas')
-  canvas: ElementRef<HTMLCanvasElement>;
-  private ctx: CanvasRenderingContext2D;
+  fields = {
+    text: 'some text'
+  };
 
   constructor() { }
 
-  ngOnInit() {
-    this.ctx = this.canvas.nativeElement.getContext('2d');
-
-    this.draw();
-  }
-
-  draw() {
-    this.ctx.fillStyle = 'red';
-    this.ctx.fillRect(0, 0, 50, 50);
-  }
-
+  ngOnInit() { }
 }

@@ -1,12 +1,22 @@
 <h2>Этикетки</h2>
-<div>
-  Этикетка 1
 
-  <div>
-    <canvas #canvas width="300" height="300"></canvas>
-
-    Выбери тип
-
-    Поля для заполнения
+<div *ngFor="let tap of taps">
+  <div class="label">
+    <div class="preview-box">
+      <ng-container *ngTemplateOutlet="tplStandard;context:fields"></ng-container>
+    </div>
+    <button></button>
+    <div class="fields"></div>
   </div>
 </div>
+
+<ng-template #tplStandard>
+  <div class="line">
+    <div class="flex1">{{ fields.text }}</div>
+    <div>icon</div>
+  </div>
+  <div class="line">
+    <div class="flex1">logo</div>
+    <div class="flex1"><ngx-barcode [bc-value]="4600682008569" [bc-display-value]="true" [bc-width]="3" [bc-element-type]="'img'"></ngx-barcode></div>
+  </div>
+</ng-template>

@@ -21,7 +21,8 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {OperationHoursComponent} from './operation-hours/operation-hours.component';
 import {KegsComponent} from './kegs/kegs.component';
-import { LabelConfiguratorComponent } from './label-configurator/label-configurator.component';
+import {LabelConfiguratorComponent} from './label-configurator/label-configurator.component';
+import {NgxBarcodeModule} from 'ngx-barcode';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -40,7 +41,8 @@ export function createTranslateLoader(http: HttpClient) {
         useFactory: (createTranslateLoader),
         deps: [HttpClient]
       }
-    })
+    }),
+    NgxBarcodeModule
   ],
   declarations: [
     WashComponent, ReplaceKegComponent, ConfirmDialogReplaceKegComponent, CalibrationComponent, CheckHeadStandComponent, CheckHeadStandDialogComponent, ReplaceLabelsComponent, UpdateBeerInfoComponent, EditDialogUpdateBeerInfoComponent, EditDialogManufacturersListComponent, ChangeControllerAddressComponent, OperationHoursComponent, KegsComponent, OkDialogComponent, LabelConfiguratorComponent
