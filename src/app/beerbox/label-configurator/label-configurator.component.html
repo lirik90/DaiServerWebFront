@@ -5,18 +5,60 @@
     <div class="preview-box">
       <ng-container *ngTemplateOutlet="tplStandard;context:fields"></ng-container>
     </div>
-    <button></button>
-    <div class="fields"></div>
+    <div class="edit-label open">
+      <button class="edit-btn" mat-button>Изменить</button>
+      <div class="fields">
+        <div *ngFor="let f of getFields()">
+          <mat-form-field>
+            <mat-label>{{ fields[f].label }}</mat-label>
+            <input matInput [value]="fields[f].content">
+          </mat-form-field>
+        </div>
+
+        <div class="apply-btn-wrap">
+          <button class="apply-btn" mat-stroked-button>Сохранить</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<ng-template #tplStandard>
+<ng-template #tplSmall>
   <div class="line">
-    <div class="flex1">{{ fields.text }}</div>
-    <div>icon</div>
+    <div class="flex1">
+      <div class="text1">{{ fields.text1.content }}</div>
+      <div class="text2">{{ fields.text2.content }}</div>
+    </div>
+    <div><img class="trash-icon" src="/assets/img/trash-bin.png"></div>
   </div>
   <div class="line">
-    <div class="flex1">logo</div>
-    <div class="flex1"><ngx-barcode [bc-value]="4600682008569" [bc-display-value]="true" [bc-width]="3" [bc-element-type]="'img'"></ngx-barcode></div>
+    <div class="flex1 centered"><div class="logo"></div></div>
+    <div class="flex1"><ngx-barcode [bc-value]="fields.ean.content" [bc-display-value]="true" [bc-width]="2" [bc-element-type]="'img'"
+      bc-format="EAN13"></ngx-barcode></div>
+  </div>
+</ng-template>
+
+<ng-template #tplStandard>
+  <div class="standard-label">
+    <div class="text2">{{ fields.text1.content }}</div>
+    <div class="text1">Дата изготовления ХХХХХ Хранить при: t {{ fields.text2.content }} Изготовитель: УУУУУУУУУУУ
+      {{ fields.text3.content }} {{ fields.text4.content }}
+    </div>
+    <div>
+      <ngx-barcode [bc-value]="fields.code.content" [bc-display-value]="true" [bc-width]="3" [bc-element-type]="'img'"
+                   [bc-format]="fields.code.bcformat"></ngx-barcode>
+    </div>
+    <div class="line">
+      <img class="eac" src="/assets/img/EAC_certificatie.jpg">
+      <div class="row text-big">
+        <div>Дата розлива</div>
+        <div>XXXXXXXXXXX</div>
+        <div>Объём: {{ fields.text5.content }}</div>
+      </div>
+    </div>
+    <div>
+      <ngx-barcode [bc-value]="fields.code.content" [bc-display-value]="true" [bc-width]="3" [bc-element-type]="'img'"
+                   [bc-format]="fields.code.bcformat"></ngx-barcode>
+    </div>
   </div>
 </ng-template>
