@@ -34,6 +34,11 @@ export class KegsComponent implements OnInit {
   manufacturers_: string[];
   is_printer_auto_: boolean;
 
+  temperature: DeviceItem;
+  cooler: Group;
+  gas: Group;
+  pressure: DeviceItem;
+
   constructor(
     private houseService: HouseService,
     public dialog: MatDialog,
@@ -48,6 +53,9 @@ export class KegsComponent implements OnInit {
     const deviceSection: Section = this.houseService.house.sections.filter((el) => el.id === 1)[0];
     const procGroup: Group = deviceSection.groups.filter((el) => el.type.name === 'proc')[0];
     this.kegVolume = procGroup.params.filter((el) => el.param.name === 'kegVolume')[0];
+
+    this.getCooler();
+    this.getGas();
   }
 
   getTaps() {
@@ -147,6 +155,46 @@ export class KegsComponent implements OnInit {
         }
       } else if (group.type.name === 'printer') {
         this.is_printer_auto_ = group.mode === 2;
+      }
+    }
+  }
+
+  getCooler() {
+    const sct = this.houseService.house.sections[0];
+
+    for (const group of sct.groups) {
+      if (group.type.name === 'cooler') {
+
+        this.cooler = group;
+
+        for (const item of group.items) {
+          if (item.type.name === 'termoCool') {
+            this.temperature = item;
+            break;
+          }
+        }
+
+        break;
+      }
+    }
+  }
+
+  private getGas() {
+    const sct = this.houseService.house.sections[0];
+
+    for (const group of sct.groups) {
+      if (group.type.name === 'pressure') {
+
+        this.gas = group;
+
+        for (const item of group.items) {
+          if (item.type.name === 'pressurePipe') {
+            this.pressure = item;
+            break;
+          }
+        }
+
+        break;
       }
     }
   }

@@ -1,4 +1,13 @@
 <h2>Кеги</h2>
+
+<div class="indicator-box color-{{cooler.status_info.short_text}}">
+  Температура охладителя: {{ temperature.val.display }}{{temperature.type.sign.name}}
+</div>
+
+<div class="indicator-box color-{{gas.status_info.short_text}}">
+  Давление в магистрали: {{ pressure.val.display }}{{pressure.type.sign.name}}
+</div>
+
 <div class="grid grid-pad">
   <ng-container *ngFor="let tap of taps">
     <div class="col-1-3">

@@ -87,3 +87,28 @@
 .empty-icon {
   color: #e84c3d;
 }
+
+.indicator-box {
+  border: 1px solid;
+  padding: 8px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+}
+
+.indicator-box.color-Ok {
+  color: #012f05;
+  border-color: #017f05;
+  background-color: rgba(1, 127, 5, 0.37);
+}
+
+.indicator-box.color-Warn {
+  color: #9e620f;
+  border-color: #f39c11;
+  background-color: rgba(243, 156, 17, 0.39);
+}
+
+.indicator-box.color-Error {
+  color: #7b2a20;
+  border-color:  #e84c3d;
+  background-color: rgba(232, 76, 61, 0.43);
+}
