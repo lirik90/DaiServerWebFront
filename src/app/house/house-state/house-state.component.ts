@@ -12,6 +12,8 @@ import {UIService} from '../../ui.service';
 })
 export class HouseStateComponent implements OnInit {
 
+  @Input() top: number;
+
   status_weight = {
     'Ok': 0,
     'Undefined': 1,

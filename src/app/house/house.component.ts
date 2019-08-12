@@ -60,6 +60,7 @@ export class HouseComponent implements OnInit, OnDestroy {
   private opened_sub: ISubscription;
 
   @ViewChild('snav') snav !: MatSidenav;
+  showNav = false;
 
   private getConnectionString(connected: boolean): string {
     return connected ? undefined : this.translate.instant('CONNECTION_PROBLEM');
@@ -223,6 +224,8 @@ export class HouseComponent implements OnInit, OnDestroy {
   getHouseInfo(): void {
     this.bytes_sub = this.controlService.byte_msg.subscribe(msg => {
 
+      /*console.log(msg);*/
+
       if (msg.cmd === WebSockCmd.WS_CONNECTION_STATE) {
 
         /*
@@ -260,8 +263,7 @@ export class HouseComponent implements OnInit, OnDestroy {
         if (!this.status_checked) {
           this.status_checked = true;
         }
-      }
-      else if (msg.cmd === WebSockCmd.WS_STRUCT_MODIFY) {
+      } else if (msg.cmd === WebSockCmd.WS_STRUCT_MODIFY) {
         const view = new Uint8Array(msg.data);
         const structure_type = view[8];
         switch (structure_type) {
@@ -283,8 +285,7 @@ export class HouseComponent implements OnInit, OnDestroy {
             this.page_reload_dialog_ref = undefined;
           });
         }
-      }
-      else if (msg.cmd === WebSockCmd.WS_TIME_INFO) {
+      } else if (msg.cmd === WebSockCmd.WS_TIME_INFO) {
         console.log(msg);
 
         const info = this.controlService.parseTimeInfo(msg.data);
@@ -333,11 +334,9 @@ export class HouseComponent implements OnInit, OnDestroy {
     }
   }
 
-  sidebarToggle() {
-    this.snav.toggle();
-    //document.body.style.overflow = this.snav.opened && this.mobileQuery.matches? 'hidden' : 'auto';
-    const rect = document.getElementsByClassName('house-toolbar')[0].getBoundingClientRect();
-    this.snav.fixedTopGap = rect.bottom;
+  closeMenu() {
+    const el: HTMLInputElement = <HTMLInputElement>document.getElementById('localnav-menustate');
+    el.checked = false;
   }
 }
 

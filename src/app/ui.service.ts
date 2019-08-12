@@ -21,11 +21,11 @@ export class UIService {
   }
 
   isToolbarHidden(): boolean {
-    if(this.scrollTop > 48 ) {
+    if (window.pageYOffset > 64 ) {
       this.toolBarHidden_ = true;
     }
 
-    if(this.scrollTop === 0) {
+    if (window.pageYOffset === 0) {
       this.toolBarHidden_ = false;
     }
 

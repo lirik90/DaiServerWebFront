@@ -1,32 +1,52 @@
-<div class="house-container" [class.house-is-mobile]="mobileQuery.matches">
-  <mat-toolbar class="house-toolbar">
-    <button mat-icon-button (click)="sidebarToggle()"><mat-icon>menu</mat-icon></button>
-    <mat-icon [matTooltip]="status_desc" [ngClass]="status_class"></mat-icon>
+<input type="checkbox" id="localnav-menustate" class="localnav-menustate">
+<div id="localnav" class="localnav css-sticky localnav-scrim">
+  <div class="localnav-wrapper">
+    <div class="localnav-background"></div>
+    <div class="localnav-content">
+      <div class="localnav-title">
+        <mat-icon [matTooltip]="status_desc" [ngClass]="status_class"></mat-icon>
 
-    <app-house-state></app-house-state>
+        <app-house-state></app-house-state>
 
-    <app-drag-scroll *ngIf="houseService.house">{{houseService.house.title}}</app-drag-scroll>
-    <span *ngIf="!mobileQuery.matches && connected" i18n-matTooltip="@@DEVICE_TIME" matTooltip="Время на устройстве">{{dt_text}} {{dt_tz_name}}</span>
+        <app-drag-scroll *ngIf="houseService.house">{{houseService.house.title}}</app-drag-scroll>
+        <span class="timestring" *ngIf="!mobileQuery.matches && connected" i18n-matTooltip="@@DEVICE_TIME" matTooltip="Время на устройстве">{{dt_text}} {{dt_tz_name}}</span>
 
-    <button mat-icon-button *ngIf="can_edit" (click)="restart()"><mat-icon>replay</mat-icon></button>
-  </mat-toolbar>
+        <button mat-icon-button *ngIf="can_edit" (click)="restart()"><mat-icon>replay</mat-icon></button>
+      </div>
 
-  <mat-sidenav-container class="house-sidenav-container">
-    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
-                 [fixedInViewport]="mobileQuery.matches" [fixedTopGap]="mobileQuery.matches && !uiService.isToolbarHidden() ? 96 : 48" [opened]="!mobileQuery.matches">
+      <div class="localnav-menu">
+        <div class="localnav-actions">
+          <div class="localnav-action localnav-action-menucta" aria-hidden="true">
+            <label for="localnav-menustate" class="localnav-menucta">
+              <span class="localnav-menucta-chevron"></span>
+            </label>
+          </div>
+        </div>
+        <div class="localnav-menu-tray">
+          <ul class="localnav-menu-items">
+            <li class="localnav-menu-item" *ngFor="let nav of fillerNav">
+              <a [routerLink]="nav.link" routerLinkActive="active" class="localnav-menu-link" (click)="closeMenu()">
+                <mat-icon>{{nav.icon}}</mat-icon>{{nav.text}}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-      <mat-nav-list>
-        <a *ngFor="let nav of fillerNav" mat-list-item
-           [routerLink]="nav.link"
-           routerLinkActive="active"
-           (click)="mobileQuery.matches && snav.close()">
+<div class="row">
+  <div class="sidenav">
+    <ul class="sidenav-menu-items">
+      <li class="sidenav-menu-item" *ngFor="let nav of fillerNav">
+        <a [routerLink]="nav.link" routerLinkActive="active" class="sidenav-menu-link" (click)="closeMenu()">
           <mat-icon>{{nav.icon}}</mat-icon>{{nav.text}}
         </a>
-      </mat-nav-list>
-    </mat-sidenav>
-
-    <mat-sidenav-content class="house-content">
-			<router-outlet></router-outlet>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+      </li>
+    </ul>
+  </div>
+  <div class="router-outlet-wrap">
+    <router-outlet></router-outlet>
+  </div>
 </div>

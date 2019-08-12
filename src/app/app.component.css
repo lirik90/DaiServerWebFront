@@ -11,6 +11,10 @@
   align-items: center;
   color: #000;
   padding: 8px;
+  flex-shrink: 0;
+  flex-grow: 0;
+  height: 64px;
+  box-sizing: border-box;
 }
 
 .app-toolbar a {

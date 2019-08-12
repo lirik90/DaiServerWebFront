@@ -70,4 +70,8 @@ export class LabelConfiguratorComponent implements OnInit {
   getFields() {
     return Object.keys(this.fields);
   }
+
+  test() {
+
+  }
 }
