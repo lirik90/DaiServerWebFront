@@ -157,17 +157,19 @@ export class HouseComponent implements OnInit, OnDestroy {
       this.fillerNav.push({link: 'elements', text: this.translate.instant('NAVIGATION_TAB.ELEMENTS'), icon: 'build'});
       this.fillerNav.push({link: 'log', text: this.translate.instant('NAVIGATION_TAB.LOG'), icon: 'event_note'});
       this.fillerNav.push({link: 'settings', text: this.translate.instant('NAVIGATION_TAB.STRUCTURE'), icon: 'settings'});
+      this.fillerNav.push({link: 'reports', text: this.translate.instant('NAVIGATION_TAB.REPORTS'), icon: 'show_chart'});
     }
-    this.fillerNav.push({link: 'reports', text: this.translate.instant('NAVIGATION_TAB.REPORTS'), icon: 'show_chart'});
     this.fillerNav.push({link: 'export', query: {data: [107]}, text: this.translate.instant('NAVIGATION_TAB.EXPORT'), icon: 'subject'});
 
     // For Beerbox
     if (this.can_see_more || this.can_wash) {
       this.fillerNav.push({link: 'beerbox/wash', text: this.translate.instant('NAVIGATION_TAB.WASH'), icon: 'opacity'});
     }
+    /*
     if (this.can_edit) {
       this.fillerNav.push({link: 'beerbox/replace_keg', text: this.translate.instant('NAVIGATION_TAB.REPLACE_KEG'), icon: 'repeat'});
     }
+     */
     if (this.can_edit) {
       this.fillerNav.push({link: 'beerbox/kegs', text: 'Кеги', icon: 'local_drink'});
     }
@@ -228,9 +230,9 @@ export class HouseComponent implements OnInit, OnDestroy {
 
       if (msg.cmd === WebSockCmd.WS_CONNECTION_STATE) {
 
-        /*
+/*
         console.log(msg);
-         */
+*/
 
         if (msg.data === undefined) {
           console.log('ConnectInfo without data');
