@@ -88,10 +88,13 @@
   color: #e84c3d;
 }
 
+.indicator-bar {
+  margin: 8px 0;
+}
+
 .indicator-box {
   border: 1px solid;
   padding: 8px;
-  margin-bottom: 8px;
   border-radius: 4px;
   display: inline-block;
   margin-right: 8px;

@@ -25,13 +25,12 @@ nav a {
   display: inline-block;
   background-color: #eee;
   border-radius: 4px;
-}
-nav a:visited, a:link {
-  color: #607D8B;
+  color: #616161;
+  cursor: pointer;
 }
 nav a:hover {
-  color: #039be5;
-  background-color: #CFD8DC;
+  color: #0070c9;
+  background-color: #f2f2f2;
 }
 nav a.active {
   color: #039be5;
@@ -138,3 +137,4 @@ nav > div {
   background: #fff;
 
 }
+

@@ -26,7 +26,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
         
         white-space: nowrap;
         line-height: 32px;
-        font-size: 1.1em;
+        font-size: 21px;
         font-weight: bold;
         font-family: Roboto, "Helvetica Neue", sans-serif;
         color: #999;
@@ -38,6 +38,11 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
         -ms-user-select: none; /* Internet Explorer/Edge */
         user-select: none; /* Non-prefixed version, currently
                                       supported by Chrome and Opera */
+    }
+    @media all and (max-width: 600px) {
+        .projtitle {
+            font-size: 18px;
+        }
     }
     `]
 })

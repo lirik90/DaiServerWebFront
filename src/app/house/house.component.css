@@ -1382,7 +1382,13 @@ h2:lang(ko).localnav-title {
 }
 
 .sidenav-menu-link {
-  color: #000;
+  color: #333;
+  font-size: 14px;
+  letter-spacing: -0.14px;
+}
+
+.sidenav-menu-link:hover {
+  color: #0070c9;
 }
 
 .sidenav {
