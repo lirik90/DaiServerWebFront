@@ -116,6 +116,10 @@
   background-color: rgba(232, 76, 61, 0.43);
 }
 
+.tap-name.blocked {
+  color: #973227;
+}
+
 .subNav {
   margin-bottom: 16px;
 }

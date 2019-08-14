@@ -18,6 +18,7 @@ interface Head {
 }
 
 interface Tap {
+  isBlocked: DeviceItem;
   sctId: number;
   name: string;
   heads: Head[];
@@ -67,6 +68,7 @@ export class KegsComponent implements OnInit {
       const heads = [];
 
       let cleanStep: DeviceItem;
+      let isBlocked: DeviceItem;
 
       for (const group of sct.groups) {
         if (group.type.name === 'takeHead') {
@@ -94,6 +96,18 @@ export class KegsComponent implements OnInit {
               break;
             }
           }
+        } else if (group.type.name === 'head') {
+          for (const item of group.items) {
+            switch (item.type.name) {
+              case 'block':
+                isBlocked = item;
+                break;
+            }
+
+            if (isBlocked !== undefined) {
+              break;
+            }
+          }
         }
       }
 
@@ -102,7 +116,8 @@ export class KegsComponent implements OnInit {
           name: sct.name,
           sctId: sct.id,
           heads: heads,
-          activeTab: cleanStep.val.raw === 0 ? 0 : 1
+          activeTab: cleanStep.val.raw === 0 ? 0 : 1,
+          isBlocked: isBlocked
         });
       }
     }
@@ -134,10 +149,11 @@ export class KegsComponent implements OnInit {
       console.log(keg);
       console.log(res);*/
 
-      this.set_manufacture(keg, res.date, res.info);
-
       // make it not empty
+      this.controlService.writeToDevItem(keg.volume_poured.id, 0);
       this.controlService.writeToDevItem(keg.is_not_empty.id, true);
+
+      this.set_manufacture(keg, res.date, res.info);
     });
   }
 

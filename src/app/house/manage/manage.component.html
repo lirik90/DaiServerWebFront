@@ -37,6 +37,7 @@
                     [ngStyle]="{'border-color': group.status_info.color}"
                     [class.td-bottom-border-right]="last"
                   >
+                  <div [style.display]="'none'">{{item.type.name}}</div>
                   <app-dev-item-value #itemValue [item]="item"></app-dev-item-value>
                 </td>
               </tr>
