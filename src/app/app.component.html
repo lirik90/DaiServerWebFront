@@ -53,7 +53,7 @@
 </header>
 
 <main>
-  <mat-spinner *ngIf="loading"></mat-spinner>
+  <mat-spinner class="loading-spinner" *ngIf="loading"></mat-spinner>
   <div class="router-outlet-wrap" [style.display]="loading ? 'none' : 'block'">
     <router-outlet></router-outlet>
   </div>

@@ -264,3 +264,21 @@ a h3 {
   margin: 4px 8px;
   display: inline-block;
 }
+
+.timestring {
+  font-size: 18px;
+  position: relative;
+  top: 1px;
+  letter-spacing: -0.2px;
+  color: #333;
+}
+
+.loading-spinner {
+  position: absolute;
+  top: 50vh;
+  left: 50vw;
+  width: 100px;
+  height: 100px;
+  margin-left: -50px;
+  margin-top: -50px;
+}
