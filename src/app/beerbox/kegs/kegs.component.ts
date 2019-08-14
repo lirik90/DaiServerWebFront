@@ -18,8 +18,10 @@ interface Head {
 }
 
 interface Tap {
+  sctId: number;
   name: string;
   heads: Head[];
+  activeTab: number;
 }
 
 @Component({
@@ -64,6 +66,8 @@ export class KegsComponent implements OnInit {
     for (const sct of this.houseService.house.sections) {
       const heads = [];
 
+      let cleanStep: DeviceItem;
+
       for (const group of sct.groups) {
         if (group.type.name === 'takeHead') {
           // heads.push(group);
@@ -78,13 +82,27 @@ export class KegsComponent implements OnInit {
             is_active: group.items.filter((el) => el.type.name === 'takeHead')[0],
             bad_clean: group.items.filter((el) => el.type.name === 'badClean')[0],
           });
+        } else if (group.type.name === 'cleanTakehead') {
+          for (const item of group.items) {
+            switch (item.type.name) {
+              case 'cleanStep':
+                cleanStep = item;
+                break; // api.CleanStepItem
+            }
+
+            if (cleanStep !== undefined) {
+              break;
+            }
+          }
         }
       }
 
       if (heads.length > 0) {
         taps.push({
           name: sct.name,
-          heads: heads
+          sctId: sct.id,
+          heads: heads,
+          activeTab: cleanStep.val.raw === 0 ? 0 : 1
         });
       }
     }
@@ -112,9 +130,9 @@ export class KegsComponent implements OnInit {
       /*
       this.toggle(keg.item);
       this.set_manufacture(keg, res.date, res.info);
-       */
-      //console.log(keg);
-      //console.log(res);
+       *//*
+      console.log(keg);
+      console.log(res);*/
 
       this.set_manufacture(keg, res.date, res.info);
 
@@ -197,5 +215,9 @@ export class KegsComponent implements OnInit {
         break;
       }
     }
+  }
+
+  changeActiveTab(tap: Tap, number: number) {
+    tap.activeTab = number;
   }
 }

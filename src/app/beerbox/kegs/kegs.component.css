@@ -6,7 +6,7 @@
   flex-shrink: 1;
 }
 
-.tap-pane__content {
+.tap-pane__content .heads  {
   display: flex;
 }
 
@@ -58,7 +58,7 @@
 }
 
 @media (max-width: 600px) {
-  .tap-pane__content {
+  .tap-pane__content .heads {
     flex-direction: column;
   }
 
@@ -93,6 +93,9 @@
   padding: 8px;
   margin-bottom: 8px;
   border-radius: 4px;
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 12px;
 }
 
 .indicator-box.color-Ok {
@@ -111,4 +114,21 @@
   color: #7b2a20;
   border-color:  #e84c3d;
   background-color: rgba(232, 76, 61, 0.43);
+}
+
+.subNav {
+  margin-bottom: 16px;
+}
+
+.badge {
+  font-size: 12px;
+  background: #777;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.used-badge {
+  background-color: #015305;
 }

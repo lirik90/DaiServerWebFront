@@ -14,42 +14,53 @@
       <div class="tap-pane">
         <div class="tap-name">{{ tap.name }}</div>
 
+        <nav class="subNav">
+          <a (click)="changeActiveTab(tap, 0)">Кеги</a>
+          <a (click)="changeActiveTab(tap, 1)">Промывка</a>
+        </nav>
+
         <div class="tap-pane__content">
-          <mat-card class="head-pane" *ngFor="let head of tap.heads">
-            <mat-card-title>
-              <div>{{head.title}}{{ !head.is_not_empty.val.display? ' &mdash; пуст' : ''}}</div>
-              <div class="separator"></div>
-              <div class="icons">
-                <mat-icon class="empty-icon" *ngIf="!head.is_not_empty.val.display">cancel</mat-icon>
-                <ng-container *ngIf="head.is_not_empty.val.display">
-                  <mat-icon class="unused-icon" *ngIf="!head.is_active.val.display">radio_button_unchecked</mat-icon>
-                  <mat-icon class="unused-icon" *ngIf="head.is_active.val.display">radio_button_checked</mat-icon>
-                </ng-container>
-              </div>
-            </mat-card-title>
-            <mat-card-content class="head-pane__content">
-              <div class="info">
-                Дата: {{ head.date_installed.value }}<br>
-                Объём кеги: {{ kegVolume.value }} мл<br>
-                Налито: {{ head.volume_poured.val.display }} мл<br>
-                Осталось пива в кеге: {{ kegVolume.value - head.volume_poured.val.display }} мл<br>
-              </div>
-              <div class="graph">
-                <div class="graph__filled" [style.height.%]="getPercentFilled(head)"></div>
-                <div class="graph_label">
-                  {{ round(getPercentFilled(head)) }}%
+          <div class="heads" *ngIf="tap.activeTab === 0">
+            <mat-card class="head-pane" *ngFor="let head of tap.heads">
+              <mat-card-title>
+                <div>{{head.title}}{{ !head.is_not_empty.val.display? ' &mdash; пуст' : ''}}</div>
+                <div class="separator"></div>
+                <div class="icons">
+                  <mat-icon class="empty-icon" *ngIf="!head.is_not_empty.val.display">cancel</mat-icon>
+                  <ng-container *ngIf="head.is_not_empty.val.display">
+                    <mat-icon class="unused-icon" *ngIf="head.is_active.val.display">radio_button_checked</mat-icon>
+                  </ng-container>
                 </div>
-              </div>
-            </mat-card-content>
-            <mat-card-actions>
-              <button mat-stroked-button (click)="openDialog(head)">Заменить</button>
-            </mat-card-actions>
-            <mat-card-footer>
+              </mat-card-title>
+              <mat-card-content class="head-pane__content">
+                <div class="info">
+                  Дата: {{ head.date_installed.value }}<br>
+                  Объём кеги: {{ kegVolume.value }} мл<br>
+                  Налито: {{ head.volume_poured.val.display }} мл<br>
+                  Осталось пива в кеге: {{ kegVolume.value - head.volume_poured.val.display }} мл<br>
+                </div>
+                <div class="graph">
+                  <div class="graph__filled" [style.height.%]="getPercentFilled(head)"></div>
+                  <div class="graph_label">
+                    {{ round(getPercentFilled(head)) }}%
+                  </div>
+                </div>
+              </mat-card-content>
+              <mat-card-actions>
+                <button mat-stroked-button (click)="openDialog(head)">Заменить</button>
+              </mat-card-actions>
+              <mat-card-footer>
               <span *ngIf="head.bad_clean !== undefined && head.bad_clean.val.raw == 1" i18n="@@BEERBOX.REPLACE_KEG.WARNING" class="bad-clean">
                 Не выполнено вытеснение пивом. После замены не забудьте сделать это
               </span>
-            </mat-card-footer>
-          </mat-card>
+              </mat-card-footer>
+            </mat-card>
+          </div>
+          <div class="wash" *ngIf="tap.activeTab === 1">
+            <div class="tap-wash__content">
+              <app-wash-tap [sctId]="tap.sctId"></app-wash-tap>
+            </div>
+          </div>
         </div>
       </div>
     </div>
