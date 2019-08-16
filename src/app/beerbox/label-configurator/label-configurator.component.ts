@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation} from '@angular/core';
-import {test} from './bitmap';
+import {create1BitBitmap, test} from './bitmap';
 import {DomSanitizer} from '@angular/platform-browser';
 
 
@@ -70,7 +70,7 @@ export class LabelConfiguratorComponent implements OnInit {
   constructor(private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
-    this.imgURL = this.sanitizer.bypassSecurityTrustUrl(test());
+    // this.imgURL = this.sanitizer.bypassSecurityTrustUrl(test());
   }
 
   getFields() {
@@ -105,15 +105,14 @@ export class LabelConfiguratorComponent implements OnInit {
         ctx.drawImage(imageObj, 0, 0, imageObj.width, imageObj.height);
 
 
-        const pixels = ctx.getImageData(0, 0, imageObj.width, imageObj.height).data;
+        const pixels = ctx.getImageData(0, 0, imageObj.width, imageObj.height);
 
         for (let y = 0; y < imageObj.height; ++y) {
           for (let x = 0; x < imageObj.width; ++x) {
             const pos = (y * imageObj.width + x) * 4;
-            const r = pixels[pos] / 255.0;
-            const g = pixels[pos + 1] / 255.0;
-            const b = pixels[pos + 2] / 255.0;
-            const a = pixels[pos + 3] / 255.0;
+            const r = pixels.data[pos] / 255.0;
+            const g = pixels.data[pos + 1] / 255.0;
+            const b = pixels.data[pos + 2] / 255.0;
 
             // linear grayscale
             const c_linear = 0.2126 * r + 0.7152 * g + 0.0722 * b;
@@ -123,18 +122,17 @@ export class LabelConfiguratorComponent implements OnInit {
 
             const newPixelVal = Math.round(t * 255);
 
-            const arr = new Uint8ClampedArray(4);
-            arr[0] = newPixelVal;
-            arr[1] = newPixelVal;
-            arr[2] = newPixelVal;
-            arr[3] = 255;
-            const imageData = new ImageData(arr, 1, 1);
-
-            ctx.putImageData(imageData, x, y);
+            pixels.data[pos] = newPixelVal;
+            pixels.data[pos + 1] = newPixelVal;
+            pixels.data[pos + 2] = newPixelVal;
+            pixels.data[pos + 4] = 255;
           }
         }
 
-        this.imgURL = canvas.toDataURL();
+        const bmp = create1BitBitmap(pixels);
+        const base64 = 'data:image/x-ms-bmp;base64,' + btoa(String.fromCharCode.apply(null, bmp));
+
+        this.imgURL = this.sanitizer.bypassSecurityTrustUrl(base64);
       };
     };
   }
