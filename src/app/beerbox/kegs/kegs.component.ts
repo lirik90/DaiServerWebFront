@@ -126,7 +126,11 @@ export class KegsComponent implements OnInit {
   }
 
   getPercentFilled(head: Head): number {
-    return (parseFloat(this.kegVolume.value) - parseFloat(head.volume_poured.val.display)) / parseFloat(this.kegVolume.value) * 100;
+    if (head.is_not_empty.val.display) {
+      return (parseFloat(this.kegVolume.value) - parseFloat(head.volume_poured.val.display)) / parseFloat(this.kegVolume.value) * 100;
+    } else {
+      return 0;
+    }
   }
 
   round(val: number) {

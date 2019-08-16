@@ -7,7 +7,6 @@ import 'rxjs/add/operator/filter';
 import {HouseService} from './house.service';
 import {ByteMessage, ByteTools, WebSocketBytesService} from '../web-socket.service';
 import {DeviceItem, EventLog, Group, ParamValue, Status} from './house';
-import {start} from 'repl';
 
 // import { QByteArray } from 'qtdatastream/src/types';
 
