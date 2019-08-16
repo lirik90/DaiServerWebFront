@@ -69,7 +69,10 @@ export class LogComponent implements OnInit, OnDestroy {
 
           //console.log(JSON.stringify(data.results[0]));
           for (let item of data.results) {
-            item.color = this.getColor(item.type);
+            console.log(item);
+            item.date = new Date(item.timestamp_msecs);
+
+            item.color = this.getColor(item.type_id);
           }
           return data.results;
         }),
@@ -82,7 +85,7 @@ export class LogComponent implements OnInit, OnDestroy {
       ).subscribe(data => this.dataSource.data = data);
 
     this.sub = this.controlService.byte_msg.subscribe(msg => {
-      if (msg.cmd != WebSockCmd.WS_EVENT_LOG)
+      if (msg.cmd !== WebSockCmd.WS_EVENT_LOG)
         return;
 
       if (msg.data === undefined) {
@@ -94,8 +97,8 @@ export class LogComponent implements OnInit, OnDestroy {
         return;
 
       let rows = this.controlService.parseEventMessage(msg.data);
-      for (let row of rows)
-      {
+      for (let row of rows) {
+
         row.color = this.getColor(row.type);
         this.dataSource.data.pop(); // For table row count is stay setted
       }
@@ -151,7 +154,7 @@ export class LogHttpDao {
   constructor(private http: HttpClient) {}
 
   getRepoIssues(houseId: number, sort: string, order_asc: boolean, page: number, limit: number = 35): Observable<PaginatorApi<EventLog>> {
-    const requestUrl = `/api/v1/events/?limit=${limit}&offset=${page * limit}&ordering=${(order_asc ? '' : '-')}${sort || 'id'}&id=${houseId}`;
+    const requestUrl = `/api/v1/log_event/?limit=${limit}&offset=${page * limit}&ordering=${(order_asc ? '' : '-')}${sort || 'id'}&id=${houseId}`;
     return this.http.get<PaginatorApi<EventLog>>(requestUrl);
   }
 }

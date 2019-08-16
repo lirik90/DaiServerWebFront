@@ -26,13 +26,13 @@
     <!-- Message Column -->
     <ng-container matColumnDef="message">
       <mat-header-cell *matHeaderCellDef i18n="@@LOG.TABLE.MESSAGE">Сообщение</mat-header-cell>
-      <mat-cell *matCellDef="let row" [style.color]="row.color">{{ row.msg }}</mat-cell>
+      <mat-cell *matCellDef="let row" [style.color]="row.color">{{ row.text }}</mat-cell>
     </ng-container>
 
     <!-- Category Column -->
     <ng-container matColumnDef="category">
       <mat-header-cell *matHeaderCellDef i18n="@@LOG.TABLE.CATEGORY">Категория</mat-header-cell>
-      <mat-cell *matCellDef="let row" [style.color]="row.color">{{ row.who }}</mat-cell>
+      <mat-cell *matCellDef="let row" [style.color]="row.color">{{ row.category }}</mat-cell>
     </ng-container>
 
     <!-- Date Column -->

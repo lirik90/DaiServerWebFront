@@ -2,7 +2,7 @@ import {AfterViewInit, Component, OnInit, QueryList, ViewChildren} from '@angula
 import {FormControl} from '@angular/forms';
 
 import {HouseService, ExportConfig, ExportItem} from '../../house.service';
-import {ItemType, GroupType, Section, DeviceItem, Logs} from '../../house';
+import {ItemType, GroupType, Section, DeviceItem, LogData} from '../../house';
 import {PaginatorApi} from '../../../user';
 import {TranslateService} from '@ngx-translate/core';
 import {ChartComponent} from 'angular2-chartjs';
@@ -225,11 +225,14 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     this.charts = [];
     this.initialized = false;
 
-    const date_from = this.genDateString(this.date_from.value, this.time_from);
-    const date_to = this.genDateString(this.date_to.value, this.time_to);
+    const dtstr_from = (<Date>this.date_from.value).toDateString() + ' ' + this.time_from;
+    const date_from = Date.parse(dtstr_from);
+
+    const dtstr_to = (<Date>this.date_to.value).toDateString() + ' ' + this.time_to;
+    const date_to = Date.parse(dtstr_to);
     let count: number;
 
-    const fillData = (logs: PaginatorApi<Logs>) => {
+    const fillData = (logs: PaginatorApi<LogData>) => {
       if (!count && logs.count > logs.results.length) {
         console.warn(`Log count: ${logs.count} on page: ${logs.results.length}`);
 
@@ -263,7 +266,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
             if (dataset.item_id === log.item_id) {
               // console.log(`Finded log ${log.item_id} val: ${log.value} date: ${log.date} t: ${typeof log.date}`);
               //              if (log.value == null || /^(\-|\+)?([0-9]+|Infinity)$/.test(log.value))
-              dataset.data.push({x: new Date(log.date), y: log.value});
+              dataset.data.push({x: new Date(log.timestamp_msecs), y: log.value});
               finded = true;
               break;
             }

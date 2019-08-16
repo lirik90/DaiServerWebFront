@@ -1,5 +1,8 @@
 <h2>Этикетки</h2>
 
+<input #file type="file" accept='image/*' (change)="preview(file.files)" />
+<img id="previewImg" [src]="imgURL" height="200" *ngIf="imgURL">
+
 <div *ngFor="let tap of taps">
   <div class="label">
     <div class="preview-box">

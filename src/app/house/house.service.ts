@@ -7,7 +7,7 @@ import { of } from 'rxjs/observable/of';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 
-import { HouseDetail, ViewItem, Section, DeviceItem, Group, Logs, ParamValue, ParamItem } from './house';
+import { HouseDetail, ViewItem, Section, DeviceItem, Group, LogData, ParamValue, ParamItem } from './house';
 import { TeamMember, PaginatorApi } from '../user';
 import { MessageService } from '../message.service';
 import { IHouseService } from '../ihouse.service';
@@ -23,8 +23,8 @@ export interface ExportConfig {
   projects: number[];
   items: ExportItem[];
 
-  date_from: Date;
-  date_to: Date;
+  ts_from: Date;
+  ts_to: Date;
   hide_null: boolean;
 }
 
@@ -265,15 +265,15 @@ export class HouseService extends IHouseService {
     return this.getPiped<PaginatorApi<ViewItem>>(this.url('viewitem') + `&limit=500&view_id=${view_id}`, `fetched ViewItem list`, 'getViewItems', {} as PaginatorApi<ViewItem>);
   }
 
-  getLogs(date_from: string, date_to: string, group_type: number, itemtypes: string, items: string, limit: number = 1000, offset: number = 0): Observable<PaginatorApi<Logs>> {
-    let url = this.url('logs') + `&date_from=${date_from}&date_to=${date_to}&limit=${limit}&offset=${offset}`;
+  getLogs(date_from: number, date_to: number, group_type: number, itemtypes: string, items: string, limit: number = 1000, offset: number = 0): Observable<PaginatorApi<LogData>> {
+    let url = this.url('log_data') + `&ts_from=${date_from}&ts_to=${+date_to}&limit=${limit}&offset=${offset}`;
     if (group_type !== undefined)
       url += `&group_type=${group_type}`;
     if (itemtypes !== undefined)
       url += `&itemtypes=${itemtypes}`;
     if (items !== undefined)
       url += `&items=${items}`;
-    return this.getPiped<PaginatorApi<Logs>>(url, `fetched logs list`, 'getLogs');
+    return this.getPiped<PaginatorApi<LogData>>(url, `fetched logs list`, 'getLogs');
   }
 
   exportExcel(conf: ExportConfig): Observable<HttpResponse<Blob>>

@@ -19,7 +19,8 @@ const PROXY_CONFIG = [
     {
         context: [
             '/api',
-            '/get_csrf'
+            '/get_csrf',
+            '/export'
         ],
         target: proxy_remote_server_address,
         secure: false,

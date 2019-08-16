@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 //import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter} from '@angular/material/core';
 
-import { ItemType, GroupType, Section, DeviceItem, Logs } from "../../house";
+import { ItemType, GroupType, Section, DeviceItem, LogData } from "../../house";
 import { HouseService, ExportConfig, ExportItem } from "../../house.service";
 import { HousesService } from '../../../houses/houses.service';
 import { House } from "../../../user";
@@ -135,7 +135,14 @@ export class ExportComponent implements OnInit {
 
   onSubmit(): void {
     this.loading = true;
-    const data: ExportConfig = Object.assign(this.firstFormGroup.value, this.secondFormGroup.value, this.dataFormGroup.value);
+
+    const ts_obj = {
+      ts_from: +this.secondFormGroup.value.date_from,
+      ts_to: +this.secondFormGroup.value.date_to,
+      timezone: this.secondFormGroup.value.timezone
+    };
+
+    const data: ExportConfig = Object.assign(this.firstFormGroup.value, ts_obj, this.dataFormGroup.value);
     this.houseService.exportExcel(data).subscribe((response: HttpResponse<Blob>) => {
       this.loading = false;
       if (!response)

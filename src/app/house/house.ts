@@ -182,9 +182,9 @@ export class Device { // Устройство
   items: DeviceItem[];// Массив элементов
 }
 
-export class Logs { // Запись журнала изменений значения
+export class LogData { // Запись журнала изменений значения
 //  id: number;     // ID
-  date: string;     // Время изменения
+  timestamp_msecs: string;     // Время изменения
   item_id: number;  // ID элемент
   raw_value: string;// Значение
   value: string;    // Отображаемое значение
@@ -201,10 +201,11 @@ export enum EventLogType { // Тип события в журнале событ
 }
 
 export class EventLog { // Запись в журнале событий
-  date: Date;       // Время события
-  who: string;        // Категория
-  msg: string;        // Сообщение
-  type: number;       // Тип события
+  date: Date;
+  timestamp_msecs: number;      // Время события
+  category: string;        // Категория
+  text: string;        // Сообщение
+  type_id: number;       // Тип события
   user_id: number;    // Пользователь
   color: string = ''; // Цвет?
 
