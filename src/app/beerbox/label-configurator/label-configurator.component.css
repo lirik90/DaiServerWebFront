@@ -2,7 +2,6 @@
   background: #fff;
   display: inline-block;
   width: 280px;
-  /*height: 150px;*/
   box-shadow: 3px 4px 5px 0px rgba(0,0,0,0.32);
   border-radius: 8px;
   padding: 16px;
@@ -98,7 +97,6 @@
 .mat-form-field {
   width: 100%;
 }
-
 
 .standard-label .text2 {
   text-align: center;

@@ -7,6 +7,7 @@ import 'rxjs/add/operator/filter';
 import {HouseService} from './house.service';
 import {ByteMessage, ByteTools, WebSocketBytesService} from '../web-socket.service';
 import {DeviceItem, EventLog, Group, ParamValue, Status} from './house';
+import {start} from 'repl';
 
 // import { QByteArray } from 'qtdatastream/src/types';
 
@@ -106,6 +107,7 @@ export class ControlService {
           }
         }
       } else if (msg.cmd == WebSockCmd.WS_DEV_ITEM_VALUES) {
+
         if (msg.data === undefined) {
           console.log('DevItemValues without data');
           return;
@@ -131,6 +133,12 @@ export class ControlService {
             console.log(`bad length ${idx} ${msg.data.byteLength} ${value}`);
             break;
           }
+
+          console.log('dev_value');
+          console.log('item_id:' + item_id);
+          console.log('raw_value:' + raw_value);
+          console.log('value:' + value);
+
 
           // console.log(`Parse value ${item_id} ${raw_value} ${value}`);
           this.procDevItemValue(item_id, raw_value, value);
@@ -321,22 +329,21 @@ export class ControlService {
 
   parseEventMessage(data: ArrayBuffer): EventLog[]
   {
-    if (data === undefined)
+    if (data === undefined) {
       return;
+    }
 
-    let items: EventLog[] = [];
-    let view = new Uint8Array(data);
-    let [start, count] = ByteTools.parseUInt32(view);
-    while (count--)
-    {
-      const [start1, id] = ByteTools.parseUInt32(view, start);
+    const items: EventLog[] = [];
+    const view = new Uint8Array(data);
+    let [start1, count] = ByteTools.parseUInt32(view);
+    while (count--) {
       const [start2, time_ms] = ByteTools.parseInt64(view, start1);
       const [start3, user_id] = ByteTools.parseUInt32(view, start2);
       const type = view[start3] & ~0x80;
       const [start5, who] = ByteTools.parseQString(view, start3 + 1);
       const [start6, msg] = ByteTools.parseQString(view, start5);
-      start = start6;
-      items.push({ id, date: new Date(time_ms), who, msg, type, user_id, color: '' } as EventLog);
+      start1 = start6;
+      items.push({date: new Date(time_ms), who, msg, type, user_id, color: '' } as EventLog);
     }
     return items;
   }

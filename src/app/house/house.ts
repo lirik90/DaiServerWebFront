@@ -127,7 +127,7 @@ export class View {  // Представление
   id: number;
   name: string;
   items: DeviceItem[] = [];
-} 
+}
 
 export class ViewItem {
   id: number;
@@ -201,7 +201,6 @@ export enum EventLogType { // Тип события в журнале событ
 }
 
 export class EventLog { // Запись в журнале событий
-  id: number;         // ID
   date: Date;       // Время события
   who: string;        // Категория
   msg: string;        // Сообщение
