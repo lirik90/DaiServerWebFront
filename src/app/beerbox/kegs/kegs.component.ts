@@ -240,4 +240,12 @@ export class KegsComponent implements OnInit {
   changeActiveTab(tap: Tap, number: number) {
     tap.activeTab = number;
   }
+
+  getRemainBeer(head: Head) {
+    if (head.is_not_empty.val.display) {
+      return parseFloat(this.kegVolume.value) - parseFloat(head.volume_poured.val.display);
+    } else {
+      return 0;
+    }
+  }
 }

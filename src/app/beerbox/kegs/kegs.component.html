@@ -42,7 +42,7 @@
                   Дата: {{ head.date_installed.value }}<br>
                   Объём кеги: {{ kegVolume.value }} мл<br>
                   Налито: {{ head.volume_poured.val.display }} мл<br>
-                  Осталось пива в кеге: {{ kegVolume.value - head.volume_poured.val.display }} мл<br>
+                  Осталось пива в кеге: {{ getRemainBeer(head) }} мл<br>
                 </div>
                 <div class="graph">
                   <div class="graph__filled" [style.height.%]="getPercentFilled(head)"></div>
