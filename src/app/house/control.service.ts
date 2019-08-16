@@ -342,7 +342,7 @@ export class ControlService {
       const [start5, who] = ByteTools.parseQString(view, start3 + 1);
       const [start6, msg] = ByteTools.parseQString(view, start5);
       start1 = start6;
-      items.push({date: new Date(time_ms), text: msg, category: who, type, user_id, color: '' } as EventLog);
+      items.push({date: new Date(time_ms), text: msg, category: who, type_id: type, user_id, color: '' } as EventLog);
     }
     return items;
   }

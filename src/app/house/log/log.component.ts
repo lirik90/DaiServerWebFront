@@ -99,7 +99,7 @@ export class LogComponent implements OnInit, OnDestroy {
       let rows = this.controlService.parseEventMessage(msg.data);
       for (let row of rows) {
 
-        row.color = this.getColor(row.type);
+        row.color = this.getColor(row.type_id);
         this.dataSource.data.pop(); // For table row count is stay setted
       }
       this.dataSource.data = [...rows, ...this.dataSource.data];
