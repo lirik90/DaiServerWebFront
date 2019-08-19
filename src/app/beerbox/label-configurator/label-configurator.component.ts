@@ -13,6 +13,10 @@ import {DomSanitizer} from '@angular/platform-browser';
 export class LabelConfiguratorComponent implements OnInit {
   taps = [1, 2];
 
+  layout = {
+
+  };
+
   fields2 = {
     text1: {
       label: 'Название',

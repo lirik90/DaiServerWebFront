@@ -18,7 +18,7 @@
   </div>
 
   <mat-table #table [dataSource]="dataSource" class="example-table"
-             matSort matSortActive="date" matSortDisableClear matSortDirection="desc">
+             matSort matSortActive="timestamp_msecs" matSortDisableClear matSortDirection="desc">
 
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
@@ -36,7 +36,7 @@
     </ng-container>
 
     <!-- Date Column -->
-    <ng-container matColumnDef="date">
+    <ng-container matColumnDef="timestamp_msecs">
       <mat-header-cell *matHeaderCellDef
                        mat-sort-header
                        disableClear="true" i18n="@@LOG.TABLE.DATE">

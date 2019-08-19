@@ -54,12 +54,12 @@
   max-width: 110px;
 }
 
-.mat-column-date {
+.mat-column-timestamp_msecs {
   max-width: 125px;
 }
 
 @media (max-width: 767px) {
-  .mat-column-date {
+  .mat-column-timestamp_msecs {
     max-width: 60px;
   }
   .mat-column-category {

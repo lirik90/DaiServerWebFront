@@ -1,6 +1,8 @@
 const protractor = require('./protractor.conf.js')
 
 const proxy_remote_server_address = 'https://dev-beerbox.npmgroup.ru';
+//const proxy_remote_server_address = 'https://beerbox.npmgroup.ru';
+
 const PROXY_CONFIG = [
     {
         context: [

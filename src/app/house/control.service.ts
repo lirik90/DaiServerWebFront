@@ -133,11 +133,12 @@ export class ControlService {
             break;
           }
 
+          /*
           console.log('dev_value');
           console.log('item_id:' + item_id);
           console.log('raw_value:' + raw_value);
           console.log('value:' + value);
-
+*/
 
           // console.log(`Parse value ${item_id} ${raw_value} ${value}`);
           this.procDevItemValue(item_id, raw_value, value);

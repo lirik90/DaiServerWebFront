@@ -22,7 +22,7 @@ import {TranslateService} from '@ngx-translate/core';
   styleUrls: ['./log.component.css']
 })
 export class LogComponent implements OnInit, OnDestroy {
-  displayedColumns = ['user', 'date', 'category', 'message'];
+  displayedColumns = ['user', 'timestamp_msecs', 'category', 'message'];
   logDatabase: LogHttpDao | null;
   dataSource = new MatTableDataSource();
 
@@ -154,7 +154,7 @@ export class LogHttpDao {
   constructor(private http: HttpClient) {}
 
   getRepoIssues(houseId: number, sort: string, order_asc: boolean, page: number, limit: number = 35): Observable<PaginatorApi<EventLog>> {
-    const requestUrl = `/api/v1/log_event/?limit=${limit}&offset=${page * limit}&ordering=${(order_asc ? '' : '-')}${sort || 'id'}&id=${houseId}`;
+    const requestUrl = `/api/v1/log_event/?limit=${limit}&offset=${page * limit}&ordering=${(order_asc ? '' : '-')}${sort || 'timestamp_msecs'}&id=${houseId}`;
     return this.http.get<PaginatorApi<EventLog>>(requestUrl);
   }
 }
