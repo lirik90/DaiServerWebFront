@@ -41,14 +41,22 @@
                 <div class="info">
                   Дата: {{ head.date_installed.value }}<br>
                   Объём кеги: {{ kegVolume.value }} мл<br>
-                  Налито: {{ head.volume_poured.val.display }} мл<br>
-                  Осталось пива в кеге: {{ getRemainBeer(head) }} мл<br>
+                  <ng-container *ngIf="head.volume_poured.val.display !== null">
+                    Налито: {{ getPoured(head) }}<br>
+                    Осталось пива в кеге: {{ getRemainBeer(head) }}<br>
+                  </ng-container>
+
+                  <ng-container *ngIf="head.volume_poured.val.display === null">
+                    Неподключено
+                  </ng-container>
                 </div>
                 <div class="graph">
-                  <div class="graph__filled" [style.height.%]="getPercentFilled(head)"></div>
-                  <div class="graph_label">
-                    {{ round(getPercentFilled(head)) }}%
-                  </div>
+                  <ng-container *ngIf="head.volume_poured.val.display !== null">
+                    <div class="graph__filled" [style.height.%]="getPercentFilled(head)"></div>
+                    <div class="graph_label">
+                      {{ round(getPercentFilled(head)) }}%
+                    </div>
+                  </ng-container>
                 </div>
               </mat-card-content>
               <mat-card-actions>

@@ -243,9 +243,19 @@ export class KegsComponent implements OnInit {
 
   getRemainBeer(head: Head) {
     if (head.is_not_empty.val.display) {
-      return parseFloat(this.kegVolume.value) - parseFloat(head.volume_poured.val.display);
+      if (head.volume_poured.val.display === null)
+        return 'Не подключено';
+
+      return parseFloat(this.kegVolume.value) - parseFloat(head.volume_poured.val.display) + ' мл.';
     } else {
       return 0;
     }
+  }
+
+  getPoured(head) {
+    if (head.volume_poured.val.display === null)
+      return 'Не подключено';
+
+    return head.volume_poured.val.display + ' мл.';
   }
 }
