@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation} from '@angular/core';
-import {create1BitBitmap, test} from './bitmap';
+import {create1BitBitmap} from './bitmap';
 import {DomSanitizer} from '@angular/platform-browser';
 
 
@@ -77,6 +77,15 @@ export class LabelConfiguratorComponent implements OnInit {
     return Object.keys(this.fields);
   }
 
+  toBase64(bmp): string {
+    let base64cnt = '';
+    for (let i = 0; i < bmp.length; i++) {
+      base64cnt += String.fromCharCode(bmp[i]);
+    }
+
+    return 'data:image/x-ms-bmp;base64,' + btoa(base64cnt);
+  }
+
   preview(files) {
     if (files.length === 0) {
       return;
@@ -110,13 +119,14 @@ export class LabelConfiguratorComponent implements OnInit {
         for (let y = 0; y < imageObj.height; ++y) {
           for (let x = 0; x < imageObj.width; ++x) {
             const pos = (y * imageObj.width + x) * 4;
+
             const r = pixels.data[pos] / 255.0;
             const g = pixels.data[pos + 1] / 255.0;
             const b = pixels.data[pos + 2] / 255.0;
 
             // linear grayscale
             const c_linear = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-
+/*
             // threshold
             const t = Math.round(c_linear);
 
@@ -126,13 +136,15 @@ export class LabelConfiguratorComponent implements OnInit {
             pixels.data[pos + 1] = newPixelVal;
             pixels.data[pos + 2] = newPixelVal;
             pixels.data[pos + 4] = 255;
+            */
+
+            pixels[pos] = c_linear < 0.5 ? 0 : 1;
           }
         }
 
-        const bmp = create1BitBitmap(pixels);
-        const base64 = 'data:image/x-ms-bmp;base64,' + btoa(String.fromCharCode.apply(null, bmp));
+        const bmp = create1BitBitmap(pixels); // from the red channel
 
-        this.imgURL = this.sanitizer.bypassSecurityTrustUrl(base64);
+        this.imgURL = this.sanitizer.bypassSecurityTrustUrl(this.toBase64(bmp));
       };
     };
   }
