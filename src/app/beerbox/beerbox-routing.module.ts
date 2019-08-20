@@ -11,6 +11,7 @@ import {ChangeControllerAddressComponent} from './change-controller-address/chan
 import {OperationHoursComponent} from './operation-hours/operation-hours.component';
 import {KegsComponent} from './kegs/kegs.component';
 import {LabelConfiguratorComponent} from './label-configurator/label-configurator.component';
+import {TapListComponent} from './label-conf/tap-list/tap-list.component';
 
 const beerboxRoutes: Routes = [
   {
@@ -26,6 +27,7 @@ const beerboxRoutes: Routes = [
       {path: 'change_controller_address', component: ChangeControllerAddressComponent},
       {path: 'operation_hours', component: OperationHoursComponent},
       {path: 'label-configurator', component: LabelConfiguratorComponent},
+      {path: 'label-conf', component: TapListComponent /*loadChildren: 'app/beerbox/label-conf/label-conf.module#LabelConfModule'*/},
     ]
   }
 ];

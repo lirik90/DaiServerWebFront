@@ -1,8 +1,26 @@
-import {Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation} from '@angular/core';
+import {
+  Component, ComponentFactory,
+  ComponentFactoryResolver, ComponentRef,
+  ElementRef,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef,
+  ViewEncapsulation
+} from '@angular/core';
 import {create1BitBitmap} from './bitmap';
 import {DomSanitizer} from '@angular/platform-browser';
+import {HouseService} from '../../house/house.service';
 
+/*
+@Component({
+  selector: "alert",
+  template: `Hello!`
+})
+class TestCompComponent {
 
+}
+ */
 
 @Component({
   selector: 'app-label-configurator',
@@ -14,8 +32,13 @@ export class LabelConfiguratorComponent implements OnInit {
   taps = [1, 2];
 
   layout = {
-
+    title: {
+      type: 'text'
+    }
   };
+
+  @ViewChild('previewContainer', { read: ViewContainerRef }) container;
+  componentRef: ComponentRef<any>;
 
   fields2 = {
     text1: {
@@ -34,47 +57,35 @@ export class LabelConfiguratorComponent implements OnInit {
     }
   };
 
-  fields = {
-    text1: {
-      label: 'Название',
-      content: 'ПИВО СВЕТЛ. Дон Живое Светлое Пастеризованное'
-    },
-    text2: {
-      label: 'Условия хранения',
-      content: 'от 4C до 15С.'
-    },
-    text3: {
-      label: 'Состав',
-      content: 'вода питьевая очищенная, солод ячменный светлый, ячмень пивоваренный, хмелепродукты, солодовый экстракт. ' +
-        'Алкоголь 4,0% об. Экстракт начального сусла 10,5%. Содержание этилового спирта, образовавшегося в процессе брожения пивного ' +
-        'сусла: 4,0мл/100мл и 40мл/1л пива. Пищевая ценность в 100мл пива (средн. значения): углеводов - 3,5г. Энергетическая ' +
-        'ценность (калорийность): 170кДж (40ккал)'
-    },
-    text4: {
-      label: 'Дополнительная информация',
-      content: 'Качество продукции обеспечивается системой менеджмента качества, сертифицированной по международному стандарту ISO 9001\n' +
-        'ТУ9184-200-01824944-2014 ЧРЕЗМЕРНОЕ УПОТРЕБЛЕНИЕ АЛКОГОЛЯ ВРЕДИТ ВАШЕМУ ЗДОРОВЬЮ Алкоголь противопоказан детям и подросткам' +
-        ' до 18 лет, беременным и кормящим женщинам, лицам с заболеваниями центральной нервной системы, почек, печени и других органов' +
-        'пищеварения. Содержание в продукции вредных для здоровья веществ не превышает допустимого уровня, установленнго ' +
-        'ТР ТС 021.2011 "О безопасности пищевой продукции".'
-    },
-    text5: {
-      label: 'Объем налива',
-      content: '1л.'
-    },
-    code: {
-      label: 'Штрихкод',
-      type: 'barcode',
-      bcformat: 'CODE128',
-      content: '4600682008569'
-    },
-  };
+  opts = [
+    {text: 'EAN-13', val: '1'},
+    {text: 'Code-128', val: '2'},
+    {text: 'QR', val: '3'},
+  ];
+
+  fields: any;
   imagePath: any;
   imgURL: any;
-  constructor(private sanitizer: DomSanitizer) { }
+  constructor(
+    private sanitizer: DomSanitizer,
+    private houseService: HouseService,
+  ) { }
 
   ngOnInit() {
-    // this.imgURL = this.sanitizer.bypassSecurityTrustUrl(test());
+    this.initFields();
+    this.renderPreview();
+  }
+/*
+  createComponent(type) {
+    this.container.clear();
+    const factory = this.resolver.resolveComponentFactory(AlertComponent);
+    this.componentRef = this.container.createComponent(factory);
+  }
+
+ */
+
+  renderPreview() {
+
   }
 
   getFields() {
@@ -151,5 +162,23 @@ export class LabelConfiguratorComponent implements OnInit {
         this.imgURL = this.sanitizer.bypassSecurityTrustUrl(this.toBase64(bmp));
       };
     };
+  }
+
+  private initFields() {
+    const labelgrp = this.houseService.house.sections[1].groups.filter(g => g.type.name === 'label')[0];
+    this.fields = labelgrp.params;
+  }
+
+  getField(fieldName: string) {
+    return this.fields.filter(f => f.param.name === fieldName)[0];
+  }
+
+  changeField(f, val) {
+    f.value = val;
+  }
+
+  getBarcodeType(fieldname: string) {
+    const type = this.getField(fieldname).value;
+    return type === '1' ? 'EAN13' : 'CODE128';
   }
 }

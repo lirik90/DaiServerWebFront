@@ -24,6 +24,7 @@ import {KegsComponent} from './kegs/kegs.component';
 import {LabelConfiguratorComponent} from './label-configurator/label-configurator.component';
 import {NgxBarcodeModule} from 'ngx-barcode';
 import { WashTapComponent } from './wash-tap/wash-tap.component';
+import {LabelConfModule} from './label-conf/label-conf.module';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -36,6 +37,7 @@ export function createTranslateLoader(http: HttpClient) {
     ReactiveFormsModule,
     MaterialModule,
     BeerboxRoutingModule,
+    LabelConfModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
