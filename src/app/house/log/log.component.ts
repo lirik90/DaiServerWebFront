@@ -85,6 +85,7 @@ export class LogComponent implements OnInit, OnDestroy {
       ).subscribe(data => this.dataSource.data = data);
 
     this.sub = this.controlService.byte_msg.subscribe(msg => {
+
       if (msg.cmd !== WebSockCmd.WS_EVENT_LOG)
         return;
 
@@ -93,7 +94,7 @@ export class LogComponent implements OnInit, OnDestroy {
         return;
       }
 
-      if (!(this.paginator.pageIndex == 0 && this.sort.active == 'date' && this.sort.direction == 'desc'))
+      if (!(this.paginator.pageIndex == 0 && this.sort.active == 'timestamp_msecs' && this.sort.direction == 'desc'))
         return;
 
       let rows = this.controlService.parseEventMessage(msg.data);

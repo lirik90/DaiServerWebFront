@@ -44,6 +44,7 @@ export enum Connection_State {
   CS_CONNECTED_SYNC_TIMEOUT,
   CS_CONNECTED,
 
+  CS_CONNECTED_WITH_LOSSES = 0x40,
   CS_CONNECTED_MODIFIED = 0x80
 }
 
@@ -71,8 +72,7 @@ export class ControlService {
 	constructor(
     private wsbService: WebSocketBytesService,
     private houseService: HouseService,
-    @Inject(DOCUMENT) private document)
-  {
+    @Inject(DOCUMENT) private document) {
     this.opened = wsbService.opened;
   }
 
@@ -93,12 +93,12 @@ export class ControlService {
           return;
         }
 
-        let view = new Uint8Array(msg.data);
-        let [start, mode_id] = ByteTools.parseUInt32(view);
-        let [start1, group_id] = ByteTools.parseUInt32(view, start);
+        const view = new Uint8Array(msg.data);
+        const [start, mode_id] = ByteTools.parseUInt32(view);
+        const [start1, group_id] = ByteTools.parseUInt32(view, start);
 
-        for (let sct of this.houseService.house.sections) {
-          for (let group of sct.groups) {
+        for (const sct of this.houseService.house.sections) {
+          for (const group of sct.groups) {
             if (group.id == group_id) {
               group.mode = mode_id;
               return;
@@ -112,7 +112,7 @@ export class ControlService {
           return;
         }
 
-        let view = new Uint8Array(msg.data);
+        const view = new Uint8Array(msg.data);
         let [idx, count] = ByteTools.parseUInt32(view);
         let item_id: number;
         while (count--) {
@@ -144,36 +144,40 @@ export class ControlService {
           this.procDevItemValue(item_id, raw_value, value);
         }
 
-        if (idx != msg.data.byteLength)
+        if (idx != msg.data.byteLength) {
           console.warn(`BAD PARSE POSITION ${idx} NEED ${msg.data.byteLength} ${JSON.stringify(view)}`);
+        }
       } else if (msg.cmd == WebSockCmd.WS_CHANGE_GROUP_PARAM_VALUES) {
-        let set_param_impl = (group: Group, prm_id: number, value: string) => {
-          if (group !== undefined && group.params !== undefined)
-            for (let param of group.params) {
+        const set_param_impl = (group: Group, prm_id: number, value: string) => {
+          if (group !== undefined && group.params !== undefined) {
+            for (const param of group.params) {
               if (param.id == prm_id) {
                 param.value = value;
                 return true;
               }
             }
+          }
           return false;
         };
 
-        let last_group: Group = undefined;
-        let set_param = (prm_id: number, value: string) => {
-          if (set_param_impl(last_group, prm_id, value))
+        let last_group: Group;
+        const set_param = (prm_id: number, value: string) => {
+          if (set_param_impl(last_group, prm_id, value)) {
             return;
-          for (let sct of this.houseService.house.sections) {
-            for (let group of sct.groups) {
+          }
+          for (const sct of this.houseService.house.sections) {
+            for (const group of sct.groups) {
               if (set_param_impl(group, prm_id, value)) {
-                if (last_group !== group)
+                if (last_group !== group) {
                   last_group = group;
+                }
                 return;
               }
             }
           }
         };
 
-        let view = new Uint8Array(msg.data);
+        const view = new Uint8Array(msg.data);
         let [idx, count] = ByteTools.parseUInt32(view);
         let param_id: number;
         while (count--) {
@@ -186,42 +190,41 @@ export class ControlService {
           set_param(param_id, value);
         }
       } else if (msg.cmd == WebSockCmd.WS_GROUP_STATUS_ADDED) {
-        let view = new Uint8Array(msg.data);
-        let group_id = ByteTools.parseUInt32(view)[1];
-        let info_id = ByteTools.parseUInt32(view, 4)[1];
+        const view = new Uint8Array(msg.data);
+        const group_id = ByteTools.parseUInt32(view)[1];
+        const info_id = ByteTools.parseUInt32(view, 4)[1];
         let [idx, args_count] = ByteTools.parseUInt32(view, 8);
-        let args: string[] = [];
+        const args: string[] = [];
 
-        while(args_count--) {
+        while (args_count--) {
           const [ last_pos, value ] = ByteTools.parseQString(view, idx);
           idx = last_pos;
           args.push(value);
         }
 
-        for (let sct of this.houseService.house.sections) {
-          for (let group of sct.groups) {
+        for (const sct of this.houseService.house.sections) {
+          for (const group of sct.groups) {
             if (group.id == group_id) {
-              if (group.statuses === undefined)
+              if (group.statuses === undefined) {
                 group.statuses = [];
-              for (let gsts of group.statuses)
-              {
-                if (gsts.status.id == info_id)
-                {
+              }
+              for (const gsts of group.statuses) {
+                if (gsts.status.id == info_id) {
                   gsts.args = args;
                   return;
                 }
               }
 
-              let status_item: Status = undefined;
-              for (let sts of this.houseService.house.statuses) {
+              let status_item: Status;
+              for (const sts of this.houseService.house.statuses) {
                 if (sts.id == info_id) {
                   status_item = sts;
                 }
               }
 
-              if (status_item === undefined)
+              if (status_item === undefined) {
                 console.warn(`Status id ${info_id} not found`);
-              else {
+              } else {
                 group.statuses.push({ status: status_item, args: args, status_id: info_id });
                 this.houseService.calculateStatusInfo(group);
               }
@@ -231,14 +234,15 @@ export class ControlService {
         }
 
       } else if (msg.cmd == WebSockCmd.WS_GROUP_STATUS_REMOVED) {
-        let view = new Uint8Array(msg.data);
-        let group_id = ByteTools.parseUInt32(view)[1];
-        let info_id = ByteTools.parseUInt32(view, 4)[1];
-        for (let sct of this.houseService.house.sections) {
-          for (let group of sct.groups) {
+        const view = new Uint8Array(msg.data);
+        const group_id = ByteTools.parseUInt32(view)[1];
+        const info_id = ByteTools.parseUInt32(view, 4)[1];
+        for (const sct of this.houseService.house.sections) {
+          for (const group of sct.groups) {
             if (group.id == group_id) {
-              if (group.statuses === undefined)
+              if (group.statuses === undefined) {
                 group.statuses = [];
+              }
               let l = group.statuses.length;
               while (l--) {
                 if (group.statuses[l].status.id == info_id) {
@@ -258,8 +262,8 @@ export class ControlService {
 
     const protocol = window.location.protocol.replace('http', 'ws'); // http: -> ws: , https: -> wss:
     const host = window.location.host; // With port -> localhost:4200
-    let ws_url = `${protocol}//${host}/${protocol}`;
-    this.wsbService.start(ws_url.replace(/:$/,"/"));
+    const ws_url = `${protocol}//${host}/${protocol}`;
+    this.wsbService.start(ws_url.replace(/:$/, '/'));
 	}
 
   close(): void {
@@ -268,13 +272,11 @@ export class ControlService {
   }
 
   private procDevItemValue(item_id: number, raw_value: any, value: any): void {
-    let item: DeviceItem = this.houseService.devItemById(item_id);
-    if (item)
-    {
-      if (!item.val)
+    const item: DeviceItem = this.houseService.devItemById(item_id);
+    if (item) {
+      if (!item.val) {
         item.val = { raw: raw_value, display: value };
-      else
-      {
+      } else {
         item.val.raw = raw_value;
         item.val.display = value;
       }
@@ -286,26 +288,24 @@ export class ControlService {
       return;
     }
 
-    let view = new Uint8Array(data);
+    const view = new Uint8Array(data);
 
-    let connState = view[0] & ~Connection_State.CS_CONNECTED_MODIFIED;
-    let modState = (view[0] & Connection_State.CS_CONNECTED_MODIFIED) == Connection_State.CS_CONNECTED_MODIFIED;
+    // tslint:disable:no-bitwise
+    const connState = view[0] & ~Connection_State.CS_CONNECTED_MODIFIED
+                            & ~Connection_State.CS_CONNECTED_WITH_LOSSES;
+    const modState = (view[0] & Connection_State.CS_CONNECTED_MODIFIED) === Connection_State.CS_CONNECTED_MODIFIED;
+    const losesState = (view[0] & Connection_State.CS_CONNECTED_WITH_LOSSES) === Connection_State.CS_CONNECTED_WITH_LOSSES;
+    // tslint:enable:no-bitwise
 
-    /*
-    console.log(view[0]);
-
-    console.log(connState);
-    console.log(modState);
-     */
-
-    return [connState, modState];
+    return [connState, modState, losesState];
   }
 
   parseTimeInfo(data: ArrayBuffer): TimeInfo {
-    if (data === undefined)
+    if (data === undefined) {
       return;
+    }
 
-    let view = new Uint8Array(data);
+    const view = new Uint8Array(data);
 
     const [start1, time] = ByteTools.parseInt64(view, 0);
     const [start2, time_zone] = ByteTools.parseQString(view, start1);
@@ -315,10 +315,11 @@ export class ControlService {
 
   /* DEPRECATED */
   parseConnectInfo(data: ArrayBuffer): ConnectInfo {
-    if (data === undefined)
+    if (data === undefined) {
       return;
+    }
 
-    let view = new Uint8Array(data);
+    const view = new Uint8Array(data);
     const connected: boolean = view[0] == 1;
     const [start, ip] = ByteTools.parseQString(view, 1);
     const [start1, time] = ByteTools.parseInt64(view, start);
@@ -327,11 +328,11 @@ export class ControlService {
     return { connected, ip, time, time_zone, modified };
   }
 
-  parseEventMessage(data: ArrayBuffer): EventLog[]
-  {
+  parseEventMessage(data: ArrayBuffer): EventLog[] {
     if (data === undefined) {
       return;
     }
+
 
     const items: EventLog[] = [];
     const view = new Uint8Array(data);
@@ -353,9 +354,9 @@ export class ControlService {
   }
 
   writeToDevItem(item_id: number, value: any): void {
-    let value_buf = ByteTools.saveQVariant(value);
+    const value_buf = ByteTools.saveQVariant(value);
 
-    let view = new Uint8Array(4 + value_buf.length);
+    const view = new Uint8Array(4 + value_buf.length);
     ByteTools.saveInt32(item_id, view);
     view.set(value_buf, 4);
 
@@ -363,7 +364,7 @@ export class ControlService {
   }
 
   changeGroupMode(value: any, group_id: number): void {
-    let view = new Uint8Array(8);
+    const view = new Uint8Array(8);
     ByteTools.saveInt32(+value, view);
     ByteTools.saveInt32(group_id, view, 4);
     console.log(`MODE ${value} GROUP ${group_id}`);
@@ -371,13 +372,14 @@ export class ControlService {
   }
 
   changeParamValues(params: ParamValue[]): void {
-    if (!params.length)
+    if (!params.length) {
       return;
+    }
 
-    let msg_size: number = 0;
+    let msg_size = 0;
     let string_buf: Uint8Array;
     let view: Uint8Array;
-    let data_list: Uint8Array[] = [];
+    const data_list: Uint8Array[] = [];
     for (const data of params) {
       string_buf = ByteTools.saveQString(data.value ? data.value.toString() : null);
       view = new Uint8Array(4 + string_buf.length);
@@ -389,7 +391,7 @@ export class ControlService {
 
     view = new Uint8Array(4 + msg_size);
     ByteTools.saveInt32(params.length, view);
-    let start: number = 4;
+    let start = 4;
     for (const data of data_list) {
       view.set(data, start);
       start += data.length;
@@ -407,24 +409,21 @@ export class ControlService {
     this.wsbService.send(WebSockCmd.WS_EXEC_SCRIPT, this.houseService.house.id, view);
   }
 
-  exec_function(func_name: string, args: any[]): void
-  {
-    let arg_list: any[] = [];
+  exec_function(func_name: string, args: any[]): void {
+    const arg_list: any[] = [];
     let args_size = 0;
-    for (const arg of args)
-    {
+    for (const arg of args) {
       const arg_var = ByteTools.saveQVariant(arg);
       args_size += arg_var.length;
       arg_list.push(arg_var);
     }
 
     const func_name_view = ByteTools.saveQString(func_name);
-    let view = new Uint8Array(func_name_view.length + 4 + args_size);
+    const view = new Uint8Array(func_name_view.length + 4 + args_size);
     let pos = 0;
     view.set(func_name_view, pos); pos += func_name_view.length;
     ByteTools.saveInt32(args.length, view, pos); pos += 4;
-    for (const data of arg_list)
-    {
+    for (const data of arg_list) {
       view.set(data, pos);
       pos += data.length;
     }

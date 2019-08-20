@@ -41,6 +41,7 @@ export class HouseComponent implements OnInit, OnDestroy {
   connect_state: Connection_State = Connection_State.CS_DISCONNECTED;
   private can_wash: boolean;
   private mod_state: boolean;
+  private loses_state: boolean;
 
   get connected(): boolean {
     return this.connect_state !== Connection_State.CS_DISCONNECTED;
@@ -106,6 +107,11 @@ export class HouseComponent implements OnInit, OnDestroy {
 
     if (this.mod_state) {
       result += this.translate.instant('MODIFIED') + '. ';
+    }
+
+
+    if (this.loses_state) {
+      result += 'С потерями пакетов. ';
     }
 
     if (this.status_checked) {
@@ -245,22 +251,13 @@ export class HouseComponent implements OnInit, OnDestroy {
           return;
         }
 
-        let [connState, modState] = this.controlService.parseConnectState(msg.data);
+        const [connState, modState, losesState] = this.controlService.parseConnectState(msg.data);
 
-        //mock
-        //connState = Connection_State.CS_CONNECTED_MODIFIED;
-
-        /*
-        console.log(msg);
-        console.log(connState);
-        console.log(modState);
-        */
-
-        //modState = true;
 
         /* get connecton state */
         this.connect_state = connState;
         this.mod_state = modState;
+        this.loses_state = losesState;
 
         if (!this.status_checked) {
           this.status_checked = true;

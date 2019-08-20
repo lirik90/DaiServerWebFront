@@ -1,0 +1,70 @@
+.previewContainer {
+  display: inline-block;
+  width: 500px;
+  background: #ccc;
+  position: relative;
+  border-radius: 8px solid rgba(8, 8, 29, 0.65);
+}
+
+.layout {
+  background: #eee;
+  outline: 1px solid red;
+  min-height: 64px;
+  resize: vertical;
+  overflow: hidden;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.layout-buttons {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 20;
+}
+
+.element-buttons {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  z-index: 20;
+}
+
+.element {
+  display: inline-block;
+  border: 1px solid blue;
+  background: #fff;
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  position: absolute;
+  z-index: 10;
+  min-height: 24px;
+}
+
+.element-top {
+  background: blue;
+  color: white;
+  height: 16px;
+  overflow: hidden;
+}
+
+.element-delete-btn {
+  float: right;
+  color: #fff;
+  background: transparent;
+  border: 0;
+  font-size: 12px;
+  height: 16px;
+  width: 16px;
+}
+
+.resize-handler {
+  display: inline-block;
+  background: blue;
+  width: 8px;
+  height: 8px;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+}
