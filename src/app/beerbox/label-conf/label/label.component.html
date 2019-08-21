@@ -6,7 +6,7 @@
     <div class="element-buttons"><button (click)="addElement(l)">+</button></div>
 
     <div class="element" *ngFor="let e of l.elements" (mousedown)="dragStart(e, $event)" (mouseup)="dragEnd(e)"
-         [style.transform]="e.transform">
+         [style.transform]="e.transform" [style.width.px]="e.currentW" [style.height.px]="e.currentH">
       Element
 
       <div class="resize-handler" (mousedown)="resizeStart(e, $event)" (mouseup)="resizeEnd(e)"></div>

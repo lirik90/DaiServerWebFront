@@ -17,6 +17,10 @@ class Element {
   currentX = 0;
   currentY = 0;
   transform = `translate(${this.currentX}px, ${this.currentY}px)`;
+  initialW = 0;
+  initialH = 0;
+  currentW = 32;
+  currentH = 32;
 }
 
 class Layout {
@@ -130,14 +134,19 @@ export class LabelComponent implements OnInit, OnDestroy {
 
       this.draggingElement.transform = 'translate(' + this.draggingElement.currentX + 'px, ' + this.draggingElement.currentY + 'px)';
     }
+
+    if (this.resizingElement) {
+      this.resizingElement.currentW = $event.clientX - this.resizingElement.initialW;
+      this.resizingElement.currentH = $event.clientY - this.resizingElement.initialH;
+    }
   }
 
   resizeStart(e: Element, $event: MouseEvent) {
     $event.preventDefault();
     $event.stopPropagation();
 
-    e.initialX = $event.clientX - e.currentX;
-    e.initialY = $event.clientY - e.currentY;
+    e.initialW = $event.clientX - e.currentW;
+    e.initialH = $event.clientY - e.currentH;
 
     this.resizingElement = e;
   }
