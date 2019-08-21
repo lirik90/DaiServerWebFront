@@ -129,9 +129,37 @@ export class LabelComponent implements OnInit, OnDestroy {
 
   drag($event: MouseEvent) {
     if (this.draggingElement) {
-      this.draggingElement.currentX = $event.clientX - this.draggingElement.initialX;
-      this.draggingElement.currentY = $event.clientY - this.draggingElement.initialY;
+      let newX = $event.clientX - this.draggingElement.initialX;
+      let newY = $event.clientY - this.draggingElement.initialY;
 
+      // prevent out of bounds
+      if (newX < 0) {
+        newX = 0;
+      }
+      if (newY < 0) {
+        newY = 0;
+      }
+      if (newX + this.draggingElement.currentW > this.container.element.nativeElement.clientWidth) {
+        newX = this.container.element.nativeElement.clientWidth - this.draggingElement.currentW;
+      }
+      if (newY + this.draggingElement.currentH > this.container.element.nativeElement.clientHeight) {
+        newY = this.container.element.nativeElement.clientHeight - this.draggingElement.currentH;
+      }
+
+      // snap to grid
+      newX -= newX % 10;
+      newY -= newY % 10;
+
+
+      this.draggingElement.currentX = newX;
+      this.draggingElement.currentY = newY;
+
+      /*
+      // snap to grid
+      if (this.draggingElement.currentX % 10 === 0 && this.draggingElement.currentX % 10 === 0) {
+        this.draggingElement.transform = 'translate(' + this.draggingElement.currentX + 'px, ' + this.draggingElement.currentY + 'px)';
+      }
+       */
       this.draggingElement.transform = 'translate(' + this.draggingElement.currentX + 'px, ' + this.draggingElement.currentY + 'px)';
     }
 

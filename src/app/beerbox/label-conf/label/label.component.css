@@ -7,7 +7,10 @@
 }
 
 .layout {
-  background: #eee;
+  background: linear-gradient(90deg, #eee 8px, transparent 1%) center, linear-gradient(#eee 8px, transparent 1%) center, #aaa;
+  background-size: 10px 10px;
+  background-position: 1px 1px;
+
   outline: 1px solid red;
   min-height: 64px;
   resize: vertical;
