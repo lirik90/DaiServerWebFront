@@ -69,3 +69,17 @@
     padding: 0 1px;
   }
 }
+
+.sendBtn {
+  background: none;
+  border: none;
+  display: inline-block;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  cursor: pointer;
+}
+
+.sendBtn:hover .mat-icon {
+  color: #0070c9;
+}

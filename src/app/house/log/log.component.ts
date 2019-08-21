@@ -15,6 +15,7 @@ import { TeamMember, PaginatorApi } from '../../user';
 import { HouseService } from "../house.service";
 import { ControlService, WebSockCmd } from "../control.service";
 import {TranslateService} from '@ngx-translate/core';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-log',
@@ -37,11 +38,19 @@ export class LogComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  cmd = '';
+
   constructor(
 	  public translate: TranslateService,
     private controlService: ControlService,
     private houseService: HouseService,
-    private http: HttpClient) {}
+    private http: HttpClient,
+    private activatedRoute: ActivatedRoute
+    ) {
+    this.activatedRoute.queryParams.subscribe(params => {
+        this.cmd = params['cmd'];
+      });
+  }
 
   ngOnInit() {
     const houseId = this.houseService.house.id;
