@@ -47,8 +47,10 @@ export class LogComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     private activatedRoute: ActivatedRoute
     ) {
-    this.activatedRoute.queryParams.subscribe(params => {
-        this.cmd = params['cmd'];
+      this.activatedRoute.queryParams.subscribe(params => {
+        if (params['cmd']) {
+          this.cmd = params['cmd'];
+        }
       });
   }
 

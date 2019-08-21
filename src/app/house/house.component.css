@@ -1154,7 +1154,7 @@ h2.house-name {
 }
 
 .localnav-menustate:checked ~ .localnav .localnav-menucta-chevron, .localnav-menustate:target ~ .localnav .localnav-menucta-chevron {
-  transform: translateY(0%)
+  transform: translateY(-10%)
 }
 
 .localnav-menustate:checked ~ .localnav .localnav-menucta-chevron::before, .localnav-menustate:target ~ .localnav .localnav-menucta-chevron::before {
