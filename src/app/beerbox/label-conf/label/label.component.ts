@@ -120,52 +120,57 @@ export class LabelComponent implements OnInit, OnDestroy {
     this.draggingElement = e;
   }
 
-  dragEnd(e: Element) {
-    e.initialX = e.currentX;
-    e.initialY = e.currentY;
+  dragEnd() {
+    if (this.draggingElement) {
+      this.draggingElement.initialX = this.draggingElement.currentX;
+      this.draggingElement.initialY = this.draggingElement.currentY;
+      this.draggingElement = null;
+    }
+    if (this.resizingElement) {
+      this.resizingElement.initialW = this.resizingElement.currentW;
+      this.resizingElement.initialH = this.resizingElement.currentH;
+      this.resizingElement = null;
+    }
+  }
 
-   this.draggingElement = null;
+  movereize($event, el, initialA, initialB, currentA, currentB, currentA2, currentB2) {
+    const cont = this.container.element.nativeElement;
+
+    let a = $event.clientX - el[initialA];
+    let b = $event.clientY - el[initialB];
+
+    if (a < 0) { a = 0; }
+    if (b < 0) { b = 0; }
+
+    if (a + el[currentA2] > cont.clientWidth) {
+      a = cont.clientWidth - el[currentA2];
+    }
+    if (b + el[currentB2] > cont.clientHeight) {
+      b = cont.clientHeight - el[currentB2];
+    }
+
+    // snap to grid
+    a -= a % 10;
+    b -= b % 10;
+
+    el[currentA] = a;
+    el[currentB] = b;
   }
 
   drag($event: MouseEvent) {
     if (this.draggingElement) {
-      let newX = $event.clientX - this.draggingElement.initialX;
-      let newY = $event.clientY - this.draggingElement.initialY;
+      this.movereize($event, this.draggingElement,
+        'initialX', 'initialY',
+        'currentX', 'currentY',
+        'currentW', 'currentH');
 
-      // prevent out of bounds
-      if (newX < 0) {
-        newX = 0;
-      }
-      if (newY < 0) {
-        newY = 0;
-      }
-      if (newX + this.draggingElement.currentW > this.container.element.nativeElement.clientWidth) {
-        newX = this.container.element.nativeElement.clientWidth - this.draggingElement.currentW;
-      }
-      if (newY + this.draggingElement.currentH > this.container.element.nativeElement.clientHeight) {
-        newY = this.container.element.nativeElement.clientHeight - this.draggingElement.currentH;
-      }
-
-      // snap to grid
-      newX -= newX % 10;
-      newY -= newY % 10;
-
-
-      this.draggingElement.currentX = newX;
-      this.draggingElement.currentY = newY;
-
-      /*
-      // snap to grid
-      if (this.draggingElement.currentX % 10 === 0 && this.draggingElement.currentX % 10 === 0) {
-        this.draggingElement.transform = 'translate(' + this.draggingElement.currentX + 'px, ' + this.draggingElement.currentY + 'px)';
-      }
-       */
       this.draggingElement.transform = 'translate(' + this.draggingElement.currentX + 'px, ' + this.draggingElement.currentY + 'px)';
     }
-
     if (this.resizingElement) {
-      this.resizingElement.currentW = $event.clientX - this.resizingElement.initialW;
-      this.resizingElement.currentH = $event.clientY - this.resizingElement.initialH;
+      this.movereize($event, this.resizingElement,
+        'initialW', 'initialH',
+        'currentW', 'currentH',
+        'currentX', 'currentY');
     }
   }
 
@@ -177,12 +182,5 @@ export class LabelComponent implements OnInit, OnDestroy {
     e.initialH = $event.clientY - e.currentH;
 
     this.resizingElement = e;
-  }
-
-  resizeEnd(e: Element) {
-    e.initialX = e.currentX;
-    e.initialY = e.currentY;
-
-    this.resizingElement = null;
   }
 }
