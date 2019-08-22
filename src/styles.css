@@ -42,10 +42,6 @@ nav > div {
 
 /* Fixes for material */
 
-.cdk-overlay-pane {
-  overflow-y: auto;
-}
-
 .mat-drawer-content {
   box-sizing: border-box;
 }
@@ -130,11 +126,16 @@ nav > div {
 
 */
 
-.cdk-overlay-backdrop-showing ~ div > .cdk-overlay-pane {
-
+.cdk-overlay-backdrop-showing:not(.cdk-overlay-transparent-backdrop) ~ div > .cdk-overlay-pane {
   overflow-y: auto;
   box-shadow: 1px 2px 5px #0000004f;
   background: #fff;
 
 }
+
+/*
+.mat-select-panel {
+  min-width: 100% !important;
+}
+ */
 

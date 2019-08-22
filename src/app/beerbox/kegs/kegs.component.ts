@@ -5,6 +5,7 @@ import {filter} from 'rxjs/operators';
 import {ConfirmDialogReplaceKegComponent} from '../replace-keg/replace-keg.component';
 import {MatDialog} from '@angular/material';
 import {ControlService} from '../../house/control.service';
+import {AuthenticationService} from '../../authentication.service';
 
 interface Head {
   title: string;
@@ -42,10 +43,13 @@ export class KegsComponent implements OnInit {
   gas: Group;
   pressure: DeviceItem;
 
+  canSeeWash = this.authService.canChangeHouse() || this.authService.canAddDeviceItem();
+
   constructor(
     private houseService: HouseService,
     public dialog: MatDialog,
-    private controlService: ControlService
+    private controlService: ControlService,
+    private authService: AuthenticationService,
   ) { }
 
   ngOnInit() {
@@ -111,12 +115,17 @@ export class KegsComponent implements OnInit {
         }
       }
 
+      let activeTab = 0;
+      if (cleanStep && cleanStep.val.raw !== 0 && this.canSeeWash) {
+        activeTab = 1;
+      }
+
       if (heads.length > 0) {
         taps.push({
           name: sct.name,
           sctId: sct.id,
           heads: heads,
-          activeTab: cleanStep.val.raw === 0 ? 0 : 1,
+          activeTab: activeTab,
           isBlocked: isBlocked
         });
       }

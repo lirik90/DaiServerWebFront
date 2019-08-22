@@ -12,6 +12,8 @@ import {OperationHoursComponent} from './operation-hours/operation-hours.compone
 import {KegsComponent} from './kegs/kegs.component';
 import {LabelConfiguratorComponent} from './label-configurator/label-configurator.component';
 import {TapListComponent} from './label-conf/tap-list/tap-list.component';
+import {ProjectLoadGuard} from '../house/project-load.guard';
+import {PermissionGuard} from '../house/permission.guard';
 
 const beerboxRoutes: Routes = [
   {
@@ -19,7 +21,7 @@ const beerboxRoutes: Routes = [
     children: [
       {path: 'replace_keg', component: ReplaceKegComponent},
       {path: 'kegs', component: KegsComponent},
-      {path: 'wash', component: WashComponent},
+      {path: 'wash', component: WashComponent, data: { req_perms: ['can_see_more', 'can_wash'] }, canActivate: [PermissionGuard]},
       {path: 'calibration', component: CalibrationComponent},
       {path: 'check-head-stand', component: CheckHeadStandComponent},
       {path: 'replace_labels', component: ReplaceLabelsComponent},

@@ -21,7 +21,7 @@
 
         <nav class="subNav">
           <a (click)="changeActiveTab(tap, 0)">Кеги</a>
-          <a (click)="changeActiveTab(tap, 1)">Промывка</a>
+          <a (click)="changeActiveTab(tap, 1)" *ngIf="canSeeWash">Промывка</a>
         </nav>
 
         <div class="tap-pane__content">

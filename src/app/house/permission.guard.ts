@@ -26,14 +26,29 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
       'can_wash': this.authService.canAddDeviceItem()
     };
 
-    const allow = req_perms.map((perm) => userPerms[perm]).reduceRight((a, b) => a && b);
+    const allow = req_perms.map((perm) => userPerms[perm]).reduceRight((a, b) => a || b);
 
     if (!allow) {
       // navigate to details in case of access denied
+      /*
       console.log(route);
 
       const curName = route.parent.params.name;
-      this.router.navigate(['/house', curName, 'detail' ]);
+      this.router.navigate(['/' ]);
+       */
+
+      // hack
+      const loc = window.location.href;
+      const regex = new RegExp('(.*\\/house\\/.*?(\\/|$))');
+      const path = loc.match(regex)[0];
+
+      console.log(path)
+
+      if (loc) {
+        window.location.href = path;
+      } else {
+        this.router.navigate(['/']);
+      }
     }
 
     return allow;
