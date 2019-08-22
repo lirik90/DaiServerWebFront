@@ -94,7 +94,7 @@ export class ReplaceLabelsComponent implements OnInit
   selector: 'app-ok-dialog',
   template: `    <h2 i18n="@@BEERBOX.REPLACE_LABEL.TITLE">Замена ленты</h2>
   <ng-container>
-      <h4><p i18n="@@BEERBOX.REPLACE_LABEL.TEXT">Вставте ленту с этикетками в устройство<br><br>Введите количество этикеток, которое указано на ленте</p></h4>
+      <h4><p i18n="@@BEERBOX.REPLACE_LABEL.TEXT">Вставьте ленту с этикетками в устройство<br><br>Введите количество этикеток, которое указано на ленте</p></h4>
       <mat-form-field>
           <label>
               <input matInput type="number" [(ngModel)]="labels_num_full_.value" i18n-placeholder="@@BEERBOX.REPLACE_LABEL.INPUT" placeholder="Введите количество этикеток"/>
