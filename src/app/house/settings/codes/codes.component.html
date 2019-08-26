@@ -42,12 +42,14 @@
 
     <div ace-editor
          [(text)]="sel_item.obj.text"
-         [mode]="'javascript'"
+         [mode]="'typescript'"
          [theme]="'eclipse'"
          [readOnly]="false"
+         [options]="options"
          [autoUpdateContent]="true"
          [durationBeforeCallback]="1000"
-         style="min-height: 480px; width:100%; overflow: auto;"></div>
+         (textChanged)="itemChanged()"
+         class="editor"></div>
 
   </mat-expansion-panel>
 </mat-accordion>

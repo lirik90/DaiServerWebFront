@@ -5,3 +5,18 @@ ngx-monaco-editor {
   font-family: 'Anonymous Pro';
   font-size: 13pt;
 }
+
+.editor {
+  min-height: 480px; width:100%; overflow: auto;
+}
+
+.accorderon-fullscren {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  background: #fff;
+  overflow: auto;
+}

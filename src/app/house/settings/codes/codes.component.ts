@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs';
 
@@ -12,18 +12,29 @@ import { SettingsService } from '../settings.service';
 
 import 'brace';
 import 'brace/mode/javascript';
+import 'brace/mode/typescript';
 import 'brace/theme/eclipse';
+import 'brace/ext/searchbox';
 
 @Component({
   selector: 'app-codes',
   templateUrl: './codes.component.html',
   styleUrls: ['../settings.css', '../../../../assets/anonymous/stylesheet.css', './codes.component.css']
 })
-export class CodesComponent extends ChangeTemplate<Codes> implements OnInit {
+export class CodesComponent extends ChangeTemplate<Codes> implements OnInit, AfterViewInit {
   codes: Codes[];
 
   editorOptions = {theme: 'vs-dark', language: 'javascript'};
   editorApi = '';
+
+  options = {
+    fontSize: '11pt'
+  };
+
+  @ViewChild('editor') editor;
+
+  ngAfterViewInit() {
+  }
 
   onEditorInit(editor) {
     if (!this.editorApi) {
