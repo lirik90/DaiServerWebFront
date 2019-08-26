@@ -4,7 +4,8 @@
     <div class="localnav-background"></div>
     <div class="localnav-content">
       <div class="localnav-title">
-        <mat-icon [matTooltip]="status_desc" [ngClass]="status_class"></mat-icon>
+        <mat-icon [matTooltip]="status_desc" [ngClass]="status_class"
+                  #tooltip="matTooltip" (click)="tooltip.toggle()"></mat-icon>
 
         <app-house-state></app-house-state>
 

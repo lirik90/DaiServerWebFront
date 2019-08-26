@@ -31,7 +31,8 @@
               "src/assets/css/flag-icon.css",
               "node_modules/normalize.css/normalize.css"
             ],
-            "scripts": []
+            "scripts": [
+            ]
           },
           "configurations": {
             "production": {

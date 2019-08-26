@@ -12,6 +12,19 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
     private router: Router
   ) {}
 
+  getResolvedUrl(route: ActivatedRouteSnapshot): string {
+    return route.pathFromRoot
+      .map(v => v.url.map(segment => segment.toString()).join('/'))
+      .join('/');
+  }
+
+  getConfiguredUrl(route: ActivatedRouteSnapshot): string {
+    return '/' + route.pathFromRoot
+      .filter(v => v.routeConfig)
+      .map(v => v.routeConfig!.path)
+      .join('/');
+  }
+
   hasPermission(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const req_perms = route.data.req_perms as Array<string>;
 
@@ -38,17 +51,9 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
        */
 
       // hack
-      const loc = window.location.href;
-      const regex = new RegExp('(.*\\/house\\/.*?(\\/|$))');
-      const path = loc.match(regex)[0];
-
-      console.log(path)
-
-      if (loc) {
-        window.location.href = path;
-      } else {
-        this.router.navigate(['/']);
-      }
+      let loc = route.pathFromRoot[3].url[0].toString();
+      console.log(loc);
+      window.location.href = '/ru/house/'+loc+'/detail';
     }
 
     return allow;

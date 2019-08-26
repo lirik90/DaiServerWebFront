@@ -19,6 +19,7 @@ import { MonacoEditorModule, NgxMonacoEditorConfig, NGX_MONACO_EDITOR_CONFIG } f
 import { CheckerTypesComponent } from './checker-types/checker-types.component';
 import { ViewsComponent, ViewItemsComponent } from './views/views.component';
 import { SaveTimersComponent } from './save-timers/save-timers.component';
+import {AceEditorModule} from 'ng2-ace-editor';
 
 
 const monacoConfig: NgxMonacoEditorConfig = {
@@ -34,17 +35,19 @@ const monacoConfig: NgxMonacoEditorConfig = {
     ReactiveFormsModule,
     SettingsRoutingModule,
     MaterialModule,
-    MonacoEditorModule, // use forRoot() in main app module only.
+    MonacoEditorModule,
+    AceEditorModule,
+    // use forRoot() in main app module only.
   ],
   declarations: [
-    SettingsComponent, 
-    DevicesComponent, 
+    SettingsComponent,
+    DevicesComponent,
     DeviceItemsComponent,
-    SectionsComponent, 
+    SectionsComponent,
     GroupsComponent, ParamsInGroupComponent,
-    GroupTypesComponent, ItemTypesComponent, ParamTypesComponent, StatusesComponent , 
-    StatusTypesComponent, 
-    SignTypesComponent, 
+    GroupTypesComponent, ItemTypesComponent, ParamTypesComponent, StatusesComponent ,
+    StatusTypesComponent,
+    SignTypesComponent,
     CodesComponent,
     CheckerTypesComponent,
     ViewsComponent, ViewItemsComponent, SaveTimersComponent,

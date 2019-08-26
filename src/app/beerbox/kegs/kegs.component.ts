@@ -1,4 +1,4 @@
-import {Component, OnInit, Pipe, PipeTransform} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HouseService} from '../../house/house.service';
 import {DeviceItem, Group, ParamValue, Section} from '../../house/house';
 import {filter} from 'rxjs/operators';
@@ -90,10 +90,8 @@ export class KegsComponent implements OnInit {
           });
         } else if (group.type.name === 'cleanTakehead') {
           for (const item of group.items) {
-            switch (item.type.name) {
-              case 'cleanStep':
-                cleanStep = item;
-                break; // api.CleanStepItem
+            if (item.type.name === 'cleanStep') {
+              cleanStep = item;
             }
 
             if (cleanStep !== undefined) {
@@ -102,10 +100,8 @@ export class KegsComponent implements OnInit {
           }
         } else if (group.type.name === 'head') {
           for (const item of group.items) {
-            switch (item.type.name) {
-              case 'block':
-                isBlocked = item;
-                break;
+            if (item.type.name === 'block') {
+              isBlocked = item;
             }
 
             if (isBlocked !== undefined) {
@@ -170,15 +166,12 @@ export class KegsComponent implements OnInit {
     });
   }
 
-  set_manufacture(keg: Head, date: string, manufacturer_info: string): void
-  {
-    if (keg.date_installed !== undefined && keg.date_installed != null)
-    {
+  set_manufacture(keg: Head, date: string, manufacturer_info: string): void {
+    if (keg.date_installed !== undefined && keg.date_installed != null) {
       keg.date_installed.value = date;
     }
 
-    if (keg.manufacturer !== undefined && keg.manufacturer != null)
-    {
+    if (keg.manufacturer !== undefined && keg.manufacturer != null) {
       keg.manufacturer.value = manufacturer_info;
     }
 
@@ -252,8 +245,9 @@ export class KegsComponent implements OnInit {
 
   getRemainBeer(head: Head) {
     if (head.is_not_empty.val.display) {
-      if (head.volume_poured.val.display === null)
+      if (head.volume_poured.val.display === null) {
         return 'Не подключено';
+      }
 
       return parseFloat(this.kegVolume.value) - parseFloat(head.volume_poured.val.display) + ' мл.';
     } else {
@@ -262,8 +256,9 @@ export class KegsComponent implements OnInit {
   }
 
   getPoured(head) {
-    if (head.volume_poured.val.display === null)
+    if (head.volume_poured.val.display === null) {
       return 'Не подключено';
+    }
 
     return head.volume_poured.val.display + ' мл.';
   }

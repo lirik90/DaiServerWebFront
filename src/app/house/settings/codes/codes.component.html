@@ -36,6 +36,18 @@
     <mat-form-field>
       <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.global_id" i18n-placeholder="@@SETTINGS.GENERAL" placeholder="Общий"/>
     </mat-form-field>
+    <!--
     <ngx-monaco-editor class="codes-editor" (change)="itemChanged()" [(ngModel)]="sel_item.obj.text" [options]="editorOptions" (onInit)="onEditorInit($event)"></ngx-monaco-editor>
+    -->
+
+    <div ace-editor
+         [(text)]="sel_item.obj.text"
+         [mode]="'javascript'"
+         [theme]="'eclipse'"
+         [readOnly]="false"
+         [autoUpdateContent]="true"
+         [durationBeforeCallback]="1000"
+         style="min-height: 480px; width:100%; overflow: auto;"></div>
+
   </mat-expansion-panel>
 </mat-accordion>
