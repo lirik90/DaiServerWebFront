@@ -30,6 +30,9 @@
           <mat-panel-title i18n="@@SETTINGS.DETAILS">Детали</mat-panel-title>
           <mat-panel-description>
             {{name(sel_item.obj)}}
+            <span>
+                      <button mat-icon-button (click)="fullscreenToggle()"><mat-icon>all_out</mat-icon></button>
+            </span>
           </mat-panel-description>
         </mat-expansion-panel-header>
         <mat-form-field>
@@ -38,7 +41,6 @@
         <mat-form-field>
           <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.global_id" i18n-placeholder="@@SETTINGS.GENERAL" placeholder="Общий"/>
         </mat-form-field>
-        <button mat-icon-button (click)="fullscreenToggle()"><mat-icon>all_out</mat-icon></button>
       </mat-expansion-panel>
     </mat-accordion>
   </div>
@@ -51,5 +53,6 @@
      [autoUpdateContent]="true"
      [durationBeforeCallback]="1000"
      (textChanged)="itemChanged()"
-     class="editor" id="editor"></ace-editor>
+     class="editor" id="editor"
+          (resize)="adjust_size()"></ace-editor>
 </div>

@@ -8,7 +8,8 @@ ngx-monaco-editor {
 
 .editor {
   min-height: 480px; width:100%;
-  height: calc(100% - 205px);
+  /*height: calc(100% - 205px);*/
+  flex: 1;
 }
 
 .accorderon-fullscren {
@@ -34,6 +35,8 @@ ngx-monaco-editor {
 #editor-pane {
   background: #fafafa;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (max-width: 600px) {
@@ -44,4 +47,9 @@ ngx-monaco-editor {
 
 .houses li {
   overflow: hidden;
+}
+
+.mat-expansion-panel-header-title {
+  justify-content: flex-start;
+  align-items: center;
 }

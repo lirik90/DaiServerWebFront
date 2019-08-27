@@ -192,6 +192,8 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit, Aft
     const ed = this.editor.getEditor();
     ed.resize();
 
+    setTimeout(() => {this.editor.getEditor().resize();}, 200);
+
     /*
     if (elem.requestFullscreen) {
       elem.requestFullscreen();
@@ -203,5 +205,10 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit, Aft
       elem.msRequestFullscreen();
     }
     */
+  }
+
+  adjust_size() {
+    const ed = this.editor.getEditor();
+    ed.resize();
   }
 }
