@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs';
 
@@ -13,7 +13,7 @@ import { SettingsService } from '../settings.service';
 import 'brace';
 import 'brace/mode/javascript';
 import 'brace/mode/typescript';
-import 'brace/theme/eclipse';
+import 'brace/theme/monokai';
 import 'brace/ext/searchbox';
 
 @Component({
@@ -27,6 +27,8 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit, Aft
   editorOptions = {theme: 'vs-dark', language: 'javascript'};
   editorApi = '';
 
+  tmp: string;
+
   options = {
     fontSize: '11pt'
   };
@@ -34,6 +36,7 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit, Aft
   @ViewChild('editor') editor;
 
   ngAfterViewInit() {
+    this.editor.getEditor().setAutoScrollEditorIntoView(true);
   }
 
   onEditorInit(editor) {
@@ -179,5 +182,26 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit, Aft
       console.warn('code_arr empty');
       this.save(evnt);
     }
+  }
+
+  fullscreenToggle() {
+    const elem = document.getElementById('editor-pane');
+
+    elem.classList.toggle('editor-pane-fullscreen');
+
+    const ed = this.editor.getEditor();
+    ed.resize();
+
+    /*
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+      elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+      elem.msRequestFullscreen();
+    }
+    */
   }
 }
