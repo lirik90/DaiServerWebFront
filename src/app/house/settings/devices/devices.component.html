@@ -44,5 +44,6 @@
       <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.extra" i18n-placeholder="@@SETTINGS.EXTRA" placeholder="Экстра" />
     </mat-form-field>
   </mat-expansion-panel>
+
   <app-deviceitems *ngIf="!changed && sel_item" [dev]="sel_item.obj"></app-deviceitems>
 </mat-accordion>

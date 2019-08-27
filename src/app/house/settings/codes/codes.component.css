@@ -7,8 +7,8 @@ ngx-monaco-editor {
 }
 
 .editor {
-  min-height: 480px; width:100%; overflow: auto;
-  height: 100%
+  min-height: 480px; width:100%;
+  height: calc(100% - 205px);
 }
 
 .accorderon-fullscren {
@@ -33,6 +33,7 @@ ngx-monaco-editor {
 
 #editor-pane {
   background: #fafafa;
+  overflow: auto;
 }
 
 @media (max-width: 600px) {

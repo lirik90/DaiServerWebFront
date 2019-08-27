@@ -139,3 +139,8 @@ nav > div {
 }
  */
 
+
+.mat-option {
+  white-space: normal;
+  line-height: 1em;
+}

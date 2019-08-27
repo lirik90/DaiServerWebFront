@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, OnChanges} from '@angular/core';
 
 import {Device, DeviceItem, ItemType, Section} from '../../house';
 import {HouseService} from '../../house.service';
@@ -66,7 +66,7 @@ export class DevicesComponent extends ChangeTemplate<Device> implements OnInit {
   templateUrl: './deviceitems.component.html',
   styleUrls: ['../settings.css', './devices.component.css']
 })
-export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements OnInit {
+export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements OnInit, OnChanges {
   @Input() dev: Device;
 
   itemtypes: ItemType[];
@@ -84,6 +84,13 @@ export class DeviceItemsComponent extends ChangeTemplate<DeviceItem> implements 
   }
 
   ngOnInit() {
+    this.itemtypes = this.houseService.house.itemTypes;
+    this.sections = this.houseService.house.sections;
+    this.fillItems();
+    this.parse_extra();
+  }
+
+  ngOnChanges() {
     this.itemtypes = this.houseService.house.itemTypes;
     this.sections = this.houseService.house.sections;
     this.fillItems();
