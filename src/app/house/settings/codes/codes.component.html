@@ -53,6 +53,7 @@
      [autoUpdateContent]="true"
      [durationBeforeCallback]="1000"
      (textChanged)="itemChanged()"
+              [style.display]="sel_item ? 'block' : 'none'"
      class="editor" id="editor"
           (resize)="adjust_size()"></ace-editor>
 </div>
