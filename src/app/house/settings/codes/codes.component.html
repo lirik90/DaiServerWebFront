@@ -52,7 +52,7 @@
      [options]="options"
      [autoUpdateContent]="true"
      [durationBeforeCallback]="1000"
-     (textChanged)="itemChanged()"
+     (textChanged)="wasChanged()"
               [style.display]="sel_item ? 'block' : 'none'"
      class="editor" id="editor"
           (resize)="adjust_size()"></ace-editor>

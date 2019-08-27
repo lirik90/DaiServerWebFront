@@ -75,6 +75,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
     translate.use(lang);
 
+    document.getElementsByTagName('html')[0].setAttribute('lang', lang);
+
     for (let item of this.languages)
     {
       if (item.code == lang)

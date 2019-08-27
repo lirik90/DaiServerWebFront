@@ -11,6 +11,7 @@ import { StructType, ChangeState, ChangeInfo, ChangeTemplate } from '../settings
 import { SettingsService } from '../settings.service';
 
 import 'brace';
+import {UndoManager} from 'brace';
 import 'brace/mode/javascript';
 import 'brace/mode/typescript';
 import 'brace/theme/monokai';
@@ -148,6 +149,12 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit, Aft
     } else {
       this.select(item);
     }
+
+    console.log(this.editor.getEditor().getSession().getUndoManager());
+    const ses = this.editor.getEditor().getSession();
+    const undo: UndoManager = ses.getUndoManager();
+    undo.reset();
+    console.log(this.editor.getEditor().getSession().getUndoManager());
   }
 
   getCode(code: ChangeInfo<Codes>): void {
@@ -192,7 +199,7 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit, Aft
     const ed = this.editor.getEditor();
     ed.resize();
 
-    setTimeout(() => {this.editor.getEditor().resize();}, 200);
+    setTimeout(() => { this.editor.getEditor().resize(); }, 200);
 
     /*
     if (elem.requestFullscreen) {
@@ -210,5 +217,9 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit, Aft
   adjust_size() {
     const ed = this.editor.getEditor();
     ed.resize();
+  }
+
+  wasChanged() {
+    this.itemChanged();
   }
 }
