@@ -44,8 +44,11 @@
       </mat-expansion-panel>
     </mat-accordion>
   </div>
+
+  <!--
+  [(text)]="sel_item ? sel_item.obj.text : tmp"
+  -->
   <ace-editor #editor
-     [(text)]="sel_item ? sel_item.obj.text : tmp"
      [mode]="'javascript'"
      [theme]="'monokai'"
      [readOnly]="false"

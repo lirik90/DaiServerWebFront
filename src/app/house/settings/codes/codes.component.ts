@@ -10,8 +10,7 @@ import { ByteTools, WebSocketBytesService } from '../../../web-socket.service';
 import { StructType, ChangeState, ChangeInfo, ChangeTemplate } from '../settings';
 import { SettingsService } from '../settings.service';
 
-import 'brace';
-import {UndoManager} from 'brace';
+import * as ace from 'brace';
 import 'brace/mode/javascript';
 import 'brace/mode/typescript';
 import 'brace/theme/monokai';
@@ -35,6 +34,7 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit, Aft
   };
 
   @ViewChild('editor') editor;
+  private newOpened = false;
 
   ngAfterViewInit() {
     this.editor.getEditor().setAutoScrollEditorIntoView(true);
@@ -149,12 +149,17 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit, Aft
     } else {
       this.select(item);
     }
+  }
 
-    console.log(this.editor.getEditor().getSession().getUndoManager());
-    const ses = this.editor.getEditor().getSession();
-    const undo: UndoManager = ses.getUndoManager();
-    undo.reset();
-    console.log(this.editor.getEditor().getSession().getUndoManager());
+  select(item: ChangeInfo<Codes>): void {
+    super.select(item);
+
+    if (item.obj.text) {
+      this.editor.setText(this.sel_item.obj.text);
+      this.editor._editor.session.setUndoManager(new ace.UndoManager());
+
+      this.newOpened = true;
+    }
   }
 
   getCode(code: ChangeInfo<Codes>): void {
@@ -220,6 +225,12 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit, Aft
   }
 
   wasChanged() {
+    if (this.newOpened) {
+      this.newOpened = false;
+      return;
+    }
+
+    this.sel_item.obj.text = this.editor.text;
     this.itemChanged();
   }
 }
