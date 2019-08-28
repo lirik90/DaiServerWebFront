@@ -29,7 +29,7 @@
 
 .example-loading-shade {
   position: absolute;
-  top: 0;
+  top: 120px;
   left: 0;
   bottom: 56px;
   right: 0;
