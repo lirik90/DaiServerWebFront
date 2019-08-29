@@ -69,7 +69,7 @@ export class HouseStateComponent implements OnInit {
           continue;
         }
 
-        if(this.status_weight[status] > this.status_weight[most_bad_status]) {
+        if (this.status_weight[status] > this.status_weight[most_bad_status]) {
           most_bad_status = status;
         }
 

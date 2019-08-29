@@ -3,21 +3,21 @@
   <ng-container *ngFor="let it of items; index as i">
     <div class="col-1-3">
       <div class="module house">
-        <h3>{{it.sct.name}}</h3>		  
-	    		  		  
+        <h3>{{it.sct.name}}</h3>
+
           <ng-container *ngIf="it.clean_type.val.raw > 0; else no_clean_type">
-            <h5 i18n="@@BEERBOX.EVENT.WASH_PROCESS">Идёт промыка, пожалуйста ждите!</h5>
+            <h5 i18n="@@BEERBOX.EVENT.WASH_PROCESS">Идёт промывка, пожалуйста ждите!</h5>
             <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
           </ng-container>
-		 
+
           <ng-template #no_clean_type>
             <ng-container *ngIf="it.pouring.val.raw == 1; else no_pouring">
               <h5 i18n="@@BEERBOX.EVENT.POURING_PROCESS">Идёт налив, пожалуйста ждите!</h5>
               <h5><span i18n="@@BEERBOX.EVENT.LEFT">Осталось</span>: {{(it.full_volume.val.display-it.volume.val.display).toFixed(1)}} <span i18n="@@BEERBOX.ML">мл.</span>
                 <span *ngIf="it.pause.val.display == 1" i18n="@@CONTROL.PAUSE"> Пауза</span></h5>
               <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
-            </ng-container>	
-			
+            </ng-container>
+
 		        <ng-template #no_pouring>
               <ng-container *ngIf="step_[i] == 0">
   			        <h4 i18n="@@BEERBOX.CALIBRATION.STEP_1">Взвесьте пустую бутылку и введите массу бутылки в граммах</h4>
@@ -38,12 +38,12 @@
               </ng-container>
 
               <ng-container *ngIf="step_[i] > 1">
-                <h4 i18n="@@BEERBOX.CALIBRATION.STEP_3">Калибровка налива завершена! <br> 
-                  Произведите контрольный налив и взвесьте бутылку с напитком, если точность налива Вас не устраивает, произведите калибровку повторно</h4>          
+                <h4 i18n="@@BEERBOX.CALIBRATION.STEP_3">Калибровка налива завершена! <br>
+                  Произведите контрольный налив и взвесьте бутылку с напитком, если точность налива Вас не устраивает, произведите калибровку повторно</h4>
                 <button mat-button (click)="click_restart(i)" i18n="@@CONTROL.REPEAT">Начать сначала</button>
               </ng-container>
 		        </ng-template>
-			
+
 		      </ng-template>
       </div>
     </div>

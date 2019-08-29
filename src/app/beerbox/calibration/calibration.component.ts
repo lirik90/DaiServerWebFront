@@ -1,9 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import {Component, OnInit, Input} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
-import { Section, DeviceItem, ParamValue } from "../../house/house";
-import { HouseService } from "../../house/house.service";
-import { ControlService } from "../../house/control.service"
+import {ParamValue} from '../../house/house';
+import {HouseService} from '../../house/house.service';
+import {ControlService} from '../../house/control.service';
 
 @Component({
   selector: 'app-calibration',
@@ -11,8 +11,7 @@ import { ControlService } from "../../house/control.service"
   styleUrls: ['../../sections.css', './calibration.component.css']
 })
 
-export class CalibrationComponent implements OnInit
-{
+export class CalibrationComponent implements OnInit {
   @Input() empty_bottle_mass_: string[];
   @Input() full_bottle_mass_: string[];
   items: any[];
@@ -22,82 +21,71 @@ export class CalibrationComponent implements OnInit
     private route: ActivatedRoute,
     private houseService: HouseService,
     private controlService: ControlService
-  ) { }
+  ) {
+  }
 
-  ngOnInit() 
-  {
+  ngOnInit() {
     this.getSections();
   }
 
-  getSections(): void 
-  {
-    let items: any[] = [];
-    let is_first: boolean = true;
-    for (let sct of this.houseService.house.sections) 
-	  {
-      if (is_first) 
-	    {
+  getSections(): void {
+    const items: any[] = [];
+    let is_first = true;
+    for (const sct of this.houseService.house.sections) {
+      if (is_first) {
         is_first = false;
         continue;
       }
-      let it: any = { sct };
-      for (let group of sct.groups) 
-	    {
-        if (group.type.name == 'head') 
-		    { // api.HeadGroup
-          for (let item of group.items) 
-		      {
-            switch(item.type.name) 
-			      {
-              case 'pouring':  it.pouring = item;    break; // api.type.item.pouring
-              case 'volume':  it.volume = item; break; // api.type.item.volume
-              case 'pause':  it.pause = item;      break; // api.type.item.pause
+      const it: any = {sct};
+      for (const group of sct.groups) {
+        if (group.type.name === 'head') { // api.HeadGroup
+          for (const item of group.items) {
+            switch (item.type.name) {
+              case 'pouring':
+                it.pouring = item;
+                break; // api.type.item.pouring
+              case 'volume':
+                it.volume = item;
+                break; // api.type.item.volume
+              case 'pause':
+                it.pause = item;
+                break; // api.type.item.pause
             }
 
-            if (it.pouring !== undefined && it.volume !== undefined && it.pause !== undefined)
-			      {
-              break;
-			      }
-          }
-        } 
-        else if (group.type.name == 'cleanTakehead') 
-        {
-          for (let item of group.items) 
-          {
-            switch(item.type.name) 
-            {
-              case 'cleanType': it.clean_type = item;              break; // api.CleanTypeItem
-            }
-
-            if (it.clean_type !== undefined)
-            {
+            if (it.pouring !== undefined && it.volume !== undefined && it.pause !== undefined) {
               break;
             }
           }
-        }
-        else if (group.type.name == 'params') 
-        { // api.type.group.params
-          for (let item of group.items) 
-          {
-            if (item.type.name == 'setVol3')
-            { // api.type.item.setVol3
+        } else if (group.type.name === 'cleanTakehead') {
+          for (const item of group.items) {
+            switch (item.type.name) {
+              case 'cleanType':
+                it.clean_type = item;
+                break; // api.CleanTypeItem
+            }
+
+            if (it.clean_type !== undefined) {
+              break;
+            }
+          }
+        } else if (group.type.name === 'params') { // api.type.group.params
+          for (const item of group.items) {
+            if (item.type.name === 'setVol3') { // api.type.item.setVol3
               it.full_volume = item;
             }
           }
-          for (let param of group.params)
-          {
-            if (param.param.name == "ratioVolume")
-            {
+          for (const param of group.params) {
+            if (param.param.name === 'ratioVolume') {
               it.ratio_volume_param = param;
               break;
             }
           }
         }
       }
-      if (it.ratio_volume_param !== undefined && it.pouring !== undefined && it.volume !== undefined && it.pause !== undefined && it.full_volume !== undefined)
-	    {
+      if (it.ratio_volume_param !== undefined && it.pouring !== undefined && it.volume !== undefined
+        && it.pause !== undefined && it.full_volume !== undefined) {
         items.push(it);
-	    }
+      }
     }
 
     this.items = items;
@@ -105,61 +93,52 @@ export class CalibrationComponent implements OnInit
     this.full_bottle_mass_ = new Array(items.length);
     this.step_ = new Array(items.length).fill(0);
   }
-	
-  click_next(index: number): void
-  {	  
-    switch(this.step_[index])
-    {
+
+  click_next(index: number): void {
+    switch (this.step_[index]) {
       case 0:
-        if (+this.empty_bottle_mass_[index] > 0)
-        {
+        if (+this.empty_bottle_mass_[index] > 0) {
           this.step_[index] = this.step_[index] + 1;
-        }	      
+        }
         break;
       case 1:
-        if (+this.full_bottle_mass_[index] > 0 && +this.full_bottle_mass_[index] > +this.empty_bottle_mass_[index])
-        {
+        if (+this.full_bottle_mass_[index] > 0 && +this.full_bottle_mass_[index] > +this.empty_bottle_mass_[index]) {
           this.calculate_coeff(index);
-          this.step_[index] = this.step_[index] + 1;			
+          this.step_[index] = this.step_[index] + 1;
         }
-        break;			  
-    }	  
-  }  
+        break;
+    }
+  }
 
-  calculate_coeff(index: number): void
-  {			  
-    if (this.items[index].ratio_volume_param != undefined)
-    {
-      let result_coeff: number = 0.;
+  calculate_coeff(index: number): void {
+    if (this.items[index].ratio_volume_param != undefined) {
+      let result_coeff = 0.;
       let ratio = +this.items[index].ratio_volume_param.value;
-      let volume = +this.items[index].full_volume.val.display;
-      let full_bottle = +this.full_bottle_mass_[index];
-      let empty_bottle = +this.empty_bottle_mass_[index];
-      
+      const volume = +this.items[index].full_volume.val.display;
+      const full_bottle = +this.full_bottle_mass_[index];
+      const empty_bottle = +this.empty_bottle_mass_[index];
+
       ratio = (ratio <= 0 ? 1 : ratio);
-      
-      result_coeff = (ratio * volume * 1.03) / (full_bottle - empty_bottle);	
 
-      this.items[index].ratio_volume_param.value = result_coeff.toString();	
+      result_coeff = (ratio * volume * 1.03) / (full_bottle - empty_bottle);
 
-      let params: ParamValue[] = [];
+      this.items[index].ratio_volume_param.value = result_coeff.toString();
+
+      const params: ParamValue[] = [];
       params.push(this.items[index].ratio_volume_param);
       this.controlService.changeParamValues(params);
     }
   }
-	
-  click_restart(index: number): void
-  {
-    this.empty_bottle_mass_[index] = "";
-    this.full_bottle_mass_[index] = "";
+
+  click_restart(index: number): void {
+    this.empty_bottle_mass_[index] = '';
+    this.full_bottle_mass_[index] = '';
     this.step_[index] = 0;
   }
-	
-  check_number_only(event): boolean 
-  {
+
+  check_number_only(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) 
-	  {
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
       return false;
     }
     return true;

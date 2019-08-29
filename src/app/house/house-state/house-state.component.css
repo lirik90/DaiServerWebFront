@@ -57,6 +57,7 @@
   z-index: 15;
   min-width: 320px;
   box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .house-state-msg__title {
