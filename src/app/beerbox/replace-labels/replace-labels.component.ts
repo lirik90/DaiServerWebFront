@@ -28,52 +28,20 @@ export class ReplaceLabelsComponent implements OnInit
     private controlService: ControlService,
     public dialog: MatDialog) { }
 
-  ngOnInit()
-  {
-    this.get_info();
-  }
-
-  get_info(): void
-  {
-    for (let sct of this.houseService.house.sections)
-	  {
-      if (sct.id == 1)
-      {
-        for (let group of sct.groups)
-        {
-          if (group.type.name == 'printer')
-          {
-            for (let item of group.items)
-            {
-              if (item.type.name == 'labels_num')
-              {
-                this.labelsRemain = item;
-              }
-            }
-
-            for (let param of group.params)
-            {
-              if (param.param.name == 'labels_num_full')
-              {
-                this.labels_num_full_ = param;
-                this.labels_num_full_.value = +this.labels_num_full_.value + 10;
-              }
-            }
-          }
-        }
-      }
-    }
+  ngOnInit() {
+    const printerGrp = this.houseService.house.sections.find(s => s.id === 1).groups.find(g => g.type.name === 'printer');
+    this.labelsRemain = printerGrp.items.find(i => i.type.name === 'labels_num');
+    this.labels_num_full_ = printerGrp.params.find(p => p.param.name === 'label_num_full');
+    this.labels_num_full_.value += 10;
   }
 
   click_apply_button(): void {
     if (this.labels_num_full_.value > 10) {
-      let params: ParamValue[] = [];
-      this.labels_num_full_.value = +this.labels_num_full_.value - 10;
-      params.push(this.labels_num_full_);
-      this.controlService.changeParamValues(params);
+      this.labels_num_full_.value -= 10;
+      this.controlService.changeParamValues([this.labels_num_full_]);
       this.controlService.writeToDevItem(this.labels_current_num_.id, this.labels_num_full_.value);
 
-      this.labels_num_full_.value = +this.labels_num_full_.value + 10;
+      this.labels_num_full_.value += 10;
 
       this.openOkDialog();
     }
@@ -94,10 +62,12 @@ export class ReplaceLabelsComponent implements OnInit
   selector: 'app-ok-dialog',
   template: `    <h2 i18n="@@BEERBOX.REPLACE_LABEL.TITLE">Замена ленты</h2>
   <ng-container>
-      <h4><p i18n="@@BEERBOX.REPLACE_LABEL.TEXT">Вставьте ленту с этикетками в устройство<br><br>Введите количество этикеток, которое указано на ленте</p></h4>
+      <h4><p i18n="@@BEERBOX.REPLACE_LABEL.TEXT">Вставьте ленту с этикетками в устройство<br><br>
+          Введите количество этикеток, которое указано на ленте</p></h4>
       <mat-form-field>
           <label>
-              <input matInput type="number" [(ngModel)]="labels_num_full_.value" i18n-placeholder="@@BEERBOX.REPLACE_LABEL.INPUT" placeholder="Введите количество этикеток"/>
+              <input matInput type="number" [(ngModel)]="labels_num_full_.value" 
+                     i18n-placeholder="@@BEERBOX.REPLACE_LABEL.INPUT" placeholder="Введите количество этикеток"/>
           </label>
       </mat-form-field>
       <div style="text-align: center">
