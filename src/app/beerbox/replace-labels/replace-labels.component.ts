@@ -31,7 +31,7 @@ export class ReplaceLabelsComponent implements OnInit
   ngOnInit() {
     const printerGrp = this.houseService.house.sections.find(s => s.id === 1).groups.find(g => g.type.name === 'printer');
     this.labelsRemain = printerGrp.items.find(i => i.type.name === 'labels_num');
-    this.labels_num_full_ = printerGrp.params.find(p => p.param.name === 'label_num_full');
+    this.labels_num_full_ = printerGrp.params.find(p => p.param.name === 'labels_num_full');
     this.labels_num_full_.value += 10;
   }
 
