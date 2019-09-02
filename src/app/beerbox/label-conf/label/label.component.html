@@ -1,17 +1,25 @@
-<button (click)="addLayout()">Add a layout</button>
+<div>
+  <button (click)="addLayout()">Add a layout</button>
+</div>
 
-<div #previewContainer class="previewContainer">
-  <div class="layout" *ngFor="let l of layouts" (mousemove)="drag($event)"  (mouseup)="dragEnd()">
+<div #previewContainer class="previewContainer" [style.width.px]="cont_width">
+  <div class="layout" *ngFor="let l of layouts" (mousemove)="drag($event)"  (mouseup)="dragEnd()" [style.height.px]="l.height">
     <div class="layout-buttons">^ v X</div>
     <div class="element-buttons"><button (click)="addElement(l)">+</button></div>
 
-    <div class="element" *ngFor="let e of l.elements" (mousedown)="dragStart(e, $event)"
-         [style.transform]="e.transform" [style.width.px]="e.currentW" [style.height.px]="e.currentH">
-      Element
+    <div class="element {{e.type}}" *ngFor="let e of l.elements" (mousedown)="dragStart(e, $event)"
+         [style.transform]="e.transform" [style.width.px]="e.currentW" [style.height.px]="e.currentH"
+         [style.background-image]="e.bgImg">
+
+      <img *ngIf="e.type === 'barcode'" class="jsbarcode"
+           jsbarcode-value="123456789012"
+           [attr.jsbarcode-format]="getBarcodeType(e.barcode_type)">
 
       <div class="resize-handler" (mousedown)="resizeStart(e, $event)"></div>
     </div>
   </div>
 </div>
 
-{{ labjson |json }}
+<pre>
+  {{ labjson |json }}
+</pre>
