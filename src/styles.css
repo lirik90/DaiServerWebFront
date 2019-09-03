@@ -143,3 +143,8 @@ nav > div {
   white-space: normal;
   line-height: 1em;
 }
+
+
+.mat-paginator-container {
+  flex-wrap: wrap !important;
+}

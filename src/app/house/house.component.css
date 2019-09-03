@@ -1398,3 +1398,9 @@ h2:lang(ko).localnav-title {
   top: 48px;
   align-self: flex-start;
 }
+
+.timestring {
+  font-size: 18px;
+  position: relative;
+  top: 1px;
+}
