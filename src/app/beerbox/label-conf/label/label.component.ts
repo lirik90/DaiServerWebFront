@@ -29,6 +29,10 @@ class Element {
   bgImg: SafeStyle;
   type: string;
   barcode_type: any;
+  value;
+  fontSize: SafeStyle;
+  fontName: SafeStyle;
+  fontWeight: SafeStyle;
 
   constructor(x = 0, y = 0, w = 32, h = 32) {
     this.initialX = x;
@@ -67,7 +71,7 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
   draggingElement: Element;
   resizingElement: Element;
 
-  private cont_width: number;
+  cont_width: number;
 
   constructor(
     private resolver: ComponentFactoryResolver,
@@ -154,6 +158,22 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (e.type === 'barcode') {
           e.barcode_type = ejson.barcode_type;
+
+          const sec = this.houseService.house.sections[1];
+          const labelGrp = sec.groups.find(g => g.type.name === 'label');
+          const param = labelGrp.params.find(p => p.param.name === ejson.param_name);
+          e.value = param.value;
+        }
+
+        if (e.type === 'text') {
+          const sec = this.houseService.house.sections[1];
+          const labelGrp = sec.groups.find(g => g.type.name === 'label');
+          const param = labelGrp.params.find(p => p.param.name === ejson.param_name);
+          e.value = param.value;
+
+          e.fontSize = ejson.font_size;
+          e.fontName = ejson.font;
+          e.fontWeight = ejson.font_bold ? 'bold' : 'normal';
         }
       });
     });
@@ -308,4 +328,5 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
         return 'QR';
     }
   }
+
 }

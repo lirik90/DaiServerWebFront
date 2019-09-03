@@ -12,8 +12,13 @@
          [style.background-image]="e.bgImg">
 
       <img *ngIf="e.type === 'barcode'" class="jsbarcode"
-           jsbarcode-value="123456789012"
+           [attr.jsbarcode-value]="e.value"
            [attr.jsbarcode-format]="getBarcodeType(e.barcode_type)">
+
+      <span *ngIf="e.type === 'text'"
+            [style.font-family]="e.fontName"
+            [style.font-size.px]="e.fontSize"
+            [style.font-weight]="e.fontWeight">{{ e.value }}</span>
 
       <div class="resize-handler" (mousedown)="resizeStart(e, $event)"></div>
     </div>
