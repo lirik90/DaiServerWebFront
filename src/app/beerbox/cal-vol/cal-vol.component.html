@@ -1,0 +1,26 @@
+<h2>Калибровка свободного объёма бутылки</h2>
+
+<div class="taps-container">
+    <mat-card class="pane" *ngFor="let tap of taps">
+      <mat-card-title>
+        {{ tap.sec.name }}
+      </mat-card-title>
+      <mat-card-content class="head-pane__content">
+        <ng-container  *ngIf="tap.step === 1">
+          Вставьте пустую бутулку и нажмите "Начать калибровку"<br>
+        </ng-container>
+        <ng-container  *ngIf="tap.step === 2">
+          Нажмите кнопку на аппарате<br>
+        </ng-container>
+        <ng-container  *ngIf="tap.step === 3">
+          <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
+        </ng-container>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-stroked-button (click)="nextStep(tap)">Следующий шаг</button>
+      </mat-card-actions>
+      <mat-card-footer>
+
+      </mat-card-footer>
+    </mat-card>
+</div>

@@ -14,6 +14,7 @@ import {LabelConfiguratorComponent} from './label-configurator/label-configurato
 import {TapListComponent} from './label-conf/tap-list/tap-list.component';
 import {ProjectLoadGuard} from '../house/project-load.guard';
 import {PermissionGuard} from '../house/permission.guard';
+import {CalVolComponent} from './cal-vol/cal-vol.component';
 
 const beerboxRoutes: Routes = [
   {
@@ -23,6 +24,7 @@ const beerboxRoutes: Routes = [
       {path: 'kegs', component: KegsComponent},
       {path: 'wash', component: WashComponent, data: { req_perms: ['can_see_more', 'can_wash'] }, canActivate: [PermissionGuard]},
       {path: 'calibration', component: CalibrationComponent},
+      {path: 'cal-vol', component: CalVolComponent},
       {path: 'check-head-stand', component: CheckHeadStandComponent},
       {path: 'replace_labels', component: ReplaceLabelsComponent},
       {path: 'update_beer_info', component: UpdateBeerInfoComponent},
