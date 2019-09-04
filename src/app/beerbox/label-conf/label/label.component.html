@@ -9,7 +9,8 @@
 
     <div class="element {{e.type}}" *ngFor="let e of l.elements" (mousedown)="dragStart(e, $event)"
          [style.transform]="e.transform" [style.width.px]="e.currentW" [style.height.px]="e.currentH"
-         [style.background-image]="e.bgImg">
+         [style.background-image]="e.bgImg"
+          (click)="select(e)">
 
       <img *ngIf="e.type === 'barcode'" class="jsbarcode"
            [attr.jsbarcode-value]="e.value"
@@ -23,6 +24,33 @@
       <div class="resize-handler" (mousedown)="resizeStart(e, $event)"></div>
     </div>
   </div>
+</div>
+
+<div *ngIf="selectedElement">
+  Тип: <select [(ngModel)]="selectedElement.type">
+        <option value="text">text</option>
+        <option value="image">image</option>
+        <option  value="barcode">barcode</option>
+       </select><br>
+
+  <ng-container *ngIf="selectedElement.type !== 'image'">
+  Значение:
+      <select [(ngModel)]="selectedElement.paramName">
+        <option *ngFor="let opt of params" [value]="opt">{{opt}}</option>
+      </select><br>
+  </ng-container>
+
+  <ng-container *ngIf="selectedElement.type === 'barcode'">
+    Тип штрихкода: <select [(ngModel)]="selectedElement.barcode_type">
+        <option value="1">EAN</option>
+        <option value="2">CODE-128</option>
+        <option value="3">QR</option>
+      </select><br>
+  </ng-container>
+
+  <ng-container *ngIf="selectedElement.type === 'image'">
+    Значение: <input type="file">
+  </ng-container>
 </div>
 
 <pre>

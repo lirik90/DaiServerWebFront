@@ -30,6 +30,7 @@ class Element {
   type: string;
   barcode_type: any;
   value;
+  paramName: string;
   fontSize: SafeStyle;
   fontName: SafeStyle;
   fontWeight: SafeStyle;
@@ -72,6 +73,8 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
   resizingElement: Element;
 
   cont_width: number;
+  selectedElement: Element;
+  params = [];
 
   constructor(
     private resolver: ComponentFactoryResolver,
@@ -133,6 +136,14 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
       '  ]' +
       '}');
 
+      const sec = this.houseService.house.sections[1];
+      const labelGrp = sec.groups.find(g => g.type.name === 'label');
+      labelGrp.params.map(p => {
+        if (p.param.name) {
+          this.params.push(p.param.name);
+        }
+      });
+
       this.load();
   }
 
@@ -163,6 +174,7 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
           const labelGrp = sec.groups.find(g => g.type.name === 'label');
           const param = labelGrp.params.find(p => p.param.name === ejson.param_name);
           e.value = param.value;
+          e.paramName = ejson.param_name;
         }
 
         if (e.type === 'text') {
@@ -170,6 +182,7 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
           const labelGrp = sec.groups.find(g => g.type.name === 'label');
           const param = labelGrp.params.find(p => p.param.name === ejson.param_name);
           e.value = param.value;
+          e.paramName = ejson.param_name;
 
           e.fontSize = ejson.font_size;
           e.fontName = ejson.font;
@@ -329,4 +342,7 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  select(e: Element) {
+    this.selectedElement = e;
+  }
 }
