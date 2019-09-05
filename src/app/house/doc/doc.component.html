@@ -1,0 +1,61 @@
+<h2>Справка</h2>
+<div>
+  <div [style.font-size.px]="19">Локальное подключение по Wi-Fi</div>
+  <div class="desc">
+    При отсутствии связи с устройством, возможно подключится к нему локально по WI-FI.
+    Супервайзер может получить Логин и пароль к WI-FI зайдя в Web-интерфейс во вкладке Элементы в поле Сеть.
+    Техник(промывщик) и Mерчендайзер(сменщик кег) должен получить пароль и логин у Cупервайзера(руководства).
+  </div>
+  <div>
+    <mat-vertical-stepper linear="false">
+      <mat-step>
+        <ng-template matStepLabel>Выберите в настройках Сеть и Интернет</ng-template>
+        <img src="/assets/img/help/local/local1.png">
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Выберите Wi-Fi</ng-template>
+        <img src="/assets/img/help/local/local2.png">
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Нажмите добавить сеть</ng-template>
+        <img src="/assets/img/help/local/local3.png">
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Введите имя сети</ng-template>
+        <img src="/assets/img/help/local/local4.png">
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Выберите защиту сети WPA/WPA2 PSK</ng-template>
+        <img src="/assets/img/help/local/local5.png">
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Если в расширенных настройках есть настройка скрытая сеть, то выберите да.</ng-template>
+        <img src="/assets/img/help/local/local6.png">
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Введите пароль сети и добавьте сеть</ng-template>
+        <img src="/assets/img/help/local/local7.png">
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Выберите добавленную точку доступа для авторизации в сети</ng-template>
+        <img src="/assets/img/help/local/local8.png">
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Нажмите на название точки доступа, чтобы войти сеть.</ng-template>
+        <img src="/assets/img/help/local/local9.png">
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Нажмите на ссылку http://beerbox.local.ru</ng-template>
+        <img src="/assets/img/help/local/local10.png">
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Введите ваш логин и пароль для входа в сеть</ng-template>
+        <img src="/assets/img/help/local/local11.png">
+      </mat-step>
+
+      <ng-template matStepperIcon="edit" let-index="index">
+        {{ index + 1 }}
+      </ng-template>
+    </mat-vertical-stepper>
+  </div>
+</div>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {HouseService} from '../../house/house.service';
 import {ControlService} from '../../house/control.service';
 import {switchAll} from 'rxjs/operators';
+import {ParamValue} from '../../house/house';
 
 @Component({
   selector: 'app-cal-vol',
@@ -27,6 +28,9 @@ export class CalVolComponent implements OnInit {
     switch (tap.step) {
       case 1:
         // При запуске калибровки мы записываем 5 в режим работы головы.
+        this.controlService.writeToDevItem(
+          tap.sec.groups.find(g => g.type.name === 'head')
+            .items.find(i => i.type.name === 'setMode').id, 5);
         break;
     }
 

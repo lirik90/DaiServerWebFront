@@ -20,7 +20,8 @@
 		"REPLACE_LABEL": "Замена ленты",
 		"BEER_INFO": "Текст этикетки",
 		"CONTROLLER": "Настройка контроллера",
-    "OPERATION_HOURS": "Часы работы"
+    "OPERATION_HOURS": "Часы работы",
+    "HELP": "Справка"
 	},
 	"LOG": {
 		"UNKNOWN_USER": "Неизвестный ID пользователя:"

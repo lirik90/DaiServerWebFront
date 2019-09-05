@@ -148,3 +148,7 @@ nav > div {
 .mat-paginator-container {
   flex-wrap: wrap !important;
 }
+
+.mat-step-icon-state-edit {
+  background-color: rgba(0,0,0,.54) !important;
+}

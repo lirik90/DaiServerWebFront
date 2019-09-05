@@ -210,6 +210,12 @@ export class HouseComponent implements OnInit, OnDestroy {
       });
     }
 
+    this.fillerNav.push({
+      link: 'doc',
+      text: this.translate.instant('NAVIGATION_TAB.HELP'),
+      icon: 'help'
+    });
+
     this.getHouseInfo();
   }
 

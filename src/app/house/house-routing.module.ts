@@ -14,6 +14,8 @@ import { ParamComponent } from './param/param.component';
 import {ExportComponent} from './reports/export/export.component';
 import {ReportsModule} from './reports/reports.module';
 import {PermissionGuard} from './permission.guard';
+import {DocCommand} from '@angular/cli/commands/doc-impl';
+import {DocComponent} from './doc/doc.component';
 
 const houseRoutes: Routes = [
   {
@@ -57,6 +59,10 @@ const houseRoutes: Routes = [
             canLoad: [AuthGuard]
           },
           { path: 'beerbox', loadChildren: 'app/beerbox/beerbox.module#BeerboxModule', canLoad: [AuthGuard] },
+          {
+            path: 'doc',
+            component: DocComponent,
+          },
         ]
       }
     ]

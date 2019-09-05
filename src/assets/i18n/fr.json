@@ -20,7 +20,8 @@
 		"REPLACE_LABEL": "Remplacement du rouleau d'autocollant",
 		"BEER_INFO": "Texte autocollant",
 		"CONTROLLER": "Contrôleur configure",
-    "OPERATION_HOURS": "Heures d'opération"
+    "OPERATION_HOURS": "Heures d'opération",
+    "HELP": "Help"
 	},
 	"LOG": {
 		"UNKNOWN_USER": "Identifiant utilisateur inconnu:"

@@ -20,7 +20,8 @@
 		"REPLACE_LABEL": "Replacing sticker roll",
 		"BEER_INFO": "Sticker text",
 		"CONTROLLER": "Controller configure",
-    "OPERATION_HOURS": "Operation hours"
+    "OPERATION_HOURS": "Operation hours",
+    "HELP": "Help"
 	},
 	"LOG": {
 		"UNKNOWN_USER": "Unknow user ID:"
