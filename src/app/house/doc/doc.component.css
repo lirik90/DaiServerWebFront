@@ -4,3 +4,17 @@
   color: #666;
   line-height: 1.33;
 }
+
+@media all and (max-width: 600px) {
+  .stepper {
+    margin-left: -32px;
+  }
+
+  .stepper .mat-vertical-content {
+    padding: 0 8px;
+  }
+
+  .stepper img {
+    max-width: 100%;
+  }
+}
