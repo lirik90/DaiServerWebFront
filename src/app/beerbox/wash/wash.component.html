@@ -24,7 +24,6 @@
         <ng-container *ngIf="clean.step.val.raw != 0">
           <h4><span i18n="@@BEERBOX.WASH.STEP">Текущий этап</span>: {{stepText(clean)}}</h4>
           <ng-container *ngIf="clean.pouring.val.raw == 0">
-
             <ng-container *ngIf="clean.step.val.raw <= 3">
               <h4 i18n="@@BEERBOX.WASH.READY">К промывке готов!</h4>
               <p><span i18n="@@BEERBOX.WASH.AGENT">Промывочное средство</span>: {{cleanAgent(clean)}}</p>
