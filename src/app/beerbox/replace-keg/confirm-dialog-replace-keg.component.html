@@ -2,13 +2,13 @@
 <div mat-dialog-content>
   <p i18n="@@BEERBOX.REPLACE_KEG.DIALOG.TEXT">После замены кеги вам нужно это подтвердить. Вы уверены что хотите сделать это?</p>
 </div>
-<p *ngIf="is_printer_auto_" i18n="@@BEERBOX.REPLACE_KEG.DIALOG.DATE">Установите дату изготовления</p>
-<mat-form-field *ngIf="is_printer_auto_" >
+<p i18n="@@BEERBOX.REPLACE_KEG.DIALOG.DATE">Установите дату изготовления</p>
+<mat-form-field>
   <input matInput required (dateChange)="change($event)" [matDatepicker]="picker" i18n-placeholder="@@BEERBOX.REPLACE_KEG.DIALOG.DATE_HINT" placeholder="Дата изготовления" [max]="maxDate">
   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
   <mat-datepicker touchUi #picker></mat-datepicker>
 </mat-form-field>
-<div *ngIf="is_printer_auto_" >
+<div>
   <p i18n="@@BEERBOX.REPLACE_KEG.DIALOG.MANUFACTORER">Укажите завод изготовитель</p>
   <mat-form-field class="input-full-width">
     <mat-select required [(value)]="manufacturer_info_">

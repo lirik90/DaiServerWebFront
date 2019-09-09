@@ -72,33 +72,22 @@ export class ReplaceKegComponent implements OnInit
   {
     this.items = [];
     let is_first: boolean = true;
-    for (let sct of this.houseService.house.sections)
-    {
-      if (is_first)
-      {
-        for (let group of sct.groups)
-        {
-          if (group.type.name == 'label_general')
-          {
-            for (let param of group.params)
-            {
-              if (param.param.name == 'manufacturers')
-              {
-                if (param.value !== undefined && param.value !== null && param.value.length)
-                {
+    for (let sct of this.houseService.house.sections) {
+      if (is_first) {
+        for (let group of sct.groups) {
+          if (group.type.name == 'label_general') {
+            for (let param of group.params) {
+              if (param.param.name == 'manufacturers') {
+                if (param.value !== undefined && param.value !== null && param.value.length) {
                   this.manufacturers_ = param.value.split("|");
                 }
               }
             }
           }
-          else if (group.type.name == 'printer')
-          {
-            if (group.mode == 2) // automatic
-            {
+          else if (group.type.name === 'printer') {
+            if (group.mode === 2) { // automatic
               this.is_printer_auto_ = true;
-            }
-            else
-            {
+            } else {
               this.is_printer_auto_ = false;
             }
           }

@@ -8,6 +8,7 @@ import {ControlService} from '../../house/control.service';
 import {AuthenticationService} from '../../authentication.service';
 
 interface Head {
+  date_made: ParamValue;
   title: string;
   date_installed: ParamValue;
   manufacturer: ParamValue;
@@ -80,7 +81,8 @@ export class KegsComponent implements OnInit {
           // TODO: check for undefined
           heads.push({
             title: group.title,
-            date_installed: group.params[0].childs.filter((el) => el.param.name === 'date')[0],
+            date_made: group.params[0].childs.filter((el) => el.param.name === 'date')[0],
+            date_installed: group.params.filter((el) => el.param.name === 'keg_replacement_date')[0],
             manufacturer: group.params[0].childs.filter((el) => el.param.name === 'name')[0],
 
             is_not_empty: group.items.filter((el) => el.type.name === 'kegNotEmpty')[0],
@@ -167,8 +169,12 @@ export class KegsComponent implements OnInit {
   }
 
   set_manufacture(keg: Head, date: string, manufacturer_info: string): void {
+    if (keg.date_made !== undefined && keg.date_made != null) {
+      keg.date_made.value = date;
+    }
+
     if (keg.date_installed !== undefined && keg.date_installed != null) {
-      keg.date_installed.value = date;
+      keg.date_installed.value = (new Date()).toLocaleDateString('ru');
     }
 
     if (keg.manufacturer !== undefined && keg.manufacturer != null) {
