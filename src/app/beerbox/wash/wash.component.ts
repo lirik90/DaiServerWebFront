@@ -118,13 +118,13 @@ export class WashComponent implements OnInit {
       return this.translate.instant('BEERBOX.WASH_AGENTS.AGENT_1');
     } else if (step == 4 || step == 5) {
       return this.translate.instant('BEERBOX.WASH_AGENTS.AGENT_2');
- } else if (step == 2) {
+    } else if (step == 2) {
       const type = clean.type.val.raw;
       if (type == 2) {
         return this.translate.instant('BEERBOX.WASH_AGENTS.AGENT_3');
       } else if (type == 3) {
         return this.translate.instant('BEERBOX.WASH_AGENTS.AGENT_4');
- }
+      }
     }
     return '';
   }

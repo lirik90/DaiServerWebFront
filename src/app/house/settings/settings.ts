@@ -1,6 +1,6 @@
-import { WebSockCmd } from "../control.service";
-import { ByteTools, WebSocketBytesService } from "../../web-socket.service";
-import { HouseService } from "../house.service";
+import {WebSockCmd} from '../control.service';
+import {ByteTools, WebSocketBytesService} from '../../web-socket.service';
+import {HouseService} from '../house.service';
 
 export enum StructType {
   Unknown,
@@ -46,11 +46,13 @@ export abstract class ChangeTemplate<T> {
 
   items: ChangeInfo<T>[] = [];
   sel_item: ChangeInfo<T>;
+
   constructor(
     private cmd: number,
     protected wsbService: WebSocketBytesService,
     public houseService: HouseService,
-    private itemType: new () => T) {}
+    private itemType: new () => T) {
+  }
 
   abstract getObjects(): T[];
 
@@ -58,8 +60,9 @@ export abstract class ChangeTemplate<T> {
     this.changed = false;
     this.items = [];
     let objects: T[] = this.getObjects();
-    for (let obj of objects)
+    for (let obj of objects) {
       this.addItem(Object.assign({}, obj), false);
+    }
   }
 
   select(item: ChangeInfo<T>): void {
@@ -67,18 +70,21 @@ export abstract class ChangeTemplate<T> {
   }
 
   itemChanged(item: ChangeInfo<T> = undefined, state: ChangeState = ChangeState.Upsert): void {
-    if (item === undefined)
+    if (item === undefined) {
       item = this.sel_item;
+    }
     if (item.state !== state) {
       item.state = state;
-      if (!this.changed)
+      if (!this.changed) {
         this.changed = true;
+      }
     }
   }
 
   save(evnt: any = undefined): void {
-    if (evnt !== undefined)
+    if (evnt !== undefined) {
       evnt.stopPropagation();
+    }
     let data = this.getChangedData();
     this.wsbService.send(WebSockCmd.WS_STRUCT_MODIFY, this.houseService.house.id, data);
     this.items = [];
@@ -87,8 +93,9 @@ export abstract class ChangeTemplate<T> {
 
   // TODO: rename and refactor. save2 is for code saving
   save2(evnt: any = undefined): void {
-    if (evnt !== undefined)
+    if (evnt !== undefined) {
       evnt.stopPropagation();
+    }
     let data = this.getChangedData();
     this.wsbService.send(WebSockCmd.WS_STRUCT_MODIFY, this.houseService.house.id, data);
 
@@ -97,14 +104,17 @@ export abstract class ChangeTemplate<T> {
   }
 
   cancel(evnt: any = undefined): void {
-    if (evnt !== undefined)
+    if (evnt !== undefined) {
       evnt.stopPropagation();
-    if (this.sel_item !== undefined)
+    }
+    if (this.sel_item !== undefined) {
       this.select(this.sel_item);
+    }
     this.fillItems();
   }
 
-  initItem(obj: T): void {}
+  initItem(obj: T): void {
+  }
 
   create(): void {
     this.changed = true;
@@ -115,10 +125,11 @@ export abstract class ChangeTemplate<T> {
   }
 
   addItem(obj: T, select: boolean = true): void {
-    let item = { state: ChangeState.NoChange, obj: obj } as ChangeInfo<T>;
+    let item = {state: ChangeState.NoChange, obj: obj} as ChangeInfo<T>;
     this.items.push(item);
-    if (select)
+    if (select) {
       this.sel_item = item;
+    }
   }
 
   remove(item: ChangeInfo<T>): void {
@@ -128,31 +139,23 @@ export abstract class ChangeTemplate<T> {
 
   abstract saveObject(obj: T): Uint8Array;
 
-  getChangedData(): Uint8Array
-  {
+  getChangedData(): Uint8Array {
     let data;
     let updateSize = 0;
     let insertSize = 0;
     let updateList = [];
     let insertList = [];
     let deleteList = [];
-    for (const item of this.items)
-    {
-      if (item.state === ChangeState.Delete)
-      {
+    for (const item of this.items) {
+      if (item.state === ChangeState.Delete) {
         deleteList.push((<any>item.obj).id);
-      }
-      else if (item.state === ChangeState.Upsert)
-      {
+      } else if (item.state === ChangeState.Upsert) {
         data = this.saveObject(item.obj);
 
-        if ((<any>item.obj).id > 0)
-        {
+        if ((<any>item.obj).id > 0) {
           updateSize += data.length;
           updateList.push(data);
-        }
-        else
-        {
+        } else {
           insertSize += data.length;
           insertList.push(data);
         }

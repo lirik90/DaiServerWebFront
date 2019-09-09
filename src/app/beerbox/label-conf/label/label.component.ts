@@ -163,7 +163,7 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
         e.type = ejson.type;
 
         if (e.type === 'image') {
-          const url = `data:image/x-ms-bpm;base64,${ejson.param_value}`;
+          const url = `data:image/x-ms-bmp;base64,${ejson.param_value}`;
           e.bgImg = this.sanitizer.bypassSecurityTrustStyle(`url("${url}")`);
         }
 
