@@ -13,8 +13,10 @@ import { SettingsService } from '../settings.service';
 import * as ace from 'brace';
 import 'brace/mode/javascript';
 import 'brace/mode/typescript';
-import 'brace/theme/monokai';
+import './dracula-mod';
 import 'brace/ext/searchbox';
+import 'brace/ext/language_tools';
+import {WebSockCmd} from '../../control.service';
 
 @Component({
   selector: 'app-codes',
@@ -30,7 +32,8 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit, Aft
   tmp: string;
 
   options = {
-    fontSize: '11pt'
+    fontSize: '11pt',
+    enableBasicAutocompletion: true
   };
 
   @ViewChild('editor') editor;
@@ -188,12 +191,17 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit, Aft
 
     if (code_arr.length) {
       forkJoin(...code_arr).subscribe(() => {
-        this.save(evnt);
+        this.save2(evnt);
       });
     } else {
       console.warn('code_arr empty');
-      this.save(evnt);
+      this.save2(evnt);
     }
+
+    const elem = document.getElementById('editor-pane');
+    elem.classList.remove('editor-pane-fullscreen');
+    this.editor.getEditor().resize();
+    setTimeout(() => { this.editor.getEditor().resize(); }, 200);
   }
 
   fullscreenToggle() {

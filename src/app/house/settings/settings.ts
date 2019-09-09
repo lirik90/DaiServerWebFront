@@ -48,7 +48,7 @@ export abstract class ChangeTemplate<T> {
   sel_item: ChangeInfo<T>;
   constructor(
     private cmd: number,
-    private wsbService: WebSocketBytesService,
+    protected wsbService: WebSocketBytesService,
     public houseService: HouseService,
     private itemType: new () => T) {}
 
@@ -83,6 +83,17 @@ export abstract class ChangeTemplate<T> {
     this.wsbService.send(WebSockCmd.WS_STRUCT_MODIFY, this.houseService.house.id, data);
     this.items = [];
     this.sel_item = null;
+  }
+
+  // TODO: rename and refactor. save2 is for code saving
+  save2(evnt: any = undefined): void {
+    if (evnt !== undefined)
+      evnt.stopPropagation();
+    let data = this.getChangedData();
+    this.wsbService.send(WebSockCmd.WS_STRUCT_MODIFY, this.houseService.house.id, data);
+
+    this.changed = false;
+    this.sel_item.state = ChangeState.NoChange;
   }
 
   cancel(evnt: any = undefined): void {
