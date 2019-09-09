@@ -104,7 +104,9 @@ export class WashComponent implements OnInit {
           }
 
          */
-          return this.translate.instant('BEERBOX.WASH_STEPS.STEP_4') + this.getGrp(clean);
+          const tapName = this.getGrp(clean).title || 'неизвестно';
+
+          return this.translate.instant('BEERBOX.WASH_STEPS.STEP_4') + tapName;
         }
     }
     return '';
@@ -128,6 +130,6 @@ export class WashComponent implements OnInit {
   }
 
   getGrp(a) {
-    return a.sct.groups.find(g => g.items.find(i => i.type.name === 'takeHead' && i.val.raw === 1) ).title;
+    return a.sct.groups.find(g => g.items.find(i => i.type.name === 'takeHead' && i.val.raw === 1) );
   }
 }
