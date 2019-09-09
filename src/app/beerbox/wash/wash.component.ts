@@ -104,7 +104,7 @@ export class WashComponent implements OnInit {
           }
 
          */
-          const tapName = this.getGrp(clean).title || 'неизвестно';
+        const tapName = this.getGrp(clean) ? this.getGrp(clean) .title : 'неизвестно';
 
           return this.translate.instant('BEERBOX.WASH_STEPS.STEP_4') + tapName;
         }
