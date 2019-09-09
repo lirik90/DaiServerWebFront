@@ -237,7 +237,7 @@ export class ConfirmDialogReplaceKegComponent
 
   confirm(): void
   {
-    if (this.is_printer_auto_ && (this.input_date_ === undefined || !this.input_date_.length || this.manufacturer_info_ === undefined || !this.manufacturer_info_.length))
+    if (this.input_date_ === undefined || !this.input_date_.length || this.manufacturer_info_ === undefined || !this.manufacturer_info_.length)
     {
       // alarm!
       console.log("alarm!");
