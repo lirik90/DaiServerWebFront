@@ -36,7 +36,13 @@ export class LoginComponent implements OnInit {
     this.authenticationService.login(this.model.username, this.model.password)
       .subscribe(
         data => {
-          this.router.navigate([this.returnUrl]);
+          console.log(this.returnUrl);
+          /*this.router.navigateByUrl(this.returnUrl);*/
+          if (this.returnUrl) {
+            window.location.href = this.returnUrl;
+          } else {
+            this.router.navigate(['/dashboard']);
+          }
         },
         error => {
           const nfe = error.error && error.error.non_field_errors; // TODO: Optional chaining once the proposal is adopted by TypeScript

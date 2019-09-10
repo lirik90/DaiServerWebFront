@@ -17,8 +17,8 @@ const routes: Routes = [
   { path: 'list', component: HouseListComponent, canActivate: [AuthGuard]  },
   { path: 'detail/:name', component: HouseDetailComponent, canActivate: [AuthGuard]  },
 
-  { 
-    path: 'house', 
+  {
+    path: 'house',
     loadChildren: 'app/house/house.module#HouseModule',
     canLoad: [AuthGuard]
   },
