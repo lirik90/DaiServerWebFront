@@ -19,7 +19,7 @@ color: #f8f8f2\
 color: #f8f8f0\
 }\
 .ace-dracula .ace_marker-layer .ace_selection {\
-background: #44475a\
+background: #78b5b3\
 }\
 .ace-dracula.ace_multiselect .ace_selection.ace_start {\
 box-shadow: 0 0 3px 0px #282a36;\

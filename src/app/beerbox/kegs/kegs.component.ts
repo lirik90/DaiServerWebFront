@@ -182,6 +182,7 @@ export class KegsComponent implements OnInit {
     }
 
     const params: ParamValue[] = [];
+    params.push(keg.date_made);
     params.push(keg.date_installed);
     params.push(keg.manufacturer);
     this.controlService.changeParamValues(params);

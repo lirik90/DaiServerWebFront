@@ -84,6 +84,7 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
   ) { }
 
   ngOnInit() {
+    /*
     this.labjson = JSON.parse('{' +
       '  "width": 424,' +
       '  "layouts": [' +
@@ -135,10 +136,17 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
       '    }' +
       '  ]' +
       '}');
+     */
+      // TODO: change to `find' later
+      const appSection = this.houseService.house.sections[0];
+      const tap1Section = this.houseService.house.sections[1];
 
-      const sec = this.houseService.house.sections[1];
-      const labelGrp = sec.groups.find(g => g.type.name === 'label');
-      labelGrp.params.map(p => {
+      const printerGroup = appSection.groups.find(g => g.type.name === 'printer');
+      const labelGroup = tap1Section.groups.find(g => g.type.name === 'label');
+
+      this.labjson = JSON.parse(printerGroup.params.find(p => p.param.name === 'label_template' ).value);
+
+      labelGroup.params.map(p => {
         if (p.param.name) {
           this.params.push(p.param.name);
         }
@@ -162,6 +170,8 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
 
         e.type = ejson.type;
 
+        console.log(ejson);
+
         if (e.type === 'image') {
           const url = `data:image/x-ms-bmp;base64,${ejson.param_value}`;
           e.bgImg = this.sanitizer.bypassSecurityTrustStyle(`url("${url}")`);
@@ -178,11 +188,32 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         if (e.type === 'text') {
-          const sec = this.houseService.house.sections[1];
-          const labelGrp = sec.groups.find(g => g.type.name === 'label');
-          const param = labelGrp.params.find(p => p.param.name === ejson.param_name);
-          e.value = param.value;
-          e.paramName = ejson.param_name;
+          // TODO: refactor me
+          if (ejson.param_name === 'current_date') {
+            e.value = new Date().toLocaleDateString('ru');
+            e.paramName = ejson.param_name;
+          } else if (ejson.param_name.match(/^manufacturer\./)) {
+            const sec = this.houseService.house.sections[1];
+            const grp = sec.groups.find(g => g.type.name === 'takeHead' &&
+              g.items.find(i => i.type.name === 'takeHead').val.raw === 1);
+
+            //console.log(grp);
+
+            const pn = ejson.param_name.split('.')[1];
+            //console.log(pn);
+
+
+              const param = grp.params.find(p => p.param.name === 'manufacturer').childs.find(c => c.param.name === pn);
+              //console.log(param);
+              e.value = param.value;
+              e.paramName = ejson.param_name;1
+          } else {
+            const sec = this.houseService.house.sections[1];
+            const labelGrp = sec.groups.find(g => g.type.name === 'label');
+            const param = labelGrp.params.find(p => p.param.name === ejson.param_name);
+            e.value = param.value;
+            e.paramName = ejson.param_name;
+          }
 
           e.fontSize = ejson.font_size;
           e.fontName = ejson.font;
@@ -334,7 +365,7 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
   getBarcodeType(barcode_type) {
     switch (barcode_type) {
       case 1:
-        return 'EAN-13';
+        return 'EAN13';
       case 2:
         return 'CODE128';
       case 3:
