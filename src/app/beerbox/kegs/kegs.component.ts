@@ -10,7 +10,7 @@ import {AuthenticationService} from '../../authentication.service';
 interface Head {
   date_made: ParamValue;
   title: string;
-  date_installed: ParamValue;
+  date_installed: DeviceItem;
   manufacturer: ParamValue;
 
   is_not_empty: DeviceItem;
@@ -82,13 +82,13 @@ export class KegsComponent implements OnInit {
           heads.push({
             title: group.title,
             date_made: group.params[0].childs.filter((el) => el.param.name === 'date')[0],
-            date_installed: group.params.filter((el) => el.param.name === 'keg_replacement_date')[0],
             manufacturer: group.params[0].childs.filter((el) => el.param.name === 'name')[0],
 
             is_not_empty: group.items.filter((el) => el.type.name === 'kegNotEmpty')[0],
             volume_poured: group.items.filter((el) => el.type.name === 'takeHeadCount')[0],
             is_active: group.items.filter((el) => el.type.name === 'takeHead')[0],
             bad_clean: group.items.filter((el) => el.type.name === 'badClean')[0],
+            date_installed: group.items.filter((el) => el.type.name === 'keg_replacement_date')[0],
           });
         } else if (group.type.name === 'cleanTakehead') {
           for (const item of group.items) {
@@ -172,18 +172,18 @@ export class KegsComponent implements OnInit {
     if (keg.date_made !== undefined && keg.date_made != null) {
       keg.date_made.value = date;
     }
-
+/*
     if (keg.date_installed !== undefined && keg.date_installed != null) {
       keg.date_installed.value = (new Date()).toLocaleDateString('ru');
     }
-
+*/
     if (keg.manufacturer !== undefined && keg.manufacturer != null) {
       keg.manufacturer.value = manufacturer_info;
     }
 
     const params: ParamValue[] = [];
     params.push(keg.date_made);
-    params.push(keg.date_installed);
+    /*params.push(keg.date_installed);*/
     params.push(keg.manufacturer);
     this.controlService.changeParamValues(params);
   }

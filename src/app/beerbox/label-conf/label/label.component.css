@@ -12,7 +12,7 @@
   background-position: 1px 1px;
 
   outline: 1px solid red;
-  min-height: 64px;
+  min-height: 24px;
   resize: vertical;
   overflow: hidden;
   box-sizing: border-box;

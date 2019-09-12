@@ -34,6 +34,7 @@ class Element {
   fontSize: SafeStyle;
   fontName: SafeStyle;
   fontWeight: SafeStyle;
+  scale: number;
 
   constructor(x = 0, y = 0, w = 32, h = 32) {
     this.initialX = x;
@@ -170,7 +171,7 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
 
         e.type = ejson.type;
 
-        console.log(ejson);
+        //console.log(ejson);
 
         if (e.type === 'image') {
           const url = `data:image/x-ms-bmp;base64,${ejson.param_value}`;
@@ -185,6 +186,7 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
           const param = labelGrp.params.find(p => p.param.name === ejson.param_name);
           e.value = param.value;
           e.paramName = ejson.param_name;
+          e.scale = ejson.scale || 1;
         }
 
         if (e.type === 'text') {
@@ -215,18 +217,23 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
             e.paramName = ejson.param_name;
           }
 
+          if (ejson.pretext) {
+            e.value = ejson.pretext + ' ' + e.value;
+          }
+
           e.fontSize = ejson.font_size;
           e.fontName = ejson.font;
           e.fontWeight = ejson.font_bold ? 'bold' : 'normal';
         }
       });
     });
-
-    this.adjustLayoutHeights();
   }
 
   ngAfterViewInit(): void {
-    JsBarcode('.jsbarcode').init();
+    setTimeout(() => {
+      this.adjustLayoutHeights();
+      JsBarcode('.jsbarcode').init();
+    }, 10);
   }
 
   ngOnDestroy() { }
@@ -350,9 +357,17 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private adjustLayoutHeights() {
-    this.layouts.map(l => {
+    this.layouts.map((l, li) => {
       let h = 0;
-      l.elements.map(e => {
+      l.elements.map((e, ei) => {
+        if (e.type === 'text') {
+          // update height
+          const natEl = document.getElementById(`element-${li}-${ei}`);
+          console.log(`element-${li}-${ei}`);
+          e.currentH = natEl.getBoundingClientRect().height;
+          console.log(e.currentH);
+        }
+
         if (e.currentY + e.currentH > h) {
           h = e.currentY + e.currentH;
         }
