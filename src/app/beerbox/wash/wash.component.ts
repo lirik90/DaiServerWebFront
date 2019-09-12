@@ -106,7 +106,7 @@ export class WashComponent implements OnInit {
          */
         const tapName = this.getGrp(clean) ? this.getGrp(clean) .title : 'неизвестно';
 
-          return this.translate.instant('BEERBOX.WASH_STEPS.STEP_4') + tapName;
+          return this.translate.instant('BEERBOX.WASH_STEPS.STEP_4');
         }
     }
     return '';
@@ -130,6 +130,12 @@ export class WashComponent implements OnInit {
   }
 
   getGrp(a) {
-    return a.sct.groups.find(g => g.items.find(i => i.type.name === 'takeHead' && i.val.raw === 1) );
+    const grp = a.sct.groups.find(g => g.items.find(i => i.type.name === 'takeHead' && i.val.raw === 1) );
+
+    if (grp) {
+      return grp.title;
+    } else {
+      return 0;
+    }
   }
 }

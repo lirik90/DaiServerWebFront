@@ -26,7 +26,7 @@
           <ng-container *ngIf="clean.pouring.val.raw == 0">
             <ng-container *ngIf="clean.step.val.raw <= 3">
               <h4 i18n="@@BEERBOX.WASH.READY">К промывке готов!</h4>
-              <p><span i18n="@@BEERBOX.WASH.AGENT">Промывочное средство</span>: {{cleanAgent(clean)}}</p>
+              <p><span i18n="@@BEERBOX.WASH.AGENT">Промывочное средство</span>: {{cleanAgent(clean)}}  <span *ngIf="clean.step.val.raw >= 4">{{getGrp(clean) || 'неизвестно'}}</span></p>
               <p i18n="@@BEERBOX.WASH.TEXT">Опустошите дренажную ёмкость. Подключите промывочный кег к обеим заборным головкам и нажмите кнопку на аппарате.</p>
             </ng-container>
 
