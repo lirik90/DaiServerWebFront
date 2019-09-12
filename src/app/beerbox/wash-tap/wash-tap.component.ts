@@ -132,7 +132,9 @@ export class WashTapComponent implements OnInit {
   }
 
   getGrp(a) {
-    const grp = a.sct.groups.find(g => g.items.find(i => i.type.name === 'takeHead' && i.val.raw === 1) );
+    const grp = a.sct.groups.find(g => g.items.find(i => i.type.name === 'takeHead' && i.val.raw == 1) );
+
+    console.log(a.sct.groups);
 
     if (grp) {
       return grp.title;

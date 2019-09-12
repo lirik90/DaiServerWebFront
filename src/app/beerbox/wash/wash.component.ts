@@ -130,7 +130,7 @@ export class WashComponent implements OnInit {
   }
 
   getGrp(a) {
-    const grp = a.sct.groups.find(g => g.items.find(i => i.type.name === 'takeHead' && i.val.raw === 1) );
+    const grp = a.sct.groups.find(g => g.items.find(i => i.type.name === 'takeHead' && i.val.raw == 1) );
 
     if (grp) {
       return grp.title;
