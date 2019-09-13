@@ -15,12 +15,16 @@
         <ng-container  *ngIf="tap.step === 3">
           <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
         </ng-container>
+        <ng-container  *ngIf="tap.step === 4">
+          Текущий объём налива: {{ getLastPouring(tap) }}<br>
+          Минимальный свободный объём бутылки: {{ getMinEmptyVol(tap)}}<br>
+        </ng-container>
       </mat-card-content>
       <mat-card-actions>
         <button mat-stroked-button (click)="nextStep(tap)" *ngIf="tap.step === 1">Следующий шаг</button>
+        <button mat-stroked-button (click)="save(tap)" *ngIf="tap.step === 4">Сохранить</button>
       </mat-card-actions>
       <mat-card-footer>
-        <pre>{{ tap.sec | json }}</pre>
       </mat-card-footer>
     </mat-card>
 </div>

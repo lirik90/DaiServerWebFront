@@ -11,6 +11,7 @@ import {ParamValue} from '../../house/house';
 })
 export class CalVolComponent implements OnInit {
   taps = [];
+  private intervalId: any;
 
   constructor(
     private houseService: HouseService,
@@ -31,9 +32,66 @@ export class CalVolComponent implements OnInit {
         this.controlService.writeToDevItem(
           tap.sec.groups.find(g => g.type.name === 'head')
             .items.find(i => i.type.name === 'setMode').id, 5);
+
+        this.intervalId = setInterval(() => {
+          if (this.isPouring(tap) == true) {
+            clearInterval(this.intervalId);
+            this.nextStep(tap);
+          }
+        }, 1000);
+        break;
+
+      case 2:
+        this.intervalId = setInterval(() => {
+          if (this.isPouring(tap) == false) {
+            clearInterval(this.intervalId);
+            this.nextStep(tap);
+          }
+        }, 1000);
         break;
     }
 
     tap.step++;
+  }
+
+  isPouring(tap: any) {
+    const pouring = tap.sec.groups.find(g => g.type.name === 'head')
+      .items.find(i => i.type.name === 'pouring');
+
+    return pouring.val.raw == 1;
+  }
+
+  getLastPouring(tap: any) {
+    const volume = tap.sec.groups.find(g => g.type.name === 'head')
+      .items.find(i => i.type.name === 'volume');
+
+    return volume.val.display;
+  }
+
+  getMinEmptyVol(tap: any) {
+    return Math.round(this.getLastPouring(tap) * 0.95);
+  }
+
+  save(tap: any) {
+    const val = this.getMinEmptyVol(tap);
+
+    const param = tap.sec.groups.find(g => g.type.name === 'params')
+      .params.find(p => p.param.name === 'minEmptyVol');
+
+    param.value = val;
+
+    console.log(param);
+    console.log(val);
+
+    const params: ParamValue[] = [];
+    params.push(param);
+    /*params.push(keg.date_installed);*/
+    this.controlService.changeParamValues(params);
+
+    this.controlService.writeToDevItem(
+      tap.sec.groups.find(g => g.type.name === 'head')
+        .items.find(i => i.type.name === 'setMode').id, 1);
+
+    tap.step = 1;
   }
 }

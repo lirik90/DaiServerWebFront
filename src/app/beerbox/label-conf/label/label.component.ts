@@ -35,6 +35,7 @@ class Element {
   fontName: SafeStyle;
   fontWeight: SafeStyle;
   scale: number;
+  align: SafeStyle;
 
   constructor(x = 0, y = 0, w = 32, h = 32) {
     this.initialX = x;
@@ -208,7 +209,7 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
               const param = grp.params.find(p => p.param.name === 'manufacturer').childs.find(c => c.param.name === pn);
               //console.log(param);
               e.value = param.value;
-              e.paramName = ejson.param_name;1
+              e.paramName = ejson.param_name;
           } else {
             const sec = this.houseService.house.sections[1];
             const labelGrp = sec.groups.find(g => g.type.name === 'label');
@@ -224,6 +225,7 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
           e.fontSize = ejson.font_size;
           e.fontName = ejson.font;
           e.fontWeight = ejson.font_bold ? 'bold' : 'normal';
+          e.align = ejson.align || 'left';
         }
       });
     });
@@ -390,5 +392,9 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
 
   select(e: Element) {
     this.selectedElement = e;
+  }
+
+  save() {
+
   }
 }

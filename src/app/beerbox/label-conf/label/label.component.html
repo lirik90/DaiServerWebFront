@@ -1,5 +1,6 @@
 <div>
   <button (click)="addLayout()">Add a layout</button>
+  <button (click)="save()">Save</button>
 </div>
 
 <div #previewContainer class="previewContainer" [style.width.px]="cont_width">
@@ -10,6 +11,7 @@
     <div class="element {{e.type}}" *ngFor="let e of l.elements; let ei = index" (mousedown)="dragStart(e, $event)"
          [style.transform]="e.transform" [style.width.px]="e.currentW" [style.height.px]="e.currentH"
          [style.background-image]="e.bgImg" id="element-{{li}}-{{ei}}"
+         [style.text-align]="e.align"
           (click)="select(e)">
 
       <img *ngIf="e.type === 'barcode'" class="jsbarcode"
@@ -52,9 +54,12 @@
   <ng-container *ngIf="selectedElement.type === 'image'">
     Значение: <input type="file">
   </ng-container>
-</div>
 
-<pre>
-  {{ labjson |json }}
-</pre>
+  <ng-container *ngIf="selectedElement.type === 'text'">
+    Шрифт: <input type="text" [value]="selectedElement.fontName"><br>
+    Размер: <input type="text" [value]="selectedElement.fontSize"><br>
+    Жирность: <input type="text" [value]="selectedElement.fontWeight"><br>
+    Выравнивание: <input type="text" [value]="selectedElement.align"><br>
+  </ng-container>
+</div>
 

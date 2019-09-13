@@ -1,11 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
-import { Section, DeviceItem } from '../../house/house';
-import { HouseService } from '../../house/house.service';
-import { ControlService } from '../../house/control.service';
+import {Section, DeviceItem} from '../../house/house';
+import {HouseService} from '../../house/house.service';
+import {ControlService} from '../../house/control.service';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
@@ -21,7 +21,8 @@ export class WashComponent implements OnInit {
     private route: ActivatedRoute,
     private houseService: HouseService,
     private controlService: ControlService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.getSections();
@@ -35,14 +36,20 @@ export class WashComponent implements OnInit {
         is_first = false;
         continue;
       }
-      const clean: any = { sct, takehead_count: 0 };
+      const clean: any = {sct, takehead_count: 0};
       for (const group of sct.groups) {
         if (group.type.name == 'head') {
           for (const item of group.items) {
             switch (item.type.name) {
-              case 'pouring':  clean.pouring = item;    break; // api.PouringItem
-              case 'volume':  clean.cur_volume = item;  break; // api.type.item.volume
-              case 'pause':  clean.pause = item;        break; // api.type.item.pause
+              case 'pouring':
+                clean.pouring = item;
+                break; // api.PouringItem
+              case 'volume':
+                clean.cur_volume = item;
+                break; // api.type.item.volume
+              case 'pause':
+                clean.pause = item;
+                break; // api.type.item.pause
             }
 
             if (clean.pouring !== undefined && clean.cur_volume !== undefined && clean.pause !== undefined) {
@@ -50,8 +57,8 @@ export class WashComponent implements OnInit {
             }
           }
         } else if (group.type.name == 'takeHead') {
-			    ++clean.takehead_count;
-		    } else if (group.type.name == 'params') { // api.type.group.params
+          ++clean.takehead_count;
+        } else if (group.type.name == 'params') { // api.type.group.params
           for (const item of group.items) {
             if (item.type.name == 'setVol3') { // api.type.item.setVol3
               clean.full_volume = item;
@@ -61,8 +68,12 @@ export class WashComponent implements OnInit {
         } else if (group.type.name == 'cleanTakehead') {
           for (const item of group.items) {
             switch (item.type.name) {
-              case 'cleanType': clean.type = item;              break; // api.CleanTypeItem
-              case 'cleanStep': clean.step = item;              break; // api.CleanStepItem
+              case 'cleanType':
+                clean.type = item;
+                break; // api.CleanTypeItem
+              case 'cleanStep':
+                clean.step = item;
+                break; // api.CleanStepItem
             }
 
             if (clean.type !== undefined && clean.step !== undefined) {
@@ -71,7 +82,8 @@ export class WashComponent implements OnInit {
           }
         }
       }
-      if (clean.type !== undefined && clean.step !== undefined && clean.pouring !== undefined && clean.cur_volume !== undefined && clean.pause !== undefined && clean.full_volume !== undefined) {
+      if (clean.type !== undefined && clean.step !== undefined && clean.pouring !== undefined && clean.cur_volume !== undefined
+        && clean.pause !== undefined && clean.full_volume !== undefined) {
         items.push(clean);
       }
     }
@@ -90,10 +102,15 @@ export class WashComponent implements OnInit {
   stepText(clean: any): string {
 
     switch (clean.step.val.raw) {
-      case 1: return this.translate.instant('BEERBOX.WASH_STEPS.STEP_1');
-      case 2: return this.translate.instant('BEERBOX.WASH_STEPS.STEP_2');
-      case 3: return this.translate.instant('BEERBOX.WASH_STEPS.STEP_3');
-      case 4: case 5: case 6: {
+      case 1:
+        return this.translate.instant('BEERBOX.WASH_STEPS.STEP_1');
+      case 2:
+        return this.translate.instant('BEERBOX.WASH_STEPS.STEP_2');
+      case 3:
+        return this.translate.instant('BEERBOX.WASH_STEPS.STEP_3');
+      case 4:
+      case 5:
+      case 6: {
         /*
           let sct_i = 0;
           if (clean.takehead_count > 1) {
@@ -104,10 +121,10 @@ export class WashComponent implements OnInit {
           }
 
          */
-        const tapName = this.getGrp(clean) ? this.getGrp(clean) .title : 'неизвестно';
+        const tapName = this.getGrp(clean) ? this.getGrp(clean).title : 'неизвестно';
 
-          return this.translate.instant('BEERBOX.WASH_STEPS.STEP_4');
-        }
+        return this.translate.instant('BEERBOX.WASH_STEPS.STEP_4');
+      }
     }
     return '';
   }
@@ -130,7 +147,7 @@ export class WashComponent implements OnInit {
   }
 
   getGrp(a) {
-    const grp = a.sct.groups.find(g => g.items.find(i => i.type.name === 'takeHead' && i.val.raw == 1) );
+    const grp = a.sct.groups.find(g => g.items.find(i => i.type.name === 'takeHead' && i.val.raw == 1));
 
     if (grp) {
       return grp.title;

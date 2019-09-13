@@ -185,6 +185,12 @@ export class HouseComponent implements OnInit, OnDestroy {
         text: this.translate.instant('NAVIGATION_TAB.CALIBRATION'),
         icon: 'compass_calibration'
       });
+
+      this.fillerNav.push({
+        link: 'beerbox/cal-vol',
+        text: 'Калибровка объёма',
+        icon: 'compass_calibration'
+      });
     }
     if (this.can_see_more) {
       this.fillerNav.push({link: 'beerbox/check-head-stand', text: this.translate.instant('NAVIGATION_TAB.STAND'), icon: 'category'});
