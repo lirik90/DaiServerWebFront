@@ -26,7 +26,7 @@
         </ng-container>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-stroked-button (click)="nextStep(tap)" *ngIf="tap.step === 1">Следующий шаг</button>
+        <button mat-stroked-button (click)="nextStep(tap)" *ngIf="tap.step === 1">Начать калибровку</button>
         <button mat-stroked-button (click)="save(tap)" *ngIf="tap.step === 4">Сохранить</button>
       </mat-card-actions>
       <mat-card-footer>
