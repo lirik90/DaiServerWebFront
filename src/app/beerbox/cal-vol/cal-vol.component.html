@@ -7,13 +7,16 @@
       </mat-card-title>
       <mat-card-content class="head-pane__content">
         <ng-container  *ngIf="tap.step === 1">
-          Вставьте пустую бутулку и нажмите "Начать калибровку"<br>
+          Вставьте пустую бутылку и нажмите "Начать калибровку"<br>
         </ng-container>
         <ng-container  *ngIf="tap.step === 2">
           Нажмите кнопку на аппарате<br>
         </ng-container>
         <ng-container  *ngIf="tap.step === 3">
-          <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
+          <div style="text-align: center">
+            Идёт налив<br>
+            <mat-progress-spinner class="progress_in_center" color="primary" mode="indeterminate"></mat-progress-spinner>
+          </div>
         </ng-container>
         <ng-container  *ngIf="tap.step === 4">
           Текущий объём налива: {{ getLastPouring(tap) }}<br>
