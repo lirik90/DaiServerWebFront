@@ -61,7 +61,7 @@
                 </div>
               </mat-card-content>
               <mat-card-actions>
-                <button mat-stroked-button (click)="openDialog(head)" [disabled]="head.is_not_empty.val.display == true ">Заменить</button>
+                <button mat-stroked-button (click)="openDialog(head)" [disabled]="head.is_not_empty.val.display == true || tap.mode.val.raw != 0">Заменить</button>
               </mat-card-actions>
               <mat-card-footer>
               <span *ngIf="head.bad_clean !== undefined && head.bad_clean.val.raw == 1" i18n="@@BEERBOX.REPLACE_KEG.WARNING" class="bad-clean">

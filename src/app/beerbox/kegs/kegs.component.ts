@@ -20,6 +20,7 @@ interface Head {
 }
 
 interface Tap {
+  mode: DeviceItem;
   isBlocked: DeviceItem;
   sctId: number;
   name: string;
@@ -74,6 +75,7 @@ export class KegsComponent implements OnInit {
 
       let cleanStep: DeviceItem;
       let isBlocked: DeviceItem;
+      let mode: DeviceItem;
 
       for (const group of sct.groups) {
         if (group.type.name === 'takeHead') {
@@ -109,6 +111,8 @@ export class KegsComponent implements OnInit {
             if (isBlocked !== undefined) {
               break;
             }
+
+            mode =  group.items.find((el) => el.type.name === 'setMode');
           }
         }
       }
@@ -124,7 +128,8 @@ export class KegsComponent implements OnInit {
           sctId: sct.id,
           heads: heads,
           activeTab: activeTab,
-          isBlocked: isBlocked
+          isBlocked: isBlocked,
+          mode: mode
         });
       }
     }
