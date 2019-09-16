@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file source-language="en" datatype="plaintext" original="ng2.template">
+  <file source-language="ru" datatype="plaintext" original="ng2.template">
     <body>
       <trans-unit id="DETAILS.HEAD" datatype="html">
         <source>Подробнее о проекте</source>
@@ -346,7 +346,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="BEERBOX.REPLACE_KEG.TITLE" datatype="html">
-        <source>Замена кег<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/>При замене кегов устанавливать кеги строго на соответствующие пронумерованные места!!!</source>
+        <source>Замена кег<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>При замене кегов устанавливать кеги строго на соответствующие пронумерованные места!!!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/replace-keg/replace-keg.component.html</context>
           <context context-type="linenumber">1</context>
@@ -711,7 +711,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="BEERBOX.CALIBRATION.STEP_3" datatype="html">
-        <source>Калибровка налива завершена! <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/>
+        <source>Калибровка налива завершена! <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>
                   Произведите контрольный налив и взвесьте бутылку с напитком, если точность налива Вас не устраивает, произведите калибровку повторно</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/calibration/calibration.component.html</context>
@@ -737,7 +737,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="BEERBOX.REPLACE_LABEL.TEXT" datatype="html">
-        <source>Вставте ленту с этикетками в устройство<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/>Введите количество этикеток, которое указано на ленте</source>
+        <source>Вставте ленту с этикетками в устройство<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>Введите количество этикеток, которое указано на ленте</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/replace-labels/replace-labels.component.html</context>
           <context context-type="linenumber">5</context>
@@ -834,7 +834,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="BEERBOX.CONTROLLER.STEP_1" datatype="html">
-        <source>Подготовьте перемычку и плату где хотите изменить адрес<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/>Нажмите кнопку </source>
+        <source>Подготовьте перемычку и плату где хотите изменить адрес<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>Нажмите кнопку </source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/change-controller-address/change-controller-address.component.html</context>
           <context context-type="linenumber">5</context>
@@ -1055,7 +1055,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="BEERBOX.CALVOL.STEP_1" datatype="html">
-        <source>Вставьте пустую бутылку и нажмите &quot;Начать калибровку&quot;</source>
+        <source>Вставьте пустую бутылку и нажмите "Начать калибровку"</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/cal-vol/cal-vol.component.html</context>
           <context context-type="linenumber">10</context>
@@ -1415,7 +1415,7 @@
       </trans-unit>
       <trans-unit id="LOG.WARNING" datatype="html">
         <source>
-      EventLog&apos;s API rate limit has been reached. It will be reset in one minute.
+      EventLog's API rate limit has been reached. It will be reset in one minute.
     </source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/log/log.component.html</context>
