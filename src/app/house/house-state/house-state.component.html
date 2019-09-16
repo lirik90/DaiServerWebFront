@@ -6,7 +6,7 @@
   <div class="house-state-modal" *ngIf="isModalOpen" [style.top.px]="top">
     <div class="hosue-state-modal__tooblar">
       <div class="hosue-state-modal__tooblar-spacer"></div>
-      <button class="house-state-modal__close-btn" (click)="closeModal()">Закрыть</button>
+      <button i18n="@@HOUSE_STATE.CLOSE" class="house-state-modal__close-btn" (click)="closeModal()">Закрыть</button>
     </div>
 
     <div class="house-state-msgs-list">
@@ -17,7 +17,7 @@
           <div class="house-state-msg__text">{{msg.text}}</div>
         </a>
       </ng-container>
-      <div class="house-state-alright" *ngIf="state.messagesCount === 0">
+      <div class="house-state-alright" *ngIf="state.messagesCount === 0" i18n="@@HOUSE_STATE.ALL_RIGHT">
         Всё хорошо
       </div>
     </div>

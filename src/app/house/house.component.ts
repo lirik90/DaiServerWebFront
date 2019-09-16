@@ -117,7 +117,7 @@ export class HouseComponent implements OnInit, OnDestroy {
     if (this.status_checked) {
       switch (this.connect_state) {
         case Connection_State.CS_SERVER_DOWN:
-          return 'Основной сервер не доступен';
+          return this.translate.instant('SERVER_DOWN');
         case Connection_State.CS_DISCONNECTED:
           return result + this.translate.instant('OFFLINE');
         case Connection_State.CS_CONNECTED:
@@ -125,11 +125,11 @@ export class HouseComponent implements OnInit, OnDestroy {
         case Connection_State.CS_CONNECTED_MODIFIED:
           return result + this.translate.instant('MODIFIED');
         case Connection_State.CS_DISCONNECTED_JUST_NOW:
-          return result + 'Связь недавно была прервана';
+          return result + this.translate.instant('DISCONNECTED_JUST_NOW');
         case Connection_State.CS_CONNECTED_JUST_NOW:
-          return result + 'Синхронизация';
+          return result + this.translate.instant('CONNECTED_JUST_NOW');
         case Connection_State.CS_CONNECTED_SYNC_TIMEOUT:
-          return result + 'Ошибка синхронизации';
+          return result + this.translate.instant('CONNECTED_SYNC_TIMEOUT');
       }
     }
     return this.translate.instant('WAIT') + '...';
@@ -177,7 +177,7 @@ export class HouseComponent implements OnInit, OnDestroy {
     }
      */
     if (this.can_edit) {
-      this.fillerNav.push({link: 'beerbox/kegs', text: 'Кеги', icon: 'local_drink'});
+      this.fillerNav.push({link: 'beerbox/kegs', text: this.translate.instant('NAVIGATION_TAB.KEGS'), icon: 'local_drink'});
     }
     if (this.can_edit) {
       this.fillerNav.push({
@@ -188,7 +188,7 @@ export class HouseComponent implements OnInit, OnDestroy {
 
       this.fillerNav.push({
         link: 'beerbox/cal-vol',
-        text: 'Калибровка объёма',
+        text: this.translate.instant('NAVIGATION_TAB.CALVOL'),
         icon: 'compass_calibration'
       });
     }

@@ -1,10 +1,10 @@
 <div class="indicator-bar">
   <div class="indicator-box color-{{cooler.status_info.short_text}}">
-    Температура охладителя: {{ temperature.val.display }} {{temperature.type.sign.name}}
+    <span  i18n="@@BEERBOX.KEGS.TEMPERATURE">Температура охладителя:</span> {{ temperature.val.display }} {{temperature.type.sign.name}}
   </div>
 
   <div class="indicator-box color-{{gas.status_info.short_text}}">
-    Давление в магистрали: {{ pressure.val.display }} {{pressure.type.sign.name}}
+    <span i18n="@@BEERBOX.KEGS.PRESSURE">Давление в магистрали:</span> {{ pressure.val.display }} {{pressure.type.sign.name}}
   </div>
 </div>
 
@@ -16,19 +16,19 @@
     <div class="col-1-3">
       <div class="tap-pane">
         <div class="tap-name" [class.blocked]="tap.isBlocked.val.display">{{ tap.name }}
-          <ng-container *ngIf="tap.isBlocked.val.display">&mdash; заблокирован</ng-container>
+          <ng-container *ngIf="tap.isBlocked.val.display" i18n="@@BEERBOX.KEGS.TAP_IS_BLOCKED">&mdash; заблокирован</ng-container>
         </div>
 
         <nav class="subNav">
-          <a (click)="changeActiveTab(tap, 0)">Кеги</a>
-          <a (click)="changeActiveTab(tap, 1)" *ngIf="canSeeWash">Промывка</a>
+          <a (click)="changeActiveTab(tap, 0)"  i18n="@@BEERBOX.KEGS.TAB_KEGS">Кеги</a>
+          <a (click)="changeActiveTab(tap, 1)" *ngIf="canSeeWash" i18n="@@BEERBOX.KEGS.TAB_WASH">Промывка</a>
         </nav>
 
         <div class="tap-pane__content">
           <div class="heads" *ngIf="tap.activeTab === 0">
             <mat-card class="head-pane" *ngFor="let head of tap.heads">
               <mat-card-title>
-                <div>{{head.title}}{{ !head.is_not_empty.val.display? ' &mdash; пуст' : ''}}</div>
+                <div>{{head.title}}<span ngIf="!head.is_not_empty.val.display"  i18n="@@BEERBOX.KEGS.KEG_IS_EMPTY"> &mdash; пуст</span></div>
                 <div class="separator"></div>
                 <div class="icons">
                   <mat-icon class="empty-icon" *ngIf="!head.is_not_empty.val.display">cancel</mat-icon>
@@ -39,16 +39,16 @@
               </mat-card-title>
               <mat-card-content class="head-pane__content">
                 <div class="info">
-                  Дата замены: {{ head.date_installed? head.date_installed.val.display || 'Неизвестно' : 'Неизвестно' }}<br>
-                  Дата изготовления: {{ head.date_made.value }}<br>
-                  Объём кеги: {{ kegVolume.value }} мл<br>
+                  <span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Дата замены:</span> {{ head.date_installed? head.date_installed.val.display || 'Неизвестно' : 'Неизвестно' }}<br>
+                  <span  i18n="@@BEERBOX.KEGS.DATE_MADE">Дата изготовления:</span> {{ head.date_made.value }}<br>
+                  <span  i18n="@@BEERBOX.KEGS.KEG_VOL">Объём кеги:</span> {{ kegVolume.value }} <span  i18n="@@BEERBOX.KEGS.MILLILITRES">мл</span><br>
                   <ng-container *ngIf="head.volume_poured.val.display !== null">
-                    Налито: {{ getPoured(head) }}<br>
-                    Осталось пива в кеге: {{ getRemainBeer(head) }}<br>
+                    <span  i18n="@@BEERBOX.KEGS.VOL_POURED">Налито:</span> {{ getPoured(head) }}<br>
+                    <span  i18n="@@BEERBOX.KEGS.VOL_REMAIN_BEER">Осталось пива в кеге:</span> {{ getRemainBeer(head) }}<br>
                   </ng-container>
 
                   <ng-container *ngIf="head.volume_poured.val.display === null">
-                    Неподключено
+                    <span i18n="@@BEERBOX.KEGS.NOT_CONNECTED">Неподключено</span>
                   </ng-container>
                 </div>
                 <div class="graph">
