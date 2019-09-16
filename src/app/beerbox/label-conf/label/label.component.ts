@@ -197,8 +197,7 @@ export class LabelComponent implements OnInit, OnDestroy, AfterViewInit {
             e.paramName = ejson.param_name;
           } else if (ejson.param_name.match(/^manufacturer\./)) {
             const sec = this.houseService.house.sections[1];
-            const grp = sec.groups.find(g => g.type.name === 'takeHead' &&
-              g.items.find(i => i.type.name === 'takeHead').val.raw === 1);
+            const grp = sec.groups.find(g => g.type.name === 'takeHead');
 
             //console.log(grp);
 
