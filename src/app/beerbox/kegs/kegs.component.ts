@@ -7,7 +7,7 @@ import {MatDialog} from '@angular/material';
 import {ControlService} from '../../house/control.service';
 import {AuthenticationService} from '../../authentication.service';
 
-interface Head {
+export interface Head {
   date_made: ParamValue;
   title: string;
   date_installed: DeviceItem;
@@ -19,7 +19,7 @@ interface Head {
   bad_clean: DeviceItem;
 }
 
-interface Tap {
+export interface Tap {
   mode: DeviceItem;
   isBlocked: DeviceItem;
   sctId: number;
@@ -73,7 +73,6 @@ export class KegsComponent implements OnInit {
     for (const sct of this.houseService.house.sections) {
       const heads = [];
 
-      let cleanStep: DeviceItem;
       let isBlocked: DeviceItem;
       let mode: DeviceItem;
 
@@ -93,16 +92,6 @@ export class KegsComponent implements OnInit {
             bad_clean: group.items.filter((el) => el.type.name === 'badClean')[0],
             date_installed: group.items.filter((el) => el.type.name === 'keg_replacement_date')[0],
           });
-        } else if (group.type.name === 'cleanTakehead') {
-          for (const item of group.items) {
-            if (item.type.name === 'cleanStep') {
-              cleanStep = item;
-            }
-
-            if (cleanStep !== undefined) {
-              break;
-            }
-          }
         } else if (group.type.name === 'head') {
           for (const item of group.items) {
             if (item.type.name === 'block') {
@@ -118,17 +107,11 @@ export class KegsComponent implements OnInit {
         }
       }
 
-      let activeTab = 0;
-      if (cleanStep && cleanStep.val.raw !== 0 && this.canSeeWash) {
-        activeTab = 1;
-      }
-
       if (heads.length > 0) {
         taps.push({
           name: sct.name,
           sctId: sct.id,
           heads: heads,
-          activeTab: activeTab,
           isBlocked: isBlocked,
           mode: mode
         });

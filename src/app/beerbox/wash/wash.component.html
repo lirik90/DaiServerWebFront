@@ -1,53 +1,20 @@
-<h2 i18n="@@BEERBOX.WASH.TITLE">Промывка</h2>
+<h2>Промывка</h2>
+
 <div class="grid grid-pad">
-  <ng-container *ngFor="let clean of items">
+  <ng-container *ngFor="let tap of taps">
     <div class="col-1-3">
-      <div class="module house">
-        <h3>{{clean.sct.name}}</h3>
+      <div class="tap-pane">
+        <div class="tap-name" [class.blocked]="tap.isBlocked.val.display">{{ tap.name }}
+          <ng-container *ngIf="tap.isBlocked.val.display" i18n="@@BEERBOX.KEGS.TAP_IS_BLOCKED">&mdash; заблокирован</ng-container>
+        </div>
 
-        <ng-container *ngIf="clean.step.val.raw == 0">
-          <h4 i18n="@@BEERBOX.WASH.TYPE">Выберите вид промывки</h4>
-          <mat-form-field>
-            <mat-select [value]="clean.type.val.raw.toString()" (selectionChange)="onChange(clean.type, $event.value)">
-              <!--<mat-option *ngFor="let title of clean.type.val.display; index as i" value="{{i}}">{{title}}</mat-option>-->
-              <mat-option value="0" i18n="@@BEERBOX.WASH.TYPE.0">Не выбран</mat-option>
-              <mat-option value="1" i18n="@@BEERBOX.WASH.TYPE.1">Ежедневная</mat-option>
-              <mat-option value="2" i18n="@@BEERBOX.WASH.TYPE.2">Дезинфекция</mat-option>
-              <mat-option value="3" i18n="@@BEERBOX.WASH.TYPE.3">Кислотная</mat-option>
-              <!--<mat-option value="4" i18n="@@BEERBOX.WASH.TYPE.4">Вытеснение</mat-option>-->
-            </mat-select>
-          </mat-form-field>
-
-          <button mat-button (click)="start(clean)" i18n="@@BEERBOX.WASH.START">Начать промывку</button>
-        </ng-container>
-
-        <ng-container *ngIf="clean.step.val.raw != 0">
-          <h4><span i18n="@@BEERBOX.WASH.STEP">Текущий этап</span>: {{stepText(clean)}}</h4>
-          <ng-container *ngIf="clean.pouring.val.raw == 0">
-            <ng-container *ngIf="clean.step.val.raw <= 3">
-              <h4 i18n="@@BEERBOX.WASH.READY">К промывке готов!</h4>
-              <p><span i18n="@@BEERBOX.WASH.AGENT">Промывочное средство</span>: {{cleanAgent(clean)}}  <span *ngIf="clean.step.val.raw >= 4">{{getGrp(clean) || 'неизвестно'}}</span></p>
-              <p i18n="@@BEERBOX.WASH.TEXT">Опустошите дренажную ёмкость. Подключите промывочный кег к обеим заборным головкам и нажмите кнопку на аппарате.</p>
-            </ng-container>
-
-            <ng-container *ngIf="clean.step.val.raw > 3">
-              <h4 i18n="@@BEERBOX.WASH.READY">К вытеснению готов!</h4>
-              <p i18n="@@BEERBOX.WASH.TEXT">Опустошите дренажную ёмкость.<br>
-                Вставьте в устройство налива пустую бутылку.<br>
-                Подключите пиво к обеим заборным головкам и нажмите кнопку на аппарате.</p>
-            </ng-container>
-
-          </ng-container>
-          <ng-container *ngIf="clean.pouring.val.raw == 1">
-            <h5 i18n="@@BEERBOX.EVENT.WASH_PROCESS">Идёт промывка, пожалуйста, подождите!</h5>
-            <h5><span
-              i18n="@@BEERBOX.EVENT.LEFT">Осталось</span>: {{(clean.full_volume.val.display - clean.cur_volume.val.display).toFixed(1)}}
-              <span i18n="@@BEERBOX.ML">мл.</span>
-              <span *ngIf="clean.pause.val.display == 1" i18n="@@CONTROL.PAUSE"> Пауза</span></h5>
-            <mat-progress-spinner class="progress_in_center" color="primary"
-                                  mode="indeterminate"></mat-progress-spinner>
-          </ng-container>
-        </ng-container>
+        <div class="tap-pane__content">
+          <div class="wash">
+            <div class="tap-wash__content">
+              <app-wash-tap [sctId]="tap.sctId"></app-wash-tap>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </ng-container>

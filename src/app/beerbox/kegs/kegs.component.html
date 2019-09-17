@@ -19,13 +19,8 @@
           <ng-container *ngIf="tap.isBlocked.val.display" i18n="@@BEERBOX.KEGS.TAP_IS_BLOCKED">&mdash; заблокирован</ng-container>
         </div>
 
-        <nav class="subNav">
-          <a (click)="changeActiveTab(tap, 0)"  i18n="@@BEERBOX.KEGS.TAB_KEGS">Кеги</a>
-          <a (click)="changeActiveTab(tap, 1)" *ngIf="canSeeWash" i18n="@@BEERBOX.KEGS.TAB_WASH">Промывка</a>
-        </nav>
-
         <div class="tap-pane__content">
-          <div class="heads" *ngIf="tap.activeTab === 0">
+          <div class="heads">
             <mat-card class="head-pane" *ngFor="let head of tap.heads">
               <mat-card-title>
                 <div>{{head.title}}<span *ngIf="!head.is_not_empty.val.display"  i18n="@@BEERBOX.KEGS.KEG_IS_EMPTY"> &mdash; пуст</span></div>
