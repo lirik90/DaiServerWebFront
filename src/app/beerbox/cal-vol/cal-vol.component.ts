@@ -90,7 +90,7 @@ export class CalVolComponent implements OnInit {
 
     this.controlService.writeToDevItem(
       tap.sec.groups.find(g => g.type.name === 'head')
-        .items.find(i => i.type.name === 'setMode').id, 1);
+        .items.find(i => i.type.name === 'setMode').id, 0);
 
     tap.step = 1;
   }
