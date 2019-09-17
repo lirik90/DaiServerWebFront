@@ -28,7 +28,7 @@
           <div class="heads" *ngIf="tap.activeTab === 0">
             <mat-card class="head-pane" *ngFor="let head of tap.heads">
               <mat-card-title>
-                <div>{{head.title}}<span ngIf="!head.is_not_empty.val.display"  i18n="@@BEERBOX.KEGS.KEG_IS_EMPTY"> &mdash; пуст</span></div>
+                <div>{{head.title}}<span *ngIf="!head.is_not_empty.val.display"  i18n="@@BEERBOX.KEGS.KEG_IS_EMPTY"> &mdash; пуст</span></div>
                 <div class="separator"></div>
                 <div class="icons">
                   <mat-icon class="empty-icon" *ngIf="!head.is_not_empty.val.display">cancel</mat-icon>

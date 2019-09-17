@@ -81,6 +81,7 @@ export class KegsComponent implements OnInit {
         if (group.type.name === 'takeHead') {
           // heads.push(group);
           // TODO: check for undefined
+          console.log(group);
           heads.push({
             title: group.title,
             date_made: group.params[0].childs.filter((el) => el.param.name === 'date')[0],
