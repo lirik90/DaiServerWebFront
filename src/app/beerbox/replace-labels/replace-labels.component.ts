@@ -32,22 +32,23 @@ export class ReplaceLabelsComponent implements OnInit
     const printerGrp = this.houseService.house.sections.find(s => s.id === 1).groups.find(g => g.type.name === 'printer');
     this.labelsRemain = printerGrp.items.find(i => i.type.name === 'labels_num');
     this.labels_num_full_ = printerGrp.params.find(p => p.param.name === 'labels_num_full');
-    this.labels_num_full_.value += 10;
+    //this.labels_num_full_.value = +this.labels_num_full_.value + 10;
   }
 
   click_apply_button(): void {
     if (this.labels_num_full_.value > 10) {
-      this.labels_num_full_.value -= 10;
+      this.labels_num_full_.value = +this.labels_num_full_.value - 10;
       this.controlService.changeParamValues([this.labels_num_full_]);
       this.controlService.writeToDevItem(this.labels_current_num_.id, this.labels_num_full_.value);
 
-      this.labels_num_full_.value += 10;
+      this.labels_num_full_.value = +this.labels_num_full_.value + 10;
 
       this.openOkDialog();
     }
   }
 
   openOkDialog() {
+    console.log(this.labels_num_full_);
     this.dialog.open(OkDialogComponent, {maxWidth: '480px', data: {curNum: this.labels_current_num_, fullNum: this.labels_num_full_} })
       .afterClosed().pipe(
       filter(name => name)
@@ -88,7 +89,9 @@ export class OkDialogComponent implements OnInit {
     private houseService: HouseService,
     private controlService: ControlService,
   ) {
-
+    console.log(data);
+    this.labels_num_full_ = data.fullNum;
+    console.log(this.labels_num_full_);
   }
 
   close() {

@@ -51,6 +51,7 @@ export class CalVolComponent implements OnInit {
         break;
     }
 
+    console.log(tap.step);
     tap.step++;
   }
 
