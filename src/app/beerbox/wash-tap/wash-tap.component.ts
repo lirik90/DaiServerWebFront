@@ -42,7 +42,7 @@ export class WashTapComponent implements OnInit {
               case 'pouring':  clean.pouring = item;    break; // api.PouringItem
               case 'volume':  clean.cur_volume = item;  break; // api.type.item.volume
               case 'pause':  clean.pause = item;        break; // api.type.item.pause
-              case 'lavelCritical': clean.criticalLvl = item; break;
+              case 'errorCode': clean.error = item;     break;
             }
 
             if (clean.pouring !== undefined && clean.cur_volume !== undefined && clean.pause !== undefined) {

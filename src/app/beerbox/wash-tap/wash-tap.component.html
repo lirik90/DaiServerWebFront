@@ -18,8 +18,9 @@
         </ng-container>
 
         <ng-container *ngIf="clean.step.val.raw != 0">
-          <div *ngIf="clean.criticalLvl.val.raw == true" class="dren-warning">
-            Дренаж переполнен!
+          <div *ngIf="clean.error.val.raw != 0" class="dren-warning">
+            <h5>Произошла ошибка!</h5>
+            <small>{{ clean.error.val.display }}</small>
           </div>
 
           <h4><span i18n="@@BEERBOX.WASH.STEP">Текущий этап</span>: {{stepText(clean)}} <span *ngIf="clean.step.val.raw >= 4">{{getGrp(clean) || 'неизвестно'}}</span></h4>
