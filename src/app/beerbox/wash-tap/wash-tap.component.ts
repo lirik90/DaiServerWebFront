@@ -42,6 +42,7 @@ export class WashTapComponent implements OnInit {
               case 'pouring':  clean.pouring = item;    break; // api.PouringItem
               case 'volume':  clean.cur_volume = item;  break; // api.type.item.volume
               case 'pause':  clean.pause = item;        break; // api.type.item.pause
+              case 'lavelCritical': clean.criticalLvl = item; break;
             }
 
             if (clean.pouring !== undefined && clean.cur_volume !== undefined && clean.pause !== undefined) {
@@ -96,16 +97,6 @@ export class WashTapComponent implements OnInit {
       case 2: return this.translate.instant('BEERBOX.WASH_STEPS.STEP_2');
       case 3: return this.translate.instant('BEERBOX.WASH_STEPS.STEP_3');
       case 4: case 5: case 6: {
-        /*
-        let sct_i = 0;
-        if (clean.takehead_count > 1) {
-          sct_i = ((clean === this.items[0] ? 0 : 1) * 2 ) + 1;
-          sct_i += (clean.step.val.raw == 6 ? 1 : 0);
-        } else {
-          sct_i = this.items.indexOf(clean) + 1;
-        }
-         */
-
         const tapName = this.getGrp(clean) ? this.getGrp(clean) .title : 'неизвестно';
 
         return this.translate.instant('BEERBOX.WASH_STEPS.STEP_4');
@@ -133,8 +124,6 @@ export class WashTapComponent implements OnInit {
 
   getGrp(a) {
     const grp = a.sct.groups.find(g => g.items.find(i => i.type.name === 'takeHead' && i.val.raw == 1) );
-
-    console.log(a.sct.groups);
 
     if (grp) {
       return grp.title;
