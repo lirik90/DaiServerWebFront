@@ -91,6 +91,10 @@ export class KegsComponent implements OnInit {
             is_active: group.items.filter((el) => el.type.name === 'takeHead')[0],
             bad_clean: group.items.filter((el) => el.type.name === 'badClean')[0],
             date_installed: group.items.filter((el) => el.type.name === 'keg_replacement_date')[0],
+            bottle_counter: group.items.find((el) => el.type.name === 'bottle_counter'),
+            extrude_counter: group.items.find((el) => el.type.name === 'extrude_counter'),
+            pouring_error_counter: group.items.find((el) => el.type.name === 'pouring_error_counter'),
+            extrude_error_counter: group.items.find((el) => el.type.name === 'extrude_error_counter'),
           });
         } else if (group.type.name === 'head') {
           for (const item of group.items) {
