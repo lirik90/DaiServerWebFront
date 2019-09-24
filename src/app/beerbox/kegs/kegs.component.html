@@ -42,10 +42,12 @@
                     <span  i18n="@@BEERBOX.KEGS.VOL_REMAIN_BEER">Осталось пива в кеге:</span> {{ getRemainBeer(head) }}<br>
                   </ng-container>
                   <br>
-                  <span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Бутылок:</span> {{ head.bottle_counter? head.bottle_counter.val.display : 'Неизвестно' }}<br>
-                  <span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Вытеснений:</span> {{ head.extrude_counter? head.extrude_counter.val.display : 'Неизвестно' }}<br>
-                  <span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Налито с ошибкой:</span> {{ head.pouring_error_counter? head.pouring_error_counter.val.display  : 'Неизвестно' }}<br>
-                  <span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Вытеснено с ошибкой:</span> {{ head.extrude_error_counter? head.extrude_error_counter.val.display : 'Неизвестно' }}<br>
+                  <span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Налито бутылок:</span> {{ head.bottle_counter? head.bottle_counter.val.display: 'Неизвестно' }}<br>
+                  <span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Произведено вытеснений:</span> {{ head.extrude_counter? head.extrude_counter.val.display : 'Неизвестно' }}<br>
+                  <br><span><b>Израсходовано пива:</b></span><br>
+                  <span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Неуспешные наливы:</span> {{ head.pouring_error_counter? head.pouring_error_counter.val.display  + ' мл' : 'Неизвестно' }}<br>
+                  <span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Неуспешные вытеснения:</span> {{ head.extrude_error_counter? head.extrude_error_counter.val.display  + ' мл': 'Неизвестно' }}<br>
+                  <span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Успешные вытеснения:</span> {{ head.extrude_error_counter? head.extrude_counter.val.display * 950  + ' мл' : 'Неизвестно' }}<br>
 
                   <ng-container *ngIf="head.volume_poured.val.display === null">
                     <span i18n="@@BEERBOX.KEGS.NOT_CONNECTED">Неподключено</span>
