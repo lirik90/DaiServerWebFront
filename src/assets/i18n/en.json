@@ -48,5 +48,22 @@
     "NOTIFICATIONS": {
       "TITLE": "Notifications"
     }
+  },
+  "FILL_ERRORS": {
+    "ERROR_1": "Filling parameters are not set",
+    "ERROR_2": "The bottle holder is out of start position",
+    "ERROR_4": "The bottle is not hold",
+    "ERROR_8": "There is no bottle",
+    "ERROR_16": "The bottle has a leak",
+    "ERROR_32": "The bottle is not empty",
+    "ERROR_64": "Time for filling is out",
+    "ERROR_128": "Time for gas releasing is out",
+    "ERROR_256": "No beer",
+    "ERROR_512": "The device has been blocked when filling a bottle",
+    "ERROR_1024": "The control of the device has been lost when filling a bottle",
+    "ERROR_2048": "The door is not closed",
+    "ERROR_4096": "The door is not blocked",
+    "ERROR_8192": "The door is not unblocked",
+    "ERROR_16384": "The bottle exploded"
   }
 }
