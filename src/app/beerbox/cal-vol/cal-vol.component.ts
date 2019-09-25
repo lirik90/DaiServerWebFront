@@ -11,7 +11,6 @@ import {ParamValue} from '../../house/house';
 })
 export class CalVolComponent implements OnInit {
   taps = [];
-  private intervalId: any;
 
   constructor(
     private houseService: HouseService,
@@ -21,7 +20,7 @@ export class CalVolComponent implements OnInit {
   ngOnInit() {
     // fill taps array
     this.houseService.house.sections.filter((sec, index) => index !== 0).map(tap => {
-      this.taps.push({sec: tap, step: 1});
+      this.taps.push({sec: tap, step: 1, intervalId: null});
     });
   }
 
@@ -33,18 +32,22 @@ export class CalVolComponent implements OnInit {
           tap.sec.groups.find(g => g.type.name === 'head')
             .items.find(i => i.type.name === 'setMode').id, 5);
 
-        this.intervalId = setInterval(() => {
+        console.log('waiting to start pouring');
+        tap.intervalId = setInterval(() => {
           if (this.isPouring(tap) == true) {
-            clearInterval(this.intervalId);
+            console.log('start pouring');
+            clearInterval(tap.intervalId);
             this.nextStep(tap);
           }
         }, 1000);
         break;
 
       case 2:
-        this.intervalId = setInterval(() => {
+        console.log('waiting to stop pouring');
+        tap.intervalId = setInterval(() => {
           if (this.isPouring(tap) == false) {
-            clearInterval(this.intervalId);
+            console.log('stop pouring');
+            clearInterval(tap.intervalId);
             this.nextStep(tap);
           }
         }, 1000);
