@@ -1,3 +1,4 @@
+
 .tap-pane {
   max-width: 640px;
 }
@@ -144,3 +145,50 @@
 .instructions {
   max-width: 640px;
 }
+
+.instructions__table-wrap {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.instructions__table-wrap, .instructions__img {
+  max-width: 980px;
+}
+
+.instructions__table {
+  color: #000;
+}
+
+.mid-row {
+  background: #8ce8ff;
+}
+
+.light-row {
+  background: #e6f8fe;
+}
+
+.dark-row {
+  background: #00aeef;
+  color: #fff;
+  font-weight: bold;
+}
+
+.instructions__table td {
+  vertical-align: middle;
+  text-align: center;
+  font-size: 13px;
+  padding: 10px 8px;
+}
+
+.instructions__table td:first-child {
+  font-weight: bold;
+}
+
+.td-white {
+  background: #fff;
+}
+
+.td-or {
+  background: #f5cb60;
+}
+
