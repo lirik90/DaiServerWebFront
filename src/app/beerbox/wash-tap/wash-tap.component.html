@@ -23,7 +23,7 @@
             <small>{{ translate.instant('FILL_ERRORS.ERROR_' + clean.error.val.raw) }}</small>
           </div>
 
-          <h4><span i18n="@@BEERBOX.WASH.STEP">Текущий этап</span>: {{stepText(clean)}} <span *ngIf="clean.step.val.raw >= 4">{{getGrp(clean) || 'неизвестно'}}</span></h4>
+          <!--h4><span i18n="@@BEERBOX.WASH.STEP">Текущий этап</span>: {{stepText(clean)}} <span *ngIf="clean.step.val.raw >= 4">{{getGrp(clean) || 'неизвестно'}}</span></h4-->
           <ng-container *ngIf="clean.pouring.val.raw == 0">
 
             <!--ng-container *ngIf="clean.step.val.raw <= 3">
@@ -39,9 +39,9 @@
                 Подключите пиво к обеим заборным головкам и нажмите кнопку на аппарате.</p>
             </ng-container-->
 
-            <h5 i18n="@@BEERBOX.EVENT.WASH_PROCESS">Отслеживайте состояние промывка по индикации аппарата и следуйте инструкции.</h5>
-
           </ng-container>
+
+          <h5 i18n="@@BEERBOX.EVENT.WASH_PROCESS">Отслеживайте состояние промывка по индикации аппарата и следуйте инструкции.</h5>
         </ng-container>
     </mat-card>
   </ng-container>
