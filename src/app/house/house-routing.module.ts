@@ -29,33 +29,34 @@ const houseRoutes: Routes = [
         canActivateChild: [AuthGuard, ProjectLoadGuard, PermissionGuard],
         children: [
           { path: '', redirectTo: 'detail', pathMatch: 'full' },
-          { path: 'detail', component: HouseDetailComponent },
+          { path: 'detail', component: HouseDetailComponent},
           {
             path: 'manage',
             component: ViewComponent,
-            data: { req_perms: ['can_see_more'] },
+            data: { req_perms: ['isSupervisor', 'isFullAccess', 'isAdmin'] },
             children: [
               { path: '', pathMatch: 'full' },
               { path: ':view_id', component: ManageComponent, data: { is_edit: true, is_view: true } }
             ]
           },
-          { path: 'elements', component: ManageComponent, data: { is_edit: true, req_perms: ['can_see_more'] }},
-          { path: 'log', component: LogComponent, data: { req_perms: ['can_see_more'] }, },
+          { path: 'elements', component: ManageComponent, data: { req_perms: ['isSupervisor', 'isFullAccess', 'isAdmin'] }},
+          { path: 'log', component: LogComponent, data: { req_perms: ['isSupervisor', 'isFullAccess', 'isAdmin'] }},
           { path: 'group/:groupId/param', component: ParamComponent },
           {
             path: 'reports',
             loadChildren: 'app/house/reports/reports.module#ReportsModule',
-            canLoad: [AuthGuard]
+            canLoad: [AuthGuard],
+            data: { req_perms: ['isAdmin'] }
           },
           {
             path: 'export',
             component: ExportComponent,
-            data: {dataPreselected: [107]}
+            data: {dataPreselected: [107], req_perms: ['isSupervisor', 'isFullAccess', 'isAdmin'] }
           },
           {
             path: 'settings',
             loadChildren: 'app/house/settings/settings.module#SettingsModule',
-            data: { req_perms: ['can_see_more'] },
+            data: { req_perms: ['isAdmin'] },
             canLoad: [AuthGuard]
           },
           { path: 'beerbox', loadChildren: 'app/beerbox/beerbox.module#BeerboxModule', canLoad: [AuthGuard] },
