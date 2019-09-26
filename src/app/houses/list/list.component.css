@@ -137,6 +137,6 @@ mat-card section {
   margin-right: 8px;
 }
 
-.sline-item:first-child {
+.sline-item:last-child {
   margin-right: 0;
 }
