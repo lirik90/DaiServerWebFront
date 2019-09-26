@@ -41,7 +41,7 @@ export class HousesService extends IHouseService {
     }
 
     if (query && query.length) {
-      url += '&name=' + query;
+      url += '&search=' + query;
     }
 
     return this.getPiped<PaginatorApi<House>>(url,
