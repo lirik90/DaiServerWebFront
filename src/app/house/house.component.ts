@@ -158,9 +158,7 @@ export class HouseComponent implements OnInit, OnDestroy {
     this.isKegReplacer = this.authService.isKegReplacer();
     this.isCleaner = this.authService.isCleaner();
 
-    if (this.isKegReplacer || this.isCleaner || this.isSupervisor || isFullAccess || isAdmin) {
-      this.fillerNav.push({link: 'detail', text: this.translate.instant('NAVIGATION_TAB.INFO'), icon: 'perm_device_information'});
-    }
+    this.fillerNav.push({link: 'detail', text: this.translate.instant('NAVIGATION_TAB.INFO'), icon: 'perm_device_information'});
 
     if (this.isSupervisor || isFullAccess || isAdmin) {
       this.fillerNav.push({link: 'manage', text: this.translate.instant('NAVIGATION_TAB.MANAGEMENT'), icon: 'home'});
