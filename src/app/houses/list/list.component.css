@@ -126,6 +126,7 @@ mat-card section {
   box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
+  margin-top: 16px;
 }
 
 .search-edit {
