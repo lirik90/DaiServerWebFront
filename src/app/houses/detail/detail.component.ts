@@ -14,6 +14,8 @@ import { AuthenticationService } from "../../authentication.service";
 export class HouseDetailComponent implements OnInit {
   house: House;
   can_save: boolean;
+  cities: any[];
+  comps: any[];
 
   constructor(
     private route: ActivatedRoute,
@@ -25,6 +27,14 @@ export class HouseDetailComponent implements OnInit {
   ngOnInit() {
     this.can_save = this.authService.isSupervisor();
     this.getHouse();
+
+    this.housesService.getCities().subscribe(data => {
+      this.cities = data.results;
+    });
+
+    this.housesService.getCompanies().subscribe(data => {
+      this.comps = data.results;
+    });
   }
 
   private getProjName(): string {
@@ -37,7 +47,9 @@ export class HouseDetailComponent implements OnInit {
   getHouse(): void {
     const name = this.getProjName();
     this.housesService.getHouse(name)
-      .subscribe(house => this.house = house);
+      .subscribe(house => {
+        this.house = house;
+      });
   }
 
   save(): void {

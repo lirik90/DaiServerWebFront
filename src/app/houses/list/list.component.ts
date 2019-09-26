@@ -5,6 +5,7 @@ import { startWith } from 'rxjs/operators/startWith';
 
 import { House } from '../../user';
 import { HousesService } from '../houses.service';
+import {PageEvent} from '@angular/material/typings/paginator';
 
 @Component({
   selector: 'app-houses',
@@ -24,6 +25,13 @@ export class HouseListComponent implements OnInit {
   compSelected: any;
   comps: any[];
 
+  lowValue = 0;
+  highValue = 10;
+  pageIndex = 0;
+  pageEvent: void;
+  pageSize = 10;
+  @ViewChild('searchBox') searchBox;
+
   constructor(private router: Router,
               private housesService: HousesService) {
 
@@ -42,19 +50,19 @@ export class HouseListComponent implements OnInit {
   }
 
   getHouses(query: string = ''): void {
-    this.paginator.page.pipe(
+    /*this.paginator.page.pipe(
       startWith({}),
-    ).subscribe(data => {
+    ).subscribe(data => {*/
       const limit: number = this.paginator.pageSize;
       const start: number = this.paginator.pageIndex;
 
       this.housesService.getHouses(limit !== undefined ? limit : 10, start !== undefined ? start : 0, 'title',
           query)
-        .subscribe(data => {
-          this.resultsLength = data.count;
-          this.houses = data.results;
+        .subscribe(dat => {
+          this.resultsLength = dat.count;
+          this.houses = dat.results;
         });
-    });
+    /*});*/
   }
 
   add(): void {
@@ -97,5 +105,14 @@ export class HouseListComponent implements OnInit {
     console.log(v);
      */
     this.getHouses(v);
+  }
+
+  getPaginatorData(event: PageEvent) {
+    console.log(event);
+
+    const q = this.searchBox.nativeElement.value;
+
+    console.log(q);
+    this.search(q);
   }
 }

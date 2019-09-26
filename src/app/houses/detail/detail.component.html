@@ -1,4 +1,5 @@
 <div *ngIf="house">
+  <!--pre>{{house | json }}</pre-->
   <h2><span i18n="@@DETAILS.HEAD">Подробнее о проекте</span>: «{{ house.title | uppercase }}»</h2>
   <div><span i18n="@@DETAILS.ID">Ид</span>: {{house.id}}</div>
   <div><span i18n="@@DETAILS.NAME">Имя</span>: {{house.name}}</div>
@@ -7,6 +8,25 @@
     <label><ng-container i18n="@@DETAILS.TITLE">Заголовок</ng-container>:
       <input [(ngModel)]="house.title" placeholder="title">
     </label>
+  </div>
+  <div>
+    <mat-form-field class="sline-item search-comp">
+      <mat-label>Город</mat-label>
+      <mat-select [(value)]="house.city_id">
+        <mat-option>Не выбрано</mat-option>
+        <mat-option *ngFor="let c of cities" [value]="c.id">{{c.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div>
+    <mat-form-field class="sline-item search-comp">
+      <mat-label>Компания</mat-label>
+      <mat-select [(value)]="house.company_id">
+        <mat-option>Не выбрано</mat-option>
+        <mat-option *ngFor="let c of comps" [value]="c.id">{{c.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
   <div>
     <label class="desc_label"><span i18n="@@DETAILS.DESCRIPTION">Описание</span>:
