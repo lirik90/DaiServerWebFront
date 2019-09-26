@@ -31,15 +31,35 @@ export class HousesService extends IHouseService {
   }
 
   private houseUrl = 'house/';  // URL to web api
+  private cityUrl = 'city/';
+  private compUrl = 'company/';
 
-  getHouses(limit: number, page: number = 0, ordering?: string): Observable<PaginatorApi<House>> {
+  getHouses(limit: number, page: number = 0, ordering?: string, query?: string): Observable<PaginatorApi<House>> {
     let url = this.houseUrl + `?limit=${limit}&offset=${limit * page}`;
     if (ordering && ordering.length) {
       url += '&ordering=' + ordering;
     }
 
+    if (query && query.length) {
+      url += '&name=' + query;
+    }
+
     return this.getPiped<PaginatorApi<House>>(url,
       `fetched client devices`, 'getHouses', {} as PaginatorApi<House>);
+  }
+
+  getCities(): Observable<PaginatorApi<any>> {
+    const url = this.cityUrl;
+
+    return this.getPiped<PaginatorApi<any>>(url,
+      `fetched cities`, 'getCities', {} as PaginatorApi<House>);
+  }
+
+  getCompanies(): Observable<PaginatorApi<any>> {
+    const url = this.compUrl;
+
+    return this.getPiped<PaginatorApi<any>>(url,
+      `fetched cities`, 'getCities', {} as PaginatorApi<House>);
   }
 
   getHouse(name: string): Observable<House> {

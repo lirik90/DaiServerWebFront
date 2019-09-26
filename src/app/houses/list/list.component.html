@@ -1,4 +1,24 @@
-<app-house-search></app-house-search>
+<div class="search-line">
+  <mat-form-field class="sline-item search-edit">
+    <input matInput #searchBox i18n-placeholder="@@CONTROL.SEARCH" placeholder="Поиск" id="search-box" (keyup)="search(searchBox.value)" />
+  </mat-form-field>
+
+  <mat-form-field class="sline-item search-ity">
+    <mat-label>Город</mat-label>
+    <mat-select [(value)]="citySelected" (selectionChange)="search(searchBox.value)" >
+      <mat-option>Не выбрано</mat-option>
+      <mat-option *ngFor="let c of cities" [value]="c.id">{{c.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="sline-item search-comp">
+    <mat-label>Компания</mat-label>
+    <mat-select [(value)]="compSelected" (selectionChange)="search(searchBox.value)">
+      <mat-option>Не выбрано</mat-option>
+      <mat-option *ngFor="let c of comps" [value]="c.id">{{c.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
 
 <ul class="houses">
   <li *ngFor="let house of houses">

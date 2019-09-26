@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material';
 import { startWith } from 'rxjs/operators/startWith';
 
@@ -19,24 +19,38 @@ export class HouseListComponent implements OnInit {
   resultsLength = 0;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  citySelected = null;
+  cities: any[];
+  compSelected: any;
+  comps: any[];
 
-  constructor(
-	  private router: Router,
-	  private housesService: HousesService) { }
+  constructor(private router: Router,
+              private housesService: HousesService) {
+
+  }
 
   ngOnInit() {
     this.getHouses();
+
+    this.housesService.getCities().subscribe(data => {
+      this.cities = data.results;
+    });
+
+    this.housesService.getCompanies().subscribe(data => {
+      this.comps = data.results;
+    });
   }
 
-  getHouses(): void {
+  getHouses(query: string = ''): void {
     this.paginator.page.pipe(
       startWith({}),
     ).subscribe(data => {
       const limit: number = this.paginator.pageSize;
       const start: number = this.paginator.pageIndex;
 
-      this.housesService.getHouses(limit !== undefined ? limit : 10, start !== undefined ? start : 0, 'title')
-        .subscribe(data => { 
+      this.housesService.getHouses(limit !== undefined ? limit : 10, start !== undefined ? start : 0, 'title',
+          query)
+        .subscribe(data => {
           this.resultsLength = data.count;
           this.houses = data.results;
         });
@@ -55,7 +69,7 @@ export class HouseListComponent implements OnInit {
         this.houses.push(house);
       });
   }
-  
+
   delete(house: House): void {
     this.houses = this.houses.filter(h => h !== house);
     this.housesService.deleteHouse(house).subscribe();
@@ -63,5 +77,24 @@ export class HouseListComponent implements OnInit {
 
   detail(house: House): void {
     this.router.navigate([`/detail/${house.id}/`]);
+  }
+
+  search(value: string) {
+    let v = value;
+
+    if (this.citySelected) {
+      v += '&city__id=' + this.citySelected;
+    }
+
+    if (this.compSelected) {
+      v += '&company__id=' + this.compSelected;
+    }
+
+    console.log(this.citySelected);
+    console.log(this.compSelected);
+
+    console.log(v);
+
+    this.getHouses(v);
   }
 }

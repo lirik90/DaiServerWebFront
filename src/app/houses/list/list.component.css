@@ -119,3 +119,24 @@ mat-card section {
   justify-content: space-between;
   align-items: center;
 }
+
+.search-line {
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.search-edit {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+.sline-item {
+  margin-right: 8px;
+}
+
+.sline-item:first-child {
+  margin-right: 0;
+}
