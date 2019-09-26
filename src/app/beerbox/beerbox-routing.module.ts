@@ -20,7 +20,7 @@ const beerboxRoutes: Routes = [
   {
     path: '',
     children: [
-      {path: 'replace_keg', component: ReplaceKegComponent},
+      {path: 'replace_keg', redirectTo: 'kegs'},
       {path: 'kegs', component: KegsComponent},
       {path: 'wash', component: WashComponent, data: { req_perms: ['can_see_more', 'can_wash'] }, canActivate: [PermissionGuard]},
       {path: 'calibration', component: CalibrationComponent},
