@@ -4,6 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import {HouseService} from '../../house/house.service';
 import {ControlService} from '../../house/control.service';
 import {DeviceItem} from '../../house/house';
+import {SafeHtml} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-wash-tap',
@@ -130,5 +131,19 @@ export class WashTapComponent implements OnInit {
     } else {
       return 0;
     }
+  }
+
+  getError(errno: number) {
+    let fullError: SafeHtml = '';
+
+    /* TODO: fix the magic constant */
+    for (let i = 16384; i > 0; i = i >> 2) {
+      // tslint:disable-next-line:no-bitwise
+      if (errno & i) {
+        fullError += this.translate.instant('FILL_ERRORS.ERROR_' + i) + '<br>';
+      }
+    }
+
+    return fullError;
   }
 }

@@ -90,11 +90,12 @@ export class HouseListComponent implements OnInit {
       v += '&company__id=' + this.compSelected;
     }
 
+    /*
     console.log(this.citySelected);
     console.log(this.compSelected);
 
     console.log(v);
-
+     */
     this.getHouses(v);
   }
 }
