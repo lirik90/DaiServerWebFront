@@ -23,14 +23,14 @@ export class HouseDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.can_save = this.authService.canChangeHouse();
+    this.can_save = this.authService.isSupervisor();
     this.getHouse();
   }
 
   private getProjName(): string {
     const p_str: string = 'name';
     if (this.route.snapshot.paramMap.has(p_str))
-      return this.route.snapshot.paramMap.get(p_str); 
+      return this.route.snapshot.paramMap.get(p_str);
     return this.route.parent.snapshot.paramMap.get(p_str);
   }
 

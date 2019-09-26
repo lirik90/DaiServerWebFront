@@ -39,7 +39,7 @@ export class HouseComponent implements OnInit, OnDestroy {
   connection_str = ' '; // HouseComponent.getConnectionString(false);
 
   connect_state: Connection_State = Connection_State.CS_DISCONNECTED;
-  private can_wash: boolean;
+  private isCleaner: boolean;
   private mod_state: boolean;
   private loses_state: boolean;
 
@@ -54,8 +54,8 @@ export class HouseComponent implements OnInit, OnDestroy {
   dt_interval: any;
   dt_text = '';
 
-  can_see_more: boolean;
-  can_edit: boolean;
+  isSupervisor: boolean;
+  isKegReplacer: boolean;
 
   private bytes_sub: ISubscription;
   private opened_sub: ISubscription;
@@ -152,13 +152,15 @@ export class HouseComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.can_see_more = this.authService.canChangeHouse();
-    this.can_edit = this.authService.canChangeItemState();
-    this.can_wash = this.authService.canAddDeviceItem();
+    const isAdmin = this.authService.isAdmin();
+    const isFullAccess = this.authService.isFullAccess();
+    this.isSupervisor = this.authService.isSupervisor();
+    this.isKegReplacer = this.authService.isKegReplacer();
+    this.isCleaner = this.authService.isCleaner();
 
     this.fillerNav.push({link: 'detail', text: this.translate.instant('NAVIGATION_TAB.INFO'), icon: 'perm_device_information'});
 
-    if (this.can_see_more) {
+    if (this.isSupervisor) {
       this.fillerNav.push({link: 'manage', text: this.translate.instant('NAVIGATION_TAB.MANAGEMENT'), icon: 'home'});
       this.fillerNav.push({link: 'elements', text: this.translate.instant('NAVIGATION_TAB.ELEMENTS'), icon: 'build'});
       this.fillerNav.push({link: 'log', text: this.translate.instant('NAVIGATION_TAB.LOG'), icon: 'event_note'});
@@ -168,7 +170,7 @@ export class HouseComponent implements OnInit, OnDestroy {
     this.fillerNav.push({link: 'export', query: {data: [107]}, text: this.translate.instant('NAVIGATION_TAB.EXPORT'), icon: 'subject'});
 
     // For Beerbox
-    if (this.can_see_more || this.can_wash) {
+    if (this.isSupervisor || this.isCleaner) {
       this.fillerNav.push({link: 'beerbox/wash', text: this.translate.instant('NAVIGATION_TAB.WASH'), icon: 'opacity'});
     }
     /*
@@ -176,10 +178,10 @@ export class HouseComponent implements OnInit, OnDestroy {
       this.fillerNav.push({link: 'beerbox/replace_keg', text: this.translate.instant('NAVIGATION_TAB.REPLACE_KEG'), icon: 'repeat'});
     }
      */
-    if (this.can_edit) {
+    if (this.isKegReplacer) {
       this.fillerNav.push({link: 'beerbox/kegs', text: this.translate.instant('NAVIGATION_TAB.KEGS'), icon: 'local_drink'});
     }
-    if (this.can_edit) {
+    if (this.isKegReplacer) {
       this.fillerNav.push({
         link: 'beerbox/calibration',
         text: this.translate.instant('NAVIGATION_TAB.CALIBRATION'),
@@ -194,23 +196,23 @@ export class HouseComponent implements OnInit, OnDestroy {
       });
 
     }
-    if (this.can_see_more) {
+    if (this.isSupervisor) {
       this.fillerNav.push({link: 'beerbox/check-head-stand', text: this.translate.instant('NAVIGATION_TAB.STAND'), icon: 'category'});
     }
-    if (this.can_edit) {
+    if (this.isKegReplacer) {
       this.fillerNav.push({link: 'beerbox/replace_labels', text: this.translate.instant('NAVIGATION_TAB.REPLACE_LABEL'), icon: 'layers'});
     }
-    if (this.can_edit) {
+    if (this.isKegReplacer) {
       this.fillerNav.push({link: 'beerbox/update_beer_info', text: this.translate.instant('NAVIGATION_TAB.BEER_INFO'), icon: 'receipt'});
     }
-    if (this.can_edit) {
+    if (this.isKegReplacer) {
       this.fillerNav.push({
         link: 'beerbox/change_controller_address',
         text: this.translate.instant('NAVIGATION_TAB.CONTROLLER'),
         icon: 'settings_input_component'
       });
     }
-    if (this.can_edit) {
+    if (this.isKegReplacer) {
       this.fillerNav.push({
         link: 'beerbox/operation_hours',
         text: this.translate.instant('NAVIGATION_TAB.OPERATION_HOURS'),
@@ -342,7 +344,7 @@ export class HouseComponent implements OnInit, OnDestroy {
   }
 
   restart(): void {
-    if (this.can_edit) {
+    if (this.isKegReplacer) {
       this.controlService.restart();
     }
   }

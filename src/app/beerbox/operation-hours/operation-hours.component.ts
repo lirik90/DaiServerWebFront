@@ -30,7 +30,7 @@ export class OperationHoursComponent implements OnInit {
 
   ngOnInit() {
     this.get_info();
-    this.can_edit = this.authService.canChangeItemState();
+    this.can_edit = this.authService.isKegReplacer();
   }
 
   get_info(): void {

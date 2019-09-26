@@ -45,7 +45,7 @@ export class KegsComponent implements OnInit {
   gas: Group;
   pressure: DeviceItem;
 
-  canSeeWash = this.authService.canChangeHouse() || this.authService.canAddDeviceItem();
+  canSeeWash = this.authService.isSupervisor() || this.authService.isCleaner();
 
   constructor(
     private houseService: HouseService,

@@ -12,7 +12,7 @@
         <app-drag-scroll *ngIf="houseService.house">{{houseService.house.title}}</app-drag-scroll>
         <span class="timestring" *ngIf="!mobileQuery.matches && connected" i18n-matTooltip="@@DEVICE_TIME" matTooltip="Время на устройстве">{{dt_text}} {{dt_tz_name}}</span>
 
-        <button *ngIf="can_see_more" mat-icon-button (click)="restart()"><mat-icon>replay</mat-icon></button>
+        <button *ngIf="isSupervisor" mat-icon-button (click)="restart()"><mat-icon>replay</mat-icon></button>
       </div>
 
       <div class="localnav-menu">

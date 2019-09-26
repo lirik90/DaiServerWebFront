@@ -32,7 +32,7 @@ export class DevItemValueComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.cantChange = !this.authService.canChangeItemState();
+    this.cantChange = !this.authService.isKegReplacer();
     this.is_toggle = this.item.type.registerType == ItemTypeRegister.Coils;
     this.is_holding = this.item.type.registerType == ItemTypeRegister.HoldingRegisters;
 	  this.is_button = this.item.type.registerType == ItemTypeRegister.SimpleButton;

@@ -26,7 +26,15 @@ export class AuthenticationService {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
-  canChangeItemState(): boolean {
+  isAdmin(): boolean {
+    return this.checkPermission('change_logentry');
+  }
+
+  isFullAccess(): boolean {
+    return this.checkPermission('add_logentry');
+  }
+
+  isKegReplacer(): boolean {
     return this.checkPermission('toggle_deviceitem');
   }
 
@@ -34,11 +42,11 @@ export class AuthenticationService {
     return this.checkPermission('change_paramvalue');
   }
 
-  canChangeHouse(): boolean {
+  isSupervisor(): boolean {
     return this.checkPermission('change_house');
   }
 
-  canAddDeviceItem(): boolean {
+  isCleaner(): boolean {
     return this.checkPermission('add_deviceitem');
   }
 
