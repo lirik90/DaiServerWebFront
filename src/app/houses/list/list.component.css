@@ -16,6 +16,7 @@
   /*white-space: nowrap;*/
   display: flex;
   align-items: center;
+  padding-left: 1em;
 }
 
 .houses li.selected {
@@ -63,6 +64,7 @@
   text-align: right;
   margin-right: .8em;
   border-radius: 4px 0 0 4px;
+  display: none;
 }
 
 button {
@@ -136,6 +138,11 @@ mat-card section {
 
 .sline-item {
   margin-right: 8px;
+  flex: 1;
+}
+
+.sline-item:first-child {
+  flex: 3;
 }
 
 .sline-item:last-child {
