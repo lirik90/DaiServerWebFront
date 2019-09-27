@@ -10,3 +10,14 @@
     </div>
   </a>
 </div>
+
+<h3 i18n="@@DASHBOARD.TITLE">Избранное</h3>
+<div class="grid grid-pad">
+  <a *ngFor="let house of favhouses" class="col-1-4"
+     routerLink="/house/{{house.name}}/manage">
+    <!--a class="detail" routerLink="/detail/{{house.name}}">?</a-->
+    <div class="module house">
+      <h4>{{house.title}}</h4>
+    </div>
+  </a>
+</div>

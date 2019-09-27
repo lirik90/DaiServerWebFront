@@ -28,6 +28,7 @@ import {UIService} from './ui.service';
 import {UserSettingsComponent} from './user-settings/user-settings.component';
 import {UserSettingsModule} from './user-settings/user-settings.module';
 import { CookieService } from 'ngx-cookie-service';
+import {FavService} from './fav.service';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -73,6 +74,7 @@ export function createTranslateLoader(http: HttpClient) {
     TranslateService,
     WebSocketBytesService,
     CookieService,
+    FavService,
     {
     	provide: HTTP_INTERCEPTORS,
     	useClass: JwtInterceptor,

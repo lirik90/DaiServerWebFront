@@ -10,6 +10,7 @@ import {Connection_State, ControlService, WebSockCmd} from './control.service';
 import {AuthenticationService} from '../authentication.service';
 import {TranslateService} from '@ngx-translate/core';
 import {UIService} from '../ui.service';
+import {FavService} from '../fav.service';
 
 interface NavLink {
   link: string;
@@ -62,6 +63,7 @@ export class HouseComponent implements OnInit, OnDestroy {
 
   @ViewChild('snav') snav !: MatSidenav;
   showNav = false;
+  isFav = false;
 
   private getConnectionString(connected: boolean): string {
     return connected ? undefined : this.translate.instant('CONNECTION_PROBLEM');
@@ -144,7 +146,8 @@ export class HouseComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     public uiService: UIService,
     private router: Router,
-    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher
+    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
+    private favService: FavService,
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -223,6 +226,8 @@ export class HouseComponent implements OnInit, OnDestroy {
     }
 
     this.getHouseInfo();
+
+    this.isFav = this.favService.isFav(this.houseService.house.name);
   }
 
   ngOnDestroy() {
@@ -348,6 +353,15 @@ export class HouseComponent implements OnInit, OnDestroy {
   closeMenu() {
     const el: HTMLInputElement = <HTMLInputElement>document.getElementById('localnav-menustate');
     el.checked = false;
+  }
+
+  fav() {
+    this.favService.addToFav(this.houseService.house.name, this.houseService.house.title);
+    this.isFav = this.favService.isFav(this.houseService.house.name);
+  }
+
+  unfav() {
+    this.isFav = this.favService.isFav(this.houseService.house.name);
   }
 }
 
