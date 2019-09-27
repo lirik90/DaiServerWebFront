@@ -137,8 +137,9 @@ export class WashTapComponent implements OnInit {
     let fullError: SafeHtml = '';
 
     /* TODO: fix the magic constant */
-    for (let i = 16384; i > 0; i = i >> 2) {
+    for (let i = 16384; i > 0; i = i >> 1) {
       // tslint:disable-next-line:no-bitwise
+      //console.log(i);
       if (errno & i) {
         fullError += this.translate.instant('FILL_ERRORS.ERROR_' + i) + '<br>';
       }
