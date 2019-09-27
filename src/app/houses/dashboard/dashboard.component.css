@@ -12,7 +12,7 @@
   color: black;
   font-weight: bold;
 }
- 
+
 .detail:hover {
   background-color: #eee;
 }
@@ -30,10 +30,13 @@ h4 {
   padding: 20px;
   text-align: center;
   color: #eee;
-  max-height: 120px;
+  height: 120px;
   min-width: 120px;
   background-color: #607D8B;
   border-radius: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .module:hover {
   background-color: #EEE;
@@ -61,4 +64,8 @@ h4 {
   .grid {
     display: unset;
   }
+}
+
+.module h4 {
+  margin: none;
 }
