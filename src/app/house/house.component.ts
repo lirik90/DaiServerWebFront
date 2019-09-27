@@ -361,6 +361,7 @@ export class HouseComponent implements OnInit, OnDestroy {
   }
 
   unfav() {
+    this.favService.removeFromFav(this.houseService.house.name);
     this.isFav = this.favService.isFav(this.houseService.house.name);
   }
 }
