@@ -247,5 +247,6 @@ export class HouseDetail {
   statuses: Status[];  // Состояния
   views: View[];
   groupModes: GroupMode[];
+  title: string;
 }
 
