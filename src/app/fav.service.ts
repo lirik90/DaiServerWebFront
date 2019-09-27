@@ -34,6 +34,11 @@ export class FavService {
 
   addToFav(name: string, title: string) {
     this.favs.push({name: name, title: title});
+
+    if (this.favs.length > 20) {
+      this.favs.shift();
+    }
+
     this.setFavs();
   }
 
