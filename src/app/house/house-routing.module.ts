@@ -33,13 +33,13 @@ const houseRoutes: Routes = [
           {
             path: 'manage',
             component: ViewComponent,
-            data: { req_perms: ['isSupervisor', 'isFullAccess', 'isAdmin'] },
+            data: { req_perms: ['isAdmin'] },
             children: [
               { path: '', pathMatch: 'full' },
               { path: ':view_id', component: ManageComponent, data: { is_edit: true, is_view: true } }
             ]
           },
-          { path: 'elements', component: ManageComponent, data: { req_perms: ['isSupervisor', 'isFullAccess', 'isAdmin'] }},
+          { path: 'elements', component: ManageComponent, data: { req_perms: ['isAdmin'] }},
           { path: 'log', component: LogComponent, data: { req_perms: ['isSupervisor', 'isFullAccess', 'isAdmin'] }},
           { path: 'group/:groupId/param', component: ParamComponent },
           {

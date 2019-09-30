@@ -53,9 +53,18 @@ export class HouseDetailComponent implements OnInit {
   }
 
   save(): void {
+    if (this.house.city == 0) {
+      this.house.city = null;
+    }
+
+    if (this.house.company == 0) {
+      this.house.company = null;
+    }
+
     this.housesService.updateHouse(this.house)
-     .subscribe(() => this.goBack());
+     .subscribe(() => {});
   }
+
 
   goBack(): void {
     this.location.back();

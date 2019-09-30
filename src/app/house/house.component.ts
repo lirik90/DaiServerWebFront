@@ -62,7 +62,6 @@ export class HouseComponent implements OnInit, OnDestroy {
   private opened_sub: ISubscription;
 
   @ViewChild('snav') snav !: MatSidenav;
-  showNav = false;
   isFav = false;
 
   private getConnectionString(connected: boolean): string {
@@ -163,9 +162,12 @@ export class HouseComponent implements OnInit, OnDestroy {
 
     this.fillerNav.push({link: 'detail', text: this.translate.instant('NAVIGATION_TAB.INFO'), icon: 'perm_device_information'});
 
-    if (this.isSupervisor || isFullAccess || isAdmin) {
+    if (isAdmin) {
       this.fillerNav.push({link: 'manage', text: this.translate.instant('NAVIGATION_TAB.MANAGEMENT'), icon: 'home'});
       this.fillerNav.push({link: 'elements', text: this.translate.instant('NAVIGATION_TAB.ELEMENTS'), icon: 'build'});
+    }
+
+    if (this.isSupervisor || isFullAccess || isAdmin) {
       this.fillerNav.push({link: 'log', text: this.translate.instant('NAVIGATION_TAB.LOG'), icon: 'event_note'});
     }
 
@@ -198,7 +200,7 @@ export class HouseComponent implements OnInit, OnDestroy {
         text: this.translate.instant('NAVIGATION_TAB.CALVOL'),
         icon: 'compass_calibration'
       });
-      */
+       */
     }
 
     if (this.isSupervisor || isFullAccess || isAdmin) {
@@ -249,14 +251,7 @@ export class HouseComponent implements OnInit, OnDestroy {
   getHouseInfo(): void {
     this.bytes_sub = this.controlService.byte_msg.subscribe(msg => {
 
-      /*console.log(msg);*/
-
       if (msg.cmd === WebSockCmd.WS_CONNECTION_STATE) {
-
-/*
-        console.log(msg);
-*/
-
         if (msg.data === undefined) {
           console.log('ConnectInfo without data');
           return;

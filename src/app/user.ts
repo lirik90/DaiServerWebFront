@@ -26,8 +26,8 @@ export class House {
   device: string;     // UUID проекта
   lastUsage: string;
   title: string;      // Отображаемое имя проекта
-  city_id: number;
-  company_id: number;
+  city: number | null;
+  company: number | null;
   description: string;
 }
 
