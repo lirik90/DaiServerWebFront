@@ -137,6 +137,11 @@ export class KegsComponent implements OnInit {
     return Math.round(val);
   }
 
+  toLitres(val) {
+    const l = val / 1000;
+    return Math.round(l * 1000) / 1000;
+  }
+
   openDialog(keg: Head) {
     this.dialog.open(ConfirmDialogReplaceKegComponent,
       {
@@ -249,7 +254,7 @@ export class KegsComponent implements OnInit {
         return 'Не подключено';
       }
 
-      return parseFloat(this.kegVolume.value) - parseFloat(head.volume_poured.val.display) + ' мл.';
+      return this.toLitres(parseFloat(this.kegVolume.value) - parseFloat(head.volume_poured.val.display)) + ' л.';
     } else {
       return 0;
     }
@@ -260,6 +265,6 @@ export class KegsComponent implements OnInit {
       return 'Не подключено';
     }
 
-    return head.volume_poured.val.display + ' мл.';
+    return this.toLitres(head.volume_poured.val.display) + ' л.';
   }
 }
