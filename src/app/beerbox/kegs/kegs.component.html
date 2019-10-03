@@ -55,9 +55,9 @@
                 </div>
                 <div class="graph">
                   <ng-container *ngIf="head.volume_poured.val.display !== null">
-                    <div class="graph__filled" [style.height.%]="getPercentFilled(head, tap.bottleVol.val.display)"></div>
+                    <div class="graph__filled" [style.height.%]="getPercentFilled(head)"></div>
                     <div class="graph_label">
-                      {{ head.bottle_counter.val.display }}
+                      {{ getLeftBottles(head) }}
                     </div>
                   </ng-container>
                 </div>
@@ -82,3 +82,5 @@
     </div>
   </ng-container>
 </div>
+
+<pre>{{this.houseService.house.sections[0] | json}}</pre>

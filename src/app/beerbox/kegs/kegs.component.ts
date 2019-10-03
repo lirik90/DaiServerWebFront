@@ -51,6 +51,8 @@ export class KegsComponent implements OnInit {
   gas: Group;
   pressure: DeviceItem;
 
+  bottleCount: ParamValue;
+
   canSeeWash = this.authService.isSupervisor() || this.authService.isCleaner();
 
   constructor(
@@ -84,7 +86,10 @@ export class KegsComponent implements OnInit {
       let bottleVol: DeviceItem;
 
       for (const group of sct.groups) {
-        if (group.type.name === 'takeHead') {
+        if (group.type.name === 'proc') {
+           this.bottleCount = group.params.find((el) => el.param.name === 'bottle_count');
+           console.log(this.bottleCount);
+        } else if (group.type.name === 'takeHead') {
           // heads.push(group);
           // TODO: check for undefined
           console.log(group);
@@ -141,16 +146,19 @@ export class KegsComponent implements OnInit {
     return taps;
   }
 
-  getPercentFilled(head: Head, bottleVol): number {
-    const maxBottles = Math.round(parseFloat(this.kegVolume.value) / parseFloat(bottleVol));
+  getLeftBottles(head: Head) {
+    const maxBottles: number = parseInt(this.bottleCount.value, 10) || 30;
 
     const curBottles = parseInt(head.bottle_counter.val.display, 10);
 
-    if (head.is_not_empty.val.display) {
-      console.log('cur: ' + curBottles);
-      console.log('max: ' + parseFloat(this.kegVolume.value) / bottleVol);
+    return (maxBottles - curBottles);
+  }
 
-      return Math.round((maxBottles - curBottles) / maxBottles * 100);
+  getPercentFilled(head: Head): number {
+    const maxBottles: number = parseInt(this.bottleCount.value, 10) || 30;
+
+    if (head.is_not_empty.val.display) {
+      return (this.getLeftBottles(head) / maxBottles * 100);
     } else {
       return 0;
     }
