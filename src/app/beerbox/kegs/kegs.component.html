@@ -55,9 +55,9 @@
                 </div>
                 <div class="graph">
                   <ng-container *ngIf="head.volume_poured.val.display !== null">
-                    <div class="graph__filled" [style.height.%]="getPercentFilled(head)"></div>
+                    <div class="graph__filled" [style.height.%]="getPercentFilled(head, tap.bottleVol.val.display)"></div>
                     <div class="graph_label">
-                      {{ round(getPercentFilled(head)) }}%
+                      {{ head.bottle_counter.val.display }}
                     </div>
                   </ng-container>
                 </div>

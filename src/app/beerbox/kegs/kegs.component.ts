@@ -17,9 +17,15 @@ export interface Head {
   volume_poured: DeviceItem;
   is_active: DeviceItem;
   bad_clean: DeviceItem;
+
+  bottle_counter: DeviceItem;
+  extrude_counter: DeviceItem;
+  pouring_error_counter: DeviceItem;
+  extrude_error_counter: DeviceItem;
 }
 
 export interface Tap {
+  bottleVol: DeviceItem;
   mode: DeviceItem;
   isBlocked: DeviceItem;
   sctId: number;
@@ -75,13 +81,14 @@ export class KegsComponent implements OnInit {
 
       let isBlocked: DeviceItem;
       let mode: DeviceItem;
+      let bottleVol: DeviceItem;
 
       for (const group of sct.groups) {
         if (group.type.name === 'takeHead') {
           // heads.push(group);
           // TODO: check for undefined
           console.log(group);
-          heads.push({
+          let h = {
             title: group.title,
             date_made: group.params[0].childs.filter((el) => el.param.name === 'date')[0],
             manufacturer: group.params[0].childs.filter((el) => el.param.name === 'name')[0],
@@ -95,7 +102,9 @@ export class KegsComponent implements OnInit {
             extrude_counter: group.items.find((el) => el.type.name === 'extrude_counter'),
             pouring_error_counter: group.items.find((el) => el.type.name === 'pouring_error_counter'),
             extrude_error_counter: group.items.find((el) => el.type.name === 'extrude_error_counter'),
-          });
+          };
+
+          heads.push(h);
         } else if (group.type.name === 'head') {
           for (const item of group.items) {
             if (item.type.name === 'block') {
@@ -108,8 +117,14 @@ export class KegsComponent implements OnInit {
 
             mode =  group.items.find((el) => el.type.name === 'setMode');
           }
+        } else if (group.type.name === 'params') {
+          bottleVol = group.items.find((el) => el.type.name === 'setVol3');
+          console.log('bbbb : ' + bottleVol);
         }
+
       }
+
+
 
       if (heads.length > 0) {
         taps.push({
@@ -117,7 +132,8 @@ export class KegsComponent implements OnInit {
           sctId: sct.id,
           heads: heads,
           isBlocked: isBlocked,
-          mode: mode
+          mode: mode,
+          bottleVol: bottleVol
         });
       }
     }
@@ -125,9 +141,16 @@ export class KegsComponent implements OnInit {
     return taps;
   }
 
-  getPercentFilled(head: Head): number {
+  getPercentFilled(head: Head, bottleVol): number {
+    const maxBottles = Math.round(parseFloat(this.kegVolume.value) / parseFloat(bottleVol));
+
+    const curBottles = parseInt(head.bottle_counter.val.display, 10);
+
     if (head.is_not_empty.val.display) {
-      return (parseFloat(this.kegVolume.value) - parseFloat(head.volume_poured.val.display)) / parseFloat(this.kegVolume.value) * 100;
+      console.log('cur: ' + curBottles);
+      console.log('max: ' + parseFloat(this.kegVolume.value) / bottleVol);
+
+      return Math.round((maxBottles - curBottles) / maxBottles * 100);
     } else {
       return 0;
     }
