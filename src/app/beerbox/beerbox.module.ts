@@ -26,6 +26,8 @@ import {NgxBarcodeModule} from 'ngx-barcode';
 import { WashTapComponent } from './wash-tap/wash-tap.component';
 import {LabelConfModule} from './label-conf/label-conf.module';
 import { CalVolComponent } from './cal-vol/cal-vol.component';
+import { BrandsComponent } from './brands/brands.component';
+import { WifiComponent } from './wifi/wifi.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -49,7 +51,7 @@ export function createTranslateLoader(http: HttpClient) {
     NgxBarcodeModule
   ],
   declarations: [
-    WashComponent, ReplaceKegComponent, ConfirmDialogReplaceKegComponent, CalibrationComponent, CheckHeadStandComponent, CheckHeadStandDialogComponent, ReplaceLabelsComponent, UpdateBeerInfoComponent, EditDialogUpdateBeerInfoComponent, EditDialogManufacturersListComponent, ChangeControllerAddressComponent, OperationHoursComponent, KegsComponent, OkDialogComponent, LabelConfiguratorComponent, WashTapComponent, CalVolComponent
+    WashComponent, ReplaceKegComponent, ConfirmDialogReplaceKegComponent, CalibrationComponent, CheckHeadStandComponent, CheckHeadStandDialogComponent, ReplaceLabelsComponent, UpdateBeerInfoComponent, EditDialogUpdateBeerInfoComponent, EditDialogManufacturersListComponent, ChangeControllerAddressComponent, OperationHoursComponent, KegsComponent, OkDialogComponent, LabelConfiguratorComponent, WashTapComponent, CalVolComponent, BrandsComponent, WifiComponent
   ],
   entryComponents: [
     ConfirmDialogReplaceKegComponent,
