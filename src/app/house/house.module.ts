@@ -71,6 +71,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     HoldingRegisterDialogComponent,
     ParamsDialogComponent,
   ],
+  exports: [
+    ParamComponent
+  ],
   providers: [
     ProjectLoadGuard,
     ControlService,

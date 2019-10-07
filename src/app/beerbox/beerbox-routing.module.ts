@@ -16,6 +16,7 @@ import {ProjectLoadGuard} from '../house/project-load.guard';
 import {PermissionGuard} from '../house/permission.guard';
 import {CalVolComponent} from './cal-vol/cal-vol.component';
 import {WifiComponent} from './wifi/wifi.component';
+import {PourSettingsComponent} from './pour-settings/pour-settings.component';
 
 const beerboxRoutes: Routes = [
   {
@@ -34,6 +35,7 @@ const beerboxRoutes: Routes = [
       {path: 'label-configurator', component: LabelConfiguratorComponent},
       {path: 'label-conf', component: TapListComponent /*loadChildren: 'app/beerbox/label-conf/label-conf.module#LabelConfModule'*/},
       {path: 'wifi', component: WifiComponent},
+      {path: 'pour-settings', component: PourSettingsComponent},
     ]
   }
 ];

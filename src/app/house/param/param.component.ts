@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { Location } from '@angular/common';
 
@@ -20,6 +20,8 @@ export class ParamComponent implements OnInit
 
   changed_values: ParamValue[] = [];
 
+  @Input() groupId;
+
   constructor(
     private route: ActivatedRoute,
     private houseService: HouseService,
@@ -29,7 +31,9 @@ export class ParamComponent implements OnInit
   ) { }
 
   ngOnInit() {
-    this.getGroup();
+    if (!this.groupId) {
+      this.getGroup();
+    }
     this.cantChange = !this.authService.canChangeParam();
   }
 
