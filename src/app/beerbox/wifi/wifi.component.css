@@ -1,0 +1,20 @@
+
+@media (min-width: 601px) {
+  .wrap {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.save-btn {
+  width: 100%;
+}

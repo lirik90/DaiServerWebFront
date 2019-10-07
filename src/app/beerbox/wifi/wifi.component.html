@@ -1,5 +1,24 @@
-<h1>Настройки WiFi</h1>
+<h2>Настройки WiFi</h2>
+
+<div class="wrap">
+  <div>
+    <mat-form-field>
+      <input type="text" [value]="wifi_ssid.val.display" matInput [placeholder]="wifi_ssid.type.title">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <input type="text" [value]="wifi_pwd.val.display" matInput [placeholder]="wifi_pwd.type.title">
+    </mat-form-field>
+  </div>
+  <div>
+    <button class="save-btn" mat-stroked-button>Сохранить</button>
+  </div>
+</div>
+<!--pre>
+  {{ wifi_ssid | json }}
+</pre>
 
 <pre>
-  {{ wifi | json }}
-</pre>
+  {{ wifi_pwd | json }}
+</pre-->
