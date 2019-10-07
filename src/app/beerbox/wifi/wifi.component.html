@@ -3,16 +3,16 @@
 <div class="wrap">
   <div>
     <mat-form-field>
-      <input type="text" [value]="wifi_ssid.val.display" matInput [placeholder]="wifi_ssid.type.title">
+      <input #ssid type="text" [value]="wifi_ssid.val.display" matInput [placeholder]="wifi_ssid.type.title">
     </mat-form-field>
   </div>
   <div>
     <mat-form-field>
-      <input type="text" [value]="wifi_pwd.val.display" matInput [placeholder]="wifi_pwd.type.title">
+      <input #pwd type="text" [value]="wifi_pwd.val.display" matInput [placeholder]="wifi_pwd.type.title">
     </mat-form-field>
   </div>
   <div>
-    <button class="save-btn" mat-stroked-button>Сохранить</button>
+    <button class="save-btn" mat-stroked-button (click)="save(ssid.value, pwd.value)">Сохранить</button>
   </div>
 </div>
 <!--pre>

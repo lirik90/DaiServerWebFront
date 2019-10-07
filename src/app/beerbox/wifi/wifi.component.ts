@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {HouseService} from '../../house/house.service';
 import {DeviceItem} from '../../house/house';
+import {ControlService} from '../../house/control.service';
 
 @Component({
   selector: 'app-wifi',
@@ -13,6 +14,7 @@ export class WifiComponent implements OnInit {
 
   constructor(
     private houseService: HouseService,
+    private controlService: ControlService,
   ) { }
 
   ngOnInit() {
@@ -22,4 +24,10 @@ export class WifiComponent implements OnInit {
     this.wifi_ssid = network.find(i => i.type.name === 'wifi_ssid');
   }
 
+  save(ssid, pwd) {
+    console.log(ssid);
+    console.log(pwd);
+    this.controlService.writeToDevItem(this.wifi_ssid.id, ssid);
+    this.controlService.writeToDevItem(this.wifi_pwd.id, pwd);
+  }
 }
