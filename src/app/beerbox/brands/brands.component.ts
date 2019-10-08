@@ -101,7 +101,7 @@ export class BrandEditDialogComponent {
     }
   }
 
-  save(fields) {
+  save() {
     this.dialogRef.close({result: this.curBrand});
   }
 
