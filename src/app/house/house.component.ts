@@ -227,6 +227,20 @@ export class HouseComponent implements OnInit, OnDestroy {
       });
     }
 
+    if (isAdmin) {
+      this.fillerNav.push({
+        link: 'beerbox/brands',
+        text: 'Brands',
+        icon: 'label'
+      });
+
+      this.fillerNav.push({
+        link: 'beerbox/wifi',
+        text: 'Настройки WiFi',
+        icon: 'label'
+      });
+    }
+
     this.getHouseInfo();
 
     this.isFav = this.favService.isFav(this.houseService.house.name);

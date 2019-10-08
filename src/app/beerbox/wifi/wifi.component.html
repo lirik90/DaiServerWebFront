@@ -2,12 +2,12 @@
 
 <div class="wrap">
   <div>
-    <mat-form-field>
+    <mat-form-field *ngIf="wifi_ssid">
       <input #ssid type="text" [value]="wifi_ssid.val.display" matInput [placeholder]="wifi_ssid.type.title">
     </mat-form-field>
   </div>
   <div>
-    <mat-form-field>
+    <mat-form-field *ngIf="wifi_pwd">
       <input #pwd type="text" [value]="wifi_pwd.val.display" matInput [placeholder]="wifi_pwd.type.title">
     </mat-form-field>
   </div>
