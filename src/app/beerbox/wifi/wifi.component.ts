@@ -24,10 +24,10 @@ export class WifiComponent implements OnInit {
     this.wifi_ssid = network.find(i => i.type.name === 'wifi_ssid');
   }
 
-  save(ssid, pwd) {
-    console.log(ssid);
-    console.log(pwd);
-    this.controlService.writeToDevItem(this.wifi_ssid.id, ssid);
-    this.controlService.writeToDevItem(this.wifi_pwd.id, pwd);
+  save(ssid: HTMLInputElement, pwd: HTMLInputElement) {
+    console.log(ssid.value);
+    console.log(pwd.value);
+    this.controlService.writeToDevItem(this.wifi_ssid.id, ssid.value);
+    this.controlService.writeToDevItem(this.wifi_pwd.id, pwd.value);
   }
 }
