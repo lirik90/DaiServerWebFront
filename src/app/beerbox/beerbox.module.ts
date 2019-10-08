@@ -29,7 +29,6 @@ import { CalVolComponent } from './cal-vol/cal-vol.component';
 import {BrandEditDialogComponent, BrandsComponent} from './brands/brands.component';
 import { WifiComponent } from './wifi/wifi.component';
 import { PourSettingsComponent } from './pour-settings/pour-settings.component';
-import {HouseModule} from '../house/house.module';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -51,7 +50,6 @@ export function createTranslateLoader(http: HttpClient) {
       }
     }),
     NgxBarcodeModule,
-    HouseModule
   ],
   declarations: [
     WashComponent, ReplaceKegComponent, ConfirmDialogReplaceKegComponent, CalibrationComponent, CheckHeadStandComponent, CheckHeadStandDialogComponent, ReplaceLabelsComponent, UpdateBeerInfoComponent, EditDialogUpdateBeerInfoComponent, EditDialogManufacturersListComponent, ChangeControllerAddressComponent, OperationHoursComponent, KegsComponent, OkDialogComponent, LabelConfiguratorComponent, WashTapComponent, CalVolComponent, BrandsComponent, WifiComponent, PourSettingsComponent, BrandEditDialogComponent
