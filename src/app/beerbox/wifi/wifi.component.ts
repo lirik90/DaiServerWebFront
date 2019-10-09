@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {HouseService} from '../../house/house.service';
 import {DeviceItem} from '../../house/house';
 import {ControlService} from '../../house/control.service';
+import {AuthenticationService} from '../../authentication.service';
 
 @Component({
   selector: 'app-wifi',
@@ -15,6 +16,7 @@ export class WifiComponent implements OnInit {
   constructor(
     private houseService: HouseService,
     private controlService: ControlService,
+    private authService: AuthenticationService,
   ) { }
 
   ngOnInit() {

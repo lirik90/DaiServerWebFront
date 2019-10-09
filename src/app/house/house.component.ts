@@ -176,6 +176,30 @@ export class HouseComponent implements OnInit, OnDestroy {
       this.fillerNav.push({link: 'reports', text: this.translate.instant('NAVIGATION_TAB.REPORTS'), icon: 'show_chart'});
     }
 
+    if (isAdmin) {
+      this.fillerNav.push({
+        link: 'beerbox/brands',
+        text: 'Brands',
+        icon: 'label'
+      });
+    }
+
+    if (this.isKegReplacer || this.isCleaner || this.isSupervisor || isFullAccess || isAdmin) {
+      this.fillerNav.push({
+        link: 'beerbox/wifi',
+        text: 'Настройки WiFi',
+        icon: 'wifi'
+      });
+    }
+
+    if (isFullAccess || isAdmin) {
+      this.fillerNav.push({
+        link: 'beerbox/pour-settings',
+        text: 'Настройки налива',
+        icon: 'settings_application'
+      });
+    }
+
     if (this.isSupervisor || isFullAccess || isAdmin) {
       this.fillerNav.push({link: 'export', query: {data: [107]}, text: this.translate.instant('NAVIGATION_TAB.EXPORT'), icon: 'subject'});
     }
@@ -227,19 +251,6 @@ export class HouseComponent implements OnInit, OnDestroy {
       });
     }
 
-    if (isAdmin) {
-      this.fillerNav.push({
-        link: 'beerbox/brands',
-        text: 'Brands',
-        icon: 'label'
-      });
-
-      this.fillerNav.push({
-        link: 'beerbox/wifi',
-        text: 'Настройки WiFi',
-        icon: 'label'
-      });
-    }
 
     this.getHouseInfo();
 
