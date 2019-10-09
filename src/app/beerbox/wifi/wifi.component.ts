@@ -32,7 +32,7 @@ export class WifiComponent implements OnInit {
   }
 
   save(ssid: HTMLInputElement, pwd: HTMLInputElement) {
-    this.controlService.changeGroupMode(1, this.networkGroup.id)
+    this.controlService.changeGroupMode(1, this.networkGroup.id);
 
     console.log(ssid.value);
     console.log(pwd.value);
