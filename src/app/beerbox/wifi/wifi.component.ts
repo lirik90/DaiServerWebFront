@@ -12,6 +12,7 @@ import {AuthenticationService} from '../../authentication.service';
 export class WifiComponent implements OnInit {
   wifi_pwd: DeviceItem;
   wifi_ssid: DeviceItem;
+  hasAccess: boolean;
 
   constructor(
     private houseService: HouseService,
@@ -20,6 +21,8 @@ export class WifiComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.hasAccess = this.authService.isFullAccess() || this.authService.isAdmin();
+
     const network = this.houseService.house.sections[0].groups.find(g => g.type.name === 'network').items;
 
     this.wifi_pwd = network.find(i => i.type.name === 'wifi_pwd');
