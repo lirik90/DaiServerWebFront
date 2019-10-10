@@ -29,5 +29,7 @@ export class House {
   city: number | null;
   company: number | null;
   description: string;
+  messages: any[];
+  parent: number;
 }
 

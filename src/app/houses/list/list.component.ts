@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material';
-import { startWith } from 'rxjs/operators/startWith';
 
-import { House } from '../../user';
+import {House, PaginatorApi} from '../../user';
 import { HousesService } from '../houses.service';
 import {PageEvent} from '@angular/material/typings/paginator';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-houses',
@@ -14,28 +14,28 @@ import {PageEvent} from '@angular/material/typings/paginator';
 })
 export class HouseListComponent implements OnInit {
 
+  constructor(private router: Router,
+              private housesService: HousesService,
+              protected http: HttpClient,
+  ) {
+
+  }
+
   houses: House[];
   new_house: House = {} as House;
 
   resultsLength = 0;
+
+  statusIds = {};
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   citySelected = null;
   cities: any[];
   compSelected: any;
   comps: any[];
-
-  lowValue = 0;
-  highValue = 10;
-  pageIndex = 0;
   pageEvent: void;
-  pageSize = 10;
+
   @ViewChild('searchBox') searchBox;
-
-  constructor(private router: Router,
-              private housesService: HousesService) {
-
-  }
 
   ngOnInit() {
     this.getHouses();
@@ -50,19 +50,55 @@ export class HouseListComponent implements OnInit {
   }
 
   getHouses(query: string = ''): void {
-    /*this.paginator.page.pipe(
-      startWith({}),
-    ).subscribe(data => {*/
-      const limit: number = this.paginator.pageSize;
-      const start: number = this.paginator.pageIndex;
+    const limit: number = this.paginator.pageSize;
+    const start: number = this.paginator.pageIndex;
 
-      this.housesService.getHouses(limit !== undefined ? limit : 10, start !== undefined ? start : 0, 'title',
-          query)
-        .subscribe(dat => {
-          this.resultsLength = dat.count;
-          this.houses = dat.results;
+    const subs = this.housesService.getHouses(limit !== undefined ? limit : 10, start !== undefined ? start : 0, 'title',
+      query)
+      .subscribe(dat => {
+        console.log(dat);
+        this.resultsLength = dat.count;
+        this.houses = dat.results;
+
+        this.houses.map(h => {
+          const id = h.parent || h.id;
+
+          const stats = new Promise<any[]>((resolve, reject) => {
+            if (this.statusIds[id]) {
+              resolve(this.statusIds[id]);
+            } else {
+              const statusItemSubs = this.http.get<any[]>(`/api/v2/project/${id}/status_info`).subscribe(statusInfo => {
+                this.statusIds[id] = statusInfo;
+                resolve(this.statusIds[id]);
+              });
+            }
+          });
+
+          stats.then(st => {
+            const statusItemSubs = this.http.get<any[]>(`/api/v2/project/${h.id}/status_item`).subscribe(statusItems => {
+              h.messages = [];
+
+              for (let i = 0; i < statusItems.length; i++) {
+                const si = statusItems[i];
+
+                if(i + 1 === statusItems.length) {
+                  // connection info
+                } else {
+                  // house state
+                  const st_item = st.find(sti => sti.id === si.status_id);
+                  h.messages.push({status: st_item.type_id, text: st_item.text});
+                }
+              }
+
+              //console.log(h.messages);
+              statusItemSubs.unsubscribe();
+            });
+          });
+
         });
-    /*});*/
+
+        subs.unsubscribe();
+      });
   }
 
   add(): void {
@@ -98,12 +134,6 @@ export class HouseListComponent implements OnInit {
       v += '&company__id=' + this.compSelected;
     }
 
-    /*
-    console.log(this.citySelected);
-    console.log(this.compSelected);
-
-    console.log(v);
-     */
     this.getHouses(v);
   }
 

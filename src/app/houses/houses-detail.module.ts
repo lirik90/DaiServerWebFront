@@ -5,6 +5,7 @@ import { RouterModule } from "@angular/router";
 
 import { HouseDetailComponent } from './detail/detail.component';
 import {MatFormFieldModule, MatSelectModule} from '@angular/material';
+import { HouseStateListComponent } from './house-state-list/house-state-list.component';
 
 
 @NgModule({
@@ -16,10 +17,12 @@ import {MatFormFieldModule, MatSelectModule} from '@angular/material';
     MatSelectModule
   ],
   declarations: [
-    HouseDetailComponent
+    HouseDetailComponent,
+    HouseStateListComponent
   ],
   exports: [
-    HouseDetailComponent
+    HouseDetailComponent,
+    HouseStateListComponent
   ]
 })
 export class HousesDetailModule { }
