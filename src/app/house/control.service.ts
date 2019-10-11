@@ -283,6 +283,16 @@ export class ControlService {
     }
   }
 
+  parseConnectNumber(n: number) {
+    // tslint:disable:no-bitwise
+    const connState = n & ~Connection_State.CS_CONNECTED_MODIFIED & ~Connection_State.CS_CONNECTED_WITH_LOSSES;
+    const modState = (n & Connection_State.CS_CONNECTED_MODIFIED) === Connection_State.CS_CONNECTED_MODIFIED;
+    const losesState = (n & Connection_State.CS_CONNECTED_WITH_LOSSES) === Connection_State.CS_CONNECTED_WITH_LOSSES;
+    // tslint:enable:no-bitwise
+
+    return [connState, modState, losesState];
+  }
+
   parseConnectState(data: ArrayBuffer): any[] {
     if (data === undefined) {
       return;
@@ -290,14 +300,7 @@ export class ControlService {
 
     const view = new Uint8Array(data);
 
-    // tslint:disable:no-bitwise
-    const connState = view[0] & ~Connection_State.CS_CONNECTED_MODIFIED
-                            & ~Connection_State.CS_CONNECTED_WITH_LOSSES;
-    const modState = (view[0] & Connection_State.CS_CONNECTED_MODIFIED) === Connection_State.CS_CONNECTED_MODIFIED;
-    const losesState = (view[0] & Connection_State.CS_CONNECTED_WITH_LOSSES) === Connection_State.CS_CONNECTED_WITH_LOSSES;
-    // tslint:enable:no-bitwise
-
-    return [connState, modState, losesState];
+    return this.parseConnectNumber(view[0]);
   }
 
   parseTimeInfo(data: ArrayBuffer): TimeInfo {

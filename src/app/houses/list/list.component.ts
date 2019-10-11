@@ -6,6 +6,19 @@ import {House, PaginatorApi} from '../../user';
 import { HousesService } from '../houses.service';
 import {PageEvent} from '@angular/material/typings/paginator';
 import {HttpClient} from '@angular/common/http';
+import {Connection_State, ControlService} from '../../house/control.service';
+import {TranslateService} from '@ngx-translate/core';
+
+class StatusItems {
+  connection: number;
+  items: {
+      args: any;
+      group_id: number;
+      id: number;
+      status_id: number;
+      title: string;
+    }[];
+}
 
 @Component({
   selector: 'app-houses',
@@ -17,6 +30,7 @@ export class HouseListComponent implements OnInit {
   constructor(private router: Router,
               private housesService: HousesService,
               protected http: HttpClient,
+              public translate: TranslateService,
   ) {
 
   }
@@ -49,6 +63,16 @@ export class HouseListComponent implements OnInit {
     });
   }
 
+  parseConnectNumber(n: number) {
+    // tslint:disable:no-bitwise
+    const connState = n & ~Connection_State.CS_CONNECTED_MODIFIED & ~Connection_State.CS_CONNECTED_WITH_LOSSES;
+    const modState = (n & Connection_State.CS_CONNECTED_MODIFIED) === Connection_State.CS_CONNECTED_MODIFIED;
+    const losesState = (n & Connection_State.CS_CONNECTED_WITH_LOSSES) === Connection_State.CS_CONNECTED_WITH_LOSSES;
+    // tslint:enable:no-bitwise
+
+    return [connState, modState, losesState];
+  }
+
   getHouses(query: string = ''): void {
     const limit: number = this.paginator.pageSize;
     const start: number = this.paginator.pageIndex;
@@ -63,6 +87,11 @@ export class HouseListComponent implements OnInit {
         this.houses.map(h => {
           const id = h.parent || h.id;
 
+          h.mod_state = false;
+          h.loses_state = false;
+          h.status_checked = false;
+          h.connect_state = Connection_State.CS_SERVER_DOWN;
+
           const stats = new Promise<any[]>((resolve, reject) => {
             if (this.statusIds[id]) {
               resolve(this.statusIds[id]);
@@ -75,22 +104,27 @@ export class HouseListComponent implements OnInit {
           });
 
           stats.then(st => {
-            const statusItemSubs = this.http.get<any[]>(`/api/v2/project/${h.id}/status_item`).subscribe(statusItems => {
+            const statusItemSubs = this.http.get<StatusItems>(`/api/v2/project/${h.id}/status_item`).subscribe(statusItems => {
               h.messages = [];
 
-              for (let i = 0; i < statusItems.length; i++) {
-                const si = statusItems[i];
+              console.log(statusItems);
 
-                if(i + 1 === statusItems.length) {
-                  // connection info
-                } else {
-                  // house state
-                  const st_item = st.find(sti => sti.id === si.status_id);
-                  h.messages.push({status: st_item.type_id, text: st_item.text});
-                }
+              for (let i = 0; i < statusItems.items.length; i++) {
+                const si = statusItems.items[i];
+
+                const st_item = st.find(sti => sti.id === si.status_id);
+                h.messages.push({status: st_item.type_id, text: st_item.text, where: si.title});
               }
 
-              //console.log(h.messages);
+              h.connection = statusItems.connection;
+
+              //h.connection_str = undefined;
+              const [connState, modState, losesState] = this.parseConnectNumber(h.connection);
+              h.mod_state = <boolean>modState;
+              h.loses_state = <boolean>losesState;
+              h.status_checked = true;
+              h.connect_state = <Connection_State>connState;
+
               statusItemSubs.unsubscribe();
             });
           });
@@ -144,5 +178,73 @@ export class HouseListComponent implements OnInit {
 
     console.log(q);
     this.search(q);
+  }
+
+  status_desc(h): string {
+    if (h.connection_str !== undefined && h.connection_str !== ' ') {
+      return h.connection_str;
+    }
+
+    let result = '';
+
+    if (h.mod_state) {
+      result += this.translate.instant('MODIFIED') + '. ';
+    }
+
+
+    if (h.loses_state) {
+      result += 'С потерями пакетов. ';
+    }
+
+    if (h.status_checked) {
+      switch (h.connect_state) {
+        case Connection_State.CS_SERVER_DOWN:
+          return this.translate.instant('SERVER_DOWN');
+        case Connection_State.CS_DISCONNECTED:
+          return result + this.translate.instant('OFFLINE');
+        case Connection_State.CS_CONNECTED:
+          return result + this.translate.instant('ONLINE');
+        case Connection_State.CS_CONNECTED_MODIFIED:
+          return result + this.translate.instant('MODIFIED');
+        case Connection_State.CS_DISCONNECTED_JUST_NOW:
+          return result + this.translate.instant('DISCONNECTED_JUST_NOW');
+        case Connection_State.CS_CONNECTED_JUST_NOW:
+          return result + this.translate.instant('CONNECTED_JUST_NOW');
+        case Connection_State.CS_CONNECTED_SYNC_TIMEOUT:
+          return result + this.translate.instant('CONNECTED_SYNC_TIMEOUT');
+      }
+    }
+    return this.translate.instant('WAIT') + '...';
+  }
+
+  status_class(h): string {
+    if (h.connection_str !== undefined && h.connection_str !== ' ') {
+      return 'status_fail';
+    }
+
+    if (!h.status_checked) {
+      return 'status_check';
+    }
+
+    if (h.mod_state) {
+      return 'status_modified';
+    }
+
+    switch (h.connect_state) {
+      case Connection_State.CS_SERVER_DOWN:
+        return 'status_server_down';
+      case Connection_State.CS_DISCONNECTED:
+        return 'status_bad';
+      case Connection_State.CS_CONNECTED:
+        return 'status_ok';
+      case Connection_State.CS_CONNECTED_MODIFIED:
+        return 'status_modified';
+      case Connection_State.CS_DISCONNECTED_JUST_NOW:
+        return 'status_bad_just';
+      case Connection_State.CS_CONNECTED_JUST_NOW:
+        return 'status_sync';
+      case Connection_State.CS_CONNECTED_SYNC_TIMEOUT:
+        return 'status_sync_fail';
+    }
   }
 }

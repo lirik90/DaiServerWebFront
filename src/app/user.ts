@@ -1,3 +1,5 @@
+import {Connection_State} from './house/control.service';
+
 export interface PaginatorApi<T> {
   results: T[];     // Массив данных
   count: number;    // Общее кол-во элементов в базе
@@ -31,5 +33,10 @@ export class House {
   description: string;
   messages: any[];
   parent: number;
+  connection: number;
+  mod_state: boolean;
+  loses_state: boolean;
+  status_checked: boolean;
+  connect_state: Connection_State;
 }
 

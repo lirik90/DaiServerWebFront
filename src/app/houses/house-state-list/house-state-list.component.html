@@ -13,7 +13,8 @@
       <ng-container *ngFor="let msg of messages">
         <div class="house-state-msg
            house-state-msg--{{status_class[msg.status]}}" (click)="closeModal()">
-          <div class="house-state-msg__title">{{msg.text}}</div>
+          <div class="house-state-msg__title">{{msg.where}}</div>
+          <div class="house-state-msg__text">{{msg.text}}</div>
         </div>
       </ng-container>
       <div class="house-state-alright" *ngIf="messages.length === 0" i18n="@@HOUSE_STATE.ALL_RIGHT">
