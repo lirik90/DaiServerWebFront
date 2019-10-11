@@ -70,7 +70,7 @@ export class AppComponent implements OnInit, OnDestroy {
       const cookieLang = cookie.get('lang');
       if (cookieLang) {
         console.log('Cookie Lang: ' + cookieLang);
-        lang = cookieLang
+        lang = cookieLang;
       } else {
         lang = browserLang.match(/ru|en|fr|es/) ? browserLang : 'ru';
       }
