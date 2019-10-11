@@ -64,17 +64,22 @@ export class AppComponent implements OnInit, OnDestroy {
     let lang;
     let match = document.location.pathname.match(/\/(ru|en|fr|es)\//);
 
-    const cookieLang = cookie.get('lang');
-    if (cookieLang) {
-      console.log('Cookie Lang: ' + cookieLang);
-      lang = cookieLang;
-    } else if (match === null) {
+    if (match === null) {
       const browserLang = translate.getBrowserLang();
       console.log('Browser Lang:' + browserLang);
       lang = browserLang.match(/ru|en|fr|es/) ? browserLang : 'ru';
     } else {
       console.log('url lang: ' + match[1]);
       lang = match[1];
+    }
+
+    const cookieLang = cookie.get('lang');
+    if (cookieLang) {
+      if (cookieLang !== lang) {
+        console.log('Cookie Lang: ' + cookieLang);
+        lang = cookieLang;
+        this.change_language();
+      }
     }
 
     translate.use(lang);
@@ -89,7 +94,6 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     }
   }
-
 
   change_language(): void
   {
