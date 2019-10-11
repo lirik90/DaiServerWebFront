@@ -78,6 +78,7 @@ export class AppComponent implements OnInit, OnDestroy {
       if (cookieLang !== lang) {
         console.log('Cookie Lang: ' + cookieLang);
         lang = cookieLang;
+        this.current_lang_.code = lang;
         this.change_language();
       }
     }
@@ -95,6 +96,11 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
+  set_language() {
+    this.cookie.set('lang', this.current_lang_.code, 365, '/');
+    this.change_language();
+  }
+
   change_language(): void
   {
     let match = document.location.pathname.match(/\/(ru|en|fr|es)\//);
@@ -103,7 +109,6 @@ export class AppComponent implements OnInit, OnDestroy {
       let current = document.location.href;
       let result = current.replace(match[0], ('\/' + this.current_lang_.code + '\/'));
 
-      this.cookie.set('lang', this.current_lang_.code, 365, '/');
 
       window.open(result, '_self');
     }
