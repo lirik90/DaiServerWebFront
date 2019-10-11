@@ -63,20 +63,15 @@ export class AppComponent implements OnInit, OnDestroy {
 
     let lang;
     let match = document.location.pathname.match(/\/(ru|en|fr|es)\//);
-    if (match === null)
-    {
-      const browserLang = translate.getBrowserLang();
 
-      const cookieLang = cookie.get('lang');
-      if (cookieLang) {
-        console.log('Cookie Lang: ' + cookieLang);
-        lang = cookieLang;
-      } else {
-        lang = browserLang.match(/ru|en|fr|es/) ? browserLang : 'ru';
-      }
-    }
-    else
-    {
+    const cookieLang = cookie.get('lang');
+    if (cookieLang) {
+      console.log('Cookie Lang: ' + cookieLang);
+      lang = cookieLang;
+    } else if (match === null) {
+      const browserLang = translate.getBrowserLang();
+      lang = browserLang.match(/ru|en|fr|es/) ? browserLang : 'ru';
+    } else {
       lang = match[1];
     }
 
