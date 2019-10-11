@@ -5,14 +5,14 @@ import {
   NavigationEnd,
   NavigationCancel,
   NavigationError
-} from "@angular/router";
+} from '@angular/router';
 
 import { MediaMatcher } from '@angular/cdk/layout';
 
-import { AuthenticationService } from "./authentication.service";
+import { AuthenticationService } from './authentication.service';
 import { TranslateService } from '@ngx-translate/core';
 
-import { UIService } from "./ui.service";
+import { UIService } from './ui.service';
 import {CookieService} from 'ngx-cookie-service';
 
 @Component({
@@ -21,7 +21,7 @@ import {CookieService} from 'ngx-cookie-service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  loading: boolean = true;
+  loading = true;
 
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
@@ -32,7 +32,7 @@ export class AppComponent implements OnInit, OnDestroy {
     { code: 'ru', label: 'Русский', icon: 'flag-icon flag-icon-ru'},
     { code: 'en', label: 'English', icon: 'flag-icon flag-icon-gb'},
     { code: 'fr', label: 'Français', icon: 'flag-icon flag-icon-fr'},
-    //{ code: 'es', label: 'Español', icon: 'flag-icon flag-icon-es'},
+    // { code: 'es', label: 'Español', icon: 'flag-icon flag-icon-es'},
   ];
 
   current_lang_: any;
@@ -59,10 +59,10 @@ export class AppComponent implements OnInit, OnDestroy {
     // this language will be used as a fallback when a translation isn't found in the current language
     translate.setDefaultLang('ru');
     // the lang to use, if the lang isn't available, it will use the current loader to get them
-    //translate.use('ru');
+    // translate.use('ru');
 
     let lang;
-    let match = document.location.pathname.match(/\/(ru|en|fr|es)\//);
+    const match = document.location.pathname.match(/\/(ru|en|fr|es)\//);
 
     if (match === null) {
       const browserLang = translate.getBrowserLang();
@@ -78,9 +78,8 @@ export class AppComponent implements OnInit, OnDestroy {
       if (cookieLang !== lang) {
         console.log('Cookie Lang: ' + cookieLang);
         lang = cookieLang;
-        this.current_lang_.code = lang;
         console.log('redirect');
-        this.change_language();
+        this.change_language(lang);
       }
     }
 
@@ -88,10 +87,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
     document.getElementsByTagName('html')[0].setAttribute('lang', lang);
 
-    for (let item of this.languages)
-    {
-      if (item.code == lang)
-      {
+    for (const item of this.languages) {
+      if (item.code == lang) {
         this.current_lang_ = item;
       }
     }
@@ -102,13 +99,14 @@ export class AppComponent implements OnInit, OnDestroy {
     this.change_language();
   }
 
-  change_language(): void
-  {
-    let match = document.location.pathname.match(/\/(ru|en|fr|es)\//);
-    if (match !== null)
-    {
-      let current = document.location.href;
-      let result = current.replace(match[0], ('\/' + this.current_lang_.code + '\/'));
+  change_language(toLang?): void {
+    const match = document.location.pathname.match(/\/(ru|en|fr|es)\//);
+    if (match !== null) {
+      const current = document.location.href;
+      if (!toLang) {
+        toLang = this.current_lang_.code;
+      }
+      const result = current.replace(match[0], ('\/' + toLang + '\/'));
 
 
       window.open(result, '_self');
