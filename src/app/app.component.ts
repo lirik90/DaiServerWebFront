@@ -66,7 +66,14 @@ export class AppComponent implements OnInit, OnDestroy {
     if (match === null)
     {
       const browserLang = translate.getBrowserLang();
-      lang = browserLang.match(/ru|en|fr|es/) ? browserLang : 'ru';
+
+      const cookieLang = cookie.get('lang');
+      if (cookieLang) {
+        console.log('Cookie Lang: ' + cookieLang);
+        lang = cookieLang
+      } else {
+        lang = browserLang.match(/ru|en|fr|es/) ? browserLang : 'ru';
+      }
     }
     else
     {
@@ -94,6 +101,9 @@ export class AppComponent implements OnInit, OnDestroy {
     {
       let current = document.location.href;
       let result = current.replace(match[0], ('\/' + this.current_lang_.code + '\/'));
+
+      this.cookie.set('lang', this.current_lang_.code, 365, '/');
+
       window.open(result, '_self');
     }
   }
