@@ -79,6 +79,7 @@ export class AppComponent implements OnInit, OnDestroy {
         console.log('Cookie Lang: ' + cookieLang);
         lang = cookieLang;
         this.current_lang_.code = lang;
+        console.log('redirect');
         this.change_language();
       }
     }
