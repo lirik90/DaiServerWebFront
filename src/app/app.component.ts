@@ -76,9 +76,9 @@ export class AppComponent implements OnInit, OnDestroy {
     const cookieLang = cookie.get('lang');
     if (cookieLang) {
       if (cookieLang !== lang) {
+        console.log('redirect');
         console.log('Cookie Lang: ' + cookieLang);
         lang = cookieLang;
-        console.log('redirect');
         this.change_language(lang);
       }
     }
@@ -107,7 +107,6 @@ export class AppComponent implements OnInit, OnDestroy {
         toLang = this.current_lang_.code;
       }
       const result = current.replace(match[0], ('\/' + toLang + '\/'));
-
 
       window.open(result, '_self');
     }
