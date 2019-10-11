@@ -23,7 +23,12 @@ export class HouseStateListComponent implements OnInit, OnChanges {
 
   isModalOpen = false;
 
-  most_bad_status: number;
+  get most_bad_status() {
+    const mbs = this.messages.reduce((acc, cur) => acc = cur.status > acc ? cur.status : acc, [1]);
+
+    //console.log(mbs);
+    return mbs;
+  }
 
   @Input() messages: any;
 
@@ -34,7 +39,7 @@ export class HouseStateListComponent implements OnInit, OnChanges {
     this.update();
   }
 
-  ngOnChanges(){
+  ngOnChanges() {
     this.update();
   }
 
@@ -42,15 +47,19 @@ export class HouseStateListComponent implements OnInit, OnChanges {
     if (!this.messages) {
       this.messages = [];
     }
+/*
+    console.log(this.messages);
 
     this.most_bad_status = 1;
 
     for (const st of this.messages) {
       const stweight =  this.status_weight[st.status];
+
       if (stweight > this.most_bad_status) {
         this.most_bad_status = stweight;
       }
     }
+    */
   }
 
   toggleModal() {

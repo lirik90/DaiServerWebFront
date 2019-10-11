@@ -20,6 +20,15 @@ class StatusItems {
     }[];
 }
 
+class StatusInfo {
+  groupType_id: number;
+  id: number;
+  inform: boolean;
+  name: string;
+  text: string;
+  type_id: number;
+}
+
 @Component({
   selector: 'app-houses',
   templateUrl: './list.component.html',
@@ -40,7 +49,8 @@ export class HouseListComponent implements OnInit {
 
   resultsLength = 0;
 
-  statusIds = {};
+  statusInfo = {};
+  statusQueue = {};
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   citySelected = null;
@@ -92,6 +102,41 @@ export class HouseListComponent implements OnInit {
           h.status_checked = false;
           h.connect_state = Connection_State.CS_SERVER_DOWN;
 
+          // get status
+          const statusItemSubs = this.http.get<StatusItems>(`/api/v2/project/${h.id}/status_item`).subscribe(statusItems => {
+            h.messages = []; // 0 messages, wait
+
+            // set connection status
+            h.connection = statusItems.connection;
+            const [connState, modState, losesState] = this.parseConnectNumber(h.connection);
+            h.mod_state = <boolean>modState;
+            h.loses_state = <boolean>losesState;
+            h.status_checked = true;
+            h.connect_state = <Connection_State>connState;
+
+            // set messages
+            if (this.statusInfo[id]) { // if we have StatusInfo
+              // do it now
+              this.putMessages(h.id, statusItems, this.statusInfo[id]);
+            } else { // if we haven't StatusInfo
+              // put into queue
+              if (!this.statusQueue[id]) {
+                this.statusQueue[id] = {isLoading: false, depHouses: []}; // create a place in queue
+              }
+              this.statusQueue[id].depHouses.push({id: h.id, si: statusItems}); // put house as a depeneded
+
+              if (!this.statusQueue[id].isLoading) {
+                // start loading if was not started
+                this.statusQueue[id].isLoading = true;
+                this.getStatusInfo(id);
+              }
+            }
+
+
+            statusItemSubs.unsubscribe();
+          });
+
+          /*
           const stats = new Promise<any[]>((resolve, reject) => {
             if (this.statusIds[id]) {
               resolve(this.statusIds[id]);
@@ -128,6 +173,7 @@ export class HouseListComponent implements OnInit {
               statusItemSubs.unsubscribe();
             });
           });
+           */
 
         });
 
@@ -245,6 +291,38 @@ export class HouseListComponent implements OnInit {
         return 'status_sync';
       case Connection_State.CS_CONNECTED_SYNC_TIMEOUT:
         return 'status_sync_fail';
+    }
+  }
+
+  private getStatusInfo(id: number) {
+    const statusInfoSubs = this.http.get<any[]>(`/api/v2/project/${id}/status_info`).subscribe(statusInfo => {
+      this.statusInfo[id] = statusInfo;
+
+      /*
+      console.log(`${id} is loaded`);
+      console.log(statusInfo);
+       */
+
+      if (this.statusQueue[id]) {
+        // parse a queue
+
+        this.statusQueue[id].depHouses.map(dh => {
+          this.putMessages(dh.id, dh.si, statusInfo);
+        });
+      }
+
+      statusInfoSubs.unsubscribe();
+    });
+  }
+
+  private putMessages(id: number, statusItems: StatusItems, st: StatusInfo[]) {
+    const house = this.houses.find(h => h.id == id);
+
+    for (let i = 0; i < statusItems.items.length; i++) {
+      const si = statusItems.items[i];
+
+      const st_item = st.find(sti => sti.id === si.status_id);
+      house.messages.push({status: st_item.type_id, text: st_item.text, where: si.title});
     }
   }
 }
