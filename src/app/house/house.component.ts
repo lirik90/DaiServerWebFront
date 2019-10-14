@@ -200,7 +200,7 @@ export class HouseComponent implements OnInit, OnDestroy {
       });
     }
 
-    if (this.isSupervisor || isFullAccess || isAdmin) {
+    if (this.isKegReplacer || this.isSupervisor || isFullAccess || isAdmin) {
       this.fillerNav.push({link: 'export', query: {data: [107]}, text: this.translate.instant('NAVIGATION_TAB.EXPORT'), icon: 'subject'});
     }
 

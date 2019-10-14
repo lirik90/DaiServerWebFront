@@ -51,7 +51,7 @@ const houseRoutes: Routes = [
           {
             path: 'export',
             component: ExportComponent,
-            data: {dataPreselected: [107], req_perms: ['isSupervisor', 'isFullAccess', 'isAdmin'] }
+            data: {dataPreselected: [107], req_perms: ['isKegReplacer', 'isSupervisor', 'isFullAccess', 'isAdmin'] }
           },
           {
             path: 'settings',
