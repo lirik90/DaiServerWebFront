@@ -1421,16 +1421,3 @@ h2:lang(ko).localnav-title {
     display: none;
   }
 }
-
-.sidenav-menu-items {
-  overflow: hidden;
-  outline: 1px solid #f00;
-}
-
-.sidenav-menu-item {
-  outline: 1px solid #0f0;
-}
-
-.sidenav-menu-link {
-  outline: 1px solid #00f;
-}
