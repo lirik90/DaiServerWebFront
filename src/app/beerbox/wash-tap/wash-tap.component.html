@@ -1,5 +1,9 @@
 <div class="grid grid-pad">
   <ng-container *ngFor="let clean of items">
+    <div class="clean-info">
+      Последняя промывка была {{ clean.date? clean.date.val.display : 'Неизвестно' }}
+    </div>
+
     <mat-card>
         <ng-container *ngIf="clean.step.val.raw == 0">
           <h4 i18n="@@BEERBOX.WASH.TYPE">Выберите вид промывки</h4>
@@ -46,3 +50,4 @@
     </mat-card>
   </ng-container>
 </div>
+

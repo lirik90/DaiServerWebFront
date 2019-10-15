@@ -35,7 +35,7 @@ export class WashTapComponent implements OnInit {
       if (sct.id !== this.sctId) {
         continue;
       }
-      const clean: any = { sct, takehead_count: 0 };
+      const clean: any = { sct, takehead_count: 0};
       for (const group of sct.groups) {
         if (group.type.name == 'head') {
           for (const item of group.items) {
@@ -60,14 +60,14 @@ export class WashTapComponent implements OnInit {
             }
           }
         } else if (group.type.name === 'cleanTakehead') {
-          for (const item of group.items) {
+          for (let i = 0; i < group.items.length; ++i) {
+            const item = group.items[i];
             switch (item.type.name) {
               case 'cleanType': clean.type = item;              break; // api.CleanTypeItem
               case 'cleanStep': clean.step = item;              break; // api.CleanStepItem
-            }
-
-            if (clean.type !== undefined && clean.step !== undefined) {
-              break;
+              case 'cleanDate':
+                clean.date = item;
+                break; // api.CleanStepItem
             }
           }
         }
