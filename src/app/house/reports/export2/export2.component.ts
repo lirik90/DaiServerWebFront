@@ -152,10 +152,10 @@ export class Export2Component implements OnInit {
 
     switch (type) {
       case ExportType.IDLE:
-        path = 'export_idle'
+        path = 'excel_idle'
         break;
       case ExportType.POURING:
-        path = 'export_pouring';
+        path = 'excel_pouring';
         break;
     }
 
