@@ -5,12 +5,28 @@
     <form [formGroup]="firstFormGroup">
       <ng-template matStepLabel i18n="@@REPORTS.EXPORT.SELECT_PROJECT">Выберите проект</ng-template>
       <mat-checkbox #current_only (change)="fillHouses($event.checked)" [checked]="true" i18n="@@REPORTS.EXPORT.SELECT_THIS">Только этот проект</mat-checkbox><br><br>
-      <mat-form-field *ngIf="!current_only.checked">
-        <mat-select placeholder="Проекты" formControlName="projects" multiple required>
-					<mat-select-trigger><span i18n="@@REPORTS.EXPORT.SELECTED">Выбрано</span>: {{firstFormGroup.controls.projects.value?.length}}</mat-select-trigger>
-          <mat-option *ngFor="let house of houses" [value]="house.id">{{house.title}}</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <ng-container *ngIf="!current_only.checked">
+        <mat-form-field>
+          <mat-select placeholder="Город" formControlName="city"  (selectionChange)="fillHouses(false, true)">
+            <mat-option>Не выбрано</mat-option>
+            <mat-option *ngFor="let c of cities" [value]="c.id">{{c.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-select placeholder="Компания" formControlName="company"  (selectionChange)="fillHouses(false, true)">
+            <mat-option>Не выбрано</mat-option>
+            <mat-option *ngFor="let c of comps" [value]="c.id">{{c.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-select placeholder="Проекты" formControlName="projects" multiple required>
+            <mat-select-trigger><span i18n="@@REPORTS.EXPORT.SELECTED">Выбрано</span>: {{firstFormGroup.controls.projects.value?.length}}</mat-select-trigger>
+            <mat-option *ngFor="let house of houses" [value]="house.id">{{house.title}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
       <div>
         <button mat-button matStepperNext i18n="@@CONTROL.NEXT2">Дальше</button>
       </div>

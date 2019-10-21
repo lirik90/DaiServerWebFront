@@ -70,6 +70,8 @@ export class Export2Component implements OnInit {
 
   locale: string;
   tzs: TimeZone[];
+  cities: any[];
+  comps: any[];
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -97,6 +99,14 @@ export class Export2Component implements OnInit {
   ngOnInit() {
     this.loading = false;
 
+    this.housesService.getCities().subscribe(data => {
+      this.cities = data.results;
+    });
+
+    this.housesService.getCompanies().subscribe(data => {
+      this.comps = data.results;
+    });
+
     let date_from_d = new Date();
     date_from_d.setDate(1);
     date_from_d.setHours(0);
@@ -112,6 +122,8 @@ export class Export2Component implements OnInit {
     const usrTz = moment.tz.guess();
 
     this.firstFormGroup = this._formBuilder.group({
+      city: [0],
+      company: [0],
       projects: [[this.houseService.house.id], Validators.required],
     });
     this.secondFormGroup = this._formBuilder.group({
@@ -130,12 +142,28 @@ export class Export2Component implements OnInit {
     this.dataFormGroup.get('items').setValue(this.dataPreselected);
   }
 
-  fillHouses(current_only: boolean): void {
-    if (current_only)
+  fillHouses(current_only: boolean, update: boolean = false): void {
+    console.log('aaa');
+
+    let query = '';
+
+    if (this.firstFormGroup.controls.city && this.firstFormGroup.controls.city.value) {
+      query += '&city__id=' + this.firstFormGroup.controls.city.value;
+    }
+
+    if (this.firstFormGroup.controls.company && this.firstFormGroup.controls.company.value) {
+      query += '&company__id=' + this.firstFormGroup.controls.company.value;
+    }
+
+    if (current_only) {
       this.firstFormGroup.controls.projects.setValue([this.houseService.house.id]);
-    else if (this.houses.length === 0)
-      this.housesService.getHouses(1000, 0, 'title')
-        .subscribe(data => this.houses = data.results);
+    } else if (this.houses.length === 0 || update) {
+      this.housesService.getHouses(1000, 0, 'title', query)
+        .subscribe(data => {
+          console.log(data);
+          this.houses = data.results;
+        });
+    }
   }
 
   onSubmit(type: number): void {
@@ -182,4 +210,5 @@ export class Export2Component implements OnInit {
       window.URL.revokeObjectURL(url);
     });
  }
+
 }
