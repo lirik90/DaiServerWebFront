@@ -16,6 +16,7 @@ import {ReportsModule} from './reports/reports.module';
 import {PermissionGuard} from './permission.guard';
 import {DocCommand} from '@angular/cli/commands/doc-impl';
 import {DocComponent} from './doc/doc.component';
+import {Export2Component} from './reports/export2/export2.component';
 
 const houseRoutes: Routes = [
   {
@@ -50,7 +51,7 @@ const houseRoutes: Routes = [
           },
           {
             path: 'export',
-            component: ExportComponent,
+            component: Export2Component,
             data: {dataPreselected: [107], req_perms: ['isKegReplacer', 'isSupervisor', 'isFullAccess', 'isAdmin'] }
           },
           {

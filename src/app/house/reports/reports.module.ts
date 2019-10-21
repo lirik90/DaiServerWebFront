@@ -12,6 +12,7 @@ import { ExportComponent } from './export/export.component';
 import { HttpClient } from '@angular/common/http';
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {Export2Component} from './export2/export2.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -36,6 +37,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ReportsComponent,
     ChartsComponent,
     ExportComponent,
+    Export2Component,
   ],
   entryComponents: [
   ],

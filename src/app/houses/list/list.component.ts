@@ -136,45 +136,6 @@ export class HouseListComponent implements OnInit {
             statusItemSubs.unsubscribe();
           });
 
-          /*
-          const stats = new Promise<any[]>((resolve, reject) => {
-            if (this.statusIds[id]) {
-              resolve(this.statusIds[id]);
-            } else {
-              const statusItemSubs = this.http.get<any[]>(`/api/v2/project/${id}/status_info`).subscribe(statusInfo => {
-                this.statusIds[id] = statusInfo;
-                resolve(this.statusIds[id]);
-              });
-            }
-          });
-
-          stats.then(st => {
-            const statusItemSubs = this.http.get<StatusItems>(`/api/v2/project/${h.id}/status_item`).subscribe(statusItems => {
-              h.messages = [];
-
-              console.log(statusItems);
-
-              for (let i = 0; i < statusItems.items.length; i++) {
-                const si = statusItems.items[i];
-
-                const st_item = st.find(sti => sti.id === si.status_id);
-                h.messages.push({status: st_item.type_id, text: st_item.text, where: si.title});
-              }
-
-              h.connection = statusItems.connection;
-
-              //h.connection_str = undefined;
-              const [connState, modState, losesState] = this.parseConnectNumber(h.connection);
-              h.mod_state = <boolean>modState;
-              h.loses_state = <boolean>losesState;
-              h.status_checked = true;
-              h.connect_state = <Connection_State>connState;
-
-              statusItemSubs.unsubscribe();
-            });
-          });
-           */
-
         });
 
         subs.unsubscribe();

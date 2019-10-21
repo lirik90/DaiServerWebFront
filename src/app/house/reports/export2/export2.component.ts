@@ -15,6 +15,11 @@ import {TranslateService} from '@ngx-translate/core';
 import moment from 'moment-timezone';
 import { Moment } from 'moment';
 
+export enum ExportType {
+  IDLE,
+  POURING
+}
+
 export class RussianDateAdapter extends NativeDateAdapter {
   parse(value: any): Date | null {
     if ((typeof value === 'string') && (value.indexOf('/') > -1)) {
@@ -37,8 +42,8 @@ interface TimeZone {
 
 @Component({
   selector: 'app-export',
-  templateUrl: './export.component.html',
-  styleUrls: ['./export.component.css'],
+  templateUrl: './export2.component.html',
+  styleUrls: ['./export2.component.css'],
 /*  providers: [
     // The locale would typically be provided on the root module of your application. We do it at
     // the component level here, due to limitations of our example generation script.
@@ -51,7 +56,7 @@ interface TimeZone {
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
   ],*/
 })
-export class ExportComponent implements OnInit {
+export class Export2Component implements OnInit {
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
   dataFormGroup: FormGroup;
@@ -133,29 +138,40 @@ export class ExportComponent implements OnInit {
         .subscribe(data => this.houses = data.results);
   }
 
-  onSubmit(): void {
+  onSubmit(type: number): void {
     this.loading = true;
 
     const ts_obj = {
       ts_from: +this.secondFormGroup.value.date_from,
       ts_to: +this.secondFormGroup.value.date_to,
-      timezone: this.secondFormGroup.value.timezone
     };
 
-    const data: ExportConfig = Object.assign(this.firstFormGroup.value, ts_obj, this.dataFormGroup.value);
-    this.houseService.exportExcel(data).subscribe((response: HttpResponse<Blob>) => {
+    const data: ExportConfig = Object.assign(this.firstFormGroup.value, ts_obj);
+
+    let path = null;
+
+    switch (type) {
+      case ExportType.IDLE:
+        path = 'export_idle'
+        break;
+      case ExportType.POURING:
+        path = 'export_pouring';
+        break;
+    }
+
+    this.houseService.exportExcel(data, path).subscribe((response: HttpResponse<Blob>) => {
       this.loading = false;
       if (!response) {
-        console.error("Fail to get excel");
+        console.error('Fail to get excel');
         return;
       }
 
-      let contentDispositionHeader = response.headers.get('Content-Disposition');
-      let result = contentDispositionHeader.split(';')[1].trim().split('=')[1];
+      const contentDispositionHeader = response.headers.get('Content-Disposition');
+      const result = contentDispositionHeader.split(';')[1].trim().split('=')[1];
 
-      let url = window.URL.createObjectURL(response.body);
-      let anchor = document.createElement('a');
-      anchor.style.display = "none";
+      const url = window.URL.createObjectURL(response.body);
+      const anchor = document.createElement('a');
+      anchor.style.display = 'none';
       anchor.download = result.replace(/"/g, '');
       anchor.href = url;
       anchor.dataset.downloadurl = ['text/plain', anchor.download, anchor.href].join(':');
@@ -164,7 +180,6 @@ export class ExportComponent implements OnInit {
 
       document.body.removeChild(anchor);
       window.URL.revokeObjectURL(url);
-      //window.open(url);
     });
  }
 }

@@ -1,0 +1,45 @@
+<h2 i18n="@@REPORTS.EXPORT.TITLE">Экспорт данных</h2>
+<h3 *ngIf="loading" i18n="@@REPORTS.EXPORT.WAITING">Подождите! Идёт генерация отчёта...</h3>
+<mat-vertical-stepper linear *ngIf="!loading">
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel i18n="@@REPORTS.EXPORT.SELECT_PROJECT">Выберите проект</ng-template>
+      <mat-checkbox #current_only (change)="fillHouses($event.checked)" [checked]="true" i18n="@@REPORTS.EXPORT.SELECT_THIS">Только этот проект</mat-checkbox><br><br>
+      <mat-form-field *ngIf="!current_only.checked">
+        <mat-select placeholder="Проекты" formControlName="projects" multiple required>
+					<mat-select-trigger><span i18n="@@REPORTS.EXPORT.SELECTED">Выбрано</span>: {{firstFormGroup.controls.projects.value?.length}}</mat-select-trigger>
+          <mat-option *ngFor="let house of houses" [value]="house.id">{{house.title}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperNext i18n="@@CONTROL.NEXT2">Дальше</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel i18n="@@REPORTS.EXPORT.SELECT_TIME">Укажите период</ng-template>
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker_from" formControlName="date_from" i18n-placeholder="@@REPORTS.DATE_FROM" placeholder="Дата от" required>
+        <mat-datepicker-toggle matSuffix [for]="picker_from"></mat-datepicker-toggle>
+        <mat-datepicker #picker_from></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker_to" formControlName="date_to" i18n-placeholder="@@REPORTS.DATE_TO" placeholder="Дата до" required>
+        <mat-datepicker-toggle matSuffix [for]="picker_to"></mat-datepicker-toggle>
+        <mat-datepicker #picker_to></mat-datepicker>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious i18n="@@CONTROL.BACK">Назад</button>
+        <button mat-button matStepperNext i18n="@@CONTROL.NEXT2">Дальше</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel i18n="@@CONTROL.READY">Готово</ng-template>
+    <div>
+      <button mat-button (click)="onSubmit(0)" i18n="@@CONTROL.DOWNLOAD">Скачать отчёт о простоях</button>
+      <button mat-button (click)="onSubmit(1)" i18n="@@CONTROL.DOWNLOAD">Скачать отчёт о наливах</button>
+    </div>
+  </mat-step>
+</mat-vertical-stepper>

@@ -276,9 +276,12 @@ export class HouseService extends IHouseService {
     return this.getPiped<PaginatorApi<LogData>>(url, `fetched logs list`, 'getLogs');
   }
 
-  exportExcel(conf: ExportConfig): Observable<HttpResponse<Blob>>
+  exportExcel(conf: ExportConfig, path?: string): Observable<HttpResponse<Blob>>
   {
-    const url = `/export/excel/?id=${this.house.id}`;
+    if (!path) {
+      path = 'excel';
+    }
+    const url = `/export/${path}/?id=${this.house.id}`;
     const opts = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       observe: 'response' as 'response',
