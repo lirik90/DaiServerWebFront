@@ -59,7 +59,7 @@ export class Log2Component implements OnInit, OnDestroy {
   ngOnInit() {
     const houseId = this.houseService.house.id;
 
-    this.houseService.getMembers().subscribe(members => this.members = members.results);
+    //this.houseService.getMembers().subscribe(members => this.members = members.results);
 
     this.logDatabase = new LogHttpDao(this.http);
 
