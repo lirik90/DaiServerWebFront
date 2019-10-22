@@ -165,7 +165,7 @@ export class LogHttpDao {
     let requestUrl = `/api/v1/log_data_2/?format=json&id=${houseId}&limit=${limit}&offset=${page * limit}&ordering=${(order_asc ? '' : '-')}${sort || 'timestamp_msecs'}`
 
     if (search) {
-      requestUrl += `&search=${search}`
+      requestUrl += `&search=${search}`;
     }
 
     if (addArgs) {
