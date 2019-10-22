@@ -123,7 +123,7 @@ export class Log2Component implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+
   }
 
   dateFormat(cell: any): string {
