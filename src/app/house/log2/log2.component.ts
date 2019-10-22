@@ -40,6 +40,7 @@ export class Log2Component implements OnInit, OnDestroy {
 
   cmd = '';
   addArgs = '';
+  search = '';
 
   constructor(
 	  public translate: TranslateService,
@@ -71,7 +72,7 @@ export class Log2Component implements OnInit, OnDestroy {
         switchMap(() => {
           this.isLoadingResults = true;
           return this.logDatabase!.getRepoIssues( houseId,
-            this.sort.active, this.sort.direction == 'asc', this.paginator.pageIndex, this.paginator.pageSize, this.addArgs);
+            this.sort.active, this.sort.direction == 'asc', this.paginator.pageIndex, this.paginator.pageSize, this.addArgs, this.search);
         }),
         map(data => {
           console.log(data);
@@ -135,9 +136,8 @@ export class Log2Component implements OnInit, OnDestroy {
   }
 
   applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
+    this.search = filterValue;
+    this.ngOnInit();
   }
 
   getColor(eventType: number): string {
@@ -160,13 +160,18 @@ export class Log2Component implements OnInit, OnDestroy {
 export class LogHttpDao {
   constructor(private http: HttpClient) {}
 
-  getRepoIssues(houseId: number, sort: string, order_asc: boolean, page: number, limit: number = 35, addArgs=null): Observable<PaginatorApi<EventLog>> {
+  getRepoIssues(houseId: number, sort: string, order_asc: boolean, page: number, limit: number = 35, addArgs=null, search=null): Observable<PaginatorApi<EventLog>> {
     // const requestUrl = `/api/v1/log_event/?limit=${limit}&offset=${page * limit}&ordering=${(order_asc ? '' : '-')}${sort || 'timestamp_msecs'}&id=${houseId}`;
     let requestUrl = `/api/v1/log_data_2/?format=json&id=${houseId}&limit=${limit}&offset=${page * limit}&ordering=${(order_asc ? '' : '-')}${sort || 'timestamp_msecs'}`
+
+    if (search) {
+      requestUrl += `&search=${search}`
+    }
 
     if (addArgs) {
       requestUrl += addArgs;
     }
+
 
     return this.http.get<PaginatorApi<EventLog>>(requestUrl);
   }
