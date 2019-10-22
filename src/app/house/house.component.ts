@@ -172,6 +172,10 @@ export class HouseComponent implements OnInit, OnDestroy {
     }
 
     if (isAdmin) {
+      this.fillerNav.push({link: 'log2', text: 'Журнал значений', icon: 'event_note'});
+    }
+
+    if (isAdmin) {
       this.fillerNav.push({link: 'settings', text: this.translate.instant('NAVIGATION_TAB.STRUCTURE'), icon: 'settings'});
       this.fillerNav.push({link: 'reports', text: this.translate.instant('NAVIGATION_TAB.REPORTS'), icon: 'show_chart'});
     }

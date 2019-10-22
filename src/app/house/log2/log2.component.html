@@ -1,0 +1,70 @@
+<h2 i18n="@@LOG.TITLE">Журнал</h2>
+<div class="example-container mat-elevation-z8">
+  <div class="example-loading-shade"
+       *ngIf="isLoadingResults || isRateLimitReached">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    <div class="example-rate-limit-reached" *ngIf="isRateLimitReached" i18n="@@LOG.WARNING">
+      EventLog's API rate limit has been reached. It will be reset in one minute.
+    </div>
+  </div>
+
+  <div class="example-header">
+    <mat-form-field>
+      <input #cmdInput matInput (keyup.enter)="execScript($event.target.value)" placeholder="Параметры" [value]="cmd">
+      <button class="sendBtn" (click)="execScript(cmdInput.value)"><mat-icon>play_arrow</mat-icon></button>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" i18n-placeholder="@@LOG.FILTER" placeholder="Фильтр">
+    </mat-form-field>
+  </div>
+
+  <mat-table #table [dataSource]="dataSource" class="example-table"
+             matSort matSortActive="timestamp_msecs" matSortDisableClear matSortDirection="desc">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <ng-container matColumnDef="value">
+      <mat-header-cell *matHeaderCellDef>Значение</mat-header-cell>
+      <mat-cell *matCellDef="let row" [style.color]="row.color">{{ row.value }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="element">
+      <mat-header-cell *matHeaderCellDef>Элемент</mat-header-cell>
+      <mat-cell *matCellDef="let row" [style.color]="row.color"
+        title="ID: {{row.item.id}}, Type ID: {{row.item.type.id}}"
+        >{{ row.item.name || row.item.type.title}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="group">
+      <mat-header-cell *matHeaderCellDef >Группа</mat-header-cell>
+      <mat-cell *matCellDef="let row" [style.color]="row.color"
+                title="ID: {{row.item.group.id}}, Type ID: {{row.item.group.type.id}}"
+        >{{ row.item.group.name || row.item.group.type.title }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="section">
+      <mat-header-cell *matHeaderCellDef>Секция</mat-header-cell>
+      <mat-cell *matCellDef="let row" [style.color]="row.color"
+                title="ID: {{row.item.group.section.id}}"
+        >{{ row.item.group.section.name }}</mat-cell>
+    </ng-container>
+
+    <!-- Date Column -->
+    <ng-container matColumnDef="timestamp_msecs">
+      <mat-header-cell *matHeaderCellDef
+                       mat-sort-header
+                       disableClear="true" i18n="@@LOG.TABLE.DATE">
+        Дата
+      </mat-header-cell>
+      <mat-cell #dateCell *matCellDef="let row" [style.color]="row.color">{{ row.date | date:dateFormat(dateCell) }}</mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <mat-paginator [length]="resultsLength" [pageSize]="35" [pageSizeOptions]="[15, 35, 50, 85, 100]">
+  </mat-paginator>
+</div>

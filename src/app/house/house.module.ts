@@ -27,6 +27,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HouseStateComponent } from './house-state/house-state.component';
 import {HouseSectionComponent} from './house-section/house-section.component';
 import { DocComponent } from './doc/doc.component';
+import {Log2Component} from './log2/log2.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -55,6 +56,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ManageComponent,
     HoldingRegisterDialogComponent,
     LogComponent,
+    Log2Component,
     ParamComponent,
     GroupStatusComponent,
     DevItemValueComponent,

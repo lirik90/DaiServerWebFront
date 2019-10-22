@@ -17,6 +17,7 @@ import {PermissionGuard} from './permission.guard';
 import {DocCommand} from '@angular/cli/commands/doc-impl';
 import {DocComponent} from './doc/doc.component';
 import {Export2Component} from './reports/export2/export2.component';
+import {Log2Component} from './log2/log2.component';
 
 const houseRoutes: Routes = [
   {
@@ -42,6 +43,7 @@ const houseRoutes: Routes = [
           },
           { path: 'elements', component: ManageComponent, data: { req_perms: ['isAdmin'] }},
           { path: 'log', component: LogComponent, data: { req_perms: ['isSupervisor', 'isFullAccess', 'isAdmin'] }},
+          { path: 'log2', component: Log2Component, data: { req_perms: ['isAdmin'] }},
           { path: 'group/:groupId/param', component: ParamComponent },
           {
             path: 'reports',
