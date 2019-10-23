@@ -28,7 +28,7 @@
       <mat-header-cell *matHeaderCellDef>Значение</mat-header-cell>
       <mat-cell *matCellDef="let row" [style.color]="row.color"
                 title="Raw: {{ row.raw_value }}"
-        >{{ row.value }}</mat-cell>
+        >{{ row.value || 'Raw: ' + row.raw_value}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="element">
