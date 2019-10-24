@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MaterialModule } from '../../material.module';
 
-import { ReportsRoutingModule } from "./reports-routing.module";
+import { ReportsRoutingModule } from './reports-routing.module';
 import { ReportsComponent } from './reports.component';
 import { ChartsComponent } from './charts/charts.component';
 import { ExportComponent } from './export/export.component';
@@ -13,6 +13,7 @@ import { HttpClient } from '@angular/common/http';
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {Export2Component} from './export2/export2.component';
+import {MAT_MOMENT_DATE_ADAPTER_OPTIONS, MatMomentDateModule} from '@angular/material-moment-adapter';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -25,6 +26,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ReactiveFormsModule,
     ReportsRoutingModule,
     MaterialModule,
+    MatMomentDateModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
@@ -41,5 +43,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   ],
   entryComponents: [
   ],
+  providers: [
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
+  ]
 })
 export class ReportsModule { }

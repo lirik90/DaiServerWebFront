@@ -143,7 +143,7 @@ export class Export2Component implements OnInit {
   }
 
   fillHouses(current_only: boolean, update: boolean = false): void {
-    console.log('aaa');
+    //console.log('aaa');
 
     let query = '';
 
