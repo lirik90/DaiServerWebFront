@@ -168,9 +168,9 @@ export class KegsComponent implements OnInit {
     return Math.round(val);
   }
 
-  toLitres(val) {
-    const l = val / 1000;
-    return Math.round(l * 1000) / 1000;
+  toLitres(val, coef = 1000) {
+    const l = val / coef;
+    return Math.round(l * coef) / coef;
   }
 
   openDialog(keg: Head) {
