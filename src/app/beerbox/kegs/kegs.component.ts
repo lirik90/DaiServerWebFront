@@ -307,8 +307,12 @@ export class KegsComponent implements OnInit {
   getExCoef(tap) {
     const d = tap.cleanDate.val.display;
 
-    const date = moment(d);
-    const isAfter = moment().isAfter(moment('2019-10-19 9:30'));
+    const date = moment(d, 'DD.MM.YYYY');
+
+    //console.log('DATE');
+    //console.log(date);
+
+    const isAfter = moment(date).isAfter(moment('2019-10-19 9:30'));
 
     if (isAfter) {
       return 882;
