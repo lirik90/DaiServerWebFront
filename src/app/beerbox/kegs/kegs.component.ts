@@ -6,7 +6,7 @@ import {ConfirmDialogReplaceKegComponent} from '../replace-keg/replace-keg.compo
 import {MatDialog} from '@angular/material';
 import {ControlService} from '../../house/control.service';
 import {AuthenticationService} from '../../authentication.service';
-import moment = require('moment');
+import * as moment from 'moment';
 
 export interface Head {
   date_made: ParamValue;
