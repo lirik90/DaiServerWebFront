@@ -6,6 +6,7 @@ import {ConfirmDialogReplaceKegComponent} from '../replace-keg/replace-keg.compo
 import {MatDialog} from '@angular/material';
 import {ControlService} from '../../house/control.service';
 import {AuthenticationService} from '../../authentication.service';
+import moment = require('moment');
 
 export interface Head {
   date_made: ParamValue;
@@ -84,6 +85,7 @@ export class KegsComponent implements OnInit {
       let isBlocked: DeviceItem;
       let mode: DeviceItem;
       let bottleVol: DeviceItem;
+      let cleanDate: DeviceItem;
 
       for (const group of sct.groups) {
         if (group.type.name === 'proc') {
@@ -93,7 +95,7 @@ export class KegsComponent implements OnInit {
           // heads.push(group);
           // TODO: check for undefined
           console.log(group);
-          let h = {
+          const h = {
             title: group.title,
             date_made: group.params[0].childs.filter((el) => el.param.name === 'date')[0],
             manufacturer: group.params[0].childs.filter((el) => el.param.name === 'name')[0],
@@ -125,6 +127,8 @@ export class KegsComponent implements OnInit {
         } else if (group.type.name === 'params') {
           bottleVol = group.items.find((el) => el.type.name === 'setVol3');
           console.log('bbbb : ' + bottleVol);
+        } else if (group.type.name === 'cleanTakehead') {
+          cleanDate = group.items.find((el) => el.type.name === 'cleanDate');
         }
 
       }
@@ -138,7 +142,8 @@ export class KegsComponent implements OnInit {
           heads: heads,
           isBlocked: isBlocked,
           mode: mode,
-          bottleVol: bottleVol
+          bottleVol: bottleVol,
+          cleanDate: cleanDate
         });
       }
     }
@@ -297,5 +302,18 @@ export class KegsComponent implements OnInit {
     }
 
     return this.toLitres(head.volume_poured.val.display) + ' л.';
+  }
+
+  getExCoef(tap) {
+    const d = tap.cleanDate.val.display;
+
+    const date = moment(d);
+    const isAfter = moment().isAfter(moment('2019-10-19 9:30'));
+
+    if (isAfter) {
+      return 882;
+    }
+    // else
+    return 950;
   }
 }
