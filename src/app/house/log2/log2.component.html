@@ -42,7 +42,7 @@
       <mat-header-cell *matHeaderCellDef >Группа</mat-header-cell>
       <mat-cell *matCellDef="let row" [style.color]="row.color"
                 title="ID: {{row.item.group.id}}, Type ID: {{row.item.group.type.id}}"
-        >{{ row.item.group.name || row.item.group.type.title }}</mat-cell>
+        >{{ row.item.group.title || row.item.group.type.title }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="section">
