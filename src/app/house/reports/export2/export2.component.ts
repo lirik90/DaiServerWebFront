@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-//import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+// import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter} from '@angular/material/core';
 
-import { ItemType, GroupType, Section, DeviceItem, LogData } from "../../house";
-import { HouseService, ExportConfig, ExportItem } from "../../house.service";
+import { ItemType, GroupType, Section, DeviceItem, LogData } from '../../house';
+import { HouseService, ExportConfig, ExportItem } from '../../house.service';
 import { HousesService } from '../../../houses/houses.service';
-import { House } from "../../../user";
+import { House } from '../../../user';
 import {ActivatedRoute} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 
@@ -64,7 +64,7 @@ export class Export2Component implements OnInit {
   houses: House[] = [];
   types: ItemType[];
 
-  loading: boolean = false;
+  loading = false;
 
   dataPreselected: number[] = [];
 
@@ -107,17 +107,17 @@ export class Export2Component implements OnInit {
       this.comps = data.results;
     });
 
-    let date_from_d = new Date();
-    date_from_d.setDate(1);
-    date_from_d.setHours(0);
-    date_from_d.setMinutes(0);
-    date_from_d.setSeconds(0);
-    date_from_d.setMilliseconds(0);
-    let date_to_d = new Date();
-    date_to_d.setHours(23);
-    date_to_d.setMinutes(59);
-    date_to_d.setSeconds(59);
-    date_to_d.setMilliseconds(0);
+    const date_from_d = new Date();
+    date_from_d.setUTCDate(1);
+    date_from_d.setUTCHours(0);
+    date_from_d.setUTCMinutes(0);
+    date_from_d.setUTCSeconds(0);
+    date_from_d.setUTCMilliseconds(0);
+    const date_to_d = new Date();
+    date_to_d.setUTCHours(23);
+    date_to_d.setUTCMinutes(59);
+    date_to_d.setUTCSeconds(59);
+    date_to_d.setUTCMilliseconds(0);
 
     const usrTz = moment.tz.guess();
 
@@ -143,7 +143,7 @@ export class Export2Component implements OnInit {
   }
 
   fillHouses(current_only: boolean, update: boolean = false): void {
-    //console.log('aaa');
+    // console.log('aaa');
 
     let query = '';
 
@@ -180,7 +180,7 @@ export class Export2Component implements OnInit {
 
     switch (type) {
       case ExportType.IDLE:
-        path = 'excel_idle'
+        path = 'excel_idle';
         break;
       case ExportType.POURING:
         path = 'excel_pouring';
