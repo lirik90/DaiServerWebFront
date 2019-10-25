@@ -84,7 +84,7 @@ export class KegsComponent implements OnInit {
 
       let isBlocked: DeviceItem;
       let mode: DeviceItem;
-      let bottleVol: DeviceItem;
+      let bottleVol: ParamValue;
       let cleanDate: DeviceItem;
 
       for (const group of sct.groups) {
@@ -125,7 +125,7 @@ export class KegsComponent implements OnInit {
             mode =  group.items.find((el) => el.type.name === 'setMode');
           }
         } else if (group.type.name === 'params') {
-          bottleVol = group.items.find((el) => el.type.name === 'setVol3');
+          bottleVol = group.params.find((el) => el.param.name === 'volume3')
           console.log('bbbb : ' + bottleVol);
         } else if (group.type.name === 'cleanTakehead') {
           cleanDate = group.items.find((el) => el.type.name === 'cleanDate');
