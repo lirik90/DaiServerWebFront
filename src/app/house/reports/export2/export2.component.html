@@ -20,12 +20,19 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field>
+        <!--mat-form-field>
           <mat-select placeholder="Проекты" formControlName="projects" multiple required>
             <mat-select-trigger><span i18n="@@REPORTS.EXPORT.SELECTED">Выбрано</span>: {{firstFormGroup.controls.projects.value?.length}}</mat-select-trigger>
             <mat-option *ngFor="let house of houses" [value]="house.id">{{house.title}}</mat-option>
           </mat-select>
-        </mat-form-field>
+        </mat-form-field-->
+
+        <mat-selection-list formControlName="projects">
+          <mat-list-option *ngFor="let house of houses">
+            {{house.title}}
+          </mat-list-option>
+        </mat-selection-list>
+
       </ng-container>
       <div>
         <button mat-raised-button  color="primary" matStepperNext i18n="@@CONTROL.NEXT2">Далее</button>

@@ -2,3 +2,16 @@
   width: 100%;
   max-width: 300px;
 }
+
+mat-selection-list {
+  max-height: 500px;
+  overflow-y: scroll;
+}
+
+.mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
+  display: block;
+  height: auto;
+  -webkit-tap-highlight-color: transparent;
+  width: 100%;
+  padding: 10px 0;
+}
