@@ -94,6 +94,7 @@ export class HouseListComponent implements OnInit {
         this.resultsLength = dat.count;
         this.houses = dat.results;
 
+        /*
         this.houses.map(h => {
           const id = h.parent || h.id;
 
@@ -132,9 +133,8 @@ export class HouseListComponent implements OnInit {
               }
             }
 
-
             statusItemSubs.unsubscribe();
-          });
+          });*/
 
         });
 
