@@ -22,9 +22,9 @@
 
 <ul class="houses">
   <li *ngFor="let house of houses">
-    <!--mat-icon [matTooltip]="status_desc(house)" [ngClass]="status_class(house)"
+    <mat-icon [matTooltip]="status_desc(house)" [ngClass]="status_class(house)"
               #tooltip="matTooltip" (click)="tooltip.toggle()"></mat-icon>
-    <app-house-state-list [messages]="house.messages"></app-house-state-list-->
+    <app-house-state-list [messages]="house.messages"></app-house-state-list>
     <a class="pre_badge" routerLink="/house/{{house.name}}/manage">
       <span class="badge">{{house.id}}</span>
       <span class="house-title">{{house.title}}</span>
