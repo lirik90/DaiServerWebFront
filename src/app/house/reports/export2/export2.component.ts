@@ -209,7 +209,7 @@ export class Export2Component implements OnInit {
       const anchor = document.createElement('a');
       anchor.style.display = 'none';
       //anchor.download = result.replace(/"/g, '');
-      anchor.download = 'result';
+      anchor.download = this.translate.instant('REPORT_IDLE_FILENAME') + ' ' + this.secondFormGroup.value.date_from + '-' + this.secondFormGroup.value.date_to + '.xlsx';
       anchor.href = url;
       anchor.dataset.downloadurl = ['text/plain', anchor.download, anchor.href].join(':');
       document.body.appendChild(anchor);
