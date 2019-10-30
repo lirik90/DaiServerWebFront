@@ -134,9 +134,9 @@ export class HouseListComponent implements OnInit {
             }
 
             statusItemSubs.unsubscribe();
-          });/**/
+          });
 
-        });
+        });/**/
 
         subs.unsubscribe();
       });
