@@ -92,6 +92,8 @@ export class AppComponent implements OnInit, OnDestroy {
         this.current_lang_ = item;
       }
     }
+
+    this.uiService.setCurLang(lang);
   }
 
   set_language() {
@@ -107,6 +109,8 @@ export class AppComponent implements OnInit, OnDestroy {
         toLang = this.current_lang_.code;
       }
       const result = current.replace(match[0], ('\/' + toLang + '\/'));
+
+      this.uiService.setCurLang(toLang);
 
       window.open(result, '_self');
     }

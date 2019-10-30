@@ -1,6 +1,28 @@
 <h2 i18n="@@REPORTS.EXPORT.TITLE">Экспорт данных</h2>
 <h3 *ngIf="loading" i18n="@@REPORTS.EXPORT.WAITING">Подождите! Идёт генерация отчёта...</h3>
 <mat-vertical-stepper linear *ngIf="!loading">
+  <mat-step [stepControl]="reportTypeFormGroup">
+    <form [formGroup]="reportTypeFormGroup">
+      <ng-template matStepLabel i18n="@@REPORTS.EXPORT.SELECT_PROJECT">Выберите тип отчёта</ng-template>
+      <mat-radio-group formControlName="reportType">
+        <div>
+          <mat-radio-button value="idle">
+            Отчёт о простоях
+          </mat-radio-button>
+        </div>
+        <div>
+          <mat-radio-button value="pouring">
+            Отчёт о наливах
+          </mat-radio-button>
+        </div>
+      </mat-radio-group>
+      <div>
+        <button mat-button matStepperPrevious i18n="@@CONTROL.BACK">Назад</button>
+        <button mat-raised-button  color="primary" matStepperNext i18n="@@CONTROL.NEXT2">Далее</button>
+      </div>
+    </form>
+  </mat-step>
+
   <mat-step [stepControl]="firstFormGroup">
     <form [formGroup]="firstFormGroup">
       <ng-template matStepLabel i18n="@@REPORTS.EXPORT.SELECT_PROJECT">Выберите проект</ng-template>
@@ -28,7 +50,7 @@
         </mat-form-field-->
 
         <mat-selection-list formControlName="projects">
-          <mat-list-option *ngFor="let house of houses">
+          <mat-list-option *ngFor="let house of houses" [value]="house.id">
             {{house.title}}
           </mat-list-option>
         </mat-selection-list>
@@ -61,8 +83,9 @@
   <mat-step>
     <ng-template matStepLabel i18n="@@CONTROL.READY">Готово</ng-template>
     <div>
-      <button mat-button (click)="onSubmit(0)" i18n="@@CONTROL.DOWNLOAD">Скачать отчёт о простоях</button>
-      <button mat-button (click)="onSubmit(1)" i18n="@@CONTROL.DOWNLOAD">Скачать отчёт о наливах</button>
+      <button mat-raised-button  color="primary" (click)="onSubmit()" i18n="@@CONTROL.DOWNLOAD">Скачать</button>
+      <!--button mat-button (click)="onSubmit(0)" i18n="@@CONTROL.DOWNLOAD">Скачать отчёт о простоях</button>
+      <button mat-button (click)="onSubmit(1)" i18n="@@CONTROL.DOWNLOAD">Скачать отчёт о наливах</button-->
     </div>
   </mat-step>
 </mat-vertical-stepper>

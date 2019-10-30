@@ -7,6 +7,7 @@ export class UIService {
 
   scrollTop_ = 0;
   toolBarHidden_ = false;
+  lang = 'ru';
 
   constructor(
     public breakpointObserver: BreakpointObserver
@@ -35,5 +36,13 @@ export class UIService {
   mobileBreakpointObserver(): Observable<BreakpointState> {
     return this.breakpointObserver
       .observe(['(min-width: 600px)'])
+  }
+
+  getCurLang() {
+    return this.lang;
+  }
+
+  setCurLang(l: string) {
+    this.lang = l;
   }
 }

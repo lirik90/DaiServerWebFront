@@ -281,6 +281,7 @@ export class HouseService extends IHouseService {
     if (!path) {
       path = 'excel';
     }
+
     const url = `/export/${path}/?id=${this.house.id}`;
     const opts = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),

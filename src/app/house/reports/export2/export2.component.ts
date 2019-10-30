@@ -14,6 +14,7 @@ import {TranslateService} from '@ngx-translate/core';
 
 import moment from 'moment-timezone';
 import { Moment } from 'moment';
+import {UIService} from '../../../ui.service';
 
 export enum ExportType {
   IDLE,
@@ -57,6 +58,7 @@ interface TimeZone {
   ],*/
 })
 export class Export2Component implements OnInit {
+  reportTypeFormGroup: FormGroup;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
   dataFormGroup: FormGroup;
@@ -79,7 +81,8 @@ export class Export2Component implements OnInit {
     private housesService: HousesService,
     private route: ActivatedRoute,
     private dateAdapter: DateAdapter<Date>,
-    public translate: TranslateService
+    public translate: TranslateService,
+    public uiService: UIService,
   ) {
     this.locale = this.translate.currentLang;
     this.dateAdapter.setLocale(this.locale);
@@ -120,6 +123,10 @@ export class Export2Component implements OnInit {
     date_to_d.setUTCMilliseconds(0);
 
     const usrTz = moment.tz.guess();
+
+    this.reportTypeFormGroup = this._formBuilder.group({
+       reportType: ['idle', Validators.required],
+    });
 
     this.firstFormGroup = this._formBuilder.group({
       city: [0],
@@ -172,17 +179,18 @@ export class Export2Component implements OnInit {
     const ts_obj = {
       ts_from: +this.secondFormGroup.value.date_from,
       ts_to: +this.secondFormGroup.value.date_to,
+      lang: this.uiService.getCurLang()
     };
 
     const data: ExportConfig = Object.assign(this.firstFormGroup.value, ts_obj);
 
     let path = null;
 
-    switch (type) {
-      case ExportType.IDLE:
+    switch (this.reportTypeFormGroup.value.reportType) {
+      case 'idle':
         path = 'excel_idle';
         break;
-      case ExportType.POURING:
+      case 'pouring':
         path = 'excel_pouring';
         break;
     }
