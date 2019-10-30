@@ -202,13 +202,14 @@ export class Export2Component implements OnInit {
         return;
       }
 
-      const contentDispositionHeader = response.headers.get('Content-Disposition');
-      const result = contentDispositionHeader.split(';')[1].trim().split('=')[1];
+      //const contentDispositionHeader = response.headers.get('Content-Disposition');
+      //const result = contentDispositionHeader.split(';')[1].trim().split('=')[1];
 
       const url = window.URL.createObjectURL(response.body);
       const anchor = document.createElement('a');
       anchor.style.display = 'none';
-      anchor.download = result.replace(/"/g, '');
+      //anchor.download = result.replace(/"/g, '');
+      anchor.download = 'result';
       anchor.href = url;
       anchor.dataset.downloadurl = ['text/plain', anchor.download, anchor.href].join(':');
       document.body.appendChild(anchor);
