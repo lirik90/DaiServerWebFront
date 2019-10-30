@@ -214,8 +214,8 @@ export class Export2Component implements OnInit {
       const anchor = document.createElement('a');
       anchor.style.display = 'none';
       // anchor.download = result.replace(/"/g, '');
-      const df = moment(this.secondFormGroup.value.date_from).format('D MMM, YYYY');
-      const dt = moment(this.secondFormGroup.value.date_to).format('D MMM, YYYY');
+      const df = moment(this.secondFormGroup.value.date_from).format('DD.MM.YYYY');
+      const dt = moment(this.secondFormGroup.value.date_to).format('DD.MM.YYYY');
       anchor.download = this.translate.instant('REPORT_IDLE_FILENAME') + ' ' + df + '-' + dt + '.xlsx';
       anchor.href = url;
       anchor.dataset.downloadurl = ['text/plain', anchor.download, anchor.href].join(':');
