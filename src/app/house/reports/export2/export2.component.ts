@@ -183,8 +183,8 @@ export class Export2Component implements OnInit {
       ts_from: +this.secondFormGroup.value.date_from,
       ts_to: +this.secondFormGroup.value.date_to,
       lang: this.uiService.getCurLang(),
-      company_name: comp_name,
-      city_name: city_name
+      company_name: comp_name.name,
+      city_name: city_name.name
     };
 
     const data: ExportConfig = Object.assign(this.firstFormGroup.value, ts_obj);
