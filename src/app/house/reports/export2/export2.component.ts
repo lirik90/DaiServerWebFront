@@ -176,10 +176,15 @@ export class Export2Component implements OnInit {
   onSubmit(type: number): void {
     this.loading = true;
 
+    const comp_name = this.comps.find(c => c.id === this.firstFormGroup.value.company);
+    const city_name = this.cities.find(c => c.id === this.firstFormGroup.value.city);
+
     const ts_obj = {
       ts_from: +this.secondFormGroup.value.date_from,
       ts_to: +this.secondFormGroup.value.date_to,
-      lang: this.uiService.getCurLang()
+      lang: this.uiService.getCurLang(),
+      company_name: comp_name,
+      city_name: city_name
     };
 
     const data: ExportConfig = Object.assign(this.firstFormGroup.value, ts_obj);
@@ -202,13 +207,13 @@ export class Export2Component implements OnInit {
         return;
       }
 
-      //const contentDispositionHeader = response.headers.get('Content-Disposition');
-      //const result = contentDispositionHeader.split(';')[1].trim().split('=')[1];
+      // const contentDispositionHeader = response.headers.get('Content-Disposition');
+      // const result = contentDispositionHeader.split(';')[1].trim().split('=')[1];
 
       const url = window.URL.createObjectURL(response.body);
       const anchor = document.createElement('a');
       anchor.style.display = 'none';
-      //anchor.download = result.replace(/"/g, '');
+      // anchor.download = result.replace(/"/g, '');
       const df = moment(this.secondFormGroup.value.date_from).format('D MMM, YYYY');
       const dt = moment(this.secondFormGroup.value.date_to).format('D MMM, YYYY');
       anchor.download = this.translate.instant('REPORT_IDLE_FILENAME') + ' ' + df + '-' + dt + '.xlsx';
