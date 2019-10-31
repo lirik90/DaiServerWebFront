@@ -190,13 +190,16 @@ export class Export2Component implements OnInit {
     const data: ExportConfig = Object.assign(this.firstFormGroup.value, ts_obj);
 
     let path = null;
+    let filename = '';
 
     switch (this.reportTypeFormGroup.value.reportType) {
       case 'idle':
         path = 'excel_idle';
+        filename = 'REPORT_IDLE_FILENAME';
         break;
       case 'pouring':
         path = 'excel_pouring';
+        filename = 'REPORT_POURING_FILENAME';
         break;
     }
 
@@ -216,7 +219,7 @@ export class Export2Component implements OnInit {
       // anchor.download = result.replace(/"/g, '');
       const df = moment(this.secondFormGroup.value.date_from).format('DD.MM.YYYY');
       const dt = moment(this.secondFormGroup.value.date_to).format('DD.MM.YYYY');
-      anchor.download = this.translate.instant('REPORT_IDLE_FILENAME') + ' ' + df + '-' + dt + '.xlsx';
+      anchor.download = this.translate.instant('filename') + ' ' + df + '-' + dt + '.xlsx';
       anchor.href = url;
       anchor.dataset.downloadurl = ['text/plain', anchor.download, anchor.href].join(':');
       document.body.appendChild(anchor);

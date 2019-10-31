@@ -1,5 +1,6 @@
 {
   "REPORT_IDLE_FILENAME": "Отчёт о простоях",
+  "REPORT_POURING_FILENAME": "Отчёт о наливах",
   "SERVER_DOWN": "Основной сервер не доступен",
   "DISCONNECTED_JUST_NOW": "Связь недавно была прервана",
   "CONNECTED_JUST_NOW": "Синхронизация",

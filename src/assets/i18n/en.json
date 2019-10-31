@@ -1,5 +1,6 @@
 {
   "REPORT_IDLE_FILENAME": "Idle report",
+   "REPORT_POURING_FILENAME": "Pour report",
 	"CONNECTION_PROBLEM": "No connection with server",
 	"OFFLINE": "Offline",
 	"ONLINE": "Online",
