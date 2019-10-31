@@ -18,9 +18,7 @@ interface NavLink {
 export class UserSettingsComponent implements OnInit {
   constructor(
     public translate: TranslateService,
-    private uiService: UIService,
     public authService: AuthenticationService,
-    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher
   ) {
 
   }

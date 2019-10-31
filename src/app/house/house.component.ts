@@ -231,7 +231,7 @@ export class HouseComponent implements OnInit, OnDestroy {
        */
     }
 
-    if (this.isSupervisor || isFullAccess || isAdmin) {
+    if (isFullAccess || isAdmin) {
       this.fillerNav.push({link: 'beerbox/check-head-stand', text: this.translate.instant('NAVIGATION_TAB.STAND'), icon: 'category'});
     }
     if (this.isKegReplacer || this.isCleaner || this.isSupervisor || isFullAccess || isAdmin) {
