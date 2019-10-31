@@ -219,7 +219,7 @@ export class Export2Component implements OnInit {
       // anchor.download = result.replace(/"/g, '');
       const df = moment(this.secondFormGroup.value.date_from).format('DD.MM.YYYY');
       const dt = moment(this.secondFormGroup.value.date_to).format('DD.MM.YYYY');
-      anchor.download = this.translate.instant('filename') + ' ' + df + '-' + dt + '.xlsx';
+      anchor.download = this.translate.instant(filename) + ' ' + df + '-' + dt + '.xlsx';
       anchor.href = url;
       anchor.dataset.downloadurl = ['text/plain', anchor.download, anchor.href].join(':');
       document.body.appendChild(anchor);
