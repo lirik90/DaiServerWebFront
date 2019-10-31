@@ -9,7 +9,6 @@ import {HouseService} from './house.service';
 import {Connection_State, ControlService, WebSockCmd} from './control.service';
 import {AuthenticationService} from '../authentication.service';
 import {TranslateService} from '@ngx-translate/core';
-import {UIService} from '../ui.service';
 import {FavService} from '../fav.service';
 
 interface NavLink {
@@ -17,12 +16,6 @@ interface NavLink {
   query?: any;
   text: string;
   icon: string;
-}
-
-enum Connect_State {
-  Disconnected,
-  Connected,
-  Modified
 }
 
 @Component({
@@ -143,14 +136,13 @@ export class HouseComponent implements OnInit, OnDestroy {
     private controlService: ControlService,
     private authService: AuthenticationService,
     private dialog: MatDialog,
-    public uiService: UIService,
     private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
     private favService: FavService,
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
+    // this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
   ngOnInit() {
@@ -262,7 +254,7 @@ export class HouseComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.mobileQuery.removeListener(this._mobileQueryListener);
+    // this.mobileQuery.removeListener(this._mobileQueryListener);
 
     this.opened_sub.unsubscribe();
     this.bytes_sub.unsubscribe();
@@ -286,7 +278,7 @@ export class HouseComponent implements OnInit, OnDestroy {
           return;
         }
 
-        if (msg.proj_id == 0) {
+        if (msg.proj_id === 0) {
           console.log('PROJECT_ID == 0');
           this.connect_state = Connection_State.CS_SERVER_DOWN;
           return;
