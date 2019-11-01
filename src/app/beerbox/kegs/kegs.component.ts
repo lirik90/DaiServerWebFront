@@ -127,7 +127,7 @@ export class KegsComponent implements OnInit {
             is_pouring = group.items.find((el) => el.type.name === 'pouring');
           }
         } else if (group.type.name === 'params') {
-          bottleVol = group.params.find((el) => el.param.name === 'volume3')
+          bottleVol = group.params.find((el) => el.param.name === 'volume3');
           console.log('bbbb : ' + bottleVol);
         } else if (group.type.name === 'cleanTakehead') {
           cleanDate = group.items.find((el) => el.type.name === 'cleanDate');
