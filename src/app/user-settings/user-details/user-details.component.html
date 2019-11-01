@@ -1,0 +1,33 @@
+<div class="details">
+  <h3>Details</h3>
+  username: <input  [ngModel]="currentUser.username" disabled="disabled"><br>
+  email: <input [ngModel]="currentUser.email"  disabled="disabled"><br>
+  first_name: <input [ngModel]="currentUser.first_name"  disabled="disabled"><br>
+  last_name: <input  [ngModel]="currentUser.last_name"  disabled="disabled"><br>
+
+  <form [formGroup]="changePasswordGroup" (ngSubmit)="changePassword()">
+    <h3>Change Password:</h3>
+
+    <div>
+      <mat-form-field>
+        Current password: <input type="password" matInput formControlName="cur_password" required="required"><br>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        New password: <input type="password" matInput formControlName="new_password" required="required"><br>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        Confirm new password: <input type="password" matInput formControlName="confirm_password" required="required"><br>
+        <mat-hint *ngIf="changePasswordGroup.hasError('mismatch')">
+          Подтверждение не совпадает с новым паролем!
+        </mat-hint>
+      </mat-form-field>
+    </div>
+    <div style="margin-top: 1em;">
+      <button mat-stroked-button type="submit">Change password</button>
+    </div>
+  </form>
+</div>

@@ -10,6 +10,8 @@ import {NotificationsComponent} from './notifications/notifications.component';
 import { HttpClient } from '@angular/common/http';
 import {TranslateModule, TranslateLoader, TranslateService} from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { UserDetailsComponent } from './user-details/user-details.component';
+import {IHouseService} from '../ihouse.service';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -33,6 +35,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   declarations: [
     UserSettingsComponent,
     NotificationsComponent,
+    UserDetailsComponent,
+  ],
+  providers: [
+    IHouseService
   ]
 })
 export class UserSettingsModule {

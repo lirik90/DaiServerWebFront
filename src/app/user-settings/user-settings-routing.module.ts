@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {AuthGuard} from '../auth.guard';
 import {NotificationsComponent} from './notifications/notifications.component';
 import {UserSettingsComponent} from './user-settings.component';
+import {UserDetailsComponent} from './user-details/user-details.component';
 
 const routes: Routes = [
   {
@@ -14,11 +15,11 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'notifications'
+        redirectTo: 'details'
       },
       {
-        path: 'notifications',
-        component: NotificationsComponent,
+        path: 'details',
+        component: UserDetailsComponent,
       }
     ]
   }
