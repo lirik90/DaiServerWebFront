@@ -10,7 +10,7 @@
 <header class="app-toolbar">
   <div class="branding">
     <img class="branding__logo" src="/assets/img/logo.png">
-    <h1 class="branding__text" *ngIf="!authService.currentUser || !mobileQuery.matches">BEERBOX</h1>
+    <h1 class="branding__text" *ngIf="!mobileQuery.matches">BEERBOX</h1>
   </div>
 
   <ng-container *ngIf="authService.currentUser">
@@ -43,7 +43,7 @@
     </div>
 
     <!-- a routerLink="/user" -->
-    <a class="app-toolbar__user app-toolbar__user-link">
+    <a class="app-toolbar__user app-toolbar__user-link" routerLink="/user">
       <mat-icon class="app-toolbar__user-icon">person</mat-icon>
       <span class="app-toolbar__user-name" *ngIf="!mobileQuery.matches" >
         <span i18n="@@HOME.GREETING">Привет,</span> <strong>{{authService.currentUser.username}}</strong>!

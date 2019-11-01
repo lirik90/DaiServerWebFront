@@ -40,7 +40,7 @@ export class IHouseService {
     return this.get<T>(url_postfix).let(this.pipe<T>(succes_string, operation, result));
   }
 
-  protected put<T> (url_postfix: string, obj: T): Observable<T> {
+  public put<T> (url_postfix: string, obj: T): Observable<T> {
     return this.http.put<T>(this.apiUrl + url_postfix, obj, httpOptions);
   }
 

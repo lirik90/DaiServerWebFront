@@ -86,6 +86,7 @@ export class KegsComponent implements OnInit {
       let mode: DeviceItem;
       let bottleVol: ParamValue;
       let cleanDate: DeviceItem;
+      let is_pouring: DeviceItem;
 
       for (const group of sct.groups) {
         if (group.type.name === 'proc') {
@@ -123,6 +124,7 @@ export class KegsComponent implements OnInit {
             }
 
             mode =  group.items.find((el) => el.type.name === 'setMode');
+            is_pouring = group.items.find((el) => el.type.name === 'pouring');
           }
         } else if (group.type.name === 'params') {
           bottleVol = group.params.find((el) => el.param.name === 'volume3')
@@ -143,7 +145,8 @@ export class KegsComponent implements OnInit {
           isBlocked: isBlocked,
           mode: mode,
           bottleVol: bottleVol,
-          cleanDate: cleanDate
+          cleanDate: cleanDate,
+          is_pouring: is_pouring
         });
       }
     }
@@ -319,5 +322,11 @@ export class KegsComponent implements OnInit {
     }
     // else
     return 950;
+  }
+
+  isDisabled(head, tap) {
+    return head.is_not_empty.val.display === true
+        || tap.mode.val.raw !== 0
+        || tap.is_pouring.val.raw === 1;
   }
 }

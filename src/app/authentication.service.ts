@@ -3,20 +3,28 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map'
-import { catchError, tap, finalize } from 'rxjs/operators';
+import 'rxjs/add/operator/map';
+import { catchError} from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 
-import { User } from "./user";
+import { User } from './user';
 
 @Injectable()
 export class AuthenticationService {
 
-  currentUser: User;
+  private currentUser_: User;
   timeout_handle: any;
 
   private tokenUrl = '/api/token/';
+
+  get currentUser() {
+    return this.currentUser_;
+  }
+
+  set currentUser(usr) {
+    //console.log('!!!!!!!!!!!!');
+    this.currentUser_ = usr;
+  }
 
   constructor(
     private http: HttpClient,
@@ -61,6 +69,7 @@ export class AuthenticationService {
   getCsrf(): void {
     this.http.head<any>('/get_csrf').pipe(
       catchError(error => {
+        console.log('1');
         this.goToLogin();
         return of();
       })
@@ -78,6 +87,7 @@ export class AuthenticationService {
       this.timeout_handle = setTimeout(() => {
         this.http.head<any>('/get_csrf').pipe(
           catchError(error => {
+            console.log('2');
             this.goToLogin();
             return of();
           })
@@ -88,11 +98,13 @@ export class AuthenticationService {
   }
 
   refreshToken(user: any = undefined): void {
-    if (!user)
+    if (!user) {
       user = this.currentUser;
+    }
     if (user && user.token) {
       this.http.post<any>(this.tokenUrl + 'refresh/', { token: user.token }).pipe(
         catchError(error => {
+          console.log('3');
           this.goToLogin();
           return of();
         })
@@ -107,7 +119,7 @@ export class AuthenticationService {
 
   login(username: string, password: string) {
     return this.http.post<any>(this.tokenUrl + 'auth/', { username: username, password: password })
-        .map(user => { return this.setCurrentUser(user); });
+        .map(user => this.setCurrentUser(user));
   }
 
   logout() {
