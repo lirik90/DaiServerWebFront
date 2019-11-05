@@ -1,33 +1,38 @@
 <div class="details">
-  <h3>Details</h3>
-  username: <input  [ngModel]="currentUser.username" disabled="disabled"><br>
-  email: <input [ngModel]="currentUser.email"  disabled="disabled"><br>
-  first_name: <input [ngModel]="currentUser.first_name"  disabled="disabled"><br>
-  last_name: <input  [ngModel]="currentUser.last_name"  disabled="disabled"><br>
+  <div style="margin-bottom: 3em;">
+    <h3>Детальная информация</h3>
+    Логин: <b>{{currentUser.username}}</b>
+  </div>
 
   <form [formGroup]="changePasswordGroup" (ngSubmit)="changePassword()">
-    <h3>Change Password:</h3>
+    <h3>Изменение пароля</h3>
 
     <div>
       <mat-form-field>
-        Current password: <input type="password" matInput formControlName="cur_password" required="required"><br>
+        Введите текущий пароль: <input type="password" matInput formControlName="cur_password" required="required"><br>
       </mat-form-field>
+      <small class="err" *ngIf="oldPassErrors">
+        <p *ngFor="let e of oldPassErrors">{{ e }}</p>
+      </small>
     </div>
     <div>
       <mat-form-field>
-        New password: <input type="password" matInput formControlName="new_password" required="required"><br>
+        Введите новый пароль: <input type="password" matInput formControlName="new_password" required="required"><br>
       </mat-form-field>
+      <small class="err" *ngIf="newPassErrors">
+        <p *ngFor="let e of newPassErrors">{{ e }}</p>
+      </small>
     </div>
     <div>
       <mat-form-field>
-        Confirm new password: <input type="password" matInput formControlName="confirm_password" required="required"><br>
-        <mat-hint *ngIf="changePasswordGroup.hasError('mismatch')">
-          Подтверждение не совпадает с новым паролем!
-        </mat-hint>
+        Введите новый пароль ещё раз: <input type="password" matInput formControlName="confirm_password" required="required"><br>
       </mat-form-field>
+      <small class="err" *ngIf="changePasswordGroup.hasError('mismatch')">
+        Данные не соответствуют
+      </small>
     </div>
     <div style="margin-top: 1em;">
-      <button mat-stroked-button type="submit">Change password</button>
+      <button mat-stroked-button type="submit" class="suc-btn">Изменить пароль</button> <span class="success-label" [class.successlabelshow]="success">Пароль успешно изменён!</span>
     </div>
   </form>
 </div>

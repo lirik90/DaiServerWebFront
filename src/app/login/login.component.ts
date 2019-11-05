@@ -37,6 +37,9 @@ export class LoginComponent implements OnInit {
       .subscribe(
         data => {
           console.log(this.returnUrl);
+
+
+
           /*this.router.navigateByUrl(this.returnUrl);*/
           if (this.returnUrl) {
             window.location.href = this.returnUrl;

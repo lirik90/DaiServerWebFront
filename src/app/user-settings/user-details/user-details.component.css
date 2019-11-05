@@ -5,3 +5,24 @@
 .mat-form-field {
   width: 100%;
 }
+
+.err {
+  margin-top: -1.5em;
+  display: inline-block;
+  color: red;
+}
+
+.success-label {
+  font-size: 15px;
+  color: green;
+  opacity: 0;
+  transition: 1s ease-out 0s opacity;
+}
+
+.successlabelshow {
+  opacity: 1;
+}
+
+.suc-btn {
+  margin-right: 2em;
+}

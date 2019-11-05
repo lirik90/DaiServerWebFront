@@ -108,7 +108,14 @@ export class AuthenticationService {
           this.goToLogin();
           return of();
         })
-      ).subscribe(refreshed_user => this.setCurrentUser(refreshed_user));
+      ).subscribe(
+        refreshed_user => {
+          this.setCurrentUser(refreshed_user);
+          if (refreshed_user.need_to_change_password === true) {
+            this.router.navigate(['/user/details']);
+          }
+        }
+      );
     }
   }
 

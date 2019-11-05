@@ -5,6 +5,7 @@ import {IHouseService} from '../../ihouse.service';
 import {catchError, tap} from 'rxjs/operators';
 import {of} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {TranslateService} from '@ngx-translate/core';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -19,11 +20,15 @@ export class UserDetailsComponent implements OnInit {
   currentUser: any;
 
   changePasswordGroup: FormGroup;
+  newPassErrors = [];
+  oldPassErrors = [];
+  success = false;
 
   constructor(
     public authService: AuthenticationService,
     private formBuilder: FormBuilder,
     protected http: HttpClient,
+    public translate: TranslateService,
   ) { }
 
   ngOnInit() {
@@ -54,11 +59,38 @@ export class UserDetailsComponent implements OnInit {
         'old_password': this.changePasswordGroup.value.cur_password,
         'new_password':  this.changePasswordGroup.value.new_password
       };
-      this.http.put('/api/v1/change_password/', pwd, httpOptions).subscribe(res => {
-        console.log(res);
+
+      this.newPassErrors = [];
+      this.oldPassErrors = [];
+
+      this.http.put('/api/v1/change_password/', pwd, httpOptions).subscribe(resp => {
+        if (typeof resp === 'object' && resp !== null && 'new_password' in resp) {
+          // show new password errors
+          this.newPassErrors = (resp['new_password'] as string[]).map(e => this.translate.instant(e));
+        }
+
+        if (typeof resp === 'object' && resp !== null && 'old_password' in resp) {
+          // show old password errors
+          this.oldPassErrors = (resp['old_password'] as string[]).map(e => this.translate.instant(e));
+        }
+
+        console.log(resp);
+        // tslint:disable-next-line:triple-equals
+        if (resp == 'New password is the same of old_password') {
+          this.newPassErrors.push(this.translate.instant('New password is the same of old_password'));
+        }
+
+        // tslint:disable-next-line:triple-equals
+        if (resp == 'Success.') {
+          // show success messge
+          console.log('TRYU!!!');
+          this.success = true;
+          const i = setInterval(() => {
+            this.success = false;
+          }, 2000);
+        }
       }, error => {
         console.log(error);
-        console.log(this.authService.currentUser);
       });
     }
   }
