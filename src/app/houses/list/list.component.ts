@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material';
 
@@ -8,6 +8,9 @@ import {PageEvent} from '@angular/material/typings/paginator';
 import {HttpClient} from '@angular/common/http';
 import {Connection_State, ControlService} from '../../house/control.service';
 import {TranslateService} from '@ngx-translate/core';
+import {Observable, of, Subject, Subscription} from 'rxjs';
+import {SubCommandDescription} from '@angular/cli/models/interface';
+import {debounceTime, distinctUntilChanged, switchMap, takeUntil} from 'rxjs/operators';
 
 class StatusItems {
   connection: number;
@@ -34,17 +37,24 @@ class StatusInfo {
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class HouseListComponent implements OnInit {
+export class HouseListComponent implements OnInit, OnDestroy {
+  private timeout: number;
 
   constructor(private router: Router,
               private housesService: HousesService,
               protected http: HttpClient,
               public translate: TranslateService,
-  ) {
+  ) {}
 
-  }
+  private httpReqs: Subject<void> = new Subject<void>();
+  private searchString: Subject<string> = new Subject<string>();
 
-  houses: House[];
+  private statusItemSubs: Subscription[] = [];
+  private housesSubs: Subscription;
+
+  searchQ: Subject<string>;
+
+  houses: House[] = [];
   new_house: House = {} as House;
 
   resultsLength = 0;
@@ -61,6 +71,18 @@ export class HouseListComponent implements OnInit {
 
   @ViewChild('searchBox') searchBox;
 
+  httpGet<T>(req: string): Observable<T> {
+    return this.http.get<T>(req)
+      .pipe( takeUntil(this.httpReqs) );
+  }
+
+  ngOnDestroy(): void {
+    // This aborts all HTTP requests.
+    this.httpReqs.next();
+    // This completes the subject properlly.
+    this.httpReqs.complete();
+  }
+
   ngOnInit() {
     this.getHouses();
 
@@ -71,6 +93,63 @@ export class HouseListComponent implements OnInit {
     this.housesService.getCompanies().subscribe(data => {
       this.comps = data.results;
     });
+
+    this.searchString.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap(text => {
+        this.search(text);
+        return of(text);
+      })
+    ).subscribe(response => {
+
+    });
+  }
+
+  search(value: string) {
+    let v = value;
+
+    if (this.citySelected) {
+      v += '&city__id=' + this.citySelected;
+    }
+
+    if (this.compSelected) {
+      v += '&company__id=' + this.compSelected;
+    }
+
+    this.getHouses(v);
+  }
+
+  getHouses(query: string = ''): void {
+    this.ngOnDestroy();
+
+    if (this.housesSubs) {
+      this.housesSubs.unsubscribe();
+    }
+
+    if (this.statusItemSubs) {
+      this.statusItemSubs.map(ss => ss.unsubscribe());
+    }
+
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+
+    const limit = this.paginator.pageSize;
+    const start = this.paginator.pageIndex;
+
+    this.housesSubs = this.housesService.getHouses(limit !== undefined ? limit : 10, start !== undefined ? start : 0, 'title',
+      query)
+      .subscribe(dat => {
+        console.log(dat);
+        this.resultsLength = dat.count;
+        this.houses = dat.results;
+
+        //console.log(this.houses);
+        this.timeout = setTimeout(this.getStatuses, 1000, this);
+
+        this.housesSubs.unsubscribe();
+      });
   }
 
   parseConnectNumber(n: number) {
@@ -81,65 +160,6 @@ export class HouseListComponent implements OnInit {
     // tslint:enable:no-bitwise
 
     return [connState, modState, losesState];
-  }
-
-  getHouses(query: string = ''): void {
-    const limit: number = this.paginator.pageSize;
-    const start: number = this.paginator.pageIndex;
-
-    const subs = this.housesService.getHouses(limit !== undefined ? limit : 10, start !== undefined ? start : 0, 'title',
-      query)
-      .subscribe(dat => {
-        console.log(dat);
-        this.resultsLength = dat.count;
-        this.houses = dat.results;
-
-        /**/
-        this.houses.map(h => {
-          const id = h.parent || h.id;
-
-          h.mod_state = false;
-          h.loses_state = false;
-          h.status_checked = false;
-          h.connect_state = Connection_State.CS_SERVER_DOWN;
-
-          // get status
-          const statusItemSubs = this.http.get<StatusItems>(`/api/v2/project/${h.id}/status_item`).subscribe(statusItems => {
-            h.messages = []; // 0 messages, wait
-
-            // set connection status
-            h.connection = statusItems.connection;
-            const [connState, modState, losesState] = this.parseConnectNumber(h.connection);
-            h.mod_state = <boolean>modState;
-            h.loses_state = <boolean>losesState;
-            h.status_checked = true;
-            h.connect_state = <Connection_State>connState;
-
-            // set messages
-            if (this.statusInfo[id]) { // if we have StatusInfo
-              // do it now
-              this.putMessages(h.id, statusItems, this.statusInfo[id]);
-            } else { // if we haven't StatusInfo
-              // put into queue
-              if (!this.statusQueue[id]) {
-                this.statusQueue[id] = {isLoading: false, depHouses: []}; // create a place in queue
-              }
-              this.statusQueue[id].depHouses.push({id: h.id, si: statusItems}); // put house as a depeneded
-
-              if (!this.statusQueue[id].isLoading) {
-                // start loading if was not started
-                this.statusQueue[id].isLoading = true;
-                this.getStatusInfo(id);
-              }
-            }
-
-            statusItemSubs.unsubscribe();
-          });
-
-        });/**/
-
-        subs.unsubscribe();
-      });
   }
 
   add(): void {
@@ -162,20 +182,6 @@ export class HouseListComponent implements OnInit {
 
   detail(house: House): void {
     this.router.navigate([`/detail/${house.id}/`]);
-  }
-
-  search(value: string) {
-    let v = value;
-
-    if (this.citySelected) {
-      v += '&city__id=' + this.citySelected;
-    }
-
-    if (this.compSelected) {
-      v += '&company__id=' + this.compSelected;
-    }
-
-    this.getHouses(v);
   }
 
   getPaginatorData(event: PageEvent) {
@@ -277,7 +283,7 @@ export class HouseListComponent implements OnInit {
   }
 
   private putMessages(id: number, statusItems: StatusItems, st: StatusInfo[]) {
-    const house = this.houses.find(h => h.id == id);
+    const house = this.houses.find(h => h.id === id);
 
     for (let i = 0; i < statusItems.items.length; i++) {
       const si = statusItems.items[i];
@@ -285,5 +291,53 @@ export class HouseListComponent implements OnInit {
       const st_item = st.find(sti => sti.id === si.status_id);
       house.messages.push({status: st_item.type_id, text: st_item.text, where: si.title});
     }
+  }
+
+  private getStatuses(th: HouseListComponent) {
+    console.log(th.houses);
+    th.houses.map(h => {
+      const id = h.parent || h.id;
+
+      h.mod_state = false;
+      h.loses_state = false;
+      h.status_checked = false;
+      h.connect_state = Connection_State.CS_SERVER_DOWN;
+
+      // get status
+      const sub = th.httpGet<StatusItems>(`/api/v2/project/${h.id}/status_item`).subscribe(statusItems => {
+        h.messages = []; // 0 messages, wait
+
+        // set connection status
+        h.connection = statusItems.connection;
+        const [connState, modState, losesState] = th.parseConnectNumber(h.connection);
+        h.mod_state = <boolean>modState;
+        h.loses_state = <boolean>losesState;
+        h.status_checked = true;
+        h.connect_state = <Connection_State>connState;
+
+        // set messages
+        if (th.statusInfo[id]) { // if we have StatusInfo
+          // do it now
+          th.putMessages(h.id, statusItems, th.statusInfo[id]);
+        } else { // if we haven't StatusInfo
+          // put into queue
+          if (!th.statusQueue[id]) {
+            th.statusQueue[id] = {isLoading: false, depHouses: []}; // create a place in queue
+          }
+          th.statusQueue[id].depHouses.push({id: h.id, si: statusItems}); // put house as a depeneded
+
+          if (!th.statusQueue[id].isLoading) {
+            // start loading if was not started
+            th.statusQueue[id].isLoading = true;
+            th.getStatusInfo(id);
+          }
+        }
+
+        sub.unsubscribe();
+      });
+
+      th.statusItemSubs.push(sub);
+
+    });
   }
 }

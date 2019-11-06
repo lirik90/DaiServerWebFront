@@ -1,6 +1,6 @@
 <div class="search-line">
   <mat-form-field class="sline-item search-edit">
-    <input matInput #searchBox i18n-placeholder="@@CONTROL.SEARCH" placeholder="Поиск" id="search-box" (keyup)="search(searchBox.value)" />
+    <input matInput #searchBox i18n-placeholder="@@CONTROL.SEARCH" placeholder="Поиск" id="search-box" (keyup)="searchString.next(searchBox.value)" />
   </mat-form-field>
 
   <mat-form-field class="sline-item search-ity">
