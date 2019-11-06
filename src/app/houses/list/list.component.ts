@@ -38,7 +38,7 @@ class StatusInfo {
   styleUrls: ['./list.component.css']
 })
 export class HouseListComponent implements OnInit, OnDestroy {
-  private timeout: number;
+  timeout: number;
 
   constructor(private router: Router,
               private housesService: HousesService,
@@ -46,11 +46,11 @@ export class HouseListComponent implements OnInit, OnDestroy {
               public translate: TranslateService,
   ) {}
 
-  private httpReqs: Subject<void> = new Subject<void>();
-  private searchString: Subject<string> = new Subject<string>();
+  httpReqs: Subject<void> = new Subject<void>();
+  searchString: Subject<string> = new Subject<string>();
 
-  private statusItemSubs: Subscription[] = [];
-  private housesSubs: Subscription;
+  statusItemSubs: Subscription[] = [];
+  housesSubs: Subscription;
 
   searchQ: Subject<string>;
 
