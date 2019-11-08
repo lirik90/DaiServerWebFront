@@ -24,7 +24,7 @@
   </mat-step>
 
   <mat-step [stepControl]="firstFormGroup">
-    <form [formGroup]="firstFormGroup">
+    <form [formGroup]="firstFormGroup" style="max-width: 600px">
       <ng-template matStepLabel i18n="@@REPORTS.EXPORT.SELECT_PROJECT">Выберите проект</ng-template>
       <mat-checkbox #current_only (change)="fillHouses($event.checked)" [checked]="true" i18n="@@REPORTS.EXPORT.SELECT_THIS">Только этот проект</mat-checkbox><br><br>
       <ng-container *ngIf="!current_only.checked">
@@ -54,6 +54,10 @@
             {{house.title}}
           </mat-list-option>
         </mat-selection-list>
+
+        <div style="margin: 1em 0; text-align: right;">
+          <button mat-stroked-button (click)="selectAll()">Выбрать все</button>
+        </div>
 
       </ng-container>
       <div>

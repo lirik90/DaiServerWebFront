@@ -230,4 +230,7 @@ export class Export2Component implements OnInit {
     });
  }
 
+  selectAll() {
+    this.firstFormGroup.controls.projects.patchValue([...this.houses.map(item => item.id), 0]);
+  }
 }

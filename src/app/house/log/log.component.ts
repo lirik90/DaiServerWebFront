@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { ISubscription } from "rxjs/Subscription";
+import { ISubscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { merge } from 'rxjs/observable/merge';
 import { of as observableOf } from 'rxjs/observable/of';
@@ -10,10 +10,10 @@ import { map } from 'rxjs/operators/map';
 import { startWith } from 'rxjs/operators/startWith';
 import { switchMap } from 'rxjs/operators/switchMap';
 
-import { EventLog, EventLogType } from "../house";
+import { EventLog, EventLogType } from '../house';
 import { TeamMember, PaginatorApi } from '../../user';
-import { HouseService } from "../house.service";
-import { ControlService, WebSockCmd } from "../control.service";
+import { HouseService } from '../house.service';
+import { ControlService, WebSockCmd } from '../control.service';
 import {TranslateService} from '@ngx-translate/core';
 import {ActivatedRoute} from '@angular/router';
 
@@ -41,7 +41,7 @@ export class LogComponent implements OnInit, OnDestroy {
   cmd = '';
 
   constructor(
-	  public translate: TranslateService,
+    public translate: TranslateService,
     private controlService: ControlService,
     private houseService: HouseService,
     private http: HttpClient,
@@ -78,8 +78,8 @@ export class LogComponent implements OnInit, OnDestroy {
           this.isRateLimitReached = false;
           this.resultsLength = data.count;
 
-          //console.log(JSON.stringify(data.results[0]));
-          for (let item of data.results) {
+          // console.log(JSON.stringify(data.results[0]));
+          for (const item of data.results) {
             console.log(item);
             item.date = new Date(item.timestamp_msecs);
 
@@ -97,19 +97,21 @@ export class LogComponent implements OnInit, OnDestroy {
 
     this.sub = this.controlService.byte_msg.subscribe(msg => {
 
-      if (msg.cmd !== WebSockCmd.WS_EVENT_LOG)
+      if (msg.cmd !== WebSockCmd.WS_EVENT_LOG) {
         return;
+      }
 
       if (msg.data === undefined) {
         console.warn('EventLog without data');
         return;
       }
 
-      if (!(this.paginator.pageIndex == 0 && this.sort.active == 'timestamp_msecs' && this.sort.direction == 'desc'))
+      if (!(this.paginator.pageIndex == 0 && this.sort.active == 'timestamp_msecs' && this.sort.direction == 'desc')) {
         return;
+      }
 
-      let rows = this.controlService.parseEventMessage(msg.data);
-      for (let row of rows) {
+      const rows = this.controlService.parseEventMessage(msg.data);
+      for (const row of rows) {
 
         row.color = this.getColor(row.type_id);
         this.dataSource.data.pop(); // For table row count is stay setted
@@ -118,14 +120,16 @@ export class LogComponent implements OnInit, OnDestroy {
     });
   }
 
-  getUserName(id: number): string
-  {
-    if (id === null || id === 0)
+  getUserName(id: number): string {
+    if (id === null || id === 0) {
       return '';
-    for (const user of this.members)
-      if (user.id === id)
+    }
+    for (const user of this.members) {
+      if (user.id === id) {
         return user.name;
-    return this.translate.instant("LOG.UNKNOWN_USER") + ' ' + String(id);
+    }
+      }
+    return this.translate.instant('LOG.UNKNOWN_USER') + ' ' + String(id);
   }
 
   ngOnDestroy() {
@@ -133,11 +137,12 @@ export class LogComponent implements OnInit, OnDestroy {
   }
 
   dateFormat(cell: any): string {
-    if (cell.clientWidth <= 60)
+    if (cell.clientWidth <= 60) {
       return 'dd H:m';
+    }
     return 'dd.MM.yy HH:mm:ss';
-    //console.log('hello ' + cell.clientWidth);
-    //console.log(cell);
+    // console.log('hello ' + cell.clientWidth);
+    // console.log(cell);
   }
 
   applyFilter(filterValue: string) {
