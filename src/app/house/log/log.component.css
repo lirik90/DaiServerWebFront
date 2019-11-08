@@ -5,10 +5,17 @@
 /*  max-height: 500px; */
   min-width: 300px;
   position: relative;
+  /*max-height: calc(100vh - 150px);*/
+}
+
+.mat-paginator {
+  display: block;
+  position: sticky;
+  bottom: 0px;
 }
 
 .example-header {
-  min-height: 64px;
+  /*min-height: 64px;*/
   padding: 8px 24px 0;
 }
 
@@ -19,7 +26,7 @@
 
 .mat-table {
   overflow: auto;
-  max-height: 500px;
+  /*max-height: 500px;*/
 }
 
 .example-table {

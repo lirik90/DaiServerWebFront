@@ -16,6 +16,8 @@ import { HouseService } from '../house.service';
 import { ControlService, WebSockCmd } from '../control.service';
 import {TranslateService} from '@ngx-translate/core';
 import {ActivatedRoute} from '@angular/router';
+import {PageEvent} from '@angular/material/typings/paginator';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-log',
@@ -31,6 +33,8 @@ export class LogComponent implements OnInit, OnDestroy {
   isLoadingResults = true;
   isRateLimitReached = false;
 
+  itemsPerPage;
+
   sub: ISubscription;
 
   members: TeamMember[] = [];
@@ -39,13 +43,15 @@ export class LogComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort;
 
   cmd = '';
+  pageEvent: any;
 
   constructor(
     public translate: TranslateService,
     private controlService: ControlService,
     private houseService: HouseService,
     private http: HttpClient,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    public cookie: CookieService,
     ) {
       this.activatedRoute.queryParams.subscribe(params => {
         if (params['cmd']) {
@@ -55,11 +61,24 @@ export class LogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+    const ipp = parseInt(this.cookie.get('logItemsPerPage'), 10);
+
+    if (ipp !== NaN) {
+      this.itemsPerPage = ipp;
+      this.paginator.pageSize = this.itemsPerPage;
+    } else {
+      console.log('b');
+      this.itemsPerPage = 35;
+      this.paginator.pageSize = this.itemsPerPage;
+    }
+
     const houseId = this.houseService.house.id;
 
     this.houseService.getMembers().subscribe(members => this.members = members.results);
 
     this.logDatabase = new LogHttpDao(this.http);
+
 
     // If the user changes the sort order, reset back to the first page.
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
@@ -80,7 +99,7 @@ export class LogComponent implements OnInit, OnDestroy {
 
           // console.log(JSON.stringify(data.results[0]));
           for (const item of data.results) {
-            console.log(item);
+            //console.log(item);
             item.date = new Date(item.timestamp_msecs);
 
             item.color = this.getColor(item.type_id);
@@ -163,6 +182,25 @@ export class LogComponent implements OnInit, OnDestroy {
 
   execScript(script: string): void {
     this.controlService.execScript(script);
+  }
+
+  handlePage($event: PageEvent) {
+    console.log($event);
+    const pi = $event.pageIndex;
+    const ppi = $event.previousPageIndex;
+
+    if (pi > ppi) {
+      // scroll top
+      window.scrollTo(0, 0);
+    } else if (pi < ppi) {
+      // scroll bottom
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    if ($event.pageSize != this.itemsPerPage) {
+      this.itemsPerPage = $event.pageSize;
+      this.cookie.set('logItemsPerPage', String($event.pageSize), 365, '/');
+    }
   }
 }
 
