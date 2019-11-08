@@ -16,6 +16,8 @@ import { HouseService } from "../house.service";
 import { ControlService, WebSockCmd } from "../control.service";
 import {TranslateService} from '@ngx-translate/core';
 import {ActivatedRoute} from '@angular/router';
+import {CookieService} from 'ngx-cookie-service';
+import {PageEvent} from '@angular/material/typings/paginator';
 
 @Component({
   selector: 'app-log',
@@ -31,6 +33,7 @@ export class Log2Component implements OnInit, OnDestroy {
   isLoadingResults = true;
   isRateLimitReached = false;
 
+  itemsPerPage;
   sub: ISubscription;
 
   members: TeamMember[] = [];
@@ -41,13 +44,15 @@ export class Log2Component implements OnInit, OnDestroy {
   cmd = '';
   addArgs = '';
   search = '';
+  pageEvent: any;
 
   constructor(
 	  public translate: TranslateService,
     private controlService: ControlService,
     private houseService: HouseService,
     private http: HttpClient,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    public cookie: CookieService,
     ) {
       this.activatedRoute.queryParams.subscribe(params => {
         if (params['cmd']) {
@@ -57,6 +62,17 @@ export class Log2Component implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    const ipp = parseInt(this.cookie.get('log2ItemsPerPage'), 10);
+
+    if (ipp !== NaN) {
+      this.itemsPerPage = ipp;
+      this.paginator.pageSize = this.itemsPerPage;
+    } else {
+      console.log('b');
+      this.itemsPerPage = 35;
+      this.paginator.pageSize = this.itemsPerPage;
+    }
+
     const houseId = this.houseService.house.id;
 
     //this.houseService.getMembers().subscribe(members => this.members = members.results);
@@ -153,6 +169,25 @@ export class Log2Component implements OnInit, OnDestroy {
   execScript(script: string): void {
     this.addArgs = script;
     this.ngOnInit();
+  }
+
+  handlePage($event: PageEvent) {
+    console.log($event);
+    const pi = $event.pageIndex;
+    const ppi = $event.previousPageIndex;
+
+    if (pi > ppi) {
+      // scroll top
+      window.scrollTo(0, 0);
+    } else if (pi < ppi) {
+      // scroll bottom
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    if ($event.pageSize != this.itemsPerPage) {
+      this.itemsPerPage = $event.pageSize;
+      this.cookie.set('log2ItemsPerPage', String($event.pageSize), 365, '/');
+    }
   }
 }
 
