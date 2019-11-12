@@ -23,6 +23,7 @@ export class UserDetailsComponent implements OnInit {
   newPassErrors = [];
   oldPassErrors = [];
   success = false;
+  success2 = false;
 
   constructor(
     public authService: AuthenticationService,
