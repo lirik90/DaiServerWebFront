@@ -16,7 +16,7 @@
   font-size: 15px;
   color: green;
   opacity: 0;
-  transition: 1s ease-out 0s opacity;
+  transition: opacity 1s ease-out 0s;
   margin-right: 2em;
 }
 

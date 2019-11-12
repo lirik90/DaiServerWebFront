@@ -37,6 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   current_lang_: any;
   cookieGot: boolean;
+  showDropDown = false;
 
   constructor(
     public translate: TranslateService,
@@ -154,5 +155,9 @@ export class AppComponent implements OnInit, OnDestroy {
   cookieAgree() {
     this.cookie.set('cookie-agree', 'true', 365, '/');
     this.cookieGot = true;
+  }
+
+  toggleDropDown() {
+    this.showDropDown = !this.showDropDown;
   }
 }

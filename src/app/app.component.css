@@ -1,3 +1,42 @@
+
+.dropdown-user-menu {
+  position: absolute;
+  bottom: -52px;
+  right: 0;
+  background: #fff;
+  border: 1px solid #eee;
+  box-shadow: 1px 2px 29px -15px rgba(0,0,0,0.75);
+  width: 160px;
+  display: none;
+}
+
+.dropdown-user-menu a {
+  display: inline-block;
+  padding: 1em 1.5em;
+  font-size: 0.9em;
+  box-sizing: border-box;
+}
+
+.dropdown-user-menu.force-visible {
+  display: inline-block;
+}
+
+.app-toolbar__user {
+  cursor: pointer;
+}
+
+.app-toolbar__user-name {
+  text-decoration: underline;
+}
+
+.dropdown-user-menu a {
+  color: #4a5f9d;
+}
+
+.app-toolbar__user {
+  position: relative;
+}
+
 /* AppComponent's private CSS styles */
 :host {
   display: flex;
