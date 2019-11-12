@@ -2,6 +2,10 @@
   <div style="margin-bottom: 3em;">
     <h3>Детальная информация</h3>
     Логин: <b>{{currentUser.username}}</b>
+
+    Имя: <input type="text" [value]="currentUser.first_name" disabled="disabled">
+    Фамилия: <input type="text" [value]="currentUser.last_name"  disabled="disabled">
+    E-mail: <input type="email" [value]="currentUser.email"  disabled="disabled">
   </div>
 
   <form [formGroup]="changePasswordGroup" (ngSubmit)="changePassword()">
