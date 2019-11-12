@@ -18,6 +18,8 @@
   opacity: 0;
   transition: opacity 1s ease-out 0s;
   margin-right: 2em;
+  margin-bottom: 1em;
+  display: inline-block;
 }
 
 .successlabelshow {
@@ -46,4 +48,9 @@
 .details {
   max-width: 600px;
   margin: 0 auto;
+}
+
+label {
+  margin-bottom: 0.7em;
+  display: inline-block;
 }

@@ -1,27 +1,28 @@
 <div class="details">
   <mat-card class="user-details-pane">
-    <form>
+    <form [formGroup]="changeUserDetailsGroup" (ngSubmit)="changeUserDetails()">
       <h3>Детальная информация</h3>
-      Логин: <b>{{currentUser.username}}</b>
+      <p>Логин: <b>{{authService.currentUser.username}}</b></p>
+      <!--p>E-mail: {{authService.currentUser.email}}</p-->
 
       <div>
         <mat-form-field>
-          <label for="first-name">Имя:</label> <input matInput id="first-name" type="text" [value]="currentUser.first_name" disabled="disabled">
+          <label for="first-name">Имя:</label> <input matInput id="first-name" type="text" formControlName="first_name">
         </mat-form-field>
       </div>
       <div>
         <mat-form-field>
-          <label for="last-name">Фамилия:</label> <input matInput id="last-name" type="text" [value]="currentUser.last_name" disabled="disabled">
+          <label for="last-name">Фамилия:</label> <input matInput id="last-name" type="text" formControlName="last_name">
         </mat-form-field>
       </div>
-      <div>
+      <!--div>
         <mat-form-field>
-          <label for="email">E-mail:</label> <input matInput id="email" type="email" [value]="currentUser.email"  disabled="disabled">
+          <label for="email">E-mail:</label> <input matInput id="email" type="email" disabled="disabled" formControlName="email">
         </mat-form-field>
-      </div>
+      </div-->
       <mat-card-actions>
         <span class="success-label" [class.successlabelshow]="success2">Данные успешно изменены!</span>
-        <button mat-stroked-button type="submit" class="suc-btn" disabled="disabled">Применить</button>
+        <button mat-stroked-button type="submit" class="suc-btn">Применить</button>
       </mat-card-actions>
     </form>
   </mat-card>

@@ -20,6 +20,7 @@ export class UserDetailsComponent implements OnInit {
   currentUser: any;
 
   changePasswordGroup: FormGroup;
+  changeUserDetailsGroup: FormGroup;
   newPassErrors = [];
   oldPassErrors = [];
   success = false;
@@ -33,13 +34,17 @@ export class UserDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.currentUser = this.authService.currentUser;
-
     this.changePasswordGroup = this.formBuilder.group({
       cur_password: ['', Validators.required],
       new_password: ['', Validators.required],
       confirm_password: ['', Validators.required],
     }, {validator: this.confirmValidator});
+
+    this.changeUserDetailsGroup = this.formBuilder.group({
+      first_name: [this.authService.currentUser.first_name],
+      last_name: [this.authService.currentUser.last_name],
+      //email: [{value: this.authService.currentUser.email, disabled: true}],
+    });
   }
 
   confirmValidator(group: FormGroup) {
@@ -89,6 +94,30 @@ export class UserDetailsComponent implements OnInit {
           const i = setInterval(() => {
             this.success = false;
           }, 2000);
+        }
+      }, error => {
+        console.log(error);
+      });
+    }
+  }
+
+  changeUserDetails() {
+    if (this.changeUserDetailsGroup.invalid) {
+    } else {
+      const req = this.changeUserDetailsGroup.value;
+
+      this.http.put('/api/v1/change_user_details/', req, httpOptions).subscribe(resp => {
+        // tslint:disable-next-line:triple-equals
+        if (resp == 'Success.') {
+          // show success messge
+          console.log('TRYU!!!');
+          this.success2 = true;
+          const i = setInterval(() => {
+            this.success2 = false;
+          }, 2000);
+
+          this.authService.refreshToken();
+          //this.currentUser = this.authService.currentUser;
         }
       }, error => {
         console.log(error);
