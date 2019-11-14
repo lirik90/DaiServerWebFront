@@ -901,12 +901,14 @@
 .flag-icon-mm.flag-icon-squared {
   background-image: url(../../../node_modules/flag-icon-css/flags/1x1/mm.svg);
 }
+*/
 .flag-icon-mn {
   background-image: url(../../../node_modules/flag-icon-css/flags/4x3/mn.svg);
 }
 .flag-icon-mn.flag-icon-squared {
   background-image: url(../../../node_modules/flag-icon-css/flags/1x1/mn.svg);
 }
+/*
 .flag-icon-mo {
   background-image: url(../../../node_modules/flag-icon-css/flags/4x3/mo.svg);
 }
