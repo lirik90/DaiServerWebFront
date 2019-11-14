@@ -14,8 +14,8 @@
 
         <button *ngIf="isSupervisor" mat-icon-button (click)="restart()"><mat-icon>replay</mat-icon></button>
 
-        <button *ngIf="!isFav" mat-flat-button class="fav-btn" (click)="fav()"><mat-icon>star_border</mat-icon><span class="fav-btn__label">Добавить<br>в избранное</span></button>
-        <button *ngIf="isFav" mat-flat-button class="fav-btn" (click)="unfav()"><mat-icon>star</mat-icon><span class="fav-btn__label">В избранном</span></button>
+        <button *ngIf="!isFav" mat-flat-button class="fav-btn" (click)="fav()"><mat-icon>star_border</mat-icon><span class="fav-btn__label" i18n="@@ADD_TO_FAV">Добавить<br>в избранное</span></button>
+        <button *ngIf="isFav" mat-flat-button class="fav-btn" (click)="unfav()"><mat-icon>star</mat-icon><span class="fav-btn__label" i18n="@@IN_FAV">В избранном</span></button>
       </div>
 
       <div class="localnav-menu">
