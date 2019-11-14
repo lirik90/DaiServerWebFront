@@ -64,12 +64,12 @@ class TimeInfo {
 
 @Injectable()
 export class ControlService {
-	public byte_msg: Subject<ByteMessage> = new Subject<ByteMessage>();
+  public byte_msg: Subject<ByteMessage> = new Subject<ByteMessage>();
   public opened: Subject<boolean>;
 
   private bmsg_sub: ISubscription;
 
-	constructor(
+  constructor(
     private wsbService: WebSocketBytesService,
     private houseService: HouseService,
     @Inject(DOCUMENT) private document) {
@@ -83,7 +83,7 @@ export class ControlService {
       console.log(this.houseService);
       */
 
-      if (!this.houseService.house || (msg.proj_id != this.houseService.house.id && msg.proj_id != 0 )) {
+      if (!this.houseService.house || (msg.proj_id != this.houseService.house.id && msg.proj_id != 0)) {
         return;
       }
 
@@ -119,14 +119,14 @@ export class ControlService {
           item_id = ByteTools.parseUInt32(view, idx)[1];
           idx += 4;
 
-          const [ last_pos1, raw_value ] = ByteTools.parseQVariant(view, idx);
+          const [last_pos1, raw_value] = ByteTools.parseQVariant(view, idx);
           idx = last_pos1;
           if (idx >= msg.data.byteLength) {
             console.log(`bad raw length ${idx} ${msg.data.byteLength} ${raw_value}`);
             break;
           }
 
-          const [ last_pos2, value ] = ByteTools.parseQVariant(view, idx);
+          const [last_pos2, value] = ByteTools.parseQVariant(view, idx);
           idx = last_pos2;
           if (idx > msg.data.byteLength) {
             console.log(`bad length ${idx} ${msg.data.byteLength} ${value}`);
@@ -184,7 +184,7 @@ export class ControlService {
           param_id = ByteTools.parseUInt32(view, idx)[1];
           idx += 4;
 
-          const [ last_pos, value ] = ByteTools.parseQString(view, idx);
+          const [last_pos, value] = ByteTools.parseQString(view, idx);
           idx = last_pos;
 
           set_param(param_id, value);
@@ -197,7 +197,7 @@ export class ControlService {
         const args: string[] = [];
 
         while (args_count--) {
-          const [ last_pos, value ] = ByteTools.parseQString(view, idx);
+          const [last_pos, value] = ByteTools.parseQString(view, idx);
           idx = last_pos;
           args.push(value);
         }
@@ -225,7 +225,7 @@ export class ControlService {
               if (status_item === undefined) {
                 console.warn(`Status id ${info_id} not found`);
               } else {
-                group.statuses.push({ status: status_item, args: args, status_id: info_id });
+                group.statuses.push({status: status_item, args: args, status_id: info_id});
                 this.houseService.calculateStatusInfo(group);
               }
               return;
@@ -264,7 +264,7 @@ export class ControlService {
     const host = window.location.host; // With port -> localhost:4200
     const ws_url = `${protocol}//${host}/${protocol}`;
     this.wsbService.start(ws_url.replace(/:$/, '/'));
-	}
+  }
 
   close(): void {
     this.bmsg_sub.unsubscribe();
@@ -275,7 +275,7 @@ export class ControlService {
     const item: DeviceItem = this.houseService.devItemById(item_id);
     if (item) {
       if (!item.val) {
-        item.val = { raw: raw_value, display: value };
+        item.val = {raw: raw_value, display: value};
       } else {
         item.val.raw = raw_value;
         item.val.display = value;
@@ -313,7 +313,7 @@ export class ControlService {
     const [start1, time] = ByteTools.parseInt64(view, 0);
     const [start2, time_zone] = ByteTools.parseQString(view, start1);
     const modified: boolean = view[start2] == 1;
-    return { time, time_zone, modified };
+    return {time, time_zone, modified};
   }
 
   /* DEPRECATED */
@@ -328,7 +328,7 @@ export class ControlService {
     const [start1, time] = ByteTools.parseInt64(view, start);
     const [start2, time_zone] = ByteTools.parseQString(view, start1);
     const modified: boolean = view[start2] == 1;
-    return { connected, ip, time, time_zone, modified };
+    return {connected, ip, time, time_zone, modified};
   }
 
   parseEventMessage(data: ArrayBuffer): EventLog[] {
@@ -347,7 +347,7 @@ export class ControlService {
       const [start5, who] = ByteTools.parseQString(view, start3 + 1);
       const [start6, msg] = ByteTools.parseQString(view, start5);
       start1 = start6;
-      items.push({date: new Date(time_ms), text: msg, category: who, type_id: type, user_id, color: '' } as EventLog);
+      items.push({date: new Date(time_ms), text: msg, category: who, type_id: type, user_id, color: ''} as EventLog);
     }
     return items;
   }
@@ -424,8 +424,10 @@ export class ControlService {
     const func_name_view = ByteTools.saveQString(func_name);
     const view = new Uint8Array(func_name_view.length + 4 + args_size);
     let pos = 0;
-    view.set(func_name_view, pos); pos += func_name_view.length;
-    ByteTools.saveInt32(args.length, view, pos); pos += 4;
+    view.set(func_name_view, pos);
+    pos += func_name_view.length;
+    ByteTools.saveInt32(args.length, view, pos);
+    pos += 4;
     for (const data of arg_list) {
       view.set(data, pos);
       pos += data.length;

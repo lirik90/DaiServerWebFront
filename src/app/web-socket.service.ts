@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable, Subscription }    from 'rxjs/Rx';
 import { map } from 'rxjs/operators';
-import { WebSocketSubject, WebSocketSubjectConfig } from "rxjs/observable/dom/WebSocketSubject";
+import { WebSocketSubject, WebSocketSubjectConfig } from 'rxjs/observable/dom/WebSocketSubject';
 import { webSocket } from 'rxjs/webSocket';
 
-import { Observer } from "rxjs/Observer";
+import { Observer } from 'rxjs/Observer';
 import { Subscriber } from 'rxjs';
 
-import { AuthenticationService } from "./authentication.service";
+import { AuthenticationService } from './authentication.service';
 
 enum WebSockCmd {
   WS_UNKNOWN,
@@ -43,7 +43,7 @@ export interface ByteMessage {
 
 export class ByteTools {
   static extendBuffer(view: Uint8Array, extend_size: number): Uint8Array {
-    let new_view = new Uint8Array(view.length + extend_size);
+    const new_view = new Uint8Array(view.length + extend_size);
     new_view.set(view);
     return new_view;
   }
@@ -60,40 +60,42 @@ export class ByteTools {
     out[start + 1] = (value & 0x000000ff);
   }
 
-  static saveByteArray(data_arr: string) : Uint8Array {
+  static saveByteArray(data_arr: string): Uint8Array {
     const t_len = data_arr.length;
-    let data = new Uint8Array(t_len + 4);
+    const data = new Uint8Array(t_len + 4);
 
     ByteTools.saveInt32(t_len, data);
-    for (let i = 0; i < t_len; ++i)
+    for (let i = 0; i < t_len; ++i) {
       data[4 + i] = data_arr.charCodeAt(i);
+    }
     return data;
   }
 
-  static saveQString(value: string, is_null: boolean = undefined): Uint8Array
-	{
-    if (is_null === undefined)
+  static saveQString(value: string, is_null: boolean = undefined): Uint8Array {
+    if (is_null === undefined) {
       is_null = !value;
-    let length = (is_null || !value) ? 0 : value.length;
-    let view = new Uint8Array(4 + (length * 2));
+    }
+    const length = (is_null || !value) ? 0 : value.length;
+    const view = new Uint8Array(4 + (length * 2));
 
-    if (is_null)
+    if (is_null) {
       ByteTools.saveInt32(0xFFFFFFFF, view);
-    else {
+    } else {
       ByteTools.saveInt32(length * 2, view);
 
       let code: number;
-      for (let i = 0; i < length; ++i)
+      for (let i = 0; i < length; ++i) {
         ByteTools.saveInt16(value.charCodeAt(i), view, 4 + (i * 2));
+      }
     }
 
     return view;
   }
 
   static saveDouble(value: number): Uint8Array {
-    let buf = new ArrayBuffer(8);
-    let view = new Uint8Array(buf);
-    let dbl_view = new Float64Array(buf);
+    const buf = new ArrayBuffer(8);
+    const view = new Uint8Array(buf);
+    const dbl_view = new Float64Array(buf);
     dbl_view[0] = value;
 
     let val: number;
@@ -109,16 +111,16 @@ export class ByteTools {
     let variant_type: number;
     let data: Uint8Array;
 
-    if (!is_null)
+    if (!is_null) {
       is_null = value === undefined || value === null;
+    }
 
     if (Array.isArray(value)) {
       variant_type = 9; // 9 QVariantList
       let total_size = 0;
-      let items = [];
-      for (const item of value)
-      {
-        let val = ByteTools.saveQVariant(item);
+      const items = [];
+      for (const item of value) {
+        const val = ByteTools.saveQVariant(item);
         total_size += val.length;
         items.push(val);
       }
@@ -126,8 +128,7 @@ export class ByteTools {
       data = new Uint8Array(4 + total_size);
       let pos = 0;
       ByteTools.saveInt32(items.length, data, pos); pos += 4;
-      for (const item of items)
-      {
+      for (const item of items) {
         data.set(item, pos); pos += item.length;
       }
     } else {
@@ -135,8 +136,7 @@ export class ByteTools {
       if (t_str === 'string') {
         variant_type = 10; // 10 QString
         data = ByteTools.saveQString(value);
-      }
-      else if (t_str === 'number') {
+      } else if (t_str === 'number') {
         if (value % 1 === 0) {
           variant_type = 2; // 2 int
           data = new Uint8Array(4);
@@ -145,76 +145,70 @@ export class ByteTools {
           variant_type = 6; // 6 double
           data = ByteTools.saveDouble(value);
         }
-      }
-      else if (t_str === 'boolean') {
+      } else if (t_str === 'boolean') {
         variant_type = 1; // 1 bool
         data = new Uint8Array(1);
         data[0] = value ? 1 : 0;
-      }
-      else if (t_str === 'object') {
+      } else if (t_str === 'object') {
         console.log(value);
         variant_type = 8; // 8 QVariantMap
         data = ByteTools.saveQVariantMap(value);
-      }
-      else {
+      } else {
         variant_type = 0; // 0 Invalid
         is_null = true;
       }
     }
 
-    let view = new Uint8Array(5 + (data ? data.length : 0));
+    const view = new Uint8Array(5 + (data ? data.length : 0));
     ByteTools.saveInt32(variant_type, view);
     view[4] = is_null ? 1 : 0;
-    if (data)
+    if (data) {
       view.set(data, 5);
+    }
     return view;
   }
 
-  static saveQVariantList(obj: any): Uint8Array
-  {
-    if (typeof obj === 'string')
+  static saveQVariantList(obj: any): Uint8Array {
+    if (typeof obj === 'string') {
       obj = JSON.parse(obj);
+    }
     let total_size = 0;
-    let items = [];
-    for (const value of obj)
-    {
-      let value_view = ByteTools.saveQVariant(value);
+    const items = [];
+    for (const value of obj) {
+      const value_view = ByteTools.saveQVariant(value);
       total_size += value_view.length;
       items.push(value_view);
     }
 
-    let view = new Uint8Array(4 + total_size);
+    const view = new Uint8Array(4 + total_size);
     let pos = 0;
     ByteTools.saveInt32(items.length, view, pos); pos += 4;
 
-    for (const item of items)
-    {
+    for (const item of items) {
       view.set(item, pos); pos += item.length;
     }
 
     return view;
  }
 
-  static saveQVariantMap(obj: any): Uint8Array
-  {
-    if (typeof obj === 'string')
+  static saveQVariantMap(obj: any): Uint8Array {
+    if (typeof obj === 'string') {
       obj = JSON.parse(obj);
+    }
     let total_size = 0;
-    let items = [];
-    for (const key in obj)
-    {
-      let key_view = ByteTools.saveQString(key);
-      let value_view = ByteTools.saveQVariant(obj[key]);
+    const items = [];
+    for (const key in obj) {
+      const key_view = ByteTools.saveQString(key);
+      const value_view = ByteTools.saveQVariant(obj[key]);
       total_size += key_view.length + value_view.length;
-      items.push([key_view,value_view]);
+      items.push([key_view, value_view]);
     }
 
-    let view = new Uint8Array(4 + total_size);
+    const view = new Uint8Array(4 + total_size);
     let pos = 0;
     ByteTools.saveInt32(items.length, view, pos); pos += 4;
 
-    for (const item of items)
-    {
+    for (const item of items) {
       view.set(item[0], pos); pos += item[0].length;
       view.set(item[1], pos); pos += item[1].length;
     }
@@ -226,21 +220,24 @@ export class ByteTools {
   static parseQString(view: Uint8Array, init_start: number = 0): [number, string] {
     const [start, bytes] = ByteTools.parseUInt32(view, init_start);
 
-    if (bytes == 0xffffffff)
+    if (bytes == 0xffffffff) {
       return [start, null];
+    }
 
-    if (bytes <= 0)
+    if (bytes <= 0) {
       return [start, ''];
+    }
 
     if (bytes & 0x1) {
       console.warn('QString parse error: Corrupt data');
       return [start, undefined];
     }
 
-		let buff = new ArrayBuffer(bytes);
-    let view16 = new Uint16Array(buff);
-		for (let i = 0; i < bytes; i += 2)
+		const buff = new ArrayBuffer(bytes);
+    const view16 = new Uint16Array(buff);
+		for (let i = 0; i < bytes; i += 2) {
       view16[i / 2] = view[start + i] << 8 | view[start + i + 1];
+		}
 		const value: string = String.fromCharCode.apply(null, view16);
 
 		return [start + bytes, value];
@@ -258,12 +255,14 @@ export class ByteTools {
 
   static parseUInt32Array(view: Uint8Array, start: number = 0, count: number = 1): [number, Uint32Array] {
     const buffer_size = count * 4;
-    if (count <= 0 || (view.length - start) < buffer_size)
+    if (count <= 0 || (view.length - start) < buffer_size) {
       return [start, new Uint32Array(0)];
+    }
 
-    let view32 = new Uint32Array(count);
-		for (let i = 0; i < buffer_size; i += 4)
+    const view32 = new Uint32Array(count);
+		for (let i = 0; i < buffer_size; i += 4) {
       view32[i / 4] = view[start + i] << 24 | view[start + i + 1] << 16 | view[start + i + 2] << 8 | view[start + i + 3];
+		}
     return [start + buffer_size, view32];
   }
 
@@ -273,10 +272,11 @@ export class ByteTools {
   }
 
   static parseFloatImpl(view: Uint8Array, start: number = 0, size: number = 4): [number, number] {
-    let buff = new ArrayBuffer(size);
-    let view1 = new Uint8Array(buff);
-    for (let i = 0; i < size; ++i)
+    const buff = new ArrayBuffer(size);
+    const view1 = new Uint8Array(buff);
+    for (let i = 0; i < size; ++i) {
       view1[i] = view[start + ((size - 1) - i)];
+    }
 
     const value = (size === 4 ? new Float32Array(buff) : new Float64Array(buff))[0];
     return [start + size, value];
@@ -301,7 +301,7 @@ export class ByteTools {
       return [start2, undefined];
     }
 
-    switch(type) {
+    switch (type) {
       case 0:
         return [start, is_null ? null : undefined];
       case 1024: // UserType
@@ -337,7 +337,7 @@ export class ByteTools {
 
       case 9: { // QVariantList
         let [start1, size] = ByteTools.parseUInt32(view, start);
-        let values: any[] = [];
+        const values: any[] = [];
         while (size--) {
           const [start_item, value] = ByteTools.parseQVariant(view, start1);
           start1 = start_item;
@@ -385,14 +385,16 @@ export class WebSocketBytesService {
   ) {}
 
   public close(): void {
-    if (this.socket)
+    if (this.socket) {
       this.socket.unsubscribe();
-    if (this.ws)
+    }
+    if (this.ws) {
       this.ws.complete();
+    }
   }
 
   public start(url: string): void {
-    let webSockConf: WebSocketSubjectConfig<any> = {
+    const webSockConf: WebSocketSubjectConfig<any> = {
       url: url,
       binaryType: 'arraybuffer',
       resultSelector: (e: MessageEvent) => e.data,
@@ -407,11 +409,13 @@ export class WebSocketBytesService {
 
     this.socket = this.ws.subscribe({
       next: (msg: ArrayBuffer) => {
-        if (!msg.byteLength)
+        if (!msg.byteLength) {
           return;
+        }
 
-        if ((<any>msg).length !== undefined)
+        if ((<any>msg).length !== undefined) {
           return;
+        }
 
         const info = new Uint8Array(msg);
         const cmd = info[0];
@@ -421,8 +425,9 @@ export class WebSocketBytesService {
         if (cmd == WebSockCmd.WS_AUTH) {
           this.sendAuth();
         } else {
-          if (cmd == WebSockCmd.WS_WELCOME)
+          if (cmd == WebSockCmd.WS_WELCOME) {
             this.opened.next(true);
+          }
 
           this.message.next({ cmd, proj_id, data });
         }
@@ -443,13 +448,14 @@ export class WebSocketBytesService {
 
   public send(cmd: number, proj_id: number, data: Uint8Array = undefined): void {
     const byte_length = data !== undefined ? data.length : 0;
-    let msg = new ArrayBuffer(5 + byte_length);
-    let view = new Uint8Array(msg);
+    const msg = new ArrayBuffer(5 + byte_length);
+    const view = new Uint8Array(msg);
 
     view[0] = cmd;
     ByteTools.saveInt32(proj_id, view, 1);
-    if (data !== undefined)
+    if (data !== undefined) {
       view.set(data, 5);
+    }
 
     this.ws.next(msg);
   }
@@ -457,10 +463,11 @@ export class WebSocketBytesService {
   private sendAuth(): void {
     const user = this.authService.currentUser;
 
-    if (user && user.token)
+    if (user && user.token) {
       this.send(WebSockCmd.WS_AUTH, 0, ByteTools.saveByteArray(user.token));
-    else
+    } else {
       this.close();
+    }
 
     // const s = "hello"; // If given to the writer, it will be coerced to QString
     // const qbytearray = QByteArray.from(s); // This will write the same string but as a QByteArray

@@ -28,53 +28,118 @@ export interface ExportConfig {
   hide_null: boolean;
 }
 
+class DevValues {
+  id: number;
+  raw: any;
+  display: any;
+}
+
+class StatusItems {
+  connection: number;
+  items: {
+    args: any;
+    group_id: number;
+    id: number;
+    status_id: number;
+    title: string;
+  }[];
+}
+
 @Injectable()
 export class HouseService extends IHouseService {
   house: HouseDetail;
 
   private house_s = 'house';
+  private devValuesInterval: any;
 
   constructor(
           public translate: TranslateService,
           private router: Router,
           http: HttpClient,
-          messageService: MessageService)
-  {
+          messageService: MessageService) {
     super( http, messageService );
     // this.house = JSON.parse(localStorage.getItem(this.house_s));
+  }
+
+  updateStatusItems(id: number): void {
+    // get dev values
+    this.http.get<StatusItems>(`/api/v2/project/${id}/status_item/`).subscribe(resp => {
+      // console.log(resp);
+
+      for (const s of this.house.sections) {
+        for (const g of s.groups) {
+          g.statuses = [];
+
+          resp.items.filter(item => item.group_id === g.id).map(item => {
+            g.statuses.push({
+              status: undefined,
+              status_id: item.status_id,
+              args: item.args
+            });
+          });
+        }
+      }
+    });
+  }
+
+
+  updateDevValues(id: number): void {
+    // get dev values
+    this.http.get<DevValues[]>(`/api/v2/project/${id}/devitem_values/`).subscribe(resp => {
+      // console.log(resp);
+
+      for (const s of this.house.sections) {
+        for (const g of s.groups) {
+          for (const di of g.items) {
+            const respItem = resp.find(i => i.id === di.id);
+
+            if (respItem) {
+              di.val.raw = respItem.raw;
+              di.val.display = respItem.display;
+            }
+          }
+        }
+      }
+
+      /*
+      const item: DeviceItem = this.devItemById(resp.id);
+      if (item) {
+        if (!item.val) {
+          item.val = {raw: resp.raw_value, display: resp.value};
+        } else {
+          item.val.raw = resp.raw_value;
+          item.val.display = resp.value;
+        }
+      }*/
+    });
   }
 
   clear(): void {
     localStorage.removeItem(this.house_s);
     this.house = undefined;
+
+    clearInterval(this.devValuesInterval);
   }
 
   loadHouse(house_name: string): Observable<boolean> {
-    if (this.house && this.house.name == house_name)
+    if (this.house && this.house.name == house_name) {
       return of(true);
+    }
 
     this.house = undefined; // If comment need compare hash of detail
 
-    let parse_param_value_childs = (group: Group, param_items: ParamItem[]) =>
-    {
-      for (let param_value of group.params)
-      {
-        for (let param of param_items)
-        {
-          if (param.id === param_value.param_id)
-          {
+    const parse_param_value_childs = (group: Group, param_items: ParamItem[]) => {
+      for (const param_value of group.params) {
+        for (const param of param_items) {
+          if (param.id === param_value.param_id) {
             param_value.param = param;
             break;
           }
         }
-        if (param_value.param.parent_id)
-        {
-          for (let param_value2 of group.params)
-          {
-            if (param_value.param.parent_id == param_value2.param.id)
-            {
-              if (!param_value2.childs)
-              {
+        if (param_value.param.parent_id) {
+          for (const param_value2 of group.params) {
+            if (param_value.param.parent_id == param_value2.param.id) {
+              if (!param_value2.childs) {
                 param_value2.childs = [];
               }
               param_value2.childs.push(param_value);
@@ -84,10 +149,8 @@ export class HouseService extends IHouseService {
         }
       }
 
-      for (let index = 0; index < group.params.length; ++index)
-      {
-        if (group.params[index].param.parent_id)
-        {
+      for (let index = 0; index < group.params.length; ++index) {
+        if (group.params[index].param.parent_id) {
           group.params.splice(index, 1);
           -- index;
         }
@@ -95,25 +158,23 @@ export class HouseService extends IHouseService {
     };
 
     let lang;
-    let match = document.location.pathname.match(/\/(ru|en|fr|es)\//);
-    if (match === null)
-    {
+    const match = document.location.pathname.match(/\/(ru|en|fr|es)\//);
+    if (match === null) {
       const browserLang = this.translate.getBrowserLang();
       lang = browserLang.match(/ru|en|fr|es/) ? browserLang : 'ru';
-    }
-    else
-    {
+    } else {
       lang = match[1];
     }
 
     return this.get<HouseDetail>(`detail/?project_name=${house_name}&lang=${lang}`).pipe(
       switchMap(detail => {
-        for (let param of detail.params) {
+        for (const param of detail.params) {
           if (param.parent_id) {
-            for (let parent_param of detail.params) {
+            for (const parent_param of detail.params) {
               if (parent_param.id === param.parent_id) {
-                if (parent_param.childs == undefined)
+                if (parent_param.childs == undefined) {
                   parent_param.childs = [];
+                }
                 parent_param.childs.push(param);
                 break;
               }
@@ -121,8 +182,8 @@ export class HouseService extends IHouseService {
           }
         }
 
-        for (let itemType of detail.itemTypes) {
-          for (let sign of detail.signTypes) {
+        for (const itemType of detail.itemTypes) {
+          for (const sign of detail.signTypes) {
             if (sign.id === itemType.sign_id) {
               itemType.sign = sign;
               break;
@@ -130,23 +191,23 @@ export class HouseService extends IHouseService {
           }
         }
 
-        for (let status of detail.statuses) {
-          for (let status_type of detail.statusTypes) {
-            if (status_type.id === status.type_id)
-            {
+        for (const status of detail.statuses) {
+          for (const status_type of detail.statusTypes) {
+            if (status_type.id === status.type_id) {
               status.type = status_type;
               break;
             }
           }
         }
 
-        let dev_items: DeviceItem[] = [];
-        for (let dev of detail.devices) {
-          for (let item of dev.items) {
-            if (!item.val)
+        const dev_items: DeviceItem[] = [];
+        for (const dev of detail.devices) {
+          for (const item of dev.items) {
+            if (!item.val) {
               item.val = { raw: null, display: null};
+            }
 
-            for (let itemType of detail.itemTypes) {
+            for (const itemType of detail.itemTypes) {
               if (itemType.id === item.type_id) {
                 item.type = itemType;
                 break;
@@ -156,30 +217,28 @@ export class HouseService extends IHouseService {
           }
         }
 
-        for (let sct of detail.sections) {
-          for (let group of sct.groups) {
-            for (let group_type of detail.groupTypes) {
-              if (group_type.id === group.type_id)
-              {
+        for (const sct of detail.sections) {
+          for (const group of sct.groups) {
+            for (const group_type of detail.groupTypes) {
+              if (group_type.id === group.type_id) {
                 group.type = group_type;
                 break;
               }
             }
 
-            if (group.items === undefined)
+            if (group.items === undefined) {
               group.items = [];
-
-            for (let item of dev_items) {
-              if (item.group_id === group.id)
-                group.items.push(item);
             }
 
-            for (let gsts of group.statuses)
-            {
-              for (let sts of detail.statuses)
-              {
-                if (sts.id == gsts.status_id)
-                {
+            for (const item of dev_items) {
+              if (item.group_id === group.id) {
+                group.items.push(item);
+              }
+            }
+
+            for (const gsts of group.statuses) {
+              for (const sts of detail.statuses) {
+                if (sts.id == gsts.status_id) {
                   gsts.status = sts;
                   break;
                 }
@@ -192,8 +251,15 @@ export class HouseService extends IHouseService {
 
         this.house = detail;
         this.house.name = house_name;
+
+        this.updateStatusItems(this.house.id);
+        this.updateDevValues(this.house.id);
+
         localStorage.setItem(this.house_s, JSON.stringify(detail));
         this.log('fetched house detail');
+
+        //console.log(this.house);
+
         return of(true);
       }),
       catchError(this.handleError('checkCurrentHouse', false))
@@ -201,16 +267,17 @@ export class HouseService extends IHouseService {
   }
 
   public calculateStatusInfo(group: Group): void {
-    let strings: string[] = [];
+    const strings: string[] = [];
     let str;
     let color = 'green';
     let short_text = 'Ok';
     let last_error_level = 0;
 
-    if (group.statuses === undefined)
+    if (group.statuses === undefined) {
       group.statuses = [];
+    }
 
-    for (let sts of group.statuses) {
+    for (const sts of group.statuses) {
       if (sts.status.type_id > last_error_level) {
         last_error_level = sts.status.type_id;
         color = sts.status.type.color;
@@ -218,8 +285,9 @@ export class HouseService extends IHouseService {
       }
       str = sts.status.text;
       let l = sts.args !== undefined ? sts.args.length : 0;
-      while (l--)
+      while (l--) {
         str = str.replace('%' + (l + 1), sts.args[l]);
+      }
       strings.push(str);
     }
 
@@ -227,10 +295,11 @@ export class HouseService extends IHouseService {
   }
 
   public devItemById(item_id: number): DeviceItem {
-    for (let dev of this.house.devices) {
-      for (let dev_item of dev.items) {
-        if (dev_item.id == item_id)
+    for (const dev of this.house.devices) {
+      for (const dev_item of dev.items) {
+        if (dev_item.id == item_id) {
           return dev_item;
+        }
       }
     }
     return undefined;
@@ -238,22 +307,21 @@ export class HouseService extends IHouseService {
 
   url(name: string, id?: number): string {
     let url = name;
-    if (id !== undefined)
+    if (id !== undefined) {
       url += '/' + id.toString();
+    }
     return url + '/?id=' + this.house.id.toString();
   }
 
-  getMembers(): Observable<PaginatorApi<TeamMember>>
-  {
+  getMembers(): Observable<PaginatorApi<TeamMember>> {
     return this.getPiped<PaginatorApi<TeamMember>>(this.url('team'), 'fetched team list', 'getMembers');
   }
 
-  upload_file(item_id: number, file: File): Observable<any>
-  {
+  upload_file(item_id: number, file: File): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('fileKey', file, file.name);
 
-    let options = { headers: new HttpHeaders() };
+    const options = { headers: new HttpHeaders() };
     options.headers.append('Content-Type', 'multipart/form-data');
 
     const url = this.apiUrl + `write_item_file/?id=${this.house.id}&item_id=${item_id}`;
@@ -267,17 +335,19 @@ export class HouseService extends IHouseService {
 
   getLogs(date_from: number, date_to: number, group_type: number, itemtypes: string, items: string, limit: number = 1000, offset: number = 0): Observable<PaginatorApi<LogData>> {
     let url = this.url('log_data') + `&ts_from=${date_from}&ts_to=${+date_to}&limit=${limit}&offset=${offset}`;
-    if (group_type !== undefined)
+    if (group_type !== undefined) {
       url += `&group_type=${group_type}`;
-    if (itemtypes !== undefined)
+    }
+    if (itemtypes !== undefined) {
       url += `&itemtypes=${itemtypes}`;
-    if (items !== undefined)
+    }
+    if (items !== undefined) {
       url += `&items=${items}`;
+    }
     return this.getPiped<PaginatorApi<LogData>>(url, `fetched logs list`, 'getLogs');
   }
 
-  exportExcel(conf: ExportConfig, path?: string): Observable<HttpResponse<Blob>>
-  {
+  exportExcel(conf: ExportConfig, path?: string): Observable<HttpResponse<Blob>> {
     if (!path) {
       path = 'excel';
     }
