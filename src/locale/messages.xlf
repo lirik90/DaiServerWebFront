@@ -6,40 +6,29 @@
         <source>Подробнее о проекте</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
-          <context context-type="linenumber">2</context>
+          <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DETAILS.ID" datatype="html">
         <source>Ид</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
-          <context context-type="linenumber">3</context>
+          <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DETAILS.NAME" datatype="html">
         <source>Имя</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
-          <context context-type="linenumber">4</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/houses/list/list.component.html</context>
-          <context context-type="linenumber">23</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/houses/list/list.component.html</context>
-          <context context-type="linenumber">23</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="DETAILS.UUID" datatype="html">
-        <source>Уникальный номер</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
           <context context-type="linenumber">5</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/houses/list/list.component.html</context>
-          <context context-type="linenumber">29</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">44</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DETAILS.TITLE" datatype="html">
@@ -50,37 +39,41 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/houses/list/list.component.html</context>
-          <context context-type="linenumber">25</context>
+          <context context-type="linenumber">46</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DETAILS.DESCRIPTION" datatype="html">
         <source>Описание</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
-          <context context-type="linenumber">12</context>
+          <context context-type="linenumber">31</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
-          <context context-type="linenumber">13</context>
+          <context context-type="linenumber">32</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/houses/list/list.component.html</context>
-          <context context-type="linenumber">27</context>
+          <context context-type="linenumber">48</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/houses/list/list.component.html</context>
-          <context context-type="linenumber">27</context>
+          <context context-type="linenumber">48</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CONTROL.BACK" datatype="html">
         <source>Назад</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
-          <context context-type="linenumber">17</context>
+          <context context-type="linenumber">36</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/operation-hours/operation-hours.component.html</context>
           <context context-type="linenumber">28</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/manage/params-dialog.component.html</context>
+          <context context-type="linenumber">9</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
@@ -91,8 +84,12 @@
           <context context-type="linenumber">57</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/house/manage/params-dialog.component.html</context>
-          <context context-type="linenumber">9</context>
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">82</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/param/param.component.html</context>
@@ -107,14 +104,14 @@
         <source>Открыть</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
-          <context context-type="linenumber">18</context>
+          <context context-type="linenumber">37</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CONTROL.SAVE" datatype="html">
         <source>Сохранить</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
-          <context context-type="linenumber">19</context>
+          <context context-type="linenumber">38</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/update-beer-info/edit-dialog-update-beer-info.component.html</context>
@@ -133,6 +130,51 @@
           <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="HOUSE_STATE.CLOSE" datatype="html">
+        <source>Закрыть</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/house-state-list/house-state-list.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/house-state/house-state.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="HOUSE_STATE.ALL_RIGHT" datatype="html">
+        <source>
+        Всё хорошо
+      </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/house-state-list/house-state-list.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/house-state/house-state.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="THIS_SITE_USE" datatype="html">
+        <source>Этот сайт использует</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="COOKIES" datatype="html">
+        <source>куки</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CLOSE" datatype="html">
+        <source>Закрыть</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="HOME.PANEL" datatype="html">
         <source>Избранное</source>
         <context-group purpose="location">
@@ -147,18 +189,18 @@
           <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="HOME.GREETING" datatype="html">
-        <source>Привет,</source>
+      <trans-unit id="PROFILE" datatype="html">
+        <source>Профиль</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/app.component.html</context>
-          <context context-type="linenumber">49</context>
+          <context context-type="linenumber">52</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CONTROL.EXIT" datatype="html">
         <source>Выйти</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/app.component.html</context>
-          <context context-type="linenumber">52</context>
+          <context context-type="linenumber">55</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DASHBOARD.TITLE" datatype="html">
@@ -167,33 +209,55 @@
           <context context-type="sourcefile">app/houses/dashboard/dashboard.component.html</context>
           <context context-type="linenumber">3</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.SEARCH" datatype="html">
+        <source>Поиск</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/search/search.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="DETAILS.PROJECT" datatype="html">
         <source>Проект</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/houses/list/list.component.html</context>
-          <context context-type="linenumber">22</context>
+          <context context-type="linenumber">43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DETAILS.HINT.NAME" datatype="html">
         <source>Display name</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/houses/list/list.component.html</context>
-          <context context-type="linenumber">25</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DETAILS.UUID" datatype="html">
+        <source>Уникальный номер</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DETAILS.HINT.UUID" datatype="html">
         <source>Device UUID</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/houses/list/list.component.html</context>
-          <context context-type="linenumber">29</context>
+          <context context-type="linenumber">50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CONTROL.ADD" datatype="html">
         <source>Добавить</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/houses/list/list.component.html</context>
-          <context context-type="linenumber">31</context>
+          <context context-type="linenumber">52</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SYSTEM.MSG.TITLE" datatype="html">
@@ -208,13 +272,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/messages/messages.component.html</context>
           <context context-type="linenumber">4</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="CONTROL.SEARCH" datatype="html">
-        <source>Поиск</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/houses/search/search.component.html</context>
-          <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
       <trans-unit id="LOGIN.TITLE" datatype="html">
@@ -345,6 +402,85 @@
           <context context-type="linenumber">7</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="PROFILE.DETAIL_INFO" datatype="html">
+        <source>Детальная информация</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PROFILE.FIRST_NAME" datatype="html">
+        <source>Имя:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PROFILE.LAST_NAME" datatype="html">
+        <source>Фамилия:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PROFILE.SUCCESS2" datatype="html">
+        <source>Данные успешно изменены!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PROFILE.CHANGE_PASSWORD" datatype="html">
+        <source>Изменение пароля</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PROFILE.OLD_PASSWORD" datatype="html">
+        <source>Введите текущий пароль:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PROFILE.NEW_PASSWORD" datatype="html">
+        <source>Введите новый пароль:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PROFILE.CONFIRM_PASSWORD" datatype="html">
+        <source>Введите новый пароль ещё раз:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PROFILE.MISMATCH" datatype="html">
+        <source>
+          Данные не соответствуют
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PROFILE.SEUUCESS" datatype="html">
+        <source>Пароль успешно изменён!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PROFILE.PASSWORD_CHANGE_BTN" datatype="html">
+        <source>Изменить пароль</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
+          <context context-type="linenumber">60</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="BEERBOX.REPLACE_KEG.TITLE" datatype="html">
         <source>Замена кег<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>При замене кегов устанавливать кеги строго на соответствующие пронумерованные места!!!</source>
         <context-group purpose="location">
@@ -374,7 +510,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-          <context context-type="linenumber">67</context>
+          <context context-type="linenumber">70</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BEERBOX.REPLACE_KEG.NONEMPTY" datatype="html">
@@ -464,197 +600,123 @@
           <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="BEERBOX.WASH.TITLE" datatype="html">
-        <source>Промывка</source>
+      <trans-unit id="BEERBOX.KEGS.TEMPERATURE" datatype="html">
+        <source>Температура охладителя:</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
-          <context context-type="linenumber">1</context>
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
+          <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="BEERBOX.WASH.TYPE" datatype="html">
-        <source>Выберите вид промывки</source>
+      <trans-unit id="BEERBOX.KEGS.PRESSURE" datatype="html">
+        <source>Давление в магистрали:</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
-          <context context-type="linenumber">9</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
-          <context context-type="linenumber">5</context>
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
+          <context context-type="linenumber">7</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="BEERBOX.WASH.TYPE.0" datatype="html">
-        <source>Не выбран</source>
+      <trans-unit id="BEERBOX.KEGS.TAP_IS_BLOCKED" datatype="html">
+        <source>— заблокирован</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
-          <context context-type="linenumber">13</context>
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
+          <context context-type="linenumber">19</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
-          <context context-type="linenumber">9</context>
+          <context context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
+          <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="BEERBOX.WASH.TYPE.1" datatype="html">
-        <source>Ежедневная</source>
+      <trans-unit id="BEERBOX.KEGS.KEG_IS_EMPTY" datatype="html">
+        <source> — пуст</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
-          <context context-type="linenumber">14</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
-          <context context-type="linenumber">10</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="BEERBOX.WASH.TYPE.2" datatype="html">
-        <source>Дезинфекция</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
-          <context context-type="linenumber">15</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
-          <context context-type="linenumber">11</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="BEERBOX.WASH.TYPE.3" datatype="html">
-        <source>Кислотная</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
-          <context context-type="linenumber">16</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
-          <context context-type="linenumber">12</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="BEERBOX.WASH.START" datatype="html">
-        <source>Начать промывку</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
-          <context context-type="linenumber">21</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
-          <context context-type="linenumber">17</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="BEERBOX.WASH.STEP" datatype="html">
-        <source>Текущий этап</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
-          <context context-type="linenumber">25</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
-          <context context-type="linenumber">21</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="BEERBOX.WASH.READY" datatype="html">
-        <source>К промывке готов!</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
-          <context context-type="linenumber">28</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
-          <context context-type="linenumber">34</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
-          <context context-type="linenumber">25</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
-          <context context-type="linenumber">31</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="BEERBOX.WASH.AGENT" datatype="html">
-        <source>Промывочное средство</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
-          <context context-type="linenumber">29</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
           <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="BEERBOX.WASH.TEXT" datatype="html">
-        <source>Опустошите дренажную ёмкость. Подключите промывочный кег к обеим заборным головкам и нажмите кнопку на аппарате.</source>
+      <trans-unit id="BEERBOX.KEGS.DATE_CHANGED" datatype="html">
+        <source>Дата замены:</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
-          <context context-type="linenumber">30</context>
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
+          <context context-type="linenumber">37</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
-          <context context-type="linenumber">35</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
-          <context context-type="linenumber">27</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
-          <context context-type="linenumber">32</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="BEERBOX.EVENT.WASH_PROCESS" datatype="html">
-        <source>Идёт промывка, пожалуйста, подождите!</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
-          <context context-type="linenumber">42</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/calibration/calibration.component.html</context>
-          <context context-type="linenumber">9</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
-          <context context-type="linenumber">39</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="BEERBOX.EVENT.LEFT" datatype="html">
-        <source>Осталось</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
-          <context context-type="linenumber">44</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/calibration/calibration.component.html</context>
-          <context context-type="linenumber">16</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
-          <context context-type="linenumber">41</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="BEERBOX.ML" datatype="html">
-        <source>мл.</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
-          <context context-type="linenumber">45</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/calibration/calibration.component.html</context>
-          <context context-type="linenumber">16</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
-          <context context-type="linenumber">42</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="CONTROL.PAUSE" datatype="html">
-        <source> Пауза</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
           <context context-type="linenumber">46</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/calibration/calibration.component.html</context>
-          <context context-type="linenumber">17</context>
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
+          <context context-type="linenumber">47</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="BEERBOX.KEGS.DATE_MADE" datatype="html">
+        <source>Дата изготовления:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="BEERBOX.KEGS.KEG_VOL" datatype="html">
+        <source>Объём кеги:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="BEERBOX.KEGS.LITRES" datatype="html">
+        <source>л</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="BEERBOX.KEGS.BOTTLE_VOL" datatype="html">
+        <source>Объём бутылки:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="BEERBOX.KEGS.VOL_POURED" datatype="html">
+        <source>Налито:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="BEERBOX.KEGS.VOL_REMAIN_BEER" datatype="html">
+        <source>Осталось пива в кеге:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
           <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="BEERBOX.KEGS.NOT_CONNECTED" datatype="html">
+        <source>Неподключено</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="BEERBOX.WASH.TITLE" datatype="html">
+        <source>Мойка</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
+          <context context-type="linenumber">1</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BEERBOX.CALIBRATION.TITLE" datatype="html">
@@ -664,11 +726,43 @@
           <context context-type="linenumber">1</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="BEERBOX.EVENT.WASH_PROCESS" datatype="html">
+        <source>Идёт промывка, пожалуйста ждите!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/calibration/calibration.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="BEERBOX.EVENT.POURING_PROCESS" datatype="html">
         <source>Идёт налив, пожалуйста ждите!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/calibration/calibration.component.html</context>
           <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="BEERBOX.EVENT.LEFT" datatype="html">
+        <source>Осталось</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/calibration/calibration.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="BEERBOX.ML" datatype="html">
+        <source>мл.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/calibration/calibration.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.PAUSE" datatype="html">
+        <source> Пауза</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/calibration/calibration.component.html</context>
+          <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BEERBOX.CALIBRATION.STEP_1" datatype="html">
@@ -956,97 +1050,6 @@
           <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="BEERBOX.KEGS.TEMPERATURE" datatype="html">
-        <source>Температура охладителя:</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-          <context context-type="linenumber">3</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="BEERBOX.KEGS.PRESSURE" datatype="html">
-        <source>Давление в магистрали:</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-          <context context-type="linenumber">7</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="BEERBOX.KEGS.TAP_IS_BLOCKED" datatype="html">
-        <source>— заблокирован</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-          <context context-type="linenumber">19</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="BEERBOX.KEGS.TAB_KEGS" datatype="html">
-        <source>Кеги</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-          <context context-type="linenumber">23</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="BEERBOX.KEGS.TAB_WASH" datatype="html">
-        <source>Промывка</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-          <context context-type="linenumber">24</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="BEERBOX.KEGS.KEG_IS_EMPTY" datatype="html">
-        <source> — пуст</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-          <context context-type="linenumber">31</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="BEERBOX.KEGS.DATE_CHANGED" datatype="html">
-        <source>Дата замены:</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-          <context context-type="linenumber">42</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="BEERBOX.KEGS.DATE_MADE" datatype="html">
-        <source>Дата изготовления:</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-          <context context-type="linenumber">43</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="BEERBOX.KEGS.KEG_VOL" datatype="html">
-        <source>Объём кеги:</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-          <context context-type="linenumber">44</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="BEERBOX.KEGS.MILLILITRES" datatype="html">
-        <source>мл</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-          <context context-type="linenumber">44</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="BEERBOX.KEGS.VOL_POURED" datatype="html">
-        <source>Налито:</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-          <context context-type="linenumber">46</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="BEERBOX.KEGS.VOL_REMAIN_BEER" datatype="html">
-        <source>Осталось пива в кеге:</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-          <context context-type="linenumber">47</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="BEERBOX.KEGS.NOT_CONNECTED" datatype="html">
-        <source>Неподключено</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-          <context context-type="linenumber">51</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="BEERBOX.CALVOL.TITLE" datatype="html">
         <source>Калибровка свободного объёма бутылки</source>
         <context-group purpose="location">
@@ -1082,7 +1085,7 @@
           <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="BEERBOX.wVOL.STEP_4.MIN_EMPTY_VOL" datatype="html">
+      <trans-unit id="BEERBOX.CALVOL.STEP_4.MIN_EMPTY_VOL" datatype="html">
         <source>Минимальный свободный объём бутылки:</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/cal-vol/cal-vol.component.html</context>
@@ -1108,6 +1111,73 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/cal-vol/cal-vol.component.html</context>
           <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="MANAGEMENT.TITLE" datatype="html">
+        <source>Управление проектом</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/manage/manage.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="MANAGEMENT.MODE" datatype="html">
+        <source>Режим</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/manage/manage.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PARAMS.TITLE" datatype="html">
+        <source>Параметры</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/manage/params-dialog.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/param/param.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="BEERBOX.WASH.TYPE" datatype="html">
+        <source>Выберите вид промывки</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="BEERBOX.WASH.TYPE.0" datatype="html">
+        <source>Не выбран</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="BEERBOX.WASH.TYPE.1" datatype="html">
+        <source>Ежедневная</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="BEERBOX.WASH.TYPE.2" datatype="html">
+        <source>Дезинфекция</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="BEERBOX.WASH.TYPE.3" datatype="html">
+        <source>Кислотная</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="BEERBOX.WASH.START" datatype="html">
+        <source>Начать промывку</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
+          <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.TITLE" datatype="html">
@@ -1155,6 +1225,10 @@
           <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
           <context context-type="linenumber">23</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">72</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.TIME_TO" datatype="html">
         <source>Время до</source>
@@ -1172,6 +1246,10 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
           <context context-type="linenumber">28</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">77</context>
         </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.CHARTS.DECOMPOSE" datatype="html">
@@ -1254,11 +1332,19 @@
           <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
           <context context-type="linenumber">1</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.EXPORT.WAITING" datatype="html">
         <source>Подождите! Идёт генерация отчёта...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
           <context context-type="linenumber">2</context>
         </context-group>
       </trans-unit>
@@ -1268,12 +1354,24 @@
           <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
           <context context-type="linenumber">6</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.EXPORT.SELECT_THIS" datatype="html">
         <source>Только этот проект</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
           <context context-type="linenumber">7</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.EXPORT.SELECTED" datatype="html">
@@ -1301,12 +1399,28 @@
           <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
           <context context-type="linenumber">58</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">83</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.EXPORT.SELECT_TIME" datatype="html">
         <source>Укажите период</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
           <context context-type="linenumber">21</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">70</context>
         </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.EXPORT.SELECT_DATA" datatype="html">
@@ -1329,6 +1443,10 @@
           <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
           <context context-type="linenumber">63</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">88</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.EXPORT.READY" datatype="html">
         <source>Для генерации отчёта всё готово.</source>
@@ -1343,12 +1461,30 @@
           <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
           <context context-type="linenumber">66</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">90</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="DEVICE_TIME" datatype="html">
         <source>Время на устройстве</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/house.component.html</context>
           <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ADD_TO_FAV" datatype="html">
+        <source>Добавить<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>в избранное</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/house.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="IN_FAV" datatype="html">
+        <source>В избранном</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/house.component.html</context>
+          <context context-type="linenumber">18</context>
         </context-group>
       </trans-unit>
       <trans-unit id="HOME.DIALOG.TITLE" datatype="html">
@@ -1381,35 +1517,14 @@
           <context context-type="linenumber">1</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="MANAGEMENT.TITLE" datatype="html">
-        <source>Управление проектом</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/house/manage/manage.component.html</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="MANAGEMENT.MODE" datatype="html">
-        <source>Режим</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/house/manage/manage.component.html</context>
-          <context context-type="linenumber">22</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="PARAMS.TITLE" datatype="html">
-        <source>Параметры</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/house/manage/params-dialog.component.html</context>
-          <context context-type="linenumber">2</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/house/param/param.component.html</context>
-          <context context-type="linenumber">2</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="LOG.TITLE" datatype="html">
         <source>Журнал</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/log/log.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log2/log2.component.html</context>
           <context context-type="linenumber">1</context>
         </context-group>
       </trans-unit>
@@ -1419,6 +1534,10 @@
     </source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/log/log.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log2/log2.component.html</context>
           <context context-type="linenumber">6</context>
         </context-group>
       </trans-unit>
@@ -1433,6 +1552,10 @@
         <source>Фильтр</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/log/log.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log2/log2.component.html</context>
           <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
@@ -1457,6 +1580,10 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/log/log.component.html</context>
           <context context-type="linenumber">43</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log2/log2.component.html</context>
+          <context context-type="linenumber">59</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CONTROL.LOAD" datatype="html">
@@ -1503,22 +1630,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/dev-item-value/holding-register-dialog.component.html</context>
           <context context-type="linenumber">25</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="HOUSE_STATE.CLOSE" datatype="html">
-        <source>Закрыть</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/house/house-state/house-state.component.html</context>
-          <context context-type="linenumber">9</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="HOUSE_STATE.ALL_RIGHT" datatype="html">
-        <source>
-        Всё хорошо
-      </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/house/house-state/house-state.component.html</context>
-          <context context-type="linenumber">20</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SETTINGS.TITLE" datatype="html">
