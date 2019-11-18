@@ -143,8 +143,10 @@ export class HouseService extends IHouseService {
       flatMap((res) => {
         console.log(JSON.parse(JSON.stringify(this.house2.sections)));
         const udv = this.updateDevValues(this.house2.id);
-
-        if (udv) {
+        return res ? udv : of(false);
+      }),
+      flatMap((res) => {
+        if (res) {
           this.house = this.house2;
           this.house.name = house_name;
 
