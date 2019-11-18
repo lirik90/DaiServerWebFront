@@ -243,6 +243,7 @@ export class ControlService {
               if (group.statuses === undefined) {
                 group.statuses = [];
               }
+
               let l = group.statuses.length;
               while (l--) {
                 if (group.statuses[l].status.id == info_id) {
@@ -251,6 +252,7 @@ export class ControlService {
                   return;
                 }
               }
+
               return;
             }
           }

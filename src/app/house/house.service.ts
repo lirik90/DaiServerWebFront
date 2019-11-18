@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { switchMap, catchError, map, tap, finalize } from 'rxjs/operators';
+import {switchMap, catchError, map, tap, finalize, flatMap} from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
@@ -51,6 +51,7 @@ export class HouseService extends IHouseService {
 
   private house_s = 'house';
   private devValuesInterval: any;
+  private house2: HouseDetail;
 
   constructor(
           public translate: TranslateService,
@@ -61,12 +62,13 @@ export class HouseService extends IHouseService {
     // this.house = JSON.parse(localStorage.getItem(this.house_s));
   }
 
-  updateStatusItems(id: number): void {
+  updateStatusItems(id: number): Observable<boolean> {
     // get dev values
-    this.http.get<StatusItems>(`/api/v2/project/${id}/status_item/`).subscribe(resp => {
+    return this.http.get<StatusItems>(`/api/v2/project/${id}/status_item/`).pipe(
+        switchMap(resp => {
       // console.log(resp);
 
-      for (const s of this.house.sections) {
+      for (const s of this.house2.sections) {
         for (const g of s.groups) {
           g.statuses = [];
 
@@ -77,18 +79,38 @@ export class HouseService extends IHouseService {
               args: item.args
             });
           });
+
+          if (g.statuses) {
+            g.statuses.map(st => {
+              //get st instance
+              const stIns = this.house2.statuses.find(sti => sti.id === st.status_id);
+              //get type
+              const stType = this.house2.statusTypes.find(stt => stt.id === stIns.type_id);
+              g.status_info.color = stType.color;
+              g.status_info.short_text = stType.name;
+              g.status_info.text = stIns.text;
+            });
+          } else {
+            // ok
+            const stType = this.house2.statusTypes.find(stt => stt.id === 1);
+            g.status_info.color = stType.color;
+            g.status_info.short_text = stType.name;
+            g.status_info.text = '';
+          }
         }
       }
-    });
+      return of(true);
+    }), catchError(this.handleError('updateStatusItems', false)));
   }
 
 
-  updateDevValues(id: number): void {
+  updateDevValues(id: number): Observable<boolean> {
     // get dev values
-    this.http.get<DevValues[]>(`/api/v2/project/${id}/devitem_values/`).subscribe(resp => {
+    return this.http.get<DevValues[]>(`/api/v2/project/${id}/devitem_values/`).pipe(
+      switchMap(resp => {
       // console.log(resp);
 
-      for (const s of this.house.sections) {
+      for (const s of this.house2.sections) {
         for (const g of s.groups) {
           for (const di of g.items) {
             const respItem = resp.find(i => i.id === di.id);
@@ -101,17 +123,8 @@ export class HouseService extends IHouseService {
         }
       }
 
-      /*
-      const item: DeviceItem = this.devItemById(resp.id);
-      if (item) {
-        if (!item.val) {
-          item.val = {raw: resp.raw_value, display: resp.value};
-        } else {
-          item.val.raw = resp.raw_value;
-          item.val.display = resp.value;
-        }
-      }*/
-    });
+      return of(true);
+    }), catchError(this.handleError('updateDevValues', false)));
   }
 
   clear(): void {
@@ -119,6 +132,31 @@ export class HouseService extends IHouseService {
     this.house = undefined;
 
     clearInterval(this.devValuesInterval);
+  }
+
+  loadHouse2(house_name: string): Observable<boolean> {
+    return this.loadHouse(house_name).pipe(
+      flatMap((res) => {
+        // returns an Observable of type Y
+        return res ? this.updateStatusItems(this.house2.id) : of(false);
+      }),
+      flatMap((res) => {
+        console.log(JSON.parse(JSON.stringify(this.house2.sections)));
+        const udv = this.updateDevValues(this.house2.id);
+
+        if (udv) {
+          this.house = this.house2;
+          this.house.name = house_name;
+
+          localStorage.setItem(this.house_s, JSON.stringify(this.house2));
+          this.log('fetched house detail');
+
+          return of(true);
+        } else {
+          return of(false);
+        }
+      }),
+    );
   }
 
   loadHouse(house_name: string): Observable<boolean> {
@@ -249,16 +287,13 @@ export class HouseService extends IHouseService {
           }
         }
 
-        this.house = detail;
-        this.house.name = house_name;
+        this.house2 = detail;
+        this.house2.name = house_name;
 
-        this.updateStatusItems(this.house.id);
-        this.updateDevValues(this.house.id);
+        //localStorage.setItem(this.house_s, JSON.stringify(detail));
+        //this.log('fetched house detail');
 
-        localStorage.setItem(this.house_s, JSON.stringify(detail));
-        this.log('fetched house detail');
-
-        //console.log(this.house);
+        // console.log(this.house);
 
         return of(true);
       }),
