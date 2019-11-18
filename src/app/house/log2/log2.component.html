@@ -10,7 +10,7 @@
 
   <div class="example-header">
     <mat-form-field>
-      <input #cmdInput matInput (keyup.enter)="execScript($event.target.value)" placeholder="Параметры" [value]="cmd">
+      <input #cmdInput matInput (keyup.enter)="execScript($event.target.value)" placeholder="Параметры" [value]="cmd" i18n-placeholder="@@PARAMS">
       <button class="sendBtn" (click)="execScript(cmdInput.value)"><mat-icon>play_arrow</mat-icon></button>
     </mat-form-field>
     <mat-form-field>

@@ -13,12 +13,12 @@
 
     <ng-template #labels_are_changed>
       <mat-card>
-        <mat-card-title><div>Лента</div></mat-card-title>
+        <mat-card-title><div i18n="@@LABELS">Лента</div></mat-card-title>
         <mat-card-content>
-          Осталось этикеток: {{ labelsRemain.val.display }}<br>
+          <span i18n="@@LABELS_REMAIN">Осталось этикеток:</span> {{ labelsRemain.val.display }}<br>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-stroked-button (click)="openOkDialog()">Заменить</button>
+          <button mat-stroked-button (click)="openOkDialog()" i18n="@@CHANGE_BUTTON">Заменить</button>
         </mat-card-actions>
       </mat-card>
     </ng-template>

@@ -42,6 +42,43 @@
           <context context-type="linenumber">46</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="CITY" datatype="html">
+        <source>Город</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="COMPANY" datatype="html">
+        <source>Компания</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="NOT_SELECTED" datatype="html">
+        <source>Не выбрано</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="DETAILS.DESCRIPTION" datatype="html">
         <source>Описание</source>
         <context-group purpose="location">
@@ -614,6 +651,13 @@
           <context context-type="linenumber">7</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="KEGS" datatype="html">
+        <source>Кеги</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="BEERBOX.KEGS.TAP_IS_BLOCKED" datatype="html">
         <source>— заблокирован</source>
         <context-group purpose="location">
@@ -710,6 +754,17 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
           <context context-type="linenumber">54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CHANGE_BUTTON" datatype="html">
+        <source>Заменить</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
+          <context context-type="linenumber">67</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/replace-labels/replace-labels.component.html</context>
+          <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BEERBOX.WASH.TITLE" datatype="html">
@@ -865,6 +920,20 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/operation-hours/operation-hours.component.html</context>
           <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LABELS" datatype="html">
+        <source>Лента</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/replace-labels/replace-labels.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LABELS_REMAIN" datatype="html">
+        <source>Осталось этикеток:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/replace-labels/replace-labels.component.html</context>
+          <context context-type="linenumber">18</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BEERBOX.REPLACE_LABEL.WARNING" datatype="html">
@@ -1512,17 +1581,6 @@
           <context context-type="linenumber">14</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="NOT_SELECTED" datatype="html">
-        <source>Не выбрано</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">33</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">40</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="SELECT_ALL" datatype="html">
         <source>Выбрать все</source>
         <context-group purpose="location">
@@ -1648,6 +1706,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/log2/log2.component.html</context>
           <context context-type="linenumber">59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PARAMS" datatype="html">
+        <source>Параметры</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log2/log2.component.html</context>
+          <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CONTROL.LOAD" datatype="html">

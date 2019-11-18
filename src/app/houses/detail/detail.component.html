@@ -10,7 +10,7 @@
   </div>
   <div>
     <mat-form-field class="sline-item search-comp">
-      <mat-label>Город</mat-label>
+      <mat-label i18n="@@CITY">Город</mat-label>
       <mat-select [(value)]="house.city">
         <mat-option value="0">Не выбрано</mat-option>
         <mat-option *ngFor="let c of cities" [value]="c.id">{{c.name}}</mat-option>
@@ -20,9 +20,9 @@
 
   <div>
     <mat-form-field class="sline-item search-comp">
-      <mat-label>Компания</mat-label>
+      <mat-label i18n="@@COMPANY">Компания</mat-label>
       <mat-select [(value)]="house.company">
-        <mat-option value="0">Не выбрано</mat-option>
+        <mat-option value="0" i18n="@@NOT_SELECTED">Не выбрано</mat-option>
         <mat-option *ngFor="let c of comps" [value]="c.id">{{c.name}}</mat-option>
       </mat-select>
     </mat-form-field>

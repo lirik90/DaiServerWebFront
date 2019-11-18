@@ -9,7 +9,7 @@
 </div>
 
 
-<h2>Кеги</h2>
+<h2 i18n="@@KEGS">Кеги</h2>
 
 <div class="grid grid-pad">
   <ng-container *ngFor="let tap of taps">
@@ -64,7 +64,7 @@
                 </div>
               </mat-card-content>
               <mat-card-actions>
-                <button mat-stroked-button (click)="openDialog(head)" [disabled]="isDisabled(head, tap)">Заменить</button>
+                <button mat-stroked-button (click)="openDialog(head)" [disabled]="isDisabled(head, tap)" i18n="@@CHANGE_BUTTON">Заменить</button>
               </mat-card-actions>
               <mat-card-footer>
               <span *ngIf="head.bad_clean !== undefined && head.bad_clean.val.raw == 1" i18n="@@BEERBOX.REPLACE_KEG.WARNING" class="bad-clean">
