@@ -1311,7 +1311,7 @@
 			</trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="SAVE_BTN" size-unit="pixel" translate="yes" space="default">
 				<source>Сохранить</source>
-				<target xml:lang="mn">Сохранить</target>
+				<target xml:lang="mn">Хадгалах</target>
 				<context-group purpose="location">
 					<context match-mandatory="no" context-type="sourcefile">app/beerbox/wifi/wifi.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">15</context>
@@ -1347,7 +1347,7 @@
 			</trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="POUR_BTN" size-unit="pixel" translate="yes" space="default">
 				<source>Настройки налива</source>
-				<target xml:lang="mn">Настройки налива</target>
+				<target xml:lang="mn">Тохиргоог ачаалж байна</target>
 				<context-group purpose="location">
 					<context match-mandatory="no" context-type="sourcefile">app/beerbox/pour-settings/pour-settings.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">1</context>
@@ -1355,7 +1355,7 @@
 			</trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="CHANGE_BTN" size-unit="pixel" translate="yes" space="default">
 				<source>Изменить</source>
-				<target xml:lang="mn">Изменить</target>
+				<target xml:lang="mn">Засварлах</target>
 				<context-group purpose="location">
 					<context match-mandatory="no" context-type="sourcefile">app/beerbox/pour-settings/pour-settings.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">11</context>
