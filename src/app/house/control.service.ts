@@ -209,7 +209,7 @@ export class ControlService {
                 group.statuses = [];
               }
               for (const gsts of group.statuses) {
-                if (gsts.status.id == info_id) {
+                if (gsts.status_id == info_id) {
                   gsts.args = args;
                   return;
                 }
@@ -246,7 +246,8 @@ export class ControlService {
 
               let l = group.statuses.length;
               while (l--) {
-                if (group.statuses[l].status.id == info_id) {
+                console.log(JSON.parse(JSON.stringify(group.statuses[l])));
+                if (group.statuses[l].status_id == info_id) {
                   group.statuses.splice(l, 1);
                   this.houseService.calculateStatusInfo(group);
                   return;
