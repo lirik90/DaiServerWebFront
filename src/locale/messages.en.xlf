@@ -422,7 +422,13 @@
       <source xml:space="preserve">Начать промывку</source>
       <target xml:space="preserve">Start cleaning</target>
 
-    <context-group purpose="location"><context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context><context context-type="linenumber">21</context></context-group></trans-unit>
+    <context-group purpose="location"><context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context><context context-type="linenumber">21</context></context-group></trans-unit><trans-unit id="LAST_WASH_ERROR" datatype="html">
+        <source>При прошлом наливе произошла ошибка!</source><target state="new">При прошлом наливе произошла ошибка!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
 
 
 
@@ -934,6 +940,12 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/pour-settings/pour-settings.component.html</context>
           <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit><trans-unit id="LAST_WASH" datatype="html">
+        <source>Последняя промывка была</source><target state="new">Последняя промывка была</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
+          <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
   </body></file>

@@ -1360,7 +1360,13 @@
 					<context match-mandatory="no" context-type="sourcefile">app/beerbox/pour-settings/pour-settings.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">11</context>
 				</context-group>
-			</trans-unit>
+			</trans-unit><trans-unit id="LAST_WASH" datatype="html">
+        <source>Последняя промывка была</source><target state="new">Сүүлчийн урсгал байв</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="BEERBOX.WASH.TYPE" size-unit="pixel" translate="yes" space="default">
 				<source>Выберите вид промывки</source>
 				<target xml:lang="mn">Угаалгын хэлбэрийг сонгоно уу</target>
@@ -1408,7 +1414,13 @@
 					<context match-mandatory="no" context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">21</context>
 				</context-group>
-			</trans-unit>
+			</trans-unit><trans-unit id="LAST_WASH_ERROR" datatype="html">
+        <source>При прошлом наливе произошла ошибка!</source><target state="new">Сүүлийн бөглөх явцад алдаа гарлаа!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/wash-tap/wash-tap.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="REPORTS.TITLE" size-unit="pixel" translate="yes" space="default">
 				<source>Отчёты</source>
 				<target xml:lang="mn">Тайлан</target>

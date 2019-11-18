@@ -1,7 +1,7 @@
 <div class="grid grid-pad">
   <ng-container *ngFor="let clean of items">
     <div class="clean-info">
-      Последняя промывка была {{ clean.date? clean.date.val.display : 'Неизвестно' }}
+      <span i18n="@@LAST_WASH">Последняя промывка была</span> {{ clean.date? clean.date.val.display : 'Неизвестно' }}
     </div>
 
     <mat-card>
@@ -23,7 +23,7 @@
 
         <ng-container *ngIf="clean.step.val.raw != 0">
           <div *ngIf="clean.error.val.raw != 0" class="dren-warning">
-            <h5>При прошлом наливе произошла ошибка!</h5>
+            <h5 i18n="@@LAST_WASH_ERROR">При прошлом наливе произошла ошибка!</h5>
             <small [innerHTML]="getError(clean.error.val.raw)"></small>
           </div>
 
