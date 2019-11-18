@@ -164,7 +164,7 @@ export class HouseComponent implements OnInit, OnDestroy {
     }
 
     if (isAdmin) {
-      this.fillerNav.push({link: 'log2', text: 'Журнал значений', icon: 'event_note'});
+      this.fillerNav.push({link: 'log2', text: this.translate.instant('NAVIGATION_TAB.LOG_VALUE'), icon: 'event_note'});
     }
 
     if (isAdmin) {
@@ -175,7 +175,7 @@ export class HouseComponent implements OnInit, OnDestroy {
     if (isAdmin) {
       this.fillerNav.push({
         link: 'beerbox/brands',
-        text: 'Brands',
+        text: this.translate.instant('NAVIGATION_TAB.BRANDS'),
         icon: 'label'
       });
     }
@@ -183,7 +183,7 @@ export class HouseComponent implements OnInit, OnDestroy {
     if (this.isKegReplacer || this.isCleaner || this.isSupervisor || isFullAccess || isAdmin) {
       this.fillerNav.push({
         link: 'beerbox/wifi',
-        text: 'Настройки WiFi',
+        text: this.translate.instant('NAVIGATION_TAB.WIFI'),
         icon: 'wifi'
       });
     }
@@ -191,7 +191,7 @@ export class HouseComponent implements OnInit, OnDestroy {
     if (isFullAccess || isAdmin) {
       this.fillerNav.push({
         link: 'beerbox/pour-settings',
-        text: 'Настройки налива',
+        text: this.translate.instant('NAVIGATION_TAB.POUR_SETTINGS'),
         icon: 'settings_application'
       });
     }
