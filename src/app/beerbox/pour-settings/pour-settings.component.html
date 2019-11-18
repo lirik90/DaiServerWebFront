@@ -1,4 +1,4 @@
-<h1>Настройки налива</h1>
+<h1  i18n="@@POUR_BTN">Настройки налива</h1>
 
 <mat-card *ngFor="let tap of taps" style="margin-bottom: 1em;">
   <mat-card-title>{{tap.name}}</mat-card-title>
@@ -8,7 +8,7 @@
     </div>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-stroked-button (click)="openParamsDialog(tap.paramsGroupId)">Изменить</button>
+    <button mat-stroked-button (click)="openParamsDialog(tap.paramsGroupId)"  i18n="@@CHANGE_BTN">Изменить</button>
   </mat-card-actions>
 </mat-card>
 

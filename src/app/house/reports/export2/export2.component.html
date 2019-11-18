@@ -6,12 +6,12 @@
       <ng-template matStepLabel i18n="@@REPORTS.EXPORT.SELECT_PROJECT">Выберите тип отчёта</ng-template>
       <mat-radio-group formControlName="reportType">
         <div>
-          <mat-radio-button value="idle">
+          <mat-radio-button value="idle" i18n="@@PERORT_IDLE">
             Отчёт о простоях
           </mat-radio-button>
         </div>
         <div>
-          <mat-radio-button value="pouring">
+          <mat-radio-button value="pouring"  i18n="@@REPORT_POUR">
             Отчёт о наливах
           </mat-radio-button>
         </div>
@@ -30,14 +30,14 @@
       <ng-container *ngIf="!current_only.checked">
         <mat-form-field>
           <mat-select placeholder="Город" formControlName="city"  (selectionChange)="fillHouses(false, true)">
-            <mat-option>Не выбрано</mat-option>
+            <mat-option  i18n="@@NOT_SELECTED">Не выбрано</mat-option>
             <mat-option *ngFor="let c of cities" [value]="c.id">{{c.name}}</mat-option>
           </mat-select>
         </mat-form-field>
 
         <mat-form-field>
           <mat-select placeholder="Компания" formControlName="company"  (selectionChange)="fillHouses(false, true)">
-            <mat-option>Не выбрано</mat-option>
+            <mat-option i18n="@@NOT_SELECTED">Не выбрано</mat-option>
             <mat-option *ngFor="let c of comps" [value]="c.id">{{c.name}}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -56,7 +56,7 @@
         </mat-selection-list>
 
         <div style="margin: 1em 0; text-align: right;">
-          <button mat-stroked-button (click)="selectAll()">Выбрать все</button>
+          <button mat-stroked-button (click)="selectAll()"  i18n="@@SELECT_ALL">Выбрать все</button>
         </div>
 
       </ng-container>

@@ -752,6 +752,18 @@
           <context context-type="sourcefile">app/beerbox/cal-vol/cal-vol.component.html</context>
           <context context-type="linenumber">30</context>
         </context-group>
+      </trans-unit><trans-unit id="WIFI_SETTINGS" datatype="html">
+        <source>Настройки WiFi</source><target state="new">Настройки WiFi</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/wifi/wifi.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit><trans-unit id="SAVE_BTN" datatype="html">
+        <source>Сохранить</source><target state="new">Сохранить</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/wifi/wifi.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
       </trans-unit>
   </body></file>
   <file original="app/house/house.component.html" datatype="plaintext" source-language="ru" target-language="en"><body>
@@ -857,7 +869,19 @@
       <source xml:space="preserve">Параметры</source>
       <target xml:space="preserve">Paramètres</target>
       
-    <context-group purpose="location"><context context-type="sourcefile">app/house/manage/params-dialog.component.html</context><context context-type="linenumber">2</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/house/param/param.component.html</context><context context-type="linenumber">2</context></context-group></trans-unit>
+    <context-group purpose="location"><context context-type="sourcefile">app/house/manage/params-dialog.component.html</context><context context-type="linenumber">2</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/house/param/param.component.html</context><context context-type="linenumber">2</context></context-group></trans-unit><trans-unit id="POUR_BTN" datatype="html">
+        <source>Настройки налива</source><target state="new">Настройки налива</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/pour-settings/pour-settings.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit><trans-unit id="CHANGE_BTN" datatype="html">
+        <source>Изменить</source><target state="new">Изменить</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/pour-settings/pour-settings.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
   </body></file>
   <file original="app/house/dev-item-value/dev-item-value.component.html" datatype="plaintext" source-language="ru" target-language="en"><body>
     <trans-unit id="CONTROL.LOAD" approved="yes">
@@ -1085,7 +1109,43 @@
       <source xml:space="preserve">Скачать</source>
       <target xml:space="preserve">Télécharger</target>
       
-    <context-group purpose="location"><context context-type="sourcefile">app/house/reports/export/export.component.html</context><context context-type="linenumber">66</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/house/reports/export2/export2.component.html</context><context context-type="linenumber">90</context></context-group></trans-unit>
+    <context-group purpose="location"><context context-type="sourcefile">app/house/reports/export/export.component.html</context><context context-type="linenumber">66</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/house/reports/export2/export2.component.html</context><context context-type="linenumber">90</context></context-group></trans-unit><trans-unit id="PERORT_IDLE" datatype="html">
+        <source>
+            Отчёт о простоях
+          </source><target state="new">
+            Отчёт о простоях
+          </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit><trans-unit id="REPORT_POUR" datatype="html">
+        <source>
+            Отчёт о наливах
+          </source><target state="new">
+            Отчёт о наливах
+          </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit><trans-unit id="NOT_SELECTED" datatype="html">
+        <source>Не выбрано</source><target state="new">Не выбрано</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit><trans-unit id="SELECT_ALL" datatype="html">
+        <source>Выбрать все</source><target state="new">Выбрать все</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+      </trans-unit>
   </body></file>
   <file original="app/house/settings/settings.component.html" datatype="plaintext" source-language="ru" target-language="en"><body>
     <trans-unit id="SETTINGS.TITLE" approved="yes">

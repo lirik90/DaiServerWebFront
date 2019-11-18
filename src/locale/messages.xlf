@@ -1113,6 +1113,20 @@
           <context context-type="linenumber">30</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="WIFI_SETTINGS" datatype="html">
+        <source>Настройки WiFi</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/wifi/wifi.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SAVE_BTN" datatype="html">
+        <source>Сохранить</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/wifi/wifi.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="MANAGEMENT.TITLE" datatype="html">
         <source>Управление проектом</source>
         <context-group purpose="location">
@@ -1136,6 +1150,20 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/param/param.component.html</context>
           <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="POUR_BTN" datatype="html">
+        <source>Настройки налива</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/pour-settings/pour-settings.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CHANGE_BTN" datatype="html">
+        <source>Изменить</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/pour-settings/pour-settings.component.html</context>
+          <context context-type="linenumber">11</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BEERBOX.WASH.TYPE" datatype="html">
@@ -1464,6 +1492,42 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
           <context context-type="linenumber">90</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PERORT_IDLE" datatype="html">
+        <source>
+            Отчёт о простоях
+          </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORT_POUR" datatype="html">
+        <source>
+            Отчёт о наливах
+          </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="NOT_SELECTED" datatype="html">
+        <source>Не выбрано</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="SELECT_ALL" datatype="html">
+        <source>Выбрать все</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">59</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DEVICE_TIME" datatype="html">
