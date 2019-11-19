@@ -1,22 +1,18 @@
-<h1>Brands</h1>
-
-<div style="margin-bottom: 1em;">
-  <button mat-stroked-button (click)="addBrand()">Add brand</button>
-</div>
-
-<div class="brand-list">
-  <mat-card *ngFor="let b of brands">
-    <mat-card-content>
-      <h3>{{b.name}}</h3>
-      <div>Alc. %: {{b.alc}}</div>
-      <div>Ingredient list: {{b.ings}}</div>
-      <div>Nutritional values: {{b.nutr}}</div>
-      <div>Brewery information / distributor address: {{b.info}}</div>
-      <div>Bar code: {{b.barcode}}</div>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-button (click)="edit(b)">Edit</button>
-      <button mat-button (click)="remove(b)">Remove</button>
-    </mat-card-actions>
-  </mat-card>
-</div>
+<h1>Бренд</h1>
+<h2>Поиск</h2>
+Производитель
+Бренд
+Дистрибьютор
+Номер бренда
+<table class="brands-list">
+  <tr>
+    <th>Наименование</th>
+    <th>Номер бренда</th>
+    <th>Статус</th>
+  </tr>
+  <tr>
+    <td>Test 1</td>
+    <td>11223</td>
+    <td><button>Активный</button></td>
+  </tr>
+</table>
