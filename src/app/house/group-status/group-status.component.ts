@@ -52,7 +52,7 @@ export class GroupStatusComponent implements OnInit {
     }
   }
   */
-  
+
   showStatusText(evnt: any): void {
     evnt.stopPropagation();
     this.tooltip.show();
