@@ -6,20 +6,23 @@ import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
 export class Brand {
-  name: string;
+  active: boolean;
   alc: string;
-  ings: string;
-  nutr: string;
-  info: string;
   barcode: string;
-
-  constructor() { }
+  distributor: Distributor;
+  id: number;
+  ingredients: string;
+  more_details: string;
+  name: string;
+  pressure: any;
+  producer: Producer;
+  storage_condition: string;
 }
 
 export class List<T> {
   count: number;
-  next: string | null;
-  previous: string | null;
+  next: string;
+  previous: string;
   results: T[];
 }
 
@@ -27,6 +30,12 @@ export class Producer {
   address: string;
   id: number;
   name: string;
+}
+
+export class Distributor {
+  id: number;
+  name: string;
+  address: string;
 }
 
 @Component({
@@ -37,10 +46,13 @@ export class Producer {
 export class BrandsComponent implements OnInit {
   brands: any[] = [];
   producers: Producer[] = [];
+  distributors: any[] = [];
   producerControl: FormControl = new FormControl();
   filteredProducers: Observable<Producer[]>;
   brandControl: FormControl = new FormControl();
   filteredBrands: Observable<Brand[]>;
+  distributorControl: FormControl = new FormControl();
+  filteredDistributors: Observable<Brand[]>;
 
   constructor(
     public dialog: MatDialog,
@@ -53,6 +65,9 @@ export class BrandsComponent implements OnInit {
 
     this.getBrands();
     this.updateFilteredBrands();
+
+    this.getDistributors();
+    this.updateFilteredDistributors();
   }
 
   private updateFilteredProducers() {
@@ -85,6 +100,23 @@ export class BrandsComponent implements OnInit {
       console.log(resp);
       this.brands = resp.results;
       this.updateFilteredBrands();
+    });
+  }
+
+  private updateFilteredDistributors() {
+    this.filteredDistributors = this.distributorControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(name => name ? this.distributors.filter(p => p.name.includes(name)) : this.distributors.slice()
+        )
+      );
+  }
+
+  private getDistributors() {
+    this.http.get<List<Producer>>(`/api/v1/distributor/`).subscribe(resp => {
+      console.log(resp);
+      this.distributors = resp.results;
+      this.updateFilteredDistributors();
     });
   }
 }

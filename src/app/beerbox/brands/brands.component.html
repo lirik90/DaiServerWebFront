@@ -20,18 +20,27 @@
   </mat-form-field>
 </div>
 
-Бренд
-Дистрибьютор
+<div>
+  <mat-form-field>
+    <label for="distributor-input">Дистрибьютор</label>
+    <input [formControl]="distributorControl" [matAutocomplete]="distributorsAuto" id="distributor-input" matInput type="text">
+    <mat-autocomplete #distributorsAuto="matAutocomplete">
+      <mat-option *ngFor="let b of filteredDistributors | async" [value]="b.name">{{b.name}}</mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>
+
 Номер бренда
+
 <table class="brands-list">
   <tr>
     <th>Наименование</th>
     <th>Номер бренда</th>
     <th>Статус</th>
   </tr>
-  <tr>
-    <td>Test 1</td>
-    <td>11223</td>
-    <td><button>Активный</button></td>
+  <tr *ngFor="let b of brands">
+    <td>{{b.name}}</td>
+    <td>{{b.id}}</td>
+    <td><button>{{ b.active ? "Активный" : "Неактивный" }}</button></td>
   </tr>
 </table>
