@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import {Component, OnInit, Input, ViewChild, OnChanges, SimpleChanges, DoCheck, ChangeDetectorRef} from '@angular/core';
 import { MatTooltip } from "@angular/material";
 
-import { Group } from '../house';
+import {Group, GroupStatusInfo} from '../house';
 
 @Component({
   selector: 'app-group-status',
@@ -33,11 +33,26 @@ export class GroupStatusComponent implements OnInit {
   }
 
   constructor(
+    private ref: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
+    //console.log(this.group);
   }
 
+  /*
+  ngOnChanges(changes: SimpleChanges): void {
+    //console.log(changes);
+  }
+
+  ngDoCheck() {
+    if (this.group.status_info !== this.old_status_info) {
+      console.log('a');
+      this.ref.markForCheck();
+    }
+  }
+  */
+  
   showStatusText(evnt: any): void {
     evnt.stopPropagation();
     this.tooltip.show();

@@ -73,13 +73,18 @@ export class HouseService extends IHouseService {
           g.statuses = [];
 
           resp.items.filter(item => item.group_id === g.id).map(item => {
+            const stIns = this.house2.statuses.find(sti => sti.id === item.status_id);
+            //const stType = this.house2.statusTypes.find(stt => stt.id === stIns.type_id);
             g.statuses.push({
-              status: undefined,
+              status: stIns,
               status_id: item.status_id,
               args: item.args
             });
           });
 
+          this.calculateStatusInfo(g);
+
+          /*
           if (g.statuses) {
             g.statuses.map(st => {
               //get st instance
@@ -97,6 +102,7 @@ export class HouseService extends IHouseService {
             g.status_info.short_text = stType.name;
             g.status_info.text = '';
           }
+          */
         }
       }
       return of(true);
@@ -321,7 +327,7 @@ export class HouseService extends IHouseService {
         short_text = sts.status.type.name;
       }
       str = sts.status.text;
-      let l = sts.args !== undefined ? sts.args.length : 0;
+      let l = sts.args ? sts.args.length : 0;
       while (l--) {
         str = str.replace('%' + (l + 1), sts.args[l]);
       }
