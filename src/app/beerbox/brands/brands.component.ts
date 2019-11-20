@@ -1,10 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
-import {MomentDateAdapter} from '@angular/material-moment-adapter';
-import {ConfirmDialogReplaceKegComponent, CUSTOM_FORMATS} from '../replace-keg/replace-keg.component';
-import {filter} from 'rxjs/operators';
-import {HouseService} from '../../house/house.service';
-import {ControlService} from '../../house/control.service';
+import {HttpClient} from '@angular/common/http';
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 
 export class Brand {
   name: string;
@@ -14,9 +13,20 @@ export class Brand {
   info: string;
   barcode: string;
 
-  constructor() {
+  constructor() { }
+}
 
-  }
+export class List<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+}
+
+export class Producer {
+  address: string;
+  id: number;
+  name: string;
 }
 
 @Component({
@@ -25,57 +35,56 @@ export class Brand {
   styleUrls: ['./brands.component.css']
 })
 export class BrandsComponent implements OnInit {
-  brands: Brand[] = [];
+  brands: any[] = [];
+  producers: Producer[] = [];
+  producerControl: FormControl = new FormControl();
+  filteredProducers: Observable<Producer[]>;
+  brandControl: FormControl = new FormControl();
+  filteredBrands: Observable<Brand[]>;
 
   constructor(
     public dialog: MatDialog,
-    private houseService: HouseService,
-    private controlService: ControlService
+    private http: HttpClient
   ) { }
 
   ngOnInit() {
-    this.mockBrands();
+    this.getProducers();
+    this.updateFilteredProducers();
+
+    this.getBrands();
+    this.updateFilteredBrands();
   }
 
-  mockBrands() {
-    const b = new Brand();
-    b.name = 'Brand name';
-    b.alc = '4';
-    b.ings = 'Ingridient 1, ingridient 2';
-    b.nutr = '48 cal'
-    b.info = 'test info';
-    b.barcode = '1234567890123';
-
-    this.brands.push(b);
+  private updateFilteredProducers() {
+    this.filteredProducers = this.producerControl.valueChanges
+      .pipe(
+          startWith(''),
+          map(name => name ? this.producers.filter(p => p.name.includes(name)) : this.producers.slice()
+        )
+      );
   }
 
-  addBrand() {
-    this.dialog.open(BrandEditDialogComponent, {width: '80%', data: { brand: null }})
-      .afterClosed().pipe(
-      filter(name => name)
-    ).subscribe(res => {
-      console.log(res.result);
-
-      if (res.result != null) {
-        this.brands.push(res.result);
-      }
+  private getProducers() {
+    this.http.get<List<Producer>>(`/api/v1/producer/`).subscribe(resp => {
+      this.producers = resp.results;
+      this.updateFilteredProducers();
     });
   }
 
-  remove(b: Brand) {
-    this.brands = this.brands.filter(bs => bs !== b);
+  private updateFilteredBrands() {
+    this.filteredBrands = this.brandControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(name => name ? this.brands.filter(p => p.name.includes(name)) : this.brands.slice()
+        )
+      );
   }
 
-  edit(b: Brand) {
-    this.dialog.open(BrandEditDialogComponent, {width: '80%', data: { brand: b }})
-      .afterClosed().pipe(
-      filter(name => name)
-    ).subscribe(res => {
-      console.log(res.result);
-
-      if (res.result != null) {
-        b = res.result;
-      }
+  private getBrands() {
+    this.http.get<List<Producer>>(`/api/v1/brand/`).subscribe(resp => {
+      console.log(resp);
+      this.brands = resp.results;
+      this.updateFilteredBrands();
     });
   }
 }
