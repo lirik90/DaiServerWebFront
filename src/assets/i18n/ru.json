@@ -8,7 +8,7 @@
   "SERVER_DOWN": "Основной сервер не доступен",
   "DISCONNECTED_JUST_NOW": "Связь недавно была прервана",
   "CONNECTED_JUST_NOW": "Синхронизация",
-  "CONNECTED_SYNC_TIMEOUT": "Ошибка синхронизации",
+  "CONNECTED_SYNC_TIMEOUT": "Ошибка синхронизации структур",
 	"CONNECTION_PROBLEM": "Нет соединения с сервером",
 	"OFFLINE": "Не на связи",
 	"ONLINE": "На связи",
