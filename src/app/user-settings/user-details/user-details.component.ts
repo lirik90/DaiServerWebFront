@@ -25,6 +25,7 @@ export class UserDetailsComponent implements OnInit {
   oldPassErrors = [];
   success = false;
   success2 = false;
+  phonemask = ['+', '7', ' ', '(', /\d/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
 
   constructor(
     public authService: AuthenticationService,
@@ -43,7 +44,9 @@ export class UserDetailsComponent implements OnInit {
     this.changeUserDetailsGroup = this.formBuilder.group({
       first_name: [this.authService.currentUser.first_name],
       last_name: [this.authService.currentUser.last_name],
-      //email: [{value: this.authService.currentUser.email, disabled: true}],
+      phone: [this.authService.currentUser.phone || '',
+        [Validators.required, Validators.pattern('\\+7\\s\\(\\d{3}\\)\\s\\d{3}-\\d{2}-\\d{2}')]]
+      // email: [{value: this.authService.currentUser.email, disabled: true}],
     });
   }
 
@@ -117,7 +120,7 @@ export class UserDetailsComponent implements OnInit {
           }, 2000);
 
           this.authService.refreshToken();
-          //this.currentUser = this.authService.currentUser;
+          // this.currentUser = this.authService.currentUser;
         }
       }, error => {
         console.log(error);

@@ -12,6 +12,7 @@ import {TranslateModule, TranslateLoader, TranslateService} from '@ngx-translate
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { UserDetailsComponent } from './user-details/user-details.component';
 import {IHouseService} from '../ihouse.service';
+import {TextMaskModule} from 'angular2-text-mask';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -30,7 +31,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    }),
+    TextMaskModule
   ],
   declarations: [
     UserSettingsComponent,

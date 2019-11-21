@@ -21,6 +21,7 @@ export class User {
     email: string;
     token: string;        // Ключ сессии
     permissions: string[];// Разрешения доступные пользователю
+    phone: string;
 }
 export class House {
   id: number;
