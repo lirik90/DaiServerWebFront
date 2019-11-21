@@ -1,30 +1,4 @@
 <h1 mat-dialog-title>Input brand's data</h1>
 <div mat-dialog-content>
-  <mat-form-field>
-    <input matInput placeholder="Brand name" [(ngModel)]="curBrand.name">
-  </mat-form-field>
 
-  <mat-form-field>
-    <input matInput placeholder="Alc. %" [(ngModel)]="curBrand.alc">
-  </mat-form-field>
-
-  <mat-form-field>
-    <input matInput placeholder="Ingredient list"  [(ngModel)]="curBrand.ings">
-  </mat-form-field>
-
-  <mat-form-field>
-    <input matInput placeholder="Nutritional values" [(ngModel)]="curBrand.nutr">
-  </mat-form-field>
-
-  <mat-form-field>
-    <input matInput placeholder="Brewery information / distributor address"  [(ngModel)]="curBrand.info">
-  </mat-form-field>
-
-  <mat-form-field>
-    <input matInput placeholder="Bar code"  [(ngModel)]="curBrand.barcode">
-  </mat-form-field>
-</div>
-<div mat-dialog-actions>
-  <button mat-button cdkFocusInitial (click)="save()">Save</button>
-  <button mat-button (click)="close()">Cancel</button>
 </div>
