@@ -1,36 +1,53 @@
 <h1>Бренд</h1>
 <h2>Поиск</h2>
-<div>
-  <mat-form-field>
-    <label for="producer-input">Производитель</label>
-    <input [formControl]="producerControl" [matAutocomplete]="producersAuto" id="producer-input" matInput type="text">
-    <mat-autocomplete #producersAuto="matAutocomplete">
-      <mat-option *ngFor="let p of filteredProducers | async" [value]="p.name">{{p.name}}</mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-</div>
+<div class="filter-pane">
+  <div>
+    <mat-form-field>
+      <label for="producer-input">Производитель</label>
+      <!--input [formControl]="producerControl" [matAutocomplete]="producersAuto" id="producer-input" matInput type="text">
+      <mat-autocomplete #producersAuto="matAutocomplete">
+        <mat-option *ngFor="let p of filteredProducers | async" [value]="p.name">{{p.name}}</mat-option>
+      </mat-autocomplete-->
+      <mat-select id="producer-input">
+        <input [formControl]="producerControl" placeholder="Поиск">
+        <mat-option>Не выбрано</mat-option>
+        <mat-option *ngFor="let p of filteredProducers | async" [value]="p.id">{{p.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 
-<div>
-  <mat-form-field>
-    <label for="brand-input">Бренд</label>
-    <input [formControl]="brandControl" [matAutocomplete]="brandsAuto" id="brand-input" matInput type="text">
-    <mat-autocomplete #brandsAuto="matAutocomplete">
-      <mat-option *ngFor="let b of filteredBrands | async" [value]="b.name">{{b.name}}</mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-</div>
+  <div>
+    <mat-form-field>
+      <label for="brand-input">Бренд</label>
+      <!--input [formControl]="brandControl" [matAutocomplete]="brandsAuto" id="brand-input" matInput type="text">
+      <mat-autocomplete #brandsAuto="matAutocomplete">
+        <mat-option *ngFor="let b of filteredBrands | async" [value]="b.name">{{b.name}}</mat-option>
+      </mat-autocomplete-->
+      <mat-select id="brand-input">
+        <input [formControl]="brandControl" placeholder="Поиск">
+        <mat-option>Не выбрано</mat-option>
+        <mat-option *ngFor="let p of filteredBrands | async" [value]="p.id">{{p.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 
-<div>
-  <mat-form-field>
-    <label for="distributor-input">Дистрибьютор</label>
-    <input [formControl]="distributorControl" [matAutocomplete]="distributorsAuto" id="distributor-input" matInput type="text">
-    <mat-autocomplete #distributorsAuto="matAutocomplete">
-      <mat-option *ngFor="let b of filteredDistributors | async" [value]="b.name">{{b.name}}</mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-</div>
+  <div>
+    <mat-form-field>
+      <label for="distributor-input">Дистрибьютор</label>
+      <!--input [formControl]="distributorControl" [matAutocomplete]="distributorsAuto" id="distributor-input" matInput type="text">
+      <mat-autocomplete #distributorsAuto="matAutocomplete">
+        <mat-option *ngFor="let b of filteredDistributors | async" [value]="b.name">{{b.name}}</mat-option>
+      </mat-autocomplete-->
+      <mat-select id="distributor-input">
+        <input [formControl]="distributorControl" placeholder="Поиск">
+        <mat-option>Не выбрано</mat-option>
+        <mat-option *ngFor="let p of filteredDistributors | async" [value]="p.id">{{p.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 
-Номер бренда
+  Номер бренда
+</div>
 
 <table class="brands-list">
   <tr>
@@ -39,7 +56,7 @@
     <th>Статус</th>
   </tr>
   <tr *ngFor="let b of brands">
-    <td>{{b.name}}</td>
+    <td><a (click)="showEditDialog(b)">{{b.name}}</a></td>
     <td>{{b.id}}</td>
     <td><button>{{ b.active ? "Активный" : "Неактивный" }}</button></td>
   </tr>

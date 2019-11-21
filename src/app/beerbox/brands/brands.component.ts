@@ -3,7 +3,8 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MAT_DIALOG_DATA, MatDial
 import {HttpClient} from '@angular/common/http';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {map, startWith, switchMap} from 'rxjs/operators';
+import {CheckHeadStandDialogComponent} from '../check-head-stand/check-head-stand.component';
 
 export class Brand {
   active: boolean;
@@ -74,7 +75,13 @@ export class BrandsComponent implements OnInit {
     this.filteredProducers = this.producerControl.valueChanges
       .pipe(
           startWith(''),
-          map(name => name ? this.producers.filter(p => p.name.includes(name)) : this.producers.slice()
+          map(name => {
+            if (name) {
+              return this.producers.filter(p => p.name.includes(name));
+            } else {
+              return this.producers.slice();
+            }
+          }
         )
       );
   }
@@ -119,6 +126,14 @@ export class BrandsComponent implements OnInit {
       this.updateFilteredDistributors();
     });
   }
+
+  showEditDialog(b: Brand) {
+    const dialogRef = this.dialog.open(BrandEditDialogComponent, {
+      data: {brand: b}
+    });
+
+    dialogRef.afterClosed().subscribe(result => console.log(result));
+  }
 }
 
 
@@ -135,15 +150,7 @@ export class BrandEditDialogComponent {
     public dialogRef: MatDialogRef<BrandEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    if (data.brand === null) {
-      this.curBrand = new Brand();
-    } else {
-      this.curBrand = data.brand;
-    }
-  }
-
-  save() {
-    this.dialogRef.close({result: this.curBrand});
+    this.curBrand = data.brand;
   }
 
   close() {

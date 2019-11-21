@@ -6,3 +6,7 @@
 .brands-list td, .brands-list th {
   border: 1px solid #ccc;
 }
+.filter-pane {
+  display: flex;
+  flex-wrap: wrap;
+}
