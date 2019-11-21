@@ -25,7 +25,7 @@ export class UserDetailsComponent implements OnInit {
   oldPassErrors = [];
   success = false;
   success2 = false;
-  phonemask = ['+', '7', ' ', '(', /\d/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
+  phonemask = ['+', '7', '(', /\d/, /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
 
   constructor(
     public authService: AuthenticationService,
@@ -45,7 +45,7 @@ export class UserDetailsComponent implements OnInit {
       first_name: [this.authService.currentUser.first_name],
       last_name: [this.authService.currentUser.last_name],
       phone_number: [this.authService.currentUser.phone_number || '',
-        [Validators.required, Validators.pattern('\\+7\\s\\(\\d{3}\\)\\s\\d{3}-\\d{2}-\\d{2}')]]
+        [Validators.required, Validators.pattern('\\+7\\(\\d{3}\\)\\d{3}-\\d{2}-\\d{2}')]]
       // email: [{value: this.authService.currentUser.email, disabled: true}],
     });
   }
