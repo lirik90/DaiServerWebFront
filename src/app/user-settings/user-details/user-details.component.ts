@@ -44,7 +44,7 @@ export class UserDetailsComponent implements OnInit {
     this.changeUserDetailsGroup = this.formBuilder.group({
       first_name: [this.authService.currentUser.first_name],
       last_name: [this.authService.currentUser.last_name],
-      phone_number: [this.authService.currentUser.phone || '',
+      phone_number: [this.authService.currentUser.phone_number || '',
         [Validators.required, Validators.pattern('\\+7\\s\\(\\d{3}\\)\\s\\d{3}-\\d{2}-\\d{2}')]]
       // email: [{value: this.authService.currentUser.email, disabled: true}],
     });
