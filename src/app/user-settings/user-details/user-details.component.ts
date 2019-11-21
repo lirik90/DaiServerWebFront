@@ -106,6 +106,7 @@ export class UserDetailsComponent implements OnInit {
 
   changeUserDetails() {
     if (this.changeUserDetailsGroup.invalid) {
+      alert('Поле "Телефон" обязательное для заполнения!');
     } else {
       const req = this.changeUserDetailsGroup.value;
 
