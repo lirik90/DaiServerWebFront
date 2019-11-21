@@ -248,6 +248,8 @@ export class HouseListComponent implements OnInit, OnDestroy {
         return 'status_server_down';
       case Connection_State.CS_DISCONNECTED:
         return 'status_bad';
+      case Connection_State.CS_CONNECTED_SYNC_TIMEOUT:
+      //  return 'status_sync_fail';
       case Connection_State.CS_CONNECTED:
         return 'status_ok';
       case Connection_State.CS_CONNECTED_MODIFIED:
@@ -256,8 +258,6 @@ export class HouseListComponent implements OnInit, OnDestroy {
         return 'status_bad_just';
       case Connection_State.CS_CONNECTED_JUST_NOW:
         return 'status_sync';
-      case Connection_State.CS_CONNECTED_SYNC_TIMEOUT:
-        return 'status_sync_fail';
     }
   }
 
