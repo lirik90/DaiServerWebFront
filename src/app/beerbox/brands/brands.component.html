@@ -1,4 +1,8 @@
-<h1>Бренд</h1>
+<div class="title-line"><h1>Бренд</h1>
+  <div class="new-brand-btn-wrap">
+    <button class="new-brand-btn" (click)="showEditDialog(null)">Новый бренд</button>
+  </div>
+</div>
 <h2>Поиск</h2>
 <div class="filter-pane">
   <div>
@@ -56,7 +60,7 @@
     <th>Статус</th>
   </tr>
   <tr *ngFor="let b of brands">
-    <td><a (click)="showEditDialog(b)">{{b.name}}</a></td>
+    <td><a>{{b.name}}</a></td>
     <td>{{b.id}}</td>
     <td><button>{{ b.active ? "Активный" : "Неактивный" }}</button></td>
   </tr>

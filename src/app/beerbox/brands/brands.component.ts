@@ -7,7 +7,7 @@ import {map, startWith, switchMap} from 'rxjs/operators';
 import {CheckHeadStandDialogComponent} from '../check-head-stand/check-head-stand.component';
 
 export class Brand {
-  active: boolean;
+  active: boolean = true;
   alc: string;
   barcode: string;
   distributor: Distributor;
@@ -18,6 +18,20 @@ export class Brand {
   pressure: any;
   producer: Producer;
   storage_condition: string;
+
+  constructor() {
+    this.active = true;
+    this.alc = '';
+    this.barcode = '';
+    this.distributor = null;
+    this.id = 0;
+    this.ingredients = '';
+    this.more_details = '';
+    this.name = '';
+    this.pressure = null;
+    this.producer = null;
+    this.storage_condition = '';
+  }
 }
 
 export class List<T> {
@@ -129,7 +143,7 @@ export class BrandsComponent implements OnInit {
 
   showEditDialog(b: Brand) {
     const dialogRef = this.dialog.open(BrandEditDialogComponent, {
-      data: {brand: b}
+      data: {brand: b}, width: '80vw'
     });
 
     dialogRef.afterClosed().subscribe(result => console.log(result));
@@ -150,7 +164,11 @@ export class BrandEditDialogComponent {
     public dialogRef: MatDialogRef<BrandEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.curBrand = data.brand;
+    if (data.brand) {
+      this.curBrand = data.brand;
+    } else {
+      this.curBrand = new Brand();
+    }
   }
 
   close() {

@@ -1,40 +1,82 @@
-<h1 mat-dialog-title>Input brand's data</h1>
+<h1 mat-dialog-title>Создание нового бренда</h1>
 <div class="table">
   <div class="row">
-    <div class="cell">Номер бренда:</div><div class="cell row2cell">{{curBrand.id}}</div>
+    <div class="cell">Наименование:</div>
+    <div class="cell row2cell">
+      <mat-form-field>
+        <input matInput type="text" [value]="curBrand.name">
+      </mat-form-field>
+    </div>
   </div>
 
   <div class="row">
-    <div class="cell">Наименование:</div><div class="cell row2cell">{{curBrand.name}}</div>
-  </div>
-
-  <div class="row">
-    <div class="cell">Алкоголь:</div>
+    <div class="cell">Алкоголь %:</div>
+    <div class="cell row2cell">
+      <mat-form-field>
+        <input matInput type="text" [value]="curBrand.alc">
+      </mat-form-field>
+    </div>
   </div>
 
 
   <div class="row">
     <div class="cell">Состав (включая указанные алергены):</div>
+    <div class="cell row2cell">
+      <mat-form-field>
+        <input matInput type="text" [value]="curBrand.ingredients">
+      </mat-form-field>
+    </div>
   </div>
 
   <div class="row">
     <div class="cell">Производитель:</div>
+    <div class="cell row2cell">
+      <div class="select-and-btn">
+        <mat-form-field>
+          <mat-select></mat-select>
+        </mat-form-field>
+        <button>+</button>
+      </div>
+    </div>
   </div>
 
   <div class="row">
     <div class="cell">Адрес производителя:</div>
+    <div class="cell row2cell">
+      <mat-form-field>
+        <input matInput disabled="disabled" type="text" [value]="curBrand.producer ? curBrand.producer.address : ''">
+      </mat-form-field>
+    </div>
   </div>
 
   <div class="row">
     <div class="cell">Дистрибьютор:</div>
+    <div class="cell row2cell">
+      <div class="select-and-btn">
+        <mat-form-field>
+          <mat-select></mat-select>
+        </mat-form-field>
+        <button>+</button>
+      </div>
+    </div>
   </div>
 
   <div class="row">
     <div class="cell">Адрес дистрибьютора:</div>
+    <div class="cell row2cell">
+      <mat-form-field>
+        <input matInput disabled="disabled" type="text" [value]="curBrand.distributor ? curBrand.distributor.address : ''">
+      </mat-form-field>
+    </div>
   </div>
 
   <div class="row">
     <div class="cell">Дополнительная информация:</div>
+    <div class="cell row2cell">
+      <mat-form-field>
+        <input matInput type="text" [value]="curBrand.more_details">
+      </mat-form-field>
+    </div>
   </div>
 
   <div class="row">
@@ -43,6 +85,11 @@
 
   <div class="row">
     <div class="cell">Штрих-код:</div>
+    <div class="cell row2cell">
+      <mat-form-field>
+        <input matInput type="text" [value]="curBrand.barcode">
+      </mat-form-field>
+    </div>
   </div>
 
 </div>
