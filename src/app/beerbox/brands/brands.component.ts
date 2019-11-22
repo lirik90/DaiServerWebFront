@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {HttpClient} from '@angular/common/http';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith, switchMap} from 'rxjs/operators';
 import {CheckHeadStandDialogComponent} from '../check-head-stand/check-head-stand.component';
@@ -188,7 +188,11 @@ export class BrandEditDialogComponent {
       data: {},
     });
 
-    dialogRef.afterClosed().subscribe(result => console.log(result));
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.curBrand.producer = result;
+      }
+    });
   }
 }
 
@@ -199,11 +203,32 @@ export class BrandEditDialogComponent {
 
 })
 export class DistribAddDialogComponent {
+  frm: FormGroup;
+
   constructor(
     public dialogRef: MatDialogRef<BrandEditDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private http: HttpClient,
+    private formBuilder: FormBuilder,
   ) {
+    this.frm = this.formBuilder.group({
+      name: ['', Validators.required],
+      address: ['', Validators.required],
+    });
+  }
 
+  addNewDistributor() {
+    if (this.frm.invalid) {
+    } else {
+      const url = '/api/v1/distributor/';
+      const body = this.frm.value;
+      this.http.post<Distributor>(url, body).subscribe(resp => {
+          this.dialogRef.close({result: resp});
+        },
+        error => {
+          console.log(error);
+        });
+    }
   }
 
   close() {
@@ -218,10 +243,32 @@ export class DistribAddDialogComponent {
 
 })
 export class ProdAddDialogComponent {
+  frm: FormGroup;
+
   constructor(
     public dialogRef: MatDialogRef<BrandEditDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private http: HttpClient,
+    private formBuilder: FormBuilder,
   ) {
+    this.frm = this.formBuilder.group({
+      name: ['', Validators.required],
+      address: ['', Validators.required],
+    });
+  }
+
+  addNewProducer() {
+    if (this.frm.invalid) {
+    } else {
+      const url = '/api/v1/producer/';
+      const body = this.frm.value;
+      this.http.post<Producer>(url, body).subscribe(resp => {
+          this.dialogRef.close({result: resp});
+      },
+      error => {
+        console.log(error);
+      });
+    }
   }
 
   close() {

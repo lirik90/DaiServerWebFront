@@ -1,24 +1,26 @@
 <h1 mat-dialog-title>Создание нового производителя</h1>
-<div class="table">
-  <div class="row">
-    <div class="cell">Наименование:</div>
-    <div class="cell row2cell">
-      <mat-form-field>
-        <input matInput type="text">
-      </mat-form-field>
+<form [formGroup]="frm" (ngSubmit)="addNewProducer()">
+  <div class="table">
+    <div class="row">
+      <div class="cell"><label for="name">Наименование:</label></div>
+      <div class="cell row2cell">
+        <mat-form-field>
+          <input id="name" matInput type="text" formControlName="name">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cell"><label for="address">Адрес:</label></div>
+      <div class="cell row2cell">
+        <mat-form-field>
+          <input id="address" matInput type="text" formControlName="address">
+        </mat-form-field>
+      </div>
     </div>
   </div>
 
-  <div class="row">
-    <div class="cell">Адрес:</div>
-    <div class="cell row2cell">
-      <mat-form-field>
-        <input matInput type="text">
-      </mat-form-field>
-    </div>
+  <div class="actions">
+    <button type="cancel" (click)="close()">Отменить</button> <button type="submit">Сохранить</button>
   </div>
-</div>
-
-<div class="actions">
-  <button (click)="close()">Отменить</button> <button>Сохранить</button>
-</div>
+</form>
