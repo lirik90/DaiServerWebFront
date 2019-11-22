@@ -143,10 +143,26 @@ export class BrandsComponent implements OnInit {
 
   showEditDialog(b: Brand) {
     const dialogRef = this.dialog.open(BrandEditDialogComponent, {
-      data: {brand: b}, width: '80vw'
+      data: {brand: b, dists: this.distributors, prods: this.producers}, width: '80vw'
     });
 
     dialogRef.afterClosed().subscribe(result => console.log(result));
+  }
+
+  updateBrand(b) {
+    const url = `/api/v1/brand/${b.id}/`;
+    const body = b;
+    this.http.put<Distributor>(url, body).subscribe(resp => {
+        console.log(resp);
+      },
+      error => {
+        console.log(error);
+      });
+  }
+
+  toggleActive(b: Brand) {
+    b.active = !b.active;
+    this.updateBrand(b);
   }
 }
 
@@ -156,8 +172,15 @@ export class BrandsComponent implements OnInit {
   styleUrls: ['./brands.component.css'],
 
 })
-export class BrandEditDialogComponent {
+export class BrandEditDialogComponent implements OnInit {
   curBrand: Brand;
+
+  distributors: Distributor[];
+  filteredDistributors: Observable<Distributor[]>;
+  distributorControl: FormControl = new FormControl();
+  producers: Producer[];
+  filteredProducers: Observable<Producer[]>;
+  producerControl: FormControl = new FormControl();
 
   constructor(
     public dialogRef: MatDialogRef<BrandEditDialogComponent>,
@@ -169,10 +192,51 @@ export class BrandEditDialogComponent {
     } else {
       this.curBrand = new Brand();
     }
+
+    if (data.dists) {
+      this.distributors = data.dists;
+    } else {
+      this.distributors = [];
+    }
+
+    if (data.prods) {
+      this.producers = data.prods;
+    } else {
+      this.producers = [];
+    }
+  }
+
+  ngOnInit(): void {
+    this.updateFilteredProducers();
+    this.updateFilteredDistributors();
   }
 
   close() {
     this.dialogRef.close({result: null});
+  }
+
+  private updateFilteredProducers() {
+    this.filteredProducers = this.producerControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(name => {
+            if (name) {
+              return this.producers.filter(p => p.name.includes(name));
+            } else {
+              return this.producers.slice();
+            }
+          }
+        )
+      );
+  }
+
+  private updateFilteredDistributors() {
+    this.filteredDistributors = this.distributorControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(name => name ? this.distributors.filter(p => p.name.includes(name)) : this.distributors.slice()
+        )
+      );
   }
 
   showDistribAddDialog() {
@@ -180,7 +244,13 @@ export class BrandEditDialogComponent {
       data: {},
     });
 
-    dialogRef.afterClosed().subscribe(result => console.log(result));
+    dialogRef.afterClosed().subscribe(resp => {
+      if (resp.result) {
+        this.curBrand.distributor = resp.result;
+        this.distributors.push(resp.result);
+        this.updateFilteredDistributors();
+      }
+    });
   }
 
   showProdAddDialog() {
@@ -188,9 +258,11 @@ export class BrandEditDialogComponent {
       data: {},
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.curBrand.producer = result;
+    dialogRef.afterClosed().subscribe(resp => {
+      if (resp.result) {
+        this.producers.push(resp.result);
+        this.curBrand.producer = resp.result;
+        this.updateFilteredProducers();
       }
     });
   }

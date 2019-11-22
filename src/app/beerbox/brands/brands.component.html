@@ -62,6 +62,6 @@
   <tr *ngFor="let b of brands">
     <td><a>{{b.name}}</a></td>
     <td>{{b.id}}</td>
-    <td><button>{{ b.active ? "Активный" : "Неактивный" }}</button></td>
+    <td><button (click)="toggleActive(b)">{{ b.active ? "Активный" : "Неактивный" }}</button></td>
   </tr>
 </table>
