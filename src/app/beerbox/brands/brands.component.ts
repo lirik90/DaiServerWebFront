@@ -154,9 +154,12 @@ export class BrandsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => console.log(result));
   }
 
-  updateBrand(b) {
-    const url = `/api/v1/brand/${b.id}/`;
-    const body = b;
+  updateBrand(b: Brand) {
+    const url = `/api/v1/brand2/${b.id}/`;
+    const body = Object.assign({}, b) as any;
+    body.producer = b.producer.id;
+    body.distributor = b.distributor.id;
+
     this.http.put<Distributor>(url, body).subscribe(resp => {
         console.log(resp);
       },
