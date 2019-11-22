@@ -33,10 +33,10 @@
     <div class="cell row2cell">
       <div class="select-and-btn">
         <mat-form-field>
-          <mat-select id="producer-input" [(value)]="curBrand.producer">
+          <mat-select id="producer-input" [(value)]="curProducerId" (closed)="closeProducer()">
             <input [formControl]="producerControl" placeholder="Поиск">
             <mat-option>Не выбрано</mat-option>
-            <mat-option *ngFor="let p of filteredProducers | async" [value]="p">{{p.name}}</mat-option>
+            <mat-option *ngFor="let p of filteredProducers | async" [value]="p.id">{{p.name}}</mat-option>
           </mat-select>
         </mat-form-field>
         <button (click)="showProdAddDialog()">+</button>
@@ -58,10 +58,10 @@
     <div class="cell row2cell">
       <div class="select-and-btn">
         <mat-form-field>
-          <mat-select id="distributor-input" [(value)]="curBrand.distributor">
-            <input [formControl]="producerControl" placeholder="Поиск">
+          <mat-select id="distributor-input" [(value)]="curDistributorId"  (closed)="closeDistributor()">
+            <input [formControl]="distributorControl" placeholder="Поиск">
             <mat-option>Не выбрано</mat-option>
-            <mat-option *ngFor="let p of filteredDistributors | async" [value]="p">{{p.name}}</mat-option>
+            <mat-option *ngFor="let d of filteredDistributors | async" [value]="d.id">{{d.name}}</mat-option>
           </mat-select>
         </mat-form-field>
         <button (click)="showDistribAddDialog()">+</button>

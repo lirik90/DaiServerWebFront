@@ -142,8 +142,13 @@ export class BrandsComponent implements OnInit {
   }
 
   showEditDialog(b: Brand) {
+    let b_copy = null;
+    if (b) {
+      b_copy = Object.assign({}, b);
+    }
+
     const dialogRef = this.dialog.open(BrandEditDialogComponent, {
-      data: {brand: b, dists: this.distributors, prods: this.producers}, width: '80vw'
+      data: {brand: b_copy, dists: this.distributors, prods: this.producers}, width: '80vw'
     });
 
     dialogRef.afterClosed().subscribe(result => console.log(result));
@@ -181,6 +186,8 @@ export class BrandEditDialogComponent implements OnInit {
   producers: Producer[];
   filteredProducers: Observable<Producer[]>;
   producerControl: FormControl = new FormControl();
+  curProducerId: number;
+  curDistributorId: number;
 
   constructor(
     public dialogRef: MatDialogRef<BrandEditDialogComponent>,
@@ -189,6 +196,8 @@ export class BrandEditDialogComponent implements OnInit {
   ) {
     if (data.brand) {
       this.curBrand = data.brand;
+      this.curProducerId = this.curBrand.producer ? this.curBrand.producer.id : 0;
+      this.curDistributorId = this.curBrand.distributor ? this.curBrand.distributor.id : 0;
     } else {
       this.curBrand = new Brand();
     }
@@ -265,6 +274,24 @@ export class BrandEditDialogComponent implements OnInit {
         this.updateFilteredProducers();
       }
     });
+  }
+
+  closeProducer() {
+    this.producerControl.setValue('');
+    if (this.curProducerId) {
+      this.curBrand.producer = this.producers.find(p => p.id === this.curProducerId);
+    } else {
+      this.curBrand.producer = null;
+    }
+  }
+
+  closeDistributor() {
+    this.distributorControl.setValue('');
+    if (this.curDistributorId) {
+      this.curBrand.distributor = this.distributors.find(d => d.id === this.curDistributorId);
+    } else {
+      this.curBrand.distributor = null;
+    }
   }
 }
 
