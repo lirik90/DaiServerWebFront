@@ -88,7 +88,7 @@ export class HouseComponent implements OnInit, OnDestroy {
       case Connection_State.CS_CONNECTED_JUST_NOW:
         return 'status_sync';
       case Connection_State.CS_CONNECTED_SYNC_TIMEOUT:
-        return 'status_sync_fail';
+        return 'status_ok';
     }
   }
 
