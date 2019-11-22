@@ -23,12 +23,12 @@ import {OperationHoursComponent} from './operation-hours/operation-hours.compone
 import {KegsComponent} from './kegs/kegs.component';
 import {LabelConfiguratorComponent} from './label-configurator/label-configurator.component';
 import {NgxBarcodeModule} from 'ngx-barcode';
-import { WashTapComponent } from './wash-tap/wash-tap.component';
+import {WashTapComponent} from './wash-tap/wash-tap.component';
 import {LabelConfModule} from './label-conf/label-conf.module';
-import { CalVolComponent } from './cal-vol/cal-vol.component';
-import {BrandEditDialogComponent, BrandsComponent} from './brands/brands.component';
-import { WifiComponent } from './wifi/wifi.component';
-import { PourSettingsComponent } from './pour-settings/pour-settings.component';
+import {CalVolComponent} from './cal-vol/cal-vol.component';
+import {BrandEditDialogComponent, BrandsComponent, DistribAddDialogComponent, ProdAddDialogComponent} from './brands/brands.component';
+import {WifiComponent} from './wifi/wifi.component';
+import {PourSettingsComponent} from './pour-settings/pour-settings.component';
 import {MatAutocompleteModule} from '@angular/material';
 
 export function createTranslateLoader(http: HttpClient) {
@@ -55,7 +55,11 @@ export function createTranslateLoader(http: HttpClient) {
     MatAutocompleteModule,
   ],
   declarations: [
-    WashComponent, ReplaceKegComponent, ConfirmDialogReplaceKegComponent, CalibrationComponent, CheckHeadStandComponent, CheckHeadStandDialogComponent, ReplaceLabelsComponent, UpdateBeerInfoComponent, EditDialogUpdateBeerInfoComponent, EditDialogManufacturersListComponent, ChangeControllerAddressComponent, OperationHoursComponent, KegsComponent, OkDialogComponent, LabelConfiguratorComponent, WashTapComponent, CalVolComponent, BrandsComponent, WifiComponent, PourSettingsComponent, BrandEditDialogComponent
+    WashComponent, ReplaceKegComponent, ConfirmDialogReplaceKegComponent, CalibrationComponent, CheckHeadStandComponent,
+    CheckHeadStandDialogComponent, ReplaceLabelsComponent, UpdateBeerInfoComponent, EditDialogUpdateBeerInfoComponent,
+    EditDialogManufacturersListComponent, ChangeControllerAddressComponent, OperationHoursComponent, KegsComponent, OkDialogComponent,
+    LabelConfiguratorComponent, WashTapComponent, CalVolComponent, BrandsComponent, WifiComponent, PourSettingsComponent,
+    BrandEditDialogComponent, ProdAddDialogComponent, DistribAddDialogComponent
   ],
   entryComponents: [
     ConfirmDialogReplaceKegComponent,
@@ -63,7 +67,8 @@ export function createTranslateLoader(http: HttpClient) {
     EditDialogUpdateBeerInfoComponent,
     EditDialogManufacturersListComponent,
     OkDialogComponent,
-    BrandEditDialogComponent
+    BrandEditDialogComponent,
+    ProdAddDialogComponent, DistribAddDialogComponent
   ],
 })
 export class BeerboxModule {

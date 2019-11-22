@@ -150,7 +150,6 @@ export class BrandsComponent implements OnInit {
   }
 }
 
-
 @Component({
   selector: 'app-brand-edit-dialog',
   templateUrl: './brand-edit-dialog.html',
@@ -162,6 +161,7 @@ export class BrandEditDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<BrandEditDialogComponent>,
+    public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     if (data.brand) {
@@ -169,6 +169,59 @@ export class BrandEditDialogComponent {
     } else {
       this.curBrand = new Brand();
     }
+  }
+
+  close() {
+    this.dialogRef.close({result: null});
+  }
+
+  showDistribAddDialog() {
+    const dialogRef = this.dialog.open(DistribAddDialogComponent, {
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe(result => console.log(result));
+  }
+
+  showProdAddDialog() {
+    const dialogRef = this.dialog.open(ProdAddDialogComponent, {
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe(result => console.log(result));
+  }
+}
+
+@Component({
+  selector: 'app-distrib-add-dialog',
+  templateUrl: './distrib-add-dialog.html',
+  styleUrls: ['./brands.component.css'],
+
+})
+export class DistribAddDialogComponent {
+  constructor(
+    public dialogRef: MatDialogRef<BrandEditDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+
+  }
+
+  close() {
+    this.dialogRef.close({result: null});
+  }
+}
+
+@Component({
+  selector: 'app-prod-add-dialog',
+  templateUrl: './prod-add-dialog.html',
+  styleUrls: ['./brands.component.css'],
+
+})
+export class ProdAddDialogComponent {
+  constructor(
+    public dialogRef: MatDialogRef<BrandEditDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
   }
 
   close() {
