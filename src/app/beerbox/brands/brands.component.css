@@ -59,3 +59,7 @@
 .brands-list a {
   cursor: pointer;
 }
+
+.brands-list td {
+  padding: 4px;
+}

@@ -1,6 +1,6 @@
 <div class="title-line"><h1>Бренд</h1>
   <div class="new-brand-btn-wrap">
-    <button class="new-brand-btn" (click)="showEditDialog(null)">Новый бренд</button>
+    <button mat-stroked-button class="new-brand-btn" (click)="showEditDialog(null)">Новый бренд</button>
   </div>
 </div>
 <h2>Поиск</h2>
@@ -75,7 +75,7 @@
   <tr *ngFor="let b of brandList | async">
     <td><a (click)="showViewDialog(b)">{{b.name}}</a></td>
     <td>{{b.id}}</td>
-    <td><button (click)="toggleActive(b)">{{ b.active ? "Активный" : "Неактивный" }}</button></td>
+    <td style="text-align: center"><button  mat-stroked-button (click)="toggleActive(b)">{{ b.active ? "Активный" : "Неактивный" }}</button></td>
   </tr>
   <tr *ngIf="(brandList | async)?.length==0">
     <td colspan="3">По указанным параметрам поиска отсутствуют данные</td>
