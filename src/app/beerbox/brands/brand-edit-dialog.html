@@ -1,10 +1,11 @@
-<h1 mat-dialog-title>Создание нового бренда</h1>
+<h1 *ngIf="!curBrand.id" mat-dialog-title>Создание нового бренда</h1>
+<h1 *ngIf="curBrand.id" mat-dialog-title>Изменение данных бренда</h1>
 <div class="table">
   <div class="row">
     <div class="cell">Наименование:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [value]="curBrand.name">
+        <input matInput type="text" [(ngModel)]="curBrand.name">
       </mat-form-field>
     </div>
   </div>
@@ -13,7 +14,7 @@
     <div class="cell">Алкоголь %:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [value]="curBrand.alc">
+        <input matInput type="text" [(ngModel)]="curBrand.alc">
       </mat-form-field>
     </div>
   </div>
@@ -23,7 +24,7 @@
     <div class="cell">Состав (включая указанные алергены):</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [value]="curBrand.ingredients">
+        <input matInput type="text" [(ngModel)]="curBrand.ingredients">
       </mat-form-field>
     </div>
   </div>
@@ -82,7 +83,7 @@
     <div class="cell">Дополнительная информация:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [value]="curBrand.more_details">
+        <input matInput type="text" [(ngModel)]="curBrand.more_details">
       </mat-form-field>
     </div>
   </div>
@@ -91,7 +92,7 @@
     <div class="cell">Давление:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="number" [value]="curBrand.pressure">
+        <input matInput type="number" [(ngModel)]="curBrand.pressure">
       </mat-form-field>
     </div>
   </div>
@@ -100,12 +101,12 @@
     <div class="cell">Штрих-код:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [value]="curBrand.barcode">
+        <input matInput type="text" [(ngModel)]="curBrand.barcode">
       </mat-form-field>
     </div>
   </div>
 </div>
 
 <div class="actions">
-  <button (click)="close()">Отменить</button> <button>Сохранить</button>
+  <button (click)="close()">Отменить</button> <button (click)="save()">Сохранить</button>
 </div>

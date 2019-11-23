@@ -202,7 +202,16 @@ export class BrandsComponent implements OnInit {
       data: {brand: b_copy, dists: this.distributors, prods: this.producers}, width: '80vw'
     });
 
-    dialogRef.afterClosed().subscribe(result => console.log(result));
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.result) {
+        if (result.mode === 'edit') {
+          Object.assign(b, result.result);
+          this.updateBrand(result.result);
+        } else if (result.mode === 'create') {
+          //
+        }
+      }
+    });
   }
 
   updateBrand(b: Brand) {
@@ -357,6 +366,14 @@ export class BrandEditDialogComponent implements OnInit {
       this.curBrand.distributor = this.distributors.find(d => d.id === this.curDistributorId);
     } else {
       this.curBrand.distributor = null;
+    }
+  }
+
+  save() {
+    if (this.curBrand.id) {
+      this.dialogRef.close({result: this.curBrand, mode: 'edit'});
+    } else {
+      this.dialogRef.close({result: this.curBrand, mode: 'create'});
     }
   }
 }
