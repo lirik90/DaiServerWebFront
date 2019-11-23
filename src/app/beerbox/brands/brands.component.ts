@@ -2,12 +2,12 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {HttpClient} from '@angular/common/http';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {map, startWith, switchMap} from 'rxjs/operators';
 import {CheckHeadStandDialogComponent} from '../check-head-stand/check-head-stand.component';
 
 export class Brand {
-  active: boolean = true;
+  active = true;
   alc: string;
   barcode: string;
   distributor: Distributor;
@@ -59,15 +59,26 @@ export class Distributor {
   styleUrls: ['./brands.component.css']
 })
 export class BrandsComponent implements OnInit {
-  brands: any[] = [];
+  brands: Brand[] = [];
   producers: Producer[] = [];
-  distributors: any[] = [];
+  distributors: Distributor[] = [];
   producerControl: FormControl = new FormControl();
   filteredProducers: Observable<Producer[]>;
   brandControl: FormControl = new FormControl();
   filteredBrands: Observable<Brand[]>;
   distributorControl: FormControl = new FormControl();
-  filteredDistributors: Observable<Brand[]>;
+  filteredDistributors: Observable<Distributor[]>;
+
+  numbers: number[] = [];
+  numbersControl: FormControl = new FormControl();
+  filteredNumbers: Observable<number[]>;
+
+  brandList: Observable<Brand[]>;
+
+  brandControlS: FormControl = new FormControl();
+  producerControlS: FormControl = new FormControl();
+  distributorControlS: FormControl = new FormControl();
+  numbersControlS: FormControl = new FormControl();
 
   constructor(
     public dialog: MatDialog,
@@ -76,13 +87,52 @@ export class BrandsComponent implements OnInit {
 
   ngOnInit() {
     this.getProducers();
-    this.updateFilteredProducers();
-
-    this.getBrands();
-    this.updateFilteredBrands();
-
     this.getDistributors();
-    this.updateFilteredDistributors();
+    this.getBrands();
+    this.getNumbers();
+  }
+
+  getNumbers() {
+    this.numbers = this.brands.map(b => b.id);
+  }
+
+  updateList() {
+    let result = this.brands;
+
+    if (this.brandControlS.value) {
+      result = result.filter(b => b.id === this.brandControlS.value);
+    }
+
+    if (this.producerControlS.value) {
+      result = result.filter(b => b.producer.id === this.producerControlS.value);
+    }
+
+    if (this.distributorControlS.value) {
+      result = result.filter(b => b.distributor.id === this.distributorControlS.value);
+    }
+
+    if (this.numbersControlS.value) {
+      result = result.filter(b => b.id === this.numbersControlS.value);
+    }
+
+    this.brandList = of(result);
+  }
+
+  updateFilteredNumbers() {
+    this.filteredNumbers = this.numbersControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(n => parseInt(n, 10)),
+        map(n => {
+          if (!isNaN(n)) {
+            console.log(n);
+            return this.brands.filter(p => p.id === n).map(b => b.id);
+          } else {
+            console.log(n);
+            return this.brands.map(b => b.id);
+          }}
+        )
+      );
   }
 
   private updateFilteredProducers() {
@@ -117,10 +167,12 @@ export class BrandsComponent implements OnInit {
   }
 
   private getBrands() {
-    this.http.get<List<Producer>>(`/api/v1/brand/`).subscribe(resp => {
+    this.http.get<List<Brand>>(`/api/v1/brand/`).subscribe(resp => {
       console.log(resp);
       this.brands = resp.results;
       this.updateFilteredBrands();
+      this.updateFilteredNumbers();
+      this.updateList();
     });
   }
 
@@ -135,7 +187,6 @@ export class BrandsComponent implements OnInit {
 
   private getDistributors() {
     this.http.get<List<Producer>>(`/api/v1/distributor/`).subscribe(resp => {
-      console.log(resp);
       this.distributors = resp.results;
       this.updateFilteredDistributors();
     });

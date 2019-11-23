@@ -12,7 +12,7 @@
       <mat-autocomplete #producersAuto="matAutocomplete">
         <mat-option *ngFor="let p of filteredProducers | async" [value]="p.name">{{p.name}}</mat-option>
       </mat-autocomplete-->
-      <mat-select id="producer-input">
+      <mat-select id="producer-input" [formControl]="producerControlS" (selectionChange)="updateList()">
         <input [formControl]="producerControl" placeholder="Поиск">
         <mat-option>Не выбрано</mat-option>
         <mat-option *ngFor="let p of filteredProducers | async" [value]="p.id">{{p.name}}</mat-option>
@@ -27,7 +27,7 @@
       <mat-autocomplete #brandsAuto="matAutocomplete">
         <mat-option *ngFor="let b of filteredBrands | async" [value]="b.name">{{b.name}}</mat-option>
       </mat-autocomplete-->
-      <mat-select id="brand-input">
+      <mat-select id="brand-input" [formControl]="brandControlS" (selectionChange)="updateList()">
         <input [formControl]="brandControl" placeholder="Поиск">
         <mat-option>Не выбрано</mat-option>
         <mat-option *ngFor="let p of filteredBrands | async" [value]="p.id">{{p.name}}</mat-option>
@@ -42,7 +42,7 @@
       <mat-autocomplete #distributorsAuto="matAutocomplete">
         <mat-option *ngFor="let b of filteredDistributors | async" [value]="b.name">{{b.name}}</mat-option>
       </mat-autocomplete-->
-      <mat-select id="distributor-input">
+      <mat-select id="distributor-input" [formControl]="distributorControlS" (selectionChange)="updateList()">
         <input [formControl]="distributorControl" placeholder="Поиск">
         <mat-option>Не выбрано</mat-option>
         <mat-option *ngFor="let p of filteredDistributors | async" [value]="p.id">{{p.name}}</mat-option>
@@ -50,7 +50,20 @@
     </mat-form-field>
   </div>
 
-  Номер бренда
+  <div>
+    <mat-form-field>
+      <label for="numbers-input">Номер бренда</label>
+      <!--input [formControl]="distributorControl" [matAutocomplete]="distributorsAuto" id="distributor-input" matInput type="text">
+      <mat-autocomplete #distributorsAuto="matAutocomplete">
+        <mat-option *ngFor="let b of filteredDistributors | async" [value]="b.name">{{b.name}}</mat-option>
+      </mat-autocomplete-->
+      <mat-select id="numbers-input" [formControl]="numbersControlS" (selectionChange)="updateList()">
+        <input [formControl]="numbersControl" placeholder="Поиск">
+        <mat-option>Не выбрано</mat-option>
+        <mat-option *ngFor="let n of filteredNumbers | async" [value]="n">{{n}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 </div>
 
 <table class="brands-list">
@@ -59,9 +72,12 @@
     <th>Номер бренда</th>
     <th>Статус</th>
   </tr>
-  <tr *ngFor="let b of brands">
+  <tr *ngFor="let b of brandList | async">
     <td><a (click)="showEditDialog(b)">{{b.name}}</a></td>
     <td>{{b.id}}</td>
     <td><button (click)="toggleActive(b)">{{ b.active ? "Активный" : "Неактивный" }}</button></td>
+  </tr>
+  <tr *ngIf="(brandList | async)?.length==0">
+    <td colspan="3">По указанным параметрам поиска отсутствуют данные</td>
   </tr>
 </table>
