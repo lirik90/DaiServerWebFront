@@ -223,6 +223,18 @@ export class BrandsComponent implements OnInit {
     b.active = !b.active;
     this.updateBrand(b);
   }
+
+  showViewDialog(b: Brand) {
+    const dialogRef = this.dialog.open(BrandViewDialogComponent, {
+      data: {brand: b}, width: '80vw'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.result === 1) {
+        this.showEditDialog(b);
+      }
+    });
+  }
 }
 
 @Component({
@@ -346,6 +358,45 @@ export class BrandEditDialogComponent implements OnInit {
     } else {
       this.curBrand.distributor = null;
     }
+  }
+}
+
+
+@Component({
+  selector: 'app-brand-view-dialog',
+  templateUrl: './brand-view-dialog.html',
+  styleUrls: ['./brands.component.css'],
+
+})
+export class BrandViewDialogComponent implements OnInit {
+  curBrand: Brand;
+  curProducerId: number;
+  curDistributorId: number;
+
+  constructor(
+    public dialogRef: MatDialogRef<BrandEditDialogComponent>,
+    public dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    if (data.brand) {
+      this.curBrand = data.brand;
+      this.curProducerId = this.curBrand.producer ? this.curBrand.producer.id : 0;
+      this.curDistributorId = this.curBrand.distributor ? this.curBrand.distributor.id : 0;
+    } else {
+      this.curBrand = new Brand();
+    }
+  }
+
+  ngOnInit(): void {
+
+  }
+
+  close() {
+    this.dialogRef.close({result: null});
+  }
+
+  edit() {
+    this.dialogRef.close({result: 1});
   }
 }
 

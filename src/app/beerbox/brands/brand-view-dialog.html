@@ -1,10 +1,19 @@
-<h1 mat-dialog-title>Создание нового бренда</h1>
+<h1 mat-dialog-title>Информация о бренде</h1>
 <div class="table">
+  <div class="row">
+    <div class="cell">Номер бренда:</div>
+    <div class="cell row2cell">
+      <mat-form-field>
+        <input matInput type="text" [value]="curBrand.id" disabled="disabled">
+      </mat-form-field>
+    </div>
+  </div>
+
   <div class="row">
     <div class="cell">Наименование:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [value]="curBrand.name">
+        <input matInput type="text" [value]="curBrand.name" disabled="disabled">
       </mat-form-field>
     </div>
   </div>
@@ -13,7 +22,7 @@
     <div class="cell">Алкоголь %:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [value]="curBrand.alc">
+        <input matInput type="text" [value]="curBrand.alc" disabled="disabled">
       </mat-form-field>
     </div>
   </div>
@@ -23,7 +32,7 @@
     <div class="cell">Состав (включая указанные алергены):</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [value]="curBrand.ingredients">
+        <input matInput type="text" [value]="curBrand.ingredients" disabled="disabled">
       </mat-form-field>
     </div>
   </div>
@@ -31,16 +40,9 @@
   <div class="row">
     <div class="cell">Производитель:</div>
     <div class="cell row2cell">
-      <div class="select-and-btn">
-        <mat-form-field>
-          <mat-select id="producer-input" [(value)]="curProducerId" (closed)="closeProducer()">
-            <input [formControl]="producerControl" placeholder="Поиск">
-            <mat-option>Не выбрано</mat-option>
-            <mat-option *ngFor="let p of filteredProducers | async" [value]="p.id">{{p.name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <button (click)="showProdAddDialog()">+</button>
-      </div>
+      <mat-form-field>
+        <input matInput type="text" [value]="curBrand.producer ? curBrand.producer.name : ''" disabled="disabled">
+      </mat-form-field>
     </div>
   </div>
 
@@ -54,18 +56,11 @@
   </div>
 
   <div class="row">
-    <div class="cell"><label for="distributor-input">Дистрибьютор:</label></div>
+    <div class="cell">Дистрибьютор:</div>
     <div class="cell row2cell">
-      <div class="select-and-btn">
-        <mat-form-field>
-          <mat-select id="distributor-input" [(value)]="curDistributorId"  (closed)="closeDistributor()">
-            <input [formControl]="distributorControl" placeholder="Поиск">
-            <mat-option>Не выбрано</mat-option>
-            <mat-option *ngFor="let d of filteredDistributors | async" [value]="d.id">{{d.name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <button (click)="showDistribAddDialog()">+</button>
-      </div>
+      <mat-form-field>
+        <input matInput type="text" [value]="curBrand.distributor ? curBrand.distributor.name : ''" disabled="disabled">
+      </mat-form-field>
     </div>
   </div>
 
@@ -82,7 +77,7 @@
     <div class="cell">Дополнительная информация:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [value]="curBrand.more_details">
+        <input matInput type="text" [value]="curBrand.more_details" disabled="disabled">
       </mat-form-field>
     </div>
   </div>
@@ -91,7 +86,7 @@
     <div class="cell">Давление:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="number" [value]="curBrand.pressure">
+        <input matInput type="number" [value]="curBrand.pressure" disabled="disabled">
       </mat-form-field>
     </div>
   </div>
@@ -100,12 +95,12 @@
     <div class="cell">Штрих-код:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [value]="curBrand.barcode">
+        <input matInput type="text" [value]="curBrand.barcode" disabled="disabled">
       </mat-form-field>
     </div>
   </div>
 </div>
 
 <div class="actions">
-  <button (click)="close()">Отменить</button> <button>Сохранить</button>
+  <button (click)="close()">Отменить</button> <button (click)="edit()">Изменить</button>
 </div>
