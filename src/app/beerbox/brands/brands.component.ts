@@ -207,8 +207,9 @@ export class BrandsComponent implements OnInit {
         if (result.mode === 'edit') {
           Object.assign(b, result.result);
           this.updateBrand(result.result);
+          this.updateList();
         } else if (result.mode === 'create') {
-          //
+          this.createBrand(result.result);
         }
       }
     });
@@ -220,8 +221,25 @@ export class BrandsComponent implements OnInit {
     body.producer = b.producer.id;
     body.distributor = b.distributor.id;
 
-    this.http.put<Distributor>(url, body).subscribe(resp => {
+    this.http.put(url, body).subscribe(resp => {
         console.log(resp);
+      },
+      error => {
+        console.log(error);
+      });
+  }
+
+  createBrand(b: Brand) {
+    const url = `/api/v1/brand2/`;
+    const body = Object.assign({}, b) as any;
+    body.id = undefined;
+    body.producer = b.producer.id;
+    body.distributor = b.distributor.id;
+
+    this.http.post<Brand>(url, body).subscribe(resp => {
+        console.log(resp);
+        this.brands.push(resp);
+        this.updateList();
       },
       error => {
         console.log(error);
