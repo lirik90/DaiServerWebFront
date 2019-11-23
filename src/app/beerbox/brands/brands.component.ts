@@ -388,11 +388,26 @@ export class BrandEditDialogComponent implements OnInit {
   }
 
   save() {
-    if (this.curBrand.id) {
-      this.dialogRef.close({result: this.curBrand, mode: 'edit'});
-    } else {
-      this.dialogRef.close({result: this.curBrand, mode: 'create'});
+    let bad = false;
+    for (const field in this.curBrand) {
+      if (field === 'id') {
+        continue;
+      }
+      if (!this.curBrand[field]) {
+        bad = true;
+        console.log(field);
+        console.log(this.curBrand['field']);
+        break;
+      }
     }
+
+    if (bad) {
+      alert('Нужно заполнить все поля!');
+    } else if (this.curBrand.id) {
+        this.dialogRef.close({result: this.curBrand, mode: 'edit'});
+      } else {
+        this.dialogRef.close({result: this.curBrand, mode: 'create'});
+      }
   }
 }
 
