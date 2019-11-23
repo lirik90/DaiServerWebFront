@@ -325,7 +325,7 @@ export class KegsComponent implements OnInit {
   }
 
   isDisabled(head, tap) {
-    return head.is_not_empty.val.display === true
+    return head.is_not_empty.val.display == true
         || tap.mode.val.raw !== 0
         || tap.is_pouring.val.raw === 1;
   }
