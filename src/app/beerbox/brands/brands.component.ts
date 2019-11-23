@@ -258,7 +258,13 @@ export class BrandsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result.result === 1) {
-        this.showEditDialog(b);
+        const dialogRef2 = this.dialog.open(ConfirmEditDialogComponent, {
+          data: {}});
+        dialogRef2.afterClosed().subscribe(result2 => {
+          if (result2.result === 1) {
+            this.showEditDialog(b);
+          }
+        });
       }
     });
   }
@@ -446,6 +452,40 @@ export class BrandViewDialogComponent implements OnInit {
   }
 
   edit() {
+    this.dialogRef.close({result: 1});
+  }
+}
+
+@Component({
+  selector: 'app-confirm-edit-dialog',
+  templateUrl: './confirm-edit-dialog.html',
+  styleUrls: ['./brands.component.css'],
+
+})
+export class ConfirmEditDialogComponent implements OnInit {
+
+
+  constructor(
+    public dialogRef: MatDialogRef<BrandEditDialogComponent>,
+    public dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+
+  }
+
+  ngOnInit(): void {
+
+  }
+
+  close() {
+    this.dialogRef.close({result: null});
+  }
+
+  onNoClick() {
+    this.dialogRef.close({result: null});
+  }
+
+  onYesClick() {
     this.dialogRef.close({result: 1});
   }
 }
