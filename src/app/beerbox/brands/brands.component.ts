@@ -396,7 +396,7 @@ export class BrandEditDialogComponent implements OnInit {
   save() {
     let bad = false;
     for (const field in this.curBrand) {
-      if (field === 'id') {
+      if (!this.curBrand.hasOwnProperty(field) || field === 'id' || field === 'active') {
         continue;
       }
       if (!this.curBrand[field]) {
