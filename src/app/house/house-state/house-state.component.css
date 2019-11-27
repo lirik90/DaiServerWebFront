@@ -149,3 +149,10 @@
 .house-state-modal__close-btn:hover::before {
   opacity: .04;
 }
+
+.house-state-msg__text {
+  white-space: normal;
+  line-height: 1.3em;
+  padding-top: 9px;
+  padding-bottom: 1em;
+}
