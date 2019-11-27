@@ -5,7 +5,7 @@
     <div class="cell">Наименование:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [(ngModel)]="curBrand.name">
+        <input matInput type="text" [(ngModel)]="curBrand.name" maxlength="100">
       </mat-form-field>
     </div>
   </div>
@@ -14,7 +14,7 @@
     <div class="cell">Алкоголь %:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [(ngModel)]="curBrand.alc">
+        <input matInput type="text" [(ngModel)]="curBrand.alc" maxlength="10">
       </mat-form-field>
     </div>
   </div>
@@ -23,7 +23,7 @@
     <div class="cell">Условия хранения:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [(ngModel)]="curBrand.storage_condition">
+        <input matInput type="text" [(ngModel)]="curBrand.storage_condition" maxlength="100">
       </mat-form-field>
     </div>
   </div>
@@ -33,7 +33,7 @@
     <div class="cell">Состав (включая указанные алергены):</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [(ngModel)]="curBrand.ingredients">
+        <input matInput type="text" [(ngModel)]="curBrand.ingredients" maxlength="100">
       </mat-form-field>
     </div>
   </div>
@@ -92,7 +92,7 @@
     <div class="cell">Дополнительная информация:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [(ngModel)]="curBrand.more_details">
+        <input matInput type="text" [(ngModel)]="curBrand.more_details" maxlength="100">
       </mat-form-field>
     </div>
   </div>
@@ -101,7 +101,7 @@
     <div class="cell">Давление:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="number" [(ngModel)]="curBrand.pressure">
+        <input matInput [(ngModel)]="curBrand.pressure" maxlength="100">
       </mat-form-field>
     </div>
   </div>
@@ -110,7 +110,7 @@
     <div class="cell">Штрих-код:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [(ngModel)]="curBrand.barcode">
+        <input matInput type="text" [(ngModel)]="curBrand.barcode" maxlength="100">
       </mat-form-field>
     </div>
   </div>
