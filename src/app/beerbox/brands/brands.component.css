@@ -86,3 +86,15 @@
 .brands-list td:nth-child(3) {
   width: 100px;
 }
+
+.wrap {
+  max-width: 980px;
+}
+
+.brands-list tr:nth-child(2n) {
+  background: #f2f4f8;
+}
+
+.act-btn-toggle {
+  background: #fafafa;
+}

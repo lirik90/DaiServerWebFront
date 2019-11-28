@@ -1,18 +1,18 @@
+<div class="wrap">
 <div class="title-line"><h1>Бренд</h1>
   <div class="new-brand-btn-wrap">
-    <button mat-stroked-button class="new-brand-btn" (click)="showEditDialog(null)">Новый бренд</button>
+    <button mat-stroked-button class="new-brand-btn" (click)="showEditDialog(null)" mat-raised-button  color="primary" >Новый бренд</button>
   </div>
 </div>
 <h2>Поиск</h2>
 <div class="filter-pane">
   <div>
     <mat-form-field>
-      <label for="producer-input">Производитель</label>
       <!--input [formControl]="producerControl" [matAutocomplete]="producersAuto" id="producer-input" matInput type="text">
       <mat-autocomplete #producersAuto="matAutocomplete">
         <mat-option *ngFor="let p of filteredProducers | async" [value]="p.name">{{p.name}}</mat-option>
       </mat-autocomplete-->
-      <mat-select id="producer-input" [formControl]="producerControlS" (selectionChange)="updateList()">
+      <mat-select id="producer-input" [formControl]="producerControlS" (selectionChange)="updateList()" placeholder="Производитель">
         <input [formControl]="producerControl" placeholder="Поиск">
         <mat-option>Не выбрано</mat-option>
         <mat-option *ngFor="let p of filteredProducers | async" [value]="p.id">{{p.name}}</mat-option>
@@ -22,12 +22,11 @@
 
   <div>
     <mat-form-field>
-      <label for="brand-input">Бренд</label>
       <!--input [formControl]="brandControl" [matAutocomplete]="brandsAuto" id="brand-input" matInput type="text">
       <mat-autocomplete #brandsAuto="matAutocomplete">
         <mat-option *ngFor="let b of filteredBrands | async" [value]="b.name">{{b.name}}</mat-option>
       </mat-autocomplete-->
-      <mat-select id="brand-input" [formControl]="brandControlS" (selectionChange)="updateList()">
+      <mat-select id="brand-input" [formControl]="brandControlS" (selectionChange)="updateList()" placeholder="Бренд">
         <input [formControl]="brandControl" placeholder="Поиск">
         <mat-option>Не выбрано</mat-option>
         <mat-option *ngFor="let p of filteredBrands | async" [value]="p.id">{{p.name}}</mat-option>
@@ -37,12 +36,11 @@
 
   <div>
     <mat-form-field>
-      <label for="distributor-input">Дистрибьютор</label>
       <!--input [formControl]="distributorControl" [matAutocomplete]="distributorsAuto" id="distributor-input" matInput type="text">
       <mat-autocomplete #distributorsAuto="matAutocomplete">
         <mat-option *ngFor="let b of filteredDistributors | async" [value]="b.name">{{b.name}}</mat-option>
       </mat-autocomplete-->
-      <mat-select id="distributor-input" [formControl]="distributorControlS" (selectionChange)="updateList()">
+      <mat-select id="distributor-input" [formControl]="distributorControlS" (selectionChange)="updateList()" placeholder="Дистрибьютор">
         <input [formControl]="distributorControl" placeholder="Поиск">
         <mat-option>Не выбрано</mat-option>
         <mat-option *ngFor="let p of filteredDistributors | async" [value]="p.id">{{p.name}}</mat-option>
@@ -52,12 +50,11 @@
 
   <div>
     <mat-form-field>
-      <label for="numbers-input">Номер бренда</label>
       <!--input [formControl]="distributorControl" [matAutocomplete]="distributorsAuto" id="distributor-input" matInput type="text">
       <mat-autocomplete #distributorsAuto="matAutocomplete">
         <mat-option *ngFor="let b of filteredDistributors | async" [value]="b.name">{{b.name}}</mat-option>
       </mat-autocomplete-->
-      <mat-select id="numbers-input" [formControl]="numbersControlS" (selectionChange)="updateList()">
+      <mat-select id="numbers-input" [formControl]="numbersControlS" (selectionChange)="updateList()" placeholder="Номер бренда">
         <input [formControl]="numbersControl" placeholder="Поиск">
         <mat-option>Не выбрано</mat-option>
         <mat-option *ngFor="let n of filteredNumbers | async" [value]="n">{{n}}</mat-option>
@@ -75,9 +72,10 @@
   <tr *ngFor="let b of brandList | async">
     <td><a (click)="showViewDialog(b)">{{b.name}}</a></td>
     <td>{{b.id}}</td>
-    <td style="text-align: center"><button  mat-stroked-button (click)="toggleActive(b)">{{ b.active ? "Активный" : "Неактивный" }}</button></td>
+    <td style="text-align: center"><button class="act-btn-toggle"  mat-stroked-button (click)="toggleActive(b)">{{ b.active ? "Активный" : "Неактивный" }}</button></td>
   </tr>
   <tr *ngIf="(brandList | async)?.length==0">
     <td colspan="3">По указанным параметрам поиска отсутствуют данные</td>
   </tr>
 </table>
+</div>
