@@ -205,21 +205,18 @@ export class BrandsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result.result) {
         if (result.mode === 'edit') {
-          this.producers = result.p;
-          this.distributors = result.d;
-          this.updateFilteredDistributors();
-          this.updateFilteredProducers();
           Object.assign(b, result.result);
           this.updateBrand(result.result);
           this.updateList();
         } else if (result.mode === 'create') {
-          this.producers = result.p;
-          this.distributors = result.d;
-          this.updateFilteredDistributors();
-          this.updateFilteredProducers();
           this.createBrand(result.result);
         }
       }
+
+      this.producers = result.p;
+      this.distributors = result.d;
+      this.updateFilteredDistributors();
+      this.updateFilteredProducers();
     });
   }
 
