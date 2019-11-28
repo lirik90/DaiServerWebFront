@@ -60,12 +60,14 @@ export class KegsComponent implements OnInit {
   bottleCount: ParamValue;
 
   canSeeWash = this.authService.isSupervisor() || this.authService.isCleaner();
+  private brands: Brand[];
 
   constructor(
     private houseService: HouseService,
     public dialog: MatDialog,
     private controlService: ControlService,
     private authService: AuthenticationService,
+    private http: HttpClient,
   ) { }
 
   ngOnInit() {
@@ -81,6 +83,7 @@ export class KegsComponent implements OnInit {
 
     this.getCooler();
     this.getGas();
+    this.getBrands();
   }
 
   getTaps() {
@@ -94,15 +97,14 @@ export class KegsComponent implements OnInit {
       let bottleVol: ParamValue;
       let cleanDate: DeviceItem;
       let is_pouring: DeviceItem;
-      let bid = 0;
+      let bidEl: DeviceItem;
 
       for (const group of sct.groups) {
         if (group.type.name === 'proc') {
            this.bottleCount = group.params.find((el) => el.param.name === 'bottle_count');
            console.log(this.bottleCount);
         } else if (group.type.name === 'brand') {
-           const bidEl = group.items.find((el) => el.type.name === 'brand_id');
-           bid = bidEl ? bidEl.val.display : 0;
+           bidEl = group.items.find((el) => el.type.name === 'brand_id');
         } else if (group.type.name === 'takeHead') {
           // heads.push(group);
           // TODO: check for undefined
@@ -158,7 +160,7 @@ export class KegsComponent implements OnInit {
           bottleVol: bottleVol,
           cleanDate: cleanDate,
           is_pouring: is_pouring,
-          bid: bid
+          bidEl: bidEl,
         });
       }
     }
@@ -344,7 +346,7 @@ export class KegsComponent implements OnInit {
 
   showChangeBrandDialog(tap) {
     const dialogRef = this.dialog.open(BrandChangeDialogComponent, {
-      data: {bid: tap.bid},
+      data: {bid: parseInt(tap.bidEl.val.display, 10), devItem: tap.bidEl},
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -352,6 +354,20 @@ export class KegsComponent implements OnInit {
         console.log('yey');
       }
     });
+  }
+
+
+  private getBrands() {
+    this.http.get<List<Brand>>(`/api/v1/brand/`).subscribe(resp => {
+      this.brands = resp.results;
+    });
+  }
+
+  getBrandName(displayId: string) {
+    const id = parseInt(displayId, 10);
+    const b = this.brands ? this.brands.find(br => br.id === id) : null;
+
+    return b ? b.name : 'не установлен';
   }
 }
 
@@ -369,6 +385,7 @@ export class BrandChangeDialogComponent implements OnInit {
   curBrand: Brand;
 
   bid = 0;
+  devItem: DeviceItem;
 
   constructor(
     public dialogRef: MatDialogRef<BrandEditDialogComponent>,
@@ -381,6 +398,8 @@ export class BrandChangeDialogComponent implements OnInit {
     if (data.bid) {
       this.bid = data.bid;
     }
+
+    this.devItem = data.devItem;
 
     this.getBrands();
   }
@@ -411,6 +430,7 @@ export class BrandChangeDialogComponent implements OnInit {
   }
 
   save() {
+    this.controlService.writeToDevItem(this.devItem.id, this.curBrand.id);
     this.dialogRef.close({result: 1});
   }
 

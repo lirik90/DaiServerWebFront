@@ -152,7 +152,7 @@
   width: 100%;
 }
 
-.mat-select-panel input {
+.mat-select-panel-input {
   position: sticky;
   top: 0;
   border: 1px solid #ccc;

@@ -13,7 +13,7 @@
         <mat-option *ngFor="let p of filteredProducers | async" [value]="p.name">{{p.name}}</mat-option>
       </mat-autocomplete-->
       <mat-select id="producer-input" [formControl]="producerControlS" (selectionChange)="updateList()" placeholder="Производитель">
-        <input [formControl]="producerControl" placeholder="Поиск">
+        <input [formControl]="producerControl" placeholder="Поиск" class="mat-select-panel-input">
         <mat-option>Не выбрано</mat-option>
         <mat-option *ngFor="let p of filteredProducers | async" [value]="p.id">{{p.name}}</mat-option>
       </mat-select>
@@ -27,7 +27,7 @@
         <mat-option *ngFor="let b of filteredBrands | async" [value]="b.name">{{b.name}}</mat-option>
       </mat-autocomplete-->
       <mat-select id="brand-input" [formControl]="brandControlS" (selectionChange)="updateList()" placeholder="Бренд">
-        <input [formControl]="brandControl" placeholder="Поиск">
+        <input [formControl]="brandControl" placeholder="Поиск" class="mat-select-panel-input">
         <mat-option>Не выбрано</mat-option>
         <mat-option *ngFor="let p of filteredBrands | async" [value]="p.id">{{p.name}}</mat-option>
       </mat-select>
@@ -41,7 +41,7 @@
         <mat-option *ngFor="let b of filteredDistributors | async" [value]="b.name">{{b.name}}</mat-option>
       </mat-autocomplete-->
       <mat-select id="distributor-input" [formControl]="distributorControlS" (selectionChange)="updateList()" placeholder="Дистрибьютор">
-        <input [formControl]="distributorControl" placeholder="Поиск">
+        <input [formControl]="distributorControl" placeholder="Поиск" class="mat-select-panel-input">
         <mat-option>Не выбрано</mat-option>
         <mat-option *ngFor="let p of filteredDistributors | async" [value]="p.id">{{p.name}}</mat-option>
       </mat-select>
@@ -55,7 +55,7 @@
         <mat-option *ngFor="let b of filteredDistributors | async" [value]="b.name">{{b.name}}</mat-option>
       </mat-autocomplete-->
       <mat-select id="numbers-input" [formControl]="numbersControlS" (selectionChange)="updateList()" placeholder="Номер бренда">
-        <input [formControl]="numbersControl" placeholder="Поиск">
+        <input [formControl]="numbersControl" placeholder="Поиск" class="mat-select-panel-input">
         <mat-option>Не выбрано</mat-option>
         <mat-option *ngFor="let n of filteredNumbers | async" [value]="n">{{n}}</mat-option>
       </mat-select>
