@@ -56,8 +56,8 @@
                     <span i18n="@@BEERBOX.KEGS.NOT_CONNECTED">Неподключено</span>
                   </ng-container>
                 </div>
-                <div class="graph">
-                  <ng-container *ngIf="head.volume_poured && head.volume_poured.val.display !== null">
+                <div class="graph" *ngIf="head.volume_poured && head.volume_poured.val.display !== null">
+                  <ng-container>
                     <div class="graph__filled" [style.height.%]="getPercentFilled(head)"></div>
                     <div class="graph_label">
                       {{ getLeftBottles(head) }}
