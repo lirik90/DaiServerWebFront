@@ -264,7 +264,7 @@ export class BrandsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result.result === 1) {
         const dialogRef2 = this.dialog.open(ConfirmEditDialogComponent, {
-          data: {}});
+          data: {text: 'Действительно хотите произвести редактирование бренда?', ybtn: 'Редактировать', nbtn: 'Отмена'}});
         dialogRef2.afterClosed().subscribe(result2 => {
           if (result2.result === 1) {
             this.showEditDialog(b);
@@ -325,7 +325,13 @@ export class BrandEditDialogComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close({result: null, d: this.distributors, p: this.producers});
+    const dialogRef2 = this.dialog.open(ConfirmEditDialogComponent, {
+      data: {text: 'Действительно хотите отменить?', ybtn: 'Отменить', nbtn: 'Продолжить'}});
+    dialogRef2.afterClosed().subscribe(result2 => {
+      if (result2.result === 1) {
+        this.dialogRef.close({result: null, d: this.distributors, p: this.producers});
+      }
+    });
   }
 
   private updateFilteredProducers() {
@@ -466,14 +472,18 @@ export class BrandViewDialogComponent implements OnInit {
 
 })
 export class ConfirmEditDialogComponent implements OnInit {
-
+  text: string;
+  ybtn: string;
+  nbtn: string;
 
   constructor(
     public dialogRef: MatDialogRef<BrandEditDialogComponent>,
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-
+    this.text = data.text;
+    this.ybtn = data.ybtn;
+    this.nbtn = data.nbtn;
   }
 
   ngOnInit(): void {
