@@ -67,6 +67,8 @@ export class KegsComponent implements OnInit {
     this.get_data();
     this.taps = this.getTaps();
 
+    console.log(this.taps);
+
     // TODO: check for undefined
     const deviceSection: Section = this.houseService.house.sections.filter((el) => el.id === 1)[0];
     const procGroup: Group = deviceSection.groups.filter((el) => el.type.name === 'proc')[0];
