@@ -199,11 +199,11 @@ export class BrandsComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open(BrandEditDialogComponent, {
-      data: {brand: b_copy, dists: this.distributors, prods: this.producers, brands: this.brands}, width: '80vw'
+      data: {brand: b_copy, dists: this.distributors, prods: this.producers, brands: this.brands}, width: '80vw', disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result.result) {
+      if (result && result.result) {
         if (result.mode === 'edit') {
           Object.assign(b, result.result);
           this.updateBrand(result.result);
@@ -211,12 +211,12 @@ export class BrandsComponent implements OnInit {
         } else if (result.mode === 'create') {
           this.createBrand(result.result);
         }
-      }
 
-      this.producers = result.p;
-      this.distributors = result.d;
-      this.updateFilteredDistributors();
-      this.updateFilteredProducers();
+        this.producers = result.p;
+        this.distributors = result.d;
+        this.updateFilteredDistributors();
+        this.updateFilteredProducers();
+      }
     });
   }
 
@@ -262,11 +262,11 @@ export class BrandsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result.result === 1) {
+      if (result && result.result === 1) {
         const dialogRef2 = this.dialog.open(ConfirmEditDialogComponent, {
           data: {text: 'Действительно хотите произвести редактирование бренда?', ybtn: 'Редактировать', nbtn: 'Отмена'}});
         dialogRef2.afterClosed().subscribe(result2 => {
-          if (result2.result === 1) {
+          if ( result && result2.result === 1) {
             this.showEditDialog(b);
           }
         });
@@ -279,6 +279,7 @@ export class BrandsComponent implements OnInit {
     this.producerControlS.setValue('');
     this.distributorControlS.setValue('');
     this.brandControlS.setValue('');
+    this.updateList();
   }
 }
 
@@ -300,9 +301,11 @@ export class BrandEditDialogComponent implements OnInit {
   producerControl: FormControl = new FormControl();
   curProducerId: number;
   curDistributorId: number;
+  fbrands: Observable<Brand[]>;
+  nameCtrl = new FormControl();
 
   constructor(
-    public dialogRef: MatDialogRef<BrandEditDialogComponent>,
+    public dialogRef: MatDialogRef <BrandEditDialogComponent>,
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -331,6 +334,24 @@ export class BrandEditDialogComponent implements OnInit {
     } else {
       this.brands = [];
     }
+
+    this.fbrands = this.nameCtrl.valueChanges
+      .pipe(
+        startWith(''),
+        map(name => {
+          //console.log(name);
+
+          if (this.curBrand.id || name.length === 0) {
+            return [];
+          }
+
+          return name ? this.brands.filter(b => b.name.includes(name)) : this.brands.slice()
+        })
+      );
+
+    this.nameCtrl.valueChanges.subscribe(v => {
+      this.curBrand.name = v;
+    });
   }
 
   ngOnInit(): void {
@@ -378,7 +399,7 @@ export class BrandEditDialogComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(resp => {
-      if (resp.result) {
+      if (resp && resp.result) {
         this.distributors.push(resp.result);
         this.updateFilteredDistributors();
       }
@@ -391,7 +412,7 @@ export class BrandEditDialogComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(resp => {
-      if (resp.result) {
+      if (resp && resp.result) {
         this.producers.push(resp.result);
         this.updateFilteredProducers();
       }
@@ -446,6 +467,36 @@ export class BrandEditDialogComponent implements OnInit {
         this.dialogRef.close({result: this.curBrand, mode: 'create', d: this.distributors, p: this.producers});
       }
   }
+
+  doFilter() {
+
+  }
+
+  showExists(v: any) {
+    //console.log(v);
+    const optId = v.id;
+    const optEl = document.getElementById(optId);
+    const dataId = parseInt(optEl.getAttribute('data-bid'), 10);
+    console.log(dataId);
+
+    const b = this.brands.find(br => br.id === dataId);
+
+    if (!b) {
+      return;
+    }
+
+    const dialogRef = this.dialog.open(BrandViewDialogComponent, {
+      data: {brand: b, ybtn: 'Продолжить создание бренда'}, width: '80vw'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.result === 1) {
+        console.log('yey');
+      } else {
+        this.close();
+      }
+    });
+  }
 }
 
 
@@ -459,6 +510,7 @@ export class BrandViewDialogComponent implements OnInit {
   curBrand: Brand;
   curProducerId: number;
   curDistributorId: number;
+  ybtn: string;
 
   constructor(
     public dialogRef: MatDialogRef<BrandEditDialogComponent>,
@@ -471,6 +523,10 @@ export class BrandViewDialogComponent implements OnInit {
       this.curDistributorId = this.curBrand.distributor ? this.curBrand.distributor.id : 0;
     } else {
       this.curBrand = new Brand();
+    }
+
+    if (data.ybtn) {
+      this.ybtn = data.ybtn;
     }
   }
 

@@ -98,3 +98,14 @@
 .act-btn-toggle {
   background: #fafafa;
 }
+
+.filter-pane-clear {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-left: 1em;
+}
+
+.brands-list {
+  margin-top: 1em;
+}

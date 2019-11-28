@@ -5,7 +5,10 @@
     <div class="cell">Наименование:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [(ngModel)]="curBrand.name" maxlength="100">
+        <input matInput type="text" [formControl]="nameCtrl" maxlength="100" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)='showExists($event.option)'>
+          <mat-option *ngFor="let b of fbrands | async" [value]="b.name" [attr.data-bid]="b.id">{{b.name}}</mat-option>
+        </mat-autocomplete>
       </mat-form-field>
     </div>
   </div>
