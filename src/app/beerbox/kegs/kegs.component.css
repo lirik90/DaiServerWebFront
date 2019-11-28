@@ -147,3 +147,19 @@
 .change-brand-btn-wrap {
   margin-top: 0.5em;
 }
+
+.w100 {
+  width: 100%;
+}
+
+.mat-select-panel input {
+  position: sticky;
+  top: 0;
+  border: 1px solid #ccc;
+  background: #fff;
+  z-index: 1000;
+  width: 100%;
+  box-sizing: border-box;
+  height: 44px;
+  padding: 8px;
+}

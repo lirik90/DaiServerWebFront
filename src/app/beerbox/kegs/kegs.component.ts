@@ -1,12 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {HouseService} from '../../house/house.service';
 import {DeviceItem, Group, ParamValue, Section} from '../../house/house';
-import {filter} from 'rxjs/operators';
+import {filter, map, startWith} from 'rxjs/operators';
 import {ConfirmDialogReplaceKegComponent} from '../replace-keg/replace-keg.component';
-import {MatDialog} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {ControlService} from '../../house/control.service';
 import {AuthenticationService} from '../../authentication.service';
 import * as moment from 'moment';
+import {Brand, BrandEditDialogComponent, BrandViewDialogComponent, List} from '../brands/brands.component';
+import {FormControl} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
 
 export interface Head {
   date_made: ParamValue;
@@ -26,6 +30,7 @@ export interface Head {
 }
 
 export interface Tap {
+  bid: number;
   bottleVol: DeviceItem;
   mode: DeviceItem;
   isBlocked: DeviceItem;
@@ -89,11 +94,15 @@ export class KegsComponent implements OnInit {
       let bottleVol: ParamValue;
       let cleanDate: DeviceItem;
       let is_pouring: DeviceItem;
+      let bid = 0;
 
       for (const group of sct.groups) {
         if (group.type.name === 'proc') {
            this.bottleCount = group.params.find((el) => el.param.name === 'bottle_count');
            console.log(this.bottleCount);
+        } else if (group.type.name === 'brand') {
+           const bidEl = group.items.find((el) => el.type.name === 'brand_id');
+           bid = bidEl ? bidEl.val.display : 0;
         } else if (group.type.name === 'takeHead') {
           // heads.push(group);
           // TODO: check for undefined
@@ -148,7 +157,8 @@ export class KegsComponent implements OnInit {
           mode: mode,
           bottleVol: bottleVol,
           cleanDate: cleanDate,
-          is_pouring: is_pouring
+          is_pouring: is_pouring,
+          bid: bid
         });
       }
     }
@@ -314,8 +324,8 @@ export class KegsComponent implements OnInit {
 
     const date = moment(d, 'DD.MM.YYYY');
 
-    //console.log('DATE');
-    //console.log(date);
+    // console.log('DATE');
+    // console.log(date);
 
     const isAfter = moment(date).isAfter(moment('2019-10-19 9:30'));
 
@@ -330,5 +340,81 @@ export class KegsComponent implements OnInit {
     return head.is_not_empty.val.display == true
         || tap.mode.val.raw !== 0
         || tap.is_pouring.val.raw === 1;
+  }
+
+  showChangeBrandDialog(tap) {
+    const dialogRef = this.dialog.open(BrandChangeDialogComponent, {
+      data: {bid: tap.bid},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('yey');
+      }
+    });
+  }
+}
+
+
+@Component({
+  selector: 'app-brand-change-dialog',
+  templateUrl: './brand-change-dialog.html',
+  styleUrls: ['./kegs.component.css'],
+
+})
+export class BrandChangeDialogComponent implements OnInit {
+  brandControl = new FormControl();
+  filteredBrands: Observable<Brand[]>;
+  brands: Brand[];
+  curBrand: Brand;
+
+  bid = 0;
+
+  constructor(
+    public dialogRef: MatDialogRef<BrandEditDialogComponent>,
+    public dialog: MatDialog,
+    private http: HttpClient,
+    private houseService: HouseService,
+    private controlService: ControlService,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    if (data.bid) {
+      this.bid = data.bid;
+    }
+
+    this.getBrands();
+  }
+
+  private getBrands() {
+    this.http.get<List<Brand>>(`/api/v1/brand/`).subscribe(resp => {
+      this.brands = resp.results;
+      this.updateFilteredBrands();
+      this.getCurBrand(this.bid);
+    });
+  }
+
+  private updateFilteredBrands() {
+    this.filteredBrands = this.brandControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(name => name ? this.brands.filter(p => p.name.includes(name)) : this.brands.slice()
+        )
+      );
+  }
+
+  ngOnInit(): void {
+
+  }
+
+  close() {
+    this.dialogRef.close({result: null});
+  }
+
+  save() {
+    this.dialogRef.close({result: 1});
+  }
+
+  private getCurBrand(id: number) {
+    this.curBrand = this.brands.find(b => b.id === id);
   }
 }

@@ -21,10 +21,10 @@
 
         <div class="brand-pane">
           <div class="current-brand">
-            <span>Текущий бренд:</span> <span>{{ '1' }}</span>
+            <span>Текущий бренд: </span><span>{{ tap.bid }}</span>
           </div>
           <div class="change-brand-btn-wrap">
-            <button mat-stroked-button>Изменить бренд</button>
+            <button mat-stroked-button (click)="showChangeBrandDialog(tap)">Изменить бренд</button>
           </div>
         </div>
 

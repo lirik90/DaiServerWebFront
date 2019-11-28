@@ -20,7 +20,7 @@ import {HttpClient} from '@angular/common/http';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {OperationHoursComponent} from './operation-hours/operation-hours.component';
-import {KegsComponent} from './kegs/kegs.component';
+import {BrandChangeDialogComponent, KegsComponent} from './kegs/kegs.component';
 import {LabelConfiguratorComponent} from './label-configurator/label-configurator.component';
 import {NgxBarcodeModule} from 'ngx-barcode';
 import {WashTapComponent} from './wash-tap/wash-tap.component';
@@ -66,7 +66,8 @@ export function createTranslateLoader(http: HttpClient) {
     CheckHeadStandDialogComponent, ReplaceLabelsComponent, UpdateBeerInfoComponent, EditDialogUpdateBeerInfoComponent,
     EditDialogManufacturersListComponent, ChangeControllerAddressComponent, OperationHoursComponent, KegsComponent, OkDialogComponent,
     LabelConfiguratorComponent, WashTapComponent, CalVolComponent, BrandsComponent, WifiComponent, PourSettingsComponent,
-    BrandEditDialogComponent, ProdAddDialogComponent, DistribAddDialogComponent, BrandViewDialogComponent, ConfirmEditDialogComponent
+    BrandEditDialogComponent, ProdAddDialogComponent, DistribAddDialogComponent, BrandViewDialogComponent, ConfirmEditDialogComponent,
+    BrandChangeDialogComponent
   ],
   entryComponents: [
     ConfirmDialogReplaceKegComponent,
@@ -75,7 +76,7 @@ export function createTranslateLoader(http: HttpClient) {
     EditDialogManufacturersListComponent,
     OkDialogComponent,
     BrandEditDialogComponent,
-    ProdAddDialogComponent, DistribAddDialogComponent, BrandViewDialogComponent, ConfirmEditDialogComponent
+    ProdAddDialogComponent, DistribAddDialogComponent, BrandViewDialogComponent, ConfirmEditDialogComponent, BrandChangeDialogComponent
   ],
 })
 export class BeerboxModule {
