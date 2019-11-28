@@ -205,10 +205,18 @@ export class BrandsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result.result) {
         if (result.mode === 'edit') {
+          this.producers = result.p;
+          this.distributors = result.d;
+          this.updateFilteredDistributors();
+          this.updateFilteredProducers();
           Object.assign(b, result.result);
           this.updateBrand(result.result);
           this.updateList();
         } else if (result.mode === 'create') {
+          this.producers = result.p;
+          this.distributors = result.d;
+          this.updateFilteredDistributors();
+          this.updateFilteredProducers();
           this.createBrand(result.result);
         }
       }
@@ -320,7 +328,7 @@ export class BrandEditDialogComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close({result: null});
+    this.dialogRef.close({result: null, d: this.distributors, p: this.producers});
   }
 
   private updateFilteredProducers() {
@@ -349,12 +357,11 @@ export class BrandEditDialogComponent implements OnInit {
 
   showDistribAddDialog() {
     const dialogRef = this.dialog.open(DistribAddDialogComponent, {
-      data: {},
+      data: {}, width: '80vw'
     });
 
     dialogRef.afterClosed().subscribe(resp => {
       if (resp.result) {
-        this.curBrand.distributor = resp.result;
         this.distributors.push(resp.result);
         this.updateFilteredDistributors();
       }
@@ -363,13 +370,12 @@ export class BrandEditDialogComponent implements OnInit {
 
   showProdAddDialog() {
     const dialogRef = this.dialog.open(ProdAddDialogComponent, {
-      data: {},
+      data: {}, width: '80vw'
     });
 
     dialogRef.afterClosed().subscribe(resp => {
       if (resp.result) {
         this.producers.push(resp.result);
-        this.curBrand.producer = resp.result;
         this.updateFilteredProducers();
       }
     });
@@ -410,9 +416,9 @@ export class BrandEditDialogComponent implements OnInit {
     if (bad) {
       alert('Нужно заполнить все поля!');
     } else if (this.curBrand.id) {
-        this.dialogRef.close({result: this.curBrand, mode: 'edit'});
+        this.dialogRef.close({result: this.curBrand, mode: 'edit', d: this.distributors, p: this.producers});
       } else {
-        this.dialogRef.close({result: this.curBrand, mode: 'create'});
+        this.dialogRef.close({result: this.curBrand, mode: 'create', d: this.distributors, p: this.producers});
       }
   }
 }

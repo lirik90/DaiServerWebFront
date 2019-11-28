@@ -1,5 +1,5 @@
 <h1 *ngIf="!curBrand.id" mat-dialog-title>Создание нового бренда</h1>
-<h1 *ngIf="curBrand.id" mat-dialog-title>Изменение данных бренда</h1>
+<h1 *ngIf="curBrand.id" mat-dialog-title>Изменение бренда</h1>
 <div class="table">
   <div class="row">
     <div class="cell">Наименование:</div>
@@ -101,7 +101,7 @@
     <div class="cell">Давление:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput [(ngModel)]="curBrand.pressure" maxlength="100">
+        <input type="number" step="0.01" matInput [(ngModel)]="curBrand.pressure" maxlength="100">
       </mat-form-field>
     </div>
   </div>
