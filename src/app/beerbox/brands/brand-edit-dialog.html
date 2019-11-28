@@ -23,7 +23,12 @@
     <div class="cell">Условия хранения:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [(ngModel)]="curBrand.storage_condition" maxlength="100">
+        <textarea matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  maxlength="100"
+                  [(ngModel)]="curBrand.storage_condition"></textarea>
       </mat-form-field>
     </div>
   </div>
@@ -33,7 +38,13 @@
     <div class="cell">Состав (включая указанные алергены):</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [(ngModel)]="curBrand.ingredients" maxlength="100">
+        <textarea matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  maxlength="100"
+                  [(ngModel)]="curBrand.ingredients"
+                  ></textarea>
       </mat-form-field>
     </div>
   </div>
@@ -58,7 +69,13 @@
     <div class="cell">Адрес производителя:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput disabled="disabled" type="text" [value]="curBrand.producer ? curBrand.producer.address : ''">
+                <textarea matInput
+                          cdkTextareaAutosize
+                          #autosize="cdkTextareaAutosize"
+                          cdkAutosizeMinRows="1"
+                          maxlength="100"
+                          [value]="curBrand.producer ? curBrand.producer.address : ''"
+                          disabled="disabled"></textarea>
       </mat-form-field>
     </div>
   </div>
@@ -83,7 +100,13 @@
     <div class="cell">Адрес дистрибьютора:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput disabled="disabled" type="text" [value]="curBrand.distributor ? curBrand.distributor.address : ''">
+                <textarea matInput
+                          cdkTextareaAutosize
+                          #autosize="cdkTextareaAutosize"
+                          cdkAutosizeMinRows="1"
+                          maxlength="100"
+                          [value]="curBrand.distributor ? curBrand.distributor.address : ''"
+                          disabled="disabled"></textarea>
       </mat-form-field>
     </div>
   </div>
@@ -92,7 +115,13 @@
     <div class="cell">Дополнительная информация:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [(ngModel)]="curBrand.more_details" maxlength="100">
+        <textarea matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  maxlength="100"
+                  [(ngModel)]="curBrand.more_details"
+        ></textarea>
       </mat-form-field>
     </div>
   </div>
@@ -101,7 +130,7 @@
     <div class="cell">Давление:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input type="number" step="0.01" matInput [(ngModel)]="curBrand.pressure" maxlength="100">
+        <input type="number" step="0.01" matInput [(ngModel)]="curBrand.pressure" maxlength="10">
       </mat-form-field>
     </div>
   </div>
@@ -110,7 +139,7 @@
     <div class="cell">Штрих-код:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [(ngModel)]="curBrand.barcode" maxlength="100">
+        <input matInput type="text" [(ngModel)]="curBrand.barcode" maxlength="13">
       </mat-form-field>
     </div>
   </div>
