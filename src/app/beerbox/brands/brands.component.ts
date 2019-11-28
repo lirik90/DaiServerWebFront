@@ -199,7 +199,7 @@ export class BrandsComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open(BrandEditDialogComponent, {
-      data: {brand: b_copy, dists: this.distributors, prods: this.producers}, width: '80vw'
+      data: {brand: b_copy, dists: this.distributors, prods: this.producers, brands: this.brands}, width: '80vw'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -273,6 +273,13 @@ export class BrandsComponent implements OnInit {
       }
     });
   }
+
+  clear() {
+    this.numbersControlS.setValue('');
+    this.producerControlS.setValue('');
+    this.distributorControlS.setValue('');
+    this.brandControlS.setValue('');
+  }
 }
 
 @Component({
@@ -283,6 +290,7 @@ export class BrandsComponent implements OnInit {
 })
 export class BrandEditDialogComponent implements OnInit {
   curBrand: Brand;
+  brands: Brand[];
 
   distributors: Distributor[];
   filteredDistributors: Observable<Distributor[]>;
@@ -316,6 +324,12 @@ export class BrandEditDialogComponent implements OnInit {
       this.producers = data.prods;
     } else {
       this.producers = [];
+    }
+
+    if (data.brands) {
+      this.brands = data.brands;
+    } else {
+      this.brands = [];
     }
   }
 
@@ -404,6 +418,7 @@ export class BrandEditDialogComponent implements OnInit {
 
   save() {
     let bad = false;
+    let badExists = false;
     for (const field in this.curBrand) {
       if (!this.curBrand.hasOwnProperty(field) || field === 'id' || field === 'active') {
         continue;
@@ -416,8 +431,15 @@ export class BrandEditDialogComponent implements OnInit {
       }
     }
 
+    if (this.brands.find(b => b.barcode == this.curBrand.barcode)) {
+      badExists = true;
+    }
+
     if (bad) {
       alert('Нужно заполнить все поля!');
+    }
+    if (badExists) {
+      alert('Данные поля «Штрих-код» совпадают с данными в БД. Необходимо указать новый код продукта');
     } else if (this.curBrand.id) {
         this.dialogRef.close({result: this.curBrand, mode: 'edit', d: this.distributors, p: this.producers});
       } else {
