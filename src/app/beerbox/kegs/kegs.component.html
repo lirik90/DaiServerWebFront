@@ -19,6 +19,15 @@
           <ng-container *ngIf="tap.isBlocked.val.display" i18n="@@BEERBOX.KEGS.TAP_IS_BLOCKED">&mdash; заблокирован</ng-container>
         </div>
 
+        <div class="brand-pane">
+          <div class="current-brand">
+            <span>Текущий бренд:</span> <span>{{ '1' }}</span>
+          </div>
+          <div class="change-brand-btn-wrap">
+            <button mat-stroked-button>Изменить бренд</button>
+          </div>
+        </div>
+
         <div class="tap-pane__content">
           <div class="heads">
             <mat-card class="head-pane" *ngFor="let head of tap.heads">
