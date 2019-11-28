@@ -5,7 +5,13 @@
       <div class="cell"><label for="name">Наименование:</label></div>
       <div class="cell row2cell">
         <mat-form-field>
-          <input id="name" matInput type="text" formControlName="name">
+          <textarea matInput
+                    id="name"
+                    formControlName="name"
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    maxlength="100"></textarea>
         </mat-form-field>
       </div>
     </div>
@@ -15,6 +21,13 @@
       <div class="cell row2cell">
         <mat-form-field>
           <input id="address" matInput type="text" formControlName="address">
+          <textarea matInput
+                    id="address"
+                    formControlName="address"
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    maxlength="100"></textarea>
         </mat-form-field>
       </div>
     </div>
