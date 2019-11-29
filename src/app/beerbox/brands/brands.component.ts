@@ -302,7 +302,7 @@ export class BrandEditDialogComponent implements OnInit {
   curProducerId: number;
   curDistributorId: number;
   fbrands: Observable<Brand[]>;
-  nameCtrl = new FormControl();
+  nameCtrl = new FormControl('');
 
   constructor(
     public dialogRef: MatDialogRef <BrandEditDialogComponent>,
@@ -313,6 +313,7 @@ export class BrandEditDialogComponent implements OnInit {
       this.curBrand = data.brand;
       this.curProducerId = this.curBrand.producer ? this.curBrand.producer.id : 0;
       this.curDistributorId = this.curBrand.distributor ? this.curBrand.distributor.id : 0;
+      this.nameCtrl.setValue(this.curBrand.name);
     } else {
       this.curBrand = new Brand();
     }

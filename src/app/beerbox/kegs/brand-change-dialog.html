@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Создание нового дистрибьютора</h1>
+
+<div>
+  <label for="brand">Выберите бренд:</label>
+</div>
+<div>
+  <mat-form-field class="w100">
+    <mat-select id="brand" [(value)]="this.curBrand" class="w100">
+      <input [formControl]="brandControl" placeholder="Поиск" class="mat-select-panel-input">
+      <mat-option>Не выбрано</mat-option>
+      <mat-option *ngFor="let p of filteredBrands | async" [value]="p">{{p.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+
+<div class="actions">
+  <button mat-stroked-button (click)="close()">Отменить</button>
+  <button mat-stroked-button (click)="save()">Сохранить</button>
+</div>
+
