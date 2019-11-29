@@ -453,7 +453,7 @@ export class BrandEditDialogComponent implements OnInit {
       }
     }
 
-    if (this.brands.find(b => b.barcode == this.curBrand.barcode || b.id != this.curBrand.id)) {
+    if (this.brands.find(b => b.barcode == this.curBrand.barcode && b.id != this.curBrand.id)) {
       badExists = true;
     }
 
