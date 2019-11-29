@@ -461,7 +461,7 @@ export class BrandEditDialogComponent implements OnInit {
       alert('Нужно заполнить все поля!');
     }
     if (badExists) {
-      alert('Данные поля «Штрих-код» совпадают с данными в БД. Необходимо указать новый код продукта');
+      alert('Данные поля «Штрих-код» совпадают с данными в БД. Необходимо указать новый штрих-код');
     } else if (this.curBrand.id) {
         this.dialogRef.close({result: this.curBrand, mode: 'edit', d: this.distributors, p: this.producers});
       } else {
