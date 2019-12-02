@@ -1,7 +1,7 @@
-<h1 mat-dialog-title>Информация о бренде</h1>
+<h1 mat-dialog-title  i18n="@@BEERBOX.BRANDS.INFO_TITLE">Информация о бренде</h1>
 <div class="table">
   <div class="row">
-    <div class="cell">Номер бренда:</div>
+    <div class="cell"  i18n="@@BEERBOX.BRANDS.BRAND_NUMBERI">Номер бренда:</div>
     <div class="cell row2cell">
       <mat-form-field>
         <input matInput type="text" [value]="curBrand.id" disabled="disabled">
@@ -10,7 +10,7 @@
   </div>
 
   <div class="row">
-    <div class="cell">Наименование:</div>
+    <div class="cell" i18n="@@BEERBOX.BRANDS.NAMEI">Наименование:</div>
     <div class="cell row2cell">
       <mat-form-field>
         <input matInput type="text" [value]="curBrand.name" disabled="disabled">
@@ -19,7 +19,7 @@
   </div>
 
   <div class="row">
-    <div class="cell">Алкоголь %:</div>
+    <div class="cell" i18n="@@BEERBOX.BRANDS.ALCI">Алкоголь %:</div>
     <div class="cell row2cell">
       <mat-form-field>
         <input matInput type="text" [value]="curBrand.alc" disabled="disabled">
@@ -28,7 +28,7 @@
   </div>
 
   <div class="row">
-    <div class="cell">Условия хранения:</div>
+    <div class="cell" i18n="@@BEERBOX.BRANDS.STORAGE_CONDITIONI">Условия хранения:</div>
     <div class="cell row2cell">
       <mat-form-field>
                 <textarea matInput
@@ -43,7 +43,7 @@
   </div>
 
   <div class="row">
-    <div class="cell">Состав (включая указанные алергены):</div>
+    <div class="cell" i18n="@@BEERBOX.BRANDS.CONTENTI">Состав (включая указанные алергены):</div>
     <div class="cell row2cell">
       <mat-form-field>
         <textarea matInput
@@ -58,7 +58,7 @@
   </div>
 
   <div class="row">
-    <div class="cell">Производитель:</div>
+    <div class="cell" i18n="@@BEERBOX.BRANDS.PRODUCERI">Производитель:</div>
     <div class="cell row2cell">
       <mat-form-field>
         <input matInput type="text" [value]="curBrand.producer ? curBrand.producer.name : ''" disabled="disabled">
@@ -67,7 +67,7 @@
   </div>
 
   <div class="row">
-    <div class="cell">Адрес производителя:</div>
+    <div class="cell" i18n="@@BEERBOX.BRANDS.PRODUCER_ADDRESSI">Адрес производителя:</div>
     <div class="cell row2cell">
       <mat-form-field>
         <textarea matInput
@@ -82,7 +82,7 @@
   </div>
 
   <div class="row">
-    <div class="cell">Дистрибьютор:</div>
+    <div class="cell" i18n="@@BEERBOX.BRANDS.DISTRIBUTORI">Дистрибьютор:</div>
     <div class="cell row2cell">
       <mat-form-field>
         <input matInput type="text" [value]="curBrand.distributor ? curBrand.distributor.name : ''" disabled="disabled">
@@ -91,7 +91,7 @@
   </div>
 
   <div class="row">
-    <div class="cell">Адрес дистрибьютора:</div>
+    <div class="cell" i18n="@@BEERBOX.BRANDS.DISTRIBUTOR_ADDRESSI">Адрес дистрибьютора:</div>
     <div class="cell row2cell">
       <mat-form-field>
         <textarea matInput
@@ -106,7 +106,7 @@
   </div>
 
   <div class="row">
-    <div class="cell">Дополнительная информация:</div>
+    <div class="cell" i18n="@@BEERBOX.BRANDS.ADDITIONAL_INFOI">Дополнительная информация:</div>
     <div class="cell row2cell">
       <mat-form-field>
         <textarea matInput
@@ -121,7 +121,7 @@
   </div>
 
   <div class="row">
-    <div class="cell">Давление:</div>
+    <div class="cell" i18n="@@BEERBOX.BRANDS.PRESSUREI">Давление:</div>
     <div class="cell row2cell">
       <mat-form-field>
         <input matInput type="number" [value]="curBrand.pressure" disabled="disabled">
@@ -130,7 +130,7 @@
   </div>
 
   <div class="row">
-    <div class="cell">Штрих-код:</div>
+    <div class="cell" i18n="@@BEERBOX.BRANDS.BARCODEI">Штрих-код:</div>
     <div class="cell row2cell">
       <mat-form-field>
         <input matInput type="text" [value]="curBrand.barcode" disabled="disabled">
@@ -141,6 +141,6 @@
 
 <div class="actions">
   <button mat-stroked-button (click)="close()">Отменить</button>
-  <button mat-raised-button  color="primary" (click)="edit()" *ngIf="!ybtn">Редактировать</button>
+  <button mat-raised-button  color="primary" (click)="edit()" *ngIf="!ybtn"  i18n="@@BEERBOX.BRANDS.EDIT_BTN">Редактировать</button>
   <button mat-raised-button  color="primary" (click)="edit()" *ngIf="ybtn">{{ybtn}}</button>
 </div>

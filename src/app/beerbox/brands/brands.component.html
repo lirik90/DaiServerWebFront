@@ -1,7 +1,7 @@
 <div class="wrap">
-<div class="title-line"><h1>Бренд</h1>
+<div class="title-line"><h1 i18n="@@BEERBOX.BRANDS.TITLE_BRAND">Бренд</h1>
   <div class="new-brand-btn-wrap">
-    <button mat-stroked-button class="new-brand-btn" (click)="showEditDialog(null)" mat-raised-button  color="primary" >Новый бренд</button>
+    <button i18n="@@BEERBOX.BRANDS.CREATE_NEW_BRAND" mat-stroked-button class="new-brand-btn" (click)="showEditDialog(null)" mat-raised-button  color="primary" >Новый бренд</button>
   </div>
 </div>
 <h2>Поиск</h2>
@@ -12,9 +12,9 @@
       <mat-autocomplete #producersAuto="matAutocomplete">
         <mat-option *ngFor="let p of filteredProducers | async" [value]="p.name">{{p.name}}</mat-option>
       </mat-autocomplete-->
-      <mat-select id="producer-input" [formControl]="producerControlS" (selectionChange)="updateList()" placeholder="Производитель">
+      <mat-select id="producer-input" [formControl]="producerControlS" (selectionChange)="updateList()" placeholder="Производитель"  i18n-placeholder="@@BEERBOX.BRANDS.PRODUCER">
         <input [formControl]="producerControl" placeholder="Поиск" class="mat-select-panel-input">
-        <mat-option>Не выбрано</mat-option>
+        <mat-option  i18n="@@BEERBOX.BRANDS.NOT_SELECTED">Не выбрано</mat-option>
         <mat-option *ngFor="let p of filteredProducers | async" [value]="p.id">{{p.name}}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -26,9 +26,9 @@
       <mat-autocomplete #brandsAuto="matAutocomplete">
         <mat-option *ngFor="let b of filteredBrands | async" [value]="b.name">{{b.name}}</mat-option>
       </mat-autocomplete-->
-      <mat-select id="brand-input" [formControl]="brandControlS" (selectionChange)="updateList()" placeholder="Бренд">
+      <mat-select id="brand-input" [formControl]="brandControlS" (selectionChange)="updateList()" placeholder="Бренд" i18n-placeholder="@@BEERBOX.BRANDS.BRAND">
         <input [formControl]="brandControl" placeholder="Поиск" class="mat-select-panel-input">
-        <mat-option>Не выбрано</mat-option>
+        <mat-option i18n="@@BEERBOX.BRANDS.NOT_SELECTED">Не выбрано</mat-option>
         <mat-option *ngFor="let p of filteredBrands | async" [value]="p.id">{{p.name}}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -40,9 +40,9 @@
       <mat-autocomplete #distributorsAuto="matAutocomplete">
         <mat-option *ngFor="let b of filteredDistributors | async" [value]="b.name">{{b.name}}</mat-option>
       </mat-autocomplete-->
-      <mat-select id="distributor-input" [formControl]="distributorControlS" (selectionChange)="updateList()" placeholder="Дистрибьютор">
+      <mat-select id="distributor-input" [formControl]="distributorControlS" (selectionChange)="updateList()" placeholder="Дистрибьютор" i18n-placeholder="@@BEERBOX.BRANDS.DISTRIBUTOR">
         <input [formControl]="distributorControl" placeholder="Поиск" class="mat-select-panel-input">
-        <mat-option>Не выбрано</mat-option>
+        <mat-option i18n="@@BEERBOX.BRANDS.NOT_SELECTED">Не выбрано</mat-option>
         <mat-option *ngFor="let p of filteredDistributors | async" [value]="p.id">{{p.name}}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -54,16 +54,16 @@
       <mat-autocomplete #distributorsAuto="matAutocomplete">
         <mat-option *ngFor="let b of filteredDistributors | async" [value]="b.name">{{b.name}}</mat-option>
       </mat-autocomplete-->
-      <mat-select id="numbers-input" [formControl]="numbersControlS" (selectionChange)="updateList()" placeholder="Номер бренда">
+      <mat-select id="numbers-input" [formControl]="numbersControlS" (selectionChange)="updateList()" placeholder="Номер бренда"  i18n-placeholder="@@BEERBOX.BRANDS.BRAND_NUMBER">
         <input [formControl]="numbersControl" placeholder="Поиск" class="mat-select-panel-input">
-        <mat-option>Не выбрано</mat-option>
+        <mat-option i18n="@@BEERBOX.BRANDS.NOT_SELECTED">Не выбрано</mat-option>
         <mat-option *ngFor="let n of filteredNumbers | async" [value]="n">{{n}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
 
   <div class="filter-pane-clear">
-    <button mat-stroked-button (click)="clear()">Очистить</button>
+    <button mat-stroked-button  i18n="@@BEERBOX.BRANDS.CLEAR_FILTER" (click)="clear()">Очистить</button>
   </div>
 </div>
 
@@ -71,17 +71,20 @@
 
 <table class="brands-list">
   <tr>
-    <th>Наименование</th>
-    <th>Номер бренда</th>
-    <th>Статус</th>
+    <th i18n="@@BEERBOX.BRANDS.NAME">Наименование</th>
+    <th i18n="@@BEERBOX.BRANDS.BRAND_NUMBER">Номер бренда</th>
+    <th i18n="@@BEERBOX.BRANDS.STATUS">Статус</th>
   </tr>
   <tr *ngFor="let b of brandList | async">
     <td><a (click)="showViewDialog(b)">{{b.name}}</a></td>
     <td>{{b.id}}</td>
-    <td style="text-align: center"><button class="act-btn-toggle"  mat-stroked-button (click)="toggleActive(b)">{{ b.active ? "Активный" : "Неактивный" }}</button></td>
+    <td style="text-align: center"><button class="act-btn-toggle"  mat-stroked-button (click)="toggleActive(b)">
+      <ng-container *ngIf="b.active" i18n="@@BEERBOX.BRANDS.ACTIVE">Активный</ng-container>
+      <ng-container *ngIf="!b.active" i18n="@@BEERBOX.BRANDS.INACTIVE">Неактивный</ng-container>
+    </button></td>
   </tr>
   <tr *ngIf="(brandList | async)?.length==0">
-    <td colspan="3">По указанным параметрам поиска отсутствуют данные</td>
+    <td colspan="3" 18n="@@BEERBOX.BRANDS.NOTHING_FOUND">По указанным параметрам поиска отсутствуют данные</td>
   </tr>
 </table>
 </div>

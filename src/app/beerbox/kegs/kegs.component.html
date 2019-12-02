@@ -21,10 +21,10 @@
 
         <div class="brand-pane" *ngIf="tap.bidEl">
           <div class="current-brand">
-            <span>Текущий бренд: </span><span>{{ getBrandName(tap.bidEl.val.display) }}</span>
+            <span  i18n="@@BEERBOX.KEGS.CURRENT_BRAND">Текущий бренд: </span><span>{{ getBrandName(tap.bidEl.val.display) }}</span>
           </div>
           <div class="change-brand-btn-wrap">
-            <button mat-stroked-button (click)="showChangeBrandDialog(tap)">Изменить бренд</button>
+            <button mat-stroked-button  i18n="@@BEERBOX.KEGS.CHANGE_BRAND" (click)="showChangeBrandDialog(tap)">Изменить бренд</button>
           </div>
         </div>
 

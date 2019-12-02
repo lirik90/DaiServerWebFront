@@ -5,6 +5,7 @@ import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, V
 import {Observable, of} from 'rxjs';
 import {map, startWith, switchMap} from 'rxjs/operators';
 import {CheckHeadStandDialogComponent} from '../check-head-stand/check-head-stand.component';
+import {TranslateService} from '@ngx-translate/core';
 
 export class Brand {
   active = true;
@@ -307,6 +308,7 @@ export class BrandEditDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef <BrandEditDialogComponent>,
     public dialog: MatDialog,
+    public translate: TranslateService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     if (data.brand) {
@@ -362,7 +364,7 @@ export class BrandEditDialogComponent implements OnInit {
 
   close() {
     const dialogRef2 = this.dialog.open(ConfirmEditDialogComponent, {
-      data: {text: 'Действительно хотите отменить?', ybtn: 'Отменить', nbtn: 'Продолжить'}});
+      data: {text: this.translate.instant('BRANDS.CONFIRM_CANCEL'), ybtn: this.translate.instant('BRANDS.CANCEL'), nbtn: this.translate.instant('BRANDS.CONTINUE')}});
     dialogRef2.afterClosed().subscribe(result2 => {
       if (result2.result === 1) {
         this.dialogRef.close({result: null, d: this.distributors, p: this.producers});
@@ -458,10 +460,10 @@ export class BrandEditDialogComponent implements OnInit {
     }
 
     if (bad) {
-      alert('Нужно заполнить все поля!');
+      alert(this.translate.instant('BRANDS.REQ_FIELDS'));
     }
     if (badExists) {
-      alert('Данные поля «Штрих-код» совпадают с данными в БД. Необходимо указать новый штрих-код');
+      alert(this.translate.instant('BRANDS.BARCODE_DUP'));
     } else if (this.curBrand.id) {
         this.dialogRef.close({result: this.curBrand, mode: 'edit', d: this.distributors, p: this.producers});
       } else {
@@ -487,7 +489,7 @@ export class BrandEditDialogComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open(BrandViewDialogComponent, {
-      data: {brand: b, ybtn: 'Продолжить создание бренда'}, width: '80vw'
+      data: {brand: b, ybtn: this.translate.instant('BRANDS.CONTINUE_CREATE')}, width: '80vw'
     });
 
     dialogRef.afterClosed().subscribe(result => {
