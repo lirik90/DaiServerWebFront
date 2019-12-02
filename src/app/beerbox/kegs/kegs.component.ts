@@ -406,7 +406,7 @@ export class BrandChangeDialogComponent implements OnInit {
 
   private getBrands() {
     this.http.get<List<Brand>>(`/api/v1/brand/`).subscribe(resp => {
-      this.brands = resp.results;
+      this.brands = resp.results.filter(b => b.active);
       this.updateFilteredBrands();
       this.getCurBrand(this.bid);
     });
