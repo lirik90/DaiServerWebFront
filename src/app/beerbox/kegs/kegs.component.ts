@@ -38,6 +38,7 @@ export interface Tap {
   name: string;
   heads: Head[];
   activeTab: number;
+  bidEl: DeviceItem;
 }
 
 @Component({
