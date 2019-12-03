@@ -205,6 +205,11 @@ export class BrandsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.result) {
+        this.producers = result.p;
+        this.distributors = result.d;
+        this.updateFilteredDistributors();
+        this.updateFilteredProducers();
+
         if (result.mode === 'edit') {
           Object.assign(b, result.result);
           this.updateBrand(result.result);
@@ -212,11 +217,6 @@ export class BrandsComponent implements OnInit {
         } else if (result.mode === 'create') {
           this.createBrand(result.result);
         }
-
-        this.producers = result.p;
-        this.distributors = result.d;
-        this.updateFilteredDistributors();
-        this.updateFilteredProducers();
       }
     });
   }
@@ -265,7 +265,7 @@ export class BrandsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.result === 1) {
         const dialogRef2 = this.dialog.open(ConfirmEditDialogComponent, {
-          data: {text: 'Действительно хотите произвести редактирование бренда?', ybtn: 'Редактировать', nbtn: 'Отмена'}});
+          data: {text: 'Действительно хотите произвести редактирование данных бренда?', ybtn: 'Редактировать', nbtn: 'Отмена'}});
         dialogRef2.afterClosed().subscribe(result2 => {
           if ( result && result2.result === 1) {
             this.showEditDialog(b);
