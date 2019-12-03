@@ -371,7 +371,11 @@ export class BrandEditDialogComponent implements OnInit {
       data: {text: this.translate.instant('BRANDS.CONFIRM_CANCEL'), ybtn: this.translate.instant('BRANDS.CANCEL'), nbtn: this.translate.instant('BRANDS.CONTINUE')}});
     dialogRef2.afterClosed().subscribe(result2 => {
       if (result2.result === 1) {
-        this.dialogRef.close({result: null, d: this.distributors, p: this.producers});
+        if (this.curBrand.id) {
+          this.dialogRef.close({result: null, mode: 'edit', d: this.distributors, p: this.producers});
+        } else {
+          this.dialogRef.close({result: null, mode: 'create', d: this.distributors, p: this.producers});
+        }
       }
     });
   }
