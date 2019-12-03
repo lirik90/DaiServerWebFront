@@ -244,7 +244,7 @@ export class BrandsComponent implements OnInit {
 
     this.http.post<Brand>(url, body).subscribe(resp => {
         console.log(resp);
-        this.brands.push(resp);
+        this.brands.push(b);
         this.updateList();
       },
       error => {
