@@ -214,6 +214,8 @@ export class BrandsComponent implements OnInit {
           Object.assign(b, result.result);
           this.updateBrand(result.result);
           this.updateList();
+
+          this.showViewDialog(b);
         } else if (result.mode === 'create') {
           this.createBrand(result.result);
         }
