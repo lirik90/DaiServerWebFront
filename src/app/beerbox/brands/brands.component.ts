@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {HttpClient} from '@angular/common/http';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -79,8 +79,8 @@ export class BrandsComponent implements OnInit {
   numbersControlS: FormControl = new FormControl();
   constructor(
     public dialog: MatDialog,
-    private http: HttpClient
-  ) { }
+    private http: HttpClient,
+    private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.getProducers();
@@ -111,6 +111,10 @@ export class BrandsComponent implements OnInit {
   updateList() {
     let result = this.brands;
 
+    if (this.numbersControlS.value) {
+      result = result.filter(b => b.id === parseInt(this.numbersControlS.value, 10));
+    }
+
     if (this.brandControlS.value) {
       result = result.filter(b => b.id === parseInt(this.brandControlS.value, 10));
     }
@@ -123,16 +127,15 @@ export class BrandsComponent implements OnInit {
       result = result.filter(b => b.distributor.id === parseInt(this.distributorControlS.value, 10));
     }
 
-    if (this.numbersControlS.value) {
-      result = result.filter(b => b.id === parseInt(this.numbersControlS.value, 10));
-    }
-
     this.brandList = of(result);
 
+    /*
     this.updateFilteredProducers(result);
     this.updateFilteredBrands(result);
     this.updateFilteredDistributors(result);
     this.updateFilteredNumbers(result);
+     */
+    this.cdRef.detectChanges();
   }
 
   updateFilteredNumbers(blist?: Brand[]) {
