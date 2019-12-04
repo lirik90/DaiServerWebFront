@@ -72,11 +72,17 @@ export class BrandsComponent implements OnInit {
   filteredNumbers: Array<Select2OptionData>;
 
   brandList: Observable<Brand[]>;
+  brandList2: Brand[] = [];
 
   brandControlS: FormControl = new FormControl();
   producerControlS: FormControl = new FormControl();
   distributorControlS: FormControl = new FormControl();
   numbersControlS: FormControl = new FormControl();
+  producerControl: string = '';
+  brandControl: string = '';
+  distributorControl: string = '';
+  numberControl: string = '';
+
   constructor(
     public dialog: MatDialog,
     private http: HttpClient,
@@ -86,22 +92,6 @@ export class BrandsComponent implements OnInit {
     this.getProducers();
     this.getDistributors();
     this.getBrands();
-
-    this.producerControlS.valueChanges.subscribe(v => {
-      this.updateList();
-    });
-
-    this.distributorControlS.valueChanges.subscribe(v => {
-      this.updateList();
-    });
-
-    this.brandControlS.valueChanges.subscribe(v => {
-      this.updateList();
-    });
-
-    this.numbersControlS.valueChanges.subscribe(v => {
-      this.updateList();
-    });
   }
 
   getNumbers() {
@@ -111,45 +101,60 @@ export class BrandsComponent implements OnInit {
   updateList() {
     let result = this.brands;
 
-    if (this.numbersControlS.value) {
-      result = result.filter(b => b.id === parseInt(this.numbersControlS.value, 10));
+    if (this.numberControl) {
+      result = result.filter(b => b.id === parseInt(this.numberControl, 10));
     }
 
-    if (this.brandControlS.value) {
-      result = result.filter(b => b.id === parseInt(this.brandControlS.value, 10));
+    if (this.brandControl) {
+      result = result.filter(b => b.id === parseInt(this.brandControl, 10));
     }
 
-    if (this.producerControlS.value) {
-      result = result.filter(b => b.producer.id === parseInt(this.producerControlS.value, 10));
+    if (this.producerControl) {
+      result = result.filter(b => b.producer.id === parseInt(this.producerControl, 10));
     }
 
-    if (this.distributorControlS.value) {
-      result = result.filter(b => b.distributor.id === parseInt(this.distributorControlS.value, 10));
+    if (this.distributorControl) {
+      result = result.filter(b => b.distributor.id === parseInt(this.distributorControl, 10));
     }
 
     this.brandList = of(result);
 
-    /*
-    this.updateFilteredProducers(result);
-    this.updateFilteredBrands(result);
-    this.updateFilteredDistributors(result);
-    this.updateFilteredNumbers(result);
-     */
+    this.filteredProducers = this.producers.filter(p => result.find(b => b.producer.id === p.id)).map(p => {
+      return {
+        id: p.id.toString(),
+        text: p.name
+      } as Select2OptionData;
+    });
+
+    this.filteredDistributors = this.distributors.filter(p => result.find(b => b.distributor.id === p.id)).map(p => {
+      return {
+        id: p.id.toString(),
+        text: p.name
+      } as Select2OptionData;
+    });
+
+    this.filteredBrands = result.map(p => {
+      return {
+        id: p.id.toString(),
+        text: p.name
+      } as Select2OptionData;
+    });
+
+    this.filteredNumbers = result.map(p => {
+      return {
+        id: p.id.toString(),
+        text: p.id.toString(),
+      } as Select2OptionData;
+    });
+
     this.cdRef.detectChanges();
+
+    console.log('redo');
+    return result;
   }
 
-  updateFilteredNumbers(blist?: Brand[]) {
-    let src = [];
-
-    if (!blist) {
-      src = this.numbers;
-    } else {
-      for (const b of blist) {
-        if (!src.includes(b.id)) {
-          src.push(b.id);
-        }
-      }
-    }
+  updateFilteredNumbers() {
+    let src: number[] = this.numbers;
 
     this.filteredNumbers = src.map(p => {
       return {
@@ -159,20 +164,8 @@ export class BrandsComponent implements OnInit {
     });
   }
 
-  private updateFilteredProducers(blist?: Brand[]) {
-    let src = [];
-
-    if (!blist) {
-      src = this.producers;
-    } else {
-      for (const b of blist) {
-        if (!src.includes(b.producer)) {
-          src.push(b.producer);
-        }
-      }
-    }
-
-    this.filteredProducers = src.map(p => {
+  private updateFilteredProducers() {
+    this.filteredProducers = this.producers.map(p => {
       return {
         id: p.id.toString(),
         text: p.name
@@ -187,15 +180,7 @@ export class BrandsComponent implements OnInit {
     });
   }
 
-  private updateFilteredBrands(blist?: Brand[]) {
-    let src = [];
-
-    if (!blist) {
-      src = this.brands;
-    } else {
-      src = blist;
-    }
-
+  private updateFilteredBrands() {
     this.filteredBrands = this.brands.map(p => {
       return {
         id: p.id.toString(),
@@ -209,26 +194,32 @@ export class BrandsComponent implements OnInit {
       console.log(resp);
       this.brands = resp.results;
       this.updateFilteredBrands();
-      this.getNumbers(); 1;
+      this.getNumbers();
       this.updateFilteredNumbers();
       this.updateList();
+
+      /*
+      this.producerControlS.valueChanges.subscribe(v => {
+        const r = this.updateList();
+      });
+
+      this.distributorControlS.valueChanges.subscribe(v => {
+        const r = this.updateList();
+      });
+
+      this.brandControlS.valueChanges.subscribe(v => {
+        const r = this.updateList();
+      });
+
+      this.numbersControlS.valueChanges.subscribe(v => {
+        const r = this.updateList();
+      });
+       */
     });
   }
 
-  private updateFilteredDistributors(blist?: Brand[]) {
-    let src = [];
-
-    if (!blist) {
-      src = this.distributors;
-    } else {
-      for (const b of blist) {
-        if (!src.includes(b.distributor)) {
-          src.push(b.distributor);
-        }
-      }
-    }
-
-    this.filteredDistributors = src.map(p => {
+  private updateFilteredDistributors() {
+    this.filteredDistributors = this.distributors.map(p => {
       return {
         id: p.id.toString(),
         text: p.name
@@ -330,10 +321,30 @@ export class BrandsComponent implements OnInit {
   }
 
   clear() {
-    this.numbersControlS.setValue('');
-    this.producerControlS.setValue('');
-    this.distributorControlS.setValue('');
-    this.brandControlS.setValue('');
+    this.numberControl = '';
+    this.producerControl = '';
+    this.distributorControl = '';
+    this.brandControl = '';
+    this.updateList();
+  }
+
+  selectedProducer(val) {
+    this.producerControl = val;
+    this.updateList();
+  }
+
+  selectedBrand(val: string) {
+    this.brandControl = val;
+    this.updateList();
+  }
+
+  selectedDistributor(val: string) {
+    this.distributorControl = val;
+    this.updateList();
+  }
+
+  selectedNumber(val: string) {
+    this.numberControl = val;
     this.updateList();
   }
 }
