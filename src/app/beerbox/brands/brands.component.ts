@@ -77,7 +77,6 @@ export class BrandsComponent implements OnInit {
   producerControlS: FormControl = new FormControl();
   distributorControlS: FormControl = new FormControl();
   numbersControlS: FormControl = new FormControl();
-
   constructor(
     public dialog: MatDialog,
     private http: HttpClient
@@ -87,6 +86,22 @@ export class BrandsComponent implements OnInit {
     this.getProducers();
     this.getDistributors();
     this.getBrands();
+
+    this.producerControlS.valueChanges.subscribe(v => {
+      this.updateList();
+    });
+
+    this.distributorControlS.valueChanges.subscribe(v => {
+      this.updateList();
+    });
+
+    this.brandControlS.valueChanges.subscribe(v => {
+      this.updateList();
+    });
+
+    this.numbersControlS.valueChanges.subscribe(v => {
+      this.updateList();
+    });
   }
 
   getNumbers() {
@@ -97,19 +112,19 @@ export class BrandsComponent implements OnInit {
     let result = this.brands;
 
     if (this.brandControlS.value) {
-      result = result.filter(b => b.id === this.brandControlS.value);
+      result = result.filter(b => b.id === parseInt(this.brandControlS.value, 10));
     }
 
     if (this.producerControlS.value) {
-      result = result.filter(b => b.producer.id === this.producerControlS.value);
+      result = result.filter(b => b.producer.id === parseInt(this.producerControlS.value, 10));
     }
 
     if (this.distributorControlS.value) {
-      result = result.filter(b => b.distributor.id === this.distributorControlS.value);
+      result = result.filter(b => b.distributor.id === parseInt(this.distributorControlS.value, 10));
     }
 
     if (this.numbersControlS.value) {
-      result = result.filter(b => b.id === this.numbersControlS.value);
+      result = result.filter(b => b.id === parseInt(this.numbersControlS.value, 10));
     }
 
     this.brandList = of(result);
@@ -154,7 +169,7 @@ export class BrandsComponent implements OnInit {
       console.log(resp);
       this.brands = resp.results;
       this.updateFilteredBrands();
-      this.getNumbers();
+      this.getNumbers();1
       this.updateFilteredNumbers();
       this.updateList();
     });
