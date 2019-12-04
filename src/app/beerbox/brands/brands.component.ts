@@ -473,10 +473,10 @@ export class BrandEditDialogComponent implements OnInit {
     if (badExists) {
       alert(this.translate.instant('BRANDS.BARCODE_DUP'));
     } else if (this.curBrand.id) {
-        this.dialogRef.close({result: this.curBrand, mode: 'edit', d: this.distributors, p: this.producers});
-      } else {
-        this.dialogRef.close({result: this.curBrand, mode: 'create', d: this.distributors, p: this.producers});
-      }
+      this.dialogRef.close({result: this.curBrand, mode: 'edit', d: this.distributors, p: this.producers});
+    } else {
+      this.dialogRef.close({result: this.curBrand, mode: 'create', d: this.distributors, p: this.producers});
+    }
   }
 
   doFilter() {
@@ -507,6 +507,19 @@ export class BrandEditDialogComponent implements OnInit {
         this.close();
       }
     });
+  }
+
+  limitnumber(target: HTMLInputElement) {
+    let val = target.value;
+    let max = target.getAttribute('max');
+    let min = target.getAttribute('min');
+    if (val > max) {
+      val = max;
+    }
+    if (val < min) {
+      val = min;
+    }
+    target.value = val;
   }
 }
 

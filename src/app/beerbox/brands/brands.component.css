@@ -58,6 +58,7 @@
 
 .brands-list a {
   cursor: pointer;
+  word-break: break-all;
 }
 
 .brands-list td {
@@ -85,6 +86,13 @@
 
 .brands-list td:nth-child(3) {
   width: 100px;
+}
+
+@media (max-width: 600px) {
+  .brands-list td:nth-child(2) {
+    width: 60px;
+  }
+
 }
 
 .wrap {
