@@ -47,7 +47,7 @@ const houseRoutes: Routes = [
           { path: 'group/:groupId/param', component: ParamComponent },
           {
             path: 'reports',
-            loadChildren: 'app/house/reports/reports.module#ReportsModule',
+            loadChildren: () => import('app/house/reports/reports.module').then(m => m.ReportsModule),
             canLoad: [AuthGuard],
             data: { req_perms: ['isAdmin'] }
           },
@@ -58,11 +58,11 @@ const houseRoutes: Routes = [
           },
           {
             path: 'settings',
-            loadChildren: 'app/house/settings/settings.module#SettingsModule',
+            loadChildren: () => import('app/house/settings/settings.module').then(m => m.SettingsModule),
             data: { req_perms: ['isAdmin'] },
             canLoad: [AuthGuard]
           },
-          { path: 'beerbox', loadChildren: 'app/beerbox/beerbox.module#BeerboxModule', canLoad: [AuthGuard] },
+          { path: 'beerbox', loadChildren: () => import('app/beerbox/beerbox.module').then(m => m.BeerboxModule), canLoad: [AuthGuard] },
           {
             path: 'doc',
             component: DocComponent,
