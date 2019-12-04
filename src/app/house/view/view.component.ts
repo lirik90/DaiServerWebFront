@@ -11,7 +11,7 @@ import {MatPaginator} from '@angular/material';
   styleUrls: ['../../sections.css', './view.component.css']
 })
 export class ViewComponent implements OnInit {
-  @ViewChild(RouterOutlet, {static: false}) outlet: RouterOutlet;
+  @ViewChild(RouterOutlet, {static: true}) outlet: RouterOutlet;
   views: View[];
 
   constructor(

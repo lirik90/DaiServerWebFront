@@ -48,7 +48,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 })
 export class DragScrollComponent {
 
-  @ViewChild('container', {static: false}) elem: ElementRef;
+  @ViewChild('container', {static: true}) elem: ElementRef;
 
   isPressed: boolean = false;
   downX: number = 0;

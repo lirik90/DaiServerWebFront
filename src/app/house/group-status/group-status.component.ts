@@ -12,7 +12,7 @@ export class GroupStatusComponent implements OnInit {
 
   @Input() group: Group;
 
-  @ViewChild(MatTooltip, {static: false}) tooltip;
+  @ViewChild(MatTooltip, {static: true}) tooltip;
 
   get color(): string {
     if (this.group.status_info === undefined)

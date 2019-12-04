@@ -37,7 +37,7 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit, Aft
     enableBasicAutocompletion: true
   };
 
-  @ViewChild('editor', {static: false}) editor;
+  @ViewChild('editor', {static: true}) editor;
   private newOpened = false;
 
   ngAfterViewInit() {

@@ -62,14 +62,14 @@ export class HouseListComponent implements OnInit, OnDestroy {
   statusInfo = {};
   statusQueue = {};
 
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   citySelected = null;
   cities: any[];
   compSelected: any;
   comps: any[];
   pageEvent: void;
 
-  @ViewChild('searchBox', {static: false}) searchBox;
+  @ViewChild('searchBox', {static: true}) searchBox;
 
   httpGet<T>(req: string): Observable<T> {
     return this.http.get<T>(req)
