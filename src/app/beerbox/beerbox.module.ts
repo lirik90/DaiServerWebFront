@@ -22,7 +22,6 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {OperationHoursComponent} from './operation-hours/operation-hours.component';
 import {BrandChangeDialogComponent, KegsComponent} from './kegs/kegs.component';
 import {LabelConfiguratorComponent} from './label-configurator/label-configurator.component';
-import {NgxBarcodeModule} from 'ngx-barcode';
 import {WashTapComponent} from './wash-tap/wash-tap.component';
 import {LabelConfModule} from './label-conf/label-conf.module';
 import {CalVolComponent} from './cal-vol/cal-vol.component';
