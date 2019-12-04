@@ -147,3 +147,8 @@ button {
   margin: 4px;
   box-sizing: border-box;
 }
+
+.select-and-btn ng-select2 {
+  flex: 1;
+  padding-right: 4px;
+}

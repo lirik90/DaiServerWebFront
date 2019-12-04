@@ -349,7 +349,7 @@ export class BrandEditDialogComponent implements OnInit {
   brands: Brand[];
 
   distributors: Distributor[];
-  filteredDistributors: Observable<Distributor[]>;
+  filteredDistributors: Array<Select2OptionData>;
   distributorControl: FormControl = new FormControl();
   producers: Producer[];
   filteredProducers: Array<Select2OptionData>;
@@ -414,6 +414,16 @@ export class BrandEditDialogComponent implements OnInit {
   ngOnInit(): void {
     this.updateFilteredProducers();
     this.updateFilteredDistributors();
+
+    this.producerControl.valueChanges.subscribe(v => {
+      this.curProducerId = parseInt(v, 10);
+      this.closeProducer();
+    });
+
+    this.distributorControl.valueChanges.subscribe(v => {
+      this.curDistributorId = parseInt(v, 10);
+      this.closeDistributor();
+    });
   }
 
   close() {
@@ -440,12 +450,12 @@ export class BrandEditDialogComponent implements OnInit {
   }
 
   private updateFilteredDistributors() {
-    this.filteredDistributors = this.distributorControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(name => name ? this.distributors.filter(p => p.name.includes(name)) : this.distributors.slice()
-        )
-      );
+    this.filteredDistributors = this.distributors.map(p => {
+      return {
+        id: p.id.toString(),
+        text: p.name
+      } as Select2OptionData;
+    });
   }
 
   showDistribAddDialog() {
@@ -475,7 +485,6 @@ export class BrandEditDialogComponent implements OnInit {
   }
 
   closeProducer() {
-    this.producerControl.setValue('');
     if (this.curProducerId) {
       this.curBrand.producer = this.producers.find(p => p.id === this.curProducerId);
     } else {
@@ -484,7 +493,6 @@ export class BrandEditDialogComponent implements OnInit {
   }
 
   closeDistributor() {
-    this.distributorControl.setValue('');
     if (this.curDistributorId) {
       this.curBrand.distributor = this.distributors.find(d => d.id === this.curDistributorId);
     } else {

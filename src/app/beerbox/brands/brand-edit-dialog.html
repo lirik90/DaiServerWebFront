@@ -56,13 +56,7 @@
     <div class="cell" i18n="@@BEERBOX.BRANDS.PRODUCERI">Производитель:</div>
     <div class="cell row2cell">
       <div class="select-and-btn">
-        <mat-form-field>
-          <mat-select id="producer-input" [(value)]="curProducerId" (closed)="closeProducer()">
-            <input [formControl]="producerControl"  i18n-placeholder="@@BEERBOX.BRANDS.SEARCH" placeholder="Поиск" class="mat-select-panel-input">
-            <mat-option i18n="@@BEERBOX.BRANDS.NOT_SELECTED">Не выбрано</mat-option>
-            <mat-option *ngFor="let p of filteredProducers | async" [value]="p.id">{{p.name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <ng-select2 [formControl]="producerControl" [data]="filteredProducers" width="100%"></ng-select2>
         <button (click)="showProdAddDialog()">+</button>
       </div>
     </div>
@@ -87,13 +81,7 @@
     <div class="cell"><label for="distributor-input" i18n="@@BEERBOX.BRANDS.DISTRIBUTORI">Дистрибьютор:</label></div>
     <div class="cell row2cell">
       <div class="select-and-btn">
-        <mat-form-field>
-          <mat-select id="distributor-input" [(value)]="curDistributorId"  (closed)="closeDistributor()">
-            <input [formControl]="distributorControl" i18n-placeholder="@@BEERBOX.BRANDS.SEARCH" placeholder="Поиск" class="mat-select-panel-input">
-            <mat-option  i18n="@@BEERBOX.BRANDS.NOT_SELECTED">Не выбрано</mat-option>
-            <mat-option *ngFor="let d of filteredDistributors | async" [value]="d.id">{{d.name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <ng-select2 id="distributor-input" [formControl]="distributorControl" [data]="filteredDistributors" width="100%"></ng-select2>
         <button (click)="showDistribAddDialog()">+</button>
       </div>
     </div>
