@@ -128,10 +128,27 @@ export class BrandsComponent implements OnInit {
     }
 
     this.brandList = of(result);
+
+    this.updateFilteredProducers(result);
+    this.updateFilteredBrands(result);
+    this.updateFilteredDistributors(result);
+    this.updateFilteredNumbers(result);
   }
 
-  updateFilteredNumbers() {
-    this.filteredNumbers = this.numbers.map(p => {
+  updateFilteredNumbers(blist?: Brand[]) {
+    let src: number[];
+
+    if (!blist) {
+      src = this.numbers;
+    } else {
+      for (const b of blist) {
+        if (!src.includes(b.id)) {
+          src.push(b.id);
+        }
+      }
+    }
+
+    this.filteredNumbers = src.map(p => {
       return {
         id: p.toString(),
         text: p.toString(),
@@ -139,8 +156,20 @@ export class BrandsComponent implements OnInit {
     });
   }
 
-  private updateFilteredProducers() {
-    this.filteredProducers = this.producers.map(p => {
+  private updateFilteredProducers(blist?: Brand[]) {
+    let src: Producer[];
+
+    if (!blist) {
+      src = this.producers;
+    } else {
+      for (const b of blist) {
+        if (!src.includes(b.producer)) {
+          src.push(b.producer);
+        }
+      }
+    }
+
+    this.filteredProducers = src.map(p => {
       return {
         id: p.id.toString(),
         text: p.name
@@ -155,7 +184,15 @@ export class BrandsComponent implements OnInit {
     });
   }
 
-  private updateFilteredBrands() {
+  private updateFilteredBrands(blist?: Brand[]) {
+    let src: Brand[];
+
+    if (!blist) {
+      src = this.brands;
+    } else {
+      src = blist;
+    }
+
     this.filteredBrands = this.brands.map(p => {
       return {
         id: p.id.toString(),
@@ -169,14 +206,26 @@ export class BrandsComponent implements OnInit {
       console.log(resp);
       this.brands = resp.results;
       this.updateFilteredBrands();
-      this.getNumbers();1
+      this.getNumbers(); 1;
       this.updateFilteredNumbers();
       this.updateList();
     });
   }
 
-  private updateFilteredDistributors() {
-    this.filteredDistributors = this.distributors.map(p => {
+  private updateFilteredDistributors(blist?: Brand[]) {
+    let src: Distributor[];
+
+    if (!blist) {
+      src = this.distributors;
+    } else {
+      for (const b of blist) {
+        if (!src.includes(b.distributor)) {
+          src.push(b.distributor);
+        }
+      }
+    }
+    
+    this.filteredDistributors = src.map(p => {
       return {
         id: p.id.toString(),
         text: p.name
