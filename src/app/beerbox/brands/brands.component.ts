@@ -136,7 +136,7 @@ export class BrandsComponent implements OnInit {
   }
 
   updateFilteredNumbers(blist?: Brand[]) {
-    let src: number[];
+    let src = [];
 
     if (!blist) {
       src = this.numbers;
@@ -157,7 +157,7 @@ export class BrandsComponent implements OnInit {
   }
 
   private updateFilteredProducers(blist?: Brand[]) {
-    let src: Producer[];
+    let src = [];
 
     if (!blist) {
       src = this.producers;
@@ -185,7 +185,7 @@ export class BrandsComponent implements OnInit {
   }
 
   private updateFilteredBrands(blist?: Brand[]) {
-    let src: Brand[];
+    let src = [];
 
     if (!blist) {
       src = this.brands;
@@ -213,7 +213,7 @@ export class BrandsComponent implements OnInit {
   }
 
   private updateFilteredDistributors(blist?: Brand[]) {
-    let src: Distributor[];
+    let src = [];
 
     if (!blist) {
       src = this.distributors;
@@ -224,7 +224,7 @@ export class BrandsComponent implements OnInit {
         }
       }
     }
-    
+
     this.filteredDistributors = src.map(p => {
       return {
         id: p.id.toString(),
