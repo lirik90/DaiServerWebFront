@@ -134,3 +134,10 @@ button {
   height: 44px;
   padding: 8px;
 }
+
+.filter-pane {
+  position: sticky;
+  top: 49px;
+  background: #fafafa;
+  z-index: 199;
+}
