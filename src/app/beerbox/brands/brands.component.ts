@@ -127,7 +127,7 @@ export class BrandsComponent implements OnInit {
         map(n => {
           if (!isNaN(n)) {
             console.log(n);
-            return this.brands.filter(p => p.id === n).map(b => b.id);
+            return this.brands.filter(p => p.id.toString(10).startsWith(n.toString(10))).map(b => b.id);
           } else {
             console.log(n);
             return this.brands.map(b => b.id);
@@ -142,7 +142,7 @@ export class BrandsComponent implements OnInit {
           startWith(''),
           map(name => {
             if (name) {
-              return this.producers.filter(p => p.name.includes(name));
+              return this.producers.filter(p => p.name.startsWith(name));
             } else {
               return this.producers.slice();
             }
@@ -162,7 +162,7 @@ export class BrandsComponent implements OnInit {
     this.filteredBrands = this.brandControl.valueChanges
       .pipe(
         startWith(''),
-        map(name => name ? this.brands.filter(p => p.name.includes(name)) : this.brands.slice()
+        map(name => name ? this.brands.filter(p => p.name.startsWith(name)) : this.brands.slice()
         )
       );
   }
@@ -181,7 +181,7 @@ export class BrandsComponent implements OnInit {
     this.filteredDistributors = this.distributorControl.valueChanges
       .pipe(
         startWith(''),
-        map(name => name ? this.distributors.filter(p => p.name.includes(name)) : this.distributors.slice()
+        map(name => name ? this.distributors.filter(p => p.name.startsWith(name)) : this.distributors.slice()
         )
       );
   }
