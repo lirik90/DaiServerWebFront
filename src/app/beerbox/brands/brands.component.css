@@ -4,8 +4,13 @@
   width: 100%;
 }
 .brands-list td, .brands-list th {
-  border: 1px solid #ccc;
+  border: 1px solid #aaa;
 }
+
+button {
+  border: 1px solid #aaa !important;
+}
+
 .filter-pane {
   display: flex;
   flex-wrap: wrap;
