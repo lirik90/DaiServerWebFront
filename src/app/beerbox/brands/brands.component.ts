@@ -519,7 +519,7 @@ export class BrandEditDialogComponent implements OnInit {
     if (val < min) {
       val = min;
     }
-    target.value = val;
+    target.value = val.toString();
   }
 }
 
