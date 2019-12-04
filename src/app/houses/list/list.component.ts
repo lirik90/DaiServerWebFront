@@ -38,7 +38,7 @@ class StatusInfo {
   styleUrls: ['./list.component.css']
 })
 export class HouseListComponent implements OnInit, OnDestroy {
-  timeout: number;
+  timeout: any;
 
   constructor(private router: Router,
               private housesService: HousesService,
@@ -62,14 +62,14 @@ export class HouseListComponent implements OnInit, OnDestroy {
   statusInfo = {};
   statusQueue = {};
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   citySelected = null;
   cities: any[];
   compSelected: any;
   comps: any[];
   pageEvent: void;
 
-  @ViewChild('searchBox') searchBox;
+  @ViewChild('searchBox', {static: false}) searchBox;
 
   httpGet<T>(req: string): Observable<T> {
     return this.http.get<T>(req)

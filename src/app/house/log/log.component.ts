@@ -39,8 +39,8 @@ export class LogComponent implements OnInit, OnDestroy {
 
   members: TeamMember[] = [];
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
 
   cmd = '';
   pageEvent: any;

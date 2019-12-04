@@ -54,7 +54,6 @@ export class HouseComponent implements OnInit, OnDestroy {
   private bytes_sub: ISubscription;
   private opened_sub: ISubscription;
 
-  @ViewChild('snav') snav !: MatSidenav;
   isFav = false;
 
   private getConnectionString(connected: boolean): string {

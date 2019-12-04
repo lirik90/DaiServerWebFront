@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, ViewChild, OnChanges, SimpleChanges, DoCheck, ChangeDetectorRef} from '@angular/core';
-import { MatTooltip } from "@angular/material";
+import {MatPaginator, MatTooltip} from '@angular/material';
 
 import {Group, GroupStatusInfo} from '../house';
 
@@ -12,7 +12,7 @@ export class GroupStatusComponent implements OnInit {
 
   @Input() group: Group;
 
-  @ViewChild(MatTooltip) tooltip;
+  @ViewChild(MatTooltip, {static: false}) tooltip;
 
   get color(): string {
     if (this.group.status_info === undefined)

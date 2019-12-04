@@ -17,6 +17,7 @@ import './dracula-mod';
 import 'brace/ext/searchbox';
 import 'brace/ext/language_tools';
 import {WebSockCmd} from '../../control.service';
+import {MatPaginator} from '@angular/material';
 
 @Component({
   selector: 'app-codes',
@@ -36,7 +37,7 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit, Aft
     enableBasicAutocompletion: true
   };
 
-  @ViewChild('editor') editor;
+  @ViewChild('editor', {static: false}) editor;
   private newOpened = false;
 
   ngAfterViewInit() {

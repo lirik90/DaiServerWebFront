@@ -3,6 +3,7 @@ import {Router, ActivatedRoute, RouterOutlet } from '@angular/router';
 
 import { HouseService } from '../house.service';
 import { View } from '../house';
+import {MatPaginator} from '@angular/material';
 
 @Component({
   selector: 'app-view',
@@ -10,7 +11,7 @@ import { View } from '../house';
   styleUrls: ['../../sections.css', './view.component.css']
 })
 export class ViewComponent implements OnInit {
-  @ViewChild(RouterOutlet) outlet: RouterOutlet;
+  @ViewChild(RouterOutlet, {static: false}) outlet: RouterOutlet;
   views: View[];
 
   constructor(
