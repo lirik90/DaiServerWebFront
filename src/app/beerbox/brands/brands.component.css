@@ -85,7 +85,7 @@ button {
 
 }
 
-.brands-list td:nth-child(2) {
+.brands-list td:nth-child(1) {
   width: 100px;
 }
 
@@ -94,7 +94,7 @@ button {
 }
 
 @media (max-width: 600px) {
-  .brands-list td:nth-child(2) {
+  .brands-list td:nth-child(1) {
     width: 60px;
   }
 
