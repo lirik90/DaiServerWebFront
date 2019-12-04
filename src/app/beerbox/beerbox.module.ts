@@ -58,7 +58,6 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    NgxBarcodeModule,
     MatAutocompleteModule,
     NgSelect2Module,
   ],
