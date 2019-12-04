@@ -153,6 +153,7 @@ button {
   padding-right: 4px;
 }
 
-.select2-container--focus .select2-selection {
-  background: #fff6ce;
+.filter-colored ::ng-deep .select2-selection {
+  background-color: #fff6ce;
 }
+

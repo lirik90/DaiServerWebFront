@@ -8,19 +8,19 @@
 <div class="filter-pane">
   <div class="select2-wrap">
     <p>Производитель:</p>
-    <ng-select2 [formControl]="producerControlS" [data]="filteredProducers" width="100%"></ng-select2>
+    <ng-select2 [class.filter-colored]="producerControlS.value" [formControl]="producerControlS" [data]="filteredProducers" width="100%"></ng-select2>
   </div>
   <div class="select2-wrap">
     <p>Бренд:</p>
-    <ng-select2 [formControl]="brandControlS" [data]="filteredBrands" width="100%"></ng-select2>
+    <ng-select2 [class.filter-colored]="brandControlS.value" [formControl]="brandControlS" [data]="filteredBrands" width="100%"></ng-select2>
   </div>
   <div class="select2-wrap">
     <p>Дистрибьютор:</p>
-    <ng-select2 [formControl]="distributorControlS" [data]="filteredDistributors" width="100%"></ng-select2>
+    <ng-select2 [class.filter-colored]="distributorControlS.value" [formControl]="distributorControlS" [data]="filteredDistributors" width="100%"></ng-select2>
   </div>
   <div class="select2-wrap">
     <p>Номер бренда:</p>
-    <ng-select2  [formControl]="numbersControlS" [data]="filteredNumbers" width="100%"></ng-select2>
+    <ng-select2  [class.filter-colored]="numbersControlS.value" [formControl]="numbersControlS" [data]="filteredNumbers" width="100%"></ng-select2>
   </div>
 
   <div class="filter-pane-clear">
