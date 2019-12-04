@@ -87,7 +87,6 @@ export class BrandsComponent implements OnInit {
     this.getProducers();
     this.getDistributors();
     this.getBrands();
-    this.getNumbers();
   }
 
   getNumbers() {
@@ -155,6 +154,7 @@ export class BrandsComponent implements OnInit {
       console.log(resp);
       this.brands = resp.results;
       this.updateFilteredBrands();
+      this.getNumbers();
       this.updateFilteredNumbers();
       this.updateList();
     });
