@@ -510,9 +510,9 @@ export class BrandEditDialogComponent implements OnInit {
   }
 
   limitnumber(target: HTMLInputElement) {
-    let val = target.value;
-    let max = target.getAttribute('max');
-    let min = target.getAttribute('min');
+    let val = parseFloat(target.value);
+    let max = parseFloat(target.getAttribute('max'));
+    let min = parseFloat(target.getAttribute('min'));
     if (val > max) {
       val = max;
     }
