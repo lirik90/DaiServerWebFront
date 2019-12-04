@@ -141,3 +141,9 @@ button {
   background: #fafafa;
   z-index: 199;
 }
+
+.select2-wrap {
+  min-width: 200px;
+  margin: 4px;
+  box-sizing: border-box;
+}

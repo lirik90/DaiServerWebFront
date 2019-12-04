@@ -6,6 +6,7 @@ import {Observable, of} from 'rxjs';
 import {map, startWith, switchMap} from 'rxjs/operators';
 import {CheckHeadStandDialogComponent} from '../check-head-stand/check-head-stand.component';
 import {TranslateService} from '@ngx-translate/core';
+import {Select2OptionData} from 'ng-select2';
 
 export class Brand {
   active = true;
@@ -63,16 +64,12 @@ export class BrandsComponent implements OnInit {
   brands: Brand[] = [];
   producers: Producer[] = [];
   distributors: Distributor[] = [];
-  producerControl: FormControl = new FormControl();
-  filteredProducers: Observable<Producer[]>;
-  brandControl: FormControl = new FormControl();
-  filteredBrands: Observable<Brand[]>;
-  distributorControl: FormControl = new FormControl();
-  filteredDistributors: Observable<Distributor[]>;
+  filteredProducers: Array<Select2OptionData>;
+  filteredBrands: Array<Select2OptionData>;
+  filteredDistributors: Array<Select2OptionData>;
 
   numbers: number[] = [];
-  numbersControl: FormControl = new FormControl();
-  filteredNumbers: Observable<number[]>;
+  filteredNumbers: Array<Select2OptionData>;
 
   brandList: Observable<Brand[]>;
 
@@ -120,35 +117,21 @@ export class BrandsComponent implements OnInit {
   }
 
   updateFilteredNumbers() {
-    this.filteredNumbers = this.numbersControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(n => parseInt(n, 10)),
-        map(n => {
-          if (!isNaN(n)) {
-            console.log(n);
-            return this.brands.filter(p => p.id.toString(10).startsWith(n.toString(10))).map(b => b.id);
-          } else {
-            console.log(n);
-            return this.brands.map(b => b.id);
-          }}
-        )
-      );
+    this.filteredNumbers = this.numbers.map(p => {
+      return {
+        id: p.toString(),
+        text: p.toString(),
+      } as Select2OptionData;
+    });
   }
 
   private updateFilteredProducers() {
-    this.filteredProducers = this.producerControl.valueChanges
-      .pipe(
-          startWith(''),
-          map(name => {
-            if (name) {
-              return this.producers.filter(p => p.name.startsWith(name));
-            } else {
-              return this.producers.slice();
-            }
-          }
-        )
-      );
+    this.filteredProducers = this.producers.map(p => {
+      return {
+        id: p.id.toString(),
+        text: p.name
+      } as Select2OptionData;
+    });
   }
 
   private getProducers() {
@@ -159,12 +142,12 @@ export class BrandsComponent implements OnInit {
   }
 
   private updateFilteredBrands() {
-    this.filteredBrands = this.brandControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(name => name ? this.brands.filter(p => p.name.startsWith(name)) : this.brands.slice()
-        )
-      );
+    this.filteredBrands = this.brands.map(p => {
+      return {
+        id: p.id.toString(),
+        text: p.name
+      } as Select2OptionData;
+    });
   }
 
   private getBrands() {
@@ -178,12 +161,12 @@ export class BrandsComponent implements OnInit {
   }
 
   private updateFilteredDistributors() {
-    this.filteredDistributors = this.distributorControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(name => name ? this.distributors.filter(p => p.name.startsWith(name)) : this.distributors.slice()
-        )
-      );
+    this.filteredDistributors = this.distributors.map(p => {
+      return {
+        id: p.id.toString(),
+        text: p.name
+      } as Select2OptionData;
+    });
   }
 
   private getDistributors() {
@@ -302,7 +285,7 @@ export class BrandEditDialogComponent implements OnInit {
   filteredDistributors: Observable<Distributor[]>;
   distributorControl: FormControl = new FormControl();
   producers: Producer[];
-  filteredProducers: Observable<Producer[]>;
+  filteredProducers: Array<Select2OptionData>;
   producerControl: FormControl = new FormControl();
   curProducerId: number;
   curDistributorId: number;
@@ -346,13 +329,13 @@ export class BrandEditDialogComponent implements OnInit {
       .pipe(
         startWith(''),
         map(name => {
-          //console.log(name);
+          // console.log(name);
 
           if (this.curBrand.id || name.length === 0) {
             return [];
           }
 
-          return name ? this.brands.filter(b => b.name.includes(name)) : this.brands.slice()
+          return name ? this.brands.filter(b => b.name.includes(name)) : this.brands.slice();
         })
       );
 
@@ -381,18 +364,12 @@ export class BrandEditDialogComponent implements OnInit {
   }
 
   private updateFilteredProducers() {
-    this.filteredProducers = this.producerControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(name => {
-            if (name) {
-              return this.producers.filter(p => p.name.includes(name));
-            } else {
-              return this.producers.slice();
-            }
-          }
-        )
-      );
+    this.filteredProducers = this.producers.map(p => {
+      return {
+          id: p.id.toString(),
+          text: p.name
+        } as Select2OptionData;
+    });
   }
 
   private updateFilteredDistributors() {
@@ -484,7 +461,7 @@ export class BrandEditDialogComponent implements OnInit {
   }
 
   showExists(v: any) {
-    //console.log(v);
+    // console.log(v);
     const optId = v.id;
     const optEl = document.getElementById(optId);
     const dataId = parseInt(optEl.getAttribute('data-bid'), 10);
@@ -511,8 +488,8 @@ export class BrandEditDialogComponent implements OnInit {
 
   limitnumber(target: HTMLInputElement) {
     let val = parseFloat(target.value);
-    let max = parseFloat(target.getAttribute('max'));
-    let min = parseFloat(target.getAttribute('min'));
+    const max = parseFloat(target.getAttribute('max'));
+    const min = parseFloat(target.getAttribute('min'));
     if (val > max) {
       val = max;
     }

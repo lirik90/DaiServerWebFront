@@ -37,6 +37,7 @@ import {
 import {WifiComponent} from './wifi/wifi.component';
 import {PourSettingsComponent} from './pour-settings/pour-settings.component';
 import {MatAutocompleteModule} from '@angular/material';
+import {NgSelect2Module} from 'ng-select2';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -60,6 +61,7 @@ export function createTranslateLoader(http: HttpClient) {
     }),
     NgxBarcodeModule,
     MatAutocompleteModule,
+    NgSelect2Module,
   ],
   declarations: [
     WashComponent, ReplaceKegComponent, ConfirmDialogReplaceKegComponent, CalibrationComponent, CheckHeadStandComponent,
