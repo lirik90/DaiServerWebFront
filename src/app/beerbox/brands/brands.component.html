@@ -71,13 +71,13 @@
 
 <table class="brands-list">
   <tr>
-    <th i18n="@@BEERBOX.BRANDS.NAME">Наименование</th>
     <th i18n="@@BEERBOX.BRANDS.BRAND_NUMBER">Номер бренда</th>
+    <th i18n="@@BEERBOX.BRANDS.NAME">Наименование</th>
     <th i18n="@@BEERBOX.BRANDS.STATUS">Статус</th>
   </tr>
   <tr *ngFor="let b of brandList | async">
-    <td><a (click)="showViewDialog(b)">{{b.name}}</a></td>
     <td>{{b.id}}</td>
+    <td><a (click)="showViewDialog(b)">{{b.name}}</a></td>
     <td style="text-align: center"><button class="act-btn-toggle"  mat-stroked-button (click)="toggleActive(b)">
       <ng-container *ngIf="b.active" i18n="@@BEERBOX.BRANDS.ACTIVE">Активный</ng-container>
       <ng-container *ngIf="!b.active" i18n="@@BEERBOX.BRANDS.INACTIVE">Неактивный</ng-container>
