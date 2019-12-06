@@ -585,7 +585,7 @@ export class BrandEditDialogComponent implements OnInit {
       alert(this.translate.instant('BRANDS.REQ_FIELDS'));
     } else if (badExists) {
       //this.showExists(null, exists.id);
-      alert('Такой бренд уже существует!');
+      alert('По указанным вами параметрам имеется ранее созданный бренд');
     } else if (this.badNumbers) {
       // do nothing
     } else if (this.curBrand.id) {
