@@ -10,10 +10,16 @@
   </div>
 
   <div class="row">
-    <div class="cell" i18n="@@BEERBOX.BRANDS.NAMEI">Наименование:</div>
+    <div class="cell" i18n="@@BEERBOX.BRANDS.NAMEI">Наименование бренда:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [value]="curBrand.name" disabled="disabled">
+              <textarea matInput
+                        cdkTextareaAutosize
+                        #autosize="cdkTextareaAutosize"
+                        cdkAutosizeMinRows="1"
+                        maxlength="100"
+                        [(ngModel)]="curBrand.name"
+                        disabled="disabled"></textarea>
       </mat-form-field>
     </div>
   </div>

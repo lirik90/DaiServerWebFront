@@ -137,9 +137,15 @@ button {
 
 .filter-pane {
   position: sticky;
-  top: 49px;
+  top: 53px;
   background: #fafafa;
-  z-index: 199;
+  z-index: 16;
+}
+
+@media (max-width: 600px) {
+  .filter-pane {
+    top: 49px;
+  }
 }
 
 .select2-wrap {

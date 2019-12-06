@@ -126,12 +126,22 @@ export class BrandsComponent implements OnInit {
       } as Select2OptionData;
     });
 
+    this.filteredProducers.unshift({
+      id: '0',
+      text: 'Не выбрано'
+    } as Select2OptionData);
+
     this.filteredDistributors = this.distributors.filter(p => result.find(b => b.distributor.id === p.id)).map(p => {
       return {
         id: p.id.toString(),
         text: p.name
       } as Select2OptionData;
     });
+
+    this.filteredDistributors.unshift({
+      id: '0',
+      text: 'Не выбрано'
+    } as Select2OptionData);
 
     this.filteredBrands = result.map(p => {
       return {
@@ -140,12 +150,22 @@ export class BrandsComponent implements OnInit {
       } as Select2OptionData;
     });
 
+    this.filteredBrands.unshift({
+      id: '0',
+      text: 'Не выбрано'
+    } as Select2OptionData);
+
     this.filteredNumbers = result.map(p => {
       return {
         id: p.id.toString(),
         text: p.id.toString(),
       } as Select2OptionData;
     });
+
+    this.filteredNumbers.unshift({
+      id: '0',
+      text: 'Не выбрано'
+    } as Select2OptionData);
 
     this.cdRef.detectChanges();
 
@@ -289,6 +309,7 @@ export class BrandsComponent implements OnInit {
 
     this.http.post<Brand>(url, body).subscribe(resp => {
         console.log(resp);
+        b.id = resp.id;
         this.brands.push(b);
         this.updateList();
       },
@@ -329,22 +350,38 @@ export class BrandsComponent implements OnInit {
   }
 
   selectedProducer(val) {
-    this.producerControl = val;
+    if (val !== '0') {
+      this.producerControl = val;
+    } else {
+      this.producerControl = '';
+    }
     this.updateList();
   }
 
   selectedBrand(val: string) {
-    this.brandControl = val;
+    if (val !== '0') {
+      this.brandControl = val;
+    } else {
+      this.brandControl = '';
+    }
     this.updateList();
   }
 
   selectedDistributor(val: string) {
-    this.distributorControl = val;
+    if (val !== '0') {
+      this.distributorControl = val;
+    } else {
+      this.distributorControl = '';
+    }
     this.updateList();
   }
 
   selectedNumber(val: string) {
-    this.numberControl = val;
+    if (val !== '0') {
+      this.numberControl = val;
+    } else {
+      this.numberControl = '';
+    }
     this.updateList();
   }
 }
@@ -370,6 +407,8 @@ export class BrandEditDialogComponent implements OnInit {
   fbrands: Observable<Brand[]>;
   nameCtrl = new FormControl('');
 
+  badNumbers = false;
+
   constructor(
     public dialogRef: MatDialogRef <BrandEditDialogComponent>,
     public dialog: MatDialog,
@@ -380,6 +419,10 @@ export class BrandEditDialogComponent implements OnInit {
       this.curBrand = data.brand;
       this.curProducerId = this.curBrand.producer ? this.curBrand.producer.id : 0;
       this.curDistributorId = this.curBrand.distributor ? this.curBrand.distributor.id : 0;
+
+      this.producerControl.setValue(this.curProducerId);
+      this.distributorControl.setValue(this.curDistributorId);
+
       this.nameCtrl.setValue(this.curBrand.name);
     } else {
       this.curBrand = new Brand();
@@ -439,7 +482,7 @@ export class BrandEditDialogComponent implements OnInit {
 
   close() {
     const dialogRef2 = this.dialog.open(ConfirmEditDialogComponent, {
-      data: {text: this.translate.instant('BRANDS.CONFIRM_CANCEL'), ybtn: this.translate.instant('BRANDS.CANCEL'), nbtn: this.translate.instant('BRANDS.CONTINUE')}});
+      data: {text: this.translate.instant('BRANDS.CONFIRM_CANCEL'), ybtn: 'Да', nbtn: 'Нет'}});
     dialogRef2.afterClosed().subscribe(result2 => {
       if (result2.result === 1) {
         if (this.curBrand.id) {
@@ -514,6 +557,7 @@ export class BrandEditDialogComponent implements OnInit {
   save() {
     let bad = false;
     let badExists = false;
+
     for (const field in this.curBrand) {
       if (!this.curBrand.hasOwnProperty(field) || field === 'id' || field === 'active') {
         continue;
@@ -526,15 +570,24 @@ export class BrandEditDialogComponent implements OnInit {
       }
     }
 
-    if (this.brands.find(b => b.barcode == this.curBrand.barcode && b.id != this.curBrand.id)) {
+    const exists = this.brands.find(b => b.id != this.curBrand.id && b.name == this.curBrand.name && b.alc == this.curBrand.alc
+      && b.producer.id == this.curProducerId);
+
+    if (exists) {
       badExists = true;
     }
 
+    const onlyNum = /^[\d,.]{1,4}$/;
+
+    this.badNumbers = !onlyNum.test(this.curBrand.alc) || !onlyNum.test(this.curBrand.pressure);
+
     if (bad) {
       alert(this.translate.instant('BRANDS.REQ_FIELDS'));
-    }
-    if (badExists) {
-      alert(this.translate.instant('BRANDS.BARCODE_DUP'));
+    } else if (badExists) {
+      //this.showExists(null, exists.id);
+      alert('Такой бренд уже существует!');
+    } else if (this.badNumbers) {
+      // do nothing
     } else if (this.curBrand.id) {
       this.dialogRef.close({result: this.curBrand, mode: 'edit', d: this.distributors, p: this.producers});
     } else {
@@ -542,16 +595,17 @@ export class BrandEditDialogComponent implements OnInit {
     }
   }
 
-  doFilter() {
-
-  }
-
-  showExists(v: any) {
-    // console.log(v);
-    const optId = v.id;
-    const optEl = document.getElementById(optId);
-    const dataId = parseInt(optEl.getAttribute('data-bid'), 10);
-    console.log(dataId);
+  showExists(v: any, id?: number) {
+    let dataId = 0;
+    if (!id) {
+      // console.log(v);
+      const optId = v.id;
+      const optEl = document.getElementById(optId);
+      dataId = parseInt(optEl.getAttribute('data-bid'), 10);
+      console.log(dataId);
+    } else {
+      dataId = id;
+    }
 
     const b = this.brands.find(br => br.id === dataId);
 

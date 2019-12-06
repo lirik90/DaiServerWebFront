@@ -2,10 +2,16 @@
 <h1 *ngIf="curBrand.id" mat-dialog-title i18n="@@BEERBOX.BRANDS.CHANGE_BRAND_TITLE">Изменение бренда</h1>
 <div class="table">
   <div class="row">
-    <div class="cell" i18n="@@BEERBOX.BRANDS.NAMEI">Наименование:</div>
+    <div class="cell" i18n="@@BEERBOX.BRANDS.NAMEI">Наименование бренда:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [formControl]="nameCtrl" maxlength="100" [matAutocomplete]="auto">
+        <textarea matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  maxlength="100"
+                  [formControl]="nameCtrl"
+                  [matAutocomplete]="auto"></textarea>
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)='showExists($event.option)'>
           <mat-option *ngFor="let b of fbrands | async" [value]="b.name" [attr.data-bid]="b.id">{{b.name}}</mat-option>
         </mat-autocomplete>
@@ -17,7 +23,10 @@
     <div class="cell" i18n="@@BEERBOX.BRANDS.ALCI">Алкоголь %:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [(ngModel)]="curBrand.alc" maxlength="10">
+        <input matInput type="text" [(ngModel)]="curBrand.alc" maxlength="4" pattern="^[0-9,.]{1,4}$">
+        <mat-error>
+          Разрешены только числа от 0 до 9999
+        </mat-error>
       </mat-form-field>
     </div>
   </div>
@@ -121,7 +130,10 @@
     <div class="cell"  i18n="@@BEERBOX.BRANDS.PRESSUREI">Давление:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input type="number" step="0.01" max="9999" min="0" matInput [(ngModel)]="curBrand.pressure" (keyup)="limitnumber($event.target)">
+        <input type="input" matInput [(ngModel)]="curBrand.pressure" maxlength="4" pattern="^[0-9,.]{1,4}$">
+        <mat-error>
+          Разрешены только числа от 0 до 9999
+        </mat-error>
       </mat-form-field>
     </div>
   </div>
