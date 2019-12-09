@@ -78,10 +78,10 @@ export class BrandsComponent implements OnInit {
   producerControlS: FormControl = new FormControl();
   distributorControlS: FormControl = new FormControl();
   numbersControlS: FormControl = new FormControl();
-  producerControl: string = '';
-  brandControl: string = '';
-  distributorControl: string = '';
-  numberControl: string = '';
+  producerControl = '';
+  brandControl = '';
+  distributorControl = '';
+  numberControl = '';
 
   constructor(
     public dialog: MatDialog,
@@ -174,7 +174,7 @@ export class BrandsComponent implements OnInit {
   }
 
   updateFilteredNumbers() {
-    let src: number[] = this.numbers;
+    const src: number[] = this.numbers;
 
     this.filteredNumbers = src.map(p => {
       return {
@@ -572,7 +572,9 @@ export class BrandEditDialogComponent implements OnInit {
       }
     }
 
+    // tslint:disable-next-line:triple-equals
     const exists = this.brands.find(b => b.id != this.curBrand.id && b.name == this.curBrand.name && b.alc == this.curBrand.alc
+      // tslint:disable-next-line:triple-equals
       && b.producer.id == this.curProducerId);
 
     if (exists) {
@@ -581,12 +583,13 @@ export class BrandEditDialogComponent implements OnInit {
 
     const onlyNum = /^[\d,.]{1,4}$/;
 
-    this.badNumbers = !onlyNum.test(this.curBrand.alc) || !onlyNum.test(this.curBrand.pressure) || !onlyNum.test(this.curBrand.barcode) || this.curBrand.barcode.length < 13;
+    this.badNumbers = !onlyNum.test(this.curBrand.alc) || !onlyNum.test(this.curBrand.pressure) || !onlyNum.test(this.curBrand.barcode)
+      || this.curBrand.barcode.length < 13;
 
     if (bad) {
       alert(this.translate.instant('BRANDS.REQ_FIELDS'));
     } else if (badExists) {
-      //this.showExists(null, exists.id);
+      // this.showExists(null, exists.id);
       alert('По указанным вами параметрам имеется ранее созданный бренд');
     } else if (this.badNumbers) {
       // do nothing
@@ -626,19 +629,6 @@ export class BrandEditDialogComponent implements OnInit {
         this.close();
       }
     });
-  }
-
-  limitnumber(target: HTMLInputElement) {
-    let val = parseFloat(target.value);
-    const max = parseFloat(target.getAttribute('max'));
-    const min = parseFloat(target.getAttribute('min'));
-    if (val > max) {
-      val = max;
-    }
-    if (val < min) {
-      val = min;
-    }
-    target.value = val.toString();
   }
 }
 
