@@ -335,6 +335,8 @@ export class BrandsComponent implements OnInit {
         dialogRef2.afterClosed().subscribe(result2 => {
           if ( result && result2.result === 1) {
             this.showEditDialog(b);
+          } else {
+            this.showViewDialog(b);
           }
         });
       }
@@ -579,7 +581,7 @@ export class BrandEditDialogComponent implements OnInit {
 
     const onlyNum = /^[\d,.]{1,4}$/;
 
-    this.badNumbers = !onlyNum.test(this.curBrand.alc) || !onlyNum.test(this.curBrand.pressure);
+    this.badNumbers = !onlyNum.test(this.curBrand.alc) || !onlyNum.test(this.curBrand.pressure) || !onlyNum.test(this.curBrand.barcode) || this.curBrand.barcode.length < 13;
 
     if (bad) {
       alert(this.translate.instant('BRANDS.REQ_FIELDS'));
