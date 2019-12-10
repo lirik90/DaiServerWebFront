@@ -585,7 +585,7 @@ export class BrandEditDialogComponent implements OnInit {
     const onlyNumBc = /^[\d]{13}$/;
     const onlyNum = /^[\d,.]+$/;
 
-    this.badNumbers = !onlyNum.test(this.curBrand.alc) || !onlyNum4.test(this.curBrand.pressure) || !onlyNumBc.test(this.curBrand.barcode);
+    this.badNumbers = !onlyNum4.test(this.curBrand.alc) || !onlyNum4.test(this.curBrand.pressure) || !onlyNumBc.test(this.curBrand.barcode);
 
     if (bad) {
       alert(this.translate.instant('BRANDS.REQ_FIELDS'));
