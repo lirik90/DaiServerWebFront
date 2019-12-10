@@ -163,3 +163,22 @@
   height: 44px;
   padding: 8px;
 }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: space-between;
+}
+
+.actions button {
+  margin: 0 4px;
+}
+
+
+.actions button:first-child {
+  margin-left: 0;
+}
+
+.actions button:last-child {
+  margin-right: 0;
+}
