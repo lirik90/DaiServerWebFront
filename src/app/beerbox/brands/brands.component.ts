@@ -581,10 +581,11 @@ export class BrandEditDialogComponent implements OnInit {
       badExists = true;
     }
 
-    const onlyNum = /^[\d,.]{1,4}$/;
+    const onlyNum4 = /^[\d,.]{1,4}$/;
+    const onlyNumBc = /^[\d]{13}$/;
+    const onlyNum = /^[\d,.]+$/;
 
-    this.badNumbers = !onlyNum.test(this.curBrand.alc) || !onlyNum.test(this.curBrand.pressure) || !onlyNum.test(this.curBrand.barcode)
-      || this.curBrand.barcode.length < 13;
+    this.badNumbers = !onlyNum.test(this.curBrand.alc) || !onlyNum4.test(this.curBrand.pressure) || !onlyNumBc.test(this.curBrand.barcode);
 
     if (bad) {
       alert(this.translate.instant('BRANDS.REQ_FIELDS'));
@@ -593,6 +594,7 @@ export class BrandEditDialogComponent implements OnInit {
       alert('По указанным вами параметрам имеется ранее созданный бренд');
     } else if (this.badNumbers) {
       // do nothing
+      console.log(this.curBrand.barcode.length);
     } else if (this.curBrand.id) {
       this.dialogRef.close({result: this.curBrand, mode: 'edit', d: this.distributors, p: this.producers});
     } else {

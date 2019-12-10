@@ -211,11 +211,8 @@
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="HOME.PANEL" size-unit="pixel" translate="yes" space="default">
 				<source>Избранное</source>
 				<target xml:lang="mn">Дуртай</target>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/app.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">21</context>
-				</context-group>
-			</trans-unit>
+				
+			<context-group purpose="location"><context context-type="sourcefile">app/app.component.html</context><context context-type="linenumber">21</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/houses/dashboard/dashboard.component.html</context><context context-type="linenumber">14</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="HOME.PROJECTS" size-unit="pixel" translate="yes" space="default">
 				<source>Список</source>
 				<target xml:lang="mn">Жагсаалт</target>
@@ -243,15 +240,9 @@
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="DASHBOARD.TITLE" size-unit="pixel" translate="yes" space="default">
 				<source>Часто посещаемые проекты</source>
 				<target xml:lang="mn">Хамгийн олон зочилсон төслүүд</target>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/dashboard/dashboard.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">3</context>
-				</context-group>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/dashboard/dashboard.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">14</context>
-				</context-group>
-			</trans-unit>
+				
+				
+			<context-group purpose="location"><context context-type="sourcefile">app/houses/dashboard/dashboard.component.html</context><context context-type="linenumber">3</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="CONTROL.SEARCH" size-unit="pixel" translate="yes" space="default">
 				<source>Поиск</source>
 				<target xml:lang="mn">Хайлт хийх</target>
@@ -487,73 +478,55 @@
 					<context match-mandatory="no" context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">15</context>
 				</context-group>
-			</trans-unit>
+			</trans-unit><trans-unit id="PROFILE.PHONE" datatype="html">
+        <source>Телефон:</source><target state="new">Телефон:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="PROFILE.SUCCESS2" size-unit="pixel" translate="yes" space="default">
 				<source>Данные успешно изменены!</source>
 				<target xml:lang="mn">Мэдээлэл амжилттай өөрчлөгдсөн байна!</target>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">24</context>
-				</context-group>
-			</trans-unit>
+				
+			<context-group purpose="location"><context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context><context context-type="linenumber">28</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="PROFILE.CHANGE_PASSWORD" size-unit="pixel" translate="yes" space="default">
 				<source>Изменение пароля</source>
 				<target xml:lang="mn">Нууц үгээ солих</target>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">32</context>
-				</context-group>
-			</trans-unit>
+				
+			<context-group purpose="location"><context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context><context context-type="linenumber">36</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="PROFILE.OLD_PASSWORD" size-unit="pixel" translate="yes" space="default">
 				<source>Введите текущий пароль:</source>
 				<target xml:lang="mn">Одоогийн нууц үгээ оруулна уу:</target>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">36</context>
-				</context-group>
-			</trans-unit>
+				
+			<context-group purpose="location"><context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context><context context-type="linenumber">40</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="PROFILE.NEW_PASSWORD" size-unit="pixel" translate="yes" space="default">
 				<source>Введите новый пароль:</source>
 				<target xml:lang="mn">Шинэ нууц үг оруулна уу:</target>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">44</context>
-				</context-group>
-			</trans-unit>
+				
+			<context-group purpose="location"><context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context><context context-type="linenumber">48</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="PROFILE.CONFIRM_PASSWORD" size-unit="pixel" translate="yes" space="default">
 				<source>Введите новый пароль ещё раз:</source>
 				<target xml:lang="mn">Нууц үгийг дахин оруулна уу:</target>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">52</context>
-				</context-group>
-			</trans-unit>
+				
+			<context-group purpose="location"><context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context><context context-type="linenumber">56</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="PROFILE.MISMATCH" size-unit="pixel" translate="yes" space="default">
 				<source>
           Данные не соответствуют
         </source>
 				<target xml:lang="mn">          Мэдээлэл таарахгүй байна        </target>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">54</context>
-				</context-group>
-			</trans-unit>
+				
+			<context-group purpose="location"><context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context><context context-type="linenumber">58</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="PROFILE.SEUUCESS" size-unit="pixel" translate="yes" space="default">
 				<source>Пароль успешно изменён!</source>
 				<target xml:lang="mn">Нууц үг амжилттай солигдлоо</target>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">59</context>
-				</context-group>
-			</trans-unit>
+				
+			<context-group purpose="location"><context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context><context context-type="linenumber">63</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="PROFILE.PASSWORD_CHANGE_BTN" size-unit="pixel" translate="yes" space="default">
 				<source>Изменить пароль</source>
 				<target xml:lang="mn">Нууц үгээ солих</target>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">60</context>
-				</context-group>
-			</trans-unit>
+				
+			<context-group purpose="location"><context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context><context context-type="linenumber">64</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="BEERBOX.REPLACE_KEG.TITLE" size-unit="pixel" translate="yes" space="default">
 				<source>Замена кег<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>При замене кегов устанавливать кеги строго на соответствующие пронумерованные места!!!</source>
 				<target xml:lang="mn">Kegs-ийг орлуулах
@@ -583,15 +556,9 @@
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="BEERBOX.REPLACE_KEG.WARNING" size-unit="pixel" translate="yes" space="default">
 				<source>Не выполнено вытеснение пивом. После замены не забудьте сделать это</source>
 				<target xml:lang="mn">Шар айрагны шилжилт хийгдээгүй байна. Орлуулсны дараа үүнийг хийхээ бүү мартаарай.</target>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/beerbox/replace-keg/replace-keg.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">12</context>
-				</context-group>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">70</context>
-				</context-group>
-			</trans-unit>
+				
+				
+			<context-group purpose="location"><context context-type="sourcefile">app/beerbox/replace-keg/replace-keg.component.html</context><context context-type="linenumber">12</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context><context context-type="linenumber">77</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="BEERBOX.REPLACE_KEG.NONEMPTY" size-unit="pixel" translate="yes" space="default">
 				<source>Пустых кег нет</source>
 				<target xml:lang="mn">Хоосон keg байхгүй байна</target>
@@ -687,7 +654,295 @@
 					<context match-mandatory="no" context-type="sourcefile">app/beerbox/replace-keg/confirm-dialog-replace-keg.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">22</context>
 				</context-group>
-			</trans-unit>
+			</trans-unit><trans-unit id="BEERBOX.BRANDS.TITLE_BRAND" datatype="html">
+        <source>Бренд</source><target state="new">Бренд</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brands.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.CREATE_NEW_BRAND" datatype="html">
+        <source>Новый бренд</source><target state="new">Новый бренд</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brands.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.SEARCH" datatype="html">
+        <source>Поиск</source><target state="new">Поиск</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brands.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.PRODUCERI" datatype="html">
+        <source>Производитель:</source><target state="new">Производитель:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brands.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context>
+          <context context-type="linenumber">65</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-view-dialog.html</context>
+          <context context-type="linenumber">67</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.BRANDI" datatype="html">
+        <source>Бренд:</source><target state="new">Бренд:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brands.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.DISTRIBUTORI" datatype="html">
+        <source>Дистрибьютор:</source><target state="new">Дистрибьютор:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brands.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context>
+          <context context-type="linenumber">90</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-view-dialog.html</context>
+          <context context-type="linenumber">91</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.NUMBERI" datatype="html">
+        <source>Номер бренда:</source><target state="new">Номер бренда:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brands.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.CLEAR_FILTER" datatype="html">
+        <source>Очистить</source><target state="new">Очистить</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brands.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.BRAND_NUMBER" datatype="html">
+        <source>Номер бренда</source><target state="new">Номер бренда</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brands.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.NAME" datatype="html">
+        <source>Наименование</source><target state="new">Наименование</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brands.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.STATUS" datatype="html">
+        <source>Статус</source><target state="new">Статус</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brands.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.ACTIVE" datatype="html">
+        <source>Активный</source><target state="new">Активный</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brands.component.html</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.INACTIVE" datatype="html">
+        <source>Неактивный</source><target state="new">Неактивный</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brands.component.html</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.NOTHING_FOUND" datatype="html">
+        <source>По указанным параметрам поиска отсутствуют данные</source><target state="new">По указанным параметрам поиска отсутствуют данные</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brands.component.html</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.CREATE_NEW_BRAND_TITLE" datatype="html">
+        <source>Создание нового бренда</source><target state="new">Создание нового бренда</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.CHANGE_BRAND_TITLE" datatype="html">
+        <source>Изменение бренда</source><target state="new">Изменение бренда</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.NAMEI" datatype="html">
+        <source>Наименование бренда:</source><target state="new">Наименование бренда:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-view-dialog.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.ALCI" datatype="html">
+        <source>Алкоголь %:</source><target state="new">Алкоголь %:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-view-dialog.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.STORAGE_CONDITIONI" datatype="html">
+        <source>Условия хранения:</source><target state="new">Условия хранения:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-view-dialog.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.CONTENTI" datatype="html">
+        <source>Состав (включая указанные алергены):</source><target state="new">Состав (включая указанные алергены):</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-view-dialog.html</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.PRODUCER_ADDRESSI" datatype="html">
+        <source>Адрес производителя:</source><target state="new">Адрес производителя:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context>
+          <context context-type="linenumber">75</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-view-dialog.html</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.DISTRIBUTOR_ADDRESSI" datatype="html">
+        <source>Адрес дистрибьютора:</source><target state="new">Адрес дистрибьютора:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context>
+          <context context-type="linenumber">100</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-view-dialog.html</context>
+          <context context-type="linenumber">100</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.ADDITIONAL_INFOI" datatype="html">
+        <source>Дополнительная информация:</source><target state="new">Дополнительная информация:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context>
+          <context context-type="linenumber">115</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-view-dialog.html</context>
+          <context context-type="linenumber">115</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.PRESSUREI" datatype="html">
+        <source>Давление:</source><target state="new">Давление:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context>
+          <context context-type="linenumber">130</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-view-dialog.html</context>
+          <context context-type="linenumber">130</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.BARCODEI" datatype="html">
+        <source>Штрих-код:</source><target state="new">Штрих-код:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context>
+          <context context-type="linenumber">142</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-view-dialog.html</context>
+          <context context-type="linenumber">139</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.CANCEL" datatype="html">
+        <source>Отменить</source><target state="new">Отменить</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context>
+          <context context-type="linenumber">155</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/distrib-add-dialog.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/prod-add-dialog.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/kegs/brand-change-dialog.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.SAVE" datatype="html">
+        <source>Сохранить</source><target state="new">Сохранить</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context>
+          <context context-type="linenumber">155</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/distrib-add-dialog.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/prod-add-dialog.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.INFO_TITLE" datatype="html">
+        <source>Информация о бренде</source><target state="new">Информация о бренде</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-view-dialog.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.BRAND_NUMBERI" datatype="html">
+        <source>Номер бренда:</source><target state="new">Номер бренда:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-view-dialog.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.EDIT_BTN" datatype="html">
+        <source>Редактировать</source><target state="new">Редактировать</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-view-dialog.html</context>
+          <context context-type="linenumber">150</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.NEW_DIST_TITLE" datatype="html">
+        <source>Создание нового дистрибьютора</source><target state="new">Создание нового дистрибьютора</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/distrib-add-dialog.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.DIST_NAMEI" datatype="html">
+        <source>Наименование:</source><target state="new">Наименование:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/distrib-add-dialog.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.DIST_ADDRESSI" datatype="html">
+        <source>Адрес:</source><target state="new">Адрес:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/distrib-add-dialog.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.NEW_PROD_TITLE" datatype="html">
+        <source>Создание нового производителя</source><target state="new">Создание нового производителя</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/prod-add-dialog.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.PROD_NAMEI" datatype="html">
+        <source>Наименование:</source><target state="new">Наименование:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/prod-add-dialog.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.PROD_ADDRESSI" datatype="html">
+        <source>Адрес:</source><target state="new">Адрес:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/prod-add-dialog.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="BEERBOX.KEGS.TEMPERATURE" size-unit="pixel" translate="yes" space="default">
 				<source>Температура охладителя:</source>
 				<target xml:lang="mn">Хөргөх температур:</target>
@@ -721,111 +976,86 @@
 					<context match-mandatory="no" context-type="sourcefile">app/beerbox/wash/wash.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">8</context>
 				</context-group>
-			</trans-unit>
+			</trans-unit><trans-unit id="BEERBOX.KEGS.CURRENT_BRAND" datatype="html">
+        <source>Текущий бренд: </source><target state="new">Текущий бренд: </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.KEGS.CHANGE_BRAND" datatype="html">
+        <source>Установить бренд</source><target state="new">Установить бренд</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="BEERBOX.KEGS.KEG_IS_EMPTY" size-unit="pixel" translate="yes" space="default">
 				<source> — пуст</source>
 				<target xml:lang="mn"> - хоосон</target>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">26</context>
-				</context-group>
-			</trans-unit>
+				
+			<context-group purpose="location"><context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context><context context-type="linenumber">35</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="BEERBOX.KEGS.DATE_CHANGED" size-unit="pixel" translate="yes" space="default">
 				<source>Дата замены:</source>
 				<target xml:lang="mn">Орлуулах огноо:</target>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">37</context>
-				</context-group>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">46</context>
-				</context-group>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">47</context>
-				</context-group>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">49</context>
-				</context-group>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">50</context>
-				</context-group>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">51</context>
-				</context-group>
-			</trans-unit>
+				
+				
+				
+				
+				
+				
+			<context-group purpose="location"><context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context><context context-type="linenumber">46</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context><context context-type="linenumber">55</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context><context context-type="linenumber">56</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context><context context-type="linenumber">59</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context><context context-type="linenumber">60</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context><context context-type="linenumber">61</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="BEERBOX.KEGS.DATE_MADE" size-unit="pixel" translate="yes" space="default">
 				<source>Дата изготовления:</source>
 				<target xml:lang="mn">Бүтээгдэхүүний огноо:</target>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">38</context>
-				</context-group>
-			</trans-unit>
+				
+			<context-group purpose="location"><context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context><context context-type="linenumber">47</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="BEERBOX.KEGS.KEG_VOL" size-unit="pixel" translate="yes" space="default">
 				<source>Объём кеги:</source>
 				<target xml:lang="mn">Кег хэмжээ:</target>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">39</context>
-				</context-group>
-			</trans-unit>
+				
+			<context-group purpose="location"><context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context><context context-type="linenumber">48</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="BEERBOX.KEGS.LITRES" size-unit="pixel" translate="yes" space="default">
 				<source>л</source>
 				<target xml:lang="mn">л</target>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">39</context>
-				</context-group>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">40</context>
-				</context-group>
-			</trans-unit>
+				
+				
+			<context-group purpose="location"><context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context><context context-type="linenumber">48</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context><context context-type="linenumber">49</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="BEERBOX.KEGS.BOTTLE_VOL" size-unit="pixel" translate="yes" space="default">
 				<source>Объём бутылки:</source>
 				<target xml:lang="mn">Лонхны хэмжээ:</target>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">40</context>
-				</context-group>
-			</trans-unit>
+				
+			<context-group purpose="location"><context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context><context context-type="linenumber">49</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="BEERBOX.KEGS.VOL_POURED" size-unit="pixel" translate="yes" space="default">
 				<source>Налито:</source>
 				<target xml:lang="mn">Үүнийг бөглөсөн:</target>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">42</context>
-				</context-group>
-			</trans-unit>
+				
+			<context-group purpose="location"><context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context><context context-type="linenumber">51</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="BEERBOX.KEGS.VOL_REMAIN_BEER" size-unit="pixel" translate="yes" space="default">
 				<source>Осталось пива в кеге:</source>
 				<target xml:lang="mn">Кег-д шар айраг үлдээв.</target>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">43</context>
-				</context-group>
-			</trans-unit>
-			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="BEERBOX.KEGS.NOT_CONNECTED" size-unit="pixel" translate="yes" space="default">
-				<source>Неподключено</source>
-				<target xml:lang="mn">Холбогдоогүй байна</target>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">54</context>
-				</context-group>
-			</trans-unit><trans-unit id="CHANGE_BUTTON" datatype="html">
+				
+			<context-group purpose="location"><context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context><context context-type="linenumber">52</context></context-group></trans-unit>
+			<trans-unit id="CHANGE_BUTTON" datatype="html">
         <source>Заменить</source><target state="new">Орлуулах</target>
+        
+        
+      <context-group purpose="location"><context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context><context context-type="linenumber">74</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/beerbox/replace-labels/replace-labels.component.html</context><context context-type="linenumber">21</context></context-group></trans-unit><trans-unit id="BEERBOX.BRANDS.SELECT_BRANDSI" datatype="html">
+        <source>Выберите бренд:</source><target state="new">Выберите бренд:</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-          <context context-type="linenumber">67</context>
+          <context context-type="sourcefile">app/beerbox/kegs/brand-change-dialog.html</context>
+          <context context-type="linenumber">2</context>
         </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.NOT_SELECTED" datatype="html">
+        <source>Не выбрано</source><target state="new">Не выбрано</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/replace-labels/replace-labels.component.html</context>
-          <context context-type="linenumber">21</context>
+          <context context-type="sourcefile">app/beerbox/kegs/brand-change-dialog.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit><trans-unit id="BEERBOX.BRANDS.SET" datatype="html">
+        <source>Установить</source><target state="new">Установить</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/kegs/brand-change-dialog.html</context>
+          <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="BEERBOX.WASH.TITLE" size-unit="pixel" translate="yes" space="default">
