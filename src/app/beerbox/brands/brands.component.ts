@@ -615,7 +615,6 @@ export class BrandEditDialogComponent implements OnInit {
     }
 
     const b = this.brands.find(br => br.id === dataId);
-
     if (!b) {
       return;
     }
