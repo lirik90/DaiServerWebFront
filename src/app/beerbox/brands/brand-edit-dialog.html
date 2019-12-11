@@ -1,6 +1,6 @@
 <h1 *ngIf="!curBrand.id" mat-dialog-title i18n="@@BEERBOX.BRANDS.CREATE_NEW_BRAND_TITLE">Создание нового бренда</h1>
 <h1 *ngIf="curBrand.id" mat-dialog-title i18n="@@BEERBOX.BRANDS.CHANGE_BRAND_TITLE">Изменение бренда</h1>
-<div class="table">
+<div class="table" style="margin-bottom: 1em;">
   <div class="row">
     <div class="cell" i18n="@@BEERBOX.BRANDS.NAMEI">Наименование бренда:</div>
     <div class="cell row2cell">
@@ -23,7 +23,7 @@
     <div class="cell" i18n="@@BEERBOX.BRANDS.ALCI">Алкоголь %:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [(ngModel)]="curBrand.alc" maxlength="4" pattern="^[0-9,.]{1,4}$">
+        <input matInput type="text" [(ngModel)]="curBrand.alc" maxlength="4" pattern="^[0-9.]{1,4}$" inputmode="numeric" autocomplete="off" digitOnly decimal="true">
         <mat-error>
           Разрешены только числа от 0 до 9999
         </mat-error>
@@ -130,7 +130,7 @@
     <div class="cell"  i18n="@@BEERBOX.BRANDS.PRESSUREI">Давление:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input type="input" matInput [(ngModel)]="curBrand.pressure" maxlength="4" pattern="^[0-9,.]{1,4}$">
+        <input type="input" matInput [(ngModel)]="curBrand.pressure" maxlength="4" pattern="^[0-9.]{1,4}$"  inputmode="numeric" autocomplete="off" digitOnly decimal="true">
         <mat-error>
           Разрешены только числа от 0 до 9999
         </mat-error>
@@ -142,7 +142,7 @@
     <div class="cell"  i18n="@@BEERBOX.BRANDS.BARCODEI">Штрих-код:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [(ngModel)]="curBrand.barcode" maxlength="13" pattern="^[0-9]{13}">
+        <input matInput type="text" [(ngModel)]="curBrand.barcode" maxlength="13" pattern="^[0-9]{13}"  inputmode="numeric" autocomplete="off" digitOnly>
         <mat-error>
           Разрешены только числа. Должно быть 13 символов.
         </mat-error>

@@ -37,6 +37,7 @@ import {WifiComponent} from './wifi/wifi.component';
 import {PourSettingsComponent} from './pour-settings/pour-settings.component';
 import {MatAutocompleteModule} from '@angular/material';
 import {NgSelect2Module} from 'ng-select2';
+import {DigitOnlyModule} from '@uiowa/digit-only';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -60,6 +61,7 @@ export function createTranslateLoader(http: HttpClient) {
     }),
     MatAutocompleteModule,
     NgSelect2Module,
+    DigitOnlyModule,
   ],
   declarations: [
     WashComponent, ReplaceKegComponent, ConfirmDialogReplaceKegComponent, CalibrationComponent, CheckHeadStandComponent,
