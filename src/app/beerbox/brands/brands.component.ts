@@ -538,7 +538,7 @@ export class BrandEditDialogComponent implements OnInit {
 
   showDistribAddDialog() {
     const dialogRef = this.dialog.open(DistribAddDialogComponent, {
-      data: {}, width: '80vw'
+      data: {distributors: this.distributors}, width: '80vw'
     });
 
     dialogRef.afterClosed().subscribe(resp => {
@@ -551,7 +551,7 @@ export class BrandEditDialogComponent implements OnInit {
 
   showProdAddDialog() {
     const dialogRef = this.dialog.open(ProdAddDialogComponent, {
-      data: {}, width: '80vw'
+      data: {producers: this.producers}, width: '80vw'
     });
 
     dialogRef.afterClosed().subscribe(resp => {
@@ -746,6 +746,8 @@ export class ConfirmEditDialogComponent implements OnInit {
 export class DistribAddDialogComponent {
   frm: FormGroup;
 
+  distributors: Distributor[];
+
   constructor(
     public dialogRef: MatDialogRef<BrandEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -756,10 +758,22 @@ export class DistribAddDialogComponent {
       name: ['', Validators.required],
       address: ['', Validators.required],
     });
+
+    if (data.distributors) {
+      this.distributors = data.distributors;
+    } else {
+      this.distributors = [];
+    }
   }
 
   addNewDistributor() {
+    let exists = false;
+
+    exists = this.distributors.find(p => p.name == this.frm.value.name) != null;
+
     if (this.frm.invalid) {
+    } else if (exists) {
+      alert('Такой дистрибьютор уже существует');
     } else {
       const url = '/api/v1/distributor/';
       const body = this.frm.value;
@@ -786,6 +800,8 @@ export class DistribAddDialogComponent {
 export class ProdAddDialogComponent {
   frm: FormGroup;
 
+  producers: Producer[];
+
   constructor(
     public dialogRef: MatDialogRef<BrandEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -796,10 +812,22 @@ export class ProdAddDialogComponent {
       name: ['', Validators.required],
       address: ['', Validators.required],
     });
+
+    if(data.producers) {
+      this.producers = data.producers;
+    } else {
+      this.producers = [];
+    }
   }
 
   addNewProducer() {
+    let exists = false;
+
+    exists = this.producers.find(p => p.name == this.frm.value.name) != null;
+
     if (this.frm.invalid) {
+    } else if (exists) {
+      alert('Такой производитель уже существует');
     } else {
       const url = '/api/v1/producer/';
       const body = this.frm.value;
