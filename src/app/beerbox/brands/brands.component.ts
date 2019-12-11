@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MAT_DIALOG_DATA, MatDialog, MatDialogRef, PageEvent} from '@angular/material';
 import {HttpClient} from '@angular/common/http';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Observable, of} from 'rxjs';
@@ -82,6 +82,7 @@ export class BrandsComponent implements OnInit {
   brandControl = '';
   distributorControl = '';
   numberControl = '';
+  pageEvent: PageEvent;
 
   constructor(
     public dialog: MatDialog,
@@ -116,6 +117,22 @@ export class BrandsComponent implements OnInit {
     if (this.distributorControl) {
       result = result.filter(b => b.distributor.id === parseInt(this.distributorControl, 10));
     }
+
+    let afrom = 0;
+    let ato = 35;
+
+    if (this.pageEvent) {
+      afrom = this.pageEvent.pageIndex * this.pageEvent.pageSize;
+      ato = this.pageEvent.pageIndex * this.pageEvent.pageSize + this.pageEvent.pageSize;
+      if (ato > this.pageEvent.length) {
+        ato = this.pageEvent.length;
+      }
+    }
+
+    console.log(afrom);
+    console.log(ato);
+
+    result = result.slice(afrom, ato);
 
     this.brandList = of(result);
 
@@ -194,7 +211,7 @@ export class BrandsComponent implements OnInit {
   }
 
   private getProducers() {
-    this.http.get<List<Producer>>(`/api/v1/producer/`).subscribe(resp => {
+    this.http.get<List<Producer>>(`/api/v1/producer/?limit=9999`).subscribe(resp => {
       this.producers = resp.results;
       this.updateFilteredProducers();
     });
@@ -210,7 +227,7 @@ export class BrandsComponent implements OnInit {
   }
 
   private getBrands() {
-    this.http.get<List<Brand>>(`/api/v1/brand/`).subscribe(resp => {
+    this.http.get<List<Brand>>(`/api/v1/brand/?limit=9999`).subscribe(resp => {
       console.log(resp);
       this.brands = resp.results;
       this.updateFilteredBrands();
@@ -248,7 +265,7 @@ export class BrandsComponent implements OnInit {
   }
 
   private getDistributors() {
-    this.http.get<List<Producer>>(`/api/v1/distributor/`).subscribe(resp => {
+    this.http.get<List<Producer>>(`/api/v1/distributor/?limit=9999`).subscribe(resp => {
       this.distributors = resp.results;
       this.updateFilteredDistributors();
     });
@@ -384,6 +401,11 @@ export class BrandsComponent implements OnInit {
     } else {
       this.numberControl = '';
     }
+    this.updateList();
+  }
+
+  paginator($event: PageEvent) {
+    this.pageEvent = $event;
     this.updateList();
   }
 }

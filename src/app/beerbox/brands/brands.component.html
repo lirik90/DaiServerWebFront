@@ -48,4 +48,9 @@
     <td colspan="3" i18n="@@BEERBOX.BRANDS.NOTHING_FOUND">По указанным параметрам поиска отсутствуют данные</td>
   </tr>
 </table>
+
+  <mat-paginator [length]="brands.length"
+                 [pageSize]="35"
+                 (page)="paginator($event)">
+  </mat-paginator>
 </div>
