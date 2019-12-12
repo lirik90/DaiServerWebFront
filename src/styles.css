@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 /* Application-wide Styles */
 
-@import url('https://fonts.googleapis.com/css?family=Noto+Sans&display=swap&subset=cyrillic');
+/*@import url('https://fonts.googleapis.com/css?family=Noto+Sans&display=swap&subset=cyrillic');*/
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 html {

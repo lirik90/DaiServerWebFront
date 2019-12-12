@@ -26,6 +26,7 @@
               }
             ],
             "styles": [
+              "src/assets/css/noto.css",
               "src/styles.css",
               /*"node_modules/flag-icon-css/css/flag-icon.min.css",*/
               "src/assets/css/flag-icon.css",
