@@ -41,9 +41,9 @@ const houseRoutes: Routes = [
               { path: ':view_id', component: ManageComponent, data: { is_edit: true, is_view: true } }
             ]
           },
-          { path: 'elements', component: ManageComponent, data: { req_perms: ['isAdmin'] }},
+          { path: 'elements', component: ManageComponent, data: { req_perms: ['isAdmin', 'Netherland'] }},
           { path: 'log', component: LogComponent, data: { req_perms: ['isSupervisor', 'isFullAccess', 'isAdmin'] }},
-          { path: 'log2', component: Log2Component, data: { req_perms: ['isAdmin'] }},
+          { path: 'log2', component: Log2Component, data: { req_perms: ['isAdmin', 'Netherland'] }},
           { path: 'group/:groupId/param', component: ParamComponent },
           {
             path: 'reports',
@@ -54,7 +54,7 @@ const houseRoutes: Routes = [
           {
             path: 'export',
             component: Export2Component,
-            data: {dataPreselected: [107], req_perms: ['isKegReplacer', 'isSupervisor', 'isFullAccess', 'isAdmin'] }
+            data: {dataPreselected: [107], req_perms: ['isKegReplacer', 'isSupervisor', 'isFullAccess', 'isAdmin', 'Netherland'] }
           },
           {
             path: 'settings',

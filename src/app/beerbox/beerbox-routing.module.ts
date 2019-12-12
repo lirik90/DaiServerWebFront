@@ -25,11 +25,11 @@ const beerboxRoutes: Routes = [
     children: [
       {path: 'replace_keg', redirectTo: 'kegs'},
       {path: 'kegs', component: KegsComponent},
-      {path: 'wash', component: WashComponent, data: { req_perms: ['isCleaner', 'isSupervisor', 'isFullAccess', 'isAdmin'] },
+      {path: 'wash', component: WashComponent, data: { req_perms: ['isCleaner', 'isSupervisor', 'isFullAccess', 'isAdmin', 'Netherland'] },
         canActivate: [PermissionGuard]},
       {path: 'calibration', component: CalibrationComponent},
       {path: 'cal-vol', component: CalVolComponent},
-      {path: 'check-head-stand', component: CheckHeadStandComponent, data: { req_perms: ['isFullAccess', 'isAdmin'] },},
+      {path: 'check-head-stand', component: CheckHeadStandComponent, data: { req_perms: ['isFullAccess', 'isAdmin'] }},
       {path: 'replace_labels', component: ReplaceLabelsComponent},
       {path: 'update_beer_info', component: UpdateBeerInfoComponent},
       {path: 'change_controller_address', component: ChangeControllerAddressComponent},
@@ -37,7 +37,7 @@ const beerboxRoutes: Routes = [
       {path: 'label-configurator', component: LabelConfiguratorComponent},
       {path: 'label-conf', component: TapListComponent /*loadChildren: 'app/beerbox/label-conf/label-conf.module#LabelConfModule'*/},
       {path: 'wifi', component: WifiComponent},
-      {path: 'pour-settings', component: PourSettingsComponent, data: { req_perms: ['isFullAccess', 'isAdmin'] }},
+      {path: 'pour-settings', component: PourSettingsComponent, data: { req_perms: ['isFullAccess', 'isAdmin', 'Netherland'] }},
       {path: 'brands', component: BrandsComponent},
     ]
   }
