@@ -2269,14 +2269,6 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-          <context context-type="linenumber">55</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
-          <context context-type="linenumber">56</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
           <context context-type="linenumber">59</context>
         </context-group>
         <context-group purpose="location">
@@ -2332,6 +2324,20 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
           <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="BEERBOX.KEGS.BOTTLE_POURED" datatype="html">
+        <source>Налито бутылок:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
+          <context context-type="linenumber">55</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="BEERBOX.KEGS.WASHS_MADE" datatype="html">
+        <source>Произведено промывок:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/kegs/kegs.component.html</context>
+          <context context-type="linenumber">56</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CHANGE_BUTTON" datatype="html">
