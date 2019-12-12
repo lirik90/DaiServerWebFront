@@ -143,6 +143,6 @@ export class AuthenticationService {
   }
 
   isNetherland() {
-    return this.checkPermission('netherland');
+    return this.checkPermission('netherlands');
   }
 }
