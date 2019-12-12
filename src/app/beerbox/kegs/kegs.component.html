@@ -54,7 +54,7 @@
                   <br>
                   <div *ngIf="head.bottle_counter"><span  i18n="@@BEERBOX.KEGS.BOTTLE_POURED">Налито бутылок:</span> {{head.bottle_counter.val.display}}</div>
                   <div *ngIf="head.extrude_counter"><span  i18n="@@BEERBOX.KEGS.WASHS_MADE">Произведено промывок:</span> {{head.extrude_counter.val.display}}</div>
-                  <ng-container *ngIf="head.pouring_error_counter">
+                  <ng-container *ngIf="head.pouring_error_counter && head.volume_poured">
                   <br><span><b>Израсходовано пива:</b></span><br>
                     <div *ngIf="head.pouring_error_counter"><span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Неуспешные наливы:</span> {{head.pouring_error_counter.val.display  + ' мл'}}</div>
                     <div *ngIf="head.extrude_error_counter"><span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Неуспешные вытеснения:</span> {{ head.extrude_error_counter.val.display  + ' мл'}}</div>
