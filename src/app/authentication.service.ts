@@ -142,4 +142,7 @@ export class AuthenticationService {
     return this.http.post('/api/v1/users/', user);
   }
 
+  isNetherland() {
+    return this.checkPermission('netherland');
+  }
 }

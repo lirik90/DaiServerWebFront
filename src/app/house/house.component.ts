@@ -150,82 +150,36 @@ export class HouseComponent implements OnInit, OnDestroy {
     this.isSupervisor = this.authService.isSupervisor();
     this.isKegReplacer = this.authService.isKegReplacer();
     this.isCleaner = this.authService.isCleaner();
+    const isNetherland = this.authService.isNetherland();
 
     this.fillerNav.push({link: 'detail', text: this.translate.instant('NAVIGATION_TAB.INFO'), icon: 'perm_device_information'});
 
-    if (isAdmin) {
+    if (isNetherland) {
       this.fillerNav.push({link: 'manage', text: this.translate.instant('NAVIGATION_TAB.MANAGEMENT'), icon: 'home'});
-      this.fillerNav.push({link: 'elements', text: this.translate.instant('NAVIGATION_TAB.ELEMENTS'), icon: 'build'});
-    }
-
-    if (this.isSupervisor || isFullAccess || isAdmin) {
-      this.fillerNav.push({link: 'log', text: this.translate.instant('NAVIGATION_TAB.LOG'), icon: 'event_note'});
-    }
-
-    if (isAdmin) {
       this.fillerNav.push({link: 'log2', text: this.translate.instant('NAVIGATION_TAB.LOG_VALUE'), icon: 'event_note'});
-    }
-
-    if (isAdmin) {
-      this.fillerNav.push({link: 'settings', text: this.translate.instant('NAVIGATION_TAB.STRUCTURE'), icon: 'settings'});
-      this.fillerNav.push({link: 'reports', text: this.translate.instant('NAVIGATION_TAB.REPORTS'), icon: 'show_chart'});
-    }
-
-    if (isAdmin) {
       this.fillerNav.push({
         link: 'beerbox/brands',
         text: this.translate.instant('NAVIGATION_TAB.BRANDS'),
         icon: 'label'
       });
-    }
-
-    if (this.isKegReplacer || this.isCleaner || this.isSupervisor || isFullAccess || isAdmin) {
       this.fillerNav.push({
         link: 'beerbox/wifi',
         text: this.translate.instant('NAVIGATION_TAB.WIFI'),
         icon: 'wifi'
       });
-    }
-
-    if (isFullAccess || isAdmin) {
       this.fillerNav.push({
         link: 'beerbox/pour-settings',
         text: this.translate.instant('NAVIGATION_TAB.POUR_SETTINGS'),
         icon: 'settings_application'
       });
-    }
-
-    if (this.isKegReplacer || this.isSupervisor || isFullAccess || isAdmin) {
       this.fillerNav.push({link: 'export', query: {data: [107]}, text: this.translate.instant('NAVIGATION_TAB.EXPORT'), icon: 'subject'});
-    }
-
-    // For Beerbox
-    if (this.isCleaner || this.isSupervisor || isFullAccess || isAdmin) {
       this.fillerNav.push({link: 'beerbox/wash', text: this.translate.instant('NAVIGATION_TAB.WASH'), icon: 'opacity'});
-    }
-
-    if (this.isKegReplacer || this.isCleaner || this.isSupervisor || isFullAccess || isAdmin) {
       this.fillerNav.push({link: 'beerbox/kegs', text: this.translate.instant('NAVIGATION_TAB.KEGS'), icon: 'local_drink'});
       this.fillerNav.push({
         link: 'beerbox/calibration',
         text: this.translate.instant('NAVIGATION_TAB.CALIBRATION'),
         icon: 'compass_calibration'
       });
-
-      // CAL_VOL
-      /*
-      this.fillerNav.push({
-        link: 'beerbox/cal-vol',
-        text: this.translate.instant('NAVIGATION_TAB.CALVOL'),
-        icon: 'compass_calibration'
-      });
-       */
-    }
-
-    if (isFullAccess || isAdmin) {
-      this.fillerNav.push({link: 'beerbox/check-head-stand', text: this.translate.instant('NAVIGATION_TAB.STAND'), icon: 'category'});
-    }
-    if (this.isKegReplacer || this.isCleaner || this.isSupervisor || isFullAccess || isAdmin) {
       this.fillerNav.push({link: 'beerbox/replace_labels', text: this.translate.instant('NAVIGATION_TAB.REPLACE_LABEL'), icon: 'layers'});
       this.fillerNav.push({link: 'beerbox/update_beer_info', text: this.translate.instant('NAVIGATION_TAB.BEER_INFO'), icon: 'receipt'});
       this.fillerNav.push({
@@ -244,8 +198,100 @@ export class HouseComponent implements OnInit, OnDestroy {
         text: this.translate.instant('NAVIGATION_TAB.HELP'),
         icon: 'help'
       });
-    }
+    } else {
+      if (isAdmin) {
+        this.fillerNav.push({link: 'manage', text: this.translate.instant('NAVIGATION_TAB.MANAGEMENT'), icon: 'home'});
+        this.fillerNav.push({link: 'elements', text: this.translate.instant('NAVIGATION_TAB.ELEMENTS'), icon: 'build'});
+      }
 
+      if (this.isSupervisor || isFullAccess || isAdmin) {
+        this.fillerNav.push({link: 'log', text: this.translate.instant('NAVIGATION_TAB.LOG'), icon: 'event_note'});
+      }
+
+      if (isAdmin) {
+        this.fillerNav.push({link: 'log2', text: this.translate.instant('NAVIGATION_TAB.LOG_VALUE'), icon: 'event_note'});
+      }
+
+      if (isAdmin) {
+        this.fillerNav.push({link: 'settings', text: this.translate.instant('NAVIGATION_TAB.STRUCTURE'), icon: 'settings'});
+        this.fillerNav.push({link: 'reports', text: this.translate.instant('NAVIGATION_TAB.REPORTS'), icon: 'show_chart'});
+      }
+
+      if (isAdmin) {
+        this.fillerNav.push({
+          link: 'beerbox/brands',
+          text: this.translate.instant('NAVIGATION_TAB.BRANDS'),
+          icon: 'label'
+        });
+      }
+
+      if (this.isKegReplacer || this.isCleaner || this.isSupervisor || isFullAccess || isAdmin) {
+        this.fillerNav.push({
+          link: 'beerbox/wifi',
+          text: this.translate.instant('NAVIGATION_TAB.WIFI'),
+          icon: 'wifi'
+        });
+      }
+
+      if (isFullAccess || isAdmin) {
+        this.fillerNav.push({
+          link: 'beerbox/pour-settings',
+          text: this.translate.instant('NAVIGATION_TAB.POUR_SETTINGS'),
+          icon: 'settings_application'
+        });
+      }
+
+      if (this.isKegReplacer || this.isSupervisor || isFullAccess || isAdmin) {
+        this.fillerNav.push({link: 'export', query: {data: [107]}, text: this.translate.instant('NAVIGATION_TAB.EXPORT'), icon: 'subject'});
+      }
+
+      // For Beerbox
+      if (this.isCleaner || this.isSupervisor || isFullAccess || isAdmin) {
+        this.fillerNav.push({link: 'beerbox/wash', text: this.translate.instant('NAVIGATION_TAB.WASH'), icon: 'opacity'});
+      }
+
+      if (this.isKegReplacer || this.isCleaner || this.isSupervisor || isFullAccess || isAdmin) {
+        this.fillerNav.push({link: 'beerbox/kegs', text: this.translate.instant('NAVIGATION_TAB.KEGS'), icon: 'local_drink'});
+        this.fillerNav.push({
+          link: 'beerbox/calibration',
+          text: this.translate.instant('NAVIGATION_TAB.CALIBRATION'),
+          icon: 'compass_calibration'
+        });
+
+        // CAL_VOL
+        /*
+        this.fillerNav.push({
+          link: 'beerbox/cal-vol',
+          text: this.translate.instant('NAVIGATION_TAB.CALVOL'),
+          icon: 'compass_calibration'
+        });
+         */
+      }
+
+      if (isFullAccess || isAdmin) {
+        this.fillerNav.push({link: 'beerbox/check-head-stand', text: this.translate.instant('NAVIGATION_TAB.STAND'), icon: 'category'});
+      }
+      if (this.isKegReplacer || this.isCleaner || this.isSupervisor || isFullAccess || isAdmin) {
+        this.fillerNav.push({link: 'beerbox/replace_labels', text: this.translate.instant('NAVIGATION_TAB.REPLACE_LABEL'), icon: 'layers'});
+        this.fillerNav.push({link: 'beerbox/update_beer_info', text: this.translate.instant('NAVIGATION_TAB.BEER_INFO'), icon: 'receipt'});
+        this.fillerNav.push({
+          link: 'beerbox/change_controller_address',
+          text: this.translate.instant('NAVIGATION_TAB.CONTROLLER'),
+          icon: 'settings_input_component'
+        });
+        this.fillerNav.push({
+          link: 'beerbox/operation_hours',
+          text: this.translate.instant('NAVIGATION_TAB.OPERATION_HOURS'),
+          icon: 'access_time'
+        });
+
+        this.fillerNav.push({
+          link: 'doc',
+          text: this.translate.instant('NAVIGATION_TAB.HELP'),
+          icon: 'help'
+        });
+      }
+    }
 
     this.getHouseInfo();
 
