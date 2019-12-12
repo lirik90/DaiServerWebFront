@@ -154,8 +154,8 @@ export class HouseComponent implements OnInit, OnDestroy {
 
     this.fillerNav.push({link: 'detail', text: this.translate.instant('NAVIGATION_TAB.INFO'), icon: 'perm_device_information'});
 
-    if (isNetherland) {
-      this.fillerNav.push({link: 'manage', text: this.translate.instant('NAVIGATION_TAB.MANAGEMENT'), icon: 'home'});1
+    if (isNetherland || !this.authService.checkPermission('change_telegramsubscriber')) {
+      this.fillerNav.push({link: 'manage', text: this.translate.instant('NAVIGATION_TAB.MANAGEMENT'), icon: 'home'});
       this.fillerNav.push({
         link: 'beerbox/brands',
         text: this.translate.instant('NAVIGATION_TAB.BRANDS'),
