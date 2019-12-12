@@ -173,20 +173,7 @@ export class HouseComponent implements OnInit, OnDestroy {
         icon: 'settings_application'
       });
       this.fillerNav.push({link: 'export', query: {data: [107]}, text: this.translate.instant('NAVIGATION_TAB.EXPORT'), icon: 'subject'});
-      this.fillerNav.push({link: 'beerbox/wash', text: this.translate.instant('NAVIGATION_TAB.WASH'), icon: 'opacity'});
       this.fillerNav.push({link: 'beerbox/kegs', text: this.translate.instant('NAVIGATION_TAB.KEGS'), icon: 'local_drink'});
-      this.fillerNav.push({
-        link: 'beerbox/calibration',
-        text: this.translate.instant('NAVIGATION_TAB.CALIBRATION'),
-        icon: 'compass_calibration'
-      });
-      this.fillerNav.push({link: 'beerbox/replace_labels', text: this.translate.instant('NAVIGATION_TAB.REPLACE_LABEL'), icon: 'layers'});
-      this.fillerNav.push({link: 'beerbox/update_beer_info', text: this.translate.instant('NAVIGATION_TAB.BEER_INFO'), icon: 'receipt'});
-      this.fillerNav.push({
-        link: 'beerbox/change_controller_address',
-        text: this.translate.instant('NAVIGATION_TAB.CONTROLLER'),
-        icon: 'settings_input_component'
-      });
       this.fillerNav.push({
         link: 'beerbox/operation_hours',
         text: this.translate.instant('NAVIGATION_TAB.OPERATION_HOURS'),
