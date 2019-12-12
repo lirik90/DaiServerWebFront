@@ -11,6 +11,7 @@ import {Brand, BrandEditDialogComponent, BrandViewDialogComponent, List} from '.
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import {TranslateService} from '@ngx-translate/core';
 
 export interface Head {
   date_made: ParamValue;
@@ -69,6 +70,7 @@ export class KegsComponent implements OnInit {
     private controlService: ControlService,
     private authService: AuthenticationService,
     private http: HttpClient,
+    public translate: TranslateService,
   ) { }
 
   ngOnInit() {
@@ -305,7 +307,7 @@ export class KegsComponent implements OnInit {
   getRemainBeer(head: Head) {
     if (head.is_not_empty.val.display) {
       if (head.volume_poured.val.display === null) {
-        return 'Не подключено';
+        return this.translate.instant('KEGS.NOT_CONNECTED');
       }
 
       return this.toLitres(parseFloat(this.kegVolume.value) - parseFloat(head.volume_poured.val.display)) + ' л.';
@@ -316,7 +318,7 @@ export class KegsComponent implements OnInit {
 
   getPoured(head) {
     if (head.volume_poured.val.display === null) {
-      return 'Не подключено';
+      return this.translate.instant('KEGS.NOT_CONNECTED');
     }
 
     return this.toLitres(head.volume_poured.val.display) + ' л.';
@@ -368,7 +370,7 @@ export class KegsComponent implements OnInit {
     const id = parseInt(displayId, 10);
     const b = this.brands ? this.brands.find(br => br.id === id) : null;
 
-    return b ? b.name : 'не установлен';
+    return b ? b.name : this.translate.instant('KEGS.NOT_SET');
   }
 }
 

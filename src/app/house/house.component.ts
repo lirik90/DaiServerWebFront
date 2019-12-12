@@ -104,7 +104,7 @@ export class HouseComponent implements OnInit, OnDestroy {
 
 
     if (this.loses_state) {
-      result += 'С потерями пакетов. ';
+      result += this.translate.instant('WITH_LOSS');
     }
 
     if (this.status_checked) {

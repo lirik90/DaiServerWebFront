@@ -15,6 +15,7 @@
 	"MODIFIED": "The device structure has been modified. Please restart the device.",
 	"WAIT": "Please wait",
 	"NOT_CONNECTED": "Not connected",
+  "WITH_LOSS": "With packets loss.",
 	"NAVIGATION_TAB": {
     "INFO": "Details",
     "MANAGEMENT": "Management",
@@ -33,7 +34,7 @@
     "CALIBRATION": "Calibration",
     "CALVOL": "Volume calibration",
     "STAND": "Stand",
-    "REPLACE_LABEL": "Replace Ribbon",
+    "REPLACE_LABEL": "Replace a sticker roll",
     "BEER_INFO": "Label Text",
     "CONTROLLER": "Controller Setup",
     "OPERATION_HOURS": "Opening hours",
@@ -97,5 +98,9 @@
     "EXISTS": "This brand is already exists",
     "EXISTS_DISTRIB": "This distributor is already exists",
     "EXISTS_PROD": "This producer is already exists"
+  },
+  "KEGS": {
+    "NOT_CONNECTED": "Not connected",
+    "NOT_SET": " none"
   }
 }
