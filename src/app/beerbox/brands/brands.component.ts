@@ -87,7 +87,8 @@ export class BrandsComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private http: HttpClient,
-    private cdRef: ChangeDetectorRef) { }
+    private cdRef: ChangeDetectorRef,
+    public translate: TranslateService,) { }
 
   ngOnInit() {
     this.getProducers();
@@ -145,7 +146,7 @@ export class BrandsComponent implements OnInit {
 
     this.filteredProducers.unshift({
       id: '0',
-      text: 'Не выбрано'
+      text: this.translate.instant('BRANDS.NOT_SELECTED')
     } as Select2OptionData);
 
     this.filteredDistributors = this.distributors.filter(p => result.find(b => b.distributor.id === p.id)).map(p => {
@@ -157,7 +158,7 @@ export class BrandsComponent implements OnInit {
 
     this.filteredDistributors.unshift({
       id: '0',
-      text: 'Не выбрано'
+      text: this.translate.instant('BRANDS.NOT_SELECTED')
     } as Select2OptionData);
 
     this.filteredBrands = result.map(p => {
@@ -169,7 +170,7 @@ export class BrandsComponent implements OnInit {
 
     this.filteredBrands.unshift({
       id: '0',
-      text: 'Не выбрано'
+      text: this.translate.instant('BRANDS.NOT_SELECTED')
     } as Select2OptionData);
 
     this.filteredNumbers = result.map(p => {
@@ -181,12 +182,12 @@ export class BrandsComponent implements OnInit {
 
     this.filteredNumbers.unshift({
       id: '0',
-      text: 'Не выбрано'
+      text: this.translate.instant('BRANDS.NOT_SELECTED')
     } as Select2OptionData);
 
     this.cdRef.detectChanges();
 
-    console.log('redo');
+    //console.log('redo');
     return result;
   }
 
@@ -348,7 +349,7 @@ export class BrandsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.result === 1) {
         const dialogRef2 = this.dialog.open(ConfirmEditDialogComponent, {
-          data: {text: 'Действительно хотите произвести редактирование данных бренда?', ybtn: 'Редактировать', nbtn: 'Отмена'}});
+          data: {text: this.translate.instant('BRANDS.CONFIRM_EDIT'), ybtn: this.translate.instant('BRANDS.EDIT'), nbtn: this.translate.instant('BRANDS.CANCEL')}});
         dialogRef2.afterClosed().subscribe(result2 => {
           if ( result && result2.result === 1) {
             this.showEditDialog(b);
@@ -506,7 +507,7 @@ export class BrandEditDialogComponent implements OnInit {
 
   close() {
     const dialogRef2 = this.dialog.open(ConfirmEditDialogComponent, {
-      data: {text: this.translate.instant('BRANDS.CONFIRM_CANCEL'), ybtn: 'Да', nbtn: 'Нет'}});
+      data: {text: this.translate.instant('BRANDS.CONFIRM_CANCEL'), ybtn: this.translate.instant('BRANDS.YES'), nbtn: this.translate.instant('BRANDS.NO')}});
     dialogRef2.afterClosed().subscribe(result2 => {
       if (result2.result === 1) {
         if (this.curBrand.id) {
@@ -613,7 +614,7 @@ export class BrandEditDialogComponent implements OnInit {
       alert(this.translate.instant('BRANDS.REQ_FIELDS'));
     } else if (badExists) {
       // this.showExists(null, exists.id);
-      alert('По указанным вами параметрам имеется ранее созданный бренд');
+      alert(this.translate.instant('BRANDS.EXISTS'));
     } else if (this.badNumbers) {
       // do nothing
       console.log(this.curBrand.barcode.length);
@@ -671,7 +672,8 @@ export class BrandViewDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<BrandEditDialogComponent>,
     public dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public translate: TranslateService,
   ) {
     if (data.brand) {
       this.curBrand = data.brand;
@@ -713,7 +715,8 @@ export class ConfirmEditDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<BrandEditDialogComponent>,
     public dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public translate: TranslateService,
   ) {
     this.text = data.text;
     this.ybtn = data.ybtn;
@@ -753,6 +756,7 @@ export class DistribAddDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private http: HttpClient,
     private formBuilder: FormBuilder,
+    public translate: TranslateService,
   ) {
     this.frm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -773,7 +777,7 @@ export class DistribAddDialogComponent {
 
     if (this.frm.invalid) {
     } else if (exists) {
-      alert('Такой дистрибьютор уже существует');
+      alert(this.translate.instant('BRANDS.EXISTS_DISTRIB'));
     } else {
       const url = '/api/v1/distributor/';
       const body = this.frm.value;
@@ -807,6 +811,7 @@ export class ProdAddDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private http: HttpClient,
     private formBuilder: FormBuilder,
+    public translate: TranslateService,
   ) {
     this.frm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -827,7 +832,7 @@ export class ProdAddDialogComponent {
 
     if (this.frm.invalid) {
     } else if (exists) {
-      alert('Такой производитель уже существует');
+      alert(this.translate.instant('BRANDS.EXISTS_PROD'));
     } else {
       const url = '/api/v1/producer/';
       const body = this.frm.value;
