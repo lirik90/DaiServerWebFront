@@ -1153,7 +1153,7 @@
       <target xml:space="preserve">Log</target>
 
 
-    <context-group purpose="location"><context context-type="sourcefile">app/house/log/log.component.html</context><context context-type="linenumber">1</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/house/log2/log2.component.html</context><context context-type="linenumber">1</context></context-group></trans-unit>
+    <context-group purpose="location"><context context-type="sourcefile">app/house/log/log.component.html</context><context context-type="linenumber">1</context></context-group></trans-unit>
     <trans-unit id="LOG.WARNING" approved="yes">
       <source xml:space="preserve">
       EventLog's API rate limit has been reached. It will be reset in one minute.
@@ -1190,14 +1190,44 @@
       <target xml:space="preserve">Date</target>
 
 
-    <context-group purpose="location"><context context-type="sourcefile">app/house/log/log.component.html</context><context context-type="linenumber">43</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/house/log2/log2.component.html</context><context context-type="linenumber">59</context></context-group></trans-unit>
+    <context-group purpose="location"><context context-type="sourcefile">app/house/log/log.component.html</context><context context-type="linenumber">43</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/house/log2/log2.component.html</context><context context-type="linenumber">59</context></context-group></trans-unit><trans-unit id="LOG2.TITLE" datatype="html">
+        <source>Журнал значений</source><target state="new">Value Log</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log2/log2.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
   </body></file>
   <file original="app/house/log2/log2.component.html" datatype="plaintext" source-language="ru" target-language="en"><body>
     <trans-unit id="PARAMS">
       <source xml:space="preserve">Параметры</source>
       <target xml:space="preserve" state="needs-review-translation">Parameters</target>
 
-    <context-group purpose="location"><context context-type="sourcefile">app/house/log2/log2.component.html</context><context context-type="linenumber">13</context></context-group></trans-unit><trans-unit id="HELP" datatype="html">
+    <context-group purpose="location"><context context-type="sourcefile">app/house/log2/log2.component.html</context><context context-type="linenumber">13</context></context-group></trans-unit><trans-unit id="LOG2.VALUE" datatype="html">
+        <source>Значение</source><target state="new">Value</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log2/log2.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit><trans-unit id="LOG2.ELEMENT" datatype="html">
+        <source>Элемент</source><target state="new">Element</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log2/log2.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit><trans-unit id="LOG2.GROUP" datatype="html">
+        <source>Группа</source><target state="new">Group</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log2/log2.component.html</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit><trans-unit id="LOG2.SECTION" datatype="html">
+        <source>Секция</source><target state="new">Section</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log2/log2.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+      </trans-unit><trans-unit id="HELP" datatype="html">
         <source>Справка</source><target state="new">Help</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/doc/doc.component.html</context>

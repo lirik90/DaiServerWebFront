@@ -594,10 +594,6 @@
           <context context-type="sourcefile">app/house/log/log.component.html</context>
           <context context-type="linenumber">1</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/house/log2/log2.component.html</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="LOG.WARNING" datatype="html">
         <source>
@@ -657,11 +653,46 @@
           <context context-type="linenumber">59</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="LOG2.TITLE" datatype="html">
+        <source>Журнал значений</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log2/log2.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="PARAMS" datatype="html">
         <source>Параметры</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/log2/log2.component.html</context>
           <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LOG2.VALUE" datatype="html">
+        <source>Значение</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log2/log2.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LOG2.ELEMENT" datatype="html">
+        <source>Элемент</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log2/log2.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LOG2.GROUP" datatype="html">
+        <source>Группа</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log2/log2.component.html</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LOG2.SECTION" datatype="html">
+        <source>Секция</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/log2/log2.component.html</context>
+          <context context-type="linenumber">49</context>
         </context-group>
       </trans-unit>
       <trans-unit id="HELP" datatype="html">
