@@ -1250,13 +1250,17 @@ h2:lang(ko).localnav-title {
   margin-left: 6px;
 }
 
-.fav-btn {
+.fav-btn, .reboot-btn {
   color: #333;
+  flex-shrink: 0;
 }
 
 @media all and (max-width: 600px) {
   .fav-btn__label, .reboot-btn__label {
     display: none;
+  }
+  .fav-btn, .reboot-btn {
+    box-sizing: border-box !important;
   }
 }
 
