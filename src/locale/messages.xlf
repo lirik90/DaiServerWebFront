@@ -52,6 +52,10 @@
           <context context-type="sourcefile">app/houses/list/list.component.html</context>
           <context context-type="linenumber">7</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="COMPANY" datatype="html">
         <source>Компания</source>
@@ -63,12 +67,24 @@
           <context context-type="sourcefile">app/houses/list/list.component.html</context>
           <context context-type="linenumber">15</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="NOT_SELECTED" datatype="html">
         <source>Не выбрано</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
           <context context-type="linenumber">25</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">17</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
@@ -880,6 +896,13 @@
           <context context-type="linenumber">70</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="REPORTS.TIMEZONE" datatype="html">
+        <source>Часовой пояс</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="REPORTS.EXPORT.SELECT_DATA" datatype="html">
         <source>Выберите данные</source>
         <context-group purpose="location">
@@ -892,6 +915,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
           <context context-type="linenumber">48</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.ELEMENT_TYPE" datatype="html">
+        <source>Типы элементов</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CONTROL.READY" datatype="html">
@@ -2127,7 +2157,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/kegs/brand-change-dialog.html</context>
-          <context context-type="linenumber">16</context>
+          <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BEERBOX.BRANDS.SAVE" datatype="html">
@@ -2358,18 +2388,11 @@
           <context context-type="linenumber">2</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="BEERBOX.BRANDS.NOT_SELECTED" datatype="html">
-        <source>Не выбрано</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/beerbox/kegs/brand-change-dialog.html</context>
-          <context context-type="linenumber">8</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="BEERBOX.BRANDS.SET" datatype="html">
         <source>Установить</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/kegs/brand-change-dialog.html</context>
-          <context context-type="linenumber">17</context>
+          <context context-type="linenumber">20</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BEERBOX.WASH.TITLE" datatype="html">
@@ -2890,13 +2913,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
           <context context-type="linenumber">15</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="PROFILE.PHONE" datatype="html">
-        <source>Телефон:</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
-          <context context-type="linenumber">18</context>
         </context-group>
       </trans-unit>
       <trans-unit id="PROFILE.SUCCESS2" datatype="html">
