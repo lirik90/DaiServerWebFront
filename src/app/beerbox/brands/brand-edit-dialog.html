@@ -24,7 +24,7 @@
     <div class="cell row2cell">
       <mat-form-field>
         <input matInput type="text" [(ngModel)]="curBrand.alc" maxlength="4" pattern="^[0-9.]{1,4}$" inputmode="numeric" autocomplete="off" digitOnly decimal="true">
-        <mat-error>
+        <mat-error i18n="@@BEERBOX.BRANDS.NUM_ERR">
           Разрешены только числа от 0 до 9999
         </mat-error>
       </mat-form-field>
@@ -131,7 +131,7 @@
     <div class="cell row2cell">
       <mat-form-field>
         <input type="input" matInput [(ngModel)]="curBrand.pressure" maxlength="4" pattern="^[0-9.]{1,4}$"  inputmode="numeric" autocomplete="off" digitOnly decimal="true">
-        <mat-error>
+        <mat-error  i18n="@@BEERBOX.BRANDS.NUM_ERR">
           Разрешены только числа от 0 до 9999
         </mat-error>
       </mat-form-field>
@@ -143,7 +143,7 @@
     <div class="cell row2cell">
       <mat-form-field>
         <input matInput type="text" [(ngModel)]="curBrand.barcode" maxlength="13" pattern="^[0-9]{13}"  inputmode="numeric" autocomplete="off" digitOnly>
-        <mat-error>
+        <mat-error  i18n="@@BEERBOX.BRANDS.NUM_ERR2">
           Разрешены только числа. Должно быть 13 символов.
         </mat-error>
       </mat-form-field>

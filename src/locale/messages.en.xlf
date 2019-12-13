@@ -77,7 +77,7 @@
 
 
 
-    <context-group purpose="location"><context context-type="sourcefile">app/houses/detail/detail.component.html</context><context context-type="linenumber">25</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/houses/list/list.component.html</context><context context-type="linenumber">9</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/houses/list/list.component.html</context><context context-type="linenumber">17</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/house/reports/export2/export2.component.html</context><context context-type="linenumber">33</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/house/reports/export2/export2.component.html</context><context context-type="linenumber">40</context></context-group></trans-unit>
+    <context-group purpose="location"><context context-type="sourcefile">app/houses/detail/detail.component.html</context><context context-type="linenumber">15</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/houses/detail/detail.component.html</context><context context-type="linenumber">25</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/houses/list/list.component.html</context><context context-type="linenumber">9</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/houses/list/list.component.html</context><context context-type="linenumber">17</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/house/reports/export2/export2.component.html</context><context context-type="linenumber">33</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/house/reports/export2/export2.component.html</context><context context-type="linenumber">40</context></context-group></trans-unit>
   </body></file>
   <file original="app/houses/list/list.component.html" datatype="plaintext" source-language="ru" target-language="en"><body>
     <trans-unit id="DETAILS.UUID" approved="yes">
@@ -493,7 +493,21 @@
       <target xml:space="preserve" state="needs-review-translation">Alcohol %:</target>
 
 
-    <context-group purpose="location"><context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context><context context-type="linenumber">23</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/beerbox/brands/brand-view-dialog.html</context><context context-type="linenumber">28</context></context-group></trans-unit>
+    <context-group purpose="location"><context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context><context context-type="linenumber">23</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/beerbox/brands/brand-view-dialog.html</context><context context-type="linenumber">28</context></context-group></trans-unit><trans-unit id="BEERBOX.BRANDS.NUM_ERR" datatype="html">
+        <source>
+          Разрешены только числа от 0 до 9999
+        </source><target state="new">
+          Only numbers from 0 to 9999 are allowed
+        </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context>
+          <context context-type="linenumber">134</context>
+        </context-group>
+      </trans-unit>
     <trans-unit id="BEERBOX.BRANDS.STORAGE_CONDITIONI">
       <source xml:space="preserve">Условия хранения:</source>
       <target xml:space="preserve" state="needs-review-translation">Storage conditions:</target>
@@ -535,7 +549,17 @@
       <target xml:space="preserve" state="needs-review-translation">Bar code EAN-13:</target>
 
 
-    <context-group purpose="location"><context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context><context context-type="linenumber">142</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/beerbox/brands/brand-view-dialog.html</context><context context-type="linenumber">139</context></context-group></trans-unit>
+    <context-group purpose="location"><context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context><context context-type="linenumber">142</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/beerbox/brands/brand-view-dialog.html</context><context context-type="linenumber">139</context></context-group></trans-unit><trans-unit id="BEERBOX.BRANDS.NUM_ERR2" datatype="html">
+        <source>
+          Разрешены только числа. Должно быть 13 символов.
+        </source><target state="new">
+          Only numbers are allowed. 13 symbols are required.
+        </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context>
+          <context context-type="linenumber">146</context>
+        </context-group>
+      </trans-unit>
     <trans-unit id="BEERBOX.BRANDS.CANCEL">
       <source xml:space="preserve">Отменить</source>
       <target xml:space="preserve" state="needs-review-translation">Cancel</target>
@@ -747,7 +771,7 @@
 
 
 
-    <context-group purpose="location"><context context-type="sourcefile">app/beerbox/replace-labels/replace-labels.component.html</context><context context-type="linenumber">11</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/beerbox/replace-labels/replace-labels.component.ts</context><context context-type="linenumber">12</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/beerbox/operation-hours/operation-hours.component.html</context><context context-type="linenumber">21</context></context-group></trans-unit>
+    <context-group purpose="location"><context context-type="sourcefile">app/beerbox/replace-labels/replace-labels.component.html</context><context context-type="linenumber">11</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/beerbox/replace-labels/replace-labels.component.ts</context><context context-type="linenumber">12</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/beerbox/operation-hours/operation-hours.component.html</context><context context-type="linenumber">21</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context><context context-type="linenumber">29</context></context-group></trans-unit>
     <trans-unit id="LABELS">
       <source xml:space="preserve">Лента</source>
       <target xml:space="preserve" state="needs-review-translation">Label roll</target>
@@ -1363,7 +1387,7 @@
 
 
 
-    <context-group purpose="location"><context context-type="sourcefile">app/house/reports/export/export.component.html</context><context context-type="linenumber">6</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/house/reports/export2/export2.component.html</context><context context-type="linenumber">6</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/house/reports/export2/export2.component.html</context><context context-type="linenumber">28</context></context-group></trans-unit>
+    <context-group purpose="location"><context context-type="sourcefile">app/house/reports/export/export.component.html</context><context context-type="linenumber">6</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/house/reports/export/export.component.html</context><context context-type="linenumber">9</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/house/reports/export2/export2.component.html</context><context context-type="linenumber">6</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/house/reports/export2/export2.component.html</context><context context-type="linenumber">28</context></context-group></trans-unit>
     <trans-unit id="REPORTS.EXPORT.SELECT_THIS">
       <source xml:space="preserve">Только этот проект</source>
       <target xml:space="preserve" state="needs-review-translation">Only this appliance</target>

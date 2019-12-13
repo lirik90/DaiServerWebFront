@@ -57,23 +57,12 @@
           <context context-type="linenumber">32</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="COMPANY" datatype="html">
-        <source>Компания</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
-          <context context-type="linenumber">23</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/houses/list/list.component.html</context>
-          <context context-type="linenumber">15</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">39</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="NOT_SELECTED" datatype="html">
         <source>Не выбрано</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
           <context context-type="linenumber">25</context>
@@ -93,6 +82,21 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
           <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="COMPANY" datatype="html">
+        <source>Компания</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+          <context context-type="linenumber">39</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DETAILS.DESCRIPTION" datatype="html">
@@ -826,6 +830,10 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
           <context context-type="linenumber">6</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/reports/export/export.component.html</context>
+          <context context-type="linenumber">9</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
@@ -2064,6 +2072,19 @@
           <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="BEERBOX.BRANDS.NUM_ERR" datatype="html">
+        <source>
+          Разрешены только числа от 0 до 9999
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context>
+          <context context-type="linenumber">134</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="BEERBOX.BRANDS.STORAGE_CONDITIONI" datatype="html">
         <source>Условия хранения:</source>
         <context-group purpose="location">
@@ -2139,6 +2160,15 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/brands/brand-view-dialog.html</context>
           <context context-type="linenumber">139</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="BEERBOX.BRANDS.NUM_ERR2" datatype="html">
+        <source>
+          Разрешены только числа. Должно быть 13 символов.
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/beerbox/brands/brand-edit-dialog.html</context>
+          <context context-type="linenumber">146</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BEERBOX.BRANDS.CANCEL" datatype="html">
@@ -2548,6 +2578,10 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/beerbox/operation-hours/operation-hours.component.html</context>
           <context context-type="linenumber">21</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
+          <context context-type="linenumber">29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="LABELS" datatype="html">
