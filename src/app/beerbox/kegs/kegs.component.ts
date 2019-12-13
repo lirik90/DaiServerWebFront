@@ -12,6 +12,7 @@ import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {TranslateService} from '@ngx-translate/core';
+import {Select2OptionData} from 'ng-select2';
 
 export interface Head {
   date_made: ParamValue;
@@ -383,7 +384,7 @@ export class KegsComponent implements OnInit {
 })
 export class BrandChangeDialogComponent implements OnInit {
   brandControl = new FormControl();
-  filteredBrands: Observable<Brand[]>;
+  filteredBrands: Array<Select2OptionData>;
   brands: Brand[];
   curBrand: Brand;
 
@@ -396,6 +397,7 @@ export class BrandChangeDialogComponent implements OnInit {
     private http: HttpClient,
     private houseService: HouseService,
     private controlService: ControlService,
+    public translate: TranslateService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     if (data.bid) {
@@ -416,12 +418,17 @@ export class BrandChangeDialogComponent implements OnInit {
   }
 
   private updateFilteredBrands() {
-    this.filteredBrands = this.brandControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(name => name ? this.brands.filter(p => p.name.includes(name)) : this.brands.slice()
-        )
-      );
+    this.filteredBrands =  this.brands.map(p => {
+      return {
+        id: p.id.toString(),
+        text: p.name
+      } as Select2OptionData;
+    });
+
+    this.filteredBrands.unshift({
+      id: '0',
+      text: this.translate.instant('BRANDS.NOT_SELECTED')
+    } as Select2OptionData);
   }
 
   ngOnInit(): void {

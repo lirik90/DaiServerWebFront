@@ -88,7 +88,7 @@ export class BrandsComponent implements OnInit {
     public dialog: MatDialog,
     private http: HttpClient,
     private cdRef: ChangeDetectorRef,
-    public translate: TranslateService,) { }
+    public translate: TranslateService) { }
 
   ngOnInit() {
     this.getProducers();

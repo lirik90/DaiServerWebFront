@@ -182,3 +182,16 @@
 .actions button:last-child {
   margin-right: 0;
 }
+
+.select2-wrap {
+  min-width: 200px;
+  /*margin: 4px;*/
+  box-sizing: border-box;
+  margin-bottom: 1em;
+}
+
+.select-and-btn ng-select2 {
+  flex: 1;
+  padding-right: 4px;
+  max-width: calc(100% - 28px);
+}

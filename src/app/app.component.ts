@@ -29,10 +29,8 @@ export class AppComponent implements OnInit, OnDestroy {
   scrollTop = 0;
 
   languages = [
-    { code: 'ru', label: 'Русский', icon: 'flag-icon flag-icon-ru'},
     { code: 'en', label: 'English', icon: 'flag-icon flag-icon-gb'},
-    { code: 'fr', label: 'Français', icon: 'flag-icon flag-icon-fr'},
-    { code: 'mn', label: 'Монгол', icon: 'flag-icon flag-icon-mn'},
+    { code: 'ru', label: 'Русский', icon: 'flag-icon flag-icon-ru'},
     // { code: 'es', label: 'Español', icon: 'flag-icon flag-icon-es'},
   ];
 
@@ -57,19 +55,19 @@ export class AppComponent implements OnInit, OnDestroy {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
 
-    translate.addLangs(['ru', 'en', 'fr', 'es', 'mn']);
+    translate.addLangs(['en', 'ru']);
     // this language will be used as a fallback when a translation isn't found in the current language
-    translate.setDefaultLang('ru');
+    translate.setDefaultLang('en');
     // the lang to use, if the lang isn't available, it will use the current loader to get them
     // translate.use('ru');
 
     let lang;
-    const match = document.location.pathname.match(/\/(ru|en|fr|es|mn)\//);
+    const match = document.location.pathname.match(/\/(ru|en)\//);
 
     if (match === null) {
       const browserLang = translate.getBrowserLang();
       console.log('Browser Lang:' + browserLang);
-      lang = browserLang.match(/ru|en|fr|es|mn/) ? browserLang : 'ru';
+      lang = browserLang.match(/ru|en/) ? browserLang : 'en';
     } else {
       console.log('url lang: ' + match[1]);
       lang = match[1];
@@ -104,7 +102,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   change_language(toLang?): void {
-    const match = document.location.pathname.match(/\/(ru|en|fr|es|mn)\//);
+    const match = document.location.pathname.match(/\/(ru|en)\//);
     if (match !== null) {
       const current = document.location.href;
       if (!toLang) {
