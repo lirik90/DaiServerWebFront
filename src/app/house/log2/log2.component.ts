@@ -98,15 +98,23 @@ export class Log2Component implements OnInit, OnDestroy {
           this.isRateLimitReached = false;
           this.resultsLength = data.count;
 
-          for (let item of data.results) {
+          for (const item of data.results as any) {
             console.log(item);
             item.date = new Date(item.timestamp_msecs);
 
             item.color = this.getColor(item.type_id);
+
+            if (item && item.grop && item.group.section) {
+              const sn = this.houseService.house.sections.find(s => s.id === item.group.section.id);
+              if (sn) {
+                item.group.section.name = sn.name;
+              }
+            }
           }
           return data.results;
         }),
-        catchError(() => {
+        catchError((err) => {
+          console.error(err);
           this.isLoadingResults = false;
           // Catch if the GitHub API has reached its rate limit. Return empty data.
           this.isRateLimitReached = true;
