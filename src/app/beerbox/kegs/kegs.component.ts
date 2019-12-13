@@ -447,4 +447,8 @@ export class BrandChangeDialogComponent implements OnInit {
   private getCurBrand(id: number) {
     this.curBrand = this.brands.find(b => b.id === id);
   }
+
+  changeVal(val: string) {
+    this.getCurBrand(parseInt(val, 10));
+  }
 }
