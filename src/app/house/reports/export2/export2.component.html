@@ -29,14 +29,14 @@
       <mat-checkbox #current_only (change)="fillHouses($event.checked)" [checked]="true" i18n="@@REPORTS.EXPORT.SELECT_THIS">Только этот проект</mat-checkbox><br><br>
       <ng-container *ngIf="!current_only.checked">
         <mat-form-field>
-          <mat-select placeholder="Город" formControlName="city"  (selectionChange)="fillHouses(false, true)">
+          <mat-select placeholder="Город" i18n-placeholder="@@CITY" formControlName="city"  (selectionChange)="fillHouses(false, true)">
             <mat-option  i18n="@@NOT_SELECTED">Не выбрано</mat-option>
             <mat-option *ngFor="let c of cities" [value]="c.id">{{c.name}}</mat-option>
           </mat-select>
         </mat-form-field>
 
         <mat-form-field>
-          <mat-select placeholder="Компания" formControlName="company"  (selectionChange)="fillHouses(false, true)">
+          <mat-select placeholder="Компания" i18n-placeholder="@@COMPANY" formControlName="company"  (selectionChange)="fillHouses(false, true)">
             <mat-option i18n="@@NOT_SELECTED">Не выбрано</mat-option>
             <mat-option *ngFor="let c of comps" [value]="c.id">{{c.name}}</mat-option>
           </mat-select>
