@@ -41,7 +41,7 @@ const houseRoutes: Routes = [
               { path: ':view_id', component: ManageComponent, data: { is_edit: true, is_view: true } }
             ]
           },
-          { path: 'elements', component: ManageComponent, data: { req_perms: ['isAdmin'] }},
+          { path: 'elements', component: ManageComponent, data: { req_perms: ['isAdmin', 'isDev'] }},
           { path: 'log', component: LogComponent, data: { req_perms: ['isSupervisor', 'isFullAccess', 'isAdmin'] }},
           { path: 'log2', component: Log2Component, data: { req_perms: ['isAdmin'] }},
           { path: 'group/:groupId/param', component: ParamComponent },
