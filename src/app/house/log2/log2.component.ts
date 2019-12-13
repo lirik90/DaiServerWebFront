@@ -104,12 +104,30 @@ export class Log2Component implements OnInit, OnDestroy {
 
             item.color = this.getColor(item.type_id);
 
-            if (item && item.grop && item.group.section) {
-              const sn = this.houseService.house.sections.find(s => s.id === item.group.section.id);
-              if (sn) {
-                item.group.section.name = sn.name;
+            if (item) {
+              if (item.group) {
+                if (item.group.section) {
+                  const sn = this.houseService.house.sections.find(s => s.id === item.group.section.id);
+                  if (sn) {
+                    item.group.section.name = sn.name;
+                  }
+
+                  const gn = sn.groups.find(g => g.id === item.group.id);
+                  if (gn) {
+                    item.group.title = gn.title;
+                    item.group.type.title = gn.type.title;
+                  }
+
+                  const en = gn.items.find(i => i.id === item.id)
+                  if (en) {
+                    item.name = en.name;
+                    item.type.title = en.type.title;
+                  }
+                }
               }
             }
+
+            //row.item.group.title || row.item.group.type.title
           }
           return data.results;
         }),
