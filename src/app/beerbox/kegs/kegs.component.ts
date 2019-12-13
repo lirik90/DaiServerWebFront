@@ -390,6 +390,7 @@ export class BrandChangeDialogComponent implements OnInit {
 
   bid = 0;
   devItem: DeviceItem;
+  curval: number;
 
   constructor(
     public dialogRef: MatDialogRef<BrandEditDialogComponent>,
@@ -446,9 +447,13 @@ export class BrandChangeDialogComponent implements OnInit {
 
   private getCurBrand(id: number) {
     this.curBrand = this.brands.find(b => b.id === id);
+    this.curval = id;
   }
 
   changeVal(val: string) {
+    /*console.log('dsfsdf');
+    console.log(val);
+    console.log('dsfsdf2');*/
     this.getCurBrand(parseInt(val, 10));
   }
 }
