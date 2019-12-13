@@ -466,18 +466,25 @@
           <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="RESTART" datatype="html">
+        <source>Перезагрузить</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/house.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="ADD_TO_FAV" datatype="html">
         <source>Добавить<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>в избранное</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/house.component.html</context>
-          <context context-type="linenumber">17</context>
+          <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
       <trans-unit id="IN_FAV" datatype="html">
         <source>В избранном</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/house/house.component.html</context>
-          <context context-type="linenumber">18</context>
+          <context context-type="linenumber">20</context>
         </context-group>
       </trans-unit>
       <trans-unit id="HOME.DIALOG.TITLE" datatype="html">

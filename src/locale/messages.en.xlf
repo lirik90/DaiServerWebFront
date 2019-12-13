@@ -1094,17 +1094,23 @@
       <source xml:space="preserve">Время на устройстве</source>
       <target xml:space="preserve" state="needs-review-translation">Appliance clock</target>
 
-    <context-group purpose="location"><context context-type="sourcefile">app/house/house.component.html</context><context context-type="linenumber">13</context></context-group></trans-unit>
+    <context-group purpose="location"><context context-type="sourcefile">app/house/house.component.html</context><context context-type="linenumber">13</context></context-group></trans-unit><trans-unit id="RESTART" datatype="html">
+        <source>Перезагрузить</source><target state="new">Reboot</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/house/house.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
     <trans-unit id="ADD_TO_FAV">
       <source xml:space="preserve">Добавить<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>в избранное</source>
       <target xml:space="preserve" state="needs-review-translation">add to favourites</target>
 
-    <context-group purpose="location"><context context-type="sourcefile">app/house/house.component.html</context><context context-type="linenumber">17</context></context-group></trans-unit>
+    <context-group purpose="location"><context context-type="sourcefile">app/house/house.component.html</context><context context-type="linenumber">19</context></context-group></trans-unit>
     <trans-unit id="IN_FAV">
       <source xml:space="preserve">В избранном</source>
       <target xml:space="preserve" state="needs-review-translation">Favourites</target>
 
-    <context-group purpose="location"><context context-type="sourcefile">app/house/house.component.html</context><context context-type="linenumber">18</context></context-group></trans-unit>
+    <context-group purpose="location"><context context-type="sourcefile">app/house/house.component.html</context><context context-type="linenumber">20</context></context-group></trans-unit>
   </body></file>
   <file original="app/house/page-reload-dialog.component.html" datatype="plaintext" source-language="ru" target-language="en"><body>
     <trans-unit id="HOME.DIALOG.TITLE" approved="yes">

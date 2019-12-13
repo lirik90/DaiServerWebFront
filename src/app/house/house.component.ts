@@ -50,6 +50,7 @@ export class HouseComponent implements OnInit, OnDestroy {
 
   isSupervisor: boolean;
   isKegReplacer: boolean;
+  isNetherlands: boolean;
 
   private bytes_sub: ISubscription;
   private opened_sub: ISubscription;
@@ -151,6 +152,7 @@ export class HouseComponent implements OnInit, OnDestroy {
     this.isKegReplacer = this.authService.isKegReplacer();
     this.isCleaner = this.authService.isCleaner();
     const isNetherland = this.authService.isNetherland();
+    this.isNetherlands = isNetherland;
 
     this.fillerNav.push({link: 'detail', text: this.translate.instant('NAVIGATION_TAB.INFO'), icon: 'perm_device_information'});
 
