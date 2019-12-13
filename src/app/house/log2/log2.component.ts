@@ -91,7 +91,7 @@ export class Log2Component implements OnInit, OnDestroy {
             this.sort.active, this.sort.direction == 'asc', this.paginator.pageIndex, this.paginator.pageSize, this.addArgs, this.search);
         }),
         map(data => {
-          console.log(data);
+          //console.log(data);
 
           // Flip flag to show that loading has finished.
           this.isLoadingResults = false;
@@ -99,32 +99,35 @@ export class Log2Component implements OnInit, OnDestroy {
           this.resultsLength = data.count;
 
           for (const item of data.results as any) {
-            console.log(item);
+            //console.log(item);
             item.date = new Date(item.timestamp_msecs);
 
             item.color = this.getColor(item.type_id);
 
-            if (item) {
-              if (item.group) {
-                if (item.group.section) {
-                  const sn = this.houseService.house.sections.find(s => s.id === item.group.section.id);
+            if (item.item) {
+              if (item.item.group) {
+                if (item.item.group.section) {
+                  const sn = this.houseService.house.sections.find(s => s.id === item.item.group.section.id);
                   if (sn) {
-                    item.group.section.name = sn.name;
+                    item.item.group.section.name = sn.name;
                   }
 
-                  const gn = sn.groups.find(g => g.id === item.group.id);
+                  const gn = sn.groups.find(g => g.id === item.item.group.id);
                   if (gn) {
-                    item.group.title = gn.title;
-                    item.group.type.title = gn.type.title;
+                    item.item.group.title = gn.title;
+                    item.item.group.type.title = gn.type.title;
                   }
 
-                  const en = gn.items.find(i => i.id === item.id)
+                  const en = gn.items.find(i => i.id === item.item.id)
                   if (en) {
-                    item.name = en.name;
-                    item.type.title = en.type.title;
+                    item.item.name = en.name;
+                    item.item.type.title = en.type.title;
                   }
+
+                  //console.log('1');
                 }
               }
+              //console.log(item);
             }
 
             //row.item.group.title || row.item.group.type.title
