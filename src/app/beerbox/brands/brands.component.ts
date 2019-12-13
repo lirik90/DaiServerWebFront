@@ -133,8 +133,6 @@ export class BrandsComponent implements OnInit {
     console.log(afrom);
     console.log(ato);
 
-    result = result.slice(afrom, ato);
-
     this.brandList = of(result);
 
     this.filteredProducers = this.producers.filter(p => result.find(b => b.producer.id === p.id)).map(p => {
@@ -186,6 +184,8 @@ export class BrandsComponent implements OnInit {
     } as Select2OptionData);
 
     this.cdRef.detectChanges();
+
+    result = result.slice(afrom, ato);
 
     //console.log('redo');
     return result;
