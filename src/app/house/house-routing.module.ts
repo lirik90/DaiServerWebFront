@@ -36,7 +36,7 @@ const houseRoutes: Routes = [
           {
             path: 'manage',
             component: Manage2Component,
-            data: { req_perms: ['isAdmin', 'Netherland'] },
+            data: { req_perms: ['isAdmin', 'Netherland', 'isSpecial'] },
           },
           { path: 'elements', component: ManageComponent, data: { req_perms: ['isAdmin', 'Netherland'] }},
           { path: 'log', component: LogComponent, data: { req_perms: ['isSupervisor', 'isFullAccess', 'isAdmin'] }},

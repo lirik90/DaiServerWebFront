@@ -40,6 +40,7 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
       'isCleaner': this.authService.isCleaner(),
       'isKegReplacer': this.authService.isKegReplacer(),
       'Netherland': this.authService.isNetherland(),
+      'isSpecial': this.authService.checkPermission('delete_signtype'),
     };
 
     const allow = req_perms.map((perm) => userPerms[perm]).reduceRight((a, b) => a || b);

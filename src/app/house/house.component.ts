@@ -156,8 +156,11 @@ export class HouseComponent implements OnInit, OnDestroy {
 
     this.fillerNav.push({link: 'detail', text: this.translate.instant('NAVIGATION_TAB.INFO'), icon: 'perm_device_information'});
 
-      if (isAdmin) {
+      if (isAdmin || this.authService.checkPermission('delete_signtype')) {
         this.fillerNav.push({link: 'manage', text: this.translate.instant('NAVIGATION_TAB.MANAGEMENT'), icon: 'home'});
+      }
+
+      if (isAdmin) {
         this.fillerNav.push({link: 'elements', text: this.translate.instant('NAVIGATION_TAB.ELEMENTS'), icon: 'build'});
       }
 
