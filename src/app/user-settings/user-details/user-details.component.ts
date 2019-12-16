@@ -44,8 +44,8 @@ export class UserDetailsComponent implements OnInit {
     this.changeUserDetailsGroup = this.formBuilder.group({
       first_name: [this.authService.currentUser.first_name],
       last_name: [this.authService.currentUser.last_name],
-      /*phone_number: [this.authService.currentUser.phone_number || '',
-        [Validators.required, Validators.pattern('\\+7\\(\\d{3}\\)\\d{3}-\\d{2}-\\d{2}')]]*/
+      phone_number: [this.authService.currentUser.phone_number || '',
+        [Validators.required, Validators.pattern('\\+7\\(\\d{3}\\)\\d{3}-\\d{2}-\\d{2}')]]
       // email: [{value: this.authService.currentUser.email, disabled: true}],
     });
   }
@@ -109,7 +109,6 @@ export class UserDetailsComponent implements OnInit {
       alert('Поле "Телефон" обязательное для заполнения!');
     } else {
       let req = this.changeUserDetailsGroup.value;
-      req.phone_number = '';
 
       this.http.put('/api/v1/change_user_details/', req, httpOptions).subscribe(resp => {
         // tslint:disable-next-line:triple-equals
