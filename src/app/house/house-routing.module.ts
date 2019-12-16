@@ -18,6 +18,7 @@ import {DocCommand} from '@angular/cli/commands/doc-impl';
 import {DocComponent} from './doc/doc.component';
 import {Export2Component} from './reports/export2/export2.component';
 import {Log2Component} from './log2/log2.component';
+import {Manage2Component} from './manage2/manage2.component';
 
 const houseRoutes: Routes = [
   {
@@ -34,12 +35,8 @@ const houseRoutes: Routes = [
           { path: 'detail', component: HouseDetailComponent},
           {
             path: 'manage',
-            component: ViewComponent,
-            data: { req_perms: ['isAdmin'] },
-            children: [
-              { path: '', pathMatch: 'full' },
-              { path: ':view_id', component: ManageComponent, data: { is_edit: true, is_view: true } }
-            ]
+            component: Manage2Component,
+            data: { req_perms: ['isAdmin', 'Netherland'] },
           },
           { path: 'elements', component: ManageComponent, data: { req_perms: ['isAdmin', 'Netherland'] }},
           { path: 'log', component: LogComponent, data: { req_perms: ['isSupervisor', 'isFullAccess', 'isAdmin'] }},

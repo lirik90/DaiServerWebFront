@@ -156,35 +156,6 @@ export class HouseComponent implements OnInit, OnDestroy {
 
     this.fillerNav.push({link: 'detail', text: this.translate.instant('NAVIGATION_TAB.INFO'), icon: 'perm_device_information'});
 
-    if (isNetherland && !this.authService.checkPermission('change_telegramsubscriber')) {
-      this.fillerNav.push({link: 'manage', text: this.translate.instant('NAVIGATION_TAB.MANAGEMENT'), icon: 'home'});
-      this.fillerNav.push({
-        link: 'beerbox/brands',
-        text: this.translate.instant('NAVIGATION_TAB.BRANDS'),
-        icon: 'label'
-      });
-      this.fillerNav.push({
-        link: 'beerbox/wifi',
-        text: this.translate.instant('NAVIGATION_TAB.WIFI'),
-        icon: 'wifi'
-      });
-      this.fillerNav.push({
-        link: 'beerbox/pour-settings',
-        text: this.translate.instant('NAVIGATION_TAB.POUR_SETTINGS'),
-        icon: 'settings_application'
-      });
-      this.fillerNav.push({link: 'beerbox/kegs', text: this.translate.instant('NAVIGATION_TAB.KEGS'), icon: 'local_drink'});
-      this.fillerNav.push({
-        link: 'beerbox/calibration',
-        text: this.translate.instant('NAVIGATION_TAB.CALIBRATION'),
-        icon: 'compass_calibration'
-      });
-      this.fillerNav.push({
-        link: 'beerbox/operation_hours',
-        text: this.translate.instant('NAVIGATION_TAB.OPERATION_HOURS'),
-        icon: 'access_time'
-      });
-    } else {
       if (isAdmin) {
         this.fillerNav.push({link: 'manage', text: this.translate.instant('NAVIGATION_TAB.MANAGEMENT'), icon: 'home'});
         this.fillerNav.push({link: 'elements', text: this.translate.instant('NAVIGATION_TAB.ELEMENTS'), icon: 'build'});
@@ -276,7 +247,7 @@ export class HouseComponent implements OnInit, OnDestroy {
           text: this.translate.instant('NAVIGATION_TAB.HELP'),
           icon: 'help'
         });
-      }
+
     }
 
     this.getHouseInfo();
