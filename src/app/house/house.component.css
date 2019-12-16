@@ -1166,7 +1166,7 @@ h2:lang(ko).localnav-title {
   width: 40px;
 }
 
-@media all and (min-width: 600px) {
+@media all and (min-width: 601px) {
   .localnav-menu {
     display: none;
   }
