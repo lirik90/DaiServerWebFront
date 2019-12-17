@@ -277,7 +277,10 @@ export class HouseComponent implements OnInit, OnDestroy {
   getHouseInfo(): void {
     this.houseService.house.conn.subscribe(v => {
       const [connState, modState, losesState] = this.controlService.parseConnectNumber(v);
-      console.log(connState);
+      this.connect_state = connState as Connection_State;
+      this.mod_state = modState as boolean;
+      this.loses_state = losesState as boolean;
+      console.log(this.connect_state);
     }).unsubscribe();
 
     this.bytes_sub = this.controlService.byte_msg.subscribe(msg => {
