@@ -66,7 +66,7 @@ export class HouseService extends IHouseService {
     // get dev values
     return this.http.get<StatusItems>(`/api/v2/project/${id}/status_item/`).pipe(
         switchMap(resp => {
-      // console.log(resp);
+      this.house2.conn = of(resp.connection);
 
       for (const s of this.house2.sections) {
         for (const g of s.groups) {
@@ -83,26 +83,6 @@ export class HouseService extends IHouseService {
           });
 
           this.calculateStatusInfo(g);
-
-          /*
-          if (g.statuses) {
-            g.statuses.map(st => {
-              //get st instance
-              const stIns = this.house2.statuses.find(sti => sti.id === st.status_id);
-              //get type
-              const stType = this.house2.statusTypes.find(stt => stt.id === stIns.type_id);
-              g.status_info.color = stType.color;
-              g.status_info.short_text = stType.name;
-              g.status_info.text = stIns.text;
-            });
-          } else {
-            // ok
-            const stType = this.house2.statusTypes.find(stt => stt.id === 1);
-            g.status_info.color = stType.color;
-            g.status_info.short_text = stType.name;
-            g.status_info.text = '';
-          }
-          */
         }
       }
       return of(true);

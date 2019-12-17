@@ -82,7 +82,6 @@ export class WashTapComponent implements OnInit {
     this.items = items;
   }
 
-
   onChange(clean_type_item: DeviceItem, value: any): void {
     clean_type_item.val.raw = +value;
   }

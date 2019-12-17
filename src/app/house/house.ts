@@ -1,3 +1,5 @@
+import {Observable} from 'rxjs';
+
 export class Codes { // Скрипт автоматизации
   id: number;   // ID
   name: string; // Имя
@@ -248,5 +250,6 @@ export class HouseDetail {
   views: View[];
   groupModes: GroupMode[];
   title: string;
+  conn: Observable<number>;
 }
 
