@@ -1,5 +1,5 @@
 import {Inject, Injectable} from '@angular/core';
-import {DOCUMENT} from '@angular/platform-browser';
+import { DOCUMENT } from "@angular/common";
 import {ISubscription} from 'rxjs/Subscription';
 import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/map';

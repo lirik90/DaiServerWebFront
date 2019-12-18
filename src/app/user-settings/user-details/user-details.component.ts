@@ -108,7 +108,7 @@ export class UserDetailsComponent implements OnInit {
     if (this.changeUserDetailsGroup.invalid) {
       alert('Поле "Телефон" обязательное для заполнения!');
     } else {
-      const req = this.changeUserDetailsGroup.value;
+      let req = this.changeUserDetailsGroup.value;
 
       this.http.put('/api/v1/change_user_details/', req, httpOptions).subscribe(resp => {
         // tslint:disable-next-line:triple-equals

@@ -1,0 +1,141 @@
+/* ManageComponent's private CSS styles */
+h2 {
+  margin-left: 8px;
+}
+h3, h4 {
+  text-align: center;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+h4 {
+  display: inline-block;
+  width: 100px;
+  word-wrap: break-word;
+}
+.grid {
+  margin: 0;
+  display: flex;
+}
+.grid-pad {
+  padding: 10px 0;
+}
+.module {
+  /*padding: 4px 8px 12px 8px;*/
+  text-align: center;
+  color: #eee;
+/*  max-height: 120px; */
+  min-width: 120px;
+  /*background-color: #6A9D80;*/
+  /*border-radius: 16px;*/
+}
+
+.eqTable {
+	text-align: center;
+	width: 100%;
+  empty-cells: hide;
+}
+.between-group {
+  padding: 0px;
+  height: 8px;
+}
+.eqTable td[colspan] {
+  border-top-width: 2px;
+  border-top-style: solid;
+  border-left-width: 2px;
+  border-left-style: solid;
+  border-right-width: 2px;
+  border-right-style: solid;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.eqTable td[colspan] a  {
+  color: #fff;
+}
+
+.eqTable td[colspan] a h4 {
+  text-decoration: underline;
+}
+
+.eqTable td[colspan] a h4:hover {
+	background-color: #eee;
+  border-radius: 16px;
+	color: #6A9D80;
+	cursor: pointer;
+}
+.eqTable td:not([colspan]) {
+	padding-top: 12px;
+	padding-bottom: 12px;
+  /* border-bottom: 1px groove #000 !important; */
+}
+.eqTable td:not([colspan]):first-child {
+  border-left-width: 2px;
+  border-left-style: solid;
+  text-align: left;
+  padding-left: 8px;
+}
+.eqTable td:not([colspan]):last-child {
+  border-right-width: 2px;
+  border-right-style: solid;
+}
+
+.td-bottom-border {
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+}
+.td-bottom-border-left {
+  border-bottom-left-radius: 16px;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+}
+.td-bottom-border-right {
+  border-bottom-right-radius: 16px;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+}
+
+mat-select {
+  width: 100%;
+}
+mat-form-field {
+  width: 50%;
+}
+
+td .mat-icon {
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+  line-height: 16px;
+}
+h2 .mat-icon {
+  font-size: 32px;
+  height: 32px;
+  width: 32px;
+  line-height: 32px;
+}
+
+@media (max-width: 600px) {
+  .module {
+    font-size: 16px;
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+  .grid {
+    display: unset;
+  }
+}
+@media (max-width: 1024px) {
+  .grid {
+    margin: 0;
+  }
+  .module {
+    min-width: 60px;
+  }
+}
+
+.invisible-anchor {
+  position: relative;
+  top: -3em;
+}

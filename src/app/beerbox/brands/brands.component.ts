@@ -1,10 +1,12 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MAT_DIALOG_DATA, MatDialog, MatDialogRef, PageEvent} from '@angular/material';
 import {HttpClient} from '@angular/common/http';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Observable, of} from 'rxjs';
 import {map, startWith, switchMap} from 'rxjs/operators';
 import {CheckHeadStandDialogComponent} from '../check-head-stand/check-head-stand.component';
+import {TranslateService} from '@ngx-translate/core';
+import {Select2OptionData} from 'ng-select2';
 
 export class Brand {
   active = true;
@@ -62,34 +64,36 @@ export class BrandsComponent implements OnInit {
   brands: Brand[] = [];
   producers: Producer[] = [];
   distributors: Distributor[] = [];
-  producerControl: FormControl = new FormControl();
-  filteredProducers: Observable<Producer[]>;
-  brandControl: FormControl = new FormControl();
-  filteredBrands: Observable<Brand[]>;
-  distributorControl: FormControl = new FormControl();
-  filteredDistributors: Observable<Distributor[]>;
+  filteredProducers: Array<Select2OptionData>;
+  filteredBrands: Array<Select2OptionData>;
+  filteredDistributors: Array<Select2OptionData>;
 
   numbers: number[] = [];
-  numbersControl: FormControl = new FormControl();
-  filteredNumbers: Observable<number[]>;
+  filteredNumbers: Array<Select2OptionData>;
 
   brandList: Observable<Brand[]>;
+  brandList2: Brand[] = [];
 
   brandControlS: FormControl = new FormControl();
   producerControlS: FormControl = new FormControl();
   distributorControlS: FormControl = new FormControl();
   numbersControlS: FormControl = new FormControl();
+  producerControl = '';
+  brandControl = '';
+  distributorControl = '';
+  numberControl = '';
+  pageEvent: PageEvent;
 
   constructor(
     public dialog: MatDialog,
-    private http: HttpClient
-  ) { }
+    private http: HttpClient,
+    private cdRef: ChangeDetectorRef,
+    public translate: TranslateService) { }
 
   ngOnInit() {
     this.getProducers();
     this.getDistributors();
     this.getBrands();
-    this.getNumbers();
   }
 
   getNumbers() {
@@ -99,94 +103,169 @@ export class BrandsComponent implements OnInit {
   updateList() {
     let result = this.brands;
 
-    if (this.brandControlS.value) {
-      result = result.filter(b => b.id === this.brandControlS.value);
+    if (this.numberControl) {
+      result = result.filter(b => b.id === parseInt(this.numberControl, 10));
     }
 
-    if (this.producerControlS.value) {
-      result = result.filter(b => b.producer.id === this.producerControlS.value);
+    if (this.brandControl) {
+      result = result.filter(b => b.id === parseInt(this.brandControl, 10));
     }
 
-    if (this.distributorControlS.value) {
-      result = result.filter(b => b.distributor.id === this.distributorControlS.value);
+    if (this.producerControl) {
+      result = result.filter(b => b.producer.id === parseInt(this.producerControl, 10));
     }
 
-    if (this.numbersControlS.value) {
-      result = result.filter(b => b.id === this.numbersControlS.value);
+    if (this.distributorControl) {
+      result = result.filter(b => b.distributor.id === parseInt(this.distributorControl, 10));
     }
 
+    let afrom = 0;
+    let ato = 35;
+
+    if (this.pageEvent) {
+      afrom = this.pageEvent.pageIndex * this.pageEvent.pageSize;
+      ato = this.pageEvent.pageIndex * this.pageEvent.pageSize + this.pageEvent.pageSize;
+      if (ato > this.pageEvent.length) {
+        ato = this.pageEvent.length;
+      }
+    }
+
+    console.log(afrom);
+    console.log(ato);
+
+    this.filteredProducers = this.producers.filter(p => result.find(b => b.producer.id === p.id)).map(p => {
+      return {
+        id: p.id.toString(),
+        text: p.name
+      } as Select2OptionData;
+    });
+
+    this.filteredProducers.unshift({
+      id: '0',
+      text: this.translate.instant('BRANDS.NOT_SELECTED')
+    } as Select2OptionData);
+
+    this.filteredDistributors = this.distributors.filter(p => result.find(b => b.distributor.id === p.id)).map(p => {
+      return {
+        id: p.id.toString(),
+        text: p.name
+      } as Select2OptionData;
+    });
+
+    this.filteredDistributors.unshift({
+      id: '0',
+      text: this.translate.instant('BRANDS.NOT_SELECTED')
+    } as Select2OptionData);
+
+    this.filteredBrands = result.map(p => {
+      return {
+        id: p.id.toString(),
+        text: p.name
+      } as Select2OptionData;
+    });
+
+    this.filteredBrands.unshift({
+      id: '0',
+      text: this.translate.instant('BRANDS.NOT_SELECTED')
+    } as Select2OptionData);
+
+    this.filteredNumbers = result.map(p => {
+      return {
+        id: p.id.toString(),
+        text: p.id.toString(),
+      } as Select2OptionData;
+    });
+
+    this.filteredNumbers.unshift({
+      id: '0',
+      text: this.translate.instant('BRANDS.NOT_SELECTED')
+    } as Select2OptionData);
+
+    this.cdRef.detectChanges();
+
+    result = result.slice(afrom, ato);
     this.brandList = of(result);
+
+    //console.log('redo');
+    return result;
   }
 
   updateFilteredNumbers() {
-    this.filteredNumbers = this.numbersControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(n => parseInt(n, 10)),
-        map(n => {
-          if (!isNaN(n)) {
-            console.log(n);
-            return this.brands.filter(p => p.id === n).map(b => b.id);
-          } else {
-            console.log(n);
-            return this.brands.map(b => b.id);
-          }}
-        )
-      );
+    const src: number[] = this.numbers;
+
+    this.filteredNumbers = src.map(p => {
+      return {
+        id: p.toString(),
+        text: p.toString(),
+      } as Select2OptionData;
+    });
   }
 
   private updateFilteredProducers() {
-    this.filteredProducers = this.producerControl.valueChanges
-      .pipe(
-          startWith(''),
-          map(name => {
-            if (name) {
-              return this.producers.filter(p => p.name.includes(name));
-            } else {
-              return this.producers.slice();
-            }
-          }
-        )
-      );
+    this.filteredProducers = this.producers.map(p => {
+      return {
+        id: p.id.toString(),
+        text: p.name
+      } as Select2OptionData;
+    });
   }
 
   private getProducers() {
-    this.http.get<List<Producer>>(`/api/v1/producer/`).subscribe(resp => {
+    this.http.get<List<Producer>>(`/api/v1/producer/?limit=9999`).subscribe(resp => {
       this.producers = resp.results;
       this.updateFilteredProducers();
     });
   }
 
   private updateFilteredBrands() {
-    this.filteredBrands = this.brandControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(name => name ? this.brands.filter(p => p.name.includes(name)) : this.brands.slice()
-        )
-      );
+    this.filteredBrands = this.brands.map(p => {
+      return {
+        id: p.id.toString(),
+        text: p.name
+      } as Select2OptionData;
+    });
   }
 
   private getBrands() {
-    this.http.get<List<Brand>>(`/api/v1/brand/`).subscribe(resp => {
+    this.http.get<List<Brand>>(`/api/v1/brand/?limit=9999`).subscribe(resp => {
       console.log(resp);
       this.brands = resp.results;
       this.updateFilteredBrands();
+      this.getNumbers();
       this.updateFilteredNumbers();
       this.updateList();
+
+      /*
+      this.producerControlS.valueChanges.subscribe(v => {
+        const r = this.updateList();
+      });
+
+      this.distributorControlS.valueChanges.subscribe(v => {
+        const r = this.updateList();
+      });
+
+      this.brandControlS.valueChanges.subscribe(v => {
+        const r = this.updateList();
+      });
+
+      this.numbersControlS.valueChanges.subscribe(v => {
+        const r = this.updateList();
+      });
+       */
     });
   }
 
   private updateFilteredDistributors() {
-    this.filteredDistributors = this.distributorControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(name => name ? this.distributors.filter(p => p.name.includes(name)) : this.distributors.slice()
-        )
-      );
+    this.filteredDistributors = this.distributors.map(p => {
+      return {
+        id: p.id.toString(),
+        text: p.name
+      } as Select2OptionData;
+    });
   }
 
   private getDistributors() {
-    this.http.get<List<Producer>>(`/api/v1/distributor/`).subscribe(resp => {
+    this.http.get<List<Producer>>(`/api/v1/distributor/?limit=9999`).subscribe(resp => {
       this.distributors = resp.results;
       this.updateFilteredDistributors();
     });
@@ -199,11 +278,16 @@ export class BrandsComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open(BrandEditDialogComponent, {
-      data: {brand: b_copy, dists: this.distributors, prods: this.producers}, width: '80vw'
+      data: {brand: b_copy, dists: this.distributors, prods: this.producers, brands: this.brands}, width: '80vw', disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result.result) {
+      if (result && result.result) {
+        this.producers = result.p;
+        this.distributors = result.d;
+        this.updateFilteredDistributors();
+        this.updateFilteredProducers();
+
         if (result.mode === 'edit') {
           Object.assign(b, result.result);
           this.updateBrand(result.result);
@@ -211,6 +295,10 @@ export class BrandsComponent implements OnInit {
         } else if (result.mode === 'create') {
           this.createBrand(result.result);
         }
+      }
+
+      if (result && result.mode === 'edit') {
+        this.showViewDialog(b);
       }
     });
   }
@@ -238,7 +326,8 @@ export class BrandsComponent implements OnInit {
 
     this.http.post<Brand>(url, body).subscribe(resp => {
         console.log(resp);
-        this.brands.push(resp);
+        b.id = resp.id;
+        this.brands.push(b);
         this.updateList();
       },
       error => {
@@ -257,16 +346,67 @@ export class BrandsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result.result === 1) {
+      if (result && result.result === 1) {
         const dialogRef2 = this.dialog.open(ConfirmEditDialogComponent, {
-          data: {}});
+          data: {text: this.translate.instant('BRANDS.CONFIRM_EDIT'), ybtn: this.translate.instant('BRANDS.EDIT'), nbtn: this.translate.instant('BRANDS.CANCEL')}});
         dialogRef2.afterClosed().subscribe(result2 => {
-          if (result2.result === 1) {
+          if ( result && result2.result === 1) {
             this.showEditDialog(b);
+          } else {
+            this.showViewDialog(b);
           }
         });
       }
     });
+  }
+
+  clear() {
+    this.numberControl = '';
+    this.producerControl = '';
+    this.distributorControl = '';
+    this.brandControl = '';
+    this.updateList();
+  }
+
+  selectedProducer(val) {
+    if (val !== '0') {
+      this.producerControl = val;
+    } else {
+      this.producerControl = '';
+    }
+    this.updateList();
+  }
+
+  selectedBrand(val: string) {
+    if (val !== '0') {
+      this.brandControl = val;
+    } else {
+      this.brandControl = '';
+    }
+    this.updateList();
+  }
+
+  selectedDistributor(val: string) {
+    if (val !== '0') {
+      this.distributorControl = val;
+    } else {
+      this.distributorControl = '';
+    }
+    this.updateList();
+  }
+
+  selectedNumber(val: string) {
+    if (val !== '0') {
+      this.numberControl = val;
+    } else {
+      this.numberControl = '';
+    }
+    this.updateList();
+  }
+
+  paginator($event: PageEvent) {
+    this.pageEvent = $event;
+    this.updateList();
   }
 }
 
@@ -278,25 +418,36 @@ export class BrandsComponent implements OnInit {
 })
 export class BrandEditDialogComponent implements OnInit {
   curBrand: Brand;
+  brands: Brand[];
 
   distributors: Distributor[];
-  filteredDistributors: Observable<Distributor[]>;
+  filteredDistributors: Array<Select2OptionData>;
   distributorControl: FormControl = new FormControl();
   producers: Producer[];
-  filteredProducers: Observable<Producer[]>;
+  filteredProducers: Array<Select2OptionData>;
   producerControl: FormControl = new FormControl();
   curProducerId: number;
   curDistributorId: number;
+  fbrands: Observable<Brand[]>;
+  nameCtrl = new FormControl('');
+
+  badNumbers = false;
 
   constructor(
-    public dialogRef: MatDialogRef<BrandEditDialogComponent>,
+    public dialogRef: MatDialogRef <BrandEditDialogComponent>,
     public dialog: MatDialog,
+    public translate: TranslateService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     if (data.brand) {
       this.curBrand = data.brand;
       this.curProducerId = this.curBrand.producer ? this.curBrand.producer.id : 0;
       this.curDistributorId = this.curBrand.distributor ? this.curBrand.distributor.id : 0;
+
+      this.producerControl.setValue(this.curProducerId);
+      this.distributorControl.setValue(this.curDistributorId);
+
+      this.nameCtrl.setValue(this.curBrand.name);
     } else {
       this.curBrand = new Brand();
     }
@@ -312,49 +463,86 @@ export class BrandEditDialogComponent implements OnInit {
     } else {
       this.producers = [];
     }
+
+    if (data.brands) {
+      this.brands = data.brands;
+    } else {
+      this.brands = [];
+    }
+
+    this.fbrands = this.nameCtrl.valueChanges
+      .pipe(
+        startWith(''),
+        map(name => {
+          // console.log(name);
+
+          if (this.curBrand.id || name.length === 0) {
+            return [];
+          }
+
+          return name ? this.brands.filter(b => b.name.includes(name)) : this.brands.slice();
+        })
+      );
+
+    this.nameCtrl.valueChanges.subscribe(v => {
+      this.curBrand.name = v;
+    });
   }
 
   ngOnInit(): void {
     this.updateFilteredProducers();
     this.updateFilteredDistributors();
+
+    this.producerControl.valueChanges.subscribe(v => {
+      this.curProducerId = parseInt(v, 10);
+      this.closeProducer();
+    });
+
+    this.distributorControl.valueChanges.subscribe(v => {
+      this.curDistributorId = parseInt(v, 10);
+      this.closeDistributor();
+    });
   }
 
   close() {
-    this.dialogRef.close({result: null});
+    const dialogRef2 = this.dialog.open(ConfirmEditDialogComponent, {
+      data: {text: this.translate.instant('BRANDS.CONFIRM_CANCEL'), ybtn: this.translate.instant('BRANDS.YES'), nbtn: this.translate.instant('BRANDS.NO')}});
+    dialogRef2.afterClosed().subscribe(result2 => {
+      if (result2.result === 1) {
+        if (this.curBrand.id) {
+          this.dialogRef.close({result: null, mode: 'edit', d: this.distributors, p: this.producers});
+        } else {
+          this.dialogRef.close({result: null, mode: 'create', d: this.distributors, p: this.producers});
+        }
+      }
+    });
   }
 
   private updateFilteredProducers() {
-    this.filteredProducers = this.producerControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(name => {
-            if (name) {
-              return this.producers.filter(p => p.name.includes(name));
-            } else {
-              return this.producers.slice();
-            }
-          }
-        )
-      );
+    this.filteredProducers = this.producers.map(p => {
+      return {
+          id: p.id.toString(),
+          text: p.name
+        } as Select2OptionData;
+    });
   }
 
   private updateFilteredDistributors() {
-    this.filteredDistributors = this.distributorControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(name => name ? this.distributors.filter(p => p.name.includes(name)) : this.distributors.slice()
-        )
-      );
+    this.filteredDistributors = this.distributors.map(p => {
+      return {
+        id: p.id.toString(),
+        text: p.name
+      } as Select2OptionData;
+    });
   }
 
   showDistribAddDialog() {
     const dialogRef = this.dialog.open(DistribAddDialogComponent, {
-      data: {},
+      data: {distributors: this.distributors}, width: '80vw'
     });
 
     dialogRef.afterClosed().subscribe(resp => {
-      if (resp.result) {
-        this.curBrand.distributor = resp.result;
+      if (resp && resp.result) {
         this.distributors.push(resp.result);
         this.updateFilteredDistributors();
       }
@@ -363,20 +551,18 @@ export class BrandEditDialogComponent implements OnInit {
 
   showProdAddDialog() {
     const dialogRef = this.dialog.open(ProdAddDialogComponent, {
-      data: {},
+      data: {producers: this.producers}, width: '80vw'
     });
 
     dialogRef.afterClosed().subscribe(resp => {
-      if (resp.result) {
+      if (resp && resp.result) {
         this.producers.push(resp.result);
-        this.curBrand.producer = resp.result;
         this.updateFilteredProducers();
       }
     });
   }
 
   closeProducer() {
-    this.producerControl.setValue('');
     if (this.curProducerId) {
       this.curBrand.producer = this.producers.find(p => p.id === this.curProducerId);
     } else {
@@ -385,7 +571,6 @@ export class BrandEditDialogComponent implements OnInit {
   }
 
   closeDistributor() {
-    this.distributorControl.setValue('');
     if (this.curDistributorId) {
       this.curBrand.distributor = this.distributors.find(d => d.id === this.curDistributorId);
     } else {
@@ -395,6 +580,8 @@ export class BrandEditDialogComponent implements OnInit {
 
   save() {
     let bad = false;
+    let badExists = false;
+
     for (const field in this.curBrand) {
       if (!this.curBrand.hasOwnProperty(field) || field === 'id' || field === 'active') {
         continue;
@@ -407,13 +594,64 @@ export class BrandEditDialogComponent implements OnInit {
       }
     }
 
+    // tslint:disable-next-line:triple-equals
+    const exists = this.brands.find(b => b.id != this.curBrand.id && b.name == this.curBrand.name && b.alc == this.curBrand.alc
+      // tslint:disable-next-line:triple-equals
+      && b.producer.id == this.curProducerId);
+
+    if (exists) {
+      badExists = true;
+    }
+
+    const onlyNum4 = /^[\d,.]{1,4}$/;
+    const onlyNumBc = /^[\d]{13}$/;
+    const onlyNum = /^[\d,.]+$/;
+
+    this.badNumbers = !onlyNum4.test(this.curBrand.alc) || !onlyNum4.test(this.curBrand.pressure) || !onlyNumBc.test(this.curBrand.barcode);
+
     if (bad) {
-      alert('Нужно заполнить все поля!');
+      alert(this.translate.instant('BRANDS.REQ_FIELDS'));
+    } else if (badExists) {
+      // this.showExists(null, exists.id);
+      alert(this.translate.instant('BRANDS.EXISTS'));
+    } else if (this.badNumbers) {
+      // do nothing
+      console.log(this.curBrand.barcode.length);
     } else if (this.curBrand.id) {
-        this.dialogRef.close({result: this.curBrand, mode: 'edit'});
+      this.dialogRef.close({result: this.curBrand, mode: 'edit', d: this.distributors, p: this.producers});
+    } else {
+      this.dialogRef.close({result: this.curBrand, mode: 'create', d: this.distributors, p: this.producers});
+    }
+  }
+
+  showExists(v: any, id?: number) {
+    let dataId = 0;
+    if (!id) {
+      // console.log(v);
+      const optId = v.id;
+      const optEl = document.getElementById(optId);
+      dataId = parseInt(optEl.getAttribute('data-bid'), 10);
+      console.log(dataId);
+    } else {
+      dataId = id;
+    }
+
+    const b = this.brands.find(br => br.id === dataId);
+    if (!b) {
+      return;
+    }
+
+    const dialogRef = this.dialog.open(BrandViewDialogComponent, {
+      data: {brand: b, ybtn: this.translate.instant('BRANDS.CONTINUE_CREATE')}, width: '80vw'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.result === 1) {
+        console.log('yey');
       } else {
-        this.dialogRef.close({result: this.curBrand, mode: 'create'});
+        this.close();
       }
+    });
   }
 }
 
@@ -428,11 +666,13 @@ export class BrandViewDialogComponent implements OnInit {
   curBrand: Brand;
   curProducerId: number;
   curDistributorId: number;
+  ybtn: string;
 
   constructor(
     public dialogRef: MatDialogRef<BrandEditDialogComponent>,
     public dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public translate: TranslateService,
   ) {
     if (data.brand) {
       this.curBrand = data.brand;
@@ -440,6 +680,10 @@ export class BrandViewDialogComponent implements OnInit {
       this.curDistributorId = this.curBrand.distributor ? this.curBrand.distributor.id : 0;
     } else {
       this.curBrand = new Brand();
+    }
+
+    if (data.ybtn) {
+      this.ybtn = data.ybtn;
     }
   }
 
@@ -463,14 +707,19 @@ export class BrandViewDialogComponent implements OnInit {
 
 })
 export class ConfirmEditDialogComponent implements OnInit {
-
+  text: string;
+  ybtn: string;
+  nbtn: string;
 
   constructor(
     public dialogRef: MatDialogRef<BrandEditDialogComponent>,
     public dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public translate: TranslateService,
   ) {
-
+    this.text = data.text;
+    this.ybtn = data.ybtn;
+    this.nbtn = data.nbtn;
   }
 
   ngOnInit(): void {
@@ -499,20 +748,35 @@ export class ConfirmEditDialogComponent implements OnInit {
 export class DistribAddDialogComponent {
   frm: FormGroup;
 
+  distributors: Distributor[];
+
   constructor(
     public dialogRef: MatDialogRef<BrandEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private http: HttpClient,
     private formBuilder: FormBuilder,
+    public translate: TranslateService,
   ) {
     this.frm = this.formBuilder.group({
       name: ['', Validators.required],
       address: ['', Validators.required],
     });
+
+    if (data.distributors) {
+      this.distributors = data.distributors;
+    } else {
+      this.distributors = [];
+    }
   }
 
   addNewDistributor() {
+    let exists = false;
+
+    exists = this.distributors.find(p => p.name == this.frm.value.name) != null;
+
     if (this.frm.invalid) {
+    } else if (exists) {
+      alert(this.translate.instant('BRANDS.EXISTS_DISTRIB'));
     } else {
       const url = '/api/v1/distributor/';
       const body = this.frm.value;
@@ -539,20 +803,35 @@ export class DistribAddDialogComponent {
 export class ProdAddDialogComponent {
   frm: FormGroup;
 
+  producers: Producer[];
+
   constructor(
     public dialogRef: MatDialogRef<BrandEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private http: HttpClient,
     private formBuilder: FormBuilder,
+    public translate: TranslateService,
   ) {
     this.frm = this.formBuilder.group({
       name: ['', Validators.required],
       address: ['', Validators.required],
     });
+
+    if(data.producers) {
+      this.producers = data.producers;
+    } else {
+      this.producers = [];
+    }
   }
 
   addNewProducer() {
+    let exists = false;
+
+    exists = this.producers.find(p => p.name == this.frm.value.name) != null;
+
     if (this.frm.invalid) {
+    } else if (exists) {
+      alert(this.translate.instant('BRANDS.EXISTS_PROD'));
     } else {
       const url = '/api/v1/producer/';
       const body = this.frm.value;

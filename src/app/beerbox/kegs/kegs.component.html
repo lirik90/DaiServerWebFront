@@ -1,9 +1,9 @@
 <div class="indicator-bar">
-  <div class="indicator-box color-{{cooler.status_info.short_text}}">
+  <div  *ngIf="cooler" class="indicator-box color-{{cooler.status_info.short_text}}">
     <span  i18n="@@BEERBOX.KEGS.TEMPERATURE">Температура охладителя:</span> {{ temperature.val.display }} {{temperature.type.sign.name}}
   </div>
 
-  <div class="indicator-box color-{{gas.status_info.short_text}}">
+  <div  *ngIf="gas" class="indicator-box color-{{gas.status_info.short_text}}">
     <span i18n="@@BEERBOX.KEGS.PRESSURE">Давление в магистрали:</span> {{ pressure.val.display }} {{pressure.type.sign.name}}
   </div>
 </div>
@@ -19,6 +19,15 @@
           <ng-container *ngIf="tap.isBlocked.val.display" i18n="@@BEERBOX.KEGS.TAP_IS_BLOCKED">&mdash; заблокирован</ng-container>
         </div>
 
+        <div class="brand-pane" *ngIf="tap.bidEl">
+          <div class="current-brand">
+            <span  i18n="@@BEERBOX.KEGS.CURRENT_BRAND">Текущий бренд: </span><span>{{ getBrandName(tap.bidEl.val.display) }}</span>
+          </div>
+          <div class="change-brand-btn-wrap">
+            <button mat-stroked-button  i18n="@@BEERBOX.KEGS.CHANGE_BRAND" (click)="showChangeBrandDialog(tap)">Установить бренд</button>
+          </div>
+        </div>
+
         <div class="tap-pane__content">
           <div class="heads">
             <mat-card class="head-pane" *ngFor="let head of tap.heads">
@@ -27,35 +36,33 @@
                 <div class="separator"></div>
                 <div class="icons">
                   <mat-icon class="empty-icon" *ngIf="!head.is_not_empty.val.display">cancel</mat-icon>
-                  <ng-container *ngIf="head.is_not_empty.val.display">
+                  <ng-container *ngIf="head.is_not_empty && head.is_not_empty.val.display && head.is_active">
                     <mat-icon class="unused-icon" *ngIf="head.is_active.val.display">radio_button_checked</mat-icon>
                   </ng-container>
                 </div>
               </mat-card-title>
               <mat-card-content class="head-pane__content">
                 <div class="info">
-                  <span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Дата замены:</span> {{ head.date_installed? head.date_installed.val.display || 'Неизвестно' : 'Неизвестно' }}<br>
-                  <span  i18n="@@BEERBOX.KEGS.DATE_MADE">Дата изготовления:</span> {{ head.date_made.value }}<br>
-                  <span  i18n="@@BEERBOX.KEGS.KEG_VOL">Объём кеги:</span> {{ toLitres(kegVolume.value) }} <span  i18n="@@BEERBOX.KEGS.LITRES">л</span><br>
-                  <span  i18n="@@BEERBOX.KEGS.BOTTLE_VOL">Объём бутылки:</span> {{ toLitres(tap.bottleVol.value) }} <span  i18n="@@BEERBOX.KEGS.LITRES">л</span><br>
-                  <ng-container *ngIf="head.volume_poured.val.display !== null">
+                  <div *ngIf="head.date_installed"><span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Дата замены:</span> {{ head.date_installed.val.display }}</div>
+                  <div *ngIf="head.date_made"><span  i18n="@@BEERBOX.KEGS.DATE_MADE">Дата изготовления:</span> {{ head.date_made.value }}</div>
+                  <div *ngIf="kegVolume"><span  i18n="@@BEERBOX.KEGS.KEG_VOL">Объём кеги:</span> {{ toLitres(kegVolume.value) }} <span  i18n="@@BEERBOX.KEGS.LITRES">л</span></div>
+                  <div *ngIf="tap.bottleVol"><span  i18n="@@BEERBOX.KEGS.BOTTLE_VOL">Объём бутылки:</span> {{ toLitres(tap.bottleVol.value) }} <span  i18n="@@BEERBOX.KEGS.LITRES">л</span></div>
+                  <ng-container *ngIf="head.volume_poured && head.volume_poured.val.display !== null">
                     <span  i18n="@@BEERBOX.KEGS.VOL_POURED">Налито:</span> {{ getPoured(head) }}<br>
                     <span  i18n="@@BEERBOX.KEGS.VOL_REMAIN_BEER">Осталось пива в кеге:</span> {{ getRemainBeer(head) }}<br>
                   </ng-container>
                   <br>
-                  <span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Налито бутылок:</span> {{ head.bottle_counter? head.bottle_counter.val.display: 'Неизвестно' }}<br>
-                  <span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Произведено промывок:</span> {{ head.extrude_counter? head.extrude_counter.val.display : 'Неизвестно' }}<br>
+                  <div *ngIf="head.bottle_counter"><span  i18n="@@BEERBOX.KEGS.BOTTLE_POURED">Налито бутылок:</span> {{head.bottle_counter.val.display}}</div>
+                  <div *ngIf="head.extrude_counter"><span  i18n="@@BEERBOX.KEGS.WASHS_MADE">Произведено промывок:</span> {{head.extrude_counter.val.display}}</div>
+                  <ng-container *ngIf="head.pouring_error_counter && head.volume_poured">
                   <br><span><b>Израсходовано пива:</b></span><br>
-                  <span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Неуспешные наливы:</span> {{ head.pouring_error_counter? head.pouring_error_counter.val.display  + ' мл' : 'Неизвестно' }}<br>
-                  <span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Неуспешные вытеснения:</span> {{ head.extrude_error_counter? head.extrude_error_counter.val.display  + ' мл': 'Неизвестно' }}<br>
-                  <span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Успешные вытеснения:</span> {{ head.extrude_error_counter? head.extrude_counter.val.display * getExCoef(tap) + ' мл' : 'Неизвестно' }}<br>
-
-                  <ng-container *ngIf="head.volume_poured.val.display === null">
-                    <span i18n="@@BEERBOX.KEGS.NOT_CONNECTED">Неподключено</span>
+                    <div *ngIf="head.pouring_error_counter"><span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Неуспешные наливы:</span> {{head.pouring_error_counter.val.display  + ' мл'}}</div>
+                    <div *ngIf="head.extrude_error_counter"><span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Неуспешные вытеснения:</span> {{ head.extrude_error_counter.val.display  + ' мл'}}</div>
+                    <div *ngIf="head.extrude_error_counter"><span  i18n="@@BEERBOX.KEGS.DATE_CHANGED">Успешные вытеснения:</span> {{head.extrude_counter.val.display * getExCoef(tap) + ' мл'}}</div>
                   </ng-container>
                 </div>
-                <div class="graph">
-                  <ng-container *ngIf="head.volume_poured.val.display !== null">
+                <div class="graph" *ngIf="head.volume_poured && head.volume_poured.val.display !== null">
+                  <ng-container>
                     <div class="graph__filled" [style.height.%]="getPercentFilled(head)"></div>
                     <div class="graph_label">
                       {{ getLeftBottles(head) }}
@@ -64,7 +71,7 @@
                 </div>
               </mat-card-content>
               <mat-card-actions>
-                <button mat-stroked-button (click)="openDialog(head)" [disabled]="isDisabled(head, tap)" i18n="@@CHANGE_BUTTON">Заменить</button>
+                <button *ngIf="!tap.bidEl" mat-stroked-button (click)="openDialog(head)" [disabled]="isDisabled(head, tap)" i18n="@@CHANGE_BUTTON">Заменить</button>
               </mat-card-actions>
               <mat-card-footer>
               <span *ngIf="head.bad_clean !== undefined && head.bad_clean.val.raw == 1" i18n="@@BEERBOX.REPLACE_KEG.WARNING" class="bad-clean">

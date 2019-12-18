@@ -6,7 +6,7 @@
       <ng-template matStepLabel i18n="@@REPORTS.EXPORT.SELECT_PROJECT">Выберите проект</ng-template>
       <mat-checkbox #current_only (change)="fillHouses($event.checked)" [checked]="true" i18n="@@REPORTS.EXPORT.SELECT_THIS">Только этот проект</mat-checkbox><br><br>
       <mat-form-field *ngIf="!current_only.checked">
-        <mat-select placeholder="Проекты" formControlName="projects" multiple required>
+        <mat-select placeholder="Проекты" i18n-placeholder="@@REPORTS.EXPORT.SELECT_PROJECT" formControlName="projects" multiple required>
 					<mat-select-trigger><span i18n="@@REPORTS.EXPORT.SELECTED">Выбрано</span>: {{firstFormGroup.controls.projects.value?.length}}</mat-select-trigger>
           <mat-option *ngFor="let house of houses" [value]="house.id">{{house.title}}</mat-option>
         </mat-select>
@@ -31,7 +31,7 @@
       </mat-form-field>
 
       <mat-form-field class="timezone-field">
-        <mat-select placeholder="Часовой пояс" formControlName="timezone" required>
+        <mat-select placeholder="Часовой пояс"  i18n-placeholder="@@REPORTS.TIMEZONE" formControlName="timezone" required>
           <mat-option *ngFor="let tz of tzs" [value]="tz.value">{{tz.title}}</mat-option>
         </mat-select>
       </mat-form-field>
@@ -47,7 +47,7 @@
       <ng-template matStepLabel i18n="@@REPORTS.EXPORT.SELECT_DATA">Выберите данные</ng-template>
       <mat-checkbox formControlName="hide_null" i18n="@@REPORTS.EXPORT.NOT_EXPORT_NULL">Не экспортировать нулевые значения</mat-checkbox><br><br>
       <mat-form-field>
-        <mat-select placeholder="Типы элементов" formControlName="items" multiple required>
+        <mat-select placeholder="Типы элементов"  i18n-placeholder="@@REPORTS.ELEMENT_TYPE" formControlName="items" multiple required>
 					<mat-select-trigger><span i18n="@@REPORTS.EXPORT.SELECTED">Выбрано</span>: {{dataFormGroup.controls.items.value?.length}}</mat-select-trigger>
           <mat-option *ngFor="let t of types" [value]="t.id">{{t.title}}</mat-option>
         </mat-select>

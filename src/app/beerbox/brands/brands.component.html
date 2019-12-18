@@ -1,83 +1,56 @@
-<div class="title-line"><h1>Бренд</h1>
+<div class="wrap">
+<div class="title-line"><h1 i18n="@@BEERBOX.BRANDS.TITLE_BRAND">Бренд</h1>
   <div class="new-brand-btn-wrap">
-    <button mat-stroked-button class="new-brand-btn" (click)="showEditDialog(null)">Новый бренд</button>
+    <button i18n="@@BEERBOX.BRANDS.CREATE_NEW_BRAND" class="new-brand-btn" (click)="showEditDialog(null)" mat-stroked-button >Новый бренд</button>
   </div>
 </div>
-<h2>Поиск</h2>
+<h2 i18n="@@BEERBOX.BRANDS.SEARCH">Поиск</h2>
 <div class="filter-pane">
-  <div>
-    <mat-form-field>
-      <label for="producer-input">Производитель</label>
-      <!--input [formControl]="producerControl" [matAutocomplete]="producersAuto" id="producer-input" matInput type="text">
-      <mat-autocomplete #producersAuto="matAutocomplete">
-        <mat-option *ngFor="let p of filteredProducers | async" [value]="p.name">{{p.name}}</mat-option>
-      </mat-autocomplete-->
-      <mat-select id="producer-input" [formControl]="producerControlS" (selectionChange)="updateList()">
-        <input [formControl]="producerControl" placeholder="Поиск">
-        <mat-option>Не выбрано</mat-option>
-        <mat-option *ngFor="let p of filteredProducers | async" [value]="p.id">{{p.name}}</mat-option>
-      </mat-select>
-    </mat-form-field>
+  <div class="select2-wrap">
+    <p i18n="@@BEERBOX.BRANDS.PRODUCERI">Производитель:</p>
+    <ng-select2 (valueChanged)="selectedProducer($event)" [value]="producerControl" [class.filter-colored]="producerControl" [data]="filteredProducers" width="100%"></ng-select2>
+  </div>
+  <div class="select2-wrap">
+    <p i18n="@@BEERBOX.BRANDS.BRANDI">Бренд:</p>
+    <ng-select2 (valueChanged)="selectedBrand($event)" [value]="brandControl" [class.filter-colored]="brandControl" [data]="filteredBrands" width="100%"></ng-select2>
+  </div>
+  <div class="select2-wrap">
+    <p i18n="@@BEERBOX.BRANDS.DISTRIBUTORI">Дистрибьютор:</p>
+    <ng-select2 (valueChanged)="selectedDistributor($event)" [value]="distributorControl" [class.filter-colored]="distributorControl" [data]="filteredDistributors" width="100%"></ng-select2>
+  </div>
+  <div class="select2-wrap">
+    <p  i18n="@@BEERBOX.BRANDS.NUMBERI">Номер бренда:</p>
+    <ng-select2 (valueChanged)="selectedNumber($event)" [value]="numberControl" [class.filter-colored]="numberControl" [data]="filteredNumbers" width="100%"></ng-select2>
   </div>
 
-  <div>
-    <mat-form-field>
-      <label for="brand-input">Бренд</label>
-      <!--input [formControl]="brandControl" [matAutocomplete]="brandsAuto" id="brand-input" matInput type="text">
-      <mat-autocomplete #brandsAuto="matAutocomplete">
-        <mat-option *ngFor="let b of filteredBrands | async" [value]="b.name">{{b.name}}</mat-option>
-      </mat-autocomplete-->
-      <mat-select id="brand-input" [formControl]="brandControlS" (selectionChange)="updateList()">
-        <input [formControl]="brandControl" placeholder="Поиск">
-        <mat-option>Не выбрано</mat-option>
-        <mat-option *ngFor="let p of filteredBrands | async" [value]="p.id">{{p.name}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-
-  <div>
-    <mat-form-field>
-      <label for="distributor-input">Дистрибьютор</label>
-      <!--input [formControl]="distributorControl" [matAutocomplete]="distributorsAuto" id="distributor-input" matInput type="text">
-      <mat-autocomplete #distributorsAuto="matAutocomplete">
-        <mat-option *ngFor="let b of filteredDistributors | async" [value]="b.name">{{b.name}}</mat-option>
-      </mat-autocomplete-->
-      <mat-select id="distributor-input" [formControl]="distributorControlS" (selectionChange)="updateList()">
-        <input [formControl]="distributorControl" placeholder="Поиск">
-        <mat-option>Не выбрано</mat-option>
-        <mat-option *ngFor="let p of filteredDistributors | async" [value]="p.id">{{p.name}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-
-  <div>
-    <mat-form-field>
-      <label for="numbers-input">Номер бренда</label>
-      <!--input [formControl]="distributorControl" [matAutocomplete]="distributorsAuto" id="distributor-input" matInput type="text">
-      <mat-autocomplete #distributorsAuto="matAutocomplete">
-        <mat-option *ngFor="let b of filteredDistributors | async" [value]="b.name">{{b.name}}</mat-option>
-      </mat-autocomplete-->
-      <mat-select id="numbers-input" [formControl]="numbersControlS" (selectionChange)="updateList()">
-        <input [formControl]="numbersControl" placeholder="Поиск">
-        <mat-option>Не выбрано</mat-option>
-        <mat-option *ngFor="let n of filteredNumbers | async" [value]="n">{{n}}</mat-option>
-      </mat-select>
-    </mat-form-field>
+  <div class="filter-pane-clear">
+    <button mat-stroked-button  i18n="@@BEERBOX.BRANDS.CLEAR_FILTER" (click)="clear()">Очистить</button>
   </div>
 </div>
+
+
 
 <table class="brands-list">
   <tr>
-    <th>Наименование</th>
-    <th>Номер бренда</th>
-    <th>Статус</th>
+    <th i18n="@@BEERBOX.BRANDS.BRAND_NUMBER">Номер бренда</th>
+    <th i18n="@@BEERBOX.BRANDS.NAME">Наименование</th>
+    <th i18n="@@BEERBOX.BRANDS.STATUS">Статус</th>
   </tr>
   <tr *ngFor="let b of brandList | async">
-    <td><a (click)="showViewDialog(b)">{{b.name}}</a></td>
     <td>{{b.id}}</td>
-    <td style="text-align: center"><button  mat-stroked-button (click)="toggleActive(b)">{{ b.active ? "Активный" : "Неактивный" }}</button></td>
+    <td><a (click)="showViewDialog(b)">{{b.name}}</a></td>
+    <td style="text-align: center"><button class="act-btn-toggle"  mat-stroked-button (click)="toggleActive(b)">
+      <ng-container *ngIf="b.active" i18n="@@BEERBOX.BRANDS.ACTIVE">Активный</ng-container>
+      <ng-container *ngIf="!b.active" i18n="@@BEERBOX.BRANDS.INACTIVE">Неактивный</ng-container>
+    </button></td>
   </tr>
   <tr *ngIf="(brandList | async)?.length==0">
-    <td colspan="3">По указанным параметрам поиска отсутствуют данные</td>
+    <td colspan="3" i18n="@@BEERBOX.BRANDS.NOTHING_FOUND">По указанным параметрам поиска отсутствуют данные</td>
   </tr>
 </table>
+
+  <mat-paginator [length]="brands.length"
+                 [pageSize]="35"
+                 (page)="paginator($event)">
+  </mat-paginator>
+</div>

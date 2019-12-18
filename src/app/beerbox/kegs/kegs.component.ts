@@ -1,12 +1,18 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {HouseService} from '../../house/house.service';
 import {DeviceItem, Group, ParamValue, Section} from '../../house/house';
-import {filter} from 'rxjs/operators';
+import {filter, map, startWith} from 'rxjs/operators';
 import {ConfirmDialogReplaceKegComponent} from '../replace-keg/replace-keg.component';
-import {MatDialog} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {ControlService} from '../../house/control.service';
 import {AuthenticationService} from '../../authentication.service';
 import * as moment from 'moment';
+import {Brand, BrandEditDialogComponent, BrandViewDialogComponent, List} from '../brands/brands.component';
+import {FormControl} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {TranslateService} from '@ngx-translate/core';
+import {Select2OptionData} from 'ng-select2';
 
 export interface Head {
   date_made: ParamValue;
@@ -26,6 +32,7 @@ export interface Head {
 }
 
 export interface Tap {
+  bid: number;
   bottleVol: DeviceItem;
   mode: DeviceItem;
   isBlocked: DeviceItem;
@@ -33,6 +40,7 @@ export interface Tap {
   name: string;
   heads: Head[];
   activeTab: number;
+  bidEl: DeviceItem;
 }
 
 @Component({
@@ -55,17 +63,22 @@ export class KegsComponent implements OnInit {
   bottleCount: ParamValue;
 
   canSeeWash = this.authService.isSupervisor() || this.authService.isCleaner();
+  private brands: Brand[];
 
   constructor(
     private houseService: HouseService,
     public dialog: MatDialog,
     private controlService: ControlService,
     private authService: AuthenticationService,
+    private http: HttpClient,
+    public translate: TranslateService,
   ) { }
 
   ngOnInit() {
     this.get_data();
     this.taps = this.getTaps();
+
+    console.log(this.taps);
 
     // TODO: check for undefined
     const deviceSection: Section = this.houseService.house.sections.filter((el) => el.id === 1)[0];
@@ -74,6 +87,7 @@ export class KegsComponent implements OnInit {
 
     this.getCooler();
     this.getGas();
+    this.getBrands();
   }
 
   getTaps() {
@@ -87,11 +101,14 @@ export class KegsComponent implements OnInit {
       let bottleVol: ParamValue;
       let cleanDate: DeviceItem;
       let is_pouring: DeviceItem;
+      let bidEl: DeviceItem;
 
       for (const group of sct.groups) {
         if (group.type.name === 'proc') {
            this.bottleCount = group.params.find((el) => el.param.name === 'bottle_count');
            console.log(this.bottleCount);
+        } else if (group.type.name === 'brand') {
+           bidEl = group.items.find((el) => el.type.name === 'brand_id');
         } else if (group.type.name === 'takeHead') {
           // heads.push(group);
           // TODO: check for undefined
@@ -146,7 +163,8 @@ export class KegsComponent implements OnInit {
           mode: mode,
           bottleVol: bottleVol,
           cleanDate: cleanDate,
-          is_pouring: is_pouring
+          is_pouring: is_pouring,
+          bidEl: bidEl,
         });
       }
     }
@@ -290,7 +308,7 @@ export class KegsComponent implements OnInit {
   getRemainBeer(head: Head) {
     if (head.is_not_empty.val.display) {
       if (head.volume_poured.val.display === null) {
-        return 'Не подключено';
+        return this.translate.instant('KEGS.NOT_CONNECTED');
       }
 
       return this.toLitres(parseFloat(this.kegVolume.value) - parseFloat(head.volume_poured.val.display)) + ' л.';
@@ -301,7 +319,7 @@ export class KegsComponent implements OnInit {
 
   getPoured(head) {
     if (head.volume_poured.val.display === null) {
-      return 'Не подключено';
+      return this.translate.instant('KEGS.NOT_CONNECTED');
     }
 
     return this.toLitres(head.volume_poured.val.display) + ' л.';
@@ -312,8 +330,8 @@ export class KegsComponent implements OnInit {
 
     const date = moment(d, 'DD.MM.YYYY');
 
-    //console.log('DATE');
-    //console.log(date);
+    // console.log('DATE');
+    // console.log(date);
 
     const isAfter = moment(date).isAfter(moment('2019-10-19 9:30'));
 
@@ -328,5 +346,114 @@ export class KegsComponent implements OnInit {
     return head.is_not_empty.val.display == true
         || tap.mode.val.raw !== 0
         || tap.is_pouring.val.raw === 1;
+  }
+
+  showChangeBrandDialog(tap) {
+    const dialogRef = this.dialog.open(BrandChangeDialogComponent, {
+      data: {bid: parseInt(tap.bidEl.val.display, 10), devItem: tap.bidEl},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('yey');
+      }
+    });
+  }
+
+
+  private getBrands() {
+    this.http.get<List<Brand>>(`/api/v1/brand/`).subscribe(resp => {
+      this.brands = resp.results;
+    });
+  }
+
+  getBrandName(displayId: string) {
+    const id = parseInt(displayId, 10);
+    const b = this.brands ? this.brands.find(br => br.id === id) : null;
+
+    return b ? b.name : this.translate.instant('KEGS.NOT_SET');
+  }
+}
+
+
+@Component({
+  selector: 'app-brand-change-dialog',
+  templateUrl: './brand-change-dialog.html',
+  styleUrls: ['./kegs.component.css'],
+
+})
+export class BrandChangeDialogComponent implements OnInit {
+  brandControl = new FormControl();
+  filteredBrands: Array<Select2OptionData>;
+  brands: Brand[];
+  curBrand: Brand;
+
+  bid = 0;
+  devItem: DeviceItem;
+  curval: number;
+
+  constructor(
+    public dialogRef: MatDialogRef<BrandEditDialogComponent>,
+    public dialog: MatDialog,
+    private http: HttpClient,
+    private houseService: HouseService,
+    private controlService: ControlService,
+    public translate: TranslateService,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    if (data.bid) {
+      this.bid = data.bid;
+    }
+
+    this.devItem = data.devItem;
+
+    this.getBrands();
+  }
+
+  private getBrands() {
+    this.http.get<List<Brand>>(`/api/v1/brand/`).subscribe(resp => {
+      this.brands = resp.results.filter(b => b.active);
+      this.updateFilteredBrands();
+      this.getCurBrand(this.bid);
+    });
+  }
+
+  private updateFilteredBrands() {
+    this.filteredBrands =  this.brands.map(p => {
+      return {
+        id: p.id.toString(),
+        text: p.name
+      } as Select2OptionData;
+    });
+
+    this.filteredBrands.unshift({
+      id: '0',
+      text: this.translate.instant('BRANDS.NOT_SELECTED')
+    } as Select2OptionData);
+  }
+
+  ngOnInit(): void {
+
+  }
+
+  close() {
+    this.dialogRef.close({result: null});
+  }
+
+  save() {
+    this.controlService.writeToDevItem(this.devItem.id, this.curBrand.id);
+    this.dialogRef.close({result: 1});
+  }
+
+  private getCurBrand(id: number) {
+    this.curBrand = this.brands.find(b => b.id === id);
+    this.curval = id;
+  }
+
+  changeVal(val: string) {
+    /*console.log('dsfsdf');
+    console.log(val);
+    console.log('dsfsdf2');*/
+    this.getCurBrand(parseInt(val, 10));
   }
 }

@@ -37,7 +37,7 @@ export class LabelConfiguratorComponent implements OnInit {
     }
   };
 
-  @ViewChild('previewContainer', { read: ViewContainerRef }) container;
+  @ViewChild('previewContainer', { read: ViewContainerRef, static: true }) container;
   componentRef: ComponentRef<any>;
 
   fields2 = {

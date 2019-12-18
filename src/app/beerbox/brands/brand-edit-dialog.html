@@ -1,121 +1,156 @@
-<h1 *ngIf="!curBrand.id" mat-dialog-title>Создание нового бренда</h1>
-<h1 *ngIf="curBrand.id" mat-dialog-title>Изменение данных бренда</h1>
-<div class="table">
+<h1 *ngIf="!curBrand.id" mat-dialog-title i18n="@@BEERBOX.BRANDS.CREATE_NEW_BRAND_TITLE">Создание нового бренда</h1>
+<h1 *ngIf="curBrand.id" mat-dialog-title i18n="@@BEERBOX.BRANDS.CHANGE_BRAND_TITLE">Изменение бренда</h1>
+<div class="table" style="margin-bottom: 1em;">
   <div class="row">
-    <div class="cell">Наименование:</div>
+    <div class="cell" i18n="@@BEERBOX.BRANDS.NAMEI">Наименование бренда:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [(ngModel)]="curBrand.name">
+        <textarea matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  maxlength="100"
+                  [formControl]="nameCtrl"
+                  [matAutocomplete]="auto"></textarea>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)='showExists($event.option)'>
+          <mat-option *ngFor="let b of fbrands | async" [value]="b.name" [attr.data-bid]="b.id">{{b.name}}</mat-option>
+        </mat-autocomplete>
       </mat-form-field>
     </div>
   </div>
 
   <div class="row">
-    <div class="cell">Алкоголь %:</div>
+    <div class="cell" i18n="@@BEERBOX.BRANDS.ALCI">Алкоголь %:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [(ngModel)]="curBrand.alc">
+        <input matInput type="text" [(ngModel)]="curBrand.alc" maxlength="4" pattern="^[0-9.]{1,4}$" inputmode="numeric" autocomplete="off" digitOnly decimal="true">
+        <mat-error i18n="@@BEERBOX.BRANDS.NUM_ERR">
+          Разрешены только числа от 0 до 9999
+        </mat-error>
       </mat-form-field>
     </div>
   </div>
 
   <div class="row">
-    <div class="cell">Условия хранения:</div>
+    <div class="cell" i18n="@@BEERBOX.BRANDS.STORAGE_CONDITIONI">Условия хранения:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [(ngModel)]="curBrand.storage_condition">
+        <textarea matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  maxlength="100"
+                  [(ngModel)]="curBrand.storage_condition"></textarea>
       </mat-form-field>
     </div>
   </div>
 
 
   <div class="row">
-    <div class="cell">Состав (включая указанные алергены):</div>
+    <div class="cell" i18n="@@BEERBOX.BRANDS.CONTENTI">Состав (включая указанные алергены):</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [(ngModel)]="curBrand.ingredients">
+        <textarea matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  maxlength="1000"
+                  [(ngModel)]="curBrand.ingredients"
+                  ></textarea>
       </mat-form-field>
     </div>
   </div>
 
   <div class="row">
-    <div class="cell">Производитель:</div>
+    <div class="cell" i18n="@@BEERBOX.BRANDS.PRODUCERI">Производитель:</div>
     <div class="cell row2cell">
       <div class="select-and-btn">
-        <mat-form-field>
-          <mat-select id="producer-input" [(value)]="curProducerId" (closed)="closeProducer()">
-            <input [formControl]="producerControl" placeholder="Поиск">
-            <mat-option>Не выбрано</mat-option>
-            <mat-option *ngFor="let p of filteredProducers | async" [value]="p.id">{{p.name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <ng-select2 [formControl]="producerControl" [data]="filteredProducers" width="100%"></ng-select2>
         <button (click)="showProdAddDialog()">+</button>
       </div>
     </div>
   </div>
 
   <div class="row">
-    <div class="cell">Адрес производителя:</div>
+    <div class="cell" i18n="@@BEERBOX.BRANDS.PRODUCER_ADDRESSI">Адрес производителя:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput disabled="disabled" type="text" [value]="curBrand.producer ? curBrand.producer.address : ''">
+                <textarea matInput
+                          cdkTextareaAutosize
+                          #autosize="cdkTextareaAutosize"
+                          cdkAutosizeMinRows="1"
+                          maxlength="100"
+                          [value]="curBrand.producer ? curBrand.producer.address : ''"
+                          disabled="disabled"></textarea>
       </mat-form-field>
     </div>
   </div>
 
   <div class="row">
-    <div class="cell"><label for="distributor-input">Дистрибьютор:</label></div>
+    <div class="cell"><label for="distributor-input" i18n="@@BEERBOX.BRANDS.DISTRIBUTORI">Дистрибьютор:</label></div>
     <div class="cell row2cell">
       <div class="select-and-btn">
-        <mat-form-field>
-          <mat-select id="distributor-input" [(value)]="curDistributorId"  (closed)="closeDistributor()">
-            <input [formControl]="distributorControl" placeholder="Поиск">
-            <mat-option>Не выбрано</mat-option>
-            <mat-option *ngFor="let d of filteredDistributors | async" [value]="d.id">{{d.name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <ng-select2 id="distributor-input" [formControl]="distributorControl" [data]="filteredDistributors" width="100%"></ng-select2>
         <button (click)="showDistribAddDialog()">+</button>
       </div>
     </div>
   </div>
 
   <div class="row">
-    <div class="cell">Адрес дистрибьютора:</div>
+    <div class="cell" i18n="@@BEERBOX.BRANDS.DISTRIBUTOR_ADDRESSI">Адрес дистрибьютора:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput disabled="disabled" type="text" [value]="curBrand.distributor ? curBrand.distributor.address : ''">
+                <textarea matInput
+                          cdkTextareaAutosize
+                          #autosize="cdkTextareaAutosize"
+                          cdkAutosizeMinRows="1"
+                          maxlength="100"
+                          [value]="curBrand.distributor ? curBrand.distributor.address : ''"
+                          disabled="disabled"></textarea>
       </mat-form-field>
     </div>
   </div>
 
   <div class="row">
-    <div class="cell">Дополнительная информация:</div>
+    <div class="cell"  i18n="@@BEERBOX.BRANDS.ADDITIONAL_INFOI">Дополнительная информация:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [(ngModel)]="curBrand.more_details">
+        <textarea matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  maxlength="3000"
+                  [(ngModel)]="curBrand.more_details"
+        ></textarea>
       </mat-form-field>
     </div>
   </div>
 
   <div class="row">
-    <div class="cell">Давление:</div>
+    <div class="cell"  i18n="@@BEERBOX.BRANDS.PRESSUREI">Давление:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="number" [(ngModel)]="curBrand.pressure">
+        <input type="input" matInput [(ngModel)]="curBrand.pressure" maxlength="4" pattern="^[0-9.]{1,4}$"  inputmode="numeric" autocomplete="off" digitOnly decimal="true">
+        <mat-error  i18n="@@BEERBOX.BRANDS.NUM_ERR">
+          Разрешены только числа от 0 до 9999
+        </mat-error>
       </mat-form-field>
     </div>
   </div>
 
   <div class="row">
-    <div class="cell">Штрих-код:</div>
+    <div class="cell"  i18n="@@BEERBOX.BRANDS.BARCODEI">Штрих-код:</div>
     <div class="cell row2cell">
       <mat-form-field>
-        <input matInput type="text" [(ngModel)]="curBrand.barcode">
+        <input matInput type="text" [(ngModel)]="curBrand.barcode" maxlength="13" pattern="^[0-9]{13}"  inputmode="numeric" autocomplete="off" digitOnly>
+        <mat-error  i18n="@@BEERBOX.BRANDS.NUM_ERR2">
+          Разрешены только числа. Должно быть 13 символов.
+        </mat-error>
       </mat-form-field>
     </div>
   </div>
 </div>
 
 <div class="actions">
-  <button mat-stroked-button (click)="close()">Отменить</button> <button mat-raised-button  color="primary" (click)="save()">Сохранить</button>
+  <button mat-stroked-button (click)="close()" i18n="@@BEERBOX.BRANDS.CANCEL">Отменить</button> <button mat-raised-button  color="primary" (click)="save()"  i18n="@@BEERBOX.BRANDS.SAVE">Сохранить</button>
 </div>

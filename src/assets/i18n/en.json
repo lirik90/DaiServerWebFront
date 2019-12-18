@@ -5,12 +5,17 @@
   "New password is the same of old_password": "The new password cannot match the old password",
   "REPORT_IDLE_FILENAME": "Idle report",
   "REPORT_POURING_FILENAME": "Pour report",
+  "SERVER_DOWN": "Server is unreachable",
+  "DISCONNECTED_JUST_NOW": "Disconnected",
+  "CONNECTED_JUST_NOW": "Syncing",
+  "CONNECTED_SYNC_TIMEOUT": "Sync error",
 	"CONNECTION_PROBLEM": "No connection with server",
 	"OFFLINE": "Offline",
 	"ONLINE": "Online",
 	"MODIFIED": "The device structure has been modified. Please restart the device.",
 	"WAIT": "Please wait",
 	"NOT_CONNECTED": "Not connected",
+  "WITH_LOSS": "With packets loss.",
 	"NAVIGATION_TAB": {
     "INFO": "Details",
     "MANAGEMENT": "Management",
@@ -19,7 +24,7 @@
     "LOG_VALUE": "Value log",
     "BRANDS": "Brands",
     "WIFI": "Wi-Fi Settings",
-    "POUR_SETTINGS": "Loading Settings",
+    "POUR_SETTINGS": "Dispensing Settings",
     "STRUCTURE": "Structure",
     "REPORTS": "Reports",
     "EXPORT": "Export data",
@@ -29,7 +34,7 @@
     "CALIBRATION": "Calibration",
     "CALVOL": "Volume calibration",
     "STAND": "Stand",
-    "REPLACE_LABEL": "Replace Ribbon",
+    "REPLACE_LABEL": "Replace a sticker roll",
     "BEER_INFO": "Label Text",
     "CONTROLLER": "Controller Setup",
     "OPERATION_HOURS": "Opening hours",
@@ -77,5 +82,25 @@
     "ERROR_4096": "The door is not blocked",
     "ERROR_8192": "The door is not unblocked",
     "ERROR_16384": "The bottle exploded"
+  },
+  "BRANDS": {
+    "CONFIRM_CANCEL": "Are you sure you want to cancel?",
+    "CANCEL": "Cancel",
+    "CONTINUE": "Continue",
+    "REQ_FIELDS": "All fields are required!",
+    "BARCODE_DUP": "There is a barcode duplication!",
+    "CONTINUE_CREATE": "Continue brand creation",
+    "NOT_SELECTED": "Not selected",
+    "CONFIRM_EDIT": "Are you sure you want to edit this brand?",
+    "EDIT": "Edit",
+    "YES": "Yes",
+    "NO": "No",
+    "EXISTS": "This brand is already exists",
+    "EXISTS_DISTRIB": "This distributor is already exists",
+    "EXISTS_PROD": "This producer is already exists"
+  },
+  "KEGS": {
+    "NOT_CONNECTED": "Not connected",
+    "NOT_SET": " none"
   }
 }

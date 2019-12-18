@@ -28,6 +28,7 @@ import { HouseStateComponent } from './house-state/house-state.component';
 import {HouseSectionComponent} from './house-section/house-section.component';
 import { DocComponent } from './doc/doc.component';
 import {Log2Component} from './log2/log2.component';
+import {Manage2Component} from './manage2/manage2.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -54,6 +55,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     PageReloadDialogComponent,
     ViewComponent,
     ManageComponent,
+    Manage2Component,
     HoldingRegisterDialogComponent,
     LogComponent,
     Log2Component,

@@ -139,3 +139,59 @@
 .used-badge {
   background-color: #015305;
 }
+
+.brand-pane {
+  margin-bottom: 1em;
+}
+
+.change-brand-btn-wrap {
+  margin-top: 0.5em;
+}
+
+.w100 {
+  width: 100%;
+}
+
+.mat-select-panel-input {
+  position: sticky;
+  top: 0;
+  border: 1px solid #ccc;
+  background: #fff;
+  z-index: 1000;
+  width: 100%;
+  box-sizing: border-box;
+  height: 44px;
+  padding: 8px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: space-between;
+}
+
+.actions button {
+  margin: 0 4px;
+}
+
+
+.actions button:first-child {
+  margin-left: 0;
+}
+
+.actions button:last-child {
+  margin-right: 0;
+}
+
+.select2-wrap {
+  min-width: 200px;
+  /*margin: 4px;*/
+  box-sizing: border-box;
+  margin-bottom: 1em;
+}
+
+.select-and-btn ng-select2 {
+  flex: 1;
+  padding-right: 4px;
+  max-width: calc(100% - 28px);
+}

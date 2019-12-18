@@ -39,7 +39,8 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
       'isSupervisor': this.authService.isSupervisor(),
       'isCleaner': this.authService.isCleaner(),
       'isKegReplacer': this.authService.isKegReplacer(),
-      'isDev': this.authService.checkPermission('delete_signtype')
+      'Netherland': this.authService.isNetherland(),
+      'isSpecial': this.authService.checkPermission('delete_signtype'),
     };
 
     const allow = req_perms.map((perm) => userPerms[perm]).reduceRight((a, b) => a || b);

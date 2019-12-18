@@ -18,6 +18,7 @@ import {DocCommand} from '@angular/cli/commands/doc-impl';
 import {DocComponent} from './doc/doc.component';
 import {Export2Component} from './reports/export2/export2.component';
 import {Log2Component} from './log2/log2.component';
+import {Manage2Component} from './manage2/manage2.component';
 
 const houseRoutes: Routes = [
   {
@@ -34,35 +35,31 @@ const houseRoutes: Routes = [
           { path: 'detail', component: HouseDetailComponent},
           {
             path: 'manage',
-            component: ViewComponent,
-            data: { req_perms: ['isAdmin'] },
-            children: [
-              { path: '', pathMatch: 'full' },
-              { path: ':view_id', component: ManageComponent, data: { is_edit: true, is_view: true } }
-            ]
+            component: Manage2Component,
+            data: { req_perms: ['isAdmin', 'Netherland', 'isSpecial'] },
           },
-          { path: 'elements', component: ManageComponent, data: { req_perms: ['isAdmin', 'isDev'] }},
+          { path: 'elements', component: ManageComponent, data: { req_perms: ['isAdmin', 'Netherland'] }},
           { path: 'log', component: LogComponent, data: { req_perms: ['isSupervisor', 'isFullAccess', 'isAdmin'] }},
-          { path: 'log2', component: Log2Component, data: { req_perms: ['isAdmin'] }},
+          { path: 'log2', component: Log2Component, data: { req_perms: ['isAdmin', 'Netherland'] }},
           { path: 'group/:groupId/param', component: ParamComponent },
           {
             path: 'reports',
-            loadChildren: 'app/house/reports/reports.module#ReportsModule',
+            loadChildren: () => import('app/house/reports/reports.module').then(m => m.ReportsModule),
             canLoad: [AuthGuard],
             data: { req_perms: ['isAdmin'] }
           },
           {
             path: 'export',
             component: Export2Component,
-            data: {dataPreselected: [107], req_perms: ['isKegReplacer', 'isSupervisor', 'isFullAccess', 'isAdmin'] }
+            data: {dataPreselected: [107], req_perms: ['isKegReplacer', 'isSupervisor', 'isFullAccess', 'isAdmin', 'Netherland'] }
           },
           {
             path: 'settings',
-            loadChildren: 'app/house/settings/settings.module#SettingsModule',
+            loadChildren: () => import('app/house/settings/settings.module').then(m => m.SettingsModule),
             data: { req_perms: ['isAdmin'] },
             canLoad: [AuthGuard]
           },
-          { path: 'beerbox', loadChildren: 'app/beerbox/beerbox.module#BeerboxModule', canLoad: [AuthGuard] },
+          { path: 'beerbox', loadChildren: () => import('app/beerbox/beerbox.module').then(m => m.BeerboxModule), canLoad: [AuthGuard] },
           {
             path: 'doc',
             component: DocComponent,

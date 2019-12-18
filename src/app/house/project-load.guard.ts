@@ -4,9 +4,8 @@ import { Router, UrlTree, UrlSegmentGroup, PRIMARY_OUTLET } from '@angular/route
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-import { HouseService } from "./house.service";
-import { AuthenticationService } from "../authentication.service";
-import {  } from "@angular/router/src/url_tree";
+import { HouseService } from './house.service';
+import { AuthenticationService } from '../authentication.service';
 
 @Injectable()
 export class ProjectLoadGuard implements CanActivate, CanActivateChild {
@@ -32,7 +31,7 @@ export class ProjectLoadGuard implements CanActivate, CanActivateChild {
     if (next.data['is_edit'] && !this.authService.isKegReplacer()) {
       const tree: UrlTree = this.router.parseUrl(state.url);
       const g: UrlSegmentGroup = tree.root.children[PRIMARY_OUTLET];
-      let segments: any[] = [g.segments[0].path, g.segments[1].path, 'detail'];
+      const segments: any[] = [g.segments[0].path, g.segments[1].path, 'detail'];
       this.router.navigate(segments);
       return false;
     }

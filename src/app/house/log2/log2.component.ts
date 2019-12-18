@@ -38,8 +38,8 @@ export class Log2Component implements OnInit, OnDestroy {
 
   members: TeamMember[] = [];
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   cmd = '';
   addArgs = '';
@@ -91,22 +91,51 @@ export class Log2Component implements OnInit, OnDestroy {
             this.sort.active, this.sort.direction == 'asc', this.paginator.pageIndex, this.paginator.pageSize, this.addArgs, this.search);
         }),
         map(data => {
-          console.log(data);
+          //console.log(data);
 
           // Flip flag to show that loading has finished.
           this.isLoadingResults = false;
           this.isRateLimitReached = false;
           this.resultsLength = data.count;
 
-          for (let item of data.results) {
-            console.log(item);
+          for (const item of data.results as any) {
+            //console.log(item);
             item.date = new Date(item.timestamp_msecs);
 
             item.color = this.getColor(item.type_id);
+
+            if (item.item) {
+              if (item.item.group) {
+                if (item.item.group.section) {
+                  const sn = this.houseService.house.sections.find(s => s.id === item.item.group.section.id);
+                  if (sn) {
+                    item.item.group.section.name = sn.name;
+                  }
+
+                  const gn = sn.groups.find(g => g.id === item.item.group.id);
+                  if (gn) {
+                    item.item.group.title = gn.title;
+                    item.item.group.type.title = gn.type.title;
+                  }
+
+                  const en = gn.items.find(i => i.id === item.item.id)
+                  if (en) {
+                    item.item.name = en.name;
+                    item.item.type.title = en.type.title;
+                  }
+
+                  //console.log('1');
+                }
+              }
+              //console.log(item);
+            }
+
+            //row.item.group.title || row.item.group.type.title
           }
           return data.results;
         }),
-        catchError(() => {
+        catchError((err) => {
+          console.error(err);
           this.isLoadingResults = false;
           // Catch if the GitHub API has reached its rate limit. Return empty data.
           this.isRateLimitReached = true;

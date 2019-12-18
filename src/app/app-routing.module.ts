@@ -19,12 +19,12 @@ const routes: Routes = [
 
   {
     path: 'house',
-    loadChildren: 'app/house/house.module#HouseModule',
+    loadChildren: () => import('app/house/house.module').then(m => m.HouseModule),
     canLoad: [AuthGuard]
   },
 
   {
-    path: 'user', loadChildren: 'app/user-settings/user-settings.module#UserSettingsModule', canActivate: [AuthGuard]
+    path: 'user', loadChildren: () => import('app/user-settings/user-settings.module').then(m => m.UserSettingsModule), canActivate: [AuthGuard]
   },
 
   // otherwise redirect to home

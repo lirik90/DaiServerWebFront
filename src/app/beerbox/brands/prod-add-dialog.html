@@ -1,26 +1,38 @@
-<h1 mat-dialog-title>Создание нового производителя</h1>
+<h1 mat-dialog-title i18n="@@BEERBOX.BRANDS.NEW_PROD_TITLE">Создание нового производителя</h1>
 <form [formGroup]="frm" (ngSubmit)="addNewProducer()">
   <div class="table">
     <div class="row">
-      <div class="cell"><label for="name">Наименование:</label></div>
+      <div class="cell"><label for="name"  i18n="@@BEERBOX.BRANDS.PROD_NAMEI">Наименование:</label></div>
       <div class="cell row2cell">
         <mat-form-field>
-          <input id="name" matInput type="text" formControlName="name">
+          <textarea matInput
+                    id="name"
+                    formControlName="name"
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    maxlength="100"></textarea>
         </mat-form-field>
       </div>
     </div>
 
     <div class="row">
-      <div class="cell"><label for="address">Адрес:</label></div>
+      <div class="cell"><label for="address" i18n="@@BEERBOX.BRANDS.PROD_ADDRESSI">Адрес:</label></div>
       <div class="cell row2cell">
         <mat-form-field>
-          <input id="address" matInput type="text" formControlName="address">
+          <textarea matInput
+                    id="address"
+                    formControlName="address"
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    maxlength="100"></textarea>
         </mat-form-field>
       </div>
     </div>
   </div>
 
   <div class="actions">
-    <button type="cancel" (click)="close()">Отменить</button> <button type="submit">Сохранить</button>
+    <button mat-stroked-button type="button" (click)="close()" i18n="@@BEERBOX.BRANDS.CANCEL">Отменить</button> <button mat-stroked-button type="submit"  i18n="@@BEERBOX.BRANDS.SAVE">Сохранить</button>
   </div>
 </form>

@@ -104,6 +104,18 @@
   .house-state-msgs-list {
     max-height: unset;
   }
+
+  .house-state-msg__title {
+    font-size: 17px;
+    padding-top: 1em;
+    white-space: normal;
+    line-height: 1.3em;
+    padding-bottom: 0.7em;
+  }
+
+  .house-state-msg__text {
+    font-size: 15px;
+  }
 }
 
 .house-state-alright {
@@ -148,4 +160,11 @@
 
 .house-state-modal__close-btn:hover::before {
   opacity: .04;
+}
+
+.house-state-msg__text {
+  white-space: normal;
+  line-height: 1.3em;
+  padding-top: 9px;
+  padding-bottom: 1em;
 }
