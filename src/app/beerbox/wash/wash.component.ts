@@ -180,7 +180,7 @@ export class WashComponent implements OnInit {
 export class WashVolDialogComponent implements OnInit {
   washVol = new FormControl('', [Validators.required]);
   constructor(
-    public dialogRef: MatDialogRef<BrandEditDialogComponent>,
+    public dialogRef: MatDialogRef<WashVolDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
 

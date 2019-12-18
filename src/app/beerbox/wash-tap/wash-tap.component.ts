@@ -1,12 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {ActivatedRoute} from '@angular/router';
 import {HouseService} from '../../house/house.service';
 import {ControlService} from '../../house/control.service';
-import {DeviceItem} from '../../house/house';
+import {DeviceItem, Group, ParamItem, ParamValue} from '../../house/house';
 import {SafeHtml} from '@angular/platform-browser';
-import {ConfirmEditDialogComponent} from '../brands/brands.component';
-import {MatDialog} from '@angular/material';
+import {BrandEditDialogComponent, ConfirmEditDialogComponent} from '../brands/brands.component';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-wash-tap',
@@ -22,6 +22,8 @@ export class WashTapComponent implements OnInit {
 
   @Input()
   disabledWash: boolean;
+
+  disabledBtn = true;
 
   constructor(
     public translate: TranslateService,
@@ -88,8 +90,69 @@ export class WashTapComponent implements OnInit {
     this.items = items;
   }
 
+  checkParams(paramGrp: Group, type: string): string {
+    const params = paramGrp.params.find(p => p.param.name === type);
+    let badParam = '';
+    for (const prmSubGrp of params.childs) {
+      // console.log('CHECK: ' + prmSubGrp.param.title);
+
+      for (const prm of prmSubGrp.childs) {
+        const prmVal = prm.value;
+        if (!prmVal) {
+          badParam = prm.param.title;
+          break;
+        }
+      }
+
+      if (badParam) {
+        break;
+      }
+    }
+
+    return badParam;
+  }
+
   onChange(clean_type_item: DeviceItem, value: any): void {
-    clean_type_item.val.raw = +value;
+    const val = parseInt(value, 10);
+    if (val) {
+      // check params
+      const paramGrp = this.houseService.house.sections[0].groups.find(g => g.type.name === 'clean');
+
+      let badParam = '';
+
+      switch (val) {
+        case 1: // daily
+          badParam = this.checkParams(paramGrp, 'daily');
+          break;
+        case 2:
+          badParam = this.checkParams(paramGrp, 'disinfection');
+          break;
+        case 3:
+          badParam = this.checkParams(paramGrp, 'acid');
+          break;
+      }
+
+      if (!badParam) {
+        this.disabledBtn = false;
+        clean_type_item.val.raw = val;
+      } else {
+        this.disabledBtn = true;
+        console.log('BAD! ' + badParam);
+
+        const badParamDialog = this.dialog.open(Ok2DialogComponent, {
+          data: {
+            text1: `Промывка аппарата не может быть запущена так как отсутствует информация по`,
+            text2: badParam,
+            text3: `Для добавления информации необходимо обратиться в Сервисную службу.`,
+            ybtn: 'Ок',
+          },
+          disableClose: true
+        });
+      }
+    } else {
+      this.disabledBtn = true;
+      clean_type_item.val.raw = 0;
+    }
   }
 
   start(clean: any): void {
@@ -151,5 +214,38 @@ export class WashTapComponent implements OnInit {
     }
 
     return fullError;
+  }
+}
+
+@Component({
+  selector: 'app-ok-dialog',
+  templateUrl: './ok-dialog.html',
+  styleUrls: ['./wash-tap.component.css'],
+
+})
+export class Ok2DialogComponent implements OnInit {
+  text1: string;
+  text2: string;
+  text3: string;
+  ybtn: string;
+
+  constructor(
+    public dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public translate: TranslateService,
+    public dialogRef: MatDialogRef<Ok2DialogComponent>,
+  ) {
+    this.text1 = data.text1;
+    this.text2 = data.text2;
+    this.text3 = data.text3;
+    this.ybtn = data.ybtn;
+  }
+
+  ngOnInit(): void {
+
+  }
+
+  close() {
+    this.dialogRef.close({result: null});
   }
 }

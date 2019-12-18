@@ -18,7 +18,7 @@
             </mat-select>
           </mat-form-field>
 
-          <button mat-button (click)="start(clean)" i18n="@@BEERBOX.WASH.START" [disabled]="disabledWash">Начать промывку</button>
+          <button mat-button (click)="start(clean)" i18n="@@BEERBOX.WASH.START" [disabled]="disabledBtn">Начать промывку</button>
         </ng-container>
 
         <ng-container *ngIf="clean.step.val.raw != 0">
