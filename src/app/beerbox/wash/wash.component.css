@@ -192,3 +192,29 @@
   background: #f5cb60;
 }
 
+.full-width {
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap-reverse;
+}
+
+.actions button {
+  margin: 0 12px;
+  white-space: normal;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  padding: 8px;
+  flex-shrink: 0;
+  flex-grow: 1;
+  display: inline-block;
+}
+
+.mat-dialog-actions {
+  justify-content: center;
+}

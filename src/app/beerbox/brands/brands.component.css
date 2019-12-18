@@ -77,6 +77,9 @@ button {
   line-height: 1.5;
   margin-bottom: 10px;
   padding: 8px;
+  flex-shrink: 0;
+  flex-grow: 1;
+  display: inline-block;
 }
 
 @media (max-width: 600px) {
@@ -180,4 +183,8 @@ button {
 
 .filter-colored ::ng-deep .select2-selection {
   background-color: #fff6ce;
+}
+
+.mat-dialog-actions {
+  justify-content: center;
 }

@@ -36,6 +36,7 @@ export class WashComponent implements OnInit {
 
   canSeeWash = this.authService.isSupervisor() || this.authService.isCleaner();
   disabledWash = false;
+  private volumeBeer: ParamValue;
 
   constructor(
     private houseService: HouseService,
@@ -53,8 +54,8 @@ export class WashComponent implements OnInit {
   checkParams(): void {
     const paramGrp = this.houseService.house.sections[0].groups.find(g => g.type.name === 'clean');
 
-    const volumeBeer = paramGrp.params.find(p => p.param.name === 'volume_beer');
-    const volumeBeerValue = parseInt(volumeBeer.value, 10);
+    this.volumeBeer = paramGrp.params.find(p => p.param.name === 'volume_beer');
+    const volumeBeerValue = parseInt(this.volumeBeer.value, 10);
 
     if (!volumeBeerValue) {
       this.disabledWash = true;
@@ -101,9 +102,11 @@ export class WashComponent implements OnInit {
       disableClose: true
     });
     volumeBeerDialog.afterClosed().subscribe(r => {
-      if ( r && r.result === 1) {
+      if ( r && r.result) {
         // save
-        this.disabledWash = true;
+        this.volumeBeer.value = r.result;
+        this.controlService.changeParamValues([this.volumeBeer]);
+        this.disabledWash = false;
       } else {
         this.confirmCancel();
       }
@@ -188,6 +191,6 @@ export class WashVolDialogComponent implements OnInit {
   }
 
   save() {
-
+    this.dialogRef.close({result: this.washVol.value});
   }
 }

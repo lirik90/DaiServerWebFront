@@ -2,6 +2,8 @@
   <p>{{text}}</p>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">{{nbtn}}</button>
-  <button mat-button (click)="onYesClick()" cdkFocusInitial>{{ybtn}}</button>
+  <div class="actions">
+    <button mat-button (click)="onNoClick()">{{nbtn}}</button>
+    <button mat-button (click)="onYesClick()" cdkFocusInitial>{{ybtn}}</button>
+  </div>
 </div>
