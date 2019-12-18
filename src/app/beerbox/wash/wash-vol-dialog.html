@@ -1,0 +1,18 @@
+<div mat-dialog-content>
+  <p>Рекомендуемый объем вытеснения 880 мл.</p>
+
+  <label for="wvfield">Объем для вытеснения:</label>
+  <mat-form-field class="full-width">
+    <input type="input" matInput id="wvfield" pattern="^\d+$" inputmode="numeric" autocomplete="off"
+           digitOnly decimal="false" [formControl]="washVol" />
+    <mat-error>
+      Поле обязательное для заполнения*
+    </mat-error>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <div  class="actions">
+    <button mat-stroked-button (click)="close()">Отменить</button>
+    <button mat-stroked-button (click)="save()">Сохранить</button>
+  </div>
+</div>
