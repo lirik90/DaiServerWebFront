@@ -4,7 +4,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MaterialModule} from '../material.module';
 import {BeerboxRoutingModule} from './beerbox-routing.module';
 
-import {WashComponent} from './wash/wash.component';
+import {WashComponent, WashVolDialogComponent} from './wash/wash.component';
 import {ConfirmDialogReplaceKegComponent, ReplaceKegComponent} from './replace-keg/replace-keg.component';
 import {CalibrationComponent} from './calibration/calibration.component';
 import {CheckHeadStandComponent, CheckHeadStandDialogComponent} from './check-head-stand/check-head-stand.component';
@@ -61,7 +61,7 @@ export function createTranslateLoader(http: HttpClient) {
     }),
     MatAutocompleteModule,
     NgSelect2Module,
-    DigitOnlyModule,
+    DigitOnlyModule
   ],
   declarations: [
     WashComponent, ReplaceKegComponent, ConfirmDialogReplaceKegComponent, CalibrationComponent, CheckHeadStandComponent,
@@ -69,7 +69,7 @@ export function createTranslateLoader(http: HttpClient) {
     EditDialogManufacturersListComponent, ChangeControllerAddressComponent, OperationHoursComponent, KegsComponent, OkDialogComponent,
     LabelConfiguratorComponent, WashTapComponent, CalVolComponent, BrandsComponent, WifiComponent, PourSettingsComponent,
     BrandEditDialogComponent, ProdAddDialogComponent, DistribAddDialogComponent, BrandViewDialogComponent, ConfirmEditDialogComponent,
-    BrandChangeDialogComponent
+    BrandChangeDialogComponent, WashVolDialogComponent
   ],
   entryComponents: [
     ConfirmDialogReplaceKegComponent,
@@ -78,7 +78,8 @@ export function createTranslateLoader(http: HttpClient) {
     EditDialogManufacturersListComponent,
     OkDialogComponent,
     BrandEditDialogComponent,
-    ProdAddDialogComponent, DistribAddDialogComponent, BrandViewDialogComponent, ConfirmEditDialogComponent, BrandChangeDialogComponent
+    ProdAddDialogComponent, DistribAddDialogComponent, BrandViewDialogComponent, ConfirmEditDialogComponent, BrandChangeDialogComponent,
+    WashVolDialogComponent
   ],
 })
 export class BeerboxModule {

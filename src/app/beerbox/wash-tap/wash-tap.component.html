@@ -8,7 +8,7 @@
         <ng-container *ngIf="clean.step.val.raw == 0">
           <h4 i18n="@@BEERBOX.WASH.TYPE">Выберите вид промывки</h4>
           <mat-form-field>
-            <mat-select [value]="clean.type.val.raw.toString()" (selectionChange)="onChange(clean.type, $event.value)">
+            <mat-select [value]="clean.type.val.raw.toString()" (selectionChange)="onChange(clean.type, $event.value)" [disabled]="disabledWash">
               <!--<mat-option *ngFor="let title of clean.type.val.display; index as i" value="{{i}}">{{title}}</mat-option>-->
               <mat-option value="0" i18n="@@BEERBOX.WASH.TYPE.0">Не выбран</mat-option>
               <mat-option value="1" i18n="@@BEERBOX.WASH.TYPE.1">Ежедневная</mat-option>
@@ -18,7 +18,7 @@
             </mat-select>
           </mat-form-field>
 
-          <button mat-button (click)="start(clean)" i18n="@@BEERBOX.WASH.START">Начать промывку</button>
+          <button mat-button (click)="start(clean)" i18n="@@BEERBOX.WASH.START" [disabled]="disabledWash">Начать промывку</button>
         </ng-container>
 
         <ng-container *ngIf="clean.step.val.raw != 0">

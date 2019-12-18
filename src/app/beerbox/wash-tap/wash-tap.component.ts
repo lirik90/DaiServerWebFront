@@ -5,6 +5,8 @@ import {HouseService} from '../../house/house.service';
 import {ControlService} from '../../house/control.service';
 import {DeviceItem} from '../../house/house';
 import {SafeHtml} from '@angular/platform-browser';
+import {ConfirmEditDialogComponent} from '../brands/brands.component';
+import {MatDialog} from '@angular/material';
 
 @Component({
   selector: 'app-wash-tap',
@@ -18,11 +20,15 @@ export class WashTapComponent implements OnInit {
   @Input()
   sctId: number;
 
+  @Input()
+  disabledWash: boolean;
+
   constructor(
     public translate: TranslateService,
     private route: ActivatedRoute,
     private houseService: HouseService,
-    private controlService: ControlService
+    private controlService: ControlService,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -138,7 +144,7 @@ export class WashTapComponent implements OnInit {
     /* TODO: fix the magic constant */
     for (let i = 16384; i > 0; i = i >> 1) {
       // tslint:disable-next-line:no-bitwise
-      //console.log(i);
+      // console.log(i);
       if (errno & i) {
         fullError += this.translate.instant('FILL_ERRORS.ERROR_' + i) + '<br>';
       }

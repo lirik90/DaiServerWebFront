@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
@@ -7,11 +7,13 @@ import {Section, DeviceItem, ParamValue, Group} from '../../house/house';
 import {HouseService} from '../../house/house.service';
 import {ControlService} from '../../house/control.service';
 import {TranslateService} from '@ngx-translate/core';
-import {MatDialog} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {AuthenticationService} from '../../authentication.service';
 import {ConfirmDialogReplaceKegComponent} from '../replace-keg/replace-keg.component';
 import {filter} from 'rxjs/operators';
 import {Tap} from '../kegs/kegs.component';
+import {Brand, BrandEditDialogComponent, ConfirmEditDialogComponent} from '../brands/brands.component';
+import {FormControl, Validators} from '@angular/forms';
 
 
 
@@ -33,6 +35,7 @@ export class WashComponent implements OnInit {
   pressure: DeviceItem;
 
   canSeeWash = this.authService.isSupervisor() || this.authService.isCleaner();
+  disabledWash = false;
 
   constructor(
     private houseService: HouseService,
@@ -43,6 +46,68 @@ export class WashComponent implements OnInit {
 
   ngOnInit() {
     this.taps = this.getTaps();
+
+    this.checkParams();
+  }
+
+  checkParams(): void {
+    const paramGrp = this.houseService.house.sections[0].groups.find(g => g.type.name === 'clean');
+
+    const volumeBeer = paramGrp.params.find(p => p.param.name === 'volume_beer');
+    const volumeBeerValue = parseInt(volumeBeer.value, 10);
+
+    if (!volumeBeerValue) {
+      this.disabledWash = true;
+
+      const noVolumeBeerDialog = this.dialog.open(ConfirmEditDialogComponent, {
+        data: {
+          text: 'Для выбора типа промывки необходимо добавить информацию об объеме вытеснения.',
+          ybtn: 'Добавить',
+          nbtn: 'Отменить'
+        },
+        disableClose: true
+      });
+      noVolumeBeerDialog .afterClosed().subscribe(result => {
+        if ( result && result.result === 1) {
+          this.setWashVol();
+        } else {
+          this.confirmCancel();
+        }
+      });
+    }
+  }
+
+  confirmCancel() {
+    const noVolumeBeerDialog = this.dialog.open(ConfirmEditDialogComponent, {
+      data: {
+        text: 'При отмене добавления вытеснения промывка аппарата не будет осуществлена.',
+        ybtn: 'Продолжить',
+        nbtn: 'Отменить'
+      },
+      disableClose: true
+    });
+
+    noVolumeBeerDialog.afterClosed().subscribe(r => {
+      if (r.result && r.result === 1) {
+        this.setWashVol();
+      } else {
+      }
+    });
+  }
+
+  setWashVol() {
+    const volumeBeerDialog = this.dialog.open(WashVolDialogComponent, {
+      data: { },
+      disableClose: true
+    });
+    volumeBeerDialog.afterClosed().subscribe(r => {
+      if ( r && r.result === 1) {
+        // save
+        this.disabledWash = true;
+      } else {
+        this.confirmCancel();
+      }
+    });
   }
 
   getTaps() {
@@ -100,5 +165,29 @@ export class WashComponent implements OnInit {
     }
 
     return taps;
+  }
+}
+
+@Component({
+  selector: 'app-wash-vol-dialog',
+  templateUrl: './wash-vol-dialog.html',
+  styleUrls: ['./wash.component.css'],
+
+})
+export class WashVolDialogComponent implements OnInit {
+  washVol = new FormControl('', [Validators.required]);
+  constructor(
+    public dialogRef: MatDialogRef<BrandEditDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) { }
+
+  ngOnInit(): void { }
+
+  close() {
+    this.dialogRef.close({result: null});
+  }
+
+  save() {
+
   }
 }
