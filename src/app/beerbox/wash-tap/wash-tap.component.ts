@@ -94,11 +94,12 @@ export class WashTapComponent implements OnInit {
     const params = paramGrp.params.find(p => p.param.name === type);
     let badParam = '';
     for (const prmSubGrp of params.childs) {
-      // console.log('CHECK: ' + prmSubGrp.param.title);
+      console.log('CHECK: ' + prmSubGrp.param.title);
 
       for (const prm of prmSubGrp.childs) {
+        console.log('CHECK: ' + prm.value);
         const prmVal = prm.value;
-        if (!prmVal) {
+        if (!prmVal || prmVal === '0') {
           badParam = prm.param.title;
           break;
         }
