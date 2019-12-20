@@ -187,6 +187,7 @@ export class WashVolDialogComponent implements OnInit {
   ngOnInit(): void { }
 
   close() {
+    console.log('close');
     this.dialogRef.close({result: null});
   }
 
@@ -194,6 +195,8 @@ export class WashVolDialogComponent implements OnInit {
     if (this.washVol.valid) {
       console.log('Value is: `' + this.washVol.value + '\'');
       this.dialogRef.close({result: this.washVol.value});
+    } else {
+      console.log('invalid');
     }
   }
 }
