@@ -56,7 +56,7 @@ export class HouseStateComponent implements OnInit {
     let most_bad_status = 'Ok';
 
     if (!this.houseService.house) {
-      return { messagesCount:0, most_bad_status: 'Undefined', messages: []};
+      return { messagesCount: 0, most_bad_status: 'Undefined', messages: []};
     }
 
     for (const sect of this.houseService.house.sections) {

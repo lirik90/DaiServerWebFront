@@ -120,6 +120,24 @@ export class HouseService extends IHouseService {
     clearInterval(this.devValuesInterval);
   }
 
+  reloadHouse(house_name: string): Observable<boolean> {
+    return this.loadHouse(house_name, true).pipe(
+      flatMap((res) => {
+        if (res) {
+          this.house = this.house2;
+          this.house.name = house_name;
+
+          localStorage.setItem(this.house_s, JSON.stringify(this.house2));
+          this.log('fetched house detail');
+
+          return of(true);
+        } else {
+          return of(false);
+        }
+      }),
+    );
+  }
+
   loadHouse2(house_name: string, reload?: boolean): Observable<boolean> {
     return this.loadHouse(house_name, reload).pipe(
       flatMap((res) => {
