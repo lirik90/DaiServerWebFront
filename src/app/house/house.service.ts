@@ -120,8 +120,8 @@ export class HouseService extends IHouseService {
     clearInterval(this.devValuesInterval);
   }
 
-  loadHouse2(house_name: string): Observable<boolean> {
-    return this.loadHouse(house_name).pipe(
+  loadHouse2(house_name: string, reload?: boolean): Observable<boolean> {
+    return this.loadHouse(house_name, reload).pipe(
       flatMap((res) => {
         // returns an Observable of type Y
         return res ? this.updateStatusItems(this.house2.id) : of(false);
@@ -147,8 +147,8 @@ export class HouseService extends IHouseService {
     );
   }
 
-  loadHouse(house_name: string): Observable<boolean> {
-    if (this.house && this.house.name == house_name) {
+  loadHouse(house_name: string, reload?: boolean): Observable<boolean> {
+    if (this.house && this.house.name == house_name && !reload) {
       return of(true);
     }
 
