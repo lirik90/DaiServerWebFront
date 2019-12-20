@@ -192,6 +192,7 @@ export class WashVolDialogComponent implements OnInit {
 
   save() {
     if (this.washVol.valid) {
+      console.log('Value is: `' + this.washVol.value + '\'');
       this.dialogRef.close({result: this.washVol.value});
     }
   }

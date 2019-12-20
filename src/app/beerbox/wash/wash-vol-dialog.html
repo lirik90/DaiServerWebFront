@@ -4,7 +4,7 @@
   <label for="wvfield">Объем для вытеснения:</label>
   <mat-form-field class="full-width">
     <input type="input" matInput id="wvfield" pattern="^\d+$" inputmode="numeric" autocomplete="off"
-           digitOnly decimal="false" [formControl]="washVol" />
+           digitOnly decimal="false" [formControl]="washVol" maxlength="3" />
     <mat-error>
       Поле обязательное для заполнения*
     </mat-error>
