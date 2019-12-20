@@ -116,40 +116,47 @@ export class WashTapComponent implements OnInit {
   onChange(clean_type_item: DeviceItem, value: any): void {
     const val = parseInt(value, 10);
     if (val) {
-      // check params
-      const paramGrp = this.houseService.house.sections[0].groups.find(g => g.type.name === 'clean');
+      this.disabledBtn = true;
+      // reload params
+      const name = this.houseService.house.name;
+      //this.houseService.clear();
+      this.houseService.loadHouse2(name).subscribe(b => {
+        console.log(b);
+        // check params
+        const paramGrp = this.houseService.house.sections[0].groups.find(g => g.type.name === 'clean');
 
-      let badParam = '';
+        let badParam = '';
 
-      switch (val) {
-        case 1: // daily
-          badParam = this.checkParams(paramGrp, 'daily');
-          break;
-        case 2:
-          badParam = this.checkParams(paramGrp, 'disinfection');
-          break;
-        case 3:
-          badParam = this.checkParams(paramGrp, 'acid');
-          break;
-      }
+        switch (val) {
+          case 1: // daily
+            badParam = this.checkParams(paramGrp, 'daily');
+            break;
+          case 2:
+            badParam = this.checkParams(paramGrp, 'disinfection');
+            break;
+          case 3:
+            badParam = this.checkParams(paramGrp, 'acid');
+            break;
+        }
 
-      if (!badParam) {
-        this.disabledBtn = false;
-        clean_type_item.val.raw = val;
-      } else {
-        this.disabledBtn = true;
-        console.log('BAD! ' + badParam);
+        if (!badParam) {
+          this.disabledBtn = false;
+          clean_type_item.val.raw = val;
+        } else {
+          this.disabledBtn = true;
+          console.log('BAD! ' + badParam);
 
-        const badParamDialog = this.dialog.open(Ok2DialogComponent, {
-          data: {
-            text1: `Промывка аппарата не может быть запущена так как отсутствует информация по`,
-            text2: badParam,
-            text3: `Для добавления информации необходимо обратиться в Сервисную службу.`,
-            ybtn: 'Ок',
-          },
-          disableClose: true
-        });
-      }
+          const badParamDialog = this.dialog.open(Ok2DialogComponent, {
+            data: {
+              text1: `Промывка аппарата не может быть запущена так как отсутствует информация по`,
+              text2: badParam,
+              text3: `Для добавления информации необходимо обратиться в Сервисную службу.`,
+              ybtn: 'Ок',
+            },
+            disableClose: true
+          });
+        }
+      });
     } else {
       this.disabledBtn = true;
       clean_type_item.val.raw = 0;
