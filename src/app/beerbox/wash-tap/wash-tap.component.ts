@@ -120,7 +120,9 @@ export class WashTapComponent implements OnInit {
       // reload params
       const name = this.houseService.house.name;
       //this.houseService.clear();
-      this.houseService.reloadHouse(name).subscribe(b => {
+      this.houseService.loadHouse2(name).subscribe(b => {
+        this.getSections();
+        
         console.log(b);
         // check params
         const paramGrp = this.houseService.house.sections[0].groups.find(g => g.type.name === 'clean');
@@ -164,7 +166,9 @@ export class WashTapComponent implements OnInit {
   }
 
   start(clean: any): void {
+    console.log(clean);
     this.controlService.writeToDevItem(clean.type.id, clean.type.val.raw);
+    //clean.step.val.raw = 1;
   }
 
   stepText(clean: any): string {
