@@ -5,6 +5,11 @@
   line-height: 1.33;
 }
 
+.center {
+  margin-bottom: 2em;
+  margin-top: 1em;
+}
+
 @media all and (max-width: 600px) {
   .stepper {
     margin-left: -32px;
