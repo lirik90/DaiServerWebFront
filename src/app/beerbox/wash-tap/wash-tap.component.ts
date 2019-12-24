@@ -122,7 +122,7 @@ export class WashTapComponent implements OnInit {
       //this.houseService.clear();
       this.houseService.loadHouse2(name).subscribe(b => {
         this.getSections();
-        
+
         console.log(b);
         // check params
         const paramGrp = this.houseService.house.sections[0].groups.find(g => g.type.name === 'clean');
