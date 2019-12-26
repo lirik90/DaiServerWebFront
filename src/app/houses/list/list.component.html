@@ -20,6 +20,14 @@
   </mat-form-field>
 </div>
 
+
+<mat-paginator [length]="resultsLength"
+               [pageSize]="limit"
+               [pageSizeOptions]="[5, 10, 25, 100]"
+               (page)="pageEvent = getPaginatorData($event)"
+               [pageIndex]="start">
+</mat-paginator>
+
 <ul class="houses">
   <li *ngFor="let house of houses">
     <mat-icon [matTooltip]="status_desc(house)" [ngClass]="status_class(house)"
@@ -35,9 +43,10 @@
 
 
 <mat-paginator [length]="resultsLength"
-               [pageSize]="10"
+               [pageSize]="limit"
                [pageSizeOptions]="[5, 10, 25, 100]"
-               (page)="pageEvent = getPaginatorData($event)">
+               (page)="pageEvent = getPaginatorData($event)"
+               [pageIndex]="start">
 </mat-paginator>
 
 <hr>

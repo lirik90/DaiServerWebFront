@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material';
 
@@ -41,6 +41,8 @@ class StatusInfo {
 export class HouseListComponent implements OnInit, OnDestroy {
   timeout: any;
   is_admin: boolean;
+  start = 0;
+  limit = 10;
 
   constructor(private router: Router,
               private housesService: HousesService,
@@ -65,12 +67,12 @@ export class HouseListComponent implements OnInit, OnDestroy {
   statusInfo = {};
   statusQueue = {};
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChildren(MatPaginator) paginator: QueryList<MatPaginator>;
   citySelected = null;
   cities: any[];
   compSelected: any;
   comps: any[];
-  pageEvent: void;
+  pageEvent: PageEvent;
 
   @ViewChild('searchBox', {static: true}) searchBox;
 
@@ -140,10 +142,11 @@ export class HouseListComponent implements OnInit, OnDestroy {
       clearTimeout(this.timeout);
     }
 
-    const limit = this.paginator.pageSize;
-    const start = this.paginator.pageIndex;
+    if (this.paginator) {
+      console.log(this.paginator);
+    }
 
-    this.housesSubs = this.housesService.getHouses(limit !== undefined ? limit : 10, start !== undefined ? start : 0, 'title',
+    this.housesSubs = this.housesService.getHouses(this.limit, this.start, 'title',
       query)
       .subscribe(dat => {
         console.log(dat);
@@ -194,8 +197,13 @@ export class HouseListComponent implements OnInit, OnDestroy {
 
     const q = this.searchBox.nativeElement.value;
 
+    this.limit = event.pageSize;
+    this.start = event.pageIndex;
+
     console.log(q);
     this.search(q);
+
+    return event;
   }
 
   status_desc(h): string {
