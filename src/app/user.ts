@@ -40,6 +40,5 @@ export class House {
   loses_state: boolean;
   status_checked: boolean;
   connect_state: Connection_State;
-  version: string;
 }
 
