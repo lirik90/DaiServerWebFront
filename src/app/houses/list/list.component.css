@@ -67,6 +67,11 @@
   display: none;
 }
 
+.houses .version {
+  color: #888;
+  margin-right: 8px;
+}
+
 button {
   background-color: #eee;
   border: none;
