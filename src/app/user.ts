@@ -32,6 +32,7 @@ export class House {
   city: number | null;
   company: number | null;
   description: string;
+  version: string;
   messages: any[];
   parent: number;
   connection: number;

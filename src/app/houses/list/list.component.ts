@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material';
 
 import {House, PaginatorApi} from '../../user';
 import { HousesService } from '../houses.service';
+import {AuthenticationService} from '../../authentication.service';
 import {PageEvent} from '@angular/material/typings/paginator';
 import {HttpClient} from '@angular/common/http';
 import {Connection_State, ControlService} from '../../house/control.service';
@@ -39,9 +40,11 @@ class StatusInfo {
 })
 export class HouseListComponent implements OnInit, OnDestroy {
   timeout: number;
+  is_admin: boolean;
 
   constructor(private router: Router,
               private housesService: HousesService,
+              private authService: AuthenticationService,
               protected http: HttpClient,
               public translate: TranslateService,
   ) {}
@@ -84,6 +87,8 @@ export class HouseListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.is_admin = this.authService.isAdmin();
+
     this.getHouses();
 
     this.housesService.getCities().subscribe(data => {
