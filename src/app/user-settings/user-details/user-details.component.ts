@@ -66,7 +66,8 @@ export class UserDetailsComponent implements OnInit {
     } else {
       const pwd = {
         'old_password': this.changePasswordGroup.value.cur_password,
-        'new_password':  this.changePasswordGroup.value.new_password
+        'new_password':  this.changePasswordGroup.value.new_password,
+        'need_to_change_password': false
       };
 
       this.newPassErrors = [];
