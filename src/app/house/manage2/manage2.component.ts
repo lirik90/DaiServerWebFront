@@ -39,8 +39,7 @@ export class Manage2Component implements OnInit {
 
     this.is_view = this.route.snapshot.data['is_view'];
 
-    const view = ['takeHeadLastCount', 'active_keg', 'last_extrude_counter', 'block_status', 'pouring', 'beer', 'gas', 'relief', 'clamp',
-      'release', 'pourLed', 'block'];
+    const view = [];
 
     for (const sct of this.houseService.house.sections) {
       for (const group of sct.groups) {

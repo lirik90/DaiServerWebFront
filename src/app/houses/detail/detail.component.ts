@@ -25,7 +25,7 @@ export class HouseDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.can_save = this.authService.isSupervisor();
+    this.can_save = true;
     this.getHouse();
 
     this.housesService.getCities().subscribe(data => {

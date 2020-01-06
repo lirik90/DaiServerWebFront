@@ -36,11 +36,11 @@ const houseRoutes: Routes = [
           {
             path: 'manage',
             component: Manage2Component,
-            data: { req_perms: ['isAdmin', 'Netherland', 'isSpecial'] },
+            data: { req_perms: ['isAdmin', 'isSpecial'] },
           },
-          { path: 'elements', component: ManageComponent, data: { req_perms: ['isAdmin', 'Netherland'] }},
-          { path: 'log', component: LogComponent, data: { req_perms: ['isSupervisor', 'isFullAccess', 'isAdmin'] }},
-          { path: 'log2', component: Log2Component, data: { req_perms: ['isAdmin', 'Netherland'] }},
+          { path: 'elements', component: ManageComponent, data: { req_perms: ['isAdmin'] }},
+          { path: 'log', component: LogComponent, data: { req_perms: ['isFullAccess', 'isAdmin'] }},
+          { path: 'log2', component: Log2Component, data: { req_perms: ['isAdmin'] }},
           { path: 'group/:groupId/param', component: ParamComponent },
           {
             path: 'reports',
@@ -51,7 +51,7 @@ const houseRoutes: Routes = [
           {
             path: 'export',
             component: Export2Component,
-            data: {dataPreselected: [107], req_perms: ['isKegReplacer', 'isSupervisor', 'isFullAccess', 'isAdmin', 'Netherland'] }
+            data: {dataPreselected: [107], req_perms: ['isFullAccess', 'isAdmin'] }
           },
           {
             path: 'settings',
@@ -59,7 +59,6 @@ const houseRoutes: Routes = [
             data: { req_perms: ['isAdmin'] },
             canLoad: [AuthGuard]
           },
-          { path: 'beerbox', loadChildren: () => import('app/beerbox/beerbox.module').then(m => m.BeerboxModule), canLoad: [AuthGuard] },
           {
             path: 'doc',
             component: DocComponent,

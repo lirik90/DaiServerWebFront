@@ -1,98 +1,11 @@
 <h2 i18n="@@HELP">Справка</h2>
 <div>
-  <div [style.font-size.px]="19">Локальное подключение по Wi-Fi</div>
+  <div [style.font-size.px]="19">Page 1</div>
   <div class="desc">
-    При отсутствии связи с устройством, возможно подключится к нему локально по WI-FI.
-    Супервайзер может получить Логин и пароль к WI-FI зайдя в Web-интерфейс во вкладке Элементы в поле Сеть.
-    Техник(промывщик) и Mерчендайзер(сменщик кег) должен получить пароль и логин у Cупервайзера(руководства).
+    Descripion for page 1
   </div>
   <div>
     <mat-vertical-stepper class="stepper" linear="false">
-      <mat-step>
-        <ng-template matStepLabel>Выберите в настройках Сеть и Интернет</ng-template>
-        Для Android:
-        <div class="center"><img src="/assets/img/help/local2/1a.png"></div>
-
-        Для iPhone:
-        <div class="center"><img src="/assets/img/help/local2/1i.png"></div>
-      </mat-step>
-      <mat-step>
-        <ng-template matStepLabel>Выберите Wi-Fi</ng-template>
-        Для Android:
-        <div class="center"><img src="/assets/img/help/local2/2a.png"></div>
-
-        Для iPhone:
-        <div class="center"><img src="/assets/img/help/local2/2i.png"></div>
-      </mat-step>
-      <mat-step>
-        <ng-template matStepLabel>Нажмите добавить сеть</ng-template>
-        Для Android:
-        <div class="center"><img src="/assets/img/help/local2/3a.png"></div>
-        <div class="center"><img src="/assets/img/help/local2/3a2.png"></div>
-
-        Для iPhone:
-        <div class="center"><img src="/assets/img/help/local2/3i.png"></div>
-        <div class="center"><img src="/assets/img/help/local2/3i2.png"></div>
-      </mat-step>
-      <mat-step>
-        <ng-template matStepLabel>Введите имя сети</ng-template>
-        <div>
-          Имя сети: <strong>BeerboxAP</strong><br>
-        </div>
-        Для Android:
-        <div class="center"><img src="/assets/img/help/local2/4a.png"></div>
-
-        Для iPhone:
-        <div class="center"><img src="/assets/img/help/local2/4i.png"></div>
-      </mat-step>
-      <mat-step>
-        <ng-template matStepLabel>Выберите защиту сети WPA/WPA2 PSK (для iPhone - WPA2)</ng-template>
-        Для Android:
-        <div class="center"><img src="/assets/img/help/local2/5a.png"></div>
-
-        Для iPhone:
-        <div class="center"><img src="/assets/img/help/local2/5i.png"></div>
-      </mat-step>
-      <mat-step>
-        <ng-template matStepLabel>Если в расширенных настройках есть настройка скрытая сеть, то выберите да.</ng-template>
-        Для Android:
-        <div class="center"><img src="/assets/img/help/local2/6a.png"></div>
-
-        Для iPhone:<br>
-        Отсутсвует
-      </mat-step>
-      <mat-step>
-        <ng-template matStepLabel>Введите пароль сети и добавьте сеть</ng-template>
-        <div>
-          Имя сети: <strong>BeerboxAP</strong><br>
-          Пароль: <strong>Pivomat003</strong>
-        </div>
-        Для Android:
-        <div class="center"><img src="/assets/img/help/local2/7a.png"></div>
-
-        Для iPhone:
-        <div class="center"><img src="/assets/img/help/local2/7i.png"></div>
-      </mat-step>
-      <mat-step>
-        <ng-template matStepLabel>Выберите добавленную точку доступа для авторизации в сети</ng-template>
-        Для Android:
-        <div class="center"><img src="/assets/img/help/local2/8a.png"></div>
-
-        Для iPhone:
-        <div class="center"><img src="/assets/img/help/local2/8i.png"></div>
-      </mat-step>
-      <mat-step>
-        <ng-template matStepLabel>Нажмите на ссылку http://192.168.12.1/</ng-template>
-        <div class="center"><img src="/assets/img/help/local2/9a.png"></div>
-      </mat-step>
-      <mat-step>
-        <ng-template matStepLabel>Введите ваш логин и пароль для входа в сеть</ng-template>
-        <div class="center"><img src="/assets/img/help/local2/10a.png"></div>
-      </mat-step>
-      <mat-step>
-        <ng-template matStepLabel>Выберите Локальный проект</ng-template>
-        <div class="center"><img src="/assets/img/help/local2/11a.png"></div>
-      </mat-step>
 
       <ng-template matStepperIcon="edit" let-index="index">
         {{ index + 1 }}

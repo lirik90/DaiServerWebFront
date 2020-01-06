@@ -28,7 +28,7 @@ export class ProjectLoadGuard implements CanActivate, CanActivateChild {
   }
 
   canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if (next.data['is_edit'] && !this.authService.isKegReplacer()) {
+    if (next.data['is_edit']) {
       const tree: UrlTree = this.router.parseUrl(state.url);
       const g: UrlSegmentGroup = tree.root.children[PRIMARY_OUTLET];
       const segments: any[] = [g.segments[0].path, g.segments[1].path, 'detail'];

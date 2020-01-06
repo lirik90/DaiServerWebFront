@@ -3,8 +3,6 @@
   "This password is entirely numeric.": "The password must contain letters.",
   "Wrong password.": "The specified login and / or password does not match the authorization data",
   "New password is the same of old_password": "The new password cannot match the old password",
-  "REPORT_IDLE_FILENAME": "Idle report",
-  "REPORT_POURING_FILENAME": "Pour report",
   "SERVER_DOWN": "Server is unreachable",
   "DISCONNECTED_JUST_NOW": "Disconnected",
   "CONNECTED_JUST_NOW": "Syncing",
@@ -22,22 +20,10 @@
     "ELEMENTS": "Elements",
     "LOG": "Journal",
     "LOG_VALUE": "Value log",
-    "BRANDS": "Brands",
     "WIFI": "Wi-Fi Settings",
-    "POUR_SETTINGS": "Dispensing Settings",
     "STRUCTURE": "Structure",
     "REPORTS": "Reports",
     "EXPORT": "Export data",
-    "WASH": "Washing",
-    "KEGS": "Kegs",
-    "REPLACE_KEG": "keg replacement",
-    "CALIBRATION": "Calibration",
-    "CALVOL": "Volume calibration",
-    "STAND": "Stand",
-    "REPLACE_LABEL": "Replace a sticker roll",
-    "BEER_INFO": "Label Text",
-    "CONTROLLER": "Controller Setup",
-    "OPERATION_HOURS": "Opening hours",
     "HELP": "Help"
 	},
 	"LOG": {
@@ -47,60 +33,9 @@
 		"CHARTS_ELEMENTS": "Selected items"
 	},
 	"MONTHS": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-	"BEERBOX": {
-		"WASH_STEPS": {
-			"STEP_1": "Washing with water",
-			"STEP_2": "Cleaning with a cleaning material",
-			"STEP_3": "Rinsing with potable water",
-			"STEP_4": "Replacing potable water with beer. Keg coupler Nr."
-		},
-		"WASH_AGENTS": {
-			"AGENT_1": "Potable water",
-			"AGENT_2": "Beer",
-			"AGENT_3": "Alkaline-based solution of the cleaning material FT-89 CIP or similar",
-			"AGENT_4": "Acid-based solution of the cleaning material FINK Acid kombi or similar"
-		}
-	},
   "USER": {
     "NOTIFICATIONS": {
       "TITLE": "Notifications"
     }
-  },
-  "FILL_ERRORS": {
-    "ERROR_1": "Filling parameters are not set",
-    "ERROR_2": "The bottle holder is out of start position",
-    "ERROR_4": "The bottle is not hold",
-    "ERROR_8": "There is no bottle",
-    "ERROR_16": "The bottle has a leak",
-    "ERROR_32": "The bottle is not empty",
-    "ERROR_64": "Time for filling is out",
-    "ERROR_128": "Time for gas releasing is out",
-    "ERROR_256": "No beer",
-    "ERROR_512": "The device has been blocked when filling a bottle",
-    "ERROR_1024": "The control of the device has been lost when filling a bottle",
-    "ERROR_2048": "The door is not closed",
-    "ERROR_4096": "The door is not blocked",
-    "ERROR_8192": "The door is not unblocked",
-    "ERROR_16384": "The bottle exploded"
-  },
-  "BRANDS": {
-    "CONFIRM_CANCEL": "Are you sure you want to cancel?",
-    "CANCEL": "Cancel",
-    "CONTINUE": "Continue",
-    "REQ_FIELDS": "All fields are required!",
-    "BARCODE_DUP": "There is a barcode duplication!",
-    "CONTINUE_CREATE": "Continue brand creation",
-    "NOT_SELECTED": "Not selected",
-    "CONFIRM_EDIT": "Are you sure you want to edit this brand?",
-    "EDIT": "Edit",
-    "YES": "Yes",
-    "NO": "No",
-    "EXISTS": "This brand is already exists",
-    "EXISTS_DISTRIB": "This distributor is already exists",
-    "EXISTS_PROD": "This producer is already exists"
-  },
-  "KEGS": {
-    "NOT_CONNECTED": "Not connected",
-    "NOT_SET": " none"
   }
 }

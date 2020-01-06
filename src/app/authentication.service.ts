@@ -42,20 +42,8 @@ export class AuthenticationService {
     return this.checkPermission('add_logentry');
   }
 
-  isKegReplacer(): boolean {
-    return this.checkPermission('toggle_deviceitem');
-  }
-
   canChangeParam(): boolean {
     return this.checkPermission('change_paramvalue');
-  }
-
-  isSupervisor(): boolean {
-    return this.checkPermission('change_house');
-  }
-
-  isCleaner(): boolean {
-    return this.checkPermission('add_deviceitem');
   }
 
   checkPermission(item: string): boolean {
@@ -140,9 +128,5 @@ export class AuthenticationService {
 
   createUser(user: any) {
     return this.http.post('/api/v1/users/', user);
-  }
-
-  isNetherland() {
-    return this.checkPermission('netherlands');
   }
 }
