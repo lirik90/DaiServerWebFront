@@ -146,30 +146,30 @@ export class HouseComponent implements OnInit, OnDestroy {
 
     this.fillerNav.push({link: 'detail', text: this.translate.instant('NAVIGATION_TAB.INFO'), icon: 'perm_device_information'});
 
-      if (isAdmin || this.authService.checkPermission('delete_signtype')) {
-        this.fillerNav.push({link: 'manage', text: this.translate.instant('NAVIGATION_TAB.MANAGEMENT'), icon: 'home'});
-      }
+    // if (isAdmin || this.authService.checkPermission('delete_signtype')) {
+    //   this.fillerNav.push({link: 'manage', text: this.translate.instant('NAVIGATION_TAB.MANAGEMENT'), icon: 'home'});
+    // }
 
-      if (isAdmin) {
-        this.fillerNav.push({link: 'elements', text: this.translate.instant('NAVIGATION_TAB.ELEMENTS'), icon: 'build'});
-      }
+    if (isAdmin) {
+      this.fillerNav.push({link: 'elements', text: this.translate.instant('NAVIGATION_TAB.ELEMENTS'), icon: 'build'});
+    }
 
-      if (isFullAccess || isAdmin) {
-        this.fillerNav.push({link: 'log', text: this.translate.instant('NAVIGATION_TAB.LOG'), icon: 'event_note'});
-      }
+    if (isFullAccess || isAdmin) {
+      this.fillerNav.push({link: 'log', text: this.translate.instant('NAVIGATION_TAB.LOG'), icon: 'event_note'});
+    }
 
-      if (isAdmin) {
-        this.fillerNav.push({link: 'log2', text: this.translate.instant('NAVIGATION_TAB.LOG_VALUE'), icon: 'event_note'});
-      }
+    if (isAdmin) {
+      this.fillerNav.push({link: 'log2', text: this.translate.instant('NAVIGATION_TAB.LOG_VALUE'), icon: 'event_note'});
+    }
 
-      if (isAdmin) {
-        this.fillerNav.push({link: 'settings', text: this.translate.instant('NAVIGATION_TAB.STRUCTURE'), icon: 'settings'});
-        this.fillerNav.push({link: 'reports', text: this.translate.instant('NAVIGATION_TAB.REPORTS'), icon: 'show_chart'});
-      }
+    if (isAdmin) {
+      this.fillerNav.push({link: 'settings', text: this.translate.instant('NAVIGATION_TAB.STRUCTURE'), icon: 'settings'});
+      this.fillerNav.push({link: 'reports', text: this.translate.instant('NAVIGATION_TAB.REPORTS'), icon: 'show_chart'});
+    }
 
-      if (isFullAccess || isAdmin) {
-        this.fillerNav.push({link: 'export', query: {data: [107]}, text: this.translate.instant('NAVIGATION_TAB.EXPORT'), icon: 'subject'});
-      }
+    if (isFullAccess || isAdmin) {
+      this.fillerNav.push({link: 'export', query: {data: [107]}, text: this.translate.instant('NAVIGATION_TAB.EXPORT'), icon: 'subject'});
+    }
 
     this.fillerNav.push({
       link: 'doc',

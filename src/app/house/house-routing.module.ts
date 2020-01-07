@@ -16,7 +16,6 @@ import {ReportsModule} from './reports/reports.module';
 import {PermissionGuard} from './permission.guard';
 import {DocCommand} from '@angular/cli/commands/doc-impl';
 import {DocComponent} from './doc/doc.component';
-import {Export2Component} from './reports/export2/export2.component';
 import {Log2Component} from './log2/log2.component';
 import {Manage2Component} from './manage2/manage2.component';
 
@@ -47,11 +46,6 @@ const houseRoutes: Routes = [
             loadChildren: () => import('app/house/reports/reports.module').then(m => m.ReportsModule),
             canLoad: [AuthGuard],
             data: { req_perms: ['isAdmin'] }
-          },
-          {
-            path: 'export',
-            component: Export2Component,
-            data: {dataPreselected: [107], req_perms: ['isFullAccess', 'isAdmin'] }
           },
           {
             path: 'settings',
