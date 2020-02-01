@@ -37,7 +37,7 @@ enum WebSockCmd {
 
 export interface ByteMessage {
   cmd: number;
-  proj_id: number;
+  scheme_id: number;
   data: ArrayBuffer;
 }
 
@@ -419,7 +419,7 @@ export class WebSocketBytesService {
 
         const info = new Uint8Array(msg);
         const cmd = info[0];
-        const proj_id = info[1] << 24 | info[2] << 16 | info[3] << 8 | info[4];
+        const scheme_id = info[1] << 24 | info[2] << 16 | info[3] << 8 | info[4];
         const data = msg.slice(5);
 
         if (cmd == WebSockCmd.WS_AUTH) {
@@ -429,7 +429,7 @@ export class WebSocketBytesService {
             this.opened.next(true);
           }
 
-          this.message.next({ cmd, proj_id, data });
+          this.message.next({ cmd, scheme_id, data });
         }
       },
       error: (err_text: any) => {
@@ -441,18 +441,18 @@ export class WebSocketBytesService {
       },
       complete: () => {
         this.opened.next(false);
-        // this.message.next({ cmd: 'closed', proj_id: undefined, data: undefined });
+        // this.message.next({ cmd: 'closed', scheme_id: undefined, data: undefined });
       }
     });
   }
 
-  public send(cmd: number, proj_id: number, data: Uint8Array = undefined): void {
+  public send(cmd: number, scheme_id: number, data: Uint8Array = undefined): void {
     const byte_length = data !== undefined ? data.length : 0;
     const msg = new ArrayBuffer(5 + byte_length);
     const view = new Uint8Array(msg);
 
     view[0] = cmd;
-    ByteTools.saveInt32(proj_id, view, 1);
+    ByteTools.saveInt32(scheme_id, view, 1);
     if (data !== undefined) {
       view.set(data, 5);
     }

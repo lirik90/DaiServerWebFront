@@ -43,7 +43,7 @@ export class AuthenticationService {
   }
 
   canChangeParam(): boolean {
-    return this.checkPermission('change_paramvalue');
+    return this.checkPermission('change_dig_param_value');
   }
 
   checkPermission(item: string): boolean {

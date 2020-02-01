@@ -6,13 +6,13 @@ import { HttpClient, HttpClientModule, HttpClientXsrfModule, HTTP_INTERCEPTORS }
 
 import { MaterialModule } from './material.module';
 
-import { HousesDetailModule } from './houses/houses-detail.module';
+import { SchemesDetailModule } from './schemes/schemes-detail.module';
 import { AppComponent } from './app.component';
 
-import { DashboardComponent } from './houses/dashboard/dashboard.component';
-import { HouseListComponent } from './houses/list/list.component';
-import { HouseSearchComponent } from './houses/search/search.component';
-import { HousesService } from './houses/houses.service';
+import { DashboardComponent } from './schemes/dashboard/dashboard.component';
+import { SchemeListComponent } from './schemes/list/list.component';
+import { SchemeSearchComponent } from './schemes/search/search.component';
+import { SchemesService } from './schemes/schemes.service';
 import { WebSocketBytesService } from "./web-socket.service";
 import { MessagesComponent } from './messages/messages.component';
 import { MessageService } from './message.service';
@@ -29,6 +29,7 @@ import {UserSettingsComponent} from './user-settings/user-settings.component';
 import {UserSettingsModule} from './user-settings/user-settings.module';
 import { CookieService } from 'ngx-cookie-service';
 import {FavService} from './fav.service';
+import { TgAuthComponent } from './tg-auth/tg-auth.component';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -38,18 +39,19 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [
     AppComponent,
     DashboardComponent,
-    HouseListComponent,
+    SchemeListComponent,
     MessagesComponent,
-    HouseSearchComponent,
+    SchemeSearchComponent,
     LoginComponent,
     RegisterComponent,
+    TgAuthComponent,
   ],
   imports: [
     BrowserAnimationsModule,
 //    BrowserModule,
     FormsModule,
     AppRoutingModule,
-    HousesDetailModule,
+    SchemesDetailModule,
     HttpClientModule,
     HttpClientXsrfModule.withOptions({
       cookieName: 'csrftoken',
@@ -67,7 +69,7 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   providers: [
     AuthGuard,
-    HousesService,
+    SchemesService,
     MessageService,
     AuthenticationService,
     UIService,

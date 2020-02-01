@@ -1,4 +1,4 @@
-import {Connection_State} from './house/control.service';
+import {Connection_State} from './scheme/control.service';
 
 export interface PaginatorApi<T> {
   results: T[];     // Массив данных
@@ -7,7 +7,7 @@ export interface PaginatorApi<T> {
   previous: string;
 }
 
-export class TeamMember {
+export class Scheme_Group_Member {
   id: number;
   name: string;
 }
@@ -23,11 +23,11 @@ export class User {
     permissions: string[];// Разрешения доступные пользователю
     phone_number: string;
 }
-export class House {
+export class Scheme {
   id: number;
   name: string;       // Имя прокта латиницей и без спец. символов, используется как имя базы данных
   device: string;     // UUID проекта
-  lastUsage: string;
+  last_usage: string;
   title: string;      // Отображаемое имя проекта
   city: number | null;
   company: number | null;

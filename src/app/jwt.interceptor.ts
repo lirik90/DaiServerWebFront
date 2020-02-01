@@ -35,8 +35,8 @@ export class JwtInterceptor implements HttpInterceptor {
  
     return next.handle(request)
       .catch((error, caught) => {
-        if (error.status === 400)
-          this.authService.goToLogin();
+        //if (error.status === 400)
+        //  this.authService.goToLogin();
 
         if (error.status === 401) {
           // logout users, redirect to login page

@@ -1,0 +1,64 @@
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { catchError, map, tap } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
+
+import { SchemeService } from '../scheme.service';
+import { Section, Codes, Plugin_Type, Save_Timer } from '../scheme';
+import { PaginatorApi } from "../../user";
+
+@Injectable()
+export class SettingsService {
+  private readonly sct_s: string = 'section/';
+
+  constructor(
+    private hServ: SchemeService
+  ) {}
+
+  getPluginTypes(): Observable<PaginatorApi<Plugin_Type>> {
+    const url = this.hServ.url('checkers');
+    return this.hServ.getPiped<PaginatorApi<Plugin_Type>>(url, 'fetched checkers', 'getCheckers', {} as PaginatorApi<Plugin_Type>);
+  }
+
+  getSaveTimers(): Observable<PaginatorApi<Save_Timer>> {
+    return this.hServ.getPiped<PaginatorApi<Save_Timer>>(this.hServ.url('savetimer'), `fetched save timer list`, 'getSaveTimers', {} as PaginatorApi<Save_Timer>);
+  }
+
+  getCodes(): Observable<Codes[]> {
+    return this.hServ.getPiped<Codes[]>(this.hServ.url('code_item'), `fetched code list`, 'getCodes', []);
+  }
+
+  getCode(code_id: number): Observable<Codes> {
+    return this.hServ.getPiped<Codes>(this.hServ.url('code_item', code_id), `fetched code ${code_id}`, 'getCode', {} as Codes);
+  }
+
+  updateCode(code: Codes): Observable<any> {
+    const url = this.hServ.url('code_item', code.id);
+    return this.hServ.patchPiped(url, { text: code.text }, `updated code id=${code.id}`, 'updateCode');
+  }
+
+  getSection(id: number): Observable<Section> {
+    const url = this.hServ.url(this.sct_s, id);
+    return this.hServ.getPiped<Section>(url, `fetched section id=${id}`, `getSection id=${id}`);
+  }
+
+  /** PUT: update the scheme on the server */
+  updateSection (sct: Section): Observable<any> {
+    const url = this.hServ.url(this.sct_s, sct.id);
+    return this.hServ.putPiped(url, sct, `updated section id=${sct.id}`, 'updateSection');
+  }
+
+  /** POST: add a new scheme to the server */
+  addSection (sct: Section): Observable<Section> {
+    const url = this.hServ.url(this.sct_s);
+    return this.hServ.postPiped<Section>(url, sct, `added section w/ id=${sct.id}`, 'addSection');
+  }
+
+  /** DELETE: delete the scheme from the server */
+  deleteSection (sct: Section | number): Observable<Section> {
+    const id = typeof sct === 'number' ? sct : sct.id;
+    const url = this.hServ.url(this.sct_s, id);
+
+    return this.hServ.deletePiped<Section>(url, `deleted section id=${id}`, 'deleteSection');
+  }
+}

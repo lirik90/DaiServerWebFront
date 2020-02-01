@@ -1,0 +1,13 @@
+<section class="scheme-section">
+  <header class="scheme-section__header" (click)="toggleExpand()">
+    <h3>{{ title }}</h3>
+    <div class="scheme-section__spacer"></div>
+    <button mat-icon-button>
+      <mat-icon>{{isExpanded? 'expand_less' : 'expand_more'}}</mat-icon>
+    </button>
+  </header>
+
+  <div class="scheme-section__content" [class.expanded]="isExpanded">
+    <ng-content></ng-content>
+  </div>
+</section>

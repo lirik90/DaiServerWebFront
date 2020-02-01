@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../../authentication.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {IHouseService} from '../../ihouse.service';
+import {ISchemeService} from '../../ischeme.service';
 import {catchError, tap} from 'rxjs/operators';
 import {of} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';

@@ -6,7 +6,7 @@
 				<source>Подробнее о проекте</source>
 				<target xml:lang="mn">Төслийн мэдээлэ</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/detail/detail.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/detail/detail.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">3</context>
 				</context-group>
 			</trans-unit>
@@ -14,7 +14,7 @@
 				<source>Ид</source>
 				<target xml:lang="mn">Eid</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/detail/detail.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/detail/detail.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">4</context>
 				</context-group>
 			</trans-unit>
@@ -22,15 +22,15 @@
 				<source>Имя</source>
 				<target xml:lang="mn">Нэр</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/detail/detail.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/detail/detail.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">5</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/list/list.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/list/list.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">44</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/list/list.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/list/list.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">44</context>
 				</context-group>
 			</trans-unit>
@@ -38,31 +38,31 @@
 				<source>Заголовок</source>
 				<target xml:lang="mn">Гарчиг</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/detail/detail.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/detail/detail.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">7</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/list/list.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/list/list.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">46</context>
 				</context-group>
 			</trans-unit><trans-unit id="CITY" datatype="html">
         <source>Город</source><target state="new">Хот</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="sourcefile">app/schemes/detail/detail.component.html</context>
           <context context-type="linenumber">13</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="sourcefile">app/schemes/list/list.component.html</context>
           <context context-type="linenumber">7</context>
         </context-group>
       </trans-unit><trans-unit id="COMPANY" datatype="html">
         <source>Компания</source><target state="new">Компани</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/houses/detail/detail.component.html</context>
+          <context context-type="sourcefile">app/schemes/detail/detail.component.html</context>
           <context context-type="linenumber">23</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/houses/list/list.component.html</context>
+          <context context-type="sourcefile">app/schemes/list/list.component.html</context>
           <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit>
@@ -70,19 +70,19 @@
 				<source>Описание</source>
 				<target xml:lang="mn">Тайлбар</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/detail/detail.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/detail/detail.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">31</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/detail/detail.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/detail/detail.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">32</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/list/list.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/list/list.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">48</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/list/list.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/list/list.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">48</context>
 				</context-group>
 			</trans-unit>
@@ -90,35 +90,35 @@
 				<source>Назад</source>
 				<target xml:lang="mn">Буцах</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/detail/detail.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/detail/detail.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">36</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/manage/params-dialog.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/manage/params-dialog.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">9</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export/export.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">40</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export/export.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">57</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">20</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">82</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/param/param.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/param/param.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">9</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/param/param.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/param/param.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">13</context>
 				</context-group>
 			</trans-unit>
@@ -126,7 +126,7 @@
 				<source>Открыть</source>
 				<target xml:lang="mn">Нээлттэй</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/detail/detail.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/detail/detail.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">37</context>
 				</context-group>
 			</trans-unit>
@@ -134,41 +134,41 @@
 				<source>Сохранить</source>
 				<target xml:lang="mn">Хадгалах</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/detail/detail.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/detail/detail.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">38</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/manage/params-dialog.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/manage/params-dialog.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">8</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/param/param.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/param/param.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">8</context>
 				</context-group>
 			</trans-unit>
-			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="HOUSE_STATE.CLOSE" size-unit="pixel" translate="yes" space="default">
+			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="SCHEME_STATE.CLOSE" size-unit="pixel" translate="yes" space="default">
 				<source>Закрыть</source>
 				<target xml:lang="mn">Хаах</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/house-state-list/house-state-list.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/scheme-state-list/scheme-state-list.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">9</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/house-state/house-state.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/scheme-state/scheme-state.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">9</context>
 				</context-group>
 			</trans-unit>
-			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="HOUSE_STATE.ALL_RIGHT" size-unit="pixel" translate="yes" space="default">
+			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="SCHEME_STATE.ALL_RIGHT" size-unit="pixel" translate="yes" space="default">
 				<source>
         Всё хорошо
       </source>
 				<target xml:lang="mn">        Бүгд л сайн байгаа      </target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/house-state-list/house-state-list.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/scheme-state-list/scheme-state-list.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">20</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/house-state/house-state.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/scheme-state/scheme-state.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">20</context>
 				</context-group>
 			</trans-unit>
@@ -200,8 +200,8 @@
 				<source>Избранное</source>
 				<target xml:lang="mn">Дуртай</target>
 				
-			<context-group purpose="location"><context context-type="sourcefile">app/app.component.html</context><context context-type="linenumber">21</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/houses/dashboard/dashboard.component.html</context><context context-type="linenumber">14</context></context-group></trans-unit>
-			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="HOME.PROJECTS" size-unit="pixel" translate="yes" space="default">
+			<context-group purpose="location"><context context-type="sourcefile">app/app.component.html</context><context context-type="linenumber">21</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/schemes/dashboard/dashboard.component.html</context><context context-type="linenumber">14</context></context-group></trans-unit>
+			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="HOME.SCHEMES" size-unit="pixel" translate="yes" space="default">
 				<source>Список</source>
 				<target xml:lang="mn">Жагсаалт</target>
 				<context-group purpose="location">
@@ -230,24 +230,24 @@
 				<target xml:lang="mn">Хамгийн олон зочилсон төслүүд</target>
 				
 				
-			<context-group purpose="location"><context context-type="sourcefile">app/houses/dashboard/dashboard.component.html</context><context context-type="linenumber">3</context></context-group></trans-unit>
+			<context-group purpose="location"><context context-type="sourcefile">app/schemes/dashboard/dashboard.component.html</context><context context-type="linenumber">3</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="CONTROL.SEARCH" size-unit="pixel" translate="yes" space="default">
 				<source>Поиск</source>
 				<target xml:lang="mn">Хайлт хийх</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/list/list.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/list/list.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">3</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/search/search.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/search/search.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">3</context>
 				</context-group>
 			</trans-unit>
-			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="DETAILS.PROJECT" size-unit="pixel" translate="yes" space="default">
+			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="DETAILS.SCHEME" size-unit="pixel" translate="yes" space="default">
 				<source>Проект</source>
 				<target xml:lang="mn">Төсөл</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/list/list.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/list/list.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">43</context>
 				</context-group>
 			</trans-unit>
@@ -255,7 +255,7 @@
 				<source>Display name</source>
 				<target xml:lang="mn">Дэлгэцийн нэр</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/list/list.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/list/list.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">46</context>
 				</context-group>
 			</trans-unit>
@@ -263,7 +263,7 @@
 				<source>Уникальный номер</source>
 				<target xml:lang="mn">Давтагдашгүй тоо</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/list/list.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/list/list.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">50</context>
 				</context-group>
 			</trans-unit>
@@ -271,7 +271,7 @@
 				<source>Device UUID</source>
 				<target xml:lang="mn">UUID төхөөрөмж</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/list/list.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/list/list.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">50</context>
 				</context-group>
 			</trans-unit>
@@ -279,7 +279,7 @@
 				<source>Добавить</source>
 				<target xml:lang="mn">Нэмэх</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/houses/list/list.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/schemes/list/list.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">52</context>
 				</context-group>
 			</trans-unit>
@@ -431,7 +431,7 @@
 					<context match-mandatory="no" context-type="linenumber">32</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/page-reload-dialog.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/page-reload-dialog.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">7</context>
 				</context-group>
 			</trans-unit>
@@ -511,23 +511,23 @@
 				<source>Нет</source>
 				<target xml:lang="mn">Үгүй шүү</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/groups.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/groups.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">35</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/item-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">33</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/item-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">43</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/item-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">55</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/statuses.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/statuses.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">32</context>
 				</context-group>
 			</trans-unit>
@@ -535,7 +535,7 @@
 				<source>Управление проектом</source>
 				<target xml:lang="mn">Төслийн менежмент</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/manage/manage.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/manage/manage.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">1</context>
 				</context-group>
 			</trans-unit>
@@ -543,7 +543,7 @@
 				<source>Режим</source>
 				<target xml:lang="mn">Горим</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/manage/manage.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/manage/manage.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">22</context>
 				</context-group>
 			</trans-unit>
@@ -551,11 +551,11 @@
 				<source>Параметры</source>
 				<target xml:lang="mn">Параметрүүд</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/manage/params-dialog.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/manage/params-dialog.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">2</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/param/param.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/param/param.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">2</context>
 				</context-group>
 			</trans-unit>
@@ -563,7 +563,7 @@
 				<source>Отчёты</source>
 				<target xml:lang="mn">Тайлан</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/reports.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/reports.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">1</context>
 				</context-group>
 			</trans-unit>
@@ -571,7 +571,7 @@
 				<source>Графики</source>
 				<target xml:lang="mn">Графикууд</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/reports.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/reports.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">3</context>
 				</context-group>
 			</trans-unit>
@@ -579,7 +579,7 @@
 				<source>Экспорт</source>
 				<target xml:lang="mn">Экспортлох</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/reports.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/reports.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">4</context>
 				</context-group>
 			</trans-unit>
@@ -587,7 +587,7 @@
 				<source>Графики</source>
 				<target xml:lang="mn">Графикууд</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">1</context>
 				</context-group>
 			</trans-unit>
@@ -595,7 +595,7 @@
 				<source>Время от</source>
 				<target xml:lang="mn">Цаг нь</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">5</context>
 				</context-group>
 			</trans-unit>
@@ -603,15 +603,15 @@
 				<source>Дата от</source>
 				<target xml:lang="mn">Огноо:</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">8</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export/export.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">23</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">72</context>
 				</context-group>
 			</trans-unit>
@@ -619,7 +619,7 @@
 				<source>Время до</source>
 				<target xml:lang="mn">Цаг нь</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">14</context>
 				</context-group>
 			</trans-unit>
@@ -627,15 +627,15 @@
 				<source>Дата до</source>
 				<target xml:lang="mn">Огноо огноо</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">17</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export/export.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">28</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">77</context>
 				</context-group>
 			</trans-unit>
@@ -643,7 +643,7 @@
 				<source>Разложить</source>
 				<target xml:lang="mn">Бууруулах</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">23</context>
 				</context-group>
 			</trans-unit>
@@ -651,7 +651,7 @@
 				<source>По группам элементов</source>
 				<target xml:lang="mn">Зүйлийн бүлгээр</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">25</context>
 				</context-group>
 			</trans-unit>
@@ -659,7 +659,7 @@
 				<source>По типам элементов</source>
 				<target xml:lang="mn">Зүйлийн төрөл</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">26</context>
 				</context-group>
 			</trans-unit>
@@ -667,7 +667,7 @@
 				<source>По элементам</source>
 				<target xml:lang="mn">Зүйлээр</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">27</context>
 				</context-group>
 			</trans-unit>
@@ -675,7 +675,7 @@
 				<source>Добавить тип элемента</source>
 				<target xml:lang="mn">Зүйлийн төрлийг нэмнэ үү</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">36</context>
 				</context-group>
 			</trans-unit>
@@ -683,7 +683,7 @@
 				<source>Выберите тип элемента</source>
 				<target xml:lang="mn">Зүйлийн төрлийг сонгоно уу</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">42</context>
 				</context-group>
 			</trans-unit>
@@ -691,11 +691,11 @@
 				<source>Удалить</source>
 				<target xml:lang="mn">Устгах</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">46</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">62</context>
 				</context-group>
 			</trans-unit>
@@ -703,7 +703,7 @@
 				<source>Добавить элемент</source>
 				<target xml:lang="mn">Зүйл нэмэх</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">52</context>
 				</context-group>
 			</trans-unit>
@@ -711,7 +711,7 @@
 				<source>Выберите элемент</source>
 				<target xml:lang="mn">Зүйлийг сонгоно уу</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">58</context>
 				</context-group>
 			</trans-unit>
@@ -719,7 +719,7 @@
 				<source>Показать</source>
 				<target xml:lang="mn">Шоу</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/charts/charts.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">68</context>
 				</context-group>
 			</trans-unit>
@@ -727,11 +727,11 @@
 				<source>Экспорт данных</source>
 				<target xml:lang="mn">Мэдээллийн экспорт</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export/export.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">1</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">1</context>
 				</context-group>
 			</trans-unit>
@@ -739,27 +739,27 @@
 				<source>Подождите! Идёт генерация отчёта...</source>
 				<target xml:lang="mn">Хүлээгээрэй! Тайланг боловсруулж байна ...</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export/export.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">2</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">2</context>
 				</context-group>
 			</trans-unit>
-			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="REPORTS.EXPORT.SELECT_PROJECT" size-unit="pixel" translate="yes" space="default">
+			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="REPORTS.EXPORT.SELECT_SCHEME" size-unit="pixel" translate="yes" space="default">
 				<source>Выберите проект</source>
 				<target xml:lang="mn">Төсөл сонгох</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export/export.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">6</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">6</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">28</context>
 				</context-group>
 			</trans-unit>
@@ -767,11 +767,11 @@
 				<source>Только этот проект</source>
 				<target xml:lang="mn">Зөвхөн энэ төсөл</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export/export.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">7</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">29</context>
 				</context-group>
 			</trans-unit>
@@ -779,11 +779,11 @@
 				<source>Выбрано</source>
 				<target xml:lang="mn">Сонгогдсон</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export/export.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">10</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export/export.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">51</context>
 				</context-group>
 			</trans-unit>
@@ -791,27 +791,27 @@
 				<source>Дальше</source>
 				<target xml:lang="mn">Цааш нь</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export/export.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">15</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export/export.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">41</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export/export.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">58</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">21</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">64</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">83</context>
 				</context-group>
 			</trans-unit>
@@ -819,11 +819,11 @@
 				<source>Укажите период</source>
 				<target xml:lang="mn">Хугацаа заана уу</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export/export.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">21</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">70</context>
 				</context-group>
 			</trans-unit>
@@ -831,7 +831,7 @@
 				<source>Выберите данные</source>
 				<target xml:lang="mn">Мэдээллийг сонгоно уу</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export/export.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">47</context>
 				</context-group>
 			</trans-unit>
@@ -839,7 +839,7 @@
 				<source>Не экспортировать нулевые значения</source>
 				<target xml:lang="mn">Хүчингүй утгыг экспортлох хэрэггүй</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export/export.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">48</context>
 				</context-group>
 			</trans-unit>
@@ -847,11 +847,11 @@
 				<source>Готово</source>
 				<target xml:lang="mn">Дууссан</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export/export.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">63</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">88</context>
 				</context-group>
 			</trans-unit>
@@ -859,7 +859,7 @@
 				<source>Для генерации отчёта всё готово.</source>
 				<target xml:lang="mn">Тайлан гаргахад бүх зүйл бэлэн байна.</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export/export.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">64</context>
 				</context-group>
 			</trans-unit>
@@ -867,11 +867,11 @@
 				<source>Скачать</source>
 				<target xml:lang="mn">Татаж авах</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export/export.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">66</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">90</context>
 				</context-group>
 			</trans-unit>
@@ -880,12 +880,12 @@
 				<target xml:lang="mn">Сонгогдоогүй байна</target>
 
 
-			<context-group purpose="location"><context context-type="sourcefile">app/houses/detail/detail.component.html</context><context context-type="linenumber">25</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/house/reports/export2/export2.component.html</context><context context-type="linenumber">33</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/house/reports/export2/export2.component.html</context><context context-type="linenumber">40</context></context-group></trans-unit>
+			<context-group purpose="location"><context context-type="sourcefile">app/schemes/detail/detail.component.html</context><context context-type="linenumber">25</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context><context context-type="linenumber">33</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context><context context-type="linenumber">40</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="SELECT_ALL" size-unit="pixel" translate="yes" space="default">
 				<source>Выбрать все</source>
 				<target xml:lang="mn">Бүгдийг нь сонго</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/reports/export2/export2.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">59</context>
 				</context-group>
 			</trans-unit>
@@ -893,7 +893,7 @@
 				<source>Время на устройстве</source>
 				<target xml:lang="mn">Төхөөрөмжийн цаг</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/house.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/scheme.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">13</context>
 				</context-group>
 			</trans-unit>
@@ -903,7 +903,7 @@
 					<x clone="yes" id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> дуртай зүйл рүүгээ нэмэх
 				</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/house.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/scheme.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">17</context>
 				</context-group>
 			</trans-unit>
@@ -911,7 +911,7 @@
 				<source>В избранном</source>
 				<target xml:lang="mn">Дуртай зүйлс дээр</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/house.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/scheme.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">18</context>
 				</context-group>
 			</trans-unit>
@@ -919,7 +919,7 @@
 				<source>Изменён</source>
 				<target xml:lang="mn">Өөрчлөгдсөн</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/page-reload-dialog.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/page-reload-dialog.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">1</context>
 				</context-group>
 			</trans-unit>
@@ -929,7 +929,7 @@
 </source>
 				<target xml:lang="mn">  Өөрчлөлтүүд гарч байна. Хуудсыг дахин ачаалмаар байна уу?</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/page-reload-dialog.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/page-reload-dialog.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">2</context>
 				</context-group>
 			</trans-unit>
@@ -937,7 +937,7 @@
 				<source>Обновить</source>
 				<target xml:lang="mn">Сэргээнэ үү</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/page-reload-dialog.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/page-reload-dialog.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">6</context>
 				</context-group>
 			</trans-unit>
@@ -945,7 +945,7 @@
 				<source>Управление</source>
 				<target xml:lang="mn">Удирдлага</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/view/view.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/view/view.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">1</context>
 				</context-group>
 			</trans-unit>
@@ -953,11 +953,11 @@
 				<source>Журнал</source>
 				<target xml:lang="mn">Сэтгүүл</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/log/log.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/log/log.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">1</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/log2/log2.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/log2/log2.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">1</context>
 				</context-group>
 			</trans-unit>
@@ -967,11 +967,11 @@
     </source>
 				<target xml:lang="mn">      EventLog-ийн API үнэлгээний хязгаарт хүрсэн байна. Энэ нэг минутын дараа шинэчлэгдэнэ.    </target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/log/log.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/log/log.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">6</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/log2/log2.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/log2/log2.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">6</context>
 				</context-group>
 			</trans-unit>
@@ -979,7 +979,7 @@
 				<source>Консольная команда</source>
 				<target xml:lang="mn">Консолийн баг</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/log/log.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/log/log.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">13</context>
 				</context-group>
 			</trans-unit>
@@ -987,11 +987,11 @@
 				<source>Фильтр</source>
 				<target xml:lang="mn">Шүүлт хийх</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/log/log.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/log/log.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">17</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/log2/log2.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/log2/log2.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">17</context>
 				</context-group>
 			</trans-unit>
@@ -999,7 +999,7 @@
 				<source>Сообщение</source>
 				<target xml:lang="mn">Мессеж</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/log/log.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/log/log.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">29</context>
 				</context-group>
 			</trans-unit>
@@ -1007,7 +1007,7 @@
 				<source>Категория</source>
 				<target xml:lang="mn">Ангилал</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/log/log.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/log/log.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">35</context>
 				</context-group>
 			</trans-unit>
@@ -1017,17 +1017,17 @@
       </source>
 				<target xml:lang="mn">        Огноо      </target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/log/log.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/log/log.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">43</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/log2/log2.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/log2/log2.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">59</context>
 				</context-group>
 			</trans-unit><trans-unit id="PARAMS" datatype="html">
         <source>Параметры</source><target state="new">Параметры</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/house/log2/log2.component.html</context>
+          <context context-type="sourcefile">app/scheme/log2/log2.component.html</context>
           <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
@@ -1035,7 +1035,7 @@
 				<source>Загрузить</source>
 				<target xml:lang="mn">Татаж авах</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/dev-item-value/dev-item-value.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/dev-item-value/dev-item-value.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">7</context>
 				</context-group>
 			</trans-unit>
@@ -1043,11 +1043,11 @@
 				<source>Загрузка</source>
 				<target xml:lang="mn">Ачаалж байна</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/dev-item-value/dev-item-value.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/dev-item-value/dev-item-value.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">10</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/dev-item-value/holding-register-dialog.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/dev-item-value/holding-register-dialog.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">3</context>
 				</context-group>
 			</trans-unit>
@@ -1055,7 +1055,7 @@
 				<source>Значение</source>
 				<target xml:lang="mn">Утга</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/dev-item-value/holding-register-dialog.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/dev-item-value/holding-register-dialog.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">19</context>
 				</context-group>
 			</trans-unit>
@@ -1063,7 +1063,7 @@
 				<source>Нет спасибо</source>
 				<target xml:lang="mn">Үгүй ээ баярлалаа</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/dev-item-value/holding-register-dialog.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/dev-item-value/holding-register-dialog.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">23</context>
 				</context-group>
 			</trans-unit>
@@ -1071,7 +1071,7 @@
 				<source>Ok</source>
 				<target xml:lang="mn">За юу?</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/dev-item-value/holding-register-dialog.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/dev-item-value/holding-register-dialog.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">24</context>
 				</context-group>
 			</trans-unit>
@@ -1079,7 +1079,7 @@
 				<source>Нажмите если нужно ввести текст</source>
 				<target xml:lang="mn">Текст оруулахыг хүсвэл дарна уу</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/dev-item-value/holding-register-dialog.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/dev-item-value/holding-register-dialog.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">25</context>
 				</context-group>
 			</trans-unit>
@@ -1087,7 +1087,7 @@
 				<source>Настройки</source>
 				<target xml:lang="mn">Тохиргоо</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/settings.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/settings.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">1</context>
 				</context-group>
 			</trans-unit>
@@ -1095,7 +1095,7 @@
 				<source>Устройства и элементы</source>
 				<target xml:lang="mn">Төхөөрөмж ба элементүүд</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/settings.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/settings.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">3</context>
 				</context-group>
 			</trans-unit>
@@ -1103,7 +1103,7 @@
 				<source>Секции и группы</source>
 				<target xml:lang="mn">Хэсэг ба бүлгүүд</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/settings.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/settings.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">4</context>
 				</context-group>
 			</trans-unit>
@@ -1111,7 +1111,7 @@
 				<source>Типы групп и элементов</source>
 				<target xml:lang="mn">Бүлэг ба элементүүдийн төрөл</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/settings.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/settings.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">5</context>
 				</context-group>
 			</trans-unit>
@@ -1119,7 +1119,7 @@
 				<source>Типы состояний</source>
 				<target xml:lang="mn">Улсын төрлүүд</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/settings.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/settings.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">6</context>
 				</context-group>
 			</trans-unit>
@@ -1127,11 +1127,11 @@
 				<source>Единицы измерения</source>
 				<target xml:lang="mn">Нэгжүүд</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/settings.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/settings.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">7</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/item-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">42</context>
 				</context-group>
 			</trans-unit>
@@ -1139,7 +1139,7 @@
 				<source>Плагины</source>
 				<target xml:lang="mn">Залгагч</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/settings.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/settings.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">8</context>
 				</context-group>
 			</trans-unit>
@@ -1147,7 +1147,7 @@
 				<source>Представления</source>
 				<target xml:lang="mn">Үзсэн тоо</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/settings.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/settings.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">9</context>
 				</context-group>
 			</trans-unit>
@@ -1155,7 +1155,7 @@
 				<source>Таймеры</source>
 				<target xml:lang="mn">Таймерууд</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/settings.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/settings.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">10</context>
 				</context-group>
 			</trans-unit>
@@ -1163,7 +1163,7 @@
 				<source>Скрипты</source>
 				<target xml:lang="mn">Скриптүүд</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/settings.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/settings.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">11</context>
 				</context-group>
 			</trans-unit>
@@ -1171,7 +1171,7 @@
 				<source>Устройства</source>
 				<target xml:lang="mn">Төхөөрөмжүүд</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/devices/devices.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/devices/devices.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">4</context>
 				</context-group>
 			</trans-unit>
@@ -1179,71 +1179,71 @@
 				<source>Всего</source>
 				<target xml:lang="mn">Нийт</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/devices/devices.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/devices/devices.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">6</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/devices/deviceitems.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/devices/deviceitems.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">5</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/sections.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/sections.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">6</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/groups.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/groups.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">5</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/groups.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/groups.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">43</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/params-in-group.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/params-in-group.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">5</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/group-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/group-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">6</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/item-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">5</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/param-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/param-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">5</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/statuses.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/statuses.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">5</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/status-types/status-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/status-types/status-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">6</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sign-types/sign-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sign-types/sign-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">6</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/codes/codes.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/codes/codes.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">8</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/checker-types/checker-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/checker-types/checker-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">6</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/views/views.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/views/views.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">6</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/views/viewitems.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/views/viewitems.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">5</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/save-timers/save-timers.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/save-timers/save-timers.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">6</context>
 				</context-group>
 			</trans-unit>
@@ -1251,7 +1251,7 @@
 				<source>Добавить устройство</source>
 				<target xml:lang="mn">Төхөөрөмж нэмэх</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/devices/devices.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/devices/devices.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">13</context>
 				</context-group>
 			</trans-unit>
@@ -1259,7 +1259,7 @@
 				<source>Удалить устройство</source>
 				<target xml:lang="mn">Төхөөрөмжийг устгах</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/devices/devices.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/devices/devices.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">22</context>
 				</context-group>
 			</trans-unit>
@@ -1267,67 +1267,67 @@
 				<source>Детали</source>
 				<target xml:lang="mn">Дэлгэрэнгүй мэдээлэл</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/devices/devices.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/devices/devices.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">29</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/devices/deviceitems.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/devices/deviceitems.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">27</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/sections.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/sections.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">28</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/groups.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/groups.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">27</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/params-in-group.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/params-in-group.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">27</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/group-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/group-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">28</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/item-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">27</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/param-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/param-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">27</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/statuses.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/statuses.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">27</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/status-types/status-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/status-types/status-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">28</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sign-types/sign-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sign-types/sign-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">28</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/codes/codes.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/codes/codes.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">30</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/checker-types/checker-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/checker-types/checker-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">28</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/views/views.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/views/views.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">28</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/views/viewitems.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/views/viewitems.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">27</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/save-timers/save-timers.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/save-timers/save-timers.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">28</context>
 				</context-group>
 			</trans-unit>
@@ -1335,51 +1335,51 @@
 				<source>Имя</source>
 				<target xml:lang="mn">Нэр</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/devices/devices.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/devices/devices.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">35</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/devices/deviceitems.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/devices/deviceitems.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">34</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/sections.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/sections.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">34</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/group-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/group-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">34</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/item-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">30</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/param-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/param-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">30</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/statuses.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/statuses.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">30</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/status-types/status-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/status-types/status-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">34</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sign-types/sign-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sign-types/sign-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">34</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/codes/codes.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/codes/codes.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">39</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/checker-types/checker-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/checker-types/checker-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">34</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/views/views.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/views/views.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">34</context>
 				</context-group>
 			</trans-unit>
@@ -1387,7 +1387,7 @@
 				<source>Плагин</source>
 				<target xml:lang="mn">Залгагч</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/devices/devices.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/devices/devices.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">38</context>
 				</context-group>
 			</trans-unit>
@@ -1395,7 +1395,7 @@
 				<source>Интервал проверки (мс)</source>
 				<target xml:lang="mn">Шалгах интервал (метр)</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/devices/devices.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/devices/devices.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">41</context>
 				</context-group>
 			</trans-unit>
@@ -1403,11 +1403,11 @@
 				<source>Экстра</source>
 				<target xml:lang="mn">Нэмэлт</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/devices/devices.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/devices/devices.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">44</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/devices/deviceitems.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/devices/deviceitems.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">37</context>
 				</context-group>
 			</trans-unit>
@@ -1415,7 +1415,7 @@
 				<source>Элементы устройства</source>
 				<target xml:lang="mn">Төхөөрөмжийн элементүүд</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/devices/deviceitems.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/devices/deviceitems.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">3</context>
 				</context-group>
 			</trans-unit>
@@ -1423,7 +1423,7 @@
 				<source>Добавить элемент</source>
 				<target xml:lang="mn">Зүйл нэмэх</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/devices/deviceitems.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/devices/deviceitems.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">12</context>
 				</context-group>
 			</trans-unit>
@@ -1431,7 +1431,7 @@
 				<source>Удалить элемент</source>
 				<target xml:lang="mn">Устгах</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/devices/deviceitems.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/devices/deviceitems.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">20</context>
 				</context-group>
 			</trans-unit>
@@ -1439,11 +1439,11 @@
 				<source>Предок</source>
 				<target xml:lang="mn">Өвөг дээдэс</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/devices/deviceitems.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/devices/deviceitems.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">40</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/param-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/param-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">33</context>
 				</context-group>
 			</trans-unit>
@@ -1451,11 +1451,11 @@
 				<source>Тип</source>
 				<target xml:lang="mn">Төрөл</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/devices/deviceitems.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/devices/deviceitems.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">43</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/statuses.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/statuses.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">31</context>
 				</context-group>
 			</trans-unit>
@@ -1463,7 +1463,7 @@
 				<source>Группа</source>
 				<target xml:lang="mn">Бүлэг</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/devices/deviceitems.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/devices/deviceitems.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">48</context>
 				</context-group>
 			</trans-unit>
@@ -1471,7 +1471,7 @@
 				<source>Секции</source>
 				<target xml:lang="mn">Хэсэгүүд</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/sections.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/sections.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">4</context>
 				</context-group>
 			</trans-unit>
@@ -1479,7 +1479,7 @@
 				<source>Добавить секцию</source>
 				<target xml:lang="mn">Хэсэг нэмэх</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/sections.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/sections.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">13</context>
 				</context-group>
 			</trans-unit>
@@ -1487,7 +1487,7 @@
 				<source>Удалить секцию</source>
 				<target xml:lang="mn">Хэсгийг устгах</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/sections.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/sections.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">21</context>
 				</context-group>
 			</trans-unit>
@@ -1495,7 +1495,7 @@
 				<source>День</source>
 				<target xml:lang="mn">Өдөр</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/sections.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/sections.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">36</context>
 				</context-group>
 			</trans-unit>
@@ -1503,7 +1503,7 @@
 				<source>Ночь</source>
 				<target xml:lang="mn">Шөнө</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/sections.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/sections.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">38</context>
 				</context-group>
 			</trans-unit>
@@ -1511,7 +1511,7 @@
 				<source>Группы в секции</source>
 				<target xml:lang="mn">Хэсэг дэх бүлгүүд</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/groups.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/groups.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">3</context>
 				</context-group>
 			</trans-unit>
@@ -1519,7 +1519,7 @@
 				<source>Добавить группу</source>
 				<target xml:lang="mn">Бүлэг нэмэх</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/groups.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/groups.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">12</context>
 				</context-group>
 			</trans-unit>
@@ -1527,7 +1527,7 @@
 				<source>Удалить группу</source>
 				<target xml:lang="mn">Бүлгийг устгах</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/groups.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/groups.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">20</context>
 				</context-group>
 			</trans-unit>
@@ -1535,7 +1535,7 @@
 				<source>Название</source>
 				<target xml:lang="mn">Гарчиг</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/groups.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/groups.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">31</context>
 				</context-group>
 			</trans-unit>
@@ -1543,7 +1543,7 @@
 				<source>Тип группы</source>
 				<target xml:lang="mn">Бүлгийн төрөл</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/groups.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/groups.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">34</context>
 				</context-group>
 			</trans-unit>
@@ -1551,7 +1551,7 @@
 				<source>Уставки в группе</source>
 				<target xml:lang="mn">Бүлгийн тохиргоо</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/params-in-group.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/params-in-group.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">3</context>
 				</context-group>
 			</trans-unit>
@@ -1559,7 +1559,7 @@
 				<source>Добавить уставку</source>
 				<target xml:lang="mn">Тогтсон цэг нэмэх</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/params-in-group.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/params-in-group.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">12</context>
 				</context-group>
 			</trans-unit>
@@ -1567,7 +1567,7 @@
 				<source>Удалить уставку</source>
 				<target xml:lang="mn">Тохиргоог устгах</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/params-in-group.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/params-in-group.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">20</context>
 				</context-group>
 			</trans-unit>
@@ -1575,15 +1575,15 @@
 				<source>Тип данных</source>
 				<target xml:lang="mn">Мэдээллийн төрөл</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sections/params-in-group.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sections/params-in-group.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">31</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/item-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">32</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/param-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/param-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">34</context>
 				</context-group>
 			</trans-unit>
@@ -1591,7 +1591,7 @@
 				<source>Типы групп</source>
 				<target xml:lang="mn">Бүлгийн төрөл</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/group-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/group-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">4</context>
 				</context-group>
 			</trans-unit>
@@ -1599,7 +1599,7 @@
 				<source>Добавить тип группы</source>
 				<target xml:lang="mn">Бүлгийн төрлийг нэмнэ үү</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/group-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/group-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">13</context>
 				</context-group>
 			</trans-unit>
@@ -1607,7 +1607,7 @@
 				<source>Удалить тип группы</source>
 				<target xml:lang="mn">Бүлгийн төрлийг устгана уу</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/group-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/group-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">21</context>
 				</context-group>
 			</trans-unit>
@@ -1615,19 +1615,19 @@
 				<source>Заголовок</source>
 				<target xml:lang="mn">Гарчиг</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/group-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/group-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">37</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/item-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">31</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/param-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/param-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">31</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/status-types/status-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/status-types/status-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">37</context>
 				</context-group>
 			</trans-unit>
@@ -1635,7 +1635,7 @@
 				<source>Скрипт</source>
 				<target xml:lang="mn">Скрипт</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/group-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/group-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">40</context>
 				</context-group>
 			</trans-unit>
@@ -1643,11 +1643,11 @@
 				<source>Описание</source>
 				<target xml:lang="mn">Тайлбар</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/group-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/group-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">48</context>
 				</context-group>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/param-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/param-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">32</context>
 				</context-group>
 			</trans-unit>
@@ -1655,7 +1655,7 @@
 				<source>Типы элементов в группе</source>
 				<target xml:lang="mn">Бүлгийн төрөл</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/item-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">3</context>
 				</context-group>
 			</trans-unit>
@@ -1663,7 +1663,7 @@
 				<source>Добавить тип элемента</source>
 				<target xml:lang="mn">Зүйлийн төрлийг нэмнэ үү</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/item-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">12</context>
 				</context-group>
 			</trans-unit>
@@ -1671,7 +1671,7 @@
 				<source>Удалить тип элемента</source>
 				<target xml:lang="mn">Зүйлийн төрлийг устгана уу</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/item-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">20</context>
 				</context-group>
 			</trans-unit>
@@ -1679,7 +1679,7 @@
 				<source>Требует нормализации</source>
 				<target xml:lang="mn">Нормалжуулах шаардлагатай</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/item-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">47</context>
 				</context-group>
 			</trans-unit>
@@ -1687,7 +1687,7 @@
 				<source>Не сохранять автоматически</source>
 				<target xml:lang="mn">Автоматаар бүү хадгал</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/item-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">49</context>
 				</context-group>
 			</trans-unit>
@@ -1695,7 +1695,7 @@
 				<source>Сохранять немедленно</source>
 				<target xml:lang="mn">Нэн даруй хадгал</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/item-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">50</context>
 				</context-group>
 			</trans-unit>
@@ -1703,7 +1703,7 @@
 				<source>Сохранять по таймеру</source>
 				<target xml:lang="mn">Цаг хэмжигч байгаарай</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/item-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">51</context>
 				</context-group>
 			</trans-unit>
@@ -1711,7 +1711,7 @@
 				<source>Алгоритм сохранения изменений</source>
 				<target xml:lang="mn">Хадгалах алгоритмыг өөрчлөх</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/item-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">48</context>
 				</context-group>
 			</trans-unit>
@@ -1719,7 +1719,7 @@
 				<source>Таймер сохранения</source>
 				<target xml:lang="mn">Цаг хэмжигчийг хадгалах</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/item-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/item-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">54</context>
 				</context-group>
 			</trans-unit>
@@ -1727,7 +1727,7 @@
 				<source>Типы уставок в группе</source>
 				<target xml:lang="mn">Бүлгийн тохируулгын төрөл</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/param-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/param-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">3</context>
 				</context-group>
 			</trans-unit>
@@ -1735,7 +1735,7 @@
 				<source>Добавить тип уставки</source>
 				<target xml:lang="mn">Тохируулах цэгийн төрлийг нэмнэ үү</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/param-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/param-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">12</context>
 				</context-group>
 			</trans-unit>
@@ -1743,7 +1743,7 @@
 				<source>Удалить тип уставки</source>
 				<target xml:lang="mn">Тохируулгын төрлийг устгана уу</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/param-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/param-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">20</context>
 				</context-group>
 			</trans-unit>
@@ -1751,7 +1751,7 @@
 				<source>Состояния группы</source>
 				<target xml:lang="mn">Групп улсууд</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/statuses.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/statuses.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">3</context>
 				</context-group>
 			</trans-unit>
@@ -1759,7 +1759,7 @@
 				<source>Добавить состояние</source>
 				<target xml:lang="mn">Муж нэмнэ үү</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/statuses.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/statuses.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">12</context>
 				</context-group>
 			</trans-unit>
@@ -1767,7 +1767,7 @@
 				<source>Удалить статус</source>
 				<target xml:lang="mn">Статусаа устгах</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/statuses.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/statuses.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">20</context>
 				</context-group>
 			</trans-unit>
@@ -1775,7 +1775,7 @@
 				<source>Текст</source>
 				<target xml:lang="mn">Текстээр бичнэ үү</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/statuses.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/statuses.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">36</context>
 				</context-group>
 			</trans-unit>
@@ -1783,7 +1783,7 @@
 				<source>Посылать уведомление</source>
 				<target xml:lang="mn">Мэдэгдэл илгээх</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/group-types/statuses.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/group-types/statuses.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">37</context>
 				</context-group>
 			</trans-unit>
@@ -1791,7 +1791,7 @@
 				<source>Типы состояний</source>
 				<target xml:lang="mn">Улсын төрлүүд</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/status-types/status-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/status-types/status-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">4</context>
 				</context-group>
 			</trans-unit>
@@ -1799,7 +1799,7 @@
 				<source>Добавить тип состояния</source>
 				<target xml:lang="mn">Мужийн төрлийг нэмнэ үү</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/status-types/status-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/status-types/status-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">13</context>
 				</context-group>
 			</trans-unit>
@@ -1807,7 +1807,7 @@
 				<source>Удалить тип состояния</source>
 				<target xml:lang="mn">Мужийн төрлийг устгах</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/status-types/status-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/status-types/status-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">21</context>
 				</context-group>
 			</trans-unit>
@@ -1815,7 +1815,7 @@
 				<source>Цвет</source>
 				<target xml:lang="mn">Өнгө</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/status-types/status-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/status-types/status-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">40</context>
 				</context-group>
 			</trans-unit>
@@ -1823,7 +1823,7 @@
 				<source>Еденицы измерения</source>
 				<target xml:lang="mn">Нэгжүүд</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sign-types/sign-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sign-types/sign-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">4</context>
 				</context-group>
 			</trans-unit>
@@ -1831,7 +1831,7 @@
 				<source>Добавить еденицу измерения</source>
 				<target xml:lang="mn">Нэгж нэмэх</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sign-types/sign-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sign-types/sign-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">13</context>
 				</context-group>
 			</trans-unit>
@@ -1839,7 +1839,7 @@
 				<source>Удалить единицу измерения</source>
 				<target xml:lang="mn">Нэгж устгах</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/sign-types/sign-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/sign-types/sign-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">21</context>
 				</context-group>
 			</trans-unit>
@@ -1847,7 +1847,7 @@
 				<source>Скрипты</source>
 				<target xml:lang="mn">Скриптүүд</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/codes/codes.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/codes/codes.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">6</context>
 				</context-group>
 			</trans-unit>
@@ -1855,7 +1855,7 @@
 				<source>Добавить скрипт</source>
 				<target xml:lang="mn">Скрипт нэмэх</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/codes/codes.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/codes/codes.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">15</context>
 				</context-group>
 			</trans-unit>
@@ -1863,7 +1863,7 @@
 				<source>Удалить скрипт</source>
 				<target xml:lang="mn">Скриптийг устгах</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/codes/codes.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/codes/codes.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">23</context>
 				</context-group>
 			</trans-unit>
@@ -1871,7 +1871,7 @@
 				<source>Общий</source>
 				<target xml:lang="mn">Ерөнхий</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/codes/codes.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/codes/codes.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">42</context>
 				</context-group>
 			</trans-unit>
@@ -1879,7 +1879,7 @@
 				<source>Плагины</source>
 				<target xml:lang="mn">Залгагч</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/checker-types/checker-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/checker-types/checker-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">4</context>
 				</context-group>
 			</trans-unit>
@@ -1887,7 +1887,7 @@
 				<source>Добавить плагин</source>
 				<target xml:lang="mn">Нэмэлт өргөтгөл нэмэх</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/checker-types/checker-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/checker-types/checker-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">13</context>
 				</context-group>
 			</trans-unit>
@@ -1895,7 +1895,7 @@
 				<source>Удалить плагин</source>
 				<target xml:lang="mn">Нэмэлт өргөтгөлийг устгана уу</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/checker-types/checker-types.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/checker-types/checker-types.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">21</context>
 				</context-group>
 			</trans-unit>
@@ -1903,7 +1903,7 @@
 				<source>Представления</source>
 				<target xml:lang="mn">Үзсэн тоо</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/views/views.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/views/views.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">4</context>
 				</context-group>
 			</trans-unit>
@@ -1911,7 +1911,7 @@
 				<source>Добавить представление</source>
 				<target xml:lang="mn">Харагдах байдлыг нэмэх</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/views/views.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/views/views.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">13</context>
 				</context-group>
 			</trans-unit>
@@ -1919,7 +1919,7 @@
 				<source>Удалить представление</source>
 				<target xml:lang="mn">Үзвэрийг устгах</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/views/views.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/views/views.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">21</context>
 				</context-group>
 			</trans-unit>
@@ -1927,7 +1927,7 @@
 				<source>Элементы представления</source>
 				<target xml:lang="mn">Танилцуулгын элементүүд</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/views/viewitems.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/views/viewitems.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">3</context>
 				</context-group>
 			</trans-unit>
@@ -1935,7 +1935,7 @@
 				<source>Добавить элемент</source>
 				<target xml:lang="mn">Зүйл нэмэх</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/views/viewitems.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/views/viewitems.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">12</context>
 				</context-group>
 			</trans-unit>
@@ -1943,7 +1943,7 @@
 				<source>Удалить элемент</source>
 				<target xml:lang="mn">Устгах</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/views/viewitems.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/views/viewitems.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">20</context>
 				</context-group>
 			</trans-unit>
@@ -1951,7 +1951,7 @@
 				<source>Элемент</source>
 				<target xml:lang="mn">Зүйл</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/views/viewitems.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/views/viewitems.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">31</context>
 				</context-group>
 			</trans-unit>
@@ -1959,7 +1959,7 @@
 				<source>Таймеры сохранения</source>
 				<target xml:lang="mn">Цаг хэмжигч хэмнэх</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/save-timers/save-timers.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/save-timers/save-timers.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">4</context>
 				</context-group>
 			</trans-unit>
@@ -1967,7 +1967,7 @@
 				<source>Добавить таймер</source>
 				<target xml:lang="mn">Таймер нэмэх</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/save-timers/save-timers.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/save-timers/save-timers.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">13</context>
 				</context-group>
 			</trans-unit>
@@ -1975,7 +1975,7 @@
 				<source>Удалить таймер</source>
 				<target xml:lang="mn">Цаг хэмжигчийг устгах</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/save-timers/save-timers.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/save-timers/save-timers.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">21</context>
 				</context-group>
 			</trans-unit>
@@ -1983,7 +1983,7 @@
 				<source>Интервал</source>
 				<target xml:lang="mn">Интервал</target>
 				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/house/settings/save-timers/save-timers.component.html</context>
+					<context match-mandatory="no" context-type="sourcefile">app/scheme/settings/save-timers/save-timers.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">34</context>
 				</context-group>
 			</trans-unit>

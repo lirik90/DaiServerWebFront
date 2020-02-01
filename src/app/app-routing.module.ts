@@ -1,31 +1,34 @@
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { DashboardComponent }   from './houses/dashboard/dashboard.component';
-import { HouseListComponent } from './houses/list/list.component';
-import { HouseDetailComponent } from './houses/detail/detail.component';
+import { DashboardComponent }   from './schemes/dashboard/dashboard.component';
+import { SchemeListComponent } from './schemes/list/list.component';
+import { SchemeDetailComponent } from './schemes/detail/detail.component';
 import { AuthGuard } from './auth.guard';
 import { RegisterComponent } from "./register/register.component";
 import { LoginComponent } from "./login/login.component";
-import {UserSettingsComponent} from './user-settings/user-settings.component';
+import { UserSettingsComponent } from './user-settings/user-settings.component';
+import { TgAuthComponent } from './tg-auth/tg-auth.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full'},
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
-  { path: 'list', component: HouseListComponent, canActivate: [AuthGuard]  },
-  { path: 'detail/:name', component: HouseDetailComponent, canActivate: [AuthGuard]  },
+  { path: 'list', component: SchemeListComponent, canActivate: [AuthGuard]  },
+  { path: 'detail/:name', component: SchemeDetailComponent, canActivate: [AuthGuard]  },
 
   {
-    path: 'house',
-    loadChildren: () => import('app/house/house.module').then(m => m.HouseModule),
+    path: 'scheme',
+    loadChildren: () => import('app/scheme/scheme.module').then(m => m.SchemeModule),
     canLoad: [AuthGuard]
   },
 
   {
     path: 'user', loadChildren: () => import('app/user-settings/user-settings.module').then(m => m.UserSettingsModule), canActivate: [AuthGuard]
   },
+
+  { path: 'tg_auth/:token', component: TgAuthComponent, canActivate: [AuthGuard]  },
 
   // otherwise redirect to home
   { path: '**', redirectTo: '/dashboard' }

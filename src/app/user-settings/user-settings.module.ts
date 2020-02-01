@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 import {TranslateModule, TranslateLoader, TranslateService} from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { UserDetailsComponent } from './user-details/user-details.component';
-import {IHouseService} from '../ihouse.service';
+import {ISchemeService} from '../ischeme.service';
 import {TextMaskModule} from 'angular2-text-mask';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -40,7 +40,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     UserDetailsComponent,
   ],
   providers: [
-    IHouseService
+    ISchemeService
   ]
 })
 export class UserSettingsModule {

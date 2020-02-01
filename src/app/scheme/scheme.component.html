@@ -1,0 +1,57 @@
+<input type="checkbox" id="localnav-menustate" class="localnav-menustate">
+<div id="localnav" class="localnav css-sticky localnav-scrim">
+  <div class="localnav-wrapper">
+    <div class="localnav-background"></div>
+    <div class="localnav-content">
+      <div class="localnav-title">
+        <mat-icon [matTooltip]="status_desc" [ngClass]="status_class"
+                  #tooltip="matTooltip" (click)="tooltip.toggle()"></mat-icon>
+
+        <app-scheme-state></app-scheme-state>
+
+        <app-drag-scroll *ngIf="schemeService.scheme">{{schemeService.scheme.title}}</app-drag-scroll>
+        <span class="timestring" *ngIf="!mobileQuery.matches && connected" i18n-matTooltip="@@DEVICE_TIME" matTooltip="Время на устройстве">{{dt_text}} {{dt_tz_name}}</span>
+
+
+        <button mat-flat-button (click)="restart()" class="reboot-btn"><mat-icon>replay</mat-icon><span class="reboot-btn__label" i18n="@@RESTART">Перезагрузить</span></button>
+
+        <button *ngIf="!isFav" mat-flat-button class="fav-btn" (click)="fav()"><mat-icon>star_border</mat-icon><span class="fav-btn__label" i18n="@@ADD_TO_FAV">Добавить<br>в избранное</span></button>
+        <button *ngIf="isFav" mat-flat-button class="fav-btn" (click)="unfav()"><mat-icon>star</mat-icon><span class="fav-btn__label" i18n="@@IN_FAV">В избранном</span></button>
+      </div>
+
+      <div class="localnav-menu">
+        <div class="localnav-actions">
+          <div class="localnav-action localnav-action-menucta" aria-hidden="true">
+            <label for="localnav-menustate" class="localnav-menucta">
+              <span class="localnav-menucta-chevron"></span>
+            </label>
+          </div>
+        </div>
+        <div class="localnav-menu-tray">
+          <ul class="localnav-menu-items">
+            <li class="localnav-menu-item" *ngFor="let nav of fillerNav">
+              <a [routerLink]="nav.link" routerLinkActive="active" class="localnav-menu-link" (click)="closeMenu()">
+                <mat-icon>{{nav.icon}}</mat-icon>{{nav.text}}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="sidenav">
+    <ul class="sidenav-menu-items">
+      <li class="sidenav-menu-item" *ngFor="let nav of fillerNav">
+        <a [routerLink]="nav.link" routerLinkActive="active" class="sidenav-menu-link" (click)="closeMenu()">
+          <mat-icon>{{nav.icon}}</mat-icon>{{nav.text}}
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="router-outlet-wrap">
+    <router-outlet></router-outlet>
+  </div>
+</div>
