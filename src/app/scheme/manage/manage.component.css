@@ -73,6 +73,7 @@ h4 {
   border-left-style: solid;
   text-align: right;
   padding-left: 8px;
+  padding-right: 4px;
 }
 .eqTable td:not([colspan]):last-child {
   border-right-width: 2px;
