@@ -16,8 +16,8 @@ export class SettingsService {
   ) {}
 
   getPluginTypes(): Observable<PaginatorApi<Plugin_Type>> {
-    const url = this.hServ.url('checkers');
-    return this.hServ.getPiped<PaginatorApi<Plugin_Type>>(url, 'fetched checkers', 'getCheckers', {} as PaginatorApi<Plugin_Type>);
+    const url = this.hServ.url('plugin');
+    return this.hServ.getPiped<PaginatorApi<Plugin_Type>>(url, 'fetched plugins', 'getPlugins', {} as PaginatorApi<Plugin_Type>);
   }
 
   getSaveTimers(): Observable<PaginatorApi<Save_Timer>> {

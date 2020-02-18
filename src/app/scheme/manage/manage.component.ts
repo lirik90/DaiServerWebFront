@@ -3,7 +3,7 @@ import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar} from '@angular/material';
 
 import { SchemeService } from '../scheme.service';
-import {Section, Device_Item, Device_Item_Group, DIG_Mode, DIG_Param_Value} from '../scheme';
+import {Section, Device_Item, Device_Item_Group, DIG_Mode_Type, DIG_Param_Value} from '../scheme';
 import { ControlService } from '../control.service';
 import {filter} from 'rxjs/operators';
 import {AuthenticationService} from '../../authentication.service';
@@ -17,14 +17,17 @@ import {Location} from '@angular/common';
 export class ManageComponent implements OnInit, AfterViewInit {
   schemeName: string;
   sections: Section[] = [];
-  groupModes: DIG_Mode[];
+  groupModes: DIG_Mode_Type[];
 
   currentSection: number;
   currentGroup: number;
 
+  canChangeMode: boolean;
+
   constructor(
     private route: ActivatedRoute,
     private schemeService: SchemeService,
+    private authService: AuthenticationService,
     private controlService: ControlService,
     private router: Router,
     public dialog: MatDialog
@@ -46,8 +49,10 @@ export class ManageComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.canChangeMode = this.authService.canChangeMode();
+
     this.schemeName = this.schemeService.scheme.name;
-    this.groupModes = this.schemeService.scheme.dig_mode;
+    this.groupModes = this.schemeService.scheme.dig_mode_type;
     this.sections = this.schemeService.scheme.section;
   }
 
@@ -63,6 +68,10 @@ export class ManageComponent implements OnInit, AfterViewInit {
         el.scrollIntoView({block: 'start', inline: 'center', behavior: 'smooth'});
       }, 200);
     }
+  }
+
+  changeDIGMode(mode_id: any, group_id: number): void {
+    this.controlService.changeGroupMode(mode_id, group_id);
   }
 
   add_device_item(sct: Section, grp: Device_Item_Group, dev_item: Device_Item): void {
@@ -98,7 +107,7 @@ export class ManageComponent implements OnInit, AfterViewInit {
   }
 
   openParamsDialog(groupId) {
-    this.dialog.open(ParamsDialogComponent, {width: '80%', data: { groupId: groupId }})
+    this.dialog.open(ParamsDialogComponent, {panelClass: 'dig-param-dialog', width: '80%', data: { groupId: groupId }})
       .afterClosed().pipe(
       filter(name => name)
     ).subscribe(res => {

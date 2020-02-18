@@ -1,4 +1,4 @@
-.group_nav a {
+.chart_conf a {
   padding: 5px 10px;
   text-decoration: none;
   margin-top: 10px;
@@ -6,16 +6,36 @@
   background-color: #eee;
   border-radius: 4px;
 }
-.group_nav a:visited, a:link {
+.chart_conf a:visited, a:link {
   color: #607D8B;
 }
-.group_nav a:hover {
+.chart_conf a:hover {
   color: #039be5;
   background-color: #CFD8DC;
 }
-.group_nav a.active {
+.chart_conf a.active {
   color: #eee;
   background-color: #607D8B;
+}
+
+.chart_conf > mat-form-field {
+  width: 110px;
+}
+.chart_conf > mat-form-field:nth-child(even) {
+  margin-right: 32px;
+}
+
+.chart_conf > button {
+  width: 100%;
+}
+
+.chart_type {
+  display: inline-block;
+  margin-right: 16px;
+}
+
+.chart_type mat-form-field {
+  width: 400px;
 }
 
 .charts-type-group {
@@ -61,3 +81,4 @@
 	color: #dcc999;
   cursor: pointer;
 }
+

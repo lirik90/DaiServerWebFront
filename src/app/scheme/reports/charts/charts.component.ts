@@ -1,12 +1,25 @@
 import {AfterViewInit, Component, OnInit, QueryList, ViewChildren, ViewChild} from '@angular/core';
 import {FormControl} from '@angular/forms';
 
-import {SchemeService, ExportConfig, ExportItem} from '../../scheme.service';
-import {Device_Item_Type, DIG_Type, Section, Device_Item, Log_Data, Register_Type} from '../../scheme';
-import {PaginatorApi} from '../../../user';
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+
 import {TranslateService} from '@ngx-translate/core';
 import { BaseChartDirective } from 'ng2-charts';
 // import {ChartComponent} from 'angular2-chartjs';
+
+import * as moment from 'moment';
+// import * as _moment from 'moment';
+// import {default as _rollupMoment} from 'moment';
+// const moment = _rollupMoment || _moment;
+
+import {SchemeService, ExportConfig, ExportItem} from '../../scheme.service';
+import {Device_Item_Type, DIG_Type, Section, Device_Item, Log_Data, Register_Type} from '../../scheme';
+import {PaginatorApi} from '../../../user';
 
 interface DevItemTypeItem {
   id: number;
@@ -26,12 +39,28 @@ interface Chart_Info_Interface {
 @Component({
   selector: 'app-charts',
   templateUrl: './charts.component.html',
-  styleUrls: ['./charts.component.css']
+  styleUrls: ['./charts.component.css'],
+  providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    {provide: MAT_DATE_LOCALE, useValue: 'ru-RU'},
+
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ],
 })
 export class ChartsComponent implements OnInit, AfterViewInit {
-  date_from = new FormControl(new Date());
+//  date_from = new FormControl(new Date().toISOString().slice(0, -1));
+  date_from = new FormControl(moment());
   time_from = '00:00:00';
-  date_to = new FormControl(new Date());
+  date_to = new FormControl(moment());
   time_to = '23:59:59';
 
   @ViewChild("chart_obj", {static: false}) chart: BaseChartDirective;
@@ -41,11 +70,11 @@ export class ChartsComponent implements OnInit, AfterViewInit {
   group_types: DIG_Type[];
   selected_group_type: DIG_Type;
 
-  item_types: Device_Item_Type[];
-  selected_item_types: DevItemTypeItem[] = [];
+  itemtypes = new FormControl();
+  itemTypeList: Device_Item_Type[];
 
-  devitems: DevItemItem[] = [];
-  selected_devitems: DevItemTypeItem[] = [];
+  devitems = new FormControl();
+  devItemList: DevItemItem[] = [];
 
   charts: Chart_Info_Interface[] = [];
 
@@ -164,11 +193,15 @@ export class ChartsComponent implements OnInit, AfterViewInit {
       this.selectGroup(this.group_types[0]);
     }
 
-    this.item_types = this.schemeService.scheme.device_item_type;
+    this.itemTypeList = this.schemeService.scheme.device_item_type;
     for (const sct of this.schemeService.scheme.section) {
       for (const group of sct.groups) {
         for (const item of group.items) {
-          this.devitems.push({id: item.id, name: sct.name + ' ' + group.title + ' ' + (item.name || item.type.title)});
+          const name = sct.name + ' - '
+            /*+ (group.title || group.type.title) + ' - '*/ 
+            + (item.name || item.type.title);
+
+          this.devItemList.push({id: item.id, name});
         }
       }
     }
@@ -229,71 +262,44 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     this.selected_group_type = group_type;
   }
 
-  add_item_type(): void {
-    this.selected_item_types.push({id: 0});
-  }
-
-  del_item_type(item: DevItemTypeItem): void {
-    const i = this.selected_item_types.indexOf(item);
-    if (i !== -1) {
-      this.selected_item_types.splice(i, 1);
-    }
-  }
-
-  add_devitem(): void {
-    this.selected_devitems.push({id: 0});
-  }
-
-  del_devitem(item: DevItemTypeItem): void {
-    const i = this.selected_devitems.indexOf(item);
-    if (i !== -1) {
-      this.selected_devitems.splice(i, 1);
-    }
-  }
-
   getLogs(): void {
   }
 
-  initCharts(): void {
-    if ((this.charts_type === 0 && !this.selected_group_type) || (this.charts_type === 1 && this.selected_item_types.length === 0)) {
+  initCharts(): void 
+  {
+    if ((this.charts_type === 0 && !this.selected_group_type) 
+        || (this.charts_type === 1 && this.itemtypes.value.length === 0)
+        || (this.charts_type === 2 && this.devitems.value.length === 0))
+    {
+      console.log('Init charts failed', this.charts_type, this.selected_group_type, this.itemtypes.value, this.devitems.value);
       return;
     }
+
     let itemtypes_str: string;
-    if (this.charts_type === 1) {
-      const itemtypes: number[] = [];
-      for (const item of this.selected_item_types) {
-        if (item.id) {
-          itemtypes.push(item.id);
-        }
-      }
-      if (itemtypes.length === 0) {
-        return;
-      }
-      itemtypes_str = itemtypes.join(',');
-    }
+    if (this.charts_type === 1)
+      itemtypes_str = this.itemtypes.value.join(',');
 
     let devitems_str: string;
-    if (this.charts_type === 2) {
-      const devitems: number[] = [];
-      for (const item of this.selected_devitems) {
-        if (item.id) {
-          devitems.push(item.id);
-        }
-      }
-      if (devitems.length === 0) {
-        return;
-      }
-      devitems_str = devitems.join(',');
-    }
+    if (this.charts_type === 2)
+      devitems_str = this.devitems.value.join(',');
 
     this.charts = [];
     this.initialized = false;
 
-    const dtstr_from = (<Date>this.date_from.value).toDateString() + ' ' + this.time_from;
-    const date_from = Date.parse(dtstr_from);
+    let time_arr = this.time_from.split(':');
+    let date_from = this.date_from.value.toDate();
+    date_from.setHours(+time_arr[0]);
+    date_from.setMinutes(+time_arr[1]);
+    date_from.setSeconds(+time_arr[2]);
+    date_from = date_from.getTime();
 
-    const dtstr_to = (<Date>this.date_to.value).toDateString() + ' ' + this.time_to;
-    const date_to = Date.parse(dtstr_to);
+    time_arr = this.time_to.split(':');
+    let date_to = this.date_to.value.toDate();
+    date_to.setHours(+time_arr[0]);
+    date_to.setMinutes(+time_arr[1]);
+    date_to.setSeconds(+time_arr[2]);
+    date_to = date_to.getTime();
+
     let count: number;
 
     const fillData = (logs: PaginatorApi<Log_Data>) => {
@@ -368,6 +374,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
               datasets.push(this.genDataset(item));
             }
 
+            console.log('Add chart', sct.name, datasets);
             this.addChart(sct.name, datasets);
             break;
           }
@@ -380,8 +387,8 @@ export class ChartsComponent implements OnInit, AfterViewInit {
         for (const group of sct.groups) {
           const datasets: any[] = [];
           for (const item of group.items) {
-            for (const it of this.selected_item_types) {
-              if (it.id === item.type.id) {
+            for (const type_id of this.itemtypes.value) {
+              if (type_id == item.type.id) {
                 datasets.push(this.genDataset(item));
                 break;
               }
@@ -400,8 +407,8 @@ export class ChartsComponent implements OnInit, AfterViewInit {
       for (const sct of sections) {
         for (const group of sct.groups) {
           for (const item of group.items) {
-            for (const it of this.selected_devitems) {
-              if (it.id === item.id) {
+            for (const item_id of this.devitems.value) {
+              if (item_id == item.id) {
                 datasets.push(this.genDataset(item, true));
                 break;
               }
@@ -430,7 +437,10 @@ export class ChartsComponent implements OnInit, AfterViewInit {
   }
 
   genDataset(item: Device_Item, add_sct_name: boolean = false): Object {
-    const rndRGB = `${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()}`;
+    // const rndRGB = `${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()}`;
+
+    const label = item.name.length ? item.name : item.type.title;
+    const rndRGB = this.intToRGB(this.hashCode(label));
 
     const RT = Register_Type;
     const rt = item.type.register_type;
@@ -438,7 +448,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
 
     return {
       item_id: item.id,
-      label: item.name.length ? item.name : item.type.title,
+      label: label,
       data: [],
 
       borderColor: `rgba(${rndRGB},0.4)`,
@@ -448,10 +458,25 @@ export class ChartsComponent implements OnInit, AfterViewInit {
       pointBorderWidth: 1,
 
       hidden: false,
+      fill: stepped,
       steppedLine: stepped,
       cubicInterpolationMode: 'monotone',
       //      lineTension: 0,
     };
+  }
+
+  hashCode(str: string): number { // java String#hashCode
+    var hash = 0;
+    for (var i = 0; i < str.length; i++)
+       hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    return hash;
+  }
+  
+  intToRGB(i: number): string {
+    var c = (i & 0x00FFFFFF);
+    return (c & 0xFF) + ','
+    + ((c >> 8) & 0xFF) + ','
+    + ((c >> 16) & 0xFF);
   }
 
   randomColorFactor(): number {

@@ -30,8 +30,8 @@ export interface ExportConfig {
 
 class DevValues {
   id: number;
-  raw: any;
-  display: any;
+  raw_value: any;
+  value: any;
 }
 
 class StatusItems {
@@ -102,8 +102,8 @@ export class SchemeService extends ISchemeService {
             const respItem = resp.find(i => i.id === di.id);
 
             if (respItem) {
-              di.val.raw = respItem.raw;
-              di.val.display = respItem.display;
+              di.val.raw_value = respItem.raw_value;
+              di.val.value = respItem.value;
             }
           }
         }
@@ -248,7 +248,7 @@ export class SchemeService extends ISchemeService {
         for (const dev of detail.device) {
           for (const item of dev.items) {
             if (!item.val) {
-              item.val = { raw: null, display: null};
+              item.val = { raw_value: null, value: null};
             }
 
             for (const itemType of detail.device_item_type) {

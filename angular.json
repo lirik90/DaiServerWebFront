@@ -128,6 +128,7 @@
             "ru": {
               "outputPath": "dist/ru/",
               "baseHref": "/ru/",
+              "i18nLocale": "ru",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -155,8 +156,8 @@
             "production": {
               "browserTarget": "device-access:build:production"
             },
-            "en": {
-              "browserTarget": "device-access:build:en"
+            "ru": {
+              "browserTarget": "device-access:build:ru"
             }
           }
         },

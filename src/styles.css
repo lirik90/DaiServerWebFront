@@ -162,3 +162,19 @@ nav > div {
 .mat-select-panel {
   min-width: 100% !important;
 }
+
+.dig-param-dialog .mat-dialog-container {
+  background-color: #ddd;
+}
+.dig-param-dialog .mat-card {
+  background-color: #eee;
+}
+.dig-param-dialog .mat-form-field-wrapper {
+  border-radius: 4px;
+  background-color: #eee;
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+}
+.dig-param-dialog .mat-card .mat-form-field-wrapper {
+  background-color: #f7f7f7;
+}
+

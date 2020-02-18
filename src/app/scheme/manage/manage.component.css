@@ -71,7 +71,7 @@ h4 {
 .eqTable td:not([colspan]):first-child {
   border-left-width: 2px;
   border-left-style: solid;
-  text-align: left;
+  text-align: right;
   padding-left: 8px;
 }
 .eqTable td:not([colspan]):last-child {
@@ -114,6 +114,11 @@ h2 .mat-icon {
   height: 32px;
   width: 32px;
   line-height: 32px;
+}
+
+app-group-status {
+  margin-left: 4px;
+  margin-right: 4px;
 }
 
 @media (max-width: 600px) {

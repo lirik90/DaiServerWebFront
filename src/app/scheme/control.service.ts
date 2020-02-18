@@ -65,6 +65,7 @@ class TimeInfo {
 @Injectable()
 export class ControlService {
   public byte_msg: Subject<ByteMessage> = new Subject<ByteMessage>();
+  public dev_item_changed: Subject<Device_Item[]> = new Subject<Device_Item[]>();
   public opened: Subject<boolean>;
 
   private bmsg_sub: ISubscription;
@@ -112,6 +113,8 @@ export class ControlService {
           return;
         }
 
+        let dev_item_list = [];
+
         const view = new Uint8Array(msg.data);
         let [idx, count] = ByteTools.parseUInt32(view);
         let item_id: number;
@@ -141,8 +144,13 @@ export class ControlService {
 */
 
           // console.log(`Parse value ${item_id} ${raw_value} ${value}`);
-          this.procDevItemValue(item_id, raw_value, value);
+          const dev_item = this.procDevItemValue(item_id, raw_value, value);
+          if (dev_item)
+            dev_item_list.push(dev_item);
         }
+
+        if (dev_item_list.length)
+          this.dev_item_changed.next(dev_item_list);
 
         if (idx != msg.data.byteLength) {
           console.warn(`BAD PARSE POSITION ${idx} NEED ${msg.data.byteLength} ${JSON.stringify(view)}`);
@@ -180,7 +188,14 @@ export class ControlService {
         const view = new Uint8Array(msg.data);
         let [idx, count] = ByteTools.parseUInt32(view);
         let param_id: number;
+        let user_id: number;
+        let ts: number;
         while (count--) {
+          ts = ByteTools.parseInt64(view, idx)[1];
+          ts &= ~0x80000000000000;
+          idx += 8;
+          user_id = ByteTools.parseUInt32(view, idx)[1];
+          idx += 4;
           param_id = ByteTools.parseUInt32(view, idx)[1];
           idx += 4;
 
@@ -274,16 +289,18 @@ export class ControlService {
     this.wsbService.close();
   }
 
-  private procDevItemValue(item_id: number, raw_value: any, value: any): void {
+  private procDevItemValue(item_id: number, raw_value: any, value: any): Device_Item {
     const item: Device_Item = this.schemeService.devItemById(item_id);
     if (item) {
       if (!item.val) {
-        item.val = {raw: raw_value, display: value};
+        item.val = {raw_value, value};
       } else {
-        item.val.raw = raw_value;
-        item.val.display = value;
+        item.val.raw_value = raw_value;
+        item.val.value = value;
       }
     }
+
+    return item;
   }
 
   parseConnectNumber(n: number) {

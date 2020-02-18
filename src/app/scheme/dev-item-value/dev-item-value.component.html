@@ -11,15 +11,23 @@
     </div>
   </ng-container>
 
-  <mat-slide-toggle *ngIf="is_toggle"
-                  color="primary"
-                  [checked]="item.val && item.val.display == 1"
-                  [disabled]="(!item.val || item.val.display == null) || cantChange"
-                  (change)="write($event.checked)">
-  </mat-slide-toggle>
+  <div class="base_box">
+    <mat-slide-toggle *ngIf="is_toggle"
+                    color="primary"
+                    [checked]="item.val && item.val.value == 1"
+                    [disabled]="(!item.val || item.val.value == null) || cantChange || is_loading"
+                    (change)="write($event.checked)">
+    </mat-slide-toggle>
 
-  <div [class.holding]="is_holding">
-    <span *ngIf="!is_toggle && !is_button && !is_file">{{text_value}}</span>
-    <span *ngIf="sign_available">{{item.type.sign.name}}</span>
+    <div [class.holding]="is_holding">
+      <span *ngIf="!is_toggle && !is_button && !is_file">{{text_value}}</span>
+      <span *ngIf="sign_available">{{item.type.sign.name}}</span>
+    </div>
+
+    <mat-progress-spinner
+      *ngIf="is_loading"
+      diameter="22"
+      mode="indeterminate">
+    </mat-progress-spinner>
   </div>
 </ng-container>

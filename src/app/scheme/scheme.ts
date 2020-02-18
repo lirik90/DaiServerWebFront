@@ -63,8 +63,8 @@ export class Section {
 }
 
 export class Device_Item_Value {
-  raw: any;      // Сырое значение
-  display: any;  // Отображаемое значение
+  raw_value: any;      // Сырое значение
+  value: any;  // Отображаемое значение
 }
 
 export class Device_Item { // Элемент устройства
@@ -206,7 +206,7 @@ export class Settings {
   value: string;
 }
 
-export class DIG_Mode {
+export class DIG_Mode_Type {
   id: number;
   name: string;
   title: string;
@@ -226,7 +226,7 @@ export class Scheme_Detail {
   dig_type: DIG_Type[];// Типы групп
   dig_status_type: DIG_Status_Type[];  // Типы состояний
   dig_status_category: DIG_Status_Category[];  // Категории состояний
-  dig_mode: DIG_Mode[];
+  dig_mode_type: DIG_Mode_Type[];
 
   conn: Observable<number>;
 }

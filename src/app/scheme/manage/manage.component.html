@@ -19,8 +19,10 @@
                   <h4 *ngIf="group.params.length === 0">{{group.title ? group.title : group.type.title}}</h4>
                   <app-group-status [group]="group"></app-group-status>
                   <mat-form-field>
-                    <mat-select i18n-placeholder="@@MANAGEMENT.MODE" placeholder="Режим" [(ngModel)]="group.mode"
-                      (selectionChange)="controlService.changeGroupMode($event.value, group.id)"
+                    <mat-select i18n-placeholder="@@MANAGEMENT.MODE" placeholder="Режим" 
+                      [(ngModel)]="group.mode"
+                      [disabled]="!canChangeMode"
+                      (selectionChange)="changeDIGMode($event.value, group.id)"
                       (click)="$event.stopPropagation()">
                       <mat-option *ngFor="let mode of groupModes" [value]="mode.id">{{mode.title}}</mat-option>
                     </mat-select>

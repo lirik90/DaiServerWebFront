@@ -30,7 +30,7 @@ class StatusInfo {
   inform: boolean;
   name: string;
   text: string;
-  type_id: number;
+  category_id: number;
 }
 
 @Component({
@@ -274,8 +274,8 @@ export class SchemeListComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getStatusInfo(id: number) {
-    const statusInfoSubs = this.http.get<any[]>(`/api/v2/scheme/${id}/dig_status_type`).subscribe(statusInfo => {
+  private getStatusInfo(id: number, real_id: number) {
+    const statusInfoSubs = this.http.get<any[]>(`/api/v2/scheme/${real_id}/dig_status_type`).subscribe(statusInfo => {
       this.statusInfo[id] = statusInfo;
 
       /*
@@ -302,7 +302,7 @@ export class SchemeListComponent implements OnInit, OnDestroy {
       const si = statusItems.items[i];
 
       const st_item = st.find(sti => sti.id === si.status_id);
-      scheme.messages.push({status: st_item.type_id, text: st_item.text, where: si.title});
+      scheme.messages.push({status: st_item.category_id, text: st_item.text, where: si.title});
     }
   }
 
@@ -342,7 +342,7 @@ export class SchemeListComponent implements OnInit, OnDestroy {
           if (!th.statusQueue[id].isLoading) {
             // start loading if was not started
             th.statusQueue[id].isLoading = true;
-            th.getStatusInfo(id);
+            th.getStatusInfo(id, h.id);
           }
         }
 

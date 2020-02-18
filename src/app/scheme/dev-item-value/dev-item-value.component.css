@@ -24,3 +24,7 @@ input[type="file"] {
 .text_mode_link {
   margin: 8px;
 }
+
+.base_box {
+  display: inline-flex;
+}

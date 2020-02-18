@@ -26,6 +26,13 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
   }
 
   hasPermission(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    const req_perms = route.data.req_perms as boolean;
+    if (req_perms === undefined || !route.url.length)
+      return true;
+
+    return !req_perms || this.authService.checkPermission('menu_' + route.url[0].path);
+
+    /*
     const req_perms = route.data.req_perms as Array<string>;
 
     if (req_perms === undefined) {
@@ -48,7 +55,7 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
 
       const curName = route.parent.params.name;
       this.router.navigate(['/' ]);
-       */
+       * /
 
       // hack
       let loc = route.pathFromRoot[3].url[0].toString();
@@ -57,6 +64,7 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
     }
 
     return allow;
+    */
   }
 
   canActivate(
@@ -69,5 +77,4 @@ export class PermissionGuard implements CanActivate, CanActivateChild {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.hasPermission(next, state);
   }
-
 }
