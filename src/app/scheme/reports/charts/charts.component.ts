@@ -18,7 +18,7 @@ import * as moment from 'moment';
 // const moment = _rollupMoment || _moment;
 
 import {SchemeService, ExportConfig, ExportItem} from '../../scheme.service';
-import {Device_Item_Type, DIG_Type, Section, Device_Item, Log_Data, Register_Type} from '../../scheme';
+import {Device_Item_Type, DIG_Type, Section, Device_Item, Log_Data, Register_Type, Save_Algorithm} from '../../scheme';
 import {PaginatorApi} from '../../../user';
 
 interface DevItemTypeItem {
@@ -34,6 +34,9 @@ interface Chart_Info_Interface {
   data: {
     datasets: any[]
   };
+
+  min_y: number;
+  max_y: number;
 }
 
 enum Chart_Type {
@@ -90,6 +93,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
   data_: string;
   time_from_: number;
   time_to_: number;
+  is_today: boolean;
 
   prgMode: string;
   prgValue: number;
@@ -317,6 +321,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
 
     this.time_from_ = parseDate(this.date_from, this.time_from);
     this.time_to_ = parseDate(this.date_to, this.time_to);
+    this.is_today = new Date().getTime() < this.time_to_;
 
     this.prgMode = 'indeterminate';
     this.prgValue = 0;
@@ -339,7 +344,8 @@ export class ChartsComponent implements OnInit, AfterViewInit {
           const datasets: any[] = [];
 
           for (const item of group.items) {
-            datasets.push(this.genDataset(item));
+            if (item.type.save_algorithm > Save_Algorithm.SA_OFF)
+              datasets.push(this.genDataset(item));
           }
 
           console.log('Add chart', sct.name, datasets);
@@ -413,7 +419,13 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     if (datasets.length) {
       datasets[0].hidden = false;
     }
-    this.charts.push({name, data: {datasets}});
+    this.charts.push({
+      name, 
+      data: {datasets},
+
+      min_y: 9999, 
+      max_y: -9999,
+    });
   }
 
   getLogs(limit: number = 1000, offset: number = 0): void {
@@ -436,27 +448,45 @@ export class ChartsComponent implements OnInit, AfterViewInit {
       this.getLogs(limit < 1000 ? limit : 1000, this.logs_count);
     }
 
+    let getY = (chart: any, log: any) => {
+      let y;
+
+      const v_type = typeof log.value;
+      if (v_type === 'number' || v_type === 'boolean') {
+        y = log.value;
+      } else {
+        const v2_type = typeof log.raw_value;
+        if (v2_type === 'number' || v2_type === 'boolean')
+          y = log.raw_value;
+      }
+      // console.log(`Finded log ${log.item_id} val: ${log.value} date: ${log.timestamp_msecs} t: ${typeof log.timestamp_msecs}`, typeof log.value, log);
+      // if (log.value == null || /^(\-|\+)?([0-9]+|Infinity)$/.test(log.value))
+
+      if (y !== undefined) {
+        if (chart.min_y > y)
+          chart.min_y = y;
+        if (chart.max_y < y)
+          chart.max_y = y;
+      }
+      return y;
+    };
+
     let finded: boolean;
 
-    let min_y = 9999, max_y = -9999;
     for (const log of logs.results) {
       finded = false;
 
       for (const chart of this.charts) {
         for (const dataset of chart.data.datasets) {
           if (dataset.item_id === log.item_id) {
-            const x = new Date(log.timestamp_msecs);
-            const y = parseFloat(log.value);
-
-            if (min_y > y)
-              min_y = y;
-            if (max_y < y)
-              max_y = y;
-
-            // console.log(`Finded log ${log.item_id} val: ${log.value} date: ${log.timestamp_msecs} t: ${typeof log.timestamp_msecs}`);
-            // if (log.value == null || /^(\-|\+)?([0-9]+|Infinity)$/.test(log.value))
-            dataset.data.push({x: x, y: log.value});
             finded = true;
+
+            const y = getY(chart, log);
+            if (y === undefined)
+              break;
+
+            const x = new Date(log.timestamp_msecs);
+            dataset.data.push({x, y});
             break;
           }
         }
@@ -469,11 +499,37 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     if (need_more)
       return;
 
+    const x = new Date();
+    if (this.is_today)
+    {
+      for (const chart of this.charts) 
+      {
+        for (const dataset of chart.data.datasets)
+        {
+          const log = dataset.item_obj.val;
+          const y = getY(chart, log);
+          if (y !== undefined)
+          {
+            if (dataset.data.length === 0)
+            {
+              const x0 = new Date(this.time_from_);
+              dataset.data.push({x: x0, y});
+            }
+            dataset.data.push({x, y});
+          }
+        }
+      }
+    }
+
     for (const chart of this.charts) 
       for (const dataset of chart.data.datasets)
-        this.adjust_stepped(dataset, min_y, max_y);
+        this.adjust_stepped(dataset, chart.min_y, chart.max_y);
 
     this.initialized = true;
+  }
+
+  breakLoad(): void {
+    this.logs_count *= 100 / this.prgValue;
   }
 
   genDateString(date: Date, time: string): string {
@@ -496,6 +552,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
 
     return {
       item_id: item.id,
+      item_obj: item,
       label: label,
       data: [],
 

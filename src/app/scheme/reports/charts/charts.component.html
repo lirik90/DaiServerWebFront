@@ -71,4 +71,7 @@
     </div>
   </div>
 </ng-container>
-<mat-progress-spinner *ngIf="!initialized" [mode]="prgMode" [value]="prgValue"></mat-progress-spinner>
+<ng-container *ngIf="!initialized">
+  <mat-progress-spinner [mode]="prgMode" [value]="prgValue"></mat-progress-spinner>
+  <button mat-raised-button (click)="breakLoad()" i18n="@@CHARTS.BREAK_LOAD">Прервать загрузку</button>
+</ng-container>
