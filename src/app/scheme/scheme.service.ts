@@ -370,18 +370,9 @@ export class SchemeService extends ISchemeService {
             .catch(error => Observable.throw(error));
   }
 
-  getLogs(date_from: number, date_to: number, group_type: number, itemtypes: string, items: string, limit: number = 1000, offset: number = 0): Observable<PaginatorApi<Log_Data>> {
-    let url = this.url('log_data') + `&ts_from=${date_from}&ts_to=${+date_to}&limit=${limit}&offset=${offset}`;
-    if (group_type !== undefined) {
-      url += `&group_type=${group_type}`;
-    }
-    if (itemtypes !== undefined) {
-      url += `&itemtypes=${itemtypes}`;
-    }
-    if (items !== undefined) {
-      url += `&items=${items}`;
-    }
-    return this.getPiped<PaginatorApi<Log_Data>>(url, `fetched logs list`, 'getLogs');
+  getChartData(date_from: number, date_to: number, chart_type: number, data: string, limit: number = 1000, offset: number = 0): Observable<PaginatorApi<Log_Data>> {
+    let url = this.url('chart_data') + `&ts_from=${date_from}&ts_to=${+date_to}&limit=${limit}&offset=${offset}&chart_type=${chart_type}&data=${data}`;
+    return this.getPiped<PaginatorApi<Log_Data>>(url, `fetched chart data list`, 'getChartData');
   }
 
   exportExcel(conf: ExportConfig, path?: string): Observable<HttpResponse<Blob>> {

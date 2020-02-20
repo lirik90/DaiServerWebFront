@@ -24,6 +24,8 @@ export class ManageComponent implements OnInit, AfterViewInit {
 
   canChangeMode: boolean;
 
+  sctCount: number;
+
   constructor(
     private route: ActivatedRoute,
     private schemeService: SchemeService,
@@ -54,6 +56,9 @@ export class ManageComponent implements OnInit, AfterViewInit {
     this.schemeName = this.schemeService.scheme.name;
     this.groupModes = this.schemeService.scheme.dig_mode_type;
     this.sections = this.schemeService.scheme.section;
+    this.sctCount = this.sections.length;
+    if (this.sctCount)
+      this.currentSection = this.sections[0].id;
   }
 
   ngAfterViewInit(): void {
@@ -160,8 +165,48 @@ export class ParamsDialogComponent implements OnInit{
     }
   }
 
+  onEnter(e: any): void {
+    e.preventDefault();
+    let control: any;
+    control = e.srcElement.parentElement;
+    control = control.parentElement;
+    control = control.parentElement;
+    control = control.parentElement;
+    if (control.nextElementSibling)
+    {
+      control = control.nextElementSibling;
+    }
+    else
+    {
+      control = control.parentElement;
+      control = control.parentElement;
+      control = control.nextElementSibling;
+    }
+
+    let findNode = (control: any):boolean => {
+      if (!control)
+        return;
+      if ((!control.hidden) &&
+         (control.nodeName == 'INPUT' ||
+          control.nodeName == 'SELECT' ||
+          control.nodeName == 'BUTTON' ||
+          control.nodeName == 'TEXTAREA'))
+         {
+           control.focus();
+           return true;
+         }
+     
+      for (const node of control.childNodes)
+        if (findNode(node))
+          return true;
+      return false;
+    };
+
+    findNode(control);
+  }
+
   onSubmit() {
-    console.log(this.changed_values);
+    console.log('param form submit', this.changed_values);
     if (this.changed_values) {
       this.controlService.changeParamValues(this.changed_values);
     }

@@ -36,6 +36,23 @@ interface Chart_Info_Interface {
   };
 }
 
+enum Chart_Type {
+  CT_UNKNOWN,
+  CT_USER,
+  CT_DIG_TYPE,
+  CT_DEVICE_ITEM_TYPE,
+  CT_DEVICE_ITEM,
+}
+
+function parseDate(date: FormControl, time: string): number {
+    let time_arr = time.split(':');
+    let date_from = date.value.toDate();
+    date_from.setHours(+time_arr[0]);
+    date_from.setMinutes(+time_arr[1]);
+    date_from.setSeconds(+time_arr[2]);
+    return date_from.getTime();
+}
+
 @Component({
   selector: 'app-charts',
   templateUrl: './charts.component.html',
@@ -57,6 +74,8 @@ interface Chart_Info_Interface {
   ],
 })
 export class ChartsComponent implements OnInit, AfterViewInit {
+  chartType = Chart_Type;
+
 //  date_from = new FormControl(new Date().toISOString().slice(0, -1));
   date_from = new FormControl(moment());
   time_from = '00:00:00';
@@ -65,7 +84,15 @@ export class ChartsComponent implements OnInit, AfterViewInit {
 
   @ViewChild("chart_obj", {static: false}) chart: BaseChartDirective;
 
-  charts_type = 0;
+  charts_type: number = Chart_Type.CT_DIG_TYPE;
+  logs_count: number;
+
+  data_: string;
+  time_from_: number;
+  time_to_: number;
+
+  prgMode: string;
+  prgValue: number;
 
   group_types: DIG_Type[];
   selected_group_type: DIG_Type;
@@ -262,163 +289,124 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     this.selected_group_type = group_type;
   }
 
-  getLogs(): void {
-  }
-
   initCharts(): void 
   {
-    if ((this.charts_type === 0 && !this.selected_group_type) 
-        || (this.charts_type === 1 && this.itemtypes.value.length === 0)
-        || (this.charts_type === 2 && this.devitems.value.length === 0))
-    {
-      console.log('Init charts failed', this.charts_type, this.selected_group_type, this.itemtypes.value, this.devitems.value);
-      return;
-    }
-
-    let itemtypes_str: string;
-    if (this.charts_type === 1)
-      itemtypes_str = this.itemtypes.value.join(',');
-
-    let devitems_str: string;
-    if (this.charts_type === 2)
-      devitems_str = this.devitems.value.join(',');
-
     this.charts = [];
     this.initialized = false;
 
-    let time_arr = this.time_from.split(':');
-    let date_from = this.date_from.value.toDate();
-    date_from.setHours(+time_arr[0]);
-    date_from.setMinutes(+time_arr[1]);
-    date_from.setSeconds(+time_arr[2]);
-    date_from = date_from.getTime();
+    let ok: boolean;
 
-    time_arr = this.time_to.split(':');
-    let date_to = this.date_to.value.toDate();
-    date_to.setHours(+time_arr[0]);
-    date_to.setMinutes(+time_arr[1]);
-    date_to.setSeconds(+time_arr[2]);
-    date_to = date_to.getTime();
+    switch(this.charts_type)
+    {
+    case Chart_Type.CT_DIG_TYPE:
+        ok = this.initDIGTypeCharts();
+        break;
+    case Chart_Type.CT_DEVICE_ITEM_TYPE:
+        ok = this.initDeviceItemTypeCharts();
+        break;
+    case Chart_Type.CT_DEVICE_ITEM:
+        ok = this.initDeviceItemCharts();
+        break;
+    default:
+        ok = false;
+        break;
+    }
 
-    let count: number;
+    if (!ok)
+      return;
 
-    const fillData = (logs: PaginatorApi<Log_Data>) => {
-      if (!count && logs.count > logs.results.length) {
-        console.warn(`Log count: ${logs.count} on page: ${logs.results.length}`);
+    this.time_from_ = parseDate(this.date_from, this.time_from);
+    this.time_to_ = parseDate(this.date_to, this.time_to);
 
-        count = logs.count;
-        const start = logs.results.length;
-        const limit = logs.count - start;
-        if (this.charts_type === 0) {
-          this.schemeService.getLogs(
-            date_from,
-            date_to,
-            this.selected_group_type.id,
-            undefined,
-            undefined,
-            limit,
-            start
-          ).subscribe(fillData);
-        } else if (this.charts_type === 1) {
-          this.schemeService.getLogs(date_from, date_to, undefined, itemtypes_str, undefined, limit, start).subscribe(fillData);
-        } else {
-          this.schemeService.getLogs(date_from, date_to, undefined, undefined, devitems_str, limit, start).subscribe(fillData);
+    this.prgMode = 'indeterminate';
+    this.prgValue = 0;
+    this.logs_count = 0;
+    this.getLogs();
+  }
+
+  initDIGTypeCharts(): boolean {
+    if (!this.selected_group_type) {
+      console.log('Init charts failed', this.charts_type, this.selected_group_type);
+      return false;
+    }
+
+    this.data_ = this.selected_group_type.id.toString();
+
+    const sections = this.schemeService.scheme.section;
+    for (const sct of sections) {
+      for (const group of sct.groups) {
+        if (group.type_id === this.selected_group_type.id) {
+          const datasets: any[] = [];
+
+          for (const item of group.items) {
+            datasets.push(this.genDataset(item));
+          }
+
+          console.log('Add chart', sct.name, datasets);
+          this.addChart(sct.name, datasets);
+          break;
         }
       }
+    }
 
-      let finded: boolean;
+    return true;
+  }
 
-      let min_y = 9999, max_y = -9999;
-      for (const log of logs.results) {
-        finded = false;
+  initDeviceItemTypeCharts(): boolean {
+    if (this.itemtypes.value.length === 0) {
+      console.log('Init charts failed', this.charts_type, this.itemtypes.value);
+      return false;
+    }
 
-        for (const chart of this.charts) {
-          for (const dataset of chart.data.datasets) {
-            if (dataset.item_id === log.item_id) {
-              const x = new Date(log.timestamp_msecs);
-              const y = parseFloat(log.value);
+    this.data_ = this.itemtypes.value.join(',');
 
-              if (min_y > y)
-                min_y = y;
-              if (max_y < y)
-                max_y = y;
-
-              // console.log(`Finded log ${log.item_id} val: ${log.value} date: ${log.timestamp_msecs} t: ${typeof log.timestamp_msecs}`);
-              // if (log.value == null || /^(\-|\+)?([0-9]+|Infinity)$/.test(log.value))
-              dataset.data.push({x: x, y: log.value});
-              finded = true;
+    const sections = this.schemeService.scheme.section;
+    for (const sct of sections) {
+      for (const group of sct.groups) {
+        const datasets: any[] = [];
+        for (const item of group.items) {
+          for (const type_id of this.itemtypes.value) {
+            if (type_id == item.type.id) {
+              datasets.push(this.genDataset(item));
               break;
             }
           }
-          if (finded) {
-            break;
-          }
+        }
+
+        if (datasets.length) {
+          this.addChart(sct.name, datasets);
         }
       }
-
-      for (const chart of this.charts) 
-        for (const dataset of chart.data.datasets)
-          this.adjust_stepped(dataset, min_y, max_y);
-
-      this.initialized = true;
-    };
-
-    if (this.charts_type === 0) {
-      const sections = this.schemeService.scheme.section;
-      for (const sct of sections) {
-        for (const group of sct.groups) {
-          if (group.type_id === this.selected_group_type.id) {
-            const datasets: any[] = [];
-
-            for (const item of group.items) {
-              datasets.push(this.genDataset(item));
-            }
-
-            console.log('Add chart', sct.name, datasets);
-            this.addChart(sct.name, datasets);
-            break;
-          }
-        }
-      }
-      this.schemeService.getLogs(date_from, date_to, this.selected_group_type.id, undefined, undefined).subscribe(fillData);
-    } else if (this.charts_type === 1) {
-      const sections = this.schemeService.scheme.section;
-      for (const sct of sections) {
-        for (const group of sct.groups) {
-          const datasets: any[] = [];
-          for (const item of group.items) {
-            for (const type_id of this.itemtypes.value) {
-              if (type_id == item.type.id) {
-                datasets.push(this.genDataset(item));
-                break;
-              }
-            }
-          }
-
-          if (datasets.length) {
-            this.addChart(sct.name, datasets);
-          }
-        }
-      }
-      this.schemeService.getLogs(date_from, date_to, undefined, itemtypes_str, undefined).subscribe(fillData);
-    } else {
-      const datasets: any[] = [];
-      const sections = this.schemeService.scheme.section;
-      for (const sct of sections) {
-        for (const group of sct.groups) {
-          for (const item of group.items) {
-            for (const item_id of this.devitems.value) {
-              if (item_id == item.id) {
-                datasets.push(this.genDataset(item, true));
-                break;
-              }
-            }
-          }
-        }
-      }
-      this.addChart(this.translate.instant('REPORTS.CHARTS_ELEMENTS'), datasets);
-      this.schemeService.getLogs(date_from, date_to, undefined, undefined, devitems_str).subscribe(fillData);
     }
+
+    return true;
+  }
+
+  initDeviceItemCharts(): boolean {
+    if (this.devitems.value.length === 0) {
+      console.log('Init charts failed', this.charts_type, this.devitems.value);
+      return false;
+    }
+
+    this.data_ = this.devitems.value.join(',');
+
+    const datasets: any[] = [];
+    const sections = this.schemeService.scheme.section;
+    for (const sct of sections) {
+      for (const group of sct.groups) {
+        for (const item of group.items) {
+          for (const item_id of this.devitems.value) {
+            if (item_id == item.id) {
+              datasets.push(this.genDataset(item, true));
+              break;
+            }
+          }
+        }
+      }
+    }
+    this.addChart(this.translate.instant('REPORTS.CHARTS_ELEMENTS'), datasets);
+
+    return true;
   }
 
   addChart(name: string, datasets: any[]): void {
@@ -426,6 +414,66 @@ export class ChartsComponent implements OnInit, AfterViewInit {
       datasets[0].hidden = false;
     }
     this.charts.push({name, data: {datasets}});
+  }
+
+  getLogs(limit: number = 1000, offset: number = 0): void {
+    this.schemeService.getChartData(this.time_from_, this.time_to_, this.charts_type, this.data_, limit, offset)
+      .subscribe((logs: PaginatorApi<Log_Data>) => this.fillData(logs));
+  }
+
+  fillData(logs: PaginatorApi<Log_Data>): void {
+    this.logs_count += logs.results.length;
+    this.prgValue = this.logs_count / (logs.count / 100.0);
+
+    const need_more: boolean = logs.count > this.logs_count && this.logs_count < 100000;
+    if (need_more)
+    {
+      this.prgMode = 'determinate';
+      console.warn(`Log count: ${logs.count} on page: ${logs.results.length} current: ${this.logs_count}`);
+
+      const start = this.logs_count;
+      const limit = logs.count - this.logs_count;
+      this.getLogs(limit < 1000 ? limit : 1000, this.logs_count);
+    }
+
+    let finded: boolean;
+
+    let min_y = 9999, max_y = -9999;
+    for (const log of logs.results) {
+      finded = false;
+
+      for (const chart of this.charts) {
+        for (const dataset of chart.data.datasets) {
+          if (dataset.item_id === log.item_id) {
+            const x = new Date(log.timestamp_msecs);
+            const y = parseFloat(log.value);
+
+            if (min_y > y)
+              min_y = y;
+            if (max_y < y)
+              max_y = y;
+
+            // console.log(`Finded log ${log.item_id} val: ${log.value} date: ${log.timestamp_msecs} t: ${typeof log.timestamp_msecs}`);
+            // if (log.value == null || /^(\-|\+)?([0-9]+|Infinity)$/.test(log.value))
+            dataset.data.push({x: x, y: log.value});
+            finded = true;
+            break;
+          }
+        }
+        if (finded) {
+          break;
+        }
+      }
+    }
+
+    if (need_more)
+      return;
+
+    for (const chart of this.charts) 
+      for (const dataset of chart.data.datasets)
+        this.adjust_stepped(dataset, min_y, max_y);
+
+    this.initialized = true;
   }
 
   genDateString(date: Date, time: string): string {

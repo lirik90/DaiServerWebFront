@@ -33,78 +33,55 @@ h4 {
 	text-align: center;
 	width: 100%;
   empty-cells: hide;
+  column-count: 1;
+  column-gap: 0;
 }
+.eqTable > div {
+  padding: 5px;
+}
+
 .between-group {
   padding: 0px;
   height: 8px;
 }
-.eqTable td[colspan] {
-  border-top-width: 2px;
-  border-top-style: solid;
-  border-left-width: 2px;
-  border-left-style: solid;
-  border-right-width: 2px;
-  border-right-style: solid;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-}
 
-.eqTable td[colspan] a  {
+.dig-header a  {
   color: #fff;
 }
 
-.eqTable td[colspan] a h4 {
+.dig-header a h4 {
   text-decoration: underline;
 }
 
-.eqTable td[colspan] a h4:hover {
+.dig-header a h4:hover {
 	background-color: #eee;
   border-radius: 16px;
 	color: #6A9D80;
 	cursor: pointer;
 }
-.eqTable td:not([colspan]) {
-	padding-top: 12px;
-	padding-bottom: 12px;
-  /* border-bottom: 1px groove #000 !important; */
-}
-.eqTable td:not([colspan]):first-child {
-  border-left-width: 2px;
-  border-left-style: solid;
-  text-align: right;
-  padding-left: 8px;
-  padding-right: 4px;
-}
-.eqTable td:not([colspan]):last-child {
-  border-right-width: 2px;
-  border-right-style: solid;
+
+.dig {
+  border: 2px solid;
+  border-radius: 16px;
+  break-inside: avoid;
+  padding: 5px;
+  background-color: #639679;
 }
 
-.td-bottom-border {
-  border-bottom-left-radius: 16px;
-  border-bottom-right-radius: 16px;
-  border-bottom-width: 2px;
-  border-bottom-style: solid;
-}
-.td-bottom-border-left {
-  border-bottom-left-radius: 16px;
-  border-bottom-width: 2px;
-  border-bottom-style: solid;
-}
-.td-bottom-border-right {
-  border-bottom-right-radius: 16px;
-  border-bottom-width: 2px;
-  border-bottom-style: solid;
+.dig > div:not(:first-child) {
+  text-align: right;
+  white-space: nowrap;
+  margin-bottom: 8px;
 }
 
 mat-select {
   width: 100%;
 }
-mat-form-field {
-  width: 50%;
+.dig-header mat-form-field {
+  width: 80px;
 }
 
-td .mat-icon {
+.dig-header .mat-icon {
   font-size: 16px;
   height: 16px;
   width: 16px;
@@ -120,6 +97,13 @@ h2 .mat-icon {
 app-group-status {
   margin-left: 4px;
   margin-right: 4px;
+}
+
+app-dev-item-value {
+  display: inline-block;
+  width: 135px;
+  margin-left: 8px;
+  text-align: left;
 }
 
 @media (max-width: 600px) {
@@ -139,6 +123,16 @@ app-group-status {
   .module {
     min-width: 60px;
   }
+}
+@media (min-width: 920px) {
+  .eqTable.sct-1 { column-count: 2; }
+}
+@media (min-width: 1300px) {
+  .eqTable.sct-1 { column-count: 3; }
+}
+@media (min-width: 1700px) {
+  .eqTable.sct-1 { column-count: 4; }
+  .eqTable.sct-2 { column-count: 2; }
 }
 
 .invisible-anchor {

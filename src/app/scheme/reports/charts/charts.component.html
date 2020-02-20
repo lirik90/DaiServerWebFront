@@ -1,5 +1,6 @@
 <h2 i18n="@@REPORTS.CHARTS.TITLE">Графики</h2>
 
+<ng-container *ngIf="initialized">
 <div class="chart_conf">
   <mat-form-field>
     <input type="time" matInput i18n-placeholder="@@REPORTS.TIME_FROM" placeholder="Время от" [(ngModel)]="time_from" required>
@@ -23,20 +24,20 @@
   <div class="chart_type">
     <span i18n="@@REPORTS.CHARTS.DECOMPOSE">Разложить</span>:
     <mat-radio-group class="charts-type-group" [(ngModel)]="charts_type">
-      <mat-radio-button class="charts-type-button" [value]="0" checked i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_GROUPS">По группам элементов</mat-radio-button>
-      <mat-radio-button class="charts-type-button" [value]="1" i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_TYPES">По типам элементов</mat-radio-button>
-      <mat-radio-button class="charts-type-button" [value]="2" i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_ITEMS">По элементам</mat-radio-button>
+      <mat-radio-button class="charts-type-button" [value]="chartType.CT_DIG_TYPE" checked i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_GROUPS">По группам элементов</mat-radio-button>
+      <mat-radio-button class="charts-type-button" [value]="chartType.CT_DEVICE_ITEM_TYPE" i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_TYPES">По типам элементов</mat-radio-button>
+      <mat-radio-button class="charts-type-button" [value]="chartType.CT_DEVICE_ITEM" i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_ITEMS">По элементам</mat-radio-button>
     </mat-radio-group>
   </div>
 
   <div class="chart_type" [ngSwitch]="charts_type">
-    <ng-container *ngSwitchCase="0">
+    <ng-container *ngSwitchCase="chartType.CT_DIG_TYPE">
       <a *ngFor="let item of group_types"
         [class.active]="selected_group_type && selected_group_type.id == item.id"
         (click)="selectGroup(item)">{{item.title}}</a>
     </ng-container>
 
-    <ng-container *ngSwitchCase="1">
+    <ng-container *ngSwitchCase="chartType.CT_DEVICE_ITEM_TYPE">
       <mat-form-field>
         <mat-label i18n="@@REPORTS.CHARTS.SELECT_TYPE">Выберите тип элемента</mat-label>
         <mat-select [formControl]="itemtypes" multiple>
@@ -45,7 +46,7 @@
       </mat-form-field>
     </ng-container>
 
-    <ng-container *ngSwitchCase="2">
+    <ng-container *ngSwitchCase="chartType.CT_DEVICE_ITEM">
       <mat-form-field>
         <mat-label i18n="@@REPORTS.CHARTS.SELECT_ITEM">Выберите элемент</mat-label>
         <mat-select [formControl]="devitems" multiple>
@@ -58,7 +59,6 @@
   <button mat-raised-button (click)="initCharts()" i18n="@@CONTROL.SHOW">Построить график</button>
 </div>
 
-<ng-container *ngIf="initialized">
   <div *ngFor="let chart of charts">
     <h2>{{chart.name}}</h2>
     <chart #chart_obj [type]="type" [data]="chart.data" [options]="options"></chart>
@@ -71,3 +71,4 @@
     </div>
   </div>
 </ng-container>
+<mat-progress-spinner *ngIf="!initialized" [mode]="prgMode" [value]="prgValue"></mat-progress-spinner>
