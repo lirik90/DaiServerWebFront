@@ -1204,11 +1204,18 @@ h2:lang(ko).localnav-title {
 }
 
 @media all and (max-width: 600px) {
-  .router-outlet-wrap {
-    padding: 8px;
-  }
   .sidenav {
     display: none;
+  }
+}
+@media all and (max-width: 400px) {
+  .router-outlet-wrap {
+    padding: 5px;
+  }
+}
+@media all and (max-width: 355px) {
+  .router-outlet-wrap {
+    padding: 0px;
   }
 }
 
