@@ -19,7 +19,7 @@
 }
 
 .chart_conf > mat-form-field {
-  width: 110px;
+  width: 125px;
 }
 .chart_conf > mat-form-field:nth-child(even) {
   margin-right: 32px;
@@ -27,6 +27,7 @@
 
 .chart_conf > button {
   width: 100%;
+  margin-top: 16px;
 }
 
 .chart_type {
@@ -34,8 +35,13 @@
   margin-right: 16px;
 }
 
-.chart_type mat-form-field {
-  width: 400px;
+.chart-type-data {
+  display: inline-block;
+  width: 350px;
+  vertical-align: middle;
+}
+.ctd-items {
+  margin-right: 32px;
 }
 
 .charts-type-group {

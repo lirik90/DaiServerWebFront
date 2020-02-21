@@ -20,41 +20,26 @@
     <mat-datepicker #picker_to></mat-datepicker>
   </mat-form-field>
 
-  <br>
   <div class="chart_type">
     <span i18n="@@REPORTS.CHARTS.DECOMPOSE">Разложить</span>:
-    <mat-radio-group class="charts-type-group" [(ngModel)]="charts_type">
+    <mat-radio-group class="charts-type-group" [(ngModel)]="charts_type" (change)="OnChartsType()">
       <mat-radio-button class="charts-type-button" [value]="chartType.CT_DIG_TYPE" checked i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_GROUPS">По группам элементов</mat-radio-button>
       <mat-radio-button class="charts-type-button" [value]="chartType.CT_DEVICE_ITEM_TYPE" i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_TYPES">По типам элементов</mat-radio-button>
       <mat-radio-button class="charts-type-button" [value]="chartType.CT_DEVICE_ITEM" i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_ITEMS">По элементам</mat-radio-button>
     </mat-radio-group>
   </div>
 
-  <div class="chart_type" [ngSwitch]="charts_type">
-    <ng-container *ngSwitchCase="chartType.CT_DIG_TYPE">
-      <a *ngFor="let item of group_types"
-        [class.active]="selected_group_type && selected_group_type.id == item.id"
-        (click)="selectGroup(item)">{{item.title}}</a>
-    </ng-container>
+  <angular2-multiselect [data]="itemList"
+                        [(ngModel)]="selectedItems"
+                        [settings]="settings"
+                        >
+  </angular2-multiselect>
 
-    <ng-container *ngSwitchCase="chartType.CT_DEVICE_ITEM_TYPE">
-      <mat-form-field>
-        <mat-label i18n="@@REPORTS.CHARTS.SELECT_TYPE">Выберите тип элемента</mat-label>
-        <mat-select [formControl]="itemtypes" multiple>
-          <mat-option *ngFor="let t of itemTypeList" [value]="t.id">{{t.title}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </ng-container>
-
-    <ng-container *ngSwitchCase="chartType.CT_DEVICE_ITEM">
-      <mat-form-field>
-        <mat-label i18n="@@REPORTS.CHARTS.SELECT_ITEM">Выберите элемент</mat-label>
-        <mat-select [formControl]="devitems" multiple>
-          <mat-option *ngFor="let it of devItemList" [value]="it.id">{{it.name}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </ng-container>
-  </div>
+  <angular2-multiselect [data]="paramList"
+                        [(ngModel)]="paramSelected"
+                        [settings]="paramSettings"
+                        >
+  </angular2-multiselect>
 
   <button mat-raised-button (click)="initCharts()" i18n="@@CONTROL.SHOW">Построить график</button>
 </div>

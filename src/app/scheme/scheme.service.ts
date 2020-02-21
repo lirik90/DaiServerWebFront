@@ -7,7 +7,7 @@ import { of } from 'rxjs/observable/of';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 
-import { Scheme_Detail, Section, Device_Item, Device_Item_Group, Log_Data, DIG_Param_Value, DIG_Param_Type } from './scheme';
+import { Scheme_Detail, Section, Device_Item, Device_Item_Group, Log_Value, Log_Param, DIG_Param_Value, DIG_Param_Type } from './scheme';
 import { Scheme_Group_Member, PaginatorApi } from '../user';
 import { MessageService } from '../message.service';
 import { ISchemeService } from '../ischeme.service';
@@ -370,9 +370,14 @@ export class SchemeService extends ISchemeService {
             .catch(error => Observable.throw(error));
   }
 
-  getChartData(date_from: number, date_to: number, chart_type: number, data: string, limit: number = 1000, offset: number = 0): Observable<PaginatorApi<Log_Data>> {
-    let url = this.url('chart_data') + `&ts_from=${date_from}&ts_to=${+date_to}&limit=${limit}&offset=${offset}&chart_type=${chart_type}&data=${data}`;
-    return this.getPiped<PaginatorApi<Log_Data>>(url, `fetched chart data list`, 'getChartData');
+  getChartData(date_from: number, date_to: number, data: string, limit: number = 1000, offset: number = 0): Observable<PaginatorApi<Log_Value>> {
+    let url = this.url('chart_value') + `&ts_from=${date_from}&ts_to=${+date_to}&limit=${limit}&offset=${offset}&data=${data}`;
+    return this.getPiped<PaginatorApi<Log_Value>>(url, `fetched chart data list`, 'getChartData');
+  }
+
+  getChartParamData(date_from: number, date_to: number, data: string, limit: number = 1000, offset: number = 0): Observable<PaginatorApi<Log_Param>> {
+    let url = this.url('chart_param') + `&ts_from=${date_from}&ts_to=${+date_to}&limit=${limit}&offset=${offset}&data=${data}`;
+    return this.getPiped<PaginatorApi<Log_Param>>(url, `fetched chart param list`, 'getChartParamData');
   }
 
   exportExcel(conf: ExportConfig, path?: string): Observable<HttpResponse<Blob>> {

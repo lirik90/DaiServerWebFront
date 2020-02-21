@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 //import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter} from '@angular/material/core';
 
-import { Device_Item_Type, DIG_Type, Section, Device_Item, Log_Data } from "../../scheme";
+import { Device_Item_Type, DIG_Type, Section, Device_Item } from "../../scheme";
 import { SchemeService, ExportConfig, ExportItem } from "../../scheme.service";
 import { SchemesService } from '../../../schemes/schemes.service';
 import { Scheme } from "../../../user";

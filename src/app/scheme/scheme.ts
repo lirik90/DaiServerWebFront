@@ -172,13 +172,16 @@ export class Device { // Устройство
   items: Device_Item[];// Массив элементов
 }
 
-export class Log_Data { // Запись журнала изменений значения
+class Log_Base {
 //  id: number;     // ID
   timestamp_msecs: string;     // Время изменения
+  user_id: number;  // Пользователь
+}
+
+export class Log_Value extends Log_Base { // Запись журнала изменений значения
   item_id: number;  // ID элемент
   raw_value: string;// Значение
   value: string;    // Отображаемое значение
-  user_id: number;  // Пользователь
 }
 
 export enum Log_Event_Type { // Тип события в журнале событий
@@ -190,14 +193,17 @@ export enum Log_Event_Type { // Тип события в журнале собы
     ET_USER
 }
 
-export class Log_Event { // Запись в журнале событий
+export class Log_Event extends Log_Base { // Запись в журнале событий
   date: Date;
-  timestamp_msecs: number;      // Время события
   category: string;        // Категория
   text: string;        // Сообщение
   type_id: number;       // Тип события
-  user_id: number;    // Пользователь
   color: string = ''; // Цвет?
+}
+
+export class Log_Param extends Log_Base {
+  group_param_id: number;
+  value: string;
 }
 
 export class Settings {
