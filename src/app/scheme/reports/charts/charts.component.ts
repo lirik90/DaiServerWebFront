@@ -138,7 +138,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
         label: function(item, data) { // args: tooltipItem, data
           // console.log('callback label:', item, data);
           const dataset = data.datasets[item.datasetIndex];
-          const text = dataset.steppedLine ?
+          const text = dataset.steppedLine && dataset.dev_item ?
             (item.yLabel < dataset["my_cond"] ? '0' : '1') :
             item.value;
           return dataset.label + ": " + text;
@@ -354,7 +354,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
   }
 
   adjust_stepped(dataset: any, y_min: number, y_max: number): void {
-    if (dataset.hidden || !dataset.steppedLine || !dataset.data.length)
+    if (dataset.hidden || !dataset.steppedLine || !dataset.data.length || !dataset.dev_item)
       return;
     
     const pr = (y_max - y_min) * 0.1;
@@ -626,7 +626,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
       this.getParamData(limit < 1000 ? limit : 1000, this.logs_count2);
     }
     else
-      this.set_initialized(true);
+      this.set_initialized(false);
   }
 
   pushDataset(log: any): void {
