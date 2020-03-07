@@ -1,5 +1,5 @@
 {
-  "This password is too short. It must contain at least 8 characters.": "Паполь слишком короткий. Он должен содержать минимум 8 символов.",
+  "This password is too short. It must contain at least 8 characters.": "Пароль слишком короткий. Он должен содержать минимум 8 символов.",
   "This password is entirely numeric.": "Пароль должен содержать буквы.",
   "Wrong password.": "Указанные данные логин и/или пароль не соответствует данным авторизации",
   "New password is the same of old_password": "Новый пароль не может соответствовать данным старого пароля",
@@ -15,14 +15,12 @@
 	"NOT_CONNECTED": "Не подключено",
   "WITH_LOSS": "С потерями пакетов.",
 	"NAVIGATION_TAB": {
-		"INFO": "Сведения",
-		"MANAGEMENT": "Управление",
+		"DETAIL": "Сведения",
 		"ELEMENTS": "Элементы",
-		"LOG": "Журнал",
+		"LOG_EVENT": "Журнал",
     "LOG_VALUE": "Журнал значений",
 		"STRUCTURE": "Структура",
 		"REPORTS": "Отчёты",
-    "EXPORT": "Экспорт данных",
     "HELP": "Справка"
 	},
 	"LOG": {

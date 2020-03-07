@@ -226,7 +226,7 @@ export class LogHttpDao {
 
   getRepoIssues(schemeId: number, sort: string, order_asc: boolean, page: number, limit: number = 35, addArgs=null, search=null): Observable<PaginatorApi<Log_Event>> {
     // const requestUrl = `/api/v1/log_event/?limit=${limit}&offset=${page * limit}&ordering=${(order_asc ? '' : '-')}${sort || 'timestamp_msecs'}&id=${schemeId}`;
-    let requestUrl = `/api/v1/log_data_2/?format=json&scheme_id=${schemeId}&limit=${limit}&offset=${page * limit}&ordering=${(order_asc ? '' : '-')}${sort || 'timestamp_msecs'}`
+    let requestUrl = `/api/v1/log_value/?format=json&scheme_id=${schemeId}&limit=${limit}&offset=${page * limit}&ordering=${(order_asc ? '' : '-')}${sort || 'timestamp_msecs'}`
 
     if (search) {
       requestUrl += `&search=${search}`;

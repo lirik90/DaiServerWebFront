@@ -12,6 +12,7 @@ import { switchMap } from 'rxjs/operators/switchMap';
 
 import { Log_Event, Log_Event_Type } from '../scheme';
 import { Scheme_Group_Member, PaginatorApi } from '../../user';
+import { AuthenticationService } from '../../authentication.service';
 import { SchemeService } from '../scheme.service';
 import { ControlService, WebSockCmd } from '../control.service';
 import {TranslateService} from '@ngx-translate/core';
@@ -33,6 +34,8 @@ export class LogComponent implements OnInit, OnDestroy {
   isLoadingResults = true;
   isRateLimitReached = false;
 
+  canExecScript: boolean;
+
   itemsPerPage;
 
   sub: ISubscription;
@@ -48,6 +51,7 @@ export class LogComponent implements OnInit, OnDestroy {
   constructor(
     public translate: TranslateService,
     private controlService: ControlService,
+    private authService: AuthenticationService,
     private schemeService: SchemeService,
     private http: HttpClient,
     private activatedRoute: ActivatedRoute,
@@ -61,6 +65,7 @@ export class LogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.canExecScript = this.authService.checkPermission('exec_script');
 
     const ipp = parseInt(this.cookie.get('logItemsPerPage'), 10);
 

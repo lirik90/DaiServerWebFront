@@ -54,9 +54,13 @@ export class ParamComponent implements OnInit
     }
   }
 
+  onEnter(e: any): void {
+    console.log('dsa');
+  }
+
   onSubmit()
   {
-    console.log(this.changed_values);
+    console.log('inside param form submit', this.changed_values);
     if (this.changed_values)
       this.controlService.changeParamValues(this.changed_values);
     this.goBack();

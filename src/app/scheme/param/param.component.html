@@ -5,7 +5,7 @@
   <form class="example-form" (ngSubmit)="onSubmit()" #paramForm="ngForm">
     <app-param-item [values]="group.params" [changed]="changed_values"></app-param-item>
 
-    <button type="submit" mat-raised-button class="custom_button" color="primary" [disabled]="cantChange || !paramForm.form.valid" type="submit" i18n="@@CONTROL.SAVE">Сохранить</button>
+    <button type="submit" mat-raised-button class="custom_button" color="primary" [disabled]="cantChange || !paramForm.form.valid" i18n="@@CONTROL.SAVE">Сохранить</button>
     <button type="button" mat-raised-button class="custom_button" (click)="goBack()" i18n="@@CONTROL.BACK">Назад</button>
 
   </form>

@@ -2,7 +2,7 @@
   <h2><span i18n="@@PARAMS.TITLE">Параметры</span>: {{sct.name}} - {{group.type.title}}</h2>
   <p *ngIf="description">{{group.type.description}}</p>
 
-  <form class="example-form" (ngSubmit)="onSubmit()" #paramForm="ngForm">
+  <form class="example-form" (ngSubmit)="onSubmit()" (keydown.enter)="onEnter($event)" #paramForm="ngForm">
     <app-param-item [values]="group.params" [changed]="changed_values"></app-param-item>
 
     <button type="submit" mat-raised-button class="custom_button" color="primary" [disabled]="cantChange || !paramForm.form.valid" type="submit" i18n="@@CONTROL.SAVE">Сохранить</button>

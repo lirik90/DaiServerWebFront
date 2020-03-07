@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>{{data.name || data.type.name}}</h1>
+<div mat-dialog-content>
+  <canvas #canvas [width]="width" [height]="height">
+  </canvas>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()" cdkFocusInitial>Закрыть</button>
+</div>
+
+

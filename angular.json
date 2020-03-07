@@ -31,7 +31,8 @@
               /*"node_modules/flag-icon-css/css/flag-icon.min.css",*/
               "src/assets/css/flag-icon.css",
               "node_modules/normalize.css/normalize.css",
-              "node_modules/select2/dist/css/select2.min.css"
+              "node_modules/select2/dist/css/select2.min.css",
+              "node_modules/angular2-multiselect-dropdown/themes/default.theme.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
@@ -128,6 +129,7 @@
             "ru": {
               "outputPath": "dist/ru/",
               "baseHref": "/ru/",
+              "i18nLocale": "ru",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -155,8 +157,8 @@
             "production": {
               "browserTarget": "device-access:build:production"
             },
-            "en": {
-              "browserTarget": "device-access:build:en"
+            "ru": {
+              "browserTarget": "device-access:build:ru"
             }
           }
         },

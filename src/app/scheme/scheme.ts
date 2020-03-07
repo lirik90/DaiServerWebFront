@@ -32,6 +32,7 @@ export enum Register_Type { // Тип данных элемента
     RT_HOLDING_REGISTERS, // Значения чтение/запись
     RT_FILE,              // Передача файла
     RT_SIMPLE_BUTTON,     // Обычная кнопка. Передает всегда значение 1
+    RT_VIDEO_STREAM,      // Видео поток
 }
 
 export enum Save_Algorithm { // Алгоритм сохранения изменений значения
@@ -63,8 +64,8 @@ export class Section {
 }
 
 export class Device_Item_Value {
-  raw: any;      // Сырое значение
-  display: any;  // Отображаемое значение
+  raw_value: any;      // Сырое значение
+  value: any;  // Отображаемое значение
 }
 
 export class Device_Item { // Элемент устройства
@@ -172,13 +173,16 @@ export class Device { // Устройство
   items: Device_Item[];// Массив элементов
 }
 
-export class Log_Data { // Запись журнала изменений значения
+class Log_Base {
 //  id: number;     // ID
   timestamp_msecs: string;     // Время изменения
+  user_id: number;  // Пользователь
+}
+
+export class Log_Value extends Log_Base { // Запись журнала изменений значения
   item_id: number;  // ID элемент
   raw_value: string;// Значение
   value: string;    // Отображаемое значение
-  user_id: number;  // Пользователь
 }
 
 export enum Log_Event_Type { // Тип события в журнале событий
@@ -190,14 +194,17 @@ export enum Log_Event_Type { // Тип события в журнале собы
     ET_USER
 }
 
-export class Log_Event { // Запись в журнале событий
+export class Log_Event extends Log_Base { // Запись в журнале событий
   date: Date;
-  timestamp_msecs: number;      // Время события
   category: string;        // Категория
   text: string;        // Сообщение
   type_id: number;       // Тип события
-  user_id: number;    // Пользователь
   color: string = ''; // Цвет?
+}
+
+export class Log_Param extends Log_Base {
+  group_param_id: number;
+  value: string;
 }
 
 export class Settings {
@@ -206,7 +213,7 @@ export class Settings {
   value: string;
 }
 
-export class DIG_Mode {
+export class DIG_Mode_Type {
   id: number;
   name: string;
   title: string;
@@ -226,7 +233,7 @@ export class Scheme_Detail {
   dig_type: DIG_Type[];// Типы групп
   dig_status_type: DIG_Status_Type[];  // Типы состояний
   dig_status_category: DIG_Status_Category[];  // Категории состояний
-  dig_mode: DIG_Mode[];
+  dig_mode_type: DIG_Mode_Type[];
 
   conn: Observable<number>;
 }

@@ -17,6 +17,7 @@ import { LogComponent } from './log/log.component';
 import { ParamComponent } from './param/param.component';
 import { GroupStatusComponent } from './group-status/group-status.component';
 import { DevItemValueComponent, HoldingRegisterDialogComponent } from './dev-item-value/dev-item-value.component';
+import { VideoStreamDialogComponent } from './dev-item-value/video-stream-dialog/video-stream-dialog.component';
 import { DragScrollComponent } from './drag-scroll.component';
 import { ParamItemComponent } from './param-item/param-item.component';
 
@@ -55,6 +56,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ManageComponent,
     Manage2Component,
     HoldingRegisterDialogComponent,
+    VideoStreamDialogComponent,
     LogComponent,
     Log2Component,
     ParamComponent,
@@ -71,6 +73,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   entryComponents: [
     PageReloadDialogComponent,
     HoldingRegisterDialogComponent,
+    VideoStreamDialogComponent,
     ParamsDialogComponent,
   ],
   exports: [

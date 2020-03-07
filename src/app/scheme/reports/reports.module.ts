@@ -20,6 +20,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 
 import { ChartsModule } from 'ng2-charts';
 
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -29,6 +31,7 @@ import { ChartsModule } from 'ng2-charts';
     MaterialModule,
     MatMomentDateModule,
     ChartsModule,
+    AngularMultiSelectModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,

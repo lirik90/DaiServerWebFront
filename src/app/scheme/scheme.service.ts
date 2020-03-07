@@ -7,7 +7,7 @@ import { of } from 'rxjs/observable/of';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 
-import { Scheme_Detail, Section, Device_Item, Device_Item_Group, Log_Data, DIG_Param_Value, DIG_Param_Type } from './scheme';
+import { Scheme_Detail, Section, Device_Item, Device_Item_Group, Log_Value, Log_Param, DIG_Param_Value, DIG_Param_Type } from './scheme';
 import { Scheme_Group_Member, PaginatorApi } from '../user';
 import { MessageService } from '../message.service';
 import { ISchemeService } from '../ischeme.service';
@@ -30,8 +30,8 @@ export interface ExportConfig {
 
 class DevValues {
   id: number;
-  raw: any;
-  display: any;
+  raw_value: any;
+  value: any;
 }
 
 class StatusItems {
@@ -102,8 +102,8 @@ export class SchemeService extends ISchemeService {
             const respItem = resp.find(i => i.id === di.id);
 
             if (respItem) {
-              di.val.raw = respItem.raw;
-              di.val.display = respItem.display;
+              di.val.raw_value = respItem.raw_value;
+              di.val.value = respItem.value;
             }
           }
         }
@@ -248,7 +248,7 @@ export class SchemeService extends ISchemeService {
         for (const dev of detail.device) {
           for (const item of dev.items) {
             if (!item.val) {
-              item.val = { raw: null, display: null};
+              item.val = { raw_value: null, value: null};
             }
 
             for (const itemType of detail.device_item_type) {
@@ -370,18 +370,14 @@ export class SchemeService extends ISchemeService {
             .catch(error => Observable.throw(error));
   }
 
-  getLogs(date_from: number, date_to: number, group_type: number, itemtypes: string, items: string, limit: number = 1000, offset: number = 0): Observable<PaginatorApi<Log_Data>> {
-    let url = this.url('log_data') + `&ts_from=${date_from}&ts_to=${+date_to}&limit=${limit}&offset=${offset}`;
-    if (group_type !== undefined) {
-      url += `&group_type=${group_type}`;
-    }
-    if (itemtypes !== undefined) {
-      url += `&itemtypes=${itemtypes}`;
-    }
-    if (items !== undefined) {
-      url += `&items=${items}`;
-    }
-    return this.getPiped<PaginatorApi<Log_Data>>(url, `fetched logs list`, 'getLogs');
+  getChartData(date_from: number, date_to: number, data: string, limit: number = 1000, offset: number = 0): Observable<PaginatorApi<Log_Value>> {
+    let url = this.url('chart_value') + `&ts_from=${date_from}&ts_to=${+date_to}&limit=${limit}&offset=${offset}&data=${data}`;
+    return this.getPiped<PaginatorApi<Log_Value>>(url, `fetched chart data list`, 'getChartData');
+  }
+
+  getChartParamData(date_from: number, date_to: number, data: string, limit: number = 1000, offset: number = 0): Observable<PaginatorApi<Log_Param>> {
+    let url = this.url('chart_param') + `&ts_from=${date_from}&ts_to=${+date_to}&limit=${limit}&offset=${offset}&data=${data}`;
+    return this.getPiped<PaginatorApi<Log_Param>>(url, `fetched chart param list`, 'getChartParamData');
   }
 
   exportExcel(conf: ExportConfig, path?: string): Observable<HttpResponse<Blob>> {

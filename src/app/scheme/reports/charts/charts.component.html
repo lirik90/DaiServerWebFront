@@ -1,6 +1,7 @@
 <h2 i18n="@@REPORTS.CHARTS.TITLE">Графики</h2>
 
-<div class="group_nav">
+<ng-container *ngIf="initialized">
+<div class="chart_conf">
   <mat-form-field>
     <input type="time" matInput i18n-placeholder="@@REPORTS.TIME_FROM" placeholder="Время от" [(ngModel)]="time_from" required>
   </mat-form-field>
@@ -19,56 +20,30 @@
     <mat-datepicker #picker_to></mat-datepicker>
   </mat-form-field>
 
-  <br>
-  <span i18n="@@REPORTS.CHARTS.DECOMPOSE">Разложить</span>:
-  <mat-radio-group class="charts-type-group" [(ngModel)]="charts_type">
-    <mat-radio-button class="charts-type-button" [value]="0" checked i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_GROUPS">По группам элементов</mat-radio-button>
-    <mat-radio-button class="charts-type-button" [value]="1" i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_TYPES">По типам элементов</mat-radio-button>
-    <mat-radio-button class="charts-type-button" [value]="2" i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_ITEMS">По элементам</mat-radio-button>
-  </mat-radio-group>
-
-  <div *ngIf="charts_type == 0">
-    <a *ngFor="let item of group_types"
-      [class.active]="selected_group_type && selected_group_type.id == item.id"
-      (click)="selectGroup(item)">{{item.title}}</a>
-  </div>
-  <div *ngIf="charts_type == 1">
-    <button (click)="add_item_type()" i18n="@@REPORTS.CHARTS.ADD_TYPE">Добавить тип элемента</button><br>
-    <table>
-      <tbody>
-        <tr *ngFor="let item of selected_item_types">
-          <td>
-            <select required [(ngModel)]="item.id">
-              <option value="0" i18n="@@REPORTS.CHARTS.SELECT_TYPE">Выберите тип элемента</option>
-              <option *ngFor="let t of item_types" value="{{t.id}}">{{t.title}}</option>
-            </select>
-          </td>
-          <td><button type="button" (click)="del_item_type(item)" i18n="@@CONTROL.DELETE">Удалить</button></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div *ngIf="charts_type == 2">
-    <button (click)="add_devitem()" i18n="@@REPORTS.CHARTS.ADD_ITEM">Добавить элемент</button><br>
-    <table>
-      <tbody>
-        <tr *ngFor="let item of selected_devitems">
-          <td>
-            <select required [(ngModel)]="item.id">
-              <option value="0" i18n="@@REPORTS.CHARTS.SELECT_ITEM">Выберите элемент</option>
-              <option *ngFor="let t of devitems" value="{{t.id}}">{{t.name}}</option>
-            </select>
-          </td>
-          <td><button type="button" (click)="del_devitem(item)" i18n="@@CONTROL.DELETE">Удалить</button></td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="chart_type">
+    <span i18n="@@REPORTS.CHARTS.DECOMPOSE">Разложить</span>:
+    <mat-radio-group class="charts-type-group" [(ngModel)]="charts_type" (change)="OnChartsType()">
+      <mat-radio-button class="charts-type-button" [value]="chartType.CT_DIG_TYPE" checked i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_GROUPS">По группам элементов</mat-radio-button>
+      <mat-radio-button class="charts-type-button" [value]="chartType.CT_DEVICE_ITEM_TYPE" i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_TYPES">По типам элементов</mat-radio-button>
+      <mat-radio-button class="charts-type-button" [value]="chartType.CT_DEVICE_ITEM" i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_ITEMS">По элементам</mat-radio-button>
+    </mat-radio-group>
   </div>
 
-  <button mat-raise-button (click)="initCharts()" i18n="@@CONTROL.SHOW">Показать</button>
+  <angular2-multiselect [data]="itemList"
+                        [(ngModel)]="selectedItems"
+                        [settings]="settings"
+                        >
+  </angular2-multiselect>
+
+  <angular2-multiselect [data]="paramList"
+                        [(ngModel)]="paramSelected"
+                        [settings]="paramSettings"
+                        >
+  </angular2-multiselect>
+
+  <button mat-raised-button (click)="initCharts()" i18n="@@CONTROL.SHOW">Построить график</button>
 </div>
 
-<ng-container *ngIf="initialized">
   <div *ngFor="let chart of charts">
     <h2>{{chart.name}}</h2>
     <chart #chart_obj [type]="type" [data]="chart.data" [options]="options"></chart>
@@ -80,4 +55,8 @@
       <a (click)="random_color()">Random color</a>
     </div>
   </div>
+</ng-container>
+<ng-container *ngIf="!initialized">
+  <mat-progress-spinner [mode]="prgMode" [value]="prgValue"></mat-progress-spinner>
+  <button mat-raised-button (click)="breakLoad()" i18n="@@CHARTS.BREAK_LOAD">Прервать загрузку</button>
 </ng-container>
