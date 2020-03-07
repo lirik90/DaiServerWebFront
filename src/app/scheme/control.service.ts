@@ -33,6 +33,9 @@ export enum WebSockCmd {
   WS_TIME_INFO,
   WS_IP_ADDRESS,
 
+  WS_STREAM_TOGGLE,
+  WS_STREAM_DATA,
+
   WEB_SOCK_CMD_COUNT
 }
 
@@ -65,6 +68,7 @@ class TimeInfo {
 @Injectable()
 export class ControlService {
   public byte_msg: Subject<ByteMessage> = new Subject<ByteMessage>();
+  public stream_msg: Subject<ByteMessage> = new Subject<ByteMessage>();
   public dev_item_changed: Subject<Device_Item[]> = new Subject<Device_Item[]>();
   public opened: Subject<boolean>;
 
@@ -273,6 +277,9 @@ export class ControlService {
             }
           }
         }
+      } else if (msg.cmd === WebSockCmd.WS_STREAM_DATA 
+                 || msg.cmd === WebSockCmd.WS_STREAM_TOGGLE) {
+        this.stream_msg.next(msg);
       } else {
         this.byte_msg.next(msg);
       }
@@ -454,4 +461,15 @@ export class ControlService {
     }
     this.wsbService.send(WebSockCmd.WS_EXEC_SCRIPT, this.schemeService.scheme.id, view);
   }
+
+    stream_toggle(dev_item_id: number, state: boolean): void
+    {
+        let view = new Uint8Array(4 + 1);
+        let pos = 0;
+
+        ByteTools.saveInt32(dev_item_id, view, pos); pos += 4;
+        view[pos] = state ? 1 : 0; pos += 1;
+
+        this.wsbService.send(WebSockCmd.WS_STREAM_TOGGLE, this.schemeService.scheme.id, view);
+    }
 } // end class ControlService

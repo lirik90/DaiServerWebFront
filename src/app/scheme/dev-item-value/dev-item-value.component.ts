@@ -2,12 +2,14 @@ import { Component, Input, OnInit, OnDestroy, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import {ISubscription} from 'rxjs/Subscription';
+import {TranslateService} from '@ngx-translate/core';
 
 import { ControlService } from "../control.service";
 import { AuthenticationService } from "../../authentication.service";
 import { Device_Item, Register_Type } from '../scheme';
 import { SchemeService } from "../scheme.service";
-import {TranslateService} from '@ngx-translate/core';
+
+import { VideoStreamDialogComponent } from "./video-stream-dialog/video-stream-dialog.component";
 
 @Component({
   selector: 'app-dev-item-value',
@@ -23,6 +25,7 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
   is_holding: boolean;
   is_button: boolean;
   is_file: boolean;
+  is_video: boolean;
   is_loading: boolean = false;
 
   timer_: number;
@@ -40,8 +43,9 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
     this.cantChange = !this.authService.canChangeValue();
     this.is_toggle = this.item.type.register_type == Register_Type.RT_COILS;
     this.is_holding = this.item.type.register_type == Register_Type.RT_HOLDING_REGISTERS;
-	  this.is_button = this.item.type.register_type == Register_Type.RT_SIMPLE_BUTTON;
-	  this.is_file = this.item.type.register_type == Register_Type.RT_FILE;
+	this.is_button = this.item.type.register_type == Register_Type.RT_SIMPLE_BUTTON;
+	this.is_file = this.item.type.register_type == Register_Type.RT_FILE;
+	this.is_video = this.item.type.register_type == Register_Type.RT_VIDEO_STREAM;
   }
 
   ngOnDestroy() {
@@ -134,6 +138,16 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
 	  {
       this.controlService.writeToDevItem(this.item.id, value);
 	  }
+  }
+
+  open_video(): void
+  {
+    let dialogRef = this.dialog.open(VideoStreamDialogComponent, {
+      width: '90%',
+      data: this.item
+    });
+
+    dialogRef.afterClosed().subscribe(result => console.log(result));
   }
 
   handleFileInput(files: FileList): void

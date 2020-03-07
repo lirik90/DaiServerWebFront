@@ -32,6 +32,7 @@ export enum Register_Type { // Тип данных элемента
     RT_HOLDING_REGISTERS, // Значения чтение/запись
     RT_FILE,              // Передача файла
     RT_SIMPLE_BUTTON,     // Обычная кнопка. Передает всегда значение 1
+    RT_VIDEO_STREAM,      // Видео поток
 }
 
 export enum Save_Algorithm { // Алгоритм сохранения изменений значения

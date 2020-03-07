@@ -562,7 +562,14 @@ export class ChartsComponent implements OnInit, AfterViewInit {
             const log = dataset.dev_item ? dataset.dev_item.val : dataset.param;
             const y = this.getY(chart, log);
             if (y !== undefined)
+            {
+              if (dataset.data.length === 0)
+              {
+                const x0 = new Date(this.time_from_);
+                dataset.data.push({x: x0, y});
+              }
               dataset.data.push({x, y});
+            }
           }
         }
       }
