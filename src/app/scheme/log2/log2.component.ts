@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
+import { PageEvent } from '@angular/material/typings/paginator';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ISubscription } from "rxjs/Subscription";
 import { Observable } from 'rxjs/Observable';
 import { merge } from 'rxjs/observable/merge';
@@ -9,15 +12,15 @@ import { catchError } from 'rxjs/operators/catchError';
 import { map } from 'rxjs/operators/map';
 import { startWith } from 'rxjs/operators/startWith';
 import { switchMap } from 'rxjs/operators/switchMap';
+import {TranslateService} from '@ngx-translate/core';
+import {CookieService} from 'ngx-cookie-service';
 
-import { Log_Event, Log_Event_Type } from "../scheme";
+import { Log_Value, Log_Event_Type } from "../scheme";
 import { Scheme_Group_Member, PaginatorApi } from '../../user';
 import { SchemeService } from "../scheme.service";
 import { ControlService, WebSockCmd } from "../control.service";
-import {TranslateService} from '@ngx-translate/core';
-import {ActivatedRoute} from '@angular/router';
-import {CookieService} from 'ngx-cookie-service';
-import {PageEvent} from '@angular/material/typings/paginator';
+
+import { VideoStreamDialogComponent } from "../dev-item-value/video-stream-dialog/video-stream-dialog.component";
 
 @Component({
   selector: 'app-log',
@@ -48,6 +51,7 @@ export class Log2Component implements OnInit, OnDestroy {
 
   constructor(
 	  public translate: TranslateService,
+    public dialog: MatDialog,
     private controlService: ControlService,
     private schemeService: SchemeService,
     private http: HttpClient,
@@ -99,6 +103,7 @@ export class Log2Component implements OnInit, OnDestroy {
           this.resultsLength = data.count;
 
           for (const item of data.results as any) {
+            item.isImg = item.raw_value && typeof item.raw_value === 'string' && item.raw_value.startsWith('img:');
             //console.log(item);
             item.date = new Date(item.timestamp_msecs);
 
@@ -150,7 +155,7 @@ export class Log2Component implements OnInit, OnDestroy {
         return;
 
       if (msg.data === undefined) {
-        console.warn('Log_Event without data');
+        console.warn('Log_Value without data');
         return;
       }
 
@@ -170,6 +175,15 @@ export class Log2Component implements OnInit, OnDestroy {
 
   ngOnDestroy() {
 
+  }
+
+  openImg(row: any): void {
+    let dialogRef = this.dialog.open(VideoStreamDialogComponent, {
+      width: '90%',
+      data: { isImg: true, devItem: null, img: row }
+    });
+
+    dialogRef.afterClosed().subscribe(result => console.log(result));
   }
 
   dateFormat(cell: any): string {
@@ -224,7 +238,7 @@ export class Log2Component implements OnInit, OnDestroy {
 export class LogHttpDao {
   constructor(private http: HttpClient) {}
 
-  getRepoIssues(schemeId: number, sort: string, order_asc: boolean, page: number, limit: number = 35, addArgs=null, search=null): Observable<PaginatorApi<Log_Event>> {
+  getRepoIssues(schemeId: number, sort: string, order_asc: boolean, page: number, limit: number = 35, addArgs=null, search=null): Observable<PaginatorApi<Log_Value>> {
     // const requestUrl = `/api/v1/log_event/?limit=${limit}&offset=${page * limit}&ordering=${(order_asc ? '' : '-')}${sort || 'timestamp_msecs'}&id=${schemeId}`;
     let requestUrl = `/api/v1/log_value/?format=json&scheme_id=${schemeId}&limit=${limit}&offset=${page * limit}&ordering=${(order_asc ? '' : '-')}${sort || 'timestamp_msecs'}`
 
@@ -237,7 +251,7 @@ export class LogHttpDao {
     }
 
 
-    return this.http.get<PaginatorApi<Log_Event>>(requestUrl);
+    return this.http.get<PaginatorApi<Log_Value>>(requestUrl);
   }
 }
 

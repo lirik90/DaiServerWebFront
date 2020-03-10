@@ -27,8 +27,10 @@
     <ng-container matColumnDef="value">
       <mat-header-cell *matHeaderCellDef  i18n="@@LOG2.VALUE">Значение</mat-header-cell>
       <mat-cell *matCellDef="let row" [style.color]="row.color"
-                title="Raw: {{ row.raw_value }}"
-        >{{ row.value || 'Raw: ' + row.raw_value}}</mat-cell>
+                title="Raw: {{ row.raw_value }}">
+          <button mat-raise-button *ngIf="row.isImg; else notImg" (click)="openImg(row)">Посмотреть</button>
+          <ng-template #notImg>{{ row.value || 'Raw: ' + row.raw_value}}</ng-template>
+      </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="element">

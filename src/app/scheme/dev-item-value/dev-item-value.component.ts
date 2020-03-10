@@ -144,7 +144,7 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
   {
     let dialogRef = this.dialog.open(VideoStreamDialogComponent, {
       width: '90%',
-      data: this.item
+      data: { isImg: false, devItem: this.item, img: null }
     });
 
     dialogRef.afterClosed().subscribe(result => console.log(result));
