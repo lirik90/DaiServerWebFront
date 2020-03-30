@@ -62,6 +62,11 @@ export class SchemesService extends ISchemeService {
       `fetched cities`, 'getCities', {} as PaginatorApi<Scheme>);
   }
 
+    setName(schemeId: number, name: string): Observable<any> {
+        const url = `/api/v2/scheme/${schemeId}/set_name/`;
+        return this.http.post<any>(url, {name});
+    }
+
   getScheme(name: string): Observable<Scheme> {
     const url = `${this.schemeUrl}${name}/`;
     return this.getPiped<Scheme>(url, `fetched client device name=${name}`, `getScheme name=${name}`);

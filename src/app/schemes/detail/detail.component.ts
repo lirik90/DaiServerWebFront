@@ -14,6 +14,8 @@ import { AuthenticationService } from "../../authentication.service";
 export class SchemeDetailComponent implements OnInit {
   scheme: Scheme;
   can_save: boolean;
+  canChangeName: boolean;
+  nameEditing: boolean = false;
   cities: any[];
   comps: any[];
 
@@ -22,10 +24,11 @@ export class SchemeDetailComponent implements OnInit {
     private schemesService: SchemesService,
     private authService: AuthenticationService,
     private location: Location
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.can_save = true;
+    this.canChangeName = this.authService.checkPermission('add_scheme');
     this.getScheme();
 
     this.schemesService.getCities().subscribe(data => {
@@ -69,4 +72,19 @@ export class SchemeDetailComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
+
+    changeName(): void
+    {
+        if (!this.canChangeName)
+            return;
+        this.nameEditing = true;
+    }
+
+    saveName(name: string): void
+    {
+        this.nameEditing = false;
+        this.schemesService.setName(this.scheme.id, name).subscribe(() => {
+            this.scheme.name = name;
+        });
+    }
 }

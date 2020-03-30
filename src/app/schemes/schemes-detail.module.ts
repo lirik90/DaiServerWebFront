@@ -3,8 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from "@angular/router";
 
+import {
+    MatFormFieldModule, 
+    MatSelectModule,
+    MatIconModule
+} from '@angular/material';
+
 import { SchemeDetailComponent } from './detail/detail.component';
-import {MatFormFieldModule, MatSelectModule} from '@angular/material';
 import { SchemeStateListComponent } from './scheme-state-list/scheme-state-list.component';
 
 
@@ -14,7 +19,8 @@ import { SchemeStateListComponent } from './scheme-state-list/scheme-state-list.
     FormsModule,
     RouterModule,
     MatFormFieldModule,
-    MatSelectModule
+    MatSelectModule,
+    MatIconModule
   ],
   declarations: [
     SchemeDetailComponent,

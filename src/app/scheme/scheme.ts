@@ -234,6 +234,7 @@ export class Scheme_Detail {
   dig_status_type: DIG_Status_Type[];  // Типы состояний
   dig_status_category: DIG_Status_Category[];  // Категории состояний
   dig_mode_type: DIG_Mode_Type[];
+    disabled_param: number[]; // Недоступные для пользователя параметры
 
   conn: Observable<number>;
 }

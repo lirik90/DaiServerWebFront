@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+
+import { SchemeService } from "../scheme.service";
 import { DIG_Param_Value, DIG_Param_Type, DIG_Param_Value_Type } from "../scheme";
 
 @Component({
@@ -14,10 +16,17 @@ export class ParamItemComponent implements OnInit {
 
   value_type = DIG_Param_Value_Type;   
 
-  constructor() { }
+  constructor(
+      private schemeService: SchemeService
+  ) { }
 
   ngOnInit() {
   }
+
+    isDisabled(p: DIG_Param_Value): boolean
+    {
+        return this.schemeService.scheme.disabled_param.includes(p.param_id);
+    }
 
   getTimeString(p: DIG_Param_Value): string 
   {

@@ -2,7 +2,11 @@
   <!--pre>{{scheme | json }}</pre-->
   <h2><span i18n="@@DETAILS.HEAD">Подробнее о проекте</span>: «{{ scheme.title | uppercase }}»</h2>
   <div><span i18n="@@DETAILS.ID">Ид</span>: {{scheme.id}}</div>
-  <div><span i18n="@@DETAILS.NAME">Имя</span>: {{scheme.name}}</div>
+  <div><span i18n="@@DETAILS.NAME">Имя</span>: 
+      <span *ngIf="!nameEditing" [class.name-field]="canChangeName" (click)="changeName()">{{scheme.name}} <mat-icon *ngIf="canChangeName">edit</mat-icon></span>
+      <input *ngIf="nameEditing" class="name-edit" mat-input [value]="scheme.name" (keydown.enter)="saveName($event.target.value)">
+      <div *ngIf="nameEditing" class="crtn"></div>
+  </div>
   <div><span i18n="@@DETAILS.VERSION">Версия</span>: {{scheme.version}}</div>
   <div>
     <label><ng-container i18n="@@DETAILS.TITLE">Заголовок</ng-container>:
