@@ -147,28 +147,23 @@ export class SchemeService extends ISchemeService {
   loadScheme2(scheme_name: string, reload?: boolean): Observable<boolean> {
     return this.loadScheme(scheme_name, reload).pipe(
       flatMap((res) => {
-          console.log('First stem: ', res);
         // returns an Observable of type Y
         return res ? this.updateStatusItems(this.scheme2.id) : of(false);
       }),
       flatMap((res) => {
-          console.log('Second stem: ', res);
         // console.log(JSON.parse(JSON.stringify(this.scheme2.section)));
         return res ? this.updateDevValues(this.scheme2.id) : of(false);
       }),
       flatMap((res) => {
-          console.log('Third stem: ', res);
-        if (res) {
-          this.scheme = this.scheme2;
-          this.scheme.name = scheme_name;
-
-          localStorage.setItem(this.scheme_s, JSON.stringify(this.scheme2));
-          this.log('fetched scheme detail');
-
-          return of(true);
-        } else {
+        if (!res)
           return of(false);
-        }
+        this.scheme = this.scheme2;
+        this.scheme.name = scheme_name;
+
+        localStorage.setItem(this.scheme_s, JSON.stringify(this.scheme2));
+        this.log('fetched scheme detail');
+
+        return of(true);
       }),
     );
   }
