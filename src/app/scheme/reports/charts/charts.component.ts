@@ -1,14 +1,16 @@
 import {AfterViewInit, Component, OnInit, QueryList, ViewChildren, ViewChild} from '@angular/core';
 import {FormControl} from '@angular/forms';
 
+import { MatDialog } from '@angular/material/dialog';
+
 import {
   MAT_MOMENT_DATE_FORMATS,
   MomentDateAdapter,
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
 } from '@angular/material-moment-adapter';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { BaseChartDirective } from 'ng2-charts';
 // import {ChartComponent} from 'angular2-chartjs';
 
@@ -17,9 +19,11 @@ import * as moment from 'moment';
 // import {default as _rollupMoment} from 'moment';
 // const moment = _rollupMoment || _moment;
 
-import {SchemeService, ExportConfig, ExportItem} from '../../scheme.service';
-import {Device_Item_Type, DIG_Param_Value, DIG_Type, Section, Device_Item, Log_Value, Log_Param, Register_Type, Save_Algorithm, DIG_Param_Value_Type, Device_Item_Group} from '../../scheme';
-import {PaginatorApi} from '../../../user';
+import { SchemeService, ExportConfig, ExportItem } from '../../scheme.service';
+import { Device_Item_Type, DIG_Param_Value, DIG_Type, Section, Device_Item, Log_Value, Log_Param, Register_Type, Save_Algorithm, DIG_Param_Value_Type, Device_Item_Group, Chart } from '../../scheme';
+import { PaginatorApi } from '../../../user';
+
+import { ColorPickerDialog } from './color-picker-dialog/color-picker-dialog';
 
 interface Chart_Info_Interface {
   name: string;
@@ -79,7 +83,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
 
   @ViewChild("chart_obj") chart: BaseChartDirective;
 
-  charts_type: number = Chart_Type.CT_DIG_TYPE;
+  charts_type: number = Chart_Type.CT_USER;
   logs_count: number;
   logs_count2: number;
 
@@ -107,7 +111,9 @@ export class ChartsComponent implements OnInit, AfterViewInit {
 
   values_loaded: boolean;
   params_loaded: boolean;
-  initialized = true;
+  initialized = false;
+
+    user_charts: Chart[] = [];
 
   type = 'line';
   options = {
@@ -213,12 +219,19 @@ export class ChartsComponent implements OnInit, AfterViewInit {
   constructor(
     public translate: TranslateService,
     private schemeService: SchemeService,
+      private dialog: MatDialog
   ) {
   }
 
   ngOnInit() {
-    this.OnChartsType();
-    this.initCharts();
+      this.schemeService.get_charts().subscribe(charts => {
+          this.user_charts = charts;
+          if (!this.user_charts.length)
+              this.charts_type = Chart_Type.CT_DIG_TYPE;
+
+          this.OnChartsType();
+          this.initCharts();
+      });
   }
 
   OnChartsType(): void {
@@ -246,6 +259,16 @@ export class ChartsComponent implements OnInit, AfterViewInit {
 
     switch(this.charts_type)
     {
+    case Chart_Type.CT_USER:
+        this.itemList = this.user_charts;
+        if (this.itemList.length)
+          this.selectedItems.push(this.itemList[0]);
+        this.settings.text = "Выберите график";
+        this.settings.singleSelection = true;
+
+        this.paramList = null;
+
+        break;
     case Chart_Type.CT_DIG_TYPE:
         this.itemList = this.schemeService.scheme.dig_type;
         if (this.itemList.length)
@@ -764,4 +787,21 @@ export class ChartsComponent implements OnInit, AfterViewInit {
   randomColor(opacity: number): string {
     return `rgba(${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()},${opacity || '.3'})`;
   }
+
+    openColorPicker(chart: Chart_Info_Interface, dataset: any, chart_obj: any): void {
+        const dialogRef = this.dialog.open(ColorPickerDialog, {
+          width: '250px',
+          data: {chart, dataset, chart_obj}
+        });
+
+        dialogRef.afterClosed().subscribe(color => {
+            const rndRGB = `${color.red},${color.green},${color.blue}`;
+            dataset.borderColor = `rgba(${rndRGB},0.4)`;
+            dataset.backgroundColor = `rgba(${rndRGB},0.5)`;
+            dataset.pointBorderColor = `rgba(${rndRGB},0.7)`;
+            dataset.pointBackgroundColor = `rgba(${rndRGB},0.5)`;
+
+            this.chart.chart.update();
+        });
+    }
 }

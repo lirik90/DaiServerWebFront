@@ -7,7 +7,7 @@ import { of } from 'rxjs/observable/of';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 
-import { Scheme_Detail, Section, Device_Item, Device_Item_Group, Log_Value, Log_Param, DIG_Param_Value, DIG_Param_Type } from './scheme';
+import { Scheme_Detail, Section, Device_Item, Device_Item_Group, Log_Value, Log_Param, DIG_Param_Value, DIG_Param_Type, Chart } from './scheme';
 import { Connection_State, Scheme_Group_Member, PaginatorApi } from '../user';
 import { MessageService } from '../message.service';
 import { ISchemeService } from '../ischeme.service';
@@ -372,6 +372,11 @@ export class SchemeService extends ISchemeService {
     return this.http.put(url, formData, options)
             .catch(error => Observable.throw(error));
   }
+
+    get_charts(): Observable<Chart[]> {
+        let url = this.url('chart');
+        return this.getPiped<Chart[]>(url, `fetched chart list`, 'get_charts', []);
+    }
 
   getChartData(date_from: number, date_to: number, data: string, limit: number = 1000, offset: number = 0): Observable<PaginatorApi<Log_Value>> {
     let url = this.url('chart_value') + `&ts_from=${date_from}&ts_to=${+date_to}&limit=${limit}&offset=${offset}&data=${data}`;

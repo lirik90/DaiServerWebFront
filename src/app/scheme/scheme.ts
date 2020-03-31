@@ -220,6 +220,11 @@ export class DIG_Mode_Type {
   group_type_id: number;
 }
 
+export class Chart {
+  id: number;
+  name: string;
+}
+
 export class Scheme_Detail {
     id: number;             // ID проекта
     name: string;           // Имя проекта

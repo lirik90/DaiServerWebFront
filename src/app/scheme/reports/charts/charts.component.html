@@ -23,7 +23,8 @@
   <div class="chart_type">
     <span i18n="@@REPORTS.CHARTS.DECOMPOSE">Разложить</span>:
     <mat-radio-group class="charts-type-group" [(ngModel)]="charts_type" (change)="OnChartsType()">
-      <mat-radio-button class="charts-type-button" [value]="chartType.CT_DIG_TYPE" checked i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_GROUPS">По группам элементов</mat-radio-button>
+      <mat-radio-button class="charts-type-button" [value]="chartType.CT_USER" i18n="@@REPORTS.CHARTS.USERCHOICE" [disabled]="!user_charts.length">Пользовательский</mat-radio-button>
+      <mat-radio-button class="charts-type-button" [value]="chartType.CT_DIG_TYPE" i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_GROUPS">По группам элементов</mat-radio-button>
       <mat-radio-button class="charts-type-button" [value]="chartType.CT_DEVICE_ITEM_TYPE" i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_TYPES">По типам элементов</mat-radio-button>
       <mat-radio-button class="charts-type-button" [value]="chartType.CT_DEVICE_ITEM" i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_ITEMS">По элементам</mat-radio-button>
     </mat-radio-group>
@@ -35,7 +36,7 @@
                         >
   </angular2-multiselect>
 
-  <angular2-multiselect [data]="paramList"
+  <angular2-multiselect *ngIf="paramList" [data]="paramList"
                         [(ngModel)]="paramSelected"
                         [settings]="paramSettings"
                         >
@@ -50,7 +51,7 @@
 
     <div class="legend">
       <div class="legend__item" *ngFor="let dataset of chart.data.datasets">
-        <div class="legend__item-color" [style.background-color]="dataset.pointBorderColor"></div><div class="legend__item-label">{{ dataset.label }}</div>
+        <div class="legend__item-color" [style.background-color]="dataset.pointBorderColor" (click)="openColorPicker(chart, dataset, chart_obj)" ></div><div class="legend__item-label">{{ dataset.label }}</div>
       </div>
       <a (click)="random_color()">Random color</a>
     </div>
