@@ -77,7 +77,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
   date_to = new FormControl(moment());
   time_to = '23:59:59';
 
-  @ViewChild("chart_obj", {static: false}) chart: BaseChartDirective;
+  @ViewChild("chart_obj") chart: BaseChartDirective;
 
   charts_type: number = Chart_Type.CT_DIG_TYPE;
   logs_count: number;
