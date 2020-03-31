@@ -39,7 +39,7 @@
     "flag-icon-css": "^3.3.0",
     "jquery": "^3.4.1",
     "moment": "^2.22.2",
-    "moment-timezone": "^0.5.26",
+    "moment-timezone": "^0.5.28",
     "ng-select2": "^1.2.2",
     "ng2-ace-editor": "^0.3.9",
     "ng2-charts": "^2.3.0",
