@@ -1,17 +1,17 @@
-import {Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator } from '@angular/material';
+import { HttpClient } from '@angular/common/http';
+import { PageEvent } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
+import { SubCommandDescription } from '@angular/cli/models/interface';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable, of, Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
 
-import {Scheme, PaginatorApi} from '../../user';
+import { Connection_State, Scheme, PaginatorApi} from '../../user';
 import { SchemesService } from '../schemes.service';
-import {AuthenticationService} from '../../authentication.service';
-import {PageEvent} from '@angular/material/typings/paginator';
-import {HttpClient} from '@angular/common/http';
-import {Connection_State, ControlService} from '../../scheme/control.service';
-import {TranslateService} from '@ngx-translate/core';
-import {Observable, of, Subject, Subscription} from 'rxjs';
-import {SubCommandDescription} from '@angular/cli/models/interface';
-import {debounceTime, distinctUntilChanged, switchMap, takeUntil} from 'rxjs/operators';
+import { AuthenticationService } from '../../authentication.service';
+import { ControlService } from '../../scheme/control.service';
 
 class StatusItems {
   connection: number;

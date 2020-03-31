@@ -221,21 +221,21 @@ export class DIG_Mode_Type {
 }
 
 export class Scheme_Detail {
-  id: number;             // ID проекта
-  name: string;           // Имя проекта
-  title: string;
+    id: number;             // ID проекта
+    name: string;           // Имя проекта
+    title: string;
 
-  sign_type: Sign_Type[];  // Еденицы измерения
-  section: Section[];    // Наполнение секций
-  device: Device[];      // Устройства и их элементы в системе
-  device_item_type: Device_Item_Type[];  // Типы элементов
-  dig_param_type: DIG_Param_Type[];    // Типы уставок
-  dig_type: DIG_Type[];// Типы групп
-  dig_status_type: DIG_Status_Type[];  // Типы состояний
-  dig_status_category: DIG_Status_Category[];  // Категории состояний
-  dig_mode_type: DIG_Mode_Type[];
+    sign_type: Sign_Type[];  // Еденицы измерения
+    section: Section[];    // Наполнение секций
+    device: Device[];      // Устройства и их элементы в системе
+    device_item_type: Device_Item_Type[];  // Типы элементов
+    dig_param_type: DIG_Param_Type[];    // Типы уставок
+    dig_type: DIG_Type[];// Типы групп
+    dig_status_type: DIG_Status_Type[];  // Типы состояний
+    dig_status_category: DIG_Status_Category[];  // Категории состояний
+    dig_mode_type: DIG_Mode_Type[];
     disabled_param: number[]; // Недоступные для пользователя параметры
 
-  conn: Observable<number>;
+    conn: Observable<number>;
 }
 

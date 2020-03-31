@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, OnInit, Inject, AfterViewInit, OnDestroy } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ISubscription } from "rxjs/Subscription";
 
 import { ByteMessage, ByteTools } from '../../../web-socket.service';

@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ISubscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { merge } from 'rxjs/observable/merge';
@@ -15,10 +17,10 @@ import { Scheme_Group_Member, PaginatorApi } from '../../user';
 import { AuthenticationService } from '../../authentication.service';
 import { SchemeService } from '../scheme.service';
 import { ControlService, WebSockCmd } from '../control.service';
-import {TranslateService} from '@ngx-translate/core';
-import {ActivatedRoute} from '@angular/router';
-import {PageEvent} from '@angular/material/typings/paginator';
-import {CookieService} from 'ngx-cookie-service';
+import { TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute } from '@angular/router';
+import { PageEvent } from '@angular/material/paginator';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-log',

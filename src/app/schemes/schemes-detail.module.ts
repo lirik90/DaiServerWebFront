@@ -3,11 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from "@angular/router";
 
-import {
-    MatFormFieldModule, 
-    MatSelectModule,
-    MatIconModule
-} from '@angular/material';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 
 import { SchemeDetailComponent } from './detail/detail.component';
 import { SchemeStateListComponent } from './scheme-state-list/scheme-state-list.component';

@@ -5,6 +5,7 @@
   "projects": {
     "device-access": {
       "i18n": {
+        "sourceLocale": "ru",
         "locales": {
           "en": "src/locale/messages.en.xlf",
           "fr": "src/locale/messages.fr.xlf",
@@ -55,6 +56,10 @@
                   "maximumWarning": "6kb"
                 }
               ],
+              "localize": [
+                "ru"
+              ],
+              "outputPath": "dist",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -78,9 +83,9 @@
                   "maximumWarning": "6kb"
                 }
               ],
-            "localize": [
-              "en"
-            ],
+              "localize": [
+                "en"
+              ],
               "outputPath": "dist",
               "i18nMissingTranslation": "warning",
               "optimization": true,
@@ -106,9 +111,9 @@
                   "maximumWarning": "6kb"
                 }
               ],
-            "localize": [
-              "fr"
-            ],
+              "localize": [
+                "fr"
+              ],
               "outputPath": "dist",
               "i18nMissingTranslation": "warning",
               "optimization": true,
@@ -134,9 +139,9 @@
                   "maximumWarning": "6kb"
                 }
               ],
-            "localize": [
-              "mn"
-            ],
+              "localize": [
+                "mn"
+              ],
               "outputPath": "dist",
               "i18nMissingTranslation": "warning",
               "optimization": true,
@@ -162,11 +167,10 @@
                   "maximumWarning": "6kb"
                 }
               ],
-            "localize": [
-              "ru"
-            ],
-              "outputPath": "dist/ru/",
-              "baseHref": "/ru/",
+              "localize": [
+                "ru"
+              ],
+              "outputPath": "dist",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -196,6 +200,9 @@
             },
             "ru": {
               "browserTarget": "device-access:build:ru"
+            },
+            "en": {
+              "browserTarget": "device-access:build:en"
             }
           }
         },

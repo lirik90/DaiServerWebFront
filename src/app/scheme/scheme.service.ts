@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 
 import { Scheme_Detail, Section, Device_Item, Device_Item_Group, Log_Value, Log_Param, DIG_Param_Value, DIG_Param_Type } from './scheme';
-import { Scheme_Group_Member, PaginatorApi } from '../user';
+import { Connection_State, Scheme_Group_Member, PaginatorApi } from '../user';
 import { MessageService } from '../message.service';
 import { ISchemeService } from '../ischeme.service';
 
@@ -86,9 +86,15 @@ export class SchemeService extends ISchemeService {
         }
       }
       return of(true);
-    }), catchError(this.handleError('updateStatusItems', false)));
-  }
+    }), catchError((error: any): Observable<boolean> => {
+        
+      console.error(error); // log to console instead
+      this.log(`updateStatusItems failed: ${error.message}`);
 
+      this.scheme2.conn = of(Connection_State.CS_SERVER_DOWN);
+      return of(true);
+    }));
+  }
 
   updateDevValues(id: number): Observable<boolean> {
     // get dev values
@@ -110,7 +116,7 @@ export class SchemeService extends ISchemeService {
       }
 
       return of(true);
-    }), catchError(this.handleError('updateDevValues', false)));
+    }), catchError(this.handleError('updateDevValues', true)));
   }
 
   clear(): void {
@@ -141,15 +147,17 @@ export class SchemeService extends ISchemeService {
   loadScheme2(scheme_name: string, reload?: boolean): Observable<boolean> {
     return this.loadScheme(scheme_name, reload).pipe(
       flatMap((res) => {
+          console.log('First stem: ', res);
         // returns an Observable of type Y
         return res ? this.updateStatusItems(this.scheme2.id) : of(false);
       }),
       flatMap((res) => {
-        console.log(JSON.parse(JSON.stringify(this.scheme2.section)));
-        const udv = this.updateDevValues(this.scheme2.id);
-        return res ? udv : of(false);
+          console.log('Second stem: ', res);
+        // console.log(JSON.parse(JSON.stringify(this.scheme2.section)));
+        return res ? this.updateDevValues(this.scheme2.id) : of(false);
       }),
       flatMap((res) => {
+          console.log('Third stem: ', res);
         if (res) {
           this.scheme = this.scheme2;
           this.scheme.name = scheme_name;
