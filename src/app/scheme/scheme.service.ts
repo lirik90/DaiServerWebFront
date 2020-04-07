@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import {switchMap, catchError, map, tap, finalize, flatMap} from 'rxjs/operators';
@@ -376,6 +376,25 @@ export class SchemeService extends ISchemeService {
     get_charts(): Observable<Chart[]> {
         let url = this.url('chart');
         return this.getPiped<Chart[]>(url, `fetched chart list`, 'get_charts', []);
+    }
+
+    del_chart(chart: Chart): Observable<boolean> {
+        const url = `/api/v2/scheme/${this.scheme.id}/chart/${chart.id}/`;
+        return this.http.delete<any>(url).pipe(
+            switchMap(resp => of(resp.result)), 
+            catchError((err: any): Observable<boolean> => 
+            {
+                alert(err.error + '\n' + err.message);
+                return of(false);
+            }));
+    }
+
+    save_chart(chart: Chart): Observable<Chart> {
+        const url = `/api/v2/scheme/${this.scheme.id}/chart/`;
+        return this.http.put<any>(url, chart).catch((err: HttpErrorResponse) => {
+            alert(err.error + '\n' + err.message);
+            return of(null as Chart);
+        });
     }
 
   getChartData(date_from: number, date_to: number, data: string, limit: number = 1000, offset: number = 0): Observable<PaginatorApi<Log_Value>> {

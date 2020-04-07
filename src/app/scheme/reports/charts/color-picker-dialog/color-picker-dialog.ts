@@ -22,18 +22,25 @@ export class ColorPickerDialog implements OnInit {
       @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
     ngOnInit(): void {
-        var match = this.data.dataset.pointBorderColor.match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
-        if (match) {
-            let cToHex = (c) => {
-                const str = match[c];
-                const num = parseInt(str);
-                var hex = num.toString(16);
-              return hex.length == 1 ? "0" + hex : hex;
-            };
-            this.color = {
-                hexString: `#${cToHex(1)}${cToHex(2)}${cToHex(3)}`
-            } as ColorOutput;
-        }
+        const hexString = ColorPickerDialog.rgba2hex(this.data.dataset.pointBorderColor);
+        if (hexString)
+            this.color = { hexString } as ColorOutput;
+    }
+
+    static rgba2hex(rgba_str: string): string
+    {
+        var match = rgba_str.match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
+        if (!match)
+            return null;
+
+        let cToHex = (c) => {
+            const str = match[c];
+            const num = parseInt(str);
+            var hex = num.toString(16);
+          return hex.length == 1 ? "0" + hex : hex;
+        };
+
+        return `#${cToHex(1)}${cToHex(2)}${cToHex(3)}`;
     }
 
     onNoClick(): void {

@@ -220,9 +220,16 @@ export class DIG_Mode_Type {
   group_type_id: number;
 }
 
+export class Chart_Item {
+    color: string;
+    item_id: number;
+    param_id: number;
+}
+
 export class Chart {
-  id: number;
-  name: string;
+    id: number;
+    name: string;
+    items: Chart_Item[];
 }
 
 export class Scheme_Detail {

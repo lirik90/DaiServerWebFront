@@ -42,7 +42,23 @@
                         >
   </angular2-multiselect>
 
-  <button mat-raised-button (click)="initCharts()" i18n="@@CONTROL.SHOW">Построить график</button>
+    <div *ngIf="charts_type == chartType.CT_USER"
+        class="save-block">
+        <button mat-raised-button (click)="edit_user_chart()" i18n="@@CONTROL.EDIT">Изменить</button>
+        <button mat-raised-button (click)="del_user_chart()" i18n="@@CONTROL.DEL">Удалить</button>
+    </div> 
+
+    <div *ngIf="charts_type == chartType.CT_DEVICE_ITEM"
+        class="save-block">
+        <mat-form-field>
+          <input matInput i18n-placeholder="@@REPORTS.NAME" placeholder="Имя графика" [(ngModel)]="user_chart.name" required>
+        </mat-form-field>
+
+        <button *ngIf="user_chart.id" mat-raised-button (click)="save_user_chart()" i18n="@@CONTROL.EDIT">Изменить</button>
+        <button *ngIf="!user_chart.id" mat-raised-button (click)="save_user_chart()" i18n="@@CONTROL.SAVE">Сохранить</button>
+    </div>
+
+    <button mat-raised-button (click)="initCharts()" i18n="@@CONTROL.SHOW">Построить график</button>
 </div>
 
   <div *ngFor="let chart of charts">
