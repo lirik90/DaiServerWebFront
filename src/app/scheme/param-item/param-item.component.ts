@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { SchemeService } from "../scheme.service";
-import { DIG_Param_Value, DIG_Param_Type, DIG_Param_Value_Type } from "../scheme";
+import { DIG_Param, DIG_Param_Type, DIG_Param_Value_Type } from "../scheme";
 
 @Component({
   selector: 'app-param-item',
@@ -10,8 +10,8 @@ import { DIG_Param_Value, DIG_Param_Type, DIG_Param_Value_Type } from "../scheme
 })
 export class ParamItemComponent implements OnInit {
 
-  @Input() values: DIG_Param_Value[];
-  @Input() changed: DIG_Param_Value[];
+  @Input() values: DIG_Param[];
+  @Input() changed: DIG_Param[];
   @Input() parent_param: DIG_Param_Type = null;
 
   value_type = DIG_Param_Value_Type;   
@@ -23,12 +23,12 @@ export class ParamItemComponent implements OnInit {
   ngOnInit() {
   }
 
-    isDisabled(p: DIG_Param_Value): boolean
+    isDisabled(p: DIG_Param): boolean
     {
         return this.schemeService.scheme.disabled_param.includes(p.param_id);
     }
 
-  getTimeString(p: DIG_Param_Value): string 
+  getTimeString(p: DIG_Param): string 
   {
     let pad = (val: number) => {
       return ('0' + val.toFixed(0)).slice(-2);
@@ -40,7 +40,7 @@ export class ParamItemComponent implements OnInit {
     return h + ':' + m + ':' + pad(secs % 60);
   }
 
-  setTimeParam(p: DIG_Param_Value, val: string): void 
+  setTimeParam(p: DIG_Param, val: string): void 
   {
       let arr = val.split(':').reverse();
       if (arr.length)
@@ -52,7 +52,7 @@ export class ParamItemComponent implements OnInit {
       }
   }
 
-  change(item: DIG_Param_Value, new_value: any): void
+  change(item: DIG_Param, new_value: any): void
   {
     for (let param_value of this.changed)
     {

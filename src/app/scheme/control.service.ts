@@ -8,7 +8,7 @@ import 'rxjs/add/operator/filter';
 import { SchemeService } from './scheme.service';
 import { ByteMessage, ByteTools, WebSocketBytesService } from '../web-socket.service';
 import { Connection_State } from '../user';
-import { Device_Item, Log_Event, Device_Item_Group, DIG_Param_Value, DIG_Status_Type } from './scheme';
+import { Device_Item, Log_Event, Device_Item_Group, DIG_Param, DIG_Status_Type } from './scheme';
 
 // import { QByteArray } from 'qtdatastream/src/types';
 
@@ -391,7 +391,7 @@ export class ControlService {
     this.wsbService.send(WebSockCmd.WS_CHANGE_GROUP_MODE, this.schemeService.scheme.id, view);
   }
 
-  changeParamValues(params: DIG_Param_Value[]): void {
+  changeParamValues(params: DIG_Param[]): void {
     if (!params.length) {
       return;
     }

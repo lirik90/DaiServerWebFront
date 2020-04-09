@@ -7,7 +7,7 @@ import { of } from 'rxjs/observable/of';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 
-import { Scheme_Detail, Section, Device_Item, Device_Item_Group, Log_Value, Log_Param, DIG_Param_Value, DIG_Param_Type, Chart } from './scheme';
+import { Scheme_Detail, Section, Device_Item, Device_Item_Group, Log_Value, Log_Param, DIG_Param, DIG_Param_Type, Chart } from './scheme';
 import { Connection_State, Scheme_Group_Member, PaginatorApi } from '../user';
 import { MessageService } from '../message.service';
 import { ISchemeService } from '../ischeme.service';

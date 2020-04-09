@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { SchemeService } from '../scheme.service';
-import {Section, Device_Item, Device_Item_Group, DIG_Mode_Type, DIG_Param_Value} from '../scheme';
+import {Section, Device_Item, Device_Item_Group, DIG_Mode_Type, DIG_Param} from '../scheme';
 import { ControlService } from '../control.service';
 import {filter} from 'rxjs/operators';
 import {AuthenticationService} from '../../authentication.service';
@@ -135,7 +135,7 @@ export class ParamsDialogComponent implements OnInit{
   group: Device_Item_Group = undefined;
   cantChange: boolean;
 
-  changed_values: DIG_Param_Value[] = [];
+  changed_values: DIG_Param[] = [];
 
   constructor(
     private route: ActivatedRoute,

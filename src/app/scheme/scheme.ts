@@ -119,7 +119,7 @@ export class Device_Item_Group {  // Группа
   mode: number;          // ID режима автоматизации
   type: DIG_Type;          // Тип группы
   items: Device_Item[] = []; // Элементы в группе
-  params: DIG_Param_Value[] = [];// Уставки
+  params: DIG_Param[] = [];// Уставки
   status: number;           // Состояние
   statuses: DIG_Status[] = [];
   status_info: DIG_Status_Info;
@@ -155,13 +155,13 @@ export class DIG_Param_Type {  // Тип уставки
   value_type: number;       // Тип значения уставки
 }
 
-export class DIG_Param_Value { // Уставка
+export class DIG_Param { // Уставка
   id: number;       // ID
   group_id: number; // ID группы
   param_id: number; // ID типа уставки
   value: string;    // Значение
   param: DIG_Param_Type; // Тип уставки
-  childs: DIG_Param_Value[] = [];
+  childs: DIG_Param[] = [];
 }
 
 export class Device { // Устройство

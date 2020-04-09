@@ -20,7 +20,7 @@ import * as moment from 'moment';
 // const moment = _rollupMoment || _moment;
 
 import { SchemeService, ExportConfig, ExportItem } from '../../scheme.service';
-import { Device_Item_Type, DIG_Param_Value, DIG_Type, Section, Device_Item, Log_Value, Log_Param, Register_Type, Save_Algorithm, DIG_Param_Value_Type, Device_Item_Group, Chart } from '../../scheme';
+import { Device_Item_Type, DIG_Param, DIG_Type, Section, Device_Item, Log_Value, Log_Param, Register_Type, Save_Algorithm, DIG_Param_Value_Type, Device_Item_Group, Chart } from '../../scheme';
 import { PaginatorApi } from '../../../user';
 
 import { ColorPickerDialog } from './color-picker-dialog/color-picker-dialog';
@@ -39,6 +39,13 @@ interface Chart_Item_Iface
 {
     id: number;
     color: string;
+}
+
+interface Select_Item_Iface
+{
+    id: number;
+    title: string;
+    category: string;
 }
 
 enum Chart_Type {
@@ -109,8 +116,8 @@ export class ChartsComponent implements OnInit, AfterViewInit {
   selectedItems = [];
   settings: any = {};
 
-  paramList = [];
-  paramSelected = [];
+    paramList: Select_Item_Iface[] = [];
+    paramSelected: Select_Item_Iface[] = [];
   paramSettings: any = {};
 
   charts: Chart_Info_Interface[] = [];
@@ -241,6 +248,22 @@ export class ChartsComponent implements OnInit, AfterViewInit {
       });
   }
 
+    onItemSelect(item: any): void
+    {
+        if (this.charts_type === Chart_Type.CT_DIG_TYPE)
+        {
+            const accepted_param_type_ids = this.schemeService.scheme.dig_param_type
+                .filter(param_type => param_type.group_type_id === item.id)
+                .map(param_type => param_type.id);
+
+            this.paramSelected = [];
+            this.paramList = this.getParamTypeList().filter((param_type: Select_Item_Iface) => 
+            {
+                return accepted_param_type_ids.includes(param_type.id);
+            });
+        }
+    }
+
   OnChartsType(user_chart: Chart = undefined): void {
     if (user_chart)
         this.user_chart = { ...user_chart };
@@ -285,11 +308,13 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     case Chart_Type.CT_DIG_TYPE:
         this.itemList = this.schemeService.scheme.dig_type;
         if (this.itemList.length)
-          this.selectedItems.push(this.itemList[0]);
+        {
+            this.selectedItems.push(this.itemList[0]);
+            this.onItemSelect(this.selectedItems[0]);
+        }
         this.settings.text = "Выберите тип группы";
         this.settings.singleSelection = true;
 
-        this.paramList = this.getParamTypeList();
         this.paramSettings.text = "Выберите тип уставки";
         break;
     case Chart_Type.CT_DEVICE_ITEM_TYPE:
@@ -324,7 +349,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     return {prefix, category};
   }
 
-  getDevItemList(): any[] {
+  getDevItemList(): Select_Item_Iface[] {
     let devItemList = [];
     for (const sct of this.schemeService.scheme.section) {
       for (const group of sct.groups) {
@@ -340,8 +365,8 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     return devItemList;
   }
 
-  getParamTypeList(): any[] {
-    let paramList = [];
+  getParamTypeList(): Select_Item_Iface[] {
+    let paramList: Select_Item_Iface[] = [];
     const param_types = this.schemeService.scheme.dig_param_type;
     for (const pt of param_types)
     {
@@ -373,11 +398,11 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     return paramList;
   }
 
-  getParamList(): any[] 
+  getParamList(): Select_Item_Iface[] 
   {
-      let paramList = [];
+      let paramList: Select_Item_Iface[] = [];
 
-      let add_param = (p: DIG_Param_Value, category: string = '') => 
+      let add_param = (p: DIG_Param, category: string = '') => 
       {
           if (p.childs && p.childs.length)
           {
@@ -460,6 +485,9 @@ export class ChartsComponent implements OnInit, AfterViewInit {
 
     switch(this.charts_type)
     {
+    case Chart_Type.CT_USER:
+        this.initDeviceItemUserCharts(data_ptr);
+        break;
     case Chart_Type.CT_DIG_TYPE:
         this.initDIGTypeCharts(data_ptr);
         break;
@@ -468,9 +496,6 @@ export class ChartsComponent implements OnInit, AfterViewInit {
         break;
     case Chart_Type.CT_DEVICE_ITEM:
         this.initDeviceItemCharts(data_ptr);
-        break;
-    case Chart_Type.CT_USER:
-        this.initDeviceItemUserCharts(data_ptr);
         break;
     default:
         break;
@@ -495,70 +520,114 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     this.getLogs();
   }
 
-  addParam2Dataset(datasets: any[], data: any, param_values: DIG_Param_Value[], selected: Chart_Item_Iface[], is_pt: boolean = true): void {
-    for (const param_value of param_values) {
-      const prm_id = is_pt ? param_value.param_id : param_value.id;
+  addParam2Dataset(datasets: any[], data: any, params: DIG_Param[], selected: Chart_Item_Iface[]): void {
+    for (const param of params) {
       for (const s_pt of selected) {
-        if (s_pt.id === prm_id) {
-          data.params.push(param_value.id);
-          datasets.push(this.genParamDataset(param_value, s_pt.color));
+        if (s_pt.id === param.id) {
+          data.params.push(param.id);
+          datasets.push(this.genParamDataset(param, s_pt.color));
           break;
         }
       }
 
-      if (param_value.childs)
-        this.addParam2Dataset(datasets, data, param_value.childs, selected);
+      if (param.childs)
+        this.addParam2Dataset(datasets, data, param.childs, selected);
     }
   }
 
-  initDIGTypeCharts(data: any): void {
-    const params = this.paramSelected.map(it => { return { id: it.id, color: null }; });
-    const sections = this.schemeService.scheme.section;
-    for (const sct of sections) {
-      for (const group of sct.groups) {
-        if (group.type_id === this.selectedItems[0].id) {
-          const datasets: any[] = [];
+    get_dig_param_ids(param_types: any[]): Chart_Item_Iface[]
+    {
+        console.log(param_types);
+        const get_param_id = (param_type_id: number): number =>
+        {
+            const find_param = (params: DIG_Param[], type_id: number) =>
+            {
+                if (params)
+                    for (const param of params)
+                    {
+                        if (param.param_id === type_id)
+                            return param.id;
 
-          for (const item of group.items) {
-            if (item.type.save_algorithm > Save_Algorithm.SA_OFF) {
-              data.dev_items.push(item.id);
-              datasets.push(this.genDevItemDataset(item));
+                        const param_id = find_param(param.childs, type_id);
+                        if (param_id)
+                            return param_id;
+                    }
+                return null;
+            };
+
+            console.log('Search param type id: ' + param_type_id);
+            for (const sct of this.schemeService.scheme.section)
+            {
+                for (const group of sct.groups)
+                {
+                    const param_id = find_param(group.params, param_type_id);
+                    if (param_id)
+                        return param_id;
+                }
             }
-          }
+            console.log('Search param type id: ' + param_type_id + ' failed', this.schemeService.scheme.section);
+            return null;
+        };
 
-          this.addParam2Dataset(datasets, data, group.params, params);
-
-          this.addChart(sct.name, datasets);
-          break;
+        let res = [];
+        for (const param_type of param_types)
+        {
+            const dig_param_id = get_param_id(param_type.id);
+            if (dig_param_id)
+                res.push({id: dig_param_id, color: null });
         }
-      }
-    }
-  }
 
-  initDeviceItemTypeCharts(data: any): void {
-    const params = this.paramSelected.map(it => { return { id: it.id, color: null }; });
-    const sections = this.schemeService.scheme.section;
-    for (const sct of sections) {
-      for (const group of sct.groups) {
-        const datasets: any[] = [];
-        for (const item of group.items) {
-          for (const type of this.selectedItems) {
-            if (type.id == item.type.id) {
-              data.dev_items.push(item.id);
-              datasets.push(this.genDevItemDataset(item));
+        return res;
+    }
+
+    initDIGTypeCharts(data: any): void {
+        const params = this.get_dig_param_ids(this.paramSelected);
+        const sections = this.schemeService.scheme.section;
+        for (const sct of sections) {
+          for (const group of sct.groups) {
+            if (group.type_id === this.selectedItems[0].id) {
+              const datasets: any[] = [];
+    
+              for (const item of group.items) {
+                if (item.type.save_algorithm > Save_Algorithm.SA_OFF) {
+                  data.dev_items.push(item.id);
+                  datasets.push(this.genDevItemDataset(item));
+                }
+              }
+    
+              this.addParam2Dataset(datasets, data, group.params, params);
+    
+              this.addChart(sct.name, datasets);
               break;
             }
           }
         }
-
-        this.addParam2Dataset(datasets, data, group.params, params);
-
-        if (datasets.length) {
-          this.addChart(sct.name, datasets);
-        }
-      }
     }
-  }
+
+    initDeviceItemTypeCharts(data: any): void {
+        const params = this.get_dig_param_ids(this.paramSelected);
+        const sections = this.schemeService.scheme.section;
+        for (const sct of sections) {
+          for (const group of sct.groups) {
+            const datasets: any[] = [];
+            for (const item of group.items) {
+              for (const type of this.selectedItems) {
+                if (type.id == item.type.id) {
+                  data.dev_items.push(item.id);
+                  datasets.push(this.genDevItemDataset(item));
+                  break;
+                }
+              }
+            }
+
+            this.addParam2Dataset(datasets, data, group.params, params);
+
+            if (datasets.length) {
+              this.addChart(sct.name, datasets);
+            }
+          }
+        }
+    }
 
   initDeviceItemChartsImpl(data: any, dev_items: Chart_Item_Iface[], params: Chart_Item_Iface[]): void {
     const datasets: any[] = [];
@@ -575,7 +644,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
           }
         }
 
-        this.addParam2Dataset(datasets, data, group.params, params, false);
+        this.addParam2Dataset(datasets, data, group.params, params);
       }
     }
     this.addChart(this.translate.instant('REPORTS.CHARTS_ELEMENTS'), datasets);
@@ -807,7 +876,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     return dataset;
   }
 
-  genParamDataset(param: DIG_Param_Value, rgb_str: string = null): Object {
+  genParamDataset(param: DIG_Param, rgb_str: string = null): Object {
     let dataset = this.genDataset('⚙️ ' + param.param.title, true, rgb_str);
     dataset['param'] = param;
     return dataset;
