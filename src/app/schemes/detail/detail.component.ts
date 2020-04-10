@@ -73,11 +73,14 @@ export class SchemeDetailComponent implements OnInit {
     this.location.back();
   }
 
-    changeName(): void
+    changeName(name_edit: any): void
     {
         if (!this.canChangeName)
             return;
         this.nameEditing = true;
+
+        name_edit.style.display = '';
+        name_edit.focus();
     }
 
     saveName(name: string): void
@@ -86,5 +89,10 @@ export class SchemeDetailComponent implements OnInit {
         this.schemesService.setName(this.scheme.id, name).subscribe(() => {
             this.scheme.name = name;
         });
+    }
+
+    cancel_name_edit(): void
+    {
+        this.nameEditing = false;
     }
 }

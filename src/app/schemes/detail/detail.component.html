@@ -3,9 +3,9 @@
   <h2><span i18n="@@DETAILS.HEAD">Подробнее о проекте</span>: «{{ scheme.title | uppercase }}»</h2>
   <div><span i18n="@@DETAILS.ID">Ид</span>: {{scheme.id}}</div>
   <div><span i18n="@@DETAILS.NAME">Имя</span>: 
-      <span *ngIf="!nameEditing" [class.name-field]="canChangeName" (click)="changeName()">{{scheme.name}} <mat-icon *ngIf="canChangeName">edit</mat-icon></span>
-      <input *ngIf="nameEditing" class="name-edit" mat-input [value]="scheme.name" (keydown.enter)="saveName($event.target.value)">
-      <div *ngIf="nameEditing" class="crtn"></div>
+      <span *ngIf="!nameEditing" [class.name-field]="canChangeName" (click)="changeName(nameEdit)">{{scheme.name}} <mat-icon *ngIf="canChangeName">edit</mat-icon></span>
+      <input #nameEdit [style.display]="nameEditing ? '' : 'none'" class="name-edit" mat-input [value]="scheme.name" (keydown.enter)="saveName($event.target.value)" (keydown.esc)="cancel_name_edit()">
+      <div *ngIf="nameEditing" class="crtn" (click)="cancel_name_edit()"></div>
   </div>
   <div><span i18n="@@DETAILS.VERSION">Версия</span>: {{scheme.version}}</div>
   <div>

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import {switchMap, catchError, map, tap, finalize, flatMap} from 'rxjs/operators';
+import { switchMap, catchError, map, tap, finalize, flatMap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SubCommandDescription } from '@angular/cli/models/interface';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, of, Subject, Subscription } from 'rxjs';
@@ -12,6 +13,7 @@ import { Connection_State, Scheme, PaginatorApi} from '../../user';
 import { SchemesService } from '../schemes.service';
 import { AuthenticationService } from '../../authentication.service';
 import { ControlService } from '../../scheme/control.service';
+import { Create_Scheme_Dialog } from './create-scheme-dialog/create-scheme-dialog';
 
 class StatusItems {
   connection: number;
@@ -49,6 +51,7 @@ export class SchemeListComponent implements OnInit, OnDestroy {
               private authService: AuthenticationService,
               protected http: HttpClient,
               public translate: TranslateService,
+              public dialog: MatDialog
   ) {}
 
   httpReqs: Subject<void> = new Subject<void>();
@@ -60,7 +63,6 @@ export class SchemeListComponent implements OnInit, OnDestroy {
   searchQ: Subject<string>;
 
   schemes: Scheme[] = [];
-  new_scheme: Scheme = {} as Scheme;
 
   resultsLength = 0;
 
@@ -168,19 +170,6 @@ export class SchemeListComponent implements OnInit, OnDestroy {
     // tslint:enable:no-bitwise
 
     return [connState, modState, losesState];
-  }
-
-  add(): void {
-    this.new_scheme.name = this.new_scheme.name.trim();
-    this.new_scheme.title = this.new_scheme.title.trim();
-    this.new_scheme.description = this.new_scheme.description.trim();
-    this.new_scheme.device = this.new_scheme.device.trim();
-    if (!this.new_scheme.name || !this.new_scheme.title || !this.new_scheme.device) { return; }
-    this.schemesService.addScheme(this.new_scheme)
-      .subscribe(scheme => {
-        this.new_scheme = {} as Scheme;
-        this.schemes.push(scheme);
-      });
   }
 
   delete(scheme: Scheme): void {
@@ -353,4 +342,20 @@ export class SchemeListComponent implements OnInit, OnDestroy {
 
     });
   }
+
+    open_create_scheme_dialog(): void
+    {
+        const dialogRef = this.dialog.open(Create_Scheme_Dialog, { width: '80%', data: { cities: this.cities, comps: this.comps } });
+
+        dialogRef.afterClosed().subscribe(new_scheme => {
+            if (!new_scheme)
+                return;
+
+            this.schemesService.create_scheme(new_scheme)
+                .subscribe(scheme => {
+                    if (scheme)
+                        this.schemes.push(scheme);
+                });
+        });
+    }
 }
