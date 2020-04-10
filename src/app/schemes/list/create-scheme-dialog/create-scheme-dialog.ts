@@ -4,7 +4,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ISubscription } from "rxjs/Subscription";
 import { Observable } from 'rxjs/Observable';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, switchMap, map, delay } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 
 import { Scheme } from '../../../user';
@@ -14,7 +14,7 @@ import { SchemesService } from '../../schemes.service';
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
         const isSubmitted = form && form.submitted;
-        return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+        return !!(control && (control.invalid || control.pending) && (control.dirty || control.touched || isSubmitted));
     }
 }
 
@@ -30,9 +30,14 @@ export function unique_scheme_name_validator(schemesService: SchemesService): As
 {
     return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> =>
     {
-        return schemesService.getScheme(control.value).pipe(
-            map(scheme => scheme ? { uniqueName: true } : null),
-            catchError(() => of(null))
+        return of(null).pipe(
+            delay(300),
+            switchMap(val => {
+                return schemesService.getScheme(control.value).pipe(
+                    map(scheme => scheme ? { uniqueName: true } : null),
+                    catchError(() => of(null))
+                );
+            })
         );
     };
 }
@@ -72,6 +77,8 @@ export class Create_Scheme_Dialog implements OnInit {
     comps: any[];
     schemes: any[] = [];
   
+    is_title_gen: boolean;
+
     constructor(
         private schemesService: SchemesService,
         public dialogRef: MatDialogRef<Create_Scheme_Dialog>,
@@ -81,23 +88,32 @@ export class Create_Scheme_Dialog implements OnInit {
         this.comps = data.comps;
     }
   
-    ngOnInit(): void {
+    ngOnInit(): void
+    {
+        this.is_title_gen = true;
         this.schemesService.get_parent_schemes().subscribe(schemes => this.schemes = schemes);
     }
 
-    onNoClick(): void {
+    onNoClick(): void
+    {
         this.dialogRef.close();
     }
 
-    forbiddenNameValidator(nameRe: RegExp): ValidatorFn {
-        return (control: AbstractControl): {[key: string]: any} | null => {
-            const forbidden = nameRe.test(control.value);
-            return forbidden ? {'forbiddenName': {value: control.value}} : null;
-        };
+    create(): void
+    {
+        this.dialogRef.close(this.form.value);
     }
 
-    add(): void {
-        this.dialogRef.close(this.form.value);
+    name_change(): void
+    {
+        if (this.is_title_gen)
+            this.fc_title.setValue(this.fc_name.value);
+    }
+
+    title_change(): void
+    {
+        this.is_title_gen = this.fc_title.value.length === 0;
+        this.name_change();
     }
 }
 
