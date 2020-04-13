@@ -59,7 +59,7 @@ export class SchemesService extends ISchemeService {
 
     get_parent_schemes(): Observable<Titled_Object[]>
     {
-        const url = this.v2_scheme_url + '?parent_id!=null';
+        const url = this.v2_scheme_url + '?parent_id=null';
         return this.http.get<Titled_Object[]>(url);
     }
 
