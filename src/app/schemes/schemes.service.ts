@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
-import { Scheme, PaginatorApi } from '../user';
+import { Scheme, Scheme_Group, PaginatorApi } from '../user';
 import { MessageService } from '../message.service';
 import { ISchemeService } from '../ischeme.service';
 
@@ -56,6 +56,12 @@ export class SchemesService extends ISchemeService {
     return this.getPiped<PaginatorApi<Scheme>>(url,
       `fetched client devices`, 'getSchemes', {} as PaginatorApi<Scheme>);
   }
+
+    get_scheme_groups(): Observable<Scheme_Group[]>
+    {
+        const url = this.v2_url + 'scheme_group/';
+        return this.http.get<Scheme_Group[]>(url);
+    }
 
     get_parent_schemes(): Observable<Titled_Object[]>
     {

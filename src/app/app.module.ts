@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule, HttpClientXsrfModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { MaterialModule } from './material.module';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 
 import { SchemesDetailModule } from './schemes/schemes-detail.module';
 import { AppComponent } from './app.component';
@@ -72,6 +73,7 @@ export function createTranslateLoader(http: HttpClient) {
             }
         }),
     MaterialModule,
+    AngularMultiSelectModule,
     UserSettingsModule,
   ],
   providers: [

@@ -5,10 +5,13 @@ export interface PaginatorApi<T> {
   previous: string;
 }
 
-export class Scheme_Group_Member {
+export class Named_Object {
   id: number;
   name: string;
 }
+
+export class Scheme_Group extends Named_Object {}
+export class Scheme_Group_Member extends Named_Object {}
 
 export class User {
     id: number;

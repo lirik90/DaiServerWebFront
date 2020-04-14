@@ -58,6 +58,19 @@
         </mat-select>
     </mat-form-field>
 
+    <div>
+        <angular2-multiselect formControlName="scheme_groups"
+                              [data]="scheme_groups"
+                              [(ngModel)]="scheme_group_selected"
+                              [settings]="scheme_group_settings"
+                              [class.ms-bad-border]="!fc_s_groups.valid"
+                        >
+        </angular2-multiselect>
+        <mat-error *ngIf="fc_s_groups.hasError('required')" i18n="@@CREATE_SCHEME.SCHEME_GROUPS_IS_REQUIRED">
+            Выберите хотя бы одну группу
+        </mat-error>
+    </div>
+
     <mat-form-field>
         <mat-label i18n="@@DETAILS.DESCRIPTION">Описание</mat-label>
         <textarea matInput formControlName="description" [errorStateMatcher]="matcher" i18n-placeholder="@@DETAILS.DESC_EX" placeholder="Например: Моё первое тестовое устройство которое находится в гостинной..."></textarea>

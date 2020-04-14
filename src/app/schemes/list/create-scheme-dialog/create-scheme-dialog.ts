@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { catchError, switchMap, map, delay } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 
-import { Scheme } from '../../../user';
+import { Scheme, Scheme_Group } from '../../../user';
 import { SchemesService } from '../../schemes.service';
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -60,6 +60,7 @@ export class Create_Scheme_Dialog implements OnInit {
     fc_comp = new FormControl(null);
     fc_desc = new FormControl('');
     fc_parent = new FormControl(null);
+    fc_s_groups = new FormControl([], [Validators.required]);
 
     form = new FormGroup({
         name: this.fc_name,
@@ -68,7 +69,8 @@ export class Create_Scheme_Dialog implements OnInit {
         city_id: this.fc_cities,
         company_id: this.fc_comp,
         description: this.fc_desc,
-        parent_id: this.fc_parent
+        parent_id: this.fc_parent,
+        scheme_groups: this.fc_s_groups
     });
 
     matcher = new MyErrorStateMatcher();
@@ -77,6 +79,10 @@ export class Create_Scheme_Dialog implements OnInit {
     comps: any[];
     schemes: any[] = [];
   
+    scheme_groups: Scheme_Group[] = [];
+    scheme_group_selected: Scheme_Group[] = [];
+    scheme_group_settings = {};
+
     is_title_gen: boolean;
 
     constructor(
@@ -92,6 +98,15 @@ export class Create_Scheme_Dialog implements OnInit {
     {
         this.is_title_gen = true;
         this.schemesService.get_parent_schemes().subscribe(schemes => this.schemes = schemes);
+        this.schemesService.get_scheme_groups().subscribe(scheme_groups => this.scheme_groups = scheme_groups);
+
+        this.scheme_group_settings = {
+            text: "Выберите группы схем",
+            selectAllText: 'Выбрать все',
+            unSelectAllText: 'Снять все',
+            classes: "scheme-groups",
+            labelKey: 'name'
+        };
     }
 
     onNoClick(): void
@@ -101,7 +116,9 @@ export class Create_Scheme_Dialog implements OnInit {
 
     create(): void
     {
-        this.dialogRef.close(this.form.value);
+        let scheme = this.form.value;
+        scheme.scheme_groups = scheme.scheme_groups.map(sg => sg.id);
+        this.dialogRef.close(scheme);
     }
 
     name_change(): void

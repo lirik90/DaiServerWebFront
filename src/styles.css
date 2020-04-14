@@ -178,3 +178,6 @@ nav > div {
   background-color: #f7f7f7;
 }
 
+.ms-bad-border .c-btn {
+    border-color: red;
+}
