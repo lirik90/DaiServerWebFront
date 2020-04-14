@@ -58,7 +58,7 @@ export class Log2Component implements OnInit, OnDestroy {
     private schemeService: SchemeService,
     private http: HttpClient,
     private activatedRoute: ActivatedRoute,
-    public cookie: CookieService,
+    public cookie: CookieService
     ) {
       this.activatedRoute.queryParams.subscribe(params => {
         if (params['cmd']) {
@@ -181,8 +181,13 @@ export class Log2Component implements OnInit, OnDestroy {
 
   openImg(row: any): void {
     let dialogRef = this.dialog.open(VideoStreamDialogComponent, {
-      width: '90%',
-      data: { isImg: true, devItem: null, img: row }
+        autoFocus: false,
+        maxWidth: '100%',
+        width: '100%',
+        maxHeight: '100%',
+        height: '100%',
+        panelClass: 'imgDialog',
+        data: { isImg: true, devItem: null, img: row },
     });
 
     dialogRef.afterClosed().subscribe(result => console.log(result));

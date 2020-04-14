@@ -39,6 +39,19 @@ export class VideoStreamDialogComponent implements OnInit, OnDestroy {
     }
   
     ngOnInit(): void {
+        this.img.nativeElement.onload = () => {
+            const img = this.img.nativeElement;
+
+            const max_width = window.innerWidth - 50;
+            const max_height = window.innerHeight - 170;
+            const w_pt = img.naturalWidth / 100.0;
+            const h_pt = img.naturalHeight / 100.0;
+            const pt = Math.min(max_width / w_pt, max_height / h_pt);
+            this.width = Math.floor(w_pt * pt);
+            this.height = Math.floor(h_pt * pt);
+            img.onload = null;
+        };
+
         if (this.data.isImg)
             this.fillImg();
         else

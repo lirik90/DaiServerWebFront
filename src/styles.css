@@ -181,3 +181,7 @@ nav > div {
 .ms-bad-border .c-btn {
     border-color: red;
 }
+
+.imgDialog .mat-dialog-container {
+    overflow: visible;
+}
