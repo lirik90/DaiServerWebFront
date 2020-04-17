@@ -140,15 +140,14 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
 	  }
   }
 
-  open_video(): void
-  {
-    let dialogRef = this.dialog.open(VideoStreamDialogComponent, {
-      width: '90%',
-      data: { isImg: false, devItem: this.item, img: null }
-    });
+    open_video(): void
+    {
+        let settings = VideoStreamDialogComponent.get_default_settings();
+        settings['data'] = { isImg: false, devItem: this.item, img: null };
+        let dialogRef = this.dialog.open(VideoStreamDialogComponent, settings);
 
-    dialogRef.afterClosed().subscribe(result => console.log(result));
-  }
+        dialogRef.afterClosed().subscribe(result => console.log(result));
+    }
 
   handleFileInput(files: FileList): void
   {

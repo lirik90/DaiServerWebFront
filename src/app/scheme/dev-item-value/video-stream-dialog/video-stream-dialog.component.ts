@@ -29,6 +29,8 @@ export class VideoStreamDialogComponent implements OnInit, OnDestroy {
   
     timer_id: any;
 
+    need_adjust: boolean = true;
+
     sub: ISubscription;
   
     constructor(
@@ -39,6 +41,9 @@ export class VideoStreamDialogComponent implements OnInit, OnDestroy {
     }
   
     ngOnInit(): void {
+        this.width  = window.innerWidth - 50;
+        this.height = window.innerHeight - 170;
+
         this.img.nativeElement.onload = () => {
             const img = this.img.nativeElement;
 
@@ -49,13 +54,29 @@ export class VideoStreamDialogComponent implements OnInit, OnDestroy {
             const pt = Math.min(max_width / w_pt, max_height / h_pt);
             this.width = Math.floor(w_pt * pt);
             this.height = Math.floor(h_pt * pt);
-            img.onload = null;
+
+            if (this.need_adjust)
+                this.need_adjust = false;
+            else
+                img.onload = null;
         };
 
         if (this.data.isImg)
             this.fillImg();
         else
             this.initVideo();
+    }
+
+    static get_default_settings(): any
+    {
+        return {
+            autoFocus: false,
+            maxWidth: '100%',
+            width: '100%',
+            maxHeight: '100%',
+            height: '100%',
+            panelClass: 'imgDialog',
+        };
     }
 
     fillImg(): void {
@@ -69,7 +90,10 @@ export class VideoStreamDialogComponent implements OnInit, OnDestroy {
         this.set_data(jpeg_data);
     }
 
-    initVideo(): void {
+    initVideo(): void
+    {
+        this.fill_image('black', 'Подождите...', 'white');
+
         this.name = this.data.devItem.name || this.data.devItem.type.name;
     
         this.sub = this.controlService.stream_msg.subscribe((msg: ByteMessage) => {
@@ -82,6 +106,23 @@ export class VideoStreamDialogComponent implements OnInit, OnDestroy {
 
         this.timer_id = setTimeout(() => this.stream_start_timeout(), 3000);
         this.controlService.stream_toggle(this.data.devItem.id, true);
+    }
+
+    fill_image(color: string, text: string, text_color: string): void
+    {
+        let canvas = document.createElement('canvas'); 
+        canvas.width = this.width;
+        canvas.height = this.height;
+        let ctx = canvas.getContext('2d');
+        ctx.fillStyle = color;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.font = "48px serif";
+        const m_text = ctx.measureText(text);
+        const x = canvas.width / 2 - (m_text.width / 2);
+        const y = canvas.height / 2 - 5;
+        ctx.fillStyle = text_color;
+        ctx.fillText(text, x, y);
+        this.img.nativeElement.src = canvas.toDataURL();
     }
 
     ngOnDestroy(): void
@@ -128,12 +169,17 @@ export class VideoStreamDialogComponent implements OnInit, OnDestroy {
         const state = view[pos] == 1; pos += 1;
 
         console.log("Stream toggled:", dev_item_id, state);
+        if (this.data.devItem.id !== dev_item_id)
+            return;
 
         if (state)
             clearTimeout(this.timer_id);
+        else
+            this.dialogRef.close();
     }
 
     stream_start_timeout(): void
     {
+        this.fill_image('red', 'Ошибка', 'black');
     }
 }

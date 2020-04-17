@@ -179,19 +179,13 @@ export class Log2Component implements OnInit, OnDestroy {
 
   }
 
-  openImg(row: any): void {
-    let dialogRef = this.dialog.open(VideoStreamDialogComponent, {
-        autoFocus: false,
-        maxWidth: '100%',
-        width: '100%',
-        maxHeight: '100%',
-        height: '100%',
-        panelClass: 'imgDialog',
-        data: { isImg: true, devItem: null, img: row },
-    });
+    openImg(row: any): void {
+        let settings = VideoStreamDialogComponent.get_default_settings();
+        settings['data'] = { isImg: true, devItem: null, img: row };
+        let dialogRef = this.dialog.open(VideoStreamDialogComponent, settings);
 
-    dialogRef.afterClosed().subscribe(result => console.log(result));
-  }
+        dialogRef.afterClosed().subscribe(result => console.log(result));
+    }
 
   dateFormat(cell: any): string {
     if (cell.clientWidth <= 60)
