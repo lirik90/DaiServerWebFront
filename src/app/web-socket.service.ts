@@ -14,24 +14,6 @@ enum WebSockCmd {
   WS_AUTH,
   WS_WELCOME,
 
-  WS_CONNECTION_STATE,
-  WS_WRITE_TO_DEV_ITEM,
-  WS_CHANGE_GROUP_MODE,
-  WS_CHANGE_GROUP_PARAM_VALUES,
-  WS_EXEC_SCRIPT,
-  WS_RESTART,
-
-  WS_DEV_ITEM_VALUES,
-  WS_EVENT_LOG,
-  WS_GROUP_MODE,
-
-  WS_STRUCT_MODIFY,
-
-  WS_GROUP_STATUS_ADDED,
-  WS_GROUP_STATUS_REMOVED,
-  WS_TIME_INFO,
-  WS_IP_ADDRESS,
-
   WEB_SOCK_CMD_COUNT
 }
 
@@ -217,6 +199,18 @@ export class ByteTools {
   }
 
 
+  static parseQByteArray(view: Uint8Array, init_start: number = 0): [number, string] {
+    const [start, bytes] = ByteTools.parseUInt32(view, init_start);
+
+    if (bytes == 0xffffffff) {
+      return [start, null];
+    }
+
+    const raw_str = view.slice(start, bytes - start);
+    const value: string = String.fromCharCode.apply(null, raw_str);
+    return [start + bytes, value];
+  }
+
   static parseQString(view: Uint8Array, init_start: number = 0): [number, string] {
     const [start, bytes] = ByteTools.parseUInt32(view, init_start);
 
@@ -233,15 +227,15 @@ export class ByteTools {
       return [start, undefined];
     }
 
-		const buff = new ArrayBuffer(bytes);
+    const buff = new ArrayBuffer(bytes);
     const view16 = new Uint16Array(buff);
-		for (let i = 0; i < bytes; i += 2) {
-      view16[i / 2] = view[start + i] << 8 | view[start + i + 1];
-		}
-		const value: string = String.fromCharCode.apply(null, view16);
-
-		return [start + bytes, value];
+    for (let i = 0; i < bytes; i += 2) {
+        view16[i / 2] = view[start + i] << 8 | view[start + i + 1];
 	}
+    const value: string = String.fromCharCode.apply(null, view16);
+
+    return [start + bytes, value];
+  }
 
   static parseInt32(view: Uint8Array, start: number = 0): [number, number] {
     const value: number = view[start] << 24 | view[start + 1] << 16 | view[start + 2] << 8 | view[start + 3];
@@ -349,10 +343,12 @@ export class ByteTools {
       case 10: // QString
         return ByteTools.parseQString(view, start);
 
+      case 12: // QByteArray
+        return ByteTools.parseQByteArray(view, start);
+
       case 7: // QChar
       case 8: // QVariantMap
       case 11: // QStringList
-      case 12: // QByteArray
       case 13: // QBitArray
       case 14: // QDate
       case 15: // QTime

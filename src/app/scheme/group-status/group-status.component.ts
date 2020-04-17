@@ -1,5 +1,6 @@
 import {Component, OnInit, Input, ViewChild, OnChanges, SimpleChanges, DoCheck, ChangeDetectorRef} from '@angular/core';
-import {MatPaginator, MatTooltip} from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTooltip } from '@angular/material/tooltip';
 
 import {Device_Item_Group, DIG_Status_Info} from '../scheme';
 

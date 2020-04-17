@@ -1,18 +1,22 @@
-import { Component, Input, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, Input, OnInit, OnDestroy, Inject } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
+import {ISubscription} from 'rxjs/Subscription';
+import {TranslateService} from '@ngx-translate/core';
 
 import { ControlService } from "../control.service";
 import { AuthenticationService } from "../../authentication.service";
 import { Device_Item, Register_Type } from '../scheme';
 import { SchemeService } from "../scheme.service";
-import {TranslateService} from '@ngx-translate/core';
+
+import { VideoStreamDialogComponent } from "./video-stream-dialog/video-stream-dialog.component";
 
 @Component({
   selector: 'app-dev-item-value',
   templateUrl: './dev-item-value.component.html',
   styleUrls: ['./dev-item-value.component.css']
 })
-export class DevItemValueComponent implements OnInit {
+export class DevItemValueComponent implements OnInit, OnDestroy {
 
   @Input() item: Device_Item;
 
@@ -21,7 +25,11 @@ export class DevItemValueComponent implements OnInit {
   is_holding: boolean;
   is_button: boolean;
   is_file: boolean;
-  is_loading: boolean;
+  is_video: boolean;
+  is_loading: boolean = false;
+
+  timer_: number;
+  changed_sub: ISubscription = null;
 
   constructor(
 	  public translate: TranslateService,
@@ -32,26 +40,31 @@ export class DevItemValueComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.cantChange = false;
+    this.cantChange = !this.authService.canChangeValue();
     this.is_toggle = this.item.type.register_type == Register_Type.RT_COILS;
     this.is_holding = this.item.type.register_type == Register_Type.RT_HOLDING_REGISTERS;
-	  this.is_button = this.item.type.register_type == Register_Type.RT_SIMPLE_BUTTON;
-	  this.is_file = this.item.type.register_type == Register_Type.RT_FILE;
-    this.is_loading = false;
+	this.is_button = this.item.type.register_type == Register_Type.RT_SIMPLE_BUTTON;
+	this.is_file = this.item.type.register_type == Register_Type.RT_FILE;
+	this.is_video = this.item.type.register_type == Register_Type.RT_VIDEO_STREAM;
+  }
+
+  ngOnDestroy() {
+    if (this.changed_sub)
+      this.changed_sub.unsubscribe();
   }
 
   get sign_available(): boolean {
-    return !this.is_toggle && this.item.val && this.item.val.display !== null && this.item.type.sign !== undefined && this.item.type.sign.name.length > 0;
+    return !this.is_toggle && this.item.val && this.item.val.value !== null && this.item.type.sign !== undefined && this.item.type.sign.name.length > 0;
   }
 
   get text_value(): string {
-    const val = this.item.val ? this.item.val.display : null;
+    const val = this.item.val ? this.item.val.value : null;
     if (val === undefined || val === null) {
       return this.translate.instant("NOT_CONNECTED");
     }
 
     if (typeof(val) === 'object') {
-      return val[this.item.val.raw];
+      return val[this.item.val.raw_value];
     }
 
     if (this.item.type.register_type === Register_Type.RT_DISCRETE_INPUTS) {
@@ -69,13 +82,45 @@ export class DevItemValueComponent implements OnInit {
     return val;
   }
 
+  changed_finished(): void
+  {
+    this.is_loading = false;
+    this.changed_sub.unsubscribe();
+    this.changed_sub = null;
+  }
+
   write(value: number | boolean): void {
     if (value !== undefined)
+    {
+      let old_value = Object.assign({}, this.item.val);
+      this.item.val.value = value;
+
+      this.is_loading = true;
+
+      this.timer_ = <any>setTimeout(() => {
+        this.item.val.raw_value = old_value.raw_value;
+        this.item.val.value = old_value.value;
+        this.changed_finished();
+      }, 2500);
+
+      this.changed_sub = this.controlService.dev_item_changed.subscribe(dev_item_list => {
+        for (const item of dev_item_list)
+        {
+          if (item.id === this.item.id)
+          {
+            clearTimeout(this.timer_);
+            this.changed_finished();
+            break;
+          }
+        }
+      });
+
       this.controlService.writeToDevItem(this.item.id, value);
+    }
   }
 
   openDialog(): void {
-    if (this.cantChange || !this.is_holding)
+    if (this.cantChange || !this.is_holding || this.is_loading)
       return;
 
     let dialogRef = this.dialog.open(HoldingRegisterDialogComponent, {
@@ -88,12 +133,21 @@ export class DevItemValueComponent implements OnInit {
 
   click_button(): void
   {
-	  let value = this.item.val ? this.item.val.raw : null;
+	  let value = this.item.val ? this.item.val.raw_value : null;
     if (value !== null && value !== undefined)
 	  {
       this.controlService.writeToDevItem(this.item.id, value);
 	  }
   }
+
+    open_video(): void
+    {
+        let settings = VideoStreamDialogComponent.get_default_settings();
+        settings['data'] = { isImg: false, devItem: this.item, img: null };
+        let dialogRef = this.dialog.open(VideoStreamDialogComponent, settings);
+
+        dialogRef.afterClosed().subscribe(result => console.log(result));
+    }
 
   handleFileInput(files: FileList): void
   {
@@ -147,12 +201,12 @@ export class HoldingRegisterDialogComponent {
   {
     if (!data.val)
       return;
-    if (typeof(data.val.display) === 'object') {
-      this.value = data.val.raw;
-      this.values = data.val.display;
+    if (typeof(data.val.value) === 'object') {
+      this.value = data.val.raw_value;
+      this.values = data.val.value;
     }
     else
-      this.value = data.val.display;
+      this.value = data.val.value;
 
     if (this.check_is_string())
     {

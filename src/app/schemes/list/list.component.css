@@ -102,10 +102,6 @@ button.delete:hover {
   background-color: #556BAA;
 }
 
-.scheme_form > label {
-  display: block;
-}
-
 .card-header {
   margin: 10px;
 }
@@ -197,4 +193,13 @@ mat-card section {
 .status_sync_fail:after {
   color: orange;
   content: "sync_problem";
+}
+
+.create-btn {
+    width: 100%;
+    text-align: center;
+}
+
+.create-btn > button {
+    margin: 16px;
 }

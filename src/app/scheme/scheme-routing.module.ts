@@ -30,31 +30,23 @@ const schemeRoutes: Routes = [
         canActivateChild: [AuthGuard, SchemeLoadGuard, PermissionGuard],
         children: [
           { path: '', redirectTo: 'detail', pathMatch: 'full' },
-          { path: 'detail', component: SchemeDetailComponent},
-          {
-            path: 'manage',
-            component: Manage2Component,
-            data: { req_perms: ['isAdmin', 'isSpecial'] },
-          },
-          { path: 'elements', component: ManageComponent, data: { req_perms: ['isAdmin'] }},
-          { path: 'log', component: LogComponent, data: { req_perms: ['isFullAccess', 'isAdmin'] }},
-          { path: 'log2', component: Log2Component, data: { req_perms: ['isAdmin'] }},
-          { path: 'group/:groupId/param', component: ParamComponent },
+          { path: 'detail', component: SchemeDetailComponent, data: { req_perms: true }},
+          { path: 'elements', component: ManageComponent, data: { req_perms: true }},
+          { path: 'log_event', component: LogComponent, data: { req_perms: true }},
+          { path: 'log_value', component: Log2Component, data: { req_perms: true }},
+          { path: 'help', component: DocComponent, data: { req_perms: true }},
+          // { path: 'group/:groupId/param', component: ParamComponent },
           {
             path: 'reports',
             loadChildren: () => import('app/scheme/reports/reports.module').then(m => m.ReportsModule),
             canLoad: [AuthGuard],
-            data: { req_perms: ['isAdmin'] }
+            data: { req_perms: true }
           },
           {
-            path: 'settings',
+            path: 'structure',
             loadChildren: () => import('app/scheme/settings/settings.module').then(m => m.SettingsModule),
-            data: { req_perms: ['isAdmin'] },
+            data: { req_perms: true },
             canLoad: [AuthGuard]
-          },
-          {
-            path: 'doc',
-            component: DocComponent,
           },
         ]
       }

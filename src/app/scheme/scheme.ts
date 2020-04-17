@@ -32,6 +32,7 @@ export enum Register_Type { // Тип данных элемента
     RT_HOLDING_REGISTERS, // Значения чтение/запись
     RT_FILE,              // Передача файла
     RT_SIMPLE_BUTTON,     // Обычная кнопка. Передает всегда значение 1
+    RT_VIDEO_STREAM,      // Видео поток
 }
 
 export enum Save_Algorithm { // Алгоритм сохранения изменений значения
@@ -63,8 +64,8 @@ export class Section {
 }
 
 export class Device_Item_Value {
-  raw: any;      // Сырое значение
-  display: any;  // Отображаемое значение
+  raw_value: any;      // Сырое значение
+  value: any;  // Отображаемое значение
 }
 
 export class Device_Item { // Элемент устройства
@@ -118,7 +119,7 @@ export class Device_Item_Group {  // Группа
   mode: number;          // ID режима автоматизации
   type: DIG_Type;          // Тип группы
   items: Device_Item[] = []; // Элементы в группе
-  params: DIG_Param_Value[] = [];// Уставки
+  params: DIG_Param[] = [];// Уставки
   status: number;           // Состояние
   statuses: DIG_Status[] = [];
   status_info: DIG_Status_Info;
@@ -154,13 +155,13 @@ export class DIG_Param_Type {  // Тип уставки
   value_type: number;       // Тип значения уставки
 }
 
-export class DIG_Param_Value { // Уставка
+export class DIG_Param { // Уставка
   id: number;       // ID
   group_id: number; // ID группы
   param_id: number; // ID типа уставки
   value: string;    // Значение
   param: DIG_Param_Type; // Тип уставки
-  childs: DIG_Param_Value[] = [];
+  childs: DIG_Param[] = [];
 }
 
 export class Device { // Устройство
@@ -172,13 +173,16 @@ export class Device { // Устройство
   items: Device_Item[];// Массив элементов
 }
 
-export class Log_Data { // Запись журнала изменений значения
+class Log_Base {
 //  id: number;     // ID
   timestamp_msecs: string;     // Время изменения
+  user_id: number;  // Пользователь
+}
+
+export class Log_Value extends Log_Base { // Запись журнала изменений значения
   item_id: number;  // ID элемент
   raw_value: string;// Значение
   value: string;    // Отображаемое значение
-  user_id: number;  // Пользователь
 }
 
 export enum Log_Event_Type { // Тип события в журнале событий
@@ -190,14 +194,17 @@ export enum Log_Event_Type { // Тип события в журнале собы
     ET_USER
 }
 
-export class Log_Event { // Запись в журнале событий
+export class Log_Event extends Log_Base { // Запись в журнале событий
   date: Date;
-  timestamp_msecs: number;      // Время события
   category: string;        // Категория
   text: string;        // Сообщение
   type_id: number;       // Тип события
-  user_id: number;    // Пользователь
   color: string = ''; // Цвет?
+}
+
+export class Log_Param extends Log_Base {
+  group_param_id: number;
+  value: string;
 }
 
 export class Settings {
@@ -206,28 +213,41 @@ export class Settings {
   value: string;
 }
 
-export class DIG_Mode {
+export class DIG_Mode_Type {
   id: number;
   name: string;
   title: string;
   group_type_id: number;
 }
 
+export class Chart_Item {
+    color: string;
+    item_id: number;
+    param_id: number;
+}
+
+export class Chart {
+    id: number;
+    name: string;
+    items: Chart_Item[];
+}
+
 export class Scheme_Detail {
-  id: number;             // ID проекта
-  name: string;           // Имя проекта
-  title: string;
+    id: number;             // ID проекта
+    name: string;           // Имя проекта
+    title: string;
 
-  sign_type: Sign_Type[];  // Еденицы измерения
-  section: Section[];    // Наполнение секций
-  device: Device[];      // Устройства и их элементы в системе
-  device_item_type: Device_Item_Type[];  // Типы элементов
-  dig_param_type: DIG_Param_Type[];    // Типы уставок
-  dig_type: DIG_Type[];// Типы групп
-  dig_status_type: DIG_Status_Type[];  // Типы состояний
-  dig_status_category: DIG_Status_Category[];  // Категории состояний
-  dig_mode: DIG_Mode[];
+    sign_type: Sign_Type[];  // Еденицы измерения
+    section: Section[];    // Наполнение секций
+    device: Device[];      // Устройства и их элементы в системе
+    device_item_type: Device_Item_Type[];  // Типы элементов
+    dig_param_type: DIG_Param_Type[];    // Типы уставок
+    dig_type: DIG_Type[];// Типы групп
+    dig_status_type: DIG_Status_Type[];  // Типы состояний
+    dig_status_category: DIG_Status_Category[];  // Категории состояний
+    dig_mode_type: DIG_Mode_Type[];
+    disabled_param: number[]; // Недоступные для пользователя параметры
 
-  conn: Observable<number>;
+    conn: Observable<number>;
 }
 

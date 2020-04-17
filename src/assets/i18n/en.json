@@ -15,15 +15,12 @@
 	"NOT_CONNECTED": "Not connected",
   "WITH_LOSS": "With packets loss.",
 	"NAVIGATION_TAB": {
-    "INFO": "Details",
-    "MANAGEMENT": "Management",
+    "DETAIL": "Details",
     "ELEMENTS": "Elements",
-    "LOG": "Journal",
+    "LOG_EVENT": "Journal",
     "LOG_VALUE": "Value log",
-    "WIFI": "Wi-Fi Settings",
     "STRUCTURE": "Structure",
     "REPORTS": "Reports",
-    "EXPORT": "Export data",
     "HELP": "Help"
 	},
 	"LOG": {

@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ISubscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { merge } from 'rxjs/observable/merge';
@@ -12,12 +14,13 @@ import { switchMap } from 'rxjs/operators/switchMap';
 
 import { Log_Event, Log_Event_Type } from '../scheme';
 import { Scheme_Group_Member, PaginatorApi } from '../../user';
+import { AuthenticationService } from '../../authentication.service';
 import { SchemeService } from '../scheme.service';
 import { ControlService, WebSockCmd } from '../control.service';
-import {TranslateService} from '@ngx-translate/core';
-import {ActivatedRoute} from '@angular/router';
-import {PageEvent} from '@angular/material/typings/paginator';
-import {CookieService} from 'ngx-cookie-service';
+import { TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute } from '@angular/router';
+import { PageEvent } from '@angular/material/paginator';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-log',
@@ -32,6 +35,8 @@ export class LogComponent implements OnInit, OnDestroy {
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
+
+  canExecScript: boolean;
 
   itemsPerPage;
 
@@ -48,6 +53,7 @@ export class LogComponent implements OnInit, OnDestroy {
   constructor(
     public translate: TranslateService,
     private controlService: ControlService,
+    private authService: AuthenticationService,
     private schemeService: SchemeService,
     private http: HttpClient,
     private activatedRoute: ActivatedRoute,
@@ -61,6 +67,7 @@ export class LogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.canExecScript = this.authService.checkPermission('exec_script');
 
     const ipp = parseInt(this.cookie.get('logItemsPerPage'), 10);
 

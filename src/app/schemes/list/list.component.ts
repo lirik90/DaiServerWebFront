@@ -1,17 +1,19 @@
-import {Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator } from '@angular/material';
+import { HttpClient } from '@angular/common/http';
+import { PageEvent } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { SubCommandDescription } from '@angular/cli/models/interface';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable, of, Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
 
-import {Scheme, PaginatorApi} from '../../user';
+import { Connection_State, Scheme, PaginatorApi} from '../../user';
 import { SchemesService } from '../schemes.service';
-import {AuthenticationService} from '../../authentication.service';
-import {PageEvent} from '@angular/material/typings/paginator';
-import {HttpClient} from '@angular/common/http';
-import {Connection_State, ControlService} from '../../scheme/control.service';
-import {TranslateService} from '@ngx-translate/core';
-import {Observable, of, Subject, Subscription} from 'rxjs';
-import {SubCommandDescription} from '@angular/cli/models/interface';
-import {debounceTime, distinctUntilChanged, switchMap, takeUntil} from 'rxjs/operators';
+import { AuthenticationService } from '../../authentication.service';
+import { ControlService } from '../../scheme/control.service';
+import { Create_Scheme_Dialog } from './create-scheme-dialog/create-scheme-dialog';
 
 class StatusItems {
   connection: number;
@@ -30,7 +32,7 @@ class StatusInfo {
   inform: boolean;
   name: string;
   text: string;
-  type_id: number;
+  category_id: number;
 }
 
 @Component({
@@ -49,6 +51,7 @@ export class SchemeListComponent implements OnInit, OnDestroy {
               private authService: AuthenticationService,
               protected http: HttpClient,
               public translate: TranslateService,
+              public dialog: MatDialog
   ) {}
 
   httpReqs: Subject<void> = new Subject<void>();
@@ -60,7 +63,6 @@ export class SchemeListComponent implements OnInit, OnDestroy {
   searchQ: Subject<string>;
 
   schemes: Scheme[] = [];
-  new_scheme: Scheme = {} as Scheme;
 
   resultsLength = 0;
 
@@ -170,19 +172,6 @@ export class SchemeListComponent implements OnInit, OnDestroy {
     return [connState, modState, losesState];
   }
 
-  add(): void {
-    this.new_scheme.name = this.new_scheme.name.trim();
-    this.new_scheme.title = this.new_scheme.title.trim();
-    this.new_scheme.description = this.new_scheme.description.trim();
-    this.new_scheme.device = this.new_scheme.device.trim();
-    if (!this.new_scheme.name || !this.new_scheme.title || !this.new_scheme.device) { return; }
-    this.schemesService.addScheme(this.new_scheme)
-      .subscribe(scheme => {
-        this.new_scheme = {} as Scheme;
-        this.schemes.push(scheme);
-      });
-  }
-
   delete(scheme: Scheme): void {
     this.schemes = this.schemes.filter(h => h !== scheme);
     this.schemesService.deleteScheme(scheme).subscribe();
@@ -274,8 +263,8 @@ export class SchemeListComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getStatusInfo(id: number) {
-    const statusInfoSubs = this.http.get<any[]>(`/api/v2/scheme/${id}/dig_status_type`).subscribe(statusInfo => {
+  private getStatusInfo(id: number, real_id: number) {
+    const statusInfoSubs = this.http.get<any[]>(`/api/v2/scheme/${real_id}/dig_status_type`).subscribe(statusInfo => {
       this.statusInfo[id] = statusInfo;
 
       /*
@@ -302,7 +291,7 @@ export class SchemeListComponent implements OnInit, OnDestroy {
       const si = statusItems.items[i];
 
       const st_item = st.find(sti => sti.id === si.status_id);
-      scheme.messages.push({status: st_item.type_id, text: st_item.text, where: si.title});
+      scheme.messages.push({status: st_item.category_id, text: st_item.text, where: si.title});
     }
   }
 
@@ -342,7 +331,7 @@ export class SchemeListComponent implements OnInit, OnDestroy {
           if (!th.statusQueue[id].isLoading) {
             // start loading if was not started
             th.statusQueue[id].isLoading = true;
-            th.getStatusInfo(id);
+            th.getStatusInfo(id, h.id);
           }
         }
 
@@ -353,4 +342,20 @@ export class SchemeListComponent implements OnInit, OnDestroy {
 
     });
   }
+
+    open_create_scheme_dialog(): void
+    {
+        const dialogRef = this.dialog.open(Create_Scheme_Dialog, { width: '80%', data: { cities: this.cities, comps: this.comps } });
+
+        dialogRef.afterClosed().subscribe(new_scheme => {
+            if (!new_scheme)
+                return;
+
+            this.schemesService.create_scheme(new_scheme)
+                .subscribe(scheme => {
+                    if (scheme)
+                        this.schemes.push(scheme);
+                });
+        });
+    }
 }

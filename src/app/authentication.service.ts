@@ -42,8 +42,16 @@ export class AuthenticationService {
     return this.checkPermission('add_logentry');
   }
 
+  canChangeMode(): boolean {
+    return this.checkPermission('change_dig_mode');
+  }
+
   canChangeParam(): boolean {
     return this.checkPermission('change_dig_param_value');
+  }
+
+  canChangeValue(): boolean {
+    return this.checkPermission('change_device_item_value');
   }
 
   checkPermission(item: string): boolean {

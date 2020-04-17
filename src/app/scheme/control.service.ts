@@ -1,12 +1,14 @@
-import {Inject, Injectable} from '@angular/core';
+import { Inject, Injectable} from '@angular/core';
 import { DOCUMENT } from "@angular/common";
-import {ISubscription} from 'rxjs/Subscription';
-import {Subject} from 'rxjs/Subject';
+import { ISubscription} from 'rxjs/Subscription';
+import { Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
-import {SchemeService} from './scheme.service';
-import {ByteMessage, ByteTools, WebSocketBytesService} from '../web-socket.service';
-import { Device_Item, Log_Event, Device_Item_Group, DIG_Param_Value, DIG_Status_Type } from './scheme';
+
+import { SchemeService } from './scheme.service';
+import { ByteMessage, ByteTools, WebSocketBytesService } from '../web-socket.service';
+import { Connection_State } from '../user';
+import { Device_Item, Log_Event, Device_Item_Group, DIG_Param, DIG_Status_Type } from './scheme';
 
 // import { QByteArray } from 'qtdatastream/src/types';
 
@@ -33,19 +35,10 @@ export enum WebSockCmd {
   WS_TIME_INFO,
   WS_IP_ADDRESS,
 
+  WS_STREAM_TOGGLE,
+  WS_STREAM_DATA,
+
   WEB_SOCK_CMD_COUNT
-}
-
-export enum Connection_State {
-  CS_SERVER_DOWN,
-  CS_DISCONNECTED,
-  CS_DISCONNECTED_JUST_NOW,
-  CS_CONNECTED_JUST_NOW,
-  CS_CONNECTED_SYNC_TIMEOUT,
-  CS_CONNECTED,
-
-  CS_CONNECTED_WITH_LOSSES = 0x40,
-  CS_CONNECTED_MODIFIED = 0x80
 }
 
 export interface ConnectInfo {
@@ -65,6 +58,8 @@ class TimeInfo {
 @Injectable()
 export class ControlService {
   public byte_msg: Subject<ByteMessage> = new Subject<ByteMessage>();
+  public stream_msg: Subject<ByteMessage> = new Subject<ByteMessage>();
+  public dev_item_changed: Subject<Device_Item[]> = new Subject<Device_Item[]>();
   public opened: Subject<boolean>;
 
   private bmsg_sub: ISubscription;
@@ -112,6 +107,8 @@ export class ControlService {
           return;
         }
 
+        let dev_item_list = [];
+
         const view = new Uint8Array(msg.data);
         let [idx, count] = ByteTools.parseUInt32(view);
         let item_id: number;
@@ -141,8 +138,13 @@ export class ControlService {
 */
 
           // console.log(`Parse value ${item_id} ${raw_value} ${value}`);
-          this.procDevItemValue(item_id, raw_value, value);
+          const dev_item = this.procDevItemValue(item_id, raw_value, value);
+          if (dev_item)
+            dev_item_list.push(dev_item);
         }
+
+        if (dev_item_list.length)
+          this.dev_item_changed.next(dev_item_list);
 
         if (idx != msg.data.byteLength) {
           console.warn(`BAD PARSE POSITION ${idx} NEED ${msg.data.byteLength} ${JSON.stringify(view)}`);
@@ -180,7 +182,14 @@ export class ControlService {
         const view = new Uint8Array(msg.data);
         let [idx, count] = ByteTools.parseUInt32(view);
         let param_id: number;
+        let user_id: number;
+        let ts: number;
         while (count--) {
+          ts = ByteTools.parseInt64(view, idx)[1];
+          ts &= ~0x80000000000000;
+          idx += 8;
+          user_id = ByteTools.parseUInt32(view, idx)[1];
+          idx += 4;
           param_id = ByteTools.parseUInt32(view, idx)[1];
           idx += 4;
 
@@ -258,6 +267,9 @@ export class ControlService {
             }
           }
         }
+      } else if (msg.cmd === WebSockCmd.WS_STREAM_DATA 
+                 || msg.cmd === WebSockCmd.WS_STREAM_TOGGLE) {
+        this.stream_msg.next(msg);
       } else {
         this.byte_msg.next(msg);
       }
@@ -274,16 +286,18 @@ export class ControlService {
     this.wsbService.close();
   }
 
-  private procDevItemValue(item_id: number, raw_value: any, value: any): void {
+  private procDevItemValue(item_id: number, raw_value: any, value: any): Device_Item {
     const item: Device_Item = this.schemeService.devItemById(item_id);
     if (item) {
       if (!item.val) {
-        item.val = {raw: raw_value, display: value};
+        item.val = {raw_value, value};
       } else {
-        item.val.raw = raw_value;
-        item.val.display = value;
+        item.val.raw_value = raw_value;
+        item.val.value = value;
       }
     }
+
+    return item;
   }
 
   parseConnectNumber(n: number) {
@@ -377,7 +391,7 @@ export class ControlService {
     this.wsbService.send(WebSockCmd.WS_CHANGE_GROUP_MODE, this.schemeService.scheme.id, view);
   }
 
-  changeParamValues(params: DIG_Param_Value[]): void {
+  changeParamValues(params: DIG_Param[]): void {
     if (!params.length) {
       return;
     }
@@ -437,4 +451,15 @@ export class ControlService {
     }
     this.wsbService.send(WebSockCmd.WS_EXEC_SCRIPT, this.schemeService.scheme.id, view);
   }
+
+    stream_toggle(dev_item_id: number, state: boolean): void
+    {
+        let view = new Uint8Array(4 + 1);
+        let pos = 0;
+
+        ByteTools.saveInt32(dev_item_id, view, pos); pos += 4;
+        view[pos] = state ? 1 : 0; pos += 1;
+
+        this.wsbService.send(WebSockCmd.WS_STREAM_TOGGLE, this.schemeService.scheme.id, view);
+    }
 } // end class ControlService

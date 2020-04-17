@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { AuthenticationService } from "../../authentication.service";
 import { SchemeService } from "../scheme.service";
 import { ControlService } from "../control.service";
-import { Device_Item_Group, DIG_Param_Value, Section } from '../scheme';
+import { Device_Item_Group, DIG_Param, Section } from '../scheme';
 
 @Component({
   selector: 'app-param',
@@ -18,7 +18,7 @@ export class ParamComponent implements OnInit
   group: Device_Item_Group = undefined;
   cantChange: boolean;
 
-  changed_values: DIG_Param_Value[] = [];
+  changed_values: DIG_Param[] = [];
 
   @Input() groupId;
 
@@ -54,9 +54,13 @@ export class ParamComponent implements OnInit
     }
   }
 
+  onEnter(e: any): void {
+    console.log('dsa');
+  }
+
   onSubmit()
   {
-    console.log(this.changed_values);
+    console.log('inside param form submit', this.changed_values);
     if (this.changed_values)
       this.controlService.changeParamValues(this.changed_values);
     this.goBack();

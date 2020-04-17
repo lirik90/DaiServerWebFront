@@ -1,15 +1,17 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {MediaMatcher} from '@angular/cdk/layout';
-import {MatDialog, MatDialogRef, MatSidenav} from '@angular/material';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { ActivatedRoute, Router} from '@angular/router';
+import { MediaMatcher} from '@angular/cdk/layout';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSidenav } from '@angular/material/sidenav';
 
-import {ISubscription} from 'rxjs/Subscription';
+import { ISubscription } from 'rxjs/Subscription';
 
-import {SchemeService} from './scheme.service';
-import {Connection_State, ControlService, WebSockCmd} from './control.service';
-import {AuthenticationService} from '../authentication.service';
-import {TranslateService} from '@ngx-translate/core';
-import {FavService} from '../fav.service';
+import { SchemeService } from './scheme.service';
+import { Connection_State } from '../user';
+import { ControlService, WebSockCmd } from './control.service';
+import { AuthenticationService } from '../authentication.service';
+import { TranslateService } from '@ngx-translate/core';
+import { FavService } from '../fav.service';
 
 interface NavLink {
   link: string;
@@ -140,42 +142,22 @@ export class SchemeComponent implements OnInit, OnDestroy {
     // this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
+  addMenu(name: string, icon: string): void {
+    if (this.authService.checkPermission('menu_' + name))
+      this.fillerNav.push({link: name, text: this.translate.instant('NAVIGATION_TAB.' + name.toUpperCase()), icon: icon});
+  }
+
   ngOnInit() {
     const isAdmin = this.authService.isAdmin();
     const isFullAccess = this.authService.isFullAccess();
 
-    this.fillerNav.push({link: 'detail', text: this.translate.instant('NAVIGATION_TAB.INFO'), icon: 'perm_device_information'});
-
-    // if (isAdmin || this.authService.checkPermission('delete_signtype')) {
-    //   this.fillerNav.push({link: 'manage', text: this.translate.instant('NAVIGATION_TAB.MANAGEMENT'), icon: 'home'});
-    // }
-
-    if (isAdmin) {
-      this.fillerNav.push({link: 'elements', text: this.translate.instant('NAVIGATION_TAB.ELEMENTS'), icon: 'build'});
-    }
-
-    if (isFullAccess || isAdmin) {
-      this.fillerNav.push({link: 'log', text: this.translate.instant('NAVIGATION_TAB.LOG'), icon: 'event_note'});
-    }
-
-    if (isAdmin) {
-      this.fillerNav.push({link: 'log2', text: this.translate.instant('NAVIGATION_TAB.LOG_VALUE'), icon: 'event_note'});
-    }
-
-    if (isAdmin) {
-      this.fillerNav.push({link: 'settings', text: this.translate.instant('NAVIGATION_TAB.STRUCTURE'), icon: 'settings'});
-      this.fillerNav.push({link: 'reports', text: this.translate.instant('NAVIGATION_TAB.REPORTS'), icon: 'show_chart'});
-    }
-
-    if (isFullAccess || isAdmin) {
-      this.fillerNav.push({link: 'export', query: {data: [107]}, text: this.translate.instant('NAVIGATION_TAB.EXPORT'), icon: 'subject'});
-    }
-
-    this.fillerNav.push({
-      link: 'doc',
-      text: this.translate.instant('NAVIGATION_TAB.HELP'),
-      icon: 'help'
-    });
+    this.addMenu('detail', 'perm_device_information');
+    this.addMenu('elements', 'build');
+    this.addMenu('log_event', 'event_note');
+    this.addMenu('log_value', 'event_note');
+    this.addMenu('structure', 'settings');
+    this.addMenu('reports', 'show_chart');
+    this.addMenu('help', 'help');
 
     this.getSchemeInfo();
 

@@ -4,6 +4,14 @@
   "newProjectRoot": "projects",
   "projects": {
     "device-access": {
+      "i18n": {
+        "sourceLocale": "ru",
+        "locales": {
+          "en": "src/locale/messages.en.xlf",
+          "fr": "src/locale/messages.fr.xlf",
+          "mn": "src/locale/messages.mn.xlf"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -11,6 +19,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -31,7 +40,8 @@
               /*"node_modules/flag-icon-css/css/flag-icon.min.css",*/
               "src/assets/css/flag-icon.css",
               "node_modules/normalize.css/normalize.css",
-              "node_modules/select2/dist/css/select2.min.css"
+              "node_modules/select2/dist/css/select2.min.css",
+              "node_modules/angular2-multiselect-dropdown/themes/default.theme.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
@@ -40,6 +50,16 @@
           },
           "configurations": {
             "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "localize": [
+                "ru"
+              ],
+              "outputPath": "dist",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -57,11 +77,16 @@
               ]
             },
             "en": {
-              "outputPath": "dist/en/",
-              "baseHref": "/en/",
-              "i18nFile": "src/locale/messages.en.xlf",
-              "i18nFormat": "xlf",
-              "i18nLocale": "en",
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "localize": [
+                "en"
+              ],
+              "outputPath": "dist",
               "i18nMissingTranslation": "warning",
               "optimization": true,
               "outputHashing": "all",
@@ -80,11 +105,16 @@
               ]
             },
             "fr": {
-              "outputPath": "dist/fr/",
-              "baseHref": "/fr/",
-              "i18nFile": "src/locale/messages.fr.xlf",
-              "i18nFormat": "xlf",
-              "i18nLocale": "fr",
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "localize": [
+                "fr"
+              ],
+              "outputPath": "dist",
               "i18nMissingTranslation": "warning",
               "optimization": true,
               "outputHashing": "all",
@@ -103,11 +133,16 @@
               ]
             },
             "mn": {
-              "outputPath": "dist/mn/",
-              "baseHref": "/mn/",
-              "i18nFile": "src/locale/messages.mn.xlf",
-              "i18nFormat": "xlf",
-              "i18nLocale": "mn",
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "localize": [
+                "mn"
+              ],
+              "outputPath": "dist",
               "i18nMissingTranslation": "warning",
               "optimization": true,
               "outputHashing": "all",
@@ -126,8 +161,16 @@
               ]
             },
             "ru": {
-              "outputPath": "dist/ru/",
-              "baseHref": "/ru/",
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "localize": [
+                "ru"
+              ],
+              "outputPath": "dist",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -154,6 +197,9 @@
           "configurations": {
             "production": {
               "browserTarget": "device-access:build:production"
+            },
+            "ru": {
+              "browserTarget": "device-access:build:ru"
             },
             "en": {
               "browserTarget": "device-access:build:en"
@@ -232,7 +278,7 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
-      "styleext": "css"
+      "style": "css"
     },
     "@schematics/angular:directive": {
       "prefix": "app"

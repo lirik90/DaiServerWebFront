@@ -24,3 +24,18 @@ input[type="file"] {
 .text_mode_link {
   margin: 8px;
 }
+
+.base_box {
+  display: inline-flex;
+}
+
+/deep/ .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+    background-color: #89d089;
+}
+/deep/ .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color: green;
+}
+/deep/ .mat-slide-toggle:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color: black;
+}
+
