@@ -1,70 +1,10 @@
-import { Component, ViewChild, ElementRef, OnInit, Inject, AfterViewInit, OnDestroy } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, ViewChild, ElementRef, OnInit, Inject, OnDestroy } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ISubscription } from "rxjs/Subscription";
 
 import { ByteMessage, ByteTools } from '../../../web-socket.service';
 import { ControlService, WebSockCmd } from "../../control.service";
 import { Device_Item, Log_Value } from '../../scheme';
-
-var Base64Binary = {
-	_keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
-
-	/* will return a  Uint8Array type */
-	decodeArrayBuffer: function(input) {
-		var bytes = (input.length/4) * 3;
-		var ab = new ArrayBuffer(bytes);
-		this.decode(input, ab);
-
-		return ab;
-	},
-
-	removePaddingChars: function(input){
-		var lkey = this._keyStr.indexOf(input.charAt(input.length - 1));
-		if(lkey == 64){
-			return input.substring(0,input.length - 1);
-		}
-		return input;
-	},
-
-    decode: function (input, arrayBuffer: ArrayBuffer = undefined) {
-		//get last chars to see if are valid
-		input = this.removePaddingChars(input);
-		input = this.removePaddingChars(input);
-
-		var bytes = (input.length / 4) * 3;
-
-		var uarray;
-		var chr1, chr2, chr3;
-		var enc1, enc2, enc3, enc4;
-		var i = 0;
-		var j = 0;
-
-		if (arrayBuffer)
-			uarray = new Uint8Array(arrayBuffer);
-		else
-			uarray = new Uint8Array(bytes);
-
-		input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
-
-		for (i=0; i<bytes; i+=3) {
-			//get the 3 octects in 4 ascii chars
-			enc1 = this._keyStr.indexOf(input.charAt(j++));
-			enc2 = this._keyStr.indexOf(input.charAt(j++));
-			enc3 = this._keyStr.indexOf(input.charAt(j++));
-			enc4 = this._keyStr.indexOf(input.charAt(j++));
-
-			chr1 = (enc1 << 2) | (enc2 >> 4);
-			chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
-			chr3 = ((enc3 & 3) << 6) | enc4;
-
-			uarray[i] = chr1;
-			if (enc3 != 64) uarray[i+1] = chr2;
-			if (enc4 != 64) uarray[i+2] = chr3;
-		}
-
-		return uarray;
-	}
-}
 
 export interface VideoStreamParam {
     isImg: boolean;
@@ -77,9 +17,9 @@ export interface VideoStreamParam {
   templateUrl: './video-stream-dialog.component.html',
   styleUrls: ['./video-stream-dialog.component.css']
 })
-export class VideoStreamDialogComponent implements OnInit, AfterViewInit, OnDestroy {
-    @ViewChild('canvas', { static: true })
-    canvas: ElementRef<HTMLCanvasElement>;
+export class VideoStreamDialogComponent implements OnInit, OnDestroy {
+    @ViewChild('image', { static: true })
+    img: ElementRef;
   
     name: string;
 
@@ -89,8 +29,8 @@ export class VideoStreamDialogComponent implements OnInit, AfterViewInit, OnDest
   
     timer_id: any;
 
-    private ctx: CanvasRenderingContext2D;
-  
+    need_adjust: boolean = true;
+
     sub: ISubscription;
   
     constructor(
@@ -101,26 +41,60 @@ export class VideoStreamDialogComponent implements OnInit, AfterViewInit, OnDest
     }
   
     ngOnInit(): void {
-        this.ctx = this.canvas.nativeElement.getContext('2d');
+        this.width  = window.innerWidth - 50;
+        this.height = window.innerHeight - 170;
+
+        this.img.nativeElement.onload = () => {
+            const img = this.img.nativeElement;
+
+            const max_width = window.innerWidth - 50;
+            const max_height = window.innerHeight - 170;
+            const w_pt = img.naturalWidth / 100.0;
+            const h_pt = img.naturalHeight / 100.0;
+            const pt = Math.min(max_width / w_pt, max_height / h_pt);
+            this.width = Math.floor(w_pt * pt);
+            this.height = Math.floor(h_pt * pt);
+
+            if (this.need_adjust)
+                this.need_adjust = false;
+            else
+                img.onload = null;
+        };
+
         if (this.data.isImg)
             this.fillImg();
         else
             this.initVideo();
     }
 
+    static get_default_settings(): any
+    {
+        return {
+            autoFocus: false,
+            maxWidth: '100%',
+            width: '100%',
+            maxHeight: '100%',
+            height: '100%',
+            panelClass: 'imgDialog',
+        };
+    }
+
     fillImg(): void {
         const obj = (<any>this.data.img)
         this.name = (obj.item.name || obj.item.type.title) + ' ' + obj.date.toString();
 
-        const data = this.data.img.raw_value.slice(4);
-        const view = Base64Binary.decode(data);
-        this.draw_img(view);
+        const jpeg_str = atob(this.data.img.raw_value.slice(4)); // 4 is "img:AAAAaa..."
+        const jpeg_data = new Uint8Array(jpeg_str.length);
+        for (let i = 0; i < jpeg_str.length; ++i)
+            jpeg_data[i] = jpeg_str[i].charCodeAt(0);
+        this.set_data(jpeg_data);
     }
 
-    initVideo(): void {
+    initVideo(): void
+    {
+        this.fill_image('black', 'Подождите...', 'white');
+
         this.name = this.data.devItem.name || this.data.devItem.type.name;
-        this.ctx.fillStyle = "black";
-        this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     
         this.sub = this.controlService.stream_msg.subscribe((msg: ByteMessage) => {
             if (msg.cmd == WebSockCmd.WS_STREAM_DATA) {
@@ -134,15 +108,29 @@ export class VideoStreamDialogComponent implements OnInit, AfterViewInit, OnDest
         this.controlService.stream_toggle(this.data.devItem.id, true);
     }
 
+    fill_image(color: string, text: string, text_color: string): void
+    {
+        let canvas = document.createElement('canvas'); 
+        canvas.width = this.width;
+        canvas.height = this.height;
+        let ctx = canvas.getContext('2d');
+        ctx.fillStyle = color;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.font = "48px serif";
+        const m_text = ctx.measureText(text);
+        const x = canvas.width / 2 - (m_text.width / 2);
+        const y = canvas.height / 2 - 5;
+        ctx.fillStyle = text_color;
+        ctx.fillText(text, x, y);
+        this.img.nativeElement.src = canvas.toDataURL();
+    }
+
     ngOnDestroy(): void
     {
         if (!this.data.isImg) {
             this.controlService.stream_toggle(this.data.devItem.id, false);
             this.sub.unsubscribe();
         }
-    }
-
-    ngAfterViewInit(): void {
     }
 
     onNoClick(): void {
@@ -160,35 +148,16 @@ export class VideoStreamDialogComponent implements OnInit, AfterViewInit, OnDest
             return;
         }
 
-        // pos += 4; // QByteArray size
-        this.draw_img(view, pos);
+        const jpeg_data = view.slice(4);
+        this.set_data(jpeg_data);
     }
 
-    draw_img(view: Uint8Array, pos: number = 0)
+    set_data(jpeg_data: Uint8Array): void
     {
-        const width = ByteTools.parseUInt32(view, pos)[1]; pos += 4;
-        const height = ByteTools.parseUInt32(view, pos)[1]; pos += 4;
-
-        if (this.width !== width || this.height !== height || !this.image_data)
-        {
-            this.width = width;
-            this.height = height;
-            this.canvas.nativeElement.width = width;
-            this.canvas.nativeElement.height = height;
-            this.image_data = this.ctx.createImageData(width, height);
-            for (var i = 3; i < this.image_data.data.length; i += 4) {
-                this.image_data.data[i] = 0xff;
-            }
-        }
-
-        let img = this.image_data.data;
-        for (var i = 0; i < img.length; i += 4) {
-            img[i]     = view[pos]; // red
-            img[i + 1] = view[pos + 1]; // green
-            img[i + 2] = view[pos + 2]; // blue
-            pos += 3;
-        }
-        this.ctx.putImageData(this.image_data, 0, 0, 0, 0, width, height);
+        const blob = new Blob( [ jpeg_data ], { type: "image/jpeg" } );
+        const url_creator = window.URL || window.webkitURL;
+        const image_url = url_creator.createObjectURL( blob );
+        this.img.nativeElement.src = image_url;
     }
 
     stream_toggled(data: ArrayBuffer): void 
@@ -200,14 +169,17 @@ export class VideoStreamDialogComponent implements OnInit, AfterViewInit, OnDest
         const state = view[pos] == 1; pos += 1;
 
         console.log("Stream toggled:", dev_item_id, state);
+        if (this.data.devItem.id !== dev_item_id)
+            return;
 
         if (state)
             clearTimeout(this.timer_id);
+        else
+            this.dialogRef.close();
     }
 
     stream_start_timeout(): void
     {
-        this.ctx.fillStyle = "red";
-        this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        this.fill_image('red', 'Ошибка', 'black');
     }
 }

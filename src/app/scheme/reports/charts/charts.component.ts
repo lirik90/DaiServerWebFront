@@ -1,14 +1,16 @@
 import {AfterViewInit, Component, OnInit, QueryList, ViewChildren, ViewChild} from '@angular/core';
 import {FormControl} from '@angular/forms';
 
+import { MatDialog } from '@angular/material/dialog';
+
 import {
   MAT_MOMENT_DATE_FORMATS,
   MomentDateAdapter,
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
 } from '@angular/material-moment-adapter';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { BaseChartDirective } from 'ng2-charts';
 // import {ChartComponent} from 'angular2-chartjs';
 
@@ -17,9 +19,11 @@ import * as moment from 'moment';
 // import {default as _rollupMoment} from 'moment';
 // const moment = _rollupMoment || _moment;
 
-import {SchemeService, ExportConfig, ExportItem} from '../../scheme.service';
-import {Device_Item_Type, DIG_Param_Value, DIG_Type, Section, Device_Item, Log_Value, Log_Param, Register_Type, Save_Algorithm, DIG_Param_Value_Type, Device_Item_Group} from '../../scheme';
-import {PaginatorApi} from '../../../user';
+import { SchemeService, ExportConfig, ExportItem } from '../../scheme.service';
+import { Device_Item_Type, DIG_Param, DIG_Type, Section, Device_Item, Log_Value, Log_Param, Register_Type, Save_Algorithm, DIG_Param_Value_Type, Device_Item_Group, Chart } from '../../scheme';
+import { PaginatorApi } from '../../../user';
+
+import { ColorPickerDialog } from './color-picker-dialog/color-picker-dialog';
 
 interface Chart_Info_Interface {
   name: string;
@@ -29,6 +33,19 @@ interface Chart_Info_Interface {
 
   min_y: number;
   max_y: number;
+}
+
+interface Chart_Item_Iface
+{
+    id: number;
+    color: string;
+}
+
+interface Select_Item_Iface
+{
+    id: number;
+    title: string;
+    category: string;
 }
 
 enum Chart_Type {
@@ -77,9 +94,9 @@ export class ChartsComponent implements OnInit, AfterViewInit {
   date_to = new FormControl(moment());
   time_to = '23:59:59';
 
-  @ViewChild("chart_obj", {static: false}) chart: BaseChartDirective;
+  @ViewChild("chart_obj") chart: BaseChartDirective;
 
-  charts_type: number = Chart_Type.CT_DIG_TYPE;
+  charts_type: number = Chart_Type.CT_USER;
   logs_count: number;
   logs_count2: number;
 
@@ -99,15 +116,18 @@ export class ChartsComponent implements OnInit, AfterViewInit {
   selectedItems = [];
   settings: any = {};
 
-  paramList = [];
-  paramSelected = [];
+    paramList: Select_Item_Iface[] = [];
+    paramSelected: Select_Item_Iface[] = [];
   paramSettings: any = {};
 
   charts: Chart_Info_Interface[] = [];
 
   values_loaded: boolean;
   params_loaded: boolean;
-  initialized = true;
+  initialized = false;
+
+    user_chart: Chart;
+    user_charts: Chart[] = [];
 
   type = 'line';
   options = {
@@ -213,15 +233,43 @@ export class ChartsComponent implements OnInit, AfterViewInit {
   constructor(
     public translate: TranslateService,
     private schemeService: SchemeService,
+      private dialog: MatDialog
   ) {
   }
 
   ngOnInit() {
-    this.OnChartsType();
-    this.initCharts();
+      this.schemeService.get_charts().subscribe(charts => {
+          this.user_charts = charts;
+          if (!this.user_charts.length)
+              this.charts_type = Chart_Type.CT_DIG_TYPE;
+
+          this.OnChartsType();
+          this.initCharts();
+      });
   }
 
-  OnChartsType(): void {
+    onItemSelect(item: any): void
+    {
+        if (this.charts_type === Chart_Type.CT_DIG_TYPE)
+        {
+            const accepted_param_type_ids = this.schemeService.scheme.dig_param_type
+                .filter(param_type => param_type.group_type_id === item.id)
+                .map(param_type => param_type.id);
+
+            this.paramSelected = [];
+            this.paramList = this.getParamTypeList().filter((param_type: Select_Item_Iface) => 
+            {
+                return accepted_param_type_ids.includes(param_type.id);
+            });
+        }
+    }
+
+  OnChartsType(user_chart: Chart = undefined): void {
+    if (user_chart)
+        this.user_chart = { ...user_chart };
+    else
+        this.user_chart = { id: 0, name: '' } as Chart;
+
     this.selectedItems = [];
     this.settings = {
         text: "",
@@ -246,14 +294,27 @@ export class ChartsComponent implements OnInit, AfterViewInit {
 
     switch(this.charts_type)
     {
+    case Chart_Type.CT_USER:
+        this.itemList = this.user_charts;
+        if (this.itemList.length)
+          this.selectedItems.push(this.itemList[0]);
+        this.settings.text = "Выберите график";
+        this.settings.singleSelection = true;
+        this.settings.labelKey = 'name';
+
+        this.paramList = null;
+
+        break;
     case Chart_Type.CT_DIG_TYPE:
         this.itemList = this.schemeService.scheme.dig_type;
         if (this.itemList.length)
-          this.selectedItems.push(this.itemList[0]);
+        {
+            this.selectedItems.push(this.itemList[0]);
+            this.onItemSelect(this.selectedItems[0]);
+        }
         this.settings.text = "Выберите тип группы";
         this.settings.singleSelection = true;
 
-        this.paramList = this.getParamTypeList();
         this.paramSettings.text = "Выберите тип уставки";
         break;
     case Chart_Type.CT_DEVICE_ITEM_TYPE:
@@ -288,7 +349,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     return {prefix, category};
   }
 
-  getDevItemList(): any[] {
+  getDevItemList(): Select_Item_Iface[] {
     let devItemList = [];
     for (const sct of this.schemeService.scheme.section) {
       for (const group of sct.groups) {
@@ -304,8 +365,8 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     return devItemList;
   }
 
-  getParamTypeList(): any[] {
-    let paramList = [];
+  getParamTypeList(): Select_Item_Iface[] {
+    let paramList: Select_Item_Iface[] = [];
     const param_types = this.schemeService.scheme.dig_param_type;
     for (const pt of param_types)
     {
@@ -337,20 +398,32 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     return paramList;
   }
 
-  getParamList(): any[] {
-    let paramList = [];
-    for (const sct of this.schemeService.scheme.section) {
-      for (const group of sct.groups) {
-        const po = this.getPrefixObj(sct, group);
+  getParamList(): Select_Item_Iface[] 
+  {
+      let paramList: Select_Item_Iface[] = [];
 
-        for (const prm of group.params) {
-          const title = po.prefix + prm.param.title;
-          paramList.push({id: prm.id, title, category: po.category});
+      let add_param = (p: DIG_Param, category: string = '') => 
+      {
+          if (p.childs && p.childs.length)
+          {
+              const new_category = category + ' - ' + p.param.title;
+              for (const p1 of p.childs)
+                  add_param(p1, new_category);
+          }
+          else
+              paramList.push({id: p.id, title: p.param.title, category});
+      };
+
+      for (const sct of this.schemeService.scheme.section) {
+        for (const group of sct.groups) {
+          const po = this.getPrefixObj(sct, group);
+
+          for (const prm of group.params)
+              add_param(prm, po.category + po.prefix);
         }
       }
-    }
 
-    return paramList;
+      return paramList;
   }
 
   adjust_stepped(dataset: any, y_min: number, y_max: number): void {
@@ -390,11 +463,11 @@ export class ChartsComponent implements OnInit, AfterViewInit {
 
   random_color(): void {
     for (const data of (<any>this.chart.data).datasets) {
-      const rndRGB = `${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()}`;
-      data.borderColor = `rgba(${rndRGB},0.4)`;
-      data.backgroundColor = `rgba(${rndRGB},0.5)`;
-      data.pointBorderColor = `rgba(${rndRGB},0.7)`;
-      data.pointBackgroundColor = `rgba(${rndRGB},0.5)`;
+      const rgb_str = `${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()}`;
+      data.borderColor = `rgba(${rgb_str},0.4)`;
+      data.backgroundColor = `rgba(${rgb_str},0.5)`;
+      data.pointBorderColor = `rgba(${rgb_str},0.7)`;
+      data.pointBackgroundColor = `rgba(${rgb_str},0.5)`;
     }
     this.chart.chart.update();
   }
@@ -412,6 +485,9 @@ export class ChartsComponent implements OnInit, AfterViewInit {
 
     switch(this.charts_type)
     {
+    case Chart_Type.CT_USER:
+        this.initDeviceItemUserCharts(data_ptr);
+        break;
     case Chart_Type.CT_DIG_TYPE:
         this.initDIGTypeCharts(data_ptr);
         break;
@@ -444,89 +520,173 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     this.getLogs();
   }
 
-  addParam2Dataset(datasets: any[], data: any, params: DIG_Param_Value[], is_pt: boolean = true): void {
-    for (const prm of params) {
-      const prm_id = is_pt ? prm.param_id : prm.id;
-      for (const s_pt of this.paramSelected) {
-        if (s_pt.id === prm_id) {
-          data.params.push(prm.id);
-          datasets.push(this.genParamDataset(prm));
+  addParam2Dataset(datasets: any[], data: any, params: DIG_Param[], selected: Chart_Item_Iface[]): void {
+    for (const param of params) {
+      for (const s_pt of selected) {
+        if (s_pt.id === param.id) {
+          data.params.push(param.id);
+          datasets.push(this.genParamDataset(param, s_pt.color));
           break;
         }
       }
 
-      if (prm.childs)
-        this.addParam2Dataset(datasets, data, prm.childs);
+      if (param.childs)
+        this.addParam2Dataset(datasets, data, param.childs, selected);
     }
   }
 
-  initDIGTypeCharts(data: any): void {
-    const sections = this.schemeService.scheme.section;
-    for (const sct of sections) {
-      for (const group of sct.groups) {
-        if (group.type_id === this.selectedItems[0].id) {
-          const datasets: any[] = [];
+    get_dig_param_ids(param_types: any[]): Chart_Item_Iface[]
+    {
+        console.log(param_types);
+        const get_param_id = (param_type_id: number): number =>
+        {
+            const find_param = (params: DIG_Param[], type_id: number) =>
+            {
+                if (params)
+                    for (const param of params)
+                    {
+                        if (param.param_id === type_id)
+                            return param.id;
 
-          for (const item of group.items) {
-            if (item.type.save_algorithm > Save_Algorithm.SA_OFF) {
-              data.dev_items.push(item.id);
-              datasets.push(this.genDevItemDataset(item));
+                        const param_id = find_param(param.childs, type_id);
+                        if (param_id)
+                            return param_id;
+                    }
+                return null;
+            };
+
+            console.log('Search param type id: ' + param_type_id);
+            for (const sct of this.schemeService.scheme.section)
+            {
+                for (const group of sct.groups)
+                {
+                    const param_id = find_param(group.params, param_type_id);
+                    if (param_id)
+                        return param_id;
+                }
             }
-          }
+            console.log('Search param type id: ' + param_type_id + ' failed', this.schemeService.scheme.section);
+            return null;
+        };
 
-          this.addParam2Dataset(datasets, data, group.params);
-
-          this.addChart(sct.name, datasets);
-          break;
+        let res = [];
+        for (const param_type of param_types)
+        {
+            const dig_param_id = get_param_id(param_type.id);
+            if (dig_param_id)
+                res.push({id: dig_param_id, color: null });
         }
-      }
-    }
-  }
 
-  initDeviceItemTypeCharts(data: any): void {
-    const sections = this.schemeService.scheme.section;
-    for (const sct of sections) {
-      for (const group of sct.groups) {
-        const datasets: any[] = [];
-        for (const item of group.items) {
-          for (const type of this.selectedItems) {
-            if (type.id == item.type.id) {
-              data.dev_items.push(item.id);
-              datasets.push(this.genDevItemDataset(item));
+        return res;
+    }
+
+    initDIGTypeCharts(data: any): void {
+        const params = this.get_dig_param_ids(this.paramSelected);
+        const sections = this.schemeService.scheme.section;
+        for (const sct of sections) {
+          for (const group of sct.groups) {
+            if (group.type_id === this.selectedItems[0].id) {
+              const datasets: any[] = [];
+    
+              for (const item of group.items) {
+                if (item.type.save_algorithm > Save_Algorithm.SA_OFF) {
+                  data.dev_items.push(item.id);
+                  datasets.push(this.genDevItemDataset(item));
+                }
+              }
+    
+              this.addParam2Dataset(datasets, data, group.params, params);
+    
+              this.addChart(sct.name, datasets);
               break;
             }
           }
         }
-
-        this.addParam2Dataset(datasets, data, group.params);
-
-        if (datasets.length) {
-          this.addChart(sct.name, datasets);
-        }
-      }
     }
-  }
 
-  initDeviceItemCharts(data: any): void {
+    initDeviceItemTypeCharts(data: any): void {
+        const params = this.get_dig_param_ids(this.paramSelected);
+        const sections = this.schemeService.scheme.section;
+        for (const sct of sections) {
+          for (const group of sct.groups) {
+            const datasets: any[] = [];
+            for (const item of group.items) {
+              for (const type of this.selectedItems) {
+                if (type.id == item.type.id) {
+                  data.dev_items.push(item.id);
+                  datasets.push(this.genDevItemDataset(item));
+                  break;
+                }
+              }
+            }
+
+            this.addParam2Dataset(datasets, data, group.params, params);
+
+            if (datasets.length) {
+              this.addChart(sct.name, datasets);
+            }
+          }
+        }
+    }
+
+  initDeviceItemChartsImpl(data: any, dev_items: Chart_Item_Iface[], params: Chart_Item_Iface[]): void {
     const datasets: any[] = [];
     const sections = this.schemeService.scheme.section;
     for (const sct of sections) {
       for (const group of sct.groups) {
         for (const item of group.items) {
-          for (const s_item of this.selectedItems) {
+          for (const s_item of dev_items) {
             if (s_item.id == item.id) {
               data.dev_items.push(item.id);
-              datasets.push(this.genDevItemDataset(item));
+              datasets.push(this.genDevItemDataset(item, s_item.color));
               break;
             }
           }
         }
 
-        this.addParam2Dataset(datasets, data, group.params, false);
+        this.addParam2Dataset(datasets, data, group.params, params);
       }
     }
     this.addChart(this.translate.instant('REPORTS.CHARTS_ELEMENTS'), datasets);
   }
+
+    initDeviceItemCharts(data: any): void 
+    {
+        const items = this.selectedItems.map(it => { return {id: it.id, color: null}; });
+        const params = this.paramSelected.map(it => { return {id: it.id, color: null}; });
+        this.initDeviceItemChartsImpl(data, items, params);
+    }
+
+    initDeviceItemUserCharts(data: any): void 
+    {
+        const hex2rgb_str = (color: string): string =>
+        {
+            if (!color)
+                return `${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()}`;
+
+            const r = parseInt(color.substr(1,2), 16);
+            const g = parseInt(color.substr(3,2), 16);
+            const b = parseInt(color.substr(5,2), 16);
+            if (isNaN(r) || isNaN(g) || isNaN(b))
+                return `${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()}`;
+
+            return r + ',' + g + ',' + b;
+        };
+
+        const user_chart = this.selectedItems[0];
+        let items = [];
+        let params = [];
+        for (const it of user_chart.items)
+        {
+            if (it.item_id)
+                items.push({id: it.item_id, color: hex2rgb_str(it.color)});
+            else
+                params.push({id: it.param_id, color: hex2rgb_str(it.color)});
+        }
+
+        //const ids = [...new Set(user_chart.items.map(it => it.item_id))];
+        this.initDeviceItemChartsImpl(data, items, params);
+    }
 
   addChart(name: string, datasets: any[]): void {
     if (datasets.length) {
@@ -702,8 +862,8 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     return date_str + time;
   }
 
-  genDevItemDataset(item: Device_Item): Object {
-    // const rndRGB = `${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()}`;
+  genDevItemDataset(item: Device_Item, rgb_str: string = null): Object {
+    // const rgb_str = `${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()}`;
 
     const label = item.name.length ? item.name : item.type.title;
 
@@ -711,28 +871,30 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     const rt = item.type.register_type;
     const stepped = rt === RT.RT_COILS || rt === RT.RT_DISCRETE_INPUTS;
 
-    let dataset = this.genDataset(label, stepped);
+    let dataset = this.genDataset(label, stepped, rgb_str);
     dataset['dev_item'] = item;
     return dataset;
   }
 
-  genParamDataset(param: DIG_Param_Value): Object {
-    let dataset = this.genDataset('⚙️ ' + param.param.title);
+  genParamDataset(param: DIG_Param, rgb_str: string = null): Object {
+    let dataset = this.genDataset('⚙️ ' + param.param.title, true, rgb_str);
     dataset['param'] = param;
     return dataset;
   }
 
-  genDataset(label: string, steppedLine: boolean = true): Object {
-    const rndRGB = this.intToRGB(this.hashCode(label));
+  genDataset(label: string, steppedLine: boolean = true, rgb_str: string = null): Object {
+      if (rgb_str === null)
+          rgb_str = this.intToRGB(this.hashCode(label));
+    // const rgb_str = this.intToRGB(this.hashCode(label));
 
     return {
       label,
       data: [],
 
-      borderColor: `rgba(${rndRGB},0.4)`,
-      backgroundColor: `rgba(${rndRGB},0.5)`,
-      pointBorderColor: `rgba(${rndRGB},0.7)`,
-      pointBackgroundColor: `rgba(${rndRGB},0.5)`,
+      borderColor: `rgba(${rgb_str},0.4)`,
+      backgroundColor: `rgba(${rgb_str},0.5)`,
+      pointBorderColor: `rgba(${rgb_str},0.7)`,
+      pointBackgroundColor: `rgba(${rgb_str},0.5)`,
       pointBorderWidth: 1,
 
       hidden: false,
@@ -764,4 +926,125 @@ export class ChartsComponent implements OnInit, AfterViewInit {
   randomColor(opacity: number): string {
     return `rgba(${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()},${opacity || '.3'})`;
   }
+
+    openColorPicker(chart: Chart_Info_Interface, dataset: any, chart_obj: any): void {
+        const dialogRef = this.dialog.open(ColorPickerDialog, {
+          width: '250px',
+          data: {chart, dataset, chart_obj}
+        });
+
+        dialogRef.afterClosed().subscribe(color => {
+            if (!color)
+                return;
+
+            const rgb_str = `${color.red},${color.green},${color.blue}`;
+            dataset.borderColor = `rgba(${rgb_str},0.4)`;
+            dataset.backgroundColor = `rgba(${rgb_str},0.5)`;
+            dataset.pointBorderColor = `rgba(${rgb_str},0.7)`;
+            dataset.pointBackgroundColor = `rgba(${rgb_str},0.5)`;
+
+            this.chart.chart.update();
+        });
+    }
+
+    del_user_chart(): void
+    {
+        const user_chart = this.selectedItems[0];
+
+        this.schemeService.del_chart(user_chart).subscribe(is_removed => 
+        {
+            if (!is_removed)
+                return;
+
+            for (const chart_i in this.user_charts)
+            {
+                if (this.user_charts[chart_i].id === user_chart.id)
+                {
+                    this.user_charts.splice(parseInt(chart_i), 1);
+                    break;
+                }
+            }
+
+            this.selectedItems = [];
+            if (this.user_charts.length)
+                this.selectedItems.push(this.user_charts[0]);
+        });
+    }
+
+    edit_user_chart(): void
+    {
+        const user_chart = this.selectedItems[0];
+
+        this.charts_type = Chart_Type.CT_DEVICE_ITEM;
+        this.OnChartsType(user_chart);
+
+        this.selectedItems = this.itemList.filter(item => {
+            for (const it of user_chart.items)
+                if (item.id === it.item_id)
+                    return true;
+            return false;
+        });
+
+        this.paramSelected = this.paramList.filter(item => {
+            for (const it of user_chart.items)
+                if (item.id === it.param_id)
+                    return true;
+            return false;
+        });
+    }
+
+    save_user_chart(): void
+    {
+        if (!this.user_chart.name.length)
+            return;
+
+        const chart = this.charts[0];
+        const get_color = (item_id: number, param_id: number): string =>
+        {
+            for (const dataset of chart.data.datasets)
+            {
+                if (item_id !== null)
+                {
+                    if (dataset.dev_item && dataset.dev_item.id === item_id)
+                        return ColorPickerDialog.rgba2hex(dataset.pointBorderColor);
+                }
+                else if (dataset.param && dataset.param.id === param_id)
+                    return ColorPickerDialog.rgba2hex(dataset.pointBorderColor);
+            }
+            return '';
+        };
+
+        let user_chart = new Chart;
+        user_chart.id = this.user_chart.id;
+        user_chart.name = this.user_chart.name;
+        user_chart.items = [];
+
+        for (const item of this.selectedItems)
+        {
+            const chart_item = { color: get_color(item.id, null), item_id: item.id, param_id: null };
+            user_chart.items.push(chart_item);
+        }
+
+        for (const item of this.paramSelected)
+        {
+            const chart_item = { color: get_color(null, item.id), item_id: null, param_id: item.id };
+            user_chart.items.push(chart_item);
+        }
+
+        this.schemeService.save_chart(user_chart).subscribe(new_chart => 
+        {
+            for (let chart of this.user_charts)
+            {
+                if (chart.id === new_chart.id)
+                {
+                    chart.name = new_chart.name;
+                    chart.items = new_chart.items;
+                    return;
+                }
+            }
+
+            this.user_charts.push(new_chart);
+        });
+    }
+
 }

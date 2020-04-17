@@ -1,7 +1,7 @@
 import { Input, Component, OnInit } from '@angular/core';
 
 import { SchemeService } from "../../scheme.service";
-import { Section, Device_Item_Group, DIG_Type, DIG_Param_Type, DIG_Param_Value } from "../../scheme";
+import { Section, Device_Item_Group, DIG_Type, DIG_Param_Type, DIG_Param } from "../../scheme";
 import { ByteTools, WebSocketBytesService } from "../../../web-socket.service";
 import { SettingsService } from "../settings.service";
 import { StructType, ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
@@ -108,7 +108,7 @@ export class GroupsComponent extends ChangeTemplate<Device_Item_Group> implement
   templateUrl: './params-in-group.component.html',
   styleUrls: ['../settings.css', './sections.component.css']
 })
-export class ParamsInGroupComponent extends ChangeTemplate<DIG_Param_Value> implements OnInit 
+export class ParamsInGroupComponent extends ChangeTemplate<DIG_Param> implements OnInit 
 {
   @Input() group: Device_Item_Group;
   
@@ -118,10 +118,10 @@ export class ParamsInGroupComponent extends ChangeTemplate<DIG_Param_Value> impl
     wsbService: WebSocketBytesService,
     schemeService: SchemeService,
   ) {
-    super(StructType.Group_Param, wsbService, schemeService, DIG_Param_Value);
+    super(StructType.Group_Param, wsbService, schemeService, DIG_Param);
   }
 
-  getObjects(): DIG_Param_Value[] 
+  getObjects(): DIG_Param[] 
   { 
     return this.group.params;
   }
@@ -132,13 +132,13 @@ export class ParamsInGroupComponent extends ChangeTemplate<DIG_Param_Value> impl
     this.params = this.schemeService.scheme.dig_param_type.filter(obj => obj.group_type_id === this.group.type_id);
   }
 
-  initItem(obj: DIG_Param_Value): void 
+  initItem(obj: DIG_Param): void 
   {
     obj.param = new DIG_Param_Type();
     obj.group_id = this.group.id;
   }
 
-  saveObject(obj: DIG_Param_Value): Uint8Array 
+  saveObject(obj: DIG_Param): Uint8Array 
   {
     console.log(obj);
     let view = new Uint8Array(16);

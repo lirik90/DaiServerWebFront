@@ -1,9 +1,11 @@
 import {AfterViewInit, Component, Inject, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar} from '@angular/material';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { SchemeService } from '../scheme.service';
-import {Section, Device_Item, Device_Item_Group, DIG_Mode_Type, DIG_Param_Value} from '../scheme';
+import {Section, Device_Item, Device_Item_Group, DIG_Mode_Type, DIG_Param} from '../scheme';
 import { ControlService } from '../control.service';
 import {filter} from 'rxjs/operators';
 import {AuthenticationService} from '../../authentication.service';
@@ -133,7 +135,7 @@ export class ParamsDialogComponent implements OnInit{
   group: Device_Item_Group = undefined;
   cantChange: boolean;
 
-  changed_values: DIG_Param_Value[] = [];
+  changed_values: DIG_Param[] = [];
 
   constructor(
     private route: ActivatedRoute,

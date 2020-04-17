@@ -61,6 +61,7 @@
   width: 16px;
   height: 8px;
   margin-right: 8px;
+  cursor: pointer;
 }
 
 .legend__item {
@@ -86,5 +87,13 @@
 	background-color: #000;
 	color: #dcc999;
   cursor: pointer;
+}
+
+.save-block {
+    text-align: center;
+}
+
+.save-block :not(:last-child) {
+    margin-right: 16px;
 }
 

@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import {switchMap, catchError, map, tap, finalize, flatMap} from 'rxjs/operators';
+import { switchMap, catchError, map, tap, finalize, flatMap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 
-import { Scheme_Detail, Section, Device_Item, Device_Item_Group, Log_Value, Log_Param, DIG_Param_Value, DIG_Param_Type } from './scheme';
-import { Scheme_Group_Member, PaginatorApi } from '../user';
+import { Scheme_Detail, Section, Device_Item, Device_Item_Group, Log_Value, Log_Param, DIG_Param, DIG_Param_Type, Chart } from './scheme';
+import { Connection_State, Scheme_Group_Member, PaginatorApi } from '../user';
 import { MessageService } from '../message.service';
 import { ISchemeService } from '../ischeme.service';
 
@@ -86,9 +86,15 @@ export class SchemeService extends ISchemeService {
         }
       }
       return of(true);
-    }), catchError(this.handleError('updateStatusItems', false)));
-  }
+    }), catchError((error: any): Observable<boolean> => {
+        
+      console.error(error); // log to console instead
+      this.log(`updateStatusItems failed: ${error.message}`);
 
+      this.scheme2.conn = of(Connection_State.CS_SERVER_DOWN);
+      return of(true);
+    }));
+  }
 
   updateDevValues(id: number): Observable<boolean> {
     // get dev values
@@ -110,7 +116,7 @@ export class SchemeService extends ISchemeService {
       }
 
       return of(true);
-    }), catchError(this.handleError('updateDevValues', false)));
+    }), catchError(this.handleError('updateDevValues', true)));
   }
 
   clear(): void {
@@ -145,22 +151,19 @@ export class SchemeService extends ISchemeService {
         return res ? this.updateStatusItems(this.scheme2.id) : of(false);
       }),
       flatMap((res) => {
-        console.log(JSON.parse(JSON.stringify(this.scheme2.section)));
-        const udv = this.updateDevValues(this.scheme2.id);
-        return res ? udv : of(false);
+        // console.log(JSON.parse(JSON.stringify(this.scheme2.section)));
+        return res ? this.updateDevValues(this.scheme2.id) : of(false);
       }),
       flatMap((res) => {
-        if (res) {
-          this.scheme = this.scheme2;
-          this.scheme.name = scheme_name;
-
-          localStorage.setItem(this.scheme_s, JSON.stringify(this.scheme2));
-          this.log('fetched scheme detail');
-
-          return of(true);
-        } else {
+        if (!res)
           return of(false);
-        }
+        this.scheme = this.scheme2;
+        this.scheme.name = scheme_name;
+
+        localStorage.setItem(this.scheme_s, JSON.stringify(this.scheme2));
+        this.log('fetched scheme detail');
+
+        return of(true);
       }),
     );
   }
@@ -369,6 +372,30 @@ export class SchemeService extends ISchemeService {
     return this.http.put(url, formData, options)
             .catch(error => Observable.throw(error));
   }
+
+    get_charts(): Observable<Chart[]> {
+        let url = this.url('chart');
+        return this.getPiped<Chart[]>(url, `fetched chart list`, 'get_charts', []);
+    }
+
+    del_chart(chart: Chart): Observable<boolean> {
+        const url = `/api/v2/scheme/${this.scheme.id}/chart/${chart.id}/`;
+        return this.http.delete<any>(url).pipe(
+            switchMap(resp => of(resp.result)), 
+            catchError((err: any): Observable<boolean> => 
+            {
+                alert(err.error + '\n' + err.message);
+                return of(false);
+            }));
+    }
+
+    save_chart(chart: Chart): Observable<Chart> {
+        const url = `/api/v2/scheme/${this.scheme.id}/chart/`;
+        return this.http.put<any>(url, chart).catch((err: HttpErrorResponse) => {
+            alert(err.error + '\n' + err.message);
+            return of(null as Chart);
+        });
+    }
 
   getChartData(date_from: number, date_to: number, data: string, limit: number = 1000, offset: number = 0): Observable<PaginatorApi<Log_Value>> {
     let url = this.url('chart_value') + `&ts_from=${date_from}&ts_to=${+date_to}&limit=${limit}&offset=${offset}&data=${data}`;

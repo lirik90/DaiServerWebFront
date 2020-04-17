@@ -1,12 +1,14 @@
-import {Inject, Injectable} from '@angular/core';
+import { Inject, Injectable} from '@angular/core';
 import { DOCUMENT } from "@angular/common";
-import {ISubscription} from 'rxjs/Subscription';
-import {Subject} from 'rxjs/Subject';
+import { ISubscription} from 'rxjs/Subscription';
+import { Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
-import {SchemeService} from './scheme.service';
-import {ByteMessage, ByteTools, WebSocketBytesService} from '../web-socket.service';
-import { Device_Item, Log_Event, Device_Item_Group, DIG_Param_Value, DIG_Status_Type } from './scheme';
+
+import { SchemeService } from './scheme.service';
+import { ByteMessage, ByteTools, WebSocketBytesService } from '../web-socket.service';
+import { Connection_State } from '../user';
+import { Device_Item, Log_Event, Device_Item_Group, DIG_Param, DIG_Status_Type } from './scheme';
 
 // import { QByteArray } from 'qtdatastream/src/types';
 
@@ -37,18 +39,6 @@ export enum WebSockCmd {
   WS_STREAM_DATA,
 
   WEB_SOCK_CMD_COUNT
-}
-
-export enum Connection_State {
-  CS_SERVER_DOWN,
-  CS_DISCONNECTED,
-  CS_DISCONNECTED_JUST_NOW,
-  CS_CONNECTED_JUST_NOW,
-  CS_CONNECTED_SYNC_TIMEOUT,
-  CS_CONNECTED,
-
-  CS_CONNECTED_WITH_LOSSES = 0x40,
-  CS_CONNECTED_MODIFIED = 0x80
 }
 
 export interface ConnectInfo {
@@ -401,7 +391,7 @@ export class ControlService {
     this.wsbService.send(WebSockCmd.WS_CHANGE_GROUP_MODE, this.schemeService.scheme.id, view);
   }
 
-  changeParamValues(params: DIG_Param_Value[]): void {
+  changeParamValues(params: DIG_Param[]): void {
     if (!params.length) {
       return;
     }

@@ -17,7 +17,7 @@ import './dracula-mod';
 import 'brace/ext/searchbox';
 import 'brace/ext/language_tools';
 import {WebSockCmd} from '../../control.service';
-import {MatPaginator} from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-codes',

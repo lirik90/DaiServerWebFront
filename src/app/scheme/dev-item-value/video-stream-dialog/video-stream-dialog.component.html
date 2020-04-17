@@ -1,10 +1,8 @@
 <h1 mat-dialog-title>{{name}}</h1>
-<div mat-dialog-content>
-  <canvas #canvas width="800" height="600">
-  </canvas>
+<div mat-dialog-content class="imgBox">
+    <img #image [width]="width" [height]="height"/>
 </div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()" cdkFocusInitial>Закрыть</button>
+<div class="test" mat-dialog-actions>
+    <button mat-button (click)="onNoClick()" cdkFocusInitial>Закрыть</button>
 </div>
-
 

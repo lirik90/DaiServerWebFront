@@ -1,15 +1,17 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {MediaMatcher} from '@angular/cdk/layout';
-import {MatDialog, MatDialogRef, MatSidenav} from '@angular/material';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { ActivatedRoute, Router} from '@angular/router';
+import { MediaMatcher} from '@angular/cdk/layout';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSidenav } from '@angular/material/sidenav';
 
-import {ISubscription} from 'rxjs/Subscription';
+import { ISubscription } from 'rxjs/Subscription';
 
-import {SchemeService} from './scheme.service';
-import {Connection_State, ControlService, WebSockCmd} from './control.service';
-import {AuthenticationService} from '../authentication.service';
-import {TranslateService} from '@ngx-translate/core';
-import {FavService} from '../fav.service';
+import { SchemeService } from './scheme.service';
+import { Connection_State } from '../user';
+import { ControlService, WebSockCmd } from './control.service';
+import { AuthenticationService } from '../authentication.service';
+import { TranslateService } from '@ngx-translate/core';
+import { FavService } from '../fav.service';
 
 interface NavLink {
   link: string;

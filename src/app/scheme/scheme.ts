@@ -119,7 +119,7 @@ export class Device_Item_Group {  // Группа
   mode: number;          // ID режима автоматизации
   type: DIG_Type;          // Тип группы
   items: Device_Item[] = []; // Элементы в группе
-  params: DIG_Param_Value[] = [];// Уставки
+  params: DIG_Param[] = [];// Уставки
   status: number;           // Состояние
   statuses: DIG_Status[] = [];
   status_info: DIG_Status_Info;
@@ -155,13 +155,13 @@ export class DIG_Param_Type {  // Тип уставки
   value_type: number;       // Тип значения уставки
 }
 
-export class DIG_Param_Value { // Уставка
+export class DIG_Param { // Уставка
   id: number;       // ID
   group_id: number; // ID группы
   param_id: number; // ID типа уставки
   value: string;    // Значение
   param: DIG_Param_Type; // Тип уставки
-  childs: DIG_Param_Value[] = [];
+  childs: DIG_Param[] = [];
 }
 
 export class Device { // Устройство
@@ -220,21 +220,34 @@ export class DIG_Mode_Type {
   group_type_id: number;
 }
 
+export class Chart_Item {
+    color: string;
+    item_id: number;
+    param_id: number;
+}
+
+export class Chart {
+    id: number;
+    name: string;
+    items: Chart_Item[];
+}
+
 export class Scheme_Detail {
-  id: number;             // ID проекта
-  name: string;           // Имя проекта
-  title: string;
+    id: number;             // ID проекта
+    name: string;           // Имя проекта
+    title: string;
 
-  sign_type: Sign_Type[];  // Еденицы измерения
-  section: Section[];    // Наполнение секций
-  device: Device[];      // Устройства и их элементы в системе
-  device_item_type: Device_Item_Type[];  // Типы элементов
-  dig_param_type: DIG_Param_Type[];    // Типы уставок
-  dig_type: DIG_Type[];// Типы групп
-  dig_status_type: DIG_Status_Type[];  // Типы состояний
-  dig_status_category: DIG_Status_Category[];  // Категории состояний
-  dig_mode_type: DIG_Mode_Type[];
+    sign_type: Sign_Type[];  // Еденицы измерения
+    section: Section[];    // Наполнение секций
+    device: Device[];      // Устройства и их элементы в системе
+    device_item_type: Device_Item_Type[];  // Типы элементов
+    dig_param_type: DIG_Param_Type[];    // Типы уставок
+    dig_type: DIG_Type[];// Типы групп
+    dig_status_type: DIG_Status_Type[];  // Типы состояний
+    dig_status_category: DIG_Status_Category[];  // Категории состояний
+    dig_mode_type: DIG_Mode_Type[];
+    disabled_param: number[]; // Недоступные для пользователя параметры
 
-  conn: Observable<number>;
+    conn: Observable<number>;
 }
 

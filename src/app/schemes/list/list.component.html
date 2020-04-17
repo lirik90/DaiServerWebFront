@@ -49,16 +49,7 @@
                [pageIndex]="start">
 </mat-paginator>
 
-<hr>
-<div class="scheme_form"><span i18n="@@DETAILS.SCHEME">Проект</span>:
-  <label><span i18n="@@DETAILS.NAME">Имя</span>: <input [(ngModel)]="new_scheme.name" i18n-placeholder="@@DETAILS.NAME" placeholder="Имя" /></label>
-
-  <label><span i18n="@@DETAILS.TITLE">Заголовок</span>: <input [(ngModel)]="new_scheme.title" i18n-placeholder="@@DETAILS.HINT.NAME" placeholder="Display name" /></label>
-
-  <label><span i18n="@@DETAILS.DESCRIPTION">Описание</span>: <input [(ngModel)]="new_scheme.description" i18n-placeholder="@@DETAILS.DESCRIPTION" placeholder="Описание" /></label>
-
-  <label><span i18n="@@DETAILS.UUID">Уникальный номер</span>: <input [(ngModel)]="new_scheme.device" i18n-placeholder="@@DETAILS.HINT.UUID" placeholder="Device UUID" /></label>
-  <!-- (click) passes input value to add() and then clears the input -->
-  <button (click)="add()" i18n="@@CONTROL.ADD">Добавить</button>
-</div>
+<div class="create-btn">
+    <button mat-raised-button i18n="@@CREATE_SCHEME.CAPTION" (click)="open_create_scheme_dialog()">Создать новую схему</button>
+<div>
 

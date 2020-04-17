@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { PageEvent } from '@angular/material/typings/paginator';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { PageEvent } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ISubscription } from "rxjs/Subscription";
 import { Observable } from 'rxjs/Observable';
 import { merge } from 'rxjs/observable/merge';
@@ -12,8 +14,8 @@ import { catchError } from 'rxjs/operators/catchError';
 import { map } from 'rxjs/operators/map';
 import { startWith } from 'rxjs/operators/startWith';
 import { switchMap } from 'rxjs/operators/switchMap';
-import {TranslateService} from '@ngx-translate/core';
-import {CookieService} from 'ngx-cookie-service';
+import { TranslateService } from '@ngx-translate/core';
+import { CookieService } from 'ngx-cookie-service';
 
 import { Log_Value, Log_Event_Type } from "../scheme";
 import { Scheme_Group_Member, PaginatorApi } from '../../user';
@@ -56,7 +58,7 @@ export class Log2Component implements OnInit, OnDestroy {
     private schemeService: SchemeService,
     private http: HttpClient,
     private activatedRoute: ActivatedRoute,
-    public cookie: CookieService,
+    public cookie: CookieService
     ) {
       this.activatedRoute.queryParams.subscribe(params => {
         if (params['cmd']) {
@@ -177,14 +179,13 @@ export class Log2Component implements OnInit, OnDestroy {
 
   }
 
-  openImg(row: any): void {
-    let dialogRef = this.dialog.open(VideoStreamDialogComponent, {
-      width: '90%',
-      data: { isImg: true, devItem: null, img: row }
-    });
+    openImg(row: any): void {
+        let settings = VideoStreamDialogComponent.get_default_settings();
+        settings['data'] = { isImg: true, devItem: null, img: row };
+        let dialogRef = this.dialog.open(VideoStreamDialogComponent, settings);
 
-    dialogRef.afterClosed().subscribe(result => console.log(result));
-  }
+        dialogRef.afterClosed().subscribe(result => console.log(result));
+    }
 
   dateFormat(cell: any): string {
     if (cell.clientWidth <= 60)
