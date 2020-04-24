@@ -185,7 +185,7 @@ export class SchemeService extends ISchemeService {
         }
         if (param_value.param.parent_id) {
           for (const param_value2 of group.params) {
-            if (param_value.param.parent_id == param_value2.param.id) {
+            if (param_value.param.parent_id == param_value2.param_id) {
               if (!param_value2.childs) {
                 param_value2.childs = [];
               }
@@ -426,4 +426,15 @@ export class SchemeService extends ISchemeService {
       catchError(this.handleError<HttpResponse<Blob>>('exportExcel', undefined))
     );
   }
+
+    copy(scheme_id: number): Observable<any>
+    {
+        const url = `/api/v2/scheme/${this.scheme.id}/copy/`;
+        return this.http.post<any>(url, { scheme_id }).pipe(
+            catchError((err: any): Observable<boolean> => 
+            {
+                alert(err.error + '\n' + err.message);
+                return of(undefined);
+            }));
+    }
 }

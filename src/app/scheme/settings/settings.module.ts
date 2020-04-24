@@ -7,7 +7,7 @@ import { MaterialModule } from "../../material.module";
 import { SettingsRoutingModule } from './settings-routing.module';
 import { SettingsService } from './settings.service';
 
-import { SettingsComponent } from './settings.component';
+import { SettingsComponent, Scheme_Copy_Dialog } from './settings.component';
 import { DevicesComponent, DeviceItemsComponent } from './devices/devices.component';
 import { SectionsComponent, GroupsComponent, ParamsInGroupComponent } from './sections/sections.component';
 import { GroupTypesComponent, ItemTypesComponent, ParamTypesComponent, StatusesComponent } from './group-types/group-types.component';
@@ -18,7 +18,7 @@ import { CodesComponent } from './codes/codes.component';
 import { MonacoEditorModule, NgxMonacoEditorConfig, NGX_MONACO_EDITOR_CONFIG } from 'ngx-monaco-editor';
 import { PluginTypesComponent } from './plugin-types/plugin-types.component';
 import { SaveTimersComponent } from './save-timers/save-timers.component';
-import {AceEditorModule} from 'ng2-ace-editor';
+import { AceEditorModule } from 'ng2-ace-editor';
 
 
 const monacoConfig: NgxMonacoEditorConfig = {
@@ -50,8 +50,10 @@ const monacoConfig: NgxMonacoEditorConfig = {
     CodesComponent,
     PluginTypesComponent,
     SaveTimersComponent,
+      Scheme_Copy_Dialog
   ],
   entryComponents: [
+      Scheme_Copy_Dialog
   ],
   providers: [
 //    SchemeLoadGuard,
