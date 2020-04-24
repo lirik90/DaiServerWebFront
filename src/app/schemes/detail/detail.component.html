@@ -37,7 +37,9 @@
       <textarea [(ngModel)]="scheme.description" i18n-placeholder="@@DETAILS.DESCRIPTION" placeholder="Описание"></textarea>
     </label>
   </div>
+
+  <button mat-raised-button>Скопировать все уставки из...</button>
 </div>
-<button (click)="goBack()" i18n="@@CONTROL.BACK">Назад</button>
-<button *ngIf="scheme" routerLink="/scheme/{{scheme.id}}/manage" i18n="@@CONTROL.OPEN">Открыть</button>
-<button *ngIf="can_save" (click)="save()" i18n="@@CONTROL.SAVE">Сохранить</button>
+<button mat-button (click)="goBack()" i18n="@@CONTROL.BACK">Назад</button>
+<button mat-button *ngIf="scheme" routerLink="/scheme/{{scheme.id}}/manage" i18n="@@CONTROL.OPEN">Открыть</button>
+<button mat-button *ngIf="can_save" (click)="save()" i18n="@@CONTROL.SAVE">Сохранить</button>

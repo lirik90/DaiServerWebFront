@@ -234,6 +234,7 @@ export class Chart {
 
 export class Scheme_Detail {
     id: number;             // ID проекта
+    parent_id: number;
     name: string;           // Имя проекта
     title: string;
 
