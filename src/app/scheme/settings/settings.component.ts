@@ -25,10 +25,10 @@ export class SettingsComponent implements OnInit {
     open_copy_dialog(): void
     {
         let ref = this.dialog.open(Scheme_Copy_Dialog, { width: '80%' });
-        ref.afterClosed().subscribe(scheme_id =>
+        ref.afterClosed().subscribe(res =>
         {
-            if (scheme_id)
-                this.schemeService.copy(scheme_id).subscribe(res =>
+            if (res.scheme_id)
+                this.schemeService.copy(res.scheme_id, res.dry_run).subscribe(res =>
                 {
                     if (!res) 
                         return;
@@ -67,9 +67,10 @@ export class SettingsComponent implements OnInit {
                     <mat-option *ngFor="let c of schemes" [value]="c.id">{{c.title}}</mat-option>
                 </mat-select>
             </mat-form-field>
+            <mat-checkbox [(ngModel)]="dry_run">Пробный прогон</mat-checkbox>
         </div>
         <div mat-dialog-actions>
-            <button mat-button [mat-dialog-close]="scheme_list.value" [disabled]="!scheme_list.value">Скопировать</button>
+            <button mat-button [mat-dialog-close]="{ scheme_id: scheme_list.value, dry_run: dry_run}" [disabled]="!scheme_list.value">Скопировать</button>
             <button mat-button mat-dialog-close cdkFocusInitial>Отмена</button>
         </div>
     `,
@@ -78,6 +79,7 @@ export class SettingsComponent implements OnInit {
 export class Scheme_Copy_Dialog implements OnInit
 {
     schemes: any[] = [];
+    dry_run: boolean = true;
 
     constructor(
         private schemeService: SchemeService,

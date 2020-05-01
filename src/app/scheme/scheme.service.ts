@@ -427,10 +427,10 @@ export class SchemeService extends ISchemeService {
     );
   }
 
-    copy(scheme_id: number): Observable<any>
+    copy(scheme_id: number, dry_run: boolean): Observable<any>
     {
         const url = `/api/v2/scheme/${this.scheme.id}/copy/`;
-        return this.http.post<any>(url, { scheme_id }).pipe(
+        return this.http.post<any>(url, { scheme_id, dry_run }).pipe(
             catchError((err: any): Observable<boolean> => 
             {
                 alert(err.error + '\n' + err.message);
