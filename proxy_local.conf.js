@@ -1,7 +1,7 @@
 const protractor = require('./protractor.conf.js')
 
-const proxy_remote_server_address = 'https://deviceaccess.ru';
-const proxy_remote_ws_server_address = 'ws://deviceaccess.ru';
+const proxy_remote_server_address = 'http://localhost:8000';
+const proxy_remote_ws_server_address = 'ws://localhost:25589';
 
 let PROXY_CONFIG = [
     {
