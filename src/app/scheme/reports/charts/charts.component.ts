@@ -708,10 +708,6 @@ export class ChartsComponent implements OnInit, AfterViewInit {
       this.params_loaded = true;
 
     if (this.values_loaded && this.params_loaded) {
-      for (const chart of this.charts) 
-        for (const dataset of chart.data.datasets)
-          this.adjust_stepped(dataset, chart.min_y, chart.max_y);
-
       const x = new Date();
       if (this.is_today)
       {
@@ -733,6 +729,10 @@ export class ChartsComponent implements OnInit, AfterViewInit {
           }
         }
       }
+
+      for (const chart of this.charts) 
+        for (const dataset of chart.data.datasets)
+          this.adjust_stepped(dataset, chart.min_y, chart.max_y);
 
       this.initialized = true;
     }

@@ -329,6 +329,21 @@ export class ByteTools {
       case 6: // Double
         return ByteTools.parseDouble(view, start);
 
+      case 8: // QVariantMap
+        let [start1, size] = ByteTools.parseUInt32(view, start);
+        let value_obj = {};
+
+        while (size--)
+        {
+            const [end_key, key] = ByteTools.parseQString(view, start1);
+            const [end_value, value] = ByteTools.parseQVariant(view, end_key);
+            start1 = end_value;
+            value_obj[key] = value;
+        }
+
+            console.log('variantmap', value_obj);
+        return [start1, value_obj];
+
       case 9: { // QVariantList
         let [start1, size] = ByteTools.parseUInt32(view, start);
         const values: any[] = [];
@@ -347,7 +362,6 @@ export class ByteTools {
         return ByteTools.parseQByteArray(view, start);
 
       case 7: // QChar
-      case 8: // QVariantMap
       case 11: // QStringList
       case 13: // QBitArray
       case 14: // QDate
