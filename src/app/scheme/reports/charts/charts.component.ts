@@ -924,14 +924,14 @@ export class ChartsComponent implements OnInit, AfterViewInit {
       label,
       data: [],
 
-      borderColor: `rgba(${rgb_str},0.4)`,
+      borderColor: `rgba(${rgb_str},0.8)`,
       backgroundColor: `rgba(${rgb_str},0.5)`,
-      pointBorderColor: `rgba(${rgb_str},0.7)`,
+      pointBorderColor: `rgba(${rgb_str},0.9)`,
       pointBackgroundColor: `rgba(${rgb_str},0.5)`,
       pointBorderWidth: 1,
 
       hidden: false,
-      fill: steppedLine,
+      fill: false, //steppedLine,
       steppedLine,
       cubicInterpolationMode: 'monotone',
       //      lineTension: 0,
