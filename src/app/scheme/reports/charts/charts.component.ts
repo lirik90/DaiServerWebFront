@@ -426,40 +426,41 @@ export class ChartsComponent implements OnInit, AfterViewInit {
       return paramList;
   }
 
-  adjust_stepped(dataset: any, y_min: number, y_max: number): void {
-    if (dataset.hidden || !dataset.steppedLine || !dataset.data.length || !dataset.dev_item)
-      return;
-    
-    const pr = (y_max - y_min) * 0.1;
-    const y0 = y_min + pr;
-    const y1 = y_max - pr;
-
-    dataset["my_cond"] = y1;
-
-    let cond;
-    for (let item of dataset.data)
+    adjust_stepped(dataset: any, y_min: number, y_max: number): void
     {
-      if (item.y !== null)
-      {
-        if (cond === undefined)
-          cond = item.y;
-        else if (item.y !== cond)
+        if (dataset.hidden || !dataset.steppedLine || !dataset.data.length || !dataset.dev_item)
+            return;
+        
+        const pr = (y_max - y_min) * 0.1;
+        const y0 = y_min + pr;
+        const y1 = y_max - pr;
+
+        dataset["my_cond"] = y1;
+
+        let cond;
+        let finded = false;
+        for (let item of dataset.data)
         {
-          if (item.y > cond)
-            cond = item.y;
-          break;
+            if (item.y !== null)
+            {
+                if (cond === undefined)
+                    cond = item.y;
+                else if (item.y !== cond)
+                {
+                    finded = true;
+                    if (item.y > cond)
+                        cond = item.y;
+                    break;
+                }
+            }
         }
-      }
-    }
 
-    for (let item of dataset.data)
-    {
-      if (item.y < cond)
-        item.y = y0;
-      else
-        item.y = y1;
+        if (!finded && cond == 0)
+            cond = 1;
+
+        for (let item of dataset.data)
+            item.y = item.y < cond ? y0 : y1;
     }
-  }
 
   random_color(): void {
     for (const data of (<any>this.chart.data).datasets) {
@@ -701,65 +702,95 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  set_initialized(set_values_loaded: boolean): void {
-    if (set_values_loaded)
-      this.values_loaded = true;
-    else
-      this.params_loaded = true;
+    set_initialized(set_values_loaded: boolean): void {
+        if (set_values_loaded)
+            this.values_loaded = true;
+        else
+            this.params_loaded = true;
 
-    if (this.values_loaded && this.params_loaded) {
-      const x = new Date();
-      if (this.is_today)
-      {
-        for (const chart of this.charts) 
+        if (this.values_loaded && this.params_loaded)
         {
-          for (const dataset of chart.data.datasets)
-          {
-            const log = dataset.dev_item ? dataset.dev_item.val : dataset.param;
-            const y = this.getY(chart, log);
-            if (y !== undefined)
+            const x = new Date();
+            for (const chart of this.charts) 
             {
-              if (dataset.data.length === 0)
-              {
-                const x0 = new Date(this.time_from_);
-                dataset.data.push({x: x0, y});
-              }
-              dataset.data.push({x, y});
+                for (const dataset of chart.data.datasets)
+                {
+                    if (dataset.steppedLine && dataset.data.length)
+                    {
+                        let y;
+                        for (const item of dataset.data)
+                        {
+                            if (item.y !== undefined && item.y !== null)
+                            {
+                                y = item.y;
+                                break;
+                            }
+                        }
+
+                        if (y !== undefined && y !== null)
+                        {
+                            const x0 = new Date(this.time_from_);
+                            dataset.data.unshift({x: x0, y: !y});
+                        }
+                    }
+
+                    if (this.is_today)
+                    {
+                        const log = dataset.dev_item ? dataset.dev_item.val : dataset.param;
+                        const y = this.getY(chart, log, dataset.steppedLine);
+                        if (y !== undefined && y !== null)
+                        {
+                            if (dataset.data.length === 0)
+                            {
+                                const x0 = new Date(this.time_from_);
+                                dataset.data.push({x: x0, y});
+                            }
+                            dataset.data.push({x, y});
+                        }
+                    }
+                }
             }
-          }
+
+            for (const chart of this.charts) 
+                for (const dataset of chart.data.datasets)
+                    this.adjust_stepped(dataset, chart.min_y, chart.max_y);
+
+            this.initialized = true;
         }
-      }
-
-      for (const chart of this.charts) 
-        for (const dataset of chart.data.datasets)
-          this.adjust_stepped(dataset, chart.min_y, chart.max_y);
-
-      this.initialized = true;
     }
-  }
 
-  getY(chart: any, log: any): any {
-    let y;
+    getY(chart: any, log: any, is_stepped: boolean): any {
+        let y = log.value;
+        if (y == undefined || y == null)
+            return null;
 
-    const v_type = typeof log.value;
-    if (v_type === 'number' || v_type === 'boolean') {
-      y = log.value;
-    } else {
-      const v2_type = typeof log.raw_value;
-      if (v2_type === 'number' || v2_type === 'boolean')
-        y = log.raw_value;
+        if (typeof y === 'string')
+        {
+            if (/^(\-|\+)?([0-9\.]+|Infinity)$/.test(y))
+                return parseFloat(y);
+
+            if (is_stepped)
+                return y;
+
+            const v2_type = typeof log.raw_value;
+            if (v2_type === 'number' || v2_type === 'boolean')
+                y = log.raw_value;
+            else
+                y = y.length;
+        }
+
+        // console.log(`Finded log ${log.item_id} val: ${log.value} date: ${log.timestamp_msecs} t: ${typeof log.timestamp_msecs}`, typeof log.value, log);
+        // if (log.value == null || /^(\-|\+)?([0-9]+|Infinity)$/.test(log.value))
+
+        if (!is_stepped && y !== undefined)
+        {
+            if (chart.min_y > y)
+                chart.min_y = y;
+            if (chart.max_y < y)
+                chart.max_y = y;
+        }
+        return y;
     }
-    // console.log(`Finded log ${log.item_id} val: ${log.value} date: ${log.timestamp_msecs} t: ${typeof log.timestamp_msecs}`, typeof log.value, log);
-    // if (log.value == null || /^(\-|\+)?([0-9]+|Infinity)$/.test(log.value))
-
-    if (y !== undefined) {
-      if (chart.min_y > y)
-        chart.min_y = y;
-      if (chart.max_y < y)
-        chart.max_y = y;
-    }
-    return y;
-  }
 
   getParamData(limit: number = 1000, offset: number = 0): void {
     if (this.param_data_.length) {
@@ -801,7 +832,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
       for (const dataset of chart.data.datasets) {
         if ((dataset.dev_item && dataset.dev_item.id === log.item_id)
             || (dataset.param && dataset.param.id === log.group_param_id)) {
-          const y = this.getY(chart, log);
+          const y = this.getY(chart, log, dataset.steppedLine);
           if (y === undefined)
             return;
 
