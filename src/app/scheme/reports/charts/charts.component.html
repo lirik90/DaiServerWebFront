@@ -2,23 +2,32 @@
 
 <ng-container *ngIf="initialized">
 <div class="chart_conf">
-  <mat-form-field>
-    <input type="time" matInput i18n-placeholder="@@REPORTS.TIME_FROM" placeholder="Время от" [(ngModel)]="time_from" required>
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput [matDatepicker]="picker_from" [formControl]="date_from" i18n-placeholder="@@REPORTS.DATE_FROM" placeholder="Дата от" required>
-    <mat-datepicker-toggle matSuffix [for]="picker_from"></mat-datepicker-toggle>
-    <mat-datepicker #picker_from></mat-datepicker>
-  </mat-form-field>
+    <div class="chart_type">
+        <mat-form-field>
+          <input type="time" matInput i18n-placeholder="@@REPORTS.TIME_FROM" placeholder="Время от" [(ngModel)]="time_from" required>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker_from" [formControl]="date_from" i18n-placeholder="@@REPORTS.DATE_FROM" placeholder="Дата от" required>
+          <mat-datepicker-toggle matSuffix [for]="picker_from"></mat-datepicker-toggle>
+          <mat-datepicker #picker_from></mat-datepicker>
+        </mat-form-field>
 
-  <mat-form-field>
-    <input type="time" matInput i18n-placeholder="@@REPORTS.TIME_TO" placeholder="Время до" [(ngModel)]="time_to" required>
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput [matDatepicker]="picker_to" [formControl]="date_to" i18n-placeholder="@@REPORTS.DATE_TO" placeholder="Дата до" required>
-    <mat-datepicker-toggle matSuffix [for]="picker_to"></mat-datepicker-toggle>
-    <mat-datepicker #picker_to></mat-datepicker>
-  </mat-form-field>
+        <mat-form-field>
+          <input type="time" matInput i18n-placeholder="@@REPORTS.TIME_TO" placeholder="Время до" [(ngModel)]="time_to" required>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker_to" [formControl]="date_to" i18n-placeholder="@@REPORTS.DATE_TO" placeholder="Дата до" required>
+          <mat-datepicker-toggle matSuffix [for]="picker_to"></mat-datepicker-toggle>
+          <mat-datepicker #picker_to></mat-datepicker>
+        </mat-form-field>
+ 
+      <br>
+      <div class="data-part-block">
+        <mat-form-field>
+            <input matInput type="number" min="100" max="10000000" placeholder="Загружать частями по" [(ngModel)]="data_part_size">
+        </mat-form-field>
+      </div>
+   </div>
 
   <div class="chart_type">
     <span i18n="@@REPORTS.CHARTS.DECOMPOSE">Разложить</span>:
@@ -42,13 +51,6 @@
                         [settings]="paramSettings"
                         >
   </angular2-multiselect>
-
-      <br>
-      <div class="data-part-block">
-        <mat-form-field>
-            <input matInput type="number" min="100" max="10000000" placeholder="Загружать частями по" [(ngModel)]="data_part_size">
-        </mat-form-field>
-      </div>
     <div *ngIf="charts_type == chartType.CT_USER"
         class="save-block">
         <button mat-raised-button (click)="edit_user_chart()" i18n="@@CONTROL.EDIT">Изменить</button>
