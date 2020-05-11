@@ -129,6 +129,8 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     user_chart: Chart;
     user_charts: Chart[] = [];
 
+    data_part_size: number = 100000;
+
   type = 'line';
   options = {
     responsive: true,
@@ -517,8 +519,8 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     this.initialized = false;
     this.values_loaded = false;
     this.params_loaded = false;
-    this.getParamData();
-    this.getLogs();
+    this.getParamData(this.data_part_size);
+    this.getLogs(this.data_part_size);
   }
 
   addParam2Dataset(datasets: any[], data: any, params: DIG_Param[], selected: Chart_Item_Iface[]): void {
@@ -792,7 +794,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
         return y;
     }
 
-  getParamData(limit: number = 1000, offset: number = 0): void {
+  getParamData(limit: number, offset: number = 0): void {
     if (this.param_data_.length) {
       this.schemeService.getChartParamData(this.time_from_, this.time_to_, this.param_data_, limit, offset)
         .subscribe((logs: PaginatorApi<Log_Param>) => this.fillParamData(logs));
@@ -813,7 +815,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     this.logs_count2 += logs.results.length;
     this.prgValue2 = this.logs_count2 / (logs.count / 100.0);
 
-    const need_more: boolean = logs.count > this.logs_count2 && this.logs_count2 < 100000;
+    const need_more: boolean = logs.count > this.logs_count2 && this.logs_count2 < 10000000;
     if (need_more)
     {
       this.prgMode = 'determinate';
@@ -821,7 +823,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
 
       const start = this.logs_count2;
       const limit = logs.count - this.logs_count2;
-      this.getParamData(limit < 1000 ? limit : 1000, this.logs_count2);
+      this.getParamData(limit < this.data_part_size ? limit : this.data_part_size, this.logs_count2);
     }
     else
       this.set_initialized(false);
@@ -849,7 +851,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
       this.pushDataset(log);
   }
 
-  getLogs(limit: number = 1000, offset: number = 0): void {
+  getLogs(limit: number, offset: number = 0): void {
     this.schemeService.getChartData(this.time_from_, this.time_to_, this.data_, limit, offset)
       .subscribe((logs: PaginatorApi<Log_Value>) => this.fillData(logs));
   }
@@ -866,7 +868,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     this.logs_count += logs.results.length;
     this.prgValue = this.logs_count / (logs.count / 100.0);
 
-    const need_more: boolean = logs.count > this.logs_count && this.logs_count < 100000;
+    const need_more: boolean = logs.count > this.logs_count && this.logs_count < 10000000;
     if (need_more)
     {
       this.prgMode = 'determinate';
@@ -874,7 +876,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
 
       const start = this.logs_count;
       const limit = logs.count - this.logs_count;
-      this.getLogs(limit < 1000 ? limit : 1000, this.logs_count);
+      this.getLogs(limit < this.data_part_size ? limit : this.data_part_size, this.logs_count);
     }
     else
       this.set_initialized(true);

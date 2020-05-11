@@ -43,6 +43,12 @@
                         >
   </angular2-multiselect>
 
+      <br>
+      <div class="data-part-block">
+        <mat-form-field>
+            <input matInput type="number" min="100" max="10000000" placeholder="Загружать частями по" [(ngModel)]="data_part_size">
+        </mat-form-field>
+      </div>
     <div *ngIf="charts_type == chartType.CT_USER"
         class="save-block">
         <button mat-raised-button (click)="edit_user_chart()" i18n="@@CONTROL.EDIT">Изменить</button>
