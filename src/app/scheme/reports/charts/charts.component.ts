@@ -19,7 +19,7 @@ import * as moment from 'moment';
 // import {default as _rollupMoment} from 'moment';
 // const moment = _rollupMoment || _moment;
 
-import { SchemeService, ExportConfig, ExportItem } from '../../scheme.service';
+import { SchemeService, ExportConfig, ExportItem, Paginator_Chart_Value } from '../../scheme.service';
 import { Device_Item_Type, DIG_Param, DIG_Type, Section, Device_Item, Log_Value, Log_Param, Register_Type, Save_Algorithm, DIG_Param_Value_Type, Device_Item_Group, Chart } from '../../scheme';
 import { PaginatorApi } from '../../../user';
 
@@ -133,6 +133,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
 
   type = 'line';
   options = {
+      elements: { point: { radius: 0 } },
     responsive: true,
     legend: {
       // display: false,
@@ -152,11 +153,6 @@ export class ChartsComponent implements OnInit, AfterViewInit {
       mode: 'nearest',
       intersect: false,
       callbacks: {
-        // title: function(itemList, data) { // args: Array[tooltipItem], data
-        // // Тут можно сделать обработку даты
-        // console.log('callback title:', data);
-        // return data;
-        // },
         label: function(item, data) { // args: tooltipItem, data
           // console.log('callback label:', item, data);
           const dataset = data.datasets[item.datasetIndex];
@@ -165,33 +161,6 @@ export class ChartsComponent implements OnInit, AfterViewInit {
             item.value;
           return dataset.label + ": " + text;
         },
-        // beforeTitle: function() {
-        // return '...beforeTitle';
-        // },
-        // afterTitle: function() {
-        // return '...afterTitle';
-        // },
-        // beforeBody: function() {
-        // return '...beforeBody';
-        // },
-        // afterBody: function() {
-        // return '...afterBody';
-        // },
-        // beforeLabel: function() {
-        // return '...beforeLabel';
-        // },
-        // afterLabel: function() {
-        // return '...afterLabel';
-        // },
-        // beforeFooter: function() {
-        // return '...beforeFooter';
-        // },
-        // footer: function() {
-        // return 'Footer';
-        // },
-        // afterFooter: function() {
-        // return '...afterFooter';
-        // },
       }
     },
     hover: {
@@ -712,31 +681,12 @@ export class ChartsComponent implements OnInit, AfterViewInit {
 
         if (this.values_loaded && this.params_loaded)
         {
-            const x = new Date();
-            for (const chart of this.charts) 
+            if (this.is_today)
             {
-                for (const dataset of chart.data.datasets)
+                const x = new Date();
+                for (const chart of this.charts) 
                 {
-                    if (dataset.steppedLine && dataset.data.length)
-                    {
-                        let y;
-                        for (const item of dataset.data)
-                        {
-                            if (item.y !== undefined && item.y !== null)
-                            {
-                                y = item.y;
-                                break;
-                            }
-                        }
-
-                        if (y !== undefined && y !== null)
-                        {
-                            const x0 = new Date(this.time_from_);
-                            dataset.data.unshift({x: x0, y: !y});
-                        }
-                    }
-
-                    if (this.is_today)
+                    for (const dataset of chart.data.datasets)
                     {
                         const log = dataset.dev_item ? dataset.dev_item.val : dataset.param;
                         const y = this.getY(chart, log, dataset.steppedLine);
@@ -794,93 +744,105 @@ export class ChartsComponent implements OnInit, AfterViewInit {
         return y;
     }
 
-  getParamData(limit: number, offset: number = 0): void {
-    if (this.param_data_.length) {
-      this.schemeService.getChartParamData(this.time_from_, this.time_to_, this.param_data_, limit, offset)
-        .subscribe((logs: PaginatorApi<Log_Param>) => this.fillParamData(logs));
-    } else {
-      this.params_loaded = true;
-    }
-  }
-
-  fillParamData(logs: PaginatorApi<Log_Param>): void {
-    if (!logs)
-    {
-      this.set_initialized(false);
-      return;
-    }
-
-    this.addLogData(logs);
-
-    this.logs_count2 += logs.results.length;
-    this.prgValue2 = this.logs_count2 / (logs.count / 100.0);
-
-    const need_more: boolean = logs.count > this.logs_count2 && this.logs_count2 < 10000000;
-    if (need_more)
-    {
-      this.prgMode = 'determinate';
-      console.warn(`Log param count: ${logs.count} on page: ${logs.results.length} current: ${this.logs_count2}`);
-
-      const start = this.logs_count2;
-      const limit = logs.count - this.logs_count2;
-      this.getParamData(limit < this.data_part_size ? limit : this.data_part_size, this.logs_count2);
-    }
-    else
-      this.set_initialized(false);
-  }
-
-  pushDataset(log: any): void {
-    for (const chart of this.charts) {
-      for (const dataset of chart.data.datasets) {
-        if ((dataset.dev_item && dataset.dev_item.id === log.item_id)
-            || (dataset.param && dataset.param.id === log.group_param_id)) {
-          const y = this.getY(chart, log, dataset.steppedLine);
-          if (y === undefined)
-            return;
-
-          const x = new Date(log.timestamp_msecs);
-          dataset.data.push({x, y});
-          return;
+    getParamData(limit: number, offset: number = 0): void {
+        if (this.param_data_.length) {
+            this.schemeService.getChartParamData(this.time_from_, this.time_to_, this.param_data_, limit, offset)
+                .subscribe((logs: Paginator_Chart_Value) => this.fillParamData(logs));
         }
-      }
+        else
+          this.params_loaded = true;
     }
-  }
 
-  addLogData(logs: any): void {
-    for (const log of logs.results)
-      this.pushDataset(log);
-  }
+    fillParamData(logs: Paginator_Chart_Value): void {
+        if (!logs)
+        {
+            this.set_initialized(false);
+            return;
+        }
 
-  getLogs(limit: number, offset: number = 0): void {
-    this.schemeService.getChartData(this.time_from_, this.time_to_, this.data_, limit, offset)
-      .subscribe((logs: PaginatorApi<Log_Value>) => this.fillData(logs));
-  }
+        this.add_chart_data(logs, 'param');
 
-  fillData(logs: PaginatorApi<Log_Value>): void {
-    if (!logs)
+        this.logs_count2 += logs.count;
+        this.prgValue2 = this.logs_count2 / (logs.count_all / 100.0);
+
+        const need_more: boolean = logs.count_all > this.logs_count2 && this.logs_count2 < 10000000;
+        if (need_more)
+        {
+            this.prgMode = 'determinate';
+
+            const start = this.logs_count2;
+            const limit = logs.count_all - this.logs_count2;
+            this.getParamData(limit < this.data_part_size ? limit : this.data_part_size, this.logs_count2);
+        }
+        else
+            this.set_initialized(false);
+    }
+
+
+    find_dataset(data_param_name: string, data_id): [any, any]
     {
-      this.set_initialized(true);
-      return;
+        for (const chart of this.charts)
+            for (const dataset of chart.data.datasets)
+                if (dataset[data_param_name] && dataset[data_param_name].id === data_id)
+                    return [chart, dataset];
+        return [null, null];
     }
 
-    this.addLogData(logs);
-
-    this.logs_count += logs.results.length;
-    this.prgValue = this.logs_count / (logs.count / 100.0);
-
-    const need_more: boolean = logs.count > this.logs_count && this.logs_count < 10000000;
-    if (need_more)
+    add_chart_data(logs: Paginator_Chart_Value, data_param_name: string)
     {
-      this.prgMode = 'determinate';
-      console.warn(`Log count: ${logs.count} on page: ${logs.results.length} current: ${this.logs_count}`);
-
-      const start = this.logs_count;
-      const limit = logs.count - this.logs_count;
-      this.getLogs(limit < this.data_part_size ? limit : this.data_part_size, this.logs_count);
+        for (const log of logs.results)
+        {
+            const [chart, dataset] = this.find_dataset(data_param_name, log.item_id);
+            if (dataset)
+            {
+                for (const log_item of log.data)
+                {
+                    const y = this.getY(chart, log_item, dataset.steppedLine);
+                    if (y !== undefined)
+                    {
+                        const x = new Date(log_item.time);
+                        let data = {x, y};
+                        if (log_item.user_id)
+                        {
+                            // This not working
+                            // data['user_id'] = log_item.user_id;
+                        }
+                        dataset.data.push(data);
+                    }
+                }
+            }
+        }
     }
-    else
-      this.set_initialized(true);
-  }
+
+    getLogs(limit: number, offset: number = 0): void {
+        this.schemeService.getChartData(this.time_from_, this.time_to_, this.data_, limit, offset)
+            .subscribe((logs: Paginator_Chart_Value) => this.fillData(logs));
+    }
+
+    fillData(logs: Paginator_Chart_Value): void {
+        if (!logs)
+        {
+            this.set_initialized(true);
+            return;
+        }
+
+        this.add_chart_data(logs, 'dev_item');
+        this.logs_count += logs.count;
+
+        this.prgValue = this.logs_count / (logs.count_all / 100.0);
+
+        const need_more: boolean = logs.count_all > this.logs_count && this.logs_count < 10000000;
+        if (need_more)
+        {
+            this.prgMode = 'determinate';
+
+            const start = this.logs_count;
+            const limit = logs.count_all - this.logs_count;
+            this.getLogs(limit < this.data_part_size ? limit : this.data_part_size, this.logs_count);
+        }
+        else
+            this.set_initialized(true);
+    }
 
   breakLoad(): void {
     this.logs_count *= 100 / this.prgValue;

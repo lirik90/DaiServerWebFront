@@ -16,6 +16,22 @@ const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 
+export interface Chart_Value_Data_Item {
+    time: number;
+    user_id?: number;
+    value: any;
+    raw?: any;
+}
+export interface Chart_Value_Item {
+    item_id: number;
+    data: Chart_Value_Data_Item[];
+}
+export interface Paginator_Chart_Value {
+    count: number;
+    count_all: number;
+    results: Chart_Value_Item[];
+}
+
 export interface ExportItem {
   id: number;
 }
@@ -397,15 +413,16 @@ export class SchemeService extends ISchemeService {
         });
     }
 
-  getChartData(date_from: number, date_to: number, data: string, limit: number = 1000, offset: number = 0): Observable<PaginatorApi<Log_Value>> {
-    let url = this.url('chart_value') + `&ts_from=${date_from}&ts_to=${+date_to}&limit=${limit}&offset=${offset}&data=${data}`;
-    return this.getPiped<PaginatorApi<Log_Value>>(url, `fetched chart data list`, 'getChartData');
-  }
+    getChartData(date_from: number, date_to: number, data: string, limit: number = 1000, offset: number = 0, data_type: string = 'value'): Observable<Paginator_Chart_Value> {
+        let url = `/api/v2/scheme/${this.scheme.id}/chart_${data_type}/?ts_from=${date_from}&ts_to=${+date_to}&limit=${limit}&offset=${offset}&data=${data}`;
+        return this.http.get<Paginator_Chart_Value>(url).pipe(
+            catchError(this.handleError<Paginator_Chart_Value>('chart_' + data_type, undefined)));
+        // return this.getPiped<PaginatorApi<Log_Value>>(url, `fetched chart data list`, 'getChartData');
+    }
 
-  getChartParamData(date_from: number, date_to: number, data: string, limit: number = 1000, offset: number = 0): Observable<PaginatorApi<Log_Param>> {
-    let url = this.url('chart_param') + `&ts_from=${date_from}&ts_to=${+date_to}&limit=${limit}&offset=${offset}&data=${data}`;
-    return this.getPiped<PaginatorApi<Log_Param>>(url, `fetched chart param list`, 'getChartParamData');
-  }
+    getChartParamData(date_from: number, date_to: number, data: string, limit: number = 1000, offset: number = 0): Observable<Paginator_Chart_Value> {
+        return this.getChartData(date_from, date_to, data, limit, offset, 'param');
+    }
 
   exportExcel(conf: ExportConfig, path?: string): Observable<HttpResponse<Blob>> {
     if (!path) {
