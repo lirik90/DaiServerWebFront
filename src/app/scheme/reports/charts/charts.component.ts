@@ -106,10 +106,6 @@ export class ChartsComponent implements OnInit, AfterViewInit {
   time_to_: number;
   is_today: boolean;
 
-  prgMode: string;
-  prgValue: number;
-  prgValue2: number;
-
   devItemList = [];
 
   itemList = [];
@@ -480,16 +476,13 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     this.time_to_ = parseDate(this.date_to, this.time_to);
     this.is_today = new Date().getTime() < this.time_to_;
 
-    this.prgMode = 'indeterminate';
-    this.prgValue = 0;
-    this.prgValue2 = 0;
     this.logs_count = 0;
     this.logs_count2 = 0;
     this.initialized = false;
     this.values_loaded = false;
     this.params_loaded = false;
-    this.getParamData(this.data_part_size);
-    this.getLogs(this.data_part_size);
+    this.getParamData();
+    this.getLogs();
   }
 
   addParam2Dataset(datasets: any[], data: any, params: DIG_Param[], selected: Chart_Item_Iface[]): void {
@@ -681,15 +674,26 @@ export class ChartsComponent implements OnInit, AfterViewInit {
 
         if (this.values_loaded && this.params_loaded)
         {
-            if (this.is_today)
+            // if (this.is_today)
             {
-                const x = new Date();
+                const x = this.is_today ? new Date() : new Date(this.time_to_);
                 for (const chart of this.charts) 
                 {
                     for (const dataset of chart.data.datasets)
                     {
-                        const log = dataset.dev_item ? dataset.dev_item.val : dataset.param;
-                        const y = this.getY(chart, log, dataset.steppedLine);
+                        let y;
+                        if (this.is_today)
+                        {
+                            const log = dataset.dev_item ? dataset.dev_item.val : dataset.param;
+                            y = this.getY(chart, log, dataset.steppedLine);
+                        }
+                        else if (dataset.data.length !== 0)
+                        {
+                            const last = dataset.data[dataset.data.length - 1];
+                            if (last.x < x)
+                                y = last.y;
+                        }
+
                         if (y !== undefined && y !== null)
                         {
                             if (dataset.data.length === 0)
@@ -744,9 +748,9 @@ export class ChartsComponent implements OnInit, AfterViewInit {
         return y;
     }
 
-    getParamData(limit: number, offset: number = 0): void {
+    getParamData(offset: number = 0): void {
         if (this.param_data_.length) {
-            this.schemeService.getChartParamData(this.time_from_, this.time_to_, this.param_data_, limit, offset)
+            this.schemeService.getChartParamData(this.time_from_, this.time_to_, this.param_data_, this.data_part_size, offset)
                 .subscribe((logs: Paginator_Chart_Value) => this.fillParamData(logs));
         }
         else
@@ -763,17 +767,9 @@ export class ChartsComponent implements OnInit, AfterViewInit {
         this.add_chart_data(logs, 'param');
 
         this.logs_count2 += logs.count;
-        this.prgValue2 = this.logs_count2 / (logs.count_all / 100.0);
 
-        const need_more: boolean = logs.count_all > this.logs_count2 && this.logs_count2 < 10000000;
-        if (need_more)
-        {
-            this.prgMode = 'determinate';
-
-            const start = this.logs_count2;
-            const limit = logs.count_all - this.logs_count2;
-            this.getParamData(limit < this.data_part_size ? limit : this.data_part_size, this.logs_count2);
-        }
+        if (logs.count >= this.data_part_size && this.logs_count2 < 10000000)
+            this.getParamData(this.logs_count2);
         else
             this.set_initialized(false);
     }
@@ -814,8 +810,8 @@ export class ChartsComponent implements OnInit, AfterViewInit {
         }
     }
 
-    getLogs(limit: number, offset: number = 0): void {
-        this.schemeService.getChartData(this.time_from_, this.time_to_, this.data_, limit, offset)
+    getLogs(offset: number = 0): void {
+        this.schemeService.getChartData(this.time_from_, this.time_to_, this.data_, this.data_part_size, offset)
             .subscribe((logs: Paginator_Chart_Value) => this.fillData(logs));
     }
 
@@ -829,24 +825,13 @@ export class ChartsComponent implements OnInit, AfterViewInit {
         this.add_chart_data(logs, 'dev_item');
         this.logs_count += logs.count;
 
-        this.prgValue = this.logs_count / (logs.count_all / 100.0);
-
-        const need_more: boolean = logs.count_all > this.logs_count && this.logs_count < 10000000;
-        if (need_more)
-        {
-            this.prgMode = 'determinate';
-
-            const start = this.logs_count;
-            const limit = logs.count_all - this.logs_count;
-            this.getLogs(limit < this.data_part_size ? limit : this.data_part_size, this.logs_count);
-        }
+        if (logs.count >= this.data_part_size && this.logs_count < 10000000)
+            this.getLogs(this.logs_count);
         else
             this.set_initialized(true);
     }
 
   breakLoad(): void {
-    this.logs_count *= 100 / this.prgValue;
-    this.logs_count2 *= 100 / this.prgValue2;
   }
 
   genDateString(date: Date, time: string): string {
