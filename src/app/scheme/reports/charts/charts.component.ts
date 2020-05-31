@@ -21,7 +21,7 @@ import * as moment from 'moment';
 
 import { SchemeService, ExportConfig, ExportItem, Paginator_Chart_Value } from '../../scheme.service';
 import { Device_Item_Type, DIG_Param, DIG_Type, Section, Device_Item, Log_Value, Log_Param, Register_Type, Save_Algorithm, DIG_Param_Value_Type, Device_Item_Group, Chart } from '../../scheme';
-import { PaginatorApi } from '../../../user';
+import { Scheme_Group_Member, PaginatorApi } from '../../../user';
 
 import { ColorPickerDialog } from './color-picker-dialog/color-picker-dialog';
 
@@ -117,6 +117,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
   paramSettings: any = {};
 
   charts: Chart_Info_Interface[] = [];
+  members: Scheme_Group_Member[] = [];
 
   values_loaded: boolean;
   params_loaded: boolean;
@@ -148,16 +149,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     tooltips: {
       mode: 'nearest',
       intersect: false,
-      callbacks: {
-        label: function(item, data) { // args: tooltipItem, data
-          // console.log('callback label:', item, data);
-          const dataset = data.datasets[item.datasetIndex];
-          const text = dataset.steppedLine && dataset.dev_item ?
-            (item.yLabel < dataset["my_cond"] ? '0' : '1') :
-            item.value;
-          return dataset.label + ": " + text;
-        },
-      }
+      callbacks: { label: null }
     },
     hover: {
       mode: 'nearest',
@@ -204,15 +196,44 @@ export class ChartsComponent implements OnInit, AfterViewInit {
   ) {
   }
 
-  ngOnInit() {
-      this.schemeService.get_charts().subscribe(charts => {
-          this.user_charts = charts;
-          if (!this.user_charts.length)
-              this.charts_type = Chart_Type.CT_DIG_TYPE;
+    ngOnInit() {
+        this.schemeService.get_charts().subscribe(charts => {
+            this.user_charts = charts;
+            if (!this.user_charts.length)
+                this.charts_type = Chart_Type.CT_DIG_TYPE;
 
-          this.OnChartsType();
-          this.initCharts();
-      });
+            this.OnChartsType();
+            this.initCharts();
+        });
+      
+        this.schemeService.getMembers().subscribe(members => this.members = members.results);
+
+        this.options.tooltips.callbacks.label = (item, data):string =>
+        {
+            console.log('callback label:', item, data);
+            const dataset = data.datasets[item.datasetIndex];
+            let text = dataset.steppedLine && dataset.dev_item ?
+              (item.yLabel < dataset["my_cond"] ? '0' : '1') :
+              item.value;
+
+            if (dataset.usered_data)
+            {
+                const x = dataset.data[item.index].x.getTime();
+                const user_id = dataset.usered_data[x];
+                if (dataset.usered_data[x])
+                {
+                    for (const user of this.members)
+                    {
+                        if (user.id === user_id)
+                        {
+                            text += ' User: ' + user.name;
+                            break;
+                        }
+                    }
+                }
+            }
+            return dataset.label + ": " + text;
+        };
   }
 
     onItemSelect(item: any): void
@@ -774,7 +795,6 @@ export class ChartsComponent implements OnInit, AfterViewInit {
             this.set_initialized(false);
     }
 
-
     find_dataset(data_param_name: string, data_id): [any, any]
     {
         for (const chart of this.charts)
@@ -800,8 +820,9 @@ export class ChartsComponent implements OnInit, AfterViewInit {
                         let data = {x, y};
                         if (log_item.user_id)
                         {
-                            // This not working
-                            // data['user_id'] = log_item.user_id;
+                            if (!dataset.usered_data)
+                                dataset.usered_data = {};
+                            dataset.usered_data[x.getTime()] = log_item.user_id;
                         }
                         dataset.data.push(data);
                     }
