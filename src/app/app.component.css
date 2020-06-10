@@ -84,6 +84,11 @@
   margin: 0 0 0 8px;
 }
 
+.branding__logo {
+    width: 48px;
+    height: 48px;
+}
+
 .app-toolbar__menu-link, .app-toolbar__user-link {
   text-decoration: none;
 }
