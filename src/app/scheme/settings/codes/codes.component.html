@@ -45,18 +45,10 @@
     </mat-accordion>
   </div>
 
-  <!--
-  [(text)]="sel_item ? sel_item.obj.text : tmp"
-  -->
-  <ace-editor #editor
-     [mode]="'javascript'"
-     [theme]="'dracula-mod'"
-     [readOnly]="false"
-     [options]="options"
-     [autoUpdateContent]="true"
-     [durationBeforeCallback]="1000"
-     (textChanged)="wasChanged()"
-              [style.display]="sel_item ? 'block' : 'none'"
-     class="editor" id="editor"
-          (resize)="adjust_size()"></ace-editor>
+  <app-editor #codeEditor
+      id="codeEditor"
+      (textChanged)="wasChanged()"
+      [style.display]="sel_item ? 'block' : 'none'"
+      [metaInfo]="metadata$ | async"
+  ></app-editor>
 </div>

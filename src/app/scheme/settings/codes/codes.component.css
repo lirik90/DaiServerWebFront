@@ -1,15 +1,6 @@
-ngx-monaco-editor {
-  height: 700px;
-}
 ::ng-deep .codes-editor * {
   font-family: 'Anonymous Pro';
   font-size: 13pt;
-}
-
-.editor {
-  min-height: 480px; width:100%;
-  /*height: calc(100% - 205px);*/
-  flex: 1;
 }
 
 .accorderon-fullscren {

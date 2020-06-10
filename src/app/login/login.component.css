@@ -43,7 +43,7 @@ h2 {
 }
 
 .separator {
-  background: url('/assets/img/HR_gradient_dark.png') top center no-repeat;
+  background: url('assets/img/HR_gradient_dark.png') top center no-repeat;
   width: 100%;
   max-width: 328px;
   margin: auto;

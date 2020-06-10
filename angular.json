@@ -27,12 +27,7 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
-              "src/favicon.ico",
-              {
-                "glob": "**/*",
-                "input": "node_modules/ngx-monaco-editor/assets/monaco",
-                "output": "/monaco"
-              }
+              "src/favicon.ico"
             ],
             "styles": [
               "src/assets/css/noto.css",
@@ -226,12 +221,7 @@
             ],
             "assets": [
               "src/assets",
-              "src/favicon.ico",
-              {
-                "glob": "**/*",
-                "input": "node_modules/ngx-monaco-editor/assets/monaco",
-                "output": "/monaco"
-              }
+              "src/favicon.ico"
             ]
           }
         },

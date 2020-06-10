@@ -13,19 +13,15 @@ import { SectionsComponent, GroupsComponent, ParamsInGroupComponent } from './se
 import { GroupTypesComponent, ItemTypesComponent, ParamTypesComponent, StatusesComponent } from './group-types/group-types.component';
 import { DIG_Status_Category_Component } from './dig-status-category/dig-status-category.component';
 import { SignTypesComponent } from './sign-types/sign-types.component';
-import { CodesComponent } from './codes/codes.component';
 
-import { MonacoEditorModule, NgxMonacoEditorConfig, NGX_MONACO_EDITOR_CONFIG } from 'ngx-monaco-editor';
+import { CodesComponent } from './codes/codes.component';
+import { EditorComponent } from './codes/editor/editor.component';
+import { CompleterService } from './codes/services/completer.service';
+import { MetadataService } from './codes/services/metadata.service';
+
 import { PluginTypesComponent } from './plugin-types/plugin-types.component';
 import { SaveTimersComponent } from './save-timers/save-timers.component';
 import { AceEditorModule } from 'ng2-ace-editor';
-
-
-const monacoConfig: NgxMonacoEditorConfig = {
-  baseUrl: 'static', // configure base path for monaco editor
-  defaultOptions: { scrollBeyondLastLine: false }, // pass deafult options to be used
-  //onMonacoLoad: () => {} // here monaco object will be avilable as window.monaco use this function to extend monaco editor functionalities.
-};
 
 @NgModule({
   imports: [
@@ -34,7 +30,6 @@ const monacoConfig: NgxMonacoEditorConfig = {
     ReactiveFormsModule,
     SettingsRoutingModule,
     MaterialModule,
-    MonacoEditorModule,
     AceEditorModule,
     // use forRoot() in main app module only.
   ],
@@ -48,6 +43,7 @@ const monacoConfig: NgxMonacoEditorConfig = {
     DIG_Status_Category_Component,
     SignTypesComponent,
     CodesComponent,
+    EditorComponent,
     PluginTypesComponent,
     SaveTimersComponent,
       Scheme_Copy_Dialog
@@ -59,7 +55,7 @@ const monacoConfig: NgxMonacoEditorConfig = {
 //    SchemeLoadGuard,
 //    ControlService,
     SettingsService,
-    { provide: NGX_MONACO_EDITOR_CONFIG, useValue: monacoConfig }
+      MetadataService, CompleterService
   ]
 })
 export class SettingsModule { }

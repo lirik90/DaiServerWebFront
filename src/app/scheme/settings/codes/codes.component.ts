@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs';
 
@@ -10,56 +10,29 @@ import { ByteTools, WebSocketBytesService } from '../../../web-socket.service';
 import { StructType, ChangeState, ChangeInfo, ChangeTemplate } from '../settings';
 import { SettingsService } from '../settings.service';
 
-import * as ace from 'brace';
-import 'brace/mode/javascript';
-import 'brace/mode/typescript';
-import './dracula-mod';
-import 'brace/ext/searchbox';
-import 'brace/ext/language_tools';
-import {WebSockCmd} from '../../control.service';
+import { WebSockCmd } from '../../control.service';
 import { MatPaginator } from '@angular/material/paginator';
+
+import { MetadataService } from './services/metadata.service';
 
 @Component({
   selector: 'app-codes',
   templateUrl: './codes.component.html',
-  styleUrls: ['../settings.css', '../../../../assets/anonymous/stylesheet.css', './codes.component.css']
+  styleUrls: ['../settings.css'/*, '../../../../assets/anonymous/stylesheet.css'*/, './codes.component.css']
 })
-export class CodesComponent extends ChangeTemplate<Codes> implements OnInit, AfterViewInit {
+export class CodesComponent extends ChangeTemplate<Codes> implements OnInit {
   codes: Codes[];
 
-  editorOptions = {theme: 'vs-dark', language: 'javascript'};
-  editorApi = '';
+    metadata$ = this.metadataService.getMetadata();
 
-  tmp: string;
-
-  options = {
-    fontSize: '11pt',
-    enableBasicAutocompletion: true
-  };
-
-  @ViewChild('editor', {static: true}) editor;
+  @ViewChild('codeEditor', {static: true}) editor;
   private newOpened = false;
-
-  ngAfterViewInit() {
-    this.editor.getEditor().setAutoScrollEditorIntoView(true);
-  }
-
-  onEditorInit(editor) {
-    if (!this.editorApi) {
-      return;
-    }
-    (<any>window).monaco.languages.typescript.javascriptDefaults.addExtraLib([
-      'declare class Dai_Api { static next():string }',
-    ].join('\n'), 'filename/facts.d.ts');
-
-    (<any>window).monaco.languages.typescript.javascriptDefaults.addExtraLib(this.editorApi, 'filename/api.d.ts');
-    this.editorApi = null;
-  }
 
   constructor(
     wsbService: WebSocketBytesService,
     schemeService: SchemeService,
     private settingsService: SettingsService,
+      private metadataService: MetadataService
   ) {
     super(StructType.Scripts, wsbService, schemeService, Codes);
   }
@@ -69,45 +42,10 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit, Aft
   }
 
   ngOnInit() {
-    this.generate_api();
-
     this.settingsService.getCodes().subscribe(codes => {
       this.codes = codes;
       this.fillItems();
     });
-  }
-
-  generate_api(): void {
-    const types: any = { item: {}, group: {} };
-    for (const t of this.schemeService.scheme.device_item_type) {  types.item[t.name] = t.id; }
-    for (const t of this.schemeService.scheme.dig_type) { types.group[t.name] = t.id; }
-
-    const api_lines = ['var api = {',
-    '  actDevice: function(group, type, newState, user_id) {},',
-    '  findItem: function(items, func) {},',
-    '  status: {}, checker: [],',
-    '  mng: { sections: [], devices: [] },',
-    '  type: ' + JSON.stringify(types) + ',',
-    '  handlers: {',
-    '      changed: {',
-    '          mode: undefined,',
-    '          item: undefined,',
-    '          sensor: undefined,',
-    '          control: undefined,',
-    '          day_part: undefined,',
-    '      },',
-    '      database: { initialized: undefined },',
-    '      section: { initialized: undefined },',
-    '      group: { initialized: {}, changed: {} },',
-    '      control_change_check: undefined,',
-    '      normalize: undefined,',
-    '      check_value: undefined,',
-    '      group_status: undefined,',
-    '      initialized: undefined,',
-    '  },',
-    '};', ];
-
-    this.editorApi = api_lines.join('\n');
   }
 
   initItem(obj: Codes): void {
@@ -146,8 +84,6 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit, Aft
 
     if (item.obj.text) {
       this.editor.setText(this.sel_item.obj.text);
-      this.editor._editor.session.setUndoManager(new ace.UndoManager());
-
       this.newOpened = true;
     }
   }
@@ -187,19 +123,17 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit, Aft
 
     const elem = document.getElementById('editor-pane');
     elem.classList.remove('editor-pane-fullscreen');
-    this.editor.getEditor().resize();
-    setTimeout(() => { this.editor.getEditor().resize(); }, 200);
+
+    this.editor.adjustSize();
+    setTimeout(() => { this.editor.adjustSize(); }, 200);
   }
 
   fullscreenToggle() {
     const elem = document.getElementById('editor-pane');
-
     elem.classList.toggle('editor-pane-fullscreen');
 
-    const ed = this.editor.getEditor();
-    ed.resize();
-
-    setTimeout(() => { this.editor.getEditor().resize(); }, 200);
+    this.editor.adjustSize();
+    setTimeout(() => { this.editor.adjustSize(); }, 200);
 
     /*
     if (elem.requestFullscreen) {
@@ -214,18 +148,13 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit, Aft
     */
   }
 
-  adjust_size() {
-    const ed = this.editor.getEditor();
-    ed.resize();
-  }
-
   wasChanged() {
     if (this.newOpened) {
       this.newOpened = false;
       return;
     }
 
-    this.sel_item.obj.text = this.editor.text;
+    this.sel_item.obj.text = this.editor.script;
     this.itemChanged();
   }
 }
