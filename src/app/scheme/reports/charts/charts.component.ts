@@ -1,5 +1,5 @@
-import {AfterViewInit, Component, OnInit, QueryList, ViewChildren, ViewChild} from '@angular/core';
-import {FormControl} from '@angular/forms';
+import { AfterViewInit, Component, OnInit, QueryList, ViewChildren, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 import { MatDialog } from '@angular/material/dialog';
 
@@ -10,9 +10,14 @@ import {
 } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
+import { ISubscription } from 'rxjs/Subscription';
+
 import { TranslateService } from '@ngx-translate/core';
 import { BaseChartDirective } from 'ng2-charts';
 // import {ChartComponent} from 'angular2-chartjs';
+
+import { Chart as ChartJS } from 'chart.js';
+import 'chartjs-plugin-zoom';
 
 import * as moment from 'moment';
 // import * as _moment from 'moment';
@@ -119,6 +124,8 @@ export class ChartsComponent implements OnInit, AfterViewInit {
   charts: Chart_Info_Interface[] = [];
   members: Scheme_Group_Member[] = [];
 
+  private logSub: ISubscription;
+  private paramSub: ISubscription;
   values_loaded: boolean;
   params_loaded: boolean;
   initialized = false;
@@ -130,8 +137,13 @@ export class ChartsComponent implements OnInit, AfterViewInit {
 
   type = 'line';
   options = {
-      elements: { point: { radius: 0 } },
+      elements: { 
+          point: { radius: 0 },
+          line: { tension: 0 }
+      },
+      animation: { duration: 0 },
     responsive: true,
+      responsiveAnimationDuration: 0,
     legend: {
       // display: false,
       // position: 'bottom',
@@ -149,11 +161,12 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     tooltips: {
       mode: 'nearest',
       intersect: false,
-      callbacks: { label: null }
+      callbacks: { label: (item, data) => this.onLabel(item, data) }
     },
     hover: {
-      mode: 'nearest',
-      intersect: false
+        mode: 'nearest',
+        intersect: false,
+        animationDuration: 0
     },
     scales: {
       xAxes: [{
@@ -175,6 +188,9 @@ export class ChartsComponent implements OnInit, AfterViewInit {
           // max: new Date({{ year }}, {{ month }} - 1, {{ day }}, 23, 59, 59),
         },
         ticks: {
+            sampleSize: 10,
+            maxRotation: 45,
+            minRotation: 45
           // min: new Date({{ year }}, {{ month }} - 1, {{ day }}),
           // max: new Date({{ year }}, {{ month }} - 1, {{ day }}, 23, 59, 59),
           // callback: function(value) {
@@ -183,8 +199,131 @@ export class ChartsComponent implements OnInit, AfterViewInit {
           // },
         },
       }],
-    }
+    },
+    plugins: {
+        zoom: {
+            pan: {
+                enabled: true,
+                mode: 'x',
+                rangeMax: { x: new Date() }, // TODO: update this sometimes
+                onPanComplete: chart => this.onZoom(chart)
+            },
+            zoom: {
+                enabled: true,
+                mode: 'x',
+                onZoomComplete: chart => this.onZoom(chart)
+            }
+        }
+    },
   };
+
+    onLabel(item, data): string
+    {
+        // console.log('callback label:', item, data);
+        const dataset = data.datasets[item.datasetIndex];
+        let text = dataset.steppedLine && dataset.dev_item ?
+          (item.yLabel < dataset["my_cond"] ? '0' : '1') :
+          item.value;
+
+        if (dataset.usered_data)
+        {
+            const x = dataset.data[item.index].x.getTime();
+            const user_id = dataset.usered_data[x];
+            if (dataset.usered_data[x])
+            {
+                for (const user of this.members)
+                {
+                    if (user.id === user_id)
+                    {
+                        text += ' User: ' + user.name;
+                        break;
+                    }
+                }
+            }
+        }
+        return dataset.label + ": " + text;
+    }
+
+    getXAxisInfo(chart: any): any
+    {
+        const xAxis = chart.chart.scales['x-axis-0'];
+        const delta = xAxis.max - xAxis.min;
+        return { min: xAxis.min, max: xAxis.max, pixelTime: delta / xAxis.width };
+    }
+
+    getDecimationTreshold(chart: any): number
+    {
+        const yAxis = chart.chart.scales['y-axis-0'];
+        const yDelta = yAxis.max - yAxis.min;
+        return yDelta / 5;
+    }
+
+    onZoom(chart: any): void
+    {
+        const threshold = this.getDecimationTreshold(chart);
+        const xAxisInfo = this.getXAxisInfo(chart);
+
+        for (const dataset of chart.chart.data.datasets)
+            this.dataDecimation(dataset, threshold, xAxisInfo);
+        chart.chart.update();
+    }
+
+    dataDecimation(dataset: any, threshold: number, xAxisInfo: any): void
+    {
+        if (!dataset.realData.length)
+            return;
+
+        let data = [];
+
+        let middled = false;
+        let firstItem;
+        let lastItem;
+        let x;
+
+        for (const item of dataset.realData)
+        {
+            x = item.x.getTime();
+            if (x < xAxisInfo.min)
+            {
+                firstItem = item;
+                continue;
+            }
+            else if (x > xAxisInfo.max)
+            {
+                if (lastItem)
+                    data.push({ x: new Date(xAxisInfo.max), y: lastItem.y });
+                break;
+            }
+            else if (firstItem)
+            {
+                data.push({ x: new Date(xAxisInfo.min), y: firstItem.y });
+                firstItem = undefined;
+            }
+
+            if (lastItem
+                && item.y > (lastItem.y - threshold)
+                && item.y < (lastItem.y + threshold)
+                && (x - lastItem.x.getTime()) < xAxisInfo.pixelTime)
+            {
+                if (!middled)
+                {
+                    middled = true;
+                    data[data.length - 1] = lastItem = { ...lastItem };
+                }
+
+                lastItem.x = new Date((lastItem.x.getTime() + x) / 2);
+                lastItem.y = (lastItem.y + item.y) / 2;
+            }
+            else
+            {
+                middled = false;
+                data.push(item);
+                lastItem = item;
+            }
+        }
+
+        dataset.data = data;
+    }
 
   ngAfterViewInit() {
   }
@@ -207,33 +346,6 @@ export class ChartsComponent implements OnInit, AfterViewInit {
         });
       
         this.schemeService.getMembers().subscribe(members => this.members = members.results);
-
-        this.options.tooltips.callbacks.label = (item, data):string =>
-        {
-            console.log('callback label:', item, data);
-            const dataset = data.datasets[item.datasetIndex];
-            let text = dataset.steppedLine && dataset.dev_item ?
-              (item.yLabel < dataset["my_cond"] ? '0' : '1') :
-              item.value;
-
-            if (dataset.usered_data)
-            {
-                const x = dataset.data[item.index].x.getTime();
-                const user_id = dataset.usered_data[x];
-                if (dataset.usered_data[x])
-                {
-                    for (const user of this.members)
-                    {
-                        if (user.id === user_id)
-                        {
-                            text += ' User: ' + user.name;
-                            break;
-                        }
-                    }
-                }
-            }
-            return dataset.label + ": " + text;
-        };
   }
 
     onItemSelect(item: any): void
@@ -697,6 +809,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
         {
             // if (this.is_today)
             {
+                let item;
                 const x = this.is_today ? new Date() : new Date(this.time_to_);
                 for (const chart of this.charts) 
                 {
@@ -708,21 +821,25 @@ export class ChartsComponent implements OnInit, AfterViewInit {
                             const log = dataset.dev_item ? dataset.dev_item.val : dataset.param;
                             y = this.getY(chart, log, dataset.steppedLine);
                         }
-                        else if (dataset.data.length !== 0)
+                        else if (dataset.realData.length !== 0)
                         {
-                            const last = dataset.data[dataset.data.length - 1];
+                            const last = dataset.realData[dataset.realData.length - 1];
                             if (last.x < x)
                                 y = last.y;
                         }
 
                         if (y !== undefined && y !== null)
                         {
-                            if (dataset.data.length === 0)
+                            if (dataset.realData.length === 0)
                             {
                                 const x0 = new Date(this.time_from_);
-                                dataset.data.push({x: x0, y});
+                                item = {x: x0, y};
+                                dataset.data.push(item);
+                                dataset.realData.push(item);
                             }
-                            dataset.data.push({x, y});
+                            item = {x, y};
+                            dataset.data.push(item);
+                            dataset.realData.push(item);
                         }
                     }
                 }
@@ -733,7 +850,9 @@ export class ChartsComponent implements OnInit, AfterViewInit {
                     this.adjust_stepped(dataset, chart.min_y, chart.max_y);
 
             this.initialized = true;
+            setTimeout(() => this.onZoom(this.chart), 500);
         }
+
     }
 
     getY(chart: any, log: any, is_stepped: boolean): any {
@@ -771,7 +890,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
 
     getParamData(offset: number = 0): void {
         if (this.param_data_.length) {
-            this.schemeService.getChartParamData(this.time_from_, this.time_to_, this.param_data_, this.data_part_size, offset)
+            this.paramSub = this.schemeService.getChartParamData(this.time_from_, this.time_to_, this.param_data_, this.data_part_size, offset)
                 .subscribe((logs: Paginator_Chart_Value) => this.fillParamData(logs));
         }
         else
@@ -825,6 +944,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
                             dataset.usered_data[x.getTime()] = log_item.user_id;
                         }
                         dataset.data.push(data);
+                        dataset.realData.push(data);
                     }
                 }
             }
@@ -832,7 +952,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     }
 
     getLogs(offset: number = 0): void {
-        this.schemeService.getChartData(this.time_from_, this.time_to_, this.data_, this.data_part_size, offset)
+        this.logSub = this.schemeService.getChartData(this.time_from_, this.time_to_, this.data_, this.data_part_size, offset)
             .subscribe((logs: Paginator_Chart_Value) => this.fillData(logs));
     }
 
@@ -853,6 +973,11 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     }
 
   breakLoad(): void {
+      if (this.paramSub)
+          this.paramSub.unsubscribe();
+      if (this.logSub)
+          this.logSub.unsubscribe();
+      this.set_initialized(true);
   }
 
   genDateString(date: Date, time: string): string {
@@ -891,6 +1016,7 @@ export class ChartsComponent implements OnInit, AfterViewInit {
     return {
       label,
       data: [],
+        realData: [],
 
       borderColor: `rgba(${rgb_str},0.8)`,
       backgroundColor: `rgba(${rgb_str},0.5)`,
