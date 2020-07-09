@@ -173,6 +173,15 @@ export class SchemeComponent implements OnInit, OnDestroy {
     this.schemeService.clear();
   }
 
+    setConnectionState(state: Connection_State): void
+    {
+        this.connect_state = state;
+        this.schemeService.isSchemeConnected = 
+            state !== Connection_State.CS_DISCONNECTED
+            && state !== Connection_State.CS_DISCONNECTED_JUST_NOW
+            && state !== Connection_State.CS_SERVER_DOWN;
+    }
+
   clearTime(): void {
     if (this.dt_interval) {
       clearInterval(this.dt_interval);
@@ -183,7 +192,7 @@ export class SchemeComponent implements OnInit, OnDestroy {
   getSchemeInfo(): void {
     this.schemeService.scheme.conn.subscribe(v => {
       const [connState, modState, losesState] = this.controlService.parseConnectNumber(v);
-      this.connect_state = connState as Connection_State;
+      this.setConnectionState(connState as Connection_State);
       this.mod_state = modState as boolean;
       this.loses_state = losesState as boolean;
       console.log(this.connect_state);
@@ -199,7 +208,7 @@ export class SchemeComponent implements OnInit, OnDestroy {
 
         if (msg.scheme_id === 0) {
           console.log('SCHEME_ID == 0');
-          this.connect_state = Connection_State.CS_SERVER_DOWN;
+          this.setConnectionState(Connection_State.CS_SERVER_DOWN);
           return;
         }
 
@@ -207,7 +216,7 @@ export class SchemeComponent implements OnInit, OnDestroy {
 
 
         /* get connecton state */
-        this.connect_state = connState;
+        this.setConnectionState(connState);
         this.mod_state = modState;
         this.loses_state = losesState;
 
@@ -272,7 +281,7 @@ export class SchemeComponent implements OnInit, OnDestroy {
         this.controlService.getConnectInfo();
       } else {
         this.clearTime();
-        this.connect_state = Connection_State.CS_DISCONNECTED;
+        this.setConnectionState(Connection_State.CS_DISCONNECTED);
       }
     });
 

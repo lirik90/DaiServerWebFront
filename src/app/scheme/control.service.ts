@@ -37,6 +37,7 @@ export enum WebSockCmd {
 
   WS_STREAM_TOGGLE,
   WS_STREAM_DATA,
+  WS_STREAM_TEXT,
 
   WEB_SOCK_CMD_COUNT
 }
@@ -268,7 +269,8 @@ export class ControlService {
           }
         }
       } else if (msg.cmd === WebSockCmd.WS_STREAM_DATA 
-                 || msg.cmd === WebSockCmd.WS_STREAM_TOGGLE) {
+                 || msg.cmd === WebSockCmd.WS_STREAM_TOGGLE
+                 || msg.cmd === WebSockCmd.WS_STREAM_TEXT) {
         this.stream_msg.next(msg);
       } else {
         this.byte_msg.next(msg);

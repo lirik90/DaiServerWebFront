@@ -99,6 +99,8 @@ export class VideoStreamDialogComponent implements OnInit, OnDestroy {
         this.sub = this.controlService.stream_msg.subscribe((msg: ByteMessage) => {
             if (msg.cmd == WebSockCmd.WS_STREAM_DATA) {
                 this.draw_frame(msg.data);
+            } else if (msg.cmd === WebSockCmd.WS_STREAM_TEXT) {
+                this.draw_text(msg.data);
             } else /*if (msg.cmd === WebSockCmd.WS_STREAM_TOGGLE)*/ {
                 this.stream_toggled(msg.data);
             }
@@ -137,6 +139,13 @@ export class VideoStreamDialogComponent implements OnInit, OnDestroy {
       this.dialogRef.close();
     }
 
+    draw_text(data: ArrayBuffer): void
+    {
+        let view = new Uint8Array(data);
+        const text = ByteTools.parseQString(view)[1];
+        this.fill_image('black', text, 'white');
+    }
+
     draw_frame(data: ArrayBuffer): void 
     {
         let view = new Uint8Array(data);
@@ -148,7 +157,7 @@ export class VideoStreamDialogComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const jpeg_data = view.slice(4);
+        const jpeg_data = view.slice(4); // QByteArray size skip
         this.set_data(jpeg_data);
     }
 

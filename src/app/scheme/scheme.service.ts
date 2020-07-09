@@ -65,6 +65,8 @@ class StatusItems {
 export class SchemeService extends ISchemeService {
   scheme: Scheme_Detail;
 
+    isSchemeConnected: boolean = false;
+
   private scheme_s = 'scheme';
   private devValuesInterval: any;
   private scheme2: Scheme_Detail;

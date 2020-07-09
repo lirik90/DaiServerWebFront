@@ -114,6 +114,12 @@ app-dev-item-value {
   white-space: normal;
 }
 
+.disabled-box {
+    cursor: not-allowed;
+    /* pointer-events: none; */
+    opacity: 0.4;
+}
+
 @media (max-width: 1024px) {
   .grid {
     margin: 0;

@@ -1,6 +1,7 @@
 <h2 i18n="@@MANAGEMENT.TITLE">Управление схемой</h2>
 
-<div class="grid grid-pad">
+<div class="grid grid-pad"
+    [class.disabled-box]="isDisabled()">
   <ng-container *ngFor="let sct of sections">
     <div *ngIf="sct.groups.length" class="col-1-3">
       <app-scheme-section [title]="sct.name" [forceExpand]="currentSection === sct.id">

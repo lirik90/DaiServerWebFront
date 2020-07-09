@@ -26,6 +26,11 @@ export class ManageComponent implements OnInit, AfterViewInit {
 
   canChangeMode: boolean;
 
+  isDisabled(): boolean
+  {
+      return !this.schemeService.isSchemeConnected;
+  }
+
   sctCount: number;
 
   constructor(
