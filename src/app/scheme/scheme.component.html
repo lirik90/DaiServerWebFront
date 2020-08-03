@@ -12,9 +12,6 @@
         <app-drag-scroll *ngIf="schemeService.scheme">{{schemeService.scheme.title}}</app-drag-scroll>
         <span class="timestring" *ngIf="!mobileQuery.matches && connected" i18n-matTooltip="@@DEVICE_TIME" matTooltip="Время на устройстве">{{dt_text}} {{dt_tz_name}}</span>
 
-
-        <button mat-flat-button (click)="restart()" class="reboot-btn"><mat-icon>replay</mat-icon><span class="reboot-btn__label" i18n="@@RESTART">Перезагрузить</span></button>
-
         <button *ngIf="!isFav" mat-flat-button class="fav-btn" (click)="fav()"><mat-icon>star_border</mat-icon><span class="fav-btn__label" i18n="@@ADD_TO_FAV">Добавить<br>в избранное</span></button>
         <button *ngIf="isFav" mat-flat-button class="fav-btn" (click)="unfav()"><mat-icon>star</mat-icon><span class="fav-btn__label" i18n="@@IN_FAV">В избранном</span></button>
       </div>
@@ -45,9 +42,10 @@
   <div class="sidenav">
     <ul class="sidenav-menu-items">
       <li class="sidenav-menu-item" *ngFor="let nav of fillerNav">
-        <a [routerLink]="nav.link" routerLinkActive="active" class="sidenav-menu-link" (click)="closeMenu()">
+        <a [routerLink]="nav.link" routerLinkActive="active" #link="routerLinkActive" class="sidenav-menu-link" (click)="closeMenu()">
           <mat-icon>{{nav.icon}}</mat-icon>{{nav.text}}
         </a>
+        <div *ngIf="link.isActive" class="active-arrow"></div>
       </li>
     </ul>
   </div>

@@ -787,14 +787,18 @@ div > h2 {
 }
 
 .localnav-menu-link {
-  color: #333333;
+  color: #000;
   display: inline-block;
   line-height: 22px;
-  white-space: nowrap
+  white-space: nowrap;
+}
+
+.localnav-menu-link.active {
+    color: darkGreen;
 }
 
 .localnav-menu-link:hover {
-  text-decoration: none
+  text-decoration: none;
 }
 
 @media only screen and (max-width: 600px) {
@@ -805,136 +809,136 @@ div > h2 {
     opacity: 0;
     transform: translate3d(0, -25px, 0);
     transition: 0.5s ease;
-    transition-property: transform, opacity
+    transition-property: transform, opacity;
   }
 
   .theme-dark .localnav .localnav-menu-link, .localnav.theme-dark .localnav-menu-link {
-    border-color: #333333
+    border-color: #000;
   }
 
   .localnav-menustate:checked ~ .localnav .localnav-menu-link, .localnav-menustate:target ~ .localnav .localnav-menu-link {
     opacity: 1;
-    transform: translate3d(0, 0, 0)
+    transform: translate3d(0, 0, 0);
   }
 }
 
 .localnav.localnav-hero .localnav-menu-link {
-  color: white
+  color: white;
 }
 
 .localnav-hero.localnav.localnav-sticking .localnav-menu-link {
-  color: #333333
+  color: #000;
 }
 
 .localnav-menustate:checked ~ .localnav-hero.localnav .localnav-menu-link, .localnav-menustate:target ~ .localnav-hero.localnav .localnav-menu-link {
-  color: #333333
+  color: #000;
 }
 
 .localnav.localnav-hero .localnav-menu-link:hover {
-  color: #66bbff
+  color: #66bbff;
 }
 
 .localnav-hero.localnav.localnav-sticking .localnav-menu-link:hover {
-  color: #0070c9
+  color: #0070c9;
 }
 
 .localnav-menustate:checked ~ .localnav-hero.localnav .localnav-menu-link:hover, .localnav-menustate:target ~ .localnav-hero.localnav .localnav-menu-link:hover {
-  color: #0070c9
+  color: #0070c9;
 }
 
 .theme-dark .localnav .localnav-menu-link, .localnav.theme-dark .localnav-menu-link {
-  color: white
+  color: white;
 }
 
 .theme-dark .localnav.localnav-sticking .localnav-menu-link, .theme-dark.localnav.localnav-sticking .localnav-menu-link {
-  color: white
+  color: white;
 }
 
 .theme-dark .localnav-menustate:checked ~ .localnav .localnav-menu-link, .theme-dark .localnav-menustate:target ~ .localnav .localnav-menu-link, .localnav-menustate:checked ~ .theme-dark.localnav .localnav-menu-link, .localnav-menustate:target ~ .theme-dark.localnav .localnav-menu-link {
-  color: white
+  color: white;
 }
 
 .theme-dark .localnav .localnav-menu-link:hover, .localnav.theme-dark .localnav-menu-link:hover {
-  color: #66bbff
+  color: #66bbff;
 }
 
 .theme-dark .localnav.localnav-sticking .localnav-menu-link:hover, .theme-dark.localnav.localnav-sticking .localnav-menu-link:hover {
-  color: #66bbff
+  color: #66bbff;
 }
 
 .theme-dark .localnav-menustate:checked ~ .localnav .localnav-menu-link:hover, .theme-dark .localnav-menustate:target ~ .localnav .localnav-menu-link:hover, .localnav-menustate:checked ~ .theme-dark.localnav .localnav-menu-link:hover, .localnav-menustate:target ~ .theme-dark.localnav .localnav-menu-link:hover {
-  color: #66bbff
+  color: #66bbff;
 }
 
 .localnav-menu-link:hover {
   color: #0070c9;
-  text-decoration: none
+  text-decoration: none;
 }
 
 .localnav-menu-link.current {
   color: rgba(51, 51, 51, 0.6);
-  cursor: default
+  cursor: default;
 }
 
 .localnav-menu-link.current:hover {
-  color: rgba(51, 51, 51, 0.6)
+  color: rgba(51, 51, 51, 0.6);
 }
 
 .localnav.localnav-hero .localnav-menu-link.current {
-  color: rgba(255, 255, 255, 0.6)
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .localnav.localnav-hero .localnav-menu-link.current:hover {
-  color: rgba(255, 255, 255, 0.6)
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .localnav-hero.localnav.localnav-sticking .localnav-menu-link.current {
-  color: rgba(51, 51, 51, 0.6)
+  color: rgba(51, 51, 51, 0.6);
 }
 
 .localnav-hero.localnav.localnav-sticking .localnav-menu-link.current:hover {
-  color: rgba(51, 51, 51, 0.6)
+  color: rgba(51, 51, 51, 0.6);
 }
 
 .localnav-menustate:checked ~ .localnav-hero.localnav .localnav-menu-link.current, .localnav-menustate:target ~ .localnav-hero.localnav .localnav-menu-link.current {
-  color: rgba(51, 51, 51, 0.6)
+  color: rgba(51, 51, 51, 0.6);
 }
 
 .localnav-menustate:checked ~ .localnav-hero.localnav .localnav-menu-link.current:hover, .localnav-menustate:target ~ .localnav-hero.localnav .localnav-menu-link.current:hover {
-  color: rgba(51, 51, 51, 0.6)
+  color: rgba(51, 51, 51, 0.6);
 }
 
 .theme-dark .localnav .localnav-menu-link.current, .localnav.theme-dark .localnav-menu-link.current {
-  color: rgba(255, 255, 255, 0.6)
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .theme-dark .localnav .localnav-menu-link.current:hover, .localnav.theme-dark .localnav-menu-link.current:hover {
-  color: rgba(255, 255, 255, 0.6)
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .theme-dark .localnav-menustate:checked ~ .localnav .localnav-menu-link.current, .theme-dark .localnav-menustate:target ~ .localnav .localnav-menu-link.current, .localnav-menustate:checked ~ .theme-dark.localnav .localnav-menu-link.current, .localnav-menustate:target ~ .theme-dark.localnav .localnav-menu-link.current {
-  color: rgba(255, 255, 255, 0.6)
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .theme-dark .localnav-menustate:checked ~ .localnav .localnav-menu-link.current:hover, .theme-dark .localnav-menustate:target ~ .localnav .localnav-menu-link.current:hover, .localnav-menustate:checked ~ .theme-dark.localnav .localnav-menu-link.current:hover, .localnav-menustate:target ~ .theme-dark.localnav .localnav-menu-link.current:hover {
-  color: rgba(255, 255, 255, 0.6)
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .theme-dark .localnav-hero.localnav.localnav-sticking .localnav-menu-link.current, .theme-dark.localnav-hero.localnav.localnav-sticking .localnav-menu-link.current {
-  color: rgba(255, 255, 255, 0.6)
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .theme-dark .localnav-hero.localnav.localnav-sticking .localnav-menu-link.current:hover, .theme-dark.localnav-hero.localnav.localnav-sticking .localnav-menu-link.current:hover {
-  color: rgba(255, 255, 255, 0.6)
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .localnav-action-menucta {
-  display: none
+  display: none;
 }
 
 @media only screen and (max-width: 600px) {
   .localnav-action-menucta {
-    display: block
+    display: block;
   }
 }
 
@@ -945,7 +949,7 @@ div > h2 {
   overflow: hidden;
   width: 40px;
   height: 48px;
-  -webkit-tap-highlight-color: transparent
+  -webkit-tap-highlight-color: transparent;
 }
 
 .localnav-menucta-chevron {
@@ -955,7 +959,7 @@ div > h2 {
   height: 100%;
   z-index: 1;
   transition: transform 1s cubic-bezier(0.86, 0, 0.07, 1), transform-origin 1s cubic-bezier(0.86, 0, 0.07, 1);
-  transform: translateY(10%)
+  transform: translateY(10%);
 }
 
 .localnav-menucta-chevron::before, .localnav-menucta-chevron::after {
@@ -978,7 +982,7 @@ div > h2 {
 }
 
 .localnav-menucta-chevron::before, .localnav-menucta-chevron::after {
-  background: #333333
+  background: #000
 }
 
 .localnav-menucta-chevron::before {
@@ -1010,11 +1014,11 @@ div > h2 {
 }
 
 .localnav-hero.localnav.localnav-sticking .localnav-menucta-chevron::before, .localnav-hero.localnav.localnav-sticking .localnav-menucta-chevron::after {
-  background: #333333
+  background: #000
 }
 
 .localnav-menustate:checked ~ .localnav-hero.localnav .localnav-menucta-chevron::before, .localnav-menustate:checked ~ .localnav-hero.localnav .localnav-menucta-chevron::after, .localnav-menustate:target ~ .localnav-hero.localnav .localnav-menucta-chevron::before, .localnav-menustate:target ~ .localnav-hero.localnav .localnav-menucta-chevron::after {
-  background: #333333
+  background: #000
 }
 
 .theme-dark .localnav .localnav-menucta-chevron::before, .theme-dark .localnav .localnav-menucta-chevron::after, .localnav.theme-dark .localnav-menucta-chevron::before, .localnav.theme-dark .localnav-menucta-chevron::after {
@@ -1111,7 +1115,7 @@ div > h2 {
 }
 
 .localnav-title, .localnav-title a {
-  color: #333333;
+  color: #000;
   transition: color 0.5s cubic-bezier(0.28, 0.11, 0.32, 1)
 }
 
@@ -1120,11 +1124,11 @@ div > h2 {
 }
 
 .localnav-hero.localnav.localnav-sticking .localnav-title, .localnav-hero.localnav.localnav-sticking .localnav-title a {
-  color: #333333
+  color: #000
 }
 
 .localnav-menustate:checked ~ .localnav-hero.localnav .localnav-title, .localnav-menustate:target ~ .localnav-hero.localnav .localnav-title, .localnav-menustate:checked ~ .localnav-hero.localnav .localnav-title a, .localnav-menustate:target ~ .localnav-hero.localnav .localnav-title a {
-  color: #333333
+  color: #000
 }
 
 .theme-dark .localnav .localnav-title, .theme-dark .localnav .localnav-title a, .localnav.theme-dark .localnav-title, .localnav.theme-dark .localnav-title a {
@@ -1177,10 +1181,11 @@ h2:lang(ko).localnav-title {
 }
 
 .localnav-menu-link, .sidenav-menu-link {
-  display: flex !important;
+  display: inline-flex !important;
   justify-content: left;
   align-items: center;
   text-decoration: none;
+  width: 100%;
 }
 
 .localnav-menu-link .mat-icon, .sidenav-menu-link .mat-icon {
@@ -1221,21 +1226,41 @@ h2:lang(ko).localnav-title {
 
 .sidenav-menu-items {
   list-style: none;
-  padding: 16px;
+  padding: 0;
 }
 
 .sidenav-menu-item {
-  margin-bottom: 12px;
+  margin-bottom: 4px;
 }
 
 .sidenav-menu-link {
-  color: #333;
+  color: #000;
   font-size: 14px;
   letter-spacing: -0.14px;
+  padding: 4px 16px;
+  white-space: nowrap;
 }
 
 .sidenav-menu-link:hover {
   color: #0070c9;
+}
+
+.sidenav-menu-link.active {
+    color: darkGreen;
+    background-color: #e6e6e6;
+    width: 74%;
+}
+
+.sidenav-menu-link + .active-arrow {
+    width: 0;
+    height: 0;
+    border-top: 16px solid transparent;
+    border-bottom: 16px solid transparent;
+    border-left: 16px solid #e6e6e6;
+    display: inline-block;
+    margin-top: -4px;
+    position: relative;
+    top: 4px;
 }
 
 .sidenav {
@@ -1252,7 +1277,7 @@ h2:lang(ko).localnav-title {
   top: 1px;
 }
 
-.fav-btn__label, .reboot-btn__label {
+.fav-btn__label {
   font-size: 13px;
   display: inline-block;
   line-height: 1.1em;
@@ -1260,16 +1285,16 @@ h2:lang(ko).localnav-title {
   margin-left: 6px;
 }
 
-.fav-btn, .reboot-btn {
-  color: #333;
+.fav-btn {
+  color: #000;
   flex-shrink: 0;
 }
 
 @media all and (max-width: 600px) {
-  .fav-btn__label, .reboot-btn__label {
+  .fav-btn__label {
     display: none;
   }
-  .fav-btn, .reboot-btn {
+  .fav-btn {
     box-sizing: border-box !important;
   }
 }
