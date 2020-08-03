@@ -161,3 +161,20 @@ app-dev-item-value {
   position: relative;
   top: -3em;
 }
+
+.reboot-btn__label {
+  font-size: 13px;
+  display: inline-block;
+  line-height: 1.1em;
+  text-align: left;
+  margin-left: 6px;
+}
+
+.reboot-btn {
+  border: 1px solid #eee;
+}
+
+::ng-deep .dig-mode .mat-form-field-label {
+    color: white;
+}
+

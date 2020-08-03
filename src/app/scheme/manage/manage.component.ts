@@ -125,6 +125,11 @@ export class ManageComponent implements OnInit, AfterViewInit {
     ).subscribe(res => {
     });
   }
+
+  restart(): void {
+    this.controlService.restart();
+  }
+
 }
 
 @Component({

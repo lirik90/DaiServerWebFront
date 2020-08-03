@@ -20,8 +20,8 @@
                 </a>
                 <h4 *ngIf="group.params.length === 0">{{group.title ? group.title : group.type.title}}</h4>
                 <app-group-status [group]="group"></app-group-status>
-                <mat-form-field>
-                  <mat-select i18n-placeholder="@@MANAGEMENT.MODE" placeholder="Режим" 
+                <mat-form-field class="dig-mode">
+                  <mat-select i18n-placeholder="@@MANAGEMENT.MODE" placeholder="Режим"
                     [(ngModel)]="group.mode"
                     [disabled]="!canChangeMode"
                     (selectionChange)="changeDIGMode($event.value, group.id)"
@@ -47,3 +47,6 @@
     </div>
   </ng-container>
 </div>
+
+<button mat-flat-button (click)="restart()" class="reboot-btn"><mat-icon>replay</mat-icon><span class="reboot-btn__label" i18n="@@RESTART">Перезагрузить ПО</span></button>
+

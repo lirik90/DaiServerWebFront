@@ -288,10 +288,6 @@ export class SchemeComponent implements OnInit, OnDestroy {
     this.controlService.open();
   }
 
-  restart(): void {
-    this.controlService.restart();
-  }
-
   closeMenu() {
     const el: HTMLInputElement = <HTMLInputElement>document.getElementById('localnav-menustate');
     el.checked = false;
