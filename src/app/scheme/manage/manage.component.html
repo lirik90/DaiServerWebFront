@@ -48,5 +48,5 @@
   </ng-container>
 </div>
 
-<button mat-flat-button (click)="restart()" class="reboot-btn"><mat-icon>replay</mat-icon><span class="reboot-btn__label" i18n="@@RESTART">Перезагрузить ПО</span></button>
+<button *ngIf="isAdmin" mat-flat-button (click)="restart()" class="reboot-btn"><mat-icon>replay</mat-icon><span class="reboot-btn__label" i18n="@@RESTART">Перезагрузить ПО</span></button>
 

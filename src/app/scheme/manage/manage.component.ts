@@ -26,6 +26,11 @@ export class ManageComponent implements OnInit, AfterViewInit {
 
   canChangeMode: boolean;
 
+    get isAdmin(): boolean
+    {
+        return this.authService.isAdmin();
+    }
+
   isDisabled(): boolean
   {
       return !this.schemeService.isSchemeConnected;
