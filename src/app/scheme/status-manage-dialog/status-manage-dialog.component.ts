@@ -79,18 +79,6 @@ export class StatusManageDialogComponent implements OnInit {
     {
         if (this.isLoading)
             return;
-            const scheme_id = this.schemeService.scheme.id;
-            this.disabled.push({ id: 1, group_id: null,                  dig_id: null,          status_id: 0,                 scheme_id: this.schemeService.scheme.parent_id });
-            this.disabled.push({ id: 2, group_id: null,                  dig_id: this.group.id, status_id: this._types[1].id, scheme_id });
-            this.disabled.push({ id: 3, group_id: null,                  dig_id: null,          status_id: this._types[2].id, scheme_id });
-            this.disabled.push({ id: 4, group_id: this.authGroups[0].id, dig_id: this.group.id, status_id: this._types[3].id, scheme_id });
-            this.disabled.push({ id: 5, group_id: this.authGroups[1].id, dig_id: null,          status_id: this._types[4].id, scheme_id });
-            this.disabled.push({ id: 6, group_id: this.authGroups[2].id, dig_id: this.group.id, status_id: this._types[3].id, scheme_id });
-            this.disabled.push({ id: 7, group_id: this.authGroups[1].id, dig_id: null,          status_id: this._types[4].id, scheme_id });
-            this.disabled.push({ id: 7, group_id: this.authGroups[0].id, dig_id: null,          status_id: this._types[4].id, scheme_id });
-            this.disabled.push({ id: 7, group_id: this.authGroups[0].id, dig_id: this.group.id, status_id: this._types[4].id, scheme_id });
-            this.disabled.push({ id: 7, group_id: this.authGroups[0].id, dig_id: null,          status_id: this._types[4].id, scheme_id });
-            this.disabled.push({ id: 7, group_id: this.authGroups[0].id, dig_id: null,          status_id: this._types[4].id, scheme_id });
 
         for (const type of this._types)
             this.items[type.id] = [];
