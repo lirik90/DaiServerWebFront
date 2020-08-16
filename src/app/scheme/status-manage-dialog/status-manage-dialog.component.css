@@ -1,0 +1,15 @@
+.mat-column-id {
+    max-width: 40px;
+}
+
+.mat-column-category {
+    max-width: 150px;
+    text-align: center;
+    justify-content: center;
+}
+
+.mat-column-type, .mat-column-inform {
+    max-width: 80px;
+    text-align: center;
+    justify-content: center;
+}

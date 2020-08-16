@@ -7,7 +7,7 @@ import { of } from 'rxjs/observable/of';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 
-import { Scheme_Detail, Section, Device_Item, Device_Item_Group, Log_Value, Log_Param, DIG_Param, DIG_Param_Type, Chart } from './scheme';
+import { Scheme_Detail, Section, Device_Item, Device_Item_Group, Log_Value, Log_Param, DIG_Param, DIG_Param_Type, Chart, Disabled_Status } from './scheme';
 import { Connection_State, Scheme_Group_Member, PaginatorApi } from '../user';
 import { MessageService } from '../message.service';
 import { ISchemeService } from '../ischeme.service';
@@ -424,6 +424,12 @@ export class SchemeService extends ISchemeService {
 
     getChartParamData(date_from: number, date_to: number, data: string, limit: number = 1000, offset: number = 0): Observable<Paginator_Chart_Value> {
         return this.getChartData(date_from, date_to, data, limit, offset, 'param');
+    }
+
+    getDisabledStatuses(dig_id: number): Observable<Disabled_Status[]>
+    {
+        const url = `/api/v2/scheme/${this.scheme.id}/disabled_status/?dig_id=${dig_id}`;
+        return this.http.get<Disabled_Status[]>(url).catch((err: HttpErrorResponse) => of([]));
     }
 
   exportExcel(conf: ExportConfig, path?: string): Observable<HttpResponse<Blob>> {

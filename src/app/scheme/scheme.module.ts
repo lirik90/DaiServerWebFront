@@ -29,6 +29,7 @@ import {SchemeSectionComponent} from './scheme-section/scheme-section.component'
 import { DocComponent } from './doc/doc.component';
 import {Log2Component} from './log2/log2.component';
 import {Manage2Component} from './manage2/manage2.component';
+import { StatusManageDialogComponent } from './status-manage-dialog/status-manage-dialog.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -54,6 +55,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     SchemeComponent,
     PageReloadDialogComponent,
     ManageComponent,
+      StatusManageDialogComponent,
     Manage2Component,
     HoldingRegisterDialogComponent,
     VideoStreamDialogComponent,
@@ -75,6 +77,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     HoldingRegisterDialogComponent,
     VideoStreamDialogComponent,
     ParamsDialogComponent,
+      StatusManageDialogComponent
   ],
   exports: [
     ParamComponent
