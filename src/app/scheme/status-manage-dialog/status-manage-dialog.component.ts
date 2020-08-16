@@ -6,6 +6,13 @@ import { SchemeService } from '../scheme.service';
 import { SchemesService } from '../../schemes/schemes.service';
 import { Auth_Group } from '../../user';
 
+export enum ItemState { Init, Removed, Added, Adding }
+export class Item {
+    title: string;
+    state: number;
+    disabled: Disabled_Status;
+}
+
 @Component({
   selector: 'app-status-manage-dialog',
   templateUrl: './status-manage-dialog.component.html',
@@ -23,6 +30,7 @@ export class StatusManageDialogComponent implements OnInit {
 
     authGroups: Auth_Group[];
     disabled: Disabled_Status[];
+    items = {};
 
     get isLoading(): boolean {
         return this.disabled === undefined || this.authGroups === undefined;
@@ -31,30 +39,13 @@ export class StatusManageDialogComponent implements OnInit {
     constructor(
         public dialogRef: MatDialogRef<StatusManageDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public group: Device_Item_Group,
-        private schemeService: SchemeService,
+        public schemeService: SchemeService,
         private schemesService: SchemesService
     ) { }
 
     ngOnInit(): void {
-        const tmp = () => {
-            if (this.isLoading)
-                return;
-            const scheme_id = this.schemeService.scheme.id;
-            this.disabled.push({ id: 1, group_id: null,                  dig_id: null,          status_id: 0,                 scheme_id: this.schemeService.scheme.parent_id });
-            this.disabled.push({ id: 2, group_id: null,                  dig_id: this.group.id, status_id: this._types[1].id, scheme_id });
-            this.disabled.push({ id: 3, group_id: null,                  dig_id: null,          status_id: this._types[2].id, scheme_id });
-            this.disabled.push({ id: 4, group_id: this.authGroups[0].id, dig_id: this.group.id, status_id: this._types[3].id, scheme_id });
-            this.disabled.push({ id: 5, group_id: this.authGroups[1].id, dig_id: null,          status_id: this._types[4].id, scheme_id });
-            this.disabled.push({ id: 6, group_id: this.authGroups[2].id, dig_id: this.group.id, status_id: this._types[3].id, scheme_id });
-            this.disabled.push({ id: 7, group_id: this.authGroups[0].id, dig_id: null,          status_id: this._types[4].id, scheme_id });
-            this.disabled.push({ id: 7, group_id: this.authGroups[0].id, dig_id: null,          status_id: this._types[4].id, scheme_id });
-            this.disabled.push({ id: 7, group_id: this.authGroups[0].id, dig_id: null,          status_id: this._types[4].id, scheme_id });
-            this.disabled.push({ id: 7, group_id: this.authGroups[0].id, dig_id: null,          status_id: this._types[4].id, scheme_id });
-            this.disabled.push({ id: 7, group_id: this.authGroups[0].id, dig_id: null,          status_id: this._types[4].id, scheme_id });
-        };
-
-        this.schemesService.getAuthGroups().subscribe(items => { this.authGroups = items; tmp(); });
-        this.schemeService.getDisabledStatuses(this.group.id).subscribe(items => { this.disabled = items; tmp(); });
+        this.schemesService.getAuthGroups().subscribe(items => { this.authGroups = items; this.prepareMap(); });
+        this.schemeService.getDisabledStatuses(this.group.id).subscribe(items => { this.disabled = items; this.prepareMap(); });
 
         this._types = this.schemeService.scheme.dig_status_type.filter(type => type.group_type_id === null || type.group_type_id === this.group.type_id);
         this._types = this._types.sort((t1, t2) => t1.group_type_id < t2.group_type_id ? -1 :
@@ -84,32 +75,53 @@ export class StatusManageDialogComponent implements OnInit {
             this.displayedColumns.splice(3, 1);
     }
 
-    getDisabledText(type: DIG_Status_Type): string
+    prepareMap(): void
     {
-        if (this.isLoading || !type.inform)
-            return '';
+        if (this.isLoading)
+            return;
+            const scheme_id = this.schemeService.scheme.id;
+            this.disabled.push({ id: 1, group_id: null,                  dig_id: null,          status_id: 0,                 scheme_id: this.schemeService.scheme.parent_id });
+            this.disabled.push({ id: 2, group_id: null,                  dig_id: this.group.id, status_id: this._types[1].id, scheme_id });
+            this.disabled.push({ id: 3, group_id: null,                  dig_id: null,          status_id: this._types[2].id, scheme_id });
+            this.disabled.push({ id: 4, group_id: this.authGroups[0].id, dig_id: this.group.id, status_id: this._types[3].id, scheme_id });
+            this.disabled.push({ id: 5, group_id: this.authGroups[1].id, dig_id: null,          status_id: this._types[4].id, scheme_id });
+            this.disabled.push({ id: 6, group_id: this.authGroups[2].id, dig_id: this.group.id, status_id: this._types[3].id, scheme_id });
+            this.disabled.push({ id: 7, group_id: this.authGroups[1].id, dig_id: null,          status_id: this._types[4].id, scheme_id });
+            this.disabled.push({ id: 7, group_id: this.authGroups[0].id, dig_id: null,          status_id: this._types[4].id, scheme_id });
+            this.disabled.push({ id: 7, group_id: this.authGroups[0].id, dig_id: this.group.id, status_id: this._types[4].id, scheme_id });
+            this.disabled.push({ id: 7, group_id: this.authGroups[0].id, dig_id: null,          status_id: this._types[4].id, scheme_id });
+            this.disabled.push({ id: 7, group_id: this.authGroups[0].id, dig_id: null,          status_id: this._types[4].id, scheme_id });
 
-        let text = [];
+        for (const type of this._types)
+            this.items[type.id] = [];
+
         for (const disabled of this.disabled)
         {
-            if (disabled.status_id == type.id)
+            let arr = this.items[disabled.status_id];
+            if (!arr)
+                continue;
+
+            if (disabled.scheme_id !== this.schemeService.scheme.id)
             {
-                if (disabled.scheme_id !== this.schemeService.scheme.id)
-                    return "По управляющей схеме";
-
-                if (disabled.dig_id != null && disabled.dig_id != this.group.id)
-                    continue;
-
-                let item = disabled.dig_id == this.group.id ? "Для этой группы" : "Для всех групп";
-                if (disabled.group_id)
-                    item += ' у "' + this.getAuthGroupName(disabled.group_id) + '"';
-                text.push(item);
+                this.items[disabled.status_id] = null; // "По управляющей схеме";
+                continue;
             }
-        }
 
-        if (!text.length)
-            return "Нет";
-        return text.join("\n");
+            if (disabled.dig_id != null && disabled.dig_id != this.group.id)
+                continue;
+
+            const title = this.getTitle(disabled);
+            const item = { title, state: ItemState.Init, disabled } as Item;
+            arr.push(item);
+        }
+    }
+
+    getTitle(disabled: Disabled_Status): string
+    {
+        let item = disabled.dig_id == this.group.id ? "Для этой группы" : "Для всех групп";
+        if (disabled.group_id)
+            item += ' у "' + this.getAuthGroupName(disabled.group_id) + '"';
+        return item;
     }
 
     getAuthGroupName(id: number): string
@@ -118,5 +130,43 @@ export class StatusManageDialogComponent implements OnInit {
             if (group.id == id)
                 return group.name;
         return "Unknown";
+    }
+
+    save()
+    {
+        let addList = [];
+        let delList = [];
+
+        for (const i in this.items)
+        {
+            const statusIt = this.items[i];
+            if (!statusIt)
+                continue;
+            for (const item of statusIt)
+            {
+                if (item.state == ItemState.Added)
+                    addList.push(item.disabled);
+                else if (item.state == ItemState.Removed)
+                    delList.push(item.disabled);
+            }
+        }
+
+        if (delList.length)
+            this.schemeService.delDisabledStatuses(delList).subscribe(() => this.checkClose());
+        else
+            this.authGroups = null;
+
+        if (addList.length)
+            this.schemeService.addDisabledStatuses(addList).subscribe(() => this.checkClose());
+        else
+            this.disabled = null;
+
+        this.checkClose();
+    }
+
+    checkClose()
+    {
+        if (!this.authGroups && !this.disabled)
+            this.dialogRef.close();
     }
 }

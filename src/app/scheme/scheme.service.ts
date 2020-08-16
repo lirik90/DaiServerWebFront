@@ -432,6 +432,22 @@ export class SchemeService extends ISchemeService {
         return this.http.get<Disabled_Status[]>(url).catch((err: HttpErrorResponse) => of([]));
     }
 
+    delDisabledStatuses(items: Disabled_Status[]): Observable<void>
+    {
+        const url = `/api/v2/scheme/${this.scheme.id}/disabled_status/`;
+        const httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+            body: items
+        };
+        return this.http.delete<void>(url, httpOptions);
+    }
+
+    addDisabledStatuses(items: Disabled_Status[]): Observable<void>
+    {
+        const url = `/api/v2/scheme/${this.scheme.id}/disabled_status/`;
+        return this.http.post<void>(url, items, httpOptions);
+    }
+
   exportExcel(conf: ExportConfig, path?: string): Observable<HttpResponse<Blob>> {
     if (!path) {
       path = 'excel';
