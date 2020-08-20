@@ -59,6 +59,8 @@
 }
 .mat-column-category {
   max-width: 110px;
+  text-align: center;
+  justify-content: center;
 }
 .mat-column-message {
   white-space: pre-wrap;
@@ -66,6 +68,8 @@
 
 .mat-column-timestamp_msecs {
   max-width: 125px;
+  text-align: center;
+  justify-content: center;
 }
 
 @media (max-width: 767px) {

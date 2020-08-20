@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
-import { Scheme, Scheme_Group, PaginatorApi } from '../user';
+import { Auth_Group, Scheme, Scheme_Group, PaginatorApi } from '../user';
 import { MessageService } from '../message.service';
 import { ISchemeService } from '../ischeme.service';
 
@@ -84,6 +84,12 @@ export class SchemesService extends ISchemeService {
     return this.getPiped<PaginatorApi<any>>(url,
       `fetched cities`, 'getCities', {} as PaginatorApi<Scheme>);
   }
+
+    getAuthGroups(): Observable<Auth_Group[]>
+    {
+        const url = '/api/v2/auth_group';
+        return this.http.get<Auth_Group[]>(url).catch((err: HttpErrorResponse) => of([]));
+    }
 
     setName(schemeId: number, name: string): Observable<any> {
         const url = `/api/v2/scheme/${schemeId}/set_name/`;

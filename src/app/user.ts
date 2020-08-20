@@ -10,6 +10,7 @@ export class Named_Object {
   name: string;
 }
 
+export class Auth_Group extends Named_Object {}
 export class Scheme_Group extends Named_Object {}
 export class Scheme_Group_Member extends Named_Object {}
 

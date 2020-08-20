@@ -1,8 +1,10 @@
 import {Component, OnInit, Input, ViewChild, OnChanges, SimpleChanges, DoCheck, ChangeDetectorRef} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTooltip } from '@angular/material/tooltip';
+import { MatDialog } from '@angular/material/dialog';
 
 import {Device_Item_Group, DIG_Status_Info} from '../scheme';
+import { StatusManageDialogComponent } from '../status-manage-dialog/status-manage-dialog.component';
 
 @Component({
   selector: 'app-group-status',
@@ -34,7 +36,8 @@ export class GroupStatusComponent implements OnInit {
   }
 
   constructor(
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+      public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -53,6 +56,15 @@ export class GroupStatusComponent implements OnInit {
     }
   }
   */
+
+    openStatusManageDialog(): void {
+        let dialogRef = this.dialog.open(StatusManageDialogComponent, {
+          width: '100%',
+          data: this.group
+        });
+
+        dialogRef.afterClosed().subscribe();
+    }
 
   showStatusText(evnt: any): void {
     evnt.stopPropagation();
