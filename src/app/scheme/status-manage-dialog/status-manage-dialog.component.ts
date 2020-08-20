@@ -23,6 +23,7 @@ export class StatusManageDialogComponent implements OnInit {
     value = 5;
 
     showCommon = false;
+    saving = false;
 
     displayedColumns = ['id', 'text', 'category', 'type', 'inform', 'block'];
     _types: DIG_Status_Type[];
@@ -33,7 +34,7 @@ export class StatusManageDialogComponent implements OnInit {
     items = {};
 
     get isLoading(): boolean {
-        return this.disabled === undefined || this.authGroups === undefined;
+        return this.disabled === undefined || this.authGroups === undefined || this.saving;
     }
 
     constructor(
@@ -50,7 +51,7 @@ export class StatusManageDialogComponent implements OnInit {
         this._types = this.schemeService.scheme.dig_status_type.filter(type => type.group_type_id === null || type.group_type_id === this.group.type_id);
         this._types = this._types.sort((t1, t2) => t1.group_type_id < t2.group_type_id ? -1 :
                                                  t1.group_type_id > t2.group_type_id ? 1 : 0);
-        this._types.splice(0, 1, { id: 0, group_type_id: null, text: 'Подключен/Отключен', category: { title: 'Инфо', color: 'blue' }, inform: true } as DIG_Status_Type);
+        this._types.unshift({ id: 0, group_type_id: null, text: 'Подключен/Отключен', category: { title: 'Инфо', color: 'blue' }, inform: true } as DIG_Status_Type);
         this.showCommonToggle();
         // TODO: Может быть заблокирован для какой то Auth_Group или для всех. Для какой то DIG или для всех. Для текущей схемы или для управляющей.
         // Если заблокированно для управляющей схемы, то остальное не актуально, тут максимальный приоритет.
@@ -122,6 +123,8 @@ export class StatusManageDialogComponent implements OnInit {
 
     save()
     {
+        this.saving = true;
+
         let addList = [];
         let delList = [];
 
@@ -140,14 +143,14 @@ export class StatusManageDialogComponent implements OnInit {
         }
 
         if (delList.length)
-            this.schemeService.delDisabledStatuses(delList).subscribe(() => this.checkClose());
+            this.schemeService.delDisabledStatuses(delList).subscribe(() => { this.authGroups = undefined; this.checkClose() });
         else
-            this.authGroups = null;
+            this.authGroups = undefined;
 
         if (addList.length)
-            this.schemeService.addDisabledStatuses(addList).subscribe(() => this.checkClose());
+            this.schemeService.addDisabledStatuses(addList).subscribe(() => { this.disabled = undefined; this.checkClose() });
         else
-            this.disabled = null;
+            this.disabled = undefined;
 
         this.checkClose();
     }

@@ -435,11 +435,7 @@ export class SchemeService extends ISchemeService {
     delDisabledStatuses(items: Disabled_Status[]): Observable<void>
     {
         const url = `/api/v2/scheme/${this.scheme.id}/disabled_status/`;
-        const httpOptions = {
-            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-            body: items
-        };
-        return this.http.delete<void>(url, httpOptions);
+        return this.http.patch<void>(url, items, httpOptions);
     }
 
     addDisabledStatuses(items: Disabled_Status[]): Observable<void>

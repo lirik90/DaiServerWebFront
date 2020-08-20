@@ -63,7 +63,7 @@ export class GroupStatusComponent implements OnInit {
           data: this.group
         });
 
-        dialogRef.afterClosed().subscribe(result => console.log(result));
+        dialogRef.afterClosed().subscribe();
     }
 
   showStatusText(evnt: any): void {
