@@ -13,3 +13,13 @@
     text-align: center;
     justify-content: center;
 }
+
+@media (max-width: 600px) {
+    .mat-cell:first-of-type {
+        padding-left: 0;
+    }
+    .mat-cell:last-of-type {
+        padding-right: 0;
+    }
+}
+

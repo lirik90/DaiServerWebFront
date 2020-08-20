@@ -1,5 +1,7 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
+import { MediaMatcher } from '@angular/cdk/layout';
 
 import { Device_Item_Group, DIG_Status_Type, Disabled_Status } from '../scheme';
 import { SchemeService } from '../scheme.service';
@@ -18,14 +20,17 @@ export class Item {
   templateUrl: './status-manage-dialog.component.html',
   styleUrls: ['./status-manage-dialog.component.css']
 })
-export class StatusManageDialogComponent implements OnInit {
+export class StatusManageDialogComponent implements OnInit, OnDestroy {
+    mobileQuery: MediaQueryList;
+    private _mobileQueryListener: () => void;
+
     name = "Test";
     value = 5;
 
     showCommon = false;
     saving = false;
 
-    displayedColumns = ['id', 'text', 'category', 'type', 'inform', 'block'];
+    displayedColumns = ['id', 'text', 'category', 'type', 'block'];
     _types: DIG_Status_Type[];
     types: DIG_Status_Type[];
 
@@ -41,8 +46,17 @@ export class StatusManageDialogComponent implements OnInit {
         public dialogRef: MatDialogRef<StatusManageDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public group: Device_Item_Group,
         public schemeService: SchemeService,
-        private schemesService: SchemesService
-    ) { }
+        private schemesService: SchemesService,
+        changeDetectorRef: ChangeDetectorRef, media: MediaMatcher
+    ) 
+    {
+        this.mobileQuery = media.matchMedia('(max-width: 600px)');
+        this._mobileQueryListener = () => {
+            changeDetectorRef.detectChanges();
+            this.onoffColumns();
+        };
+        this.mobileQuery.addListener(this._mobileQueryListener);
+    }
 
     ngOnInit(): void {
         this.schemesService.getAuthGroups().subscribe(items => { this.authGroups = items; this.prepareMap(); });
@@ -52,7 +66,6 @@ export class StatusManageDialogComponent implements OnInit {
         this._types = this._types.sort((t1, t2) => t1.group_type_id < t2.group_type_id ? -1 :
                                                  t1.group_type_id > t2.group_type_id ? 1 : 0);
         this._types.unshift({ id: 0, group_type_id: null, text: 'Подключен/Отключен', category: { title: 'Инфо', color: 'blue' }, inform: true } as DIG_Status_Type);
-        this.showCommonToggle();
         // TODO: Может быть заблокирован для какой то Auth_Group или для всех. Для какой то DIG или для всех. Для текущей схемы или для управляющей.
         // Если заблокированно для управляющей схемы, то остальное не актуально, тут максимальный приоритет.
         // Варианты (столбец Блокировка):
@@ -62,18 +75,50 @@ export class StatusManageDialogComponent implements OnInit {
         // Для всех групп
         // Для этой группы у "Admins"
         // Для всех групп у "Users"
+        
+        this.onoffColumns();
+    }
+
+    ngOnDestroy() {
+        this.mobileQuery.removeListener(this._mobileQueryListener);
     }
 
     onNoClick(): void {
         this.dialogRef.close();
     }
 
+    onoffColumns() {
+        if (this.mobileQuery.matches)
+        {
+            if (this.displayedColumns.length >= 4)
+            {
+                this.displayedColumns.splice(2, 1);
+                this.displayedColumns.splice(0, 1);
+            }
+        }
+        else
+        {
+            if (this.displayedColumns.length < 4)
+            {
+                this.displayedColumns.splice(0, 0, "id");
+                this.displayedColumns.splice(2, 0, "category");
+            }
+        }
+
+        this.showCommonToggle();
+    }
+
     showCommonToggle(): void {
         this.types = this._types.filter(type => type.group_type_id !== null || this.showCommon);
-        if (this.showCommon)
+        console.log('mobile +', this.mobileQuery.matches, this.displayedColumns.length, this.displayedColumns);
+        if (this.showCommon && !this.mobileQuery.matches && this.displayedColumns.length < 5)
             this.displayedColumns.splice(3, 0, 'type');
         else
-            this.displayedColumns.splice(3, 1);
+        {
+            const i = this.displayedColumns.indexOf('type');
+            if (i !== -1)
+                this.displayedColumns.splice(i, 1);
+        }
     }
 
     prepareMap(): void

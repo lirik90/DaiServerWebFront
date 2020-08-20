@@ -118,8 +118,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.firstInitialization();
-
-
   }
 
   ngOnDestroy(): void {

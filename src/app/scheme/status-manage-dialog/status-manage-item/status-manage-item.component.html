@@ -1,4 +1,4 @@
-<div *ngIf="items; else noItems">
+<div *ngIf="statusType.inform && items; else noItems">
     <ul *ngIf="items.length; else zero">
         <ng-container *ngFor="let item of items">
             <li *ngIf="item.state != itemState.Removed">
@@ -37,4 +37,7 @@
         <mat-icon>add</mat-icon>
     </button>
 </div>
-<ng-template #noItems>По управляющей схеме</ng-template>
+<ng-template #noItems>
+    <span *ngIf="statusType.inform">По управляющей схеме</span>
+    <span *ngIf="!statusType.inform">В схеме</span>
+</ng-template>

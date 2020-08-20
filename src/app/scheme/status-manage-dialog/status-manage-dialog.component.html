@@ -18,7 +18,7 @@
             <!-- Text Column -->
             <ng-container matColumnDef="text">
               <mat-header-cell *matHeaderCellDef i18n="@@STATUS.TABLE.TEXT">Текст</mat-header-cell>
-              <mat-cell *matCellDef="let row">{{ row.text }}</mat-cell>
+              <mat-cell *matCellDef="let row" [style.color]="mobileQuery.matches ? row.category.color : 'black'">{{ row.text }}</mat-cell>
             </ng-container>
 
             <!-- Category Column -->
@@ -33,16 +33,10 @@
               <mat-cell *matCellDef="let row">{{ row.group_type_id ? 'Нет' : 'Да' }}</mat-cell>
             </ng-container>
 
-            <!-- Inform Column -->
-            <ng-container matColumnDef="inform">
-              <mat-header-cell *matHeaderCellDef i18n="@@STATUS.TABLE.INFORM">Рассылка</mat-header-cell>
-              <mat-cell *matCellDef="let row">{{ row.inform ? 'Да' : 'нет' }}</mat-cell>
-            </ng-container>
-
             <!-- Block Column -->
             <ng-container matColumnDef="block">
               <mat-header-cell *matHeaderCellDef i18n="@@STATUS.TABLE.INFORM">Блокировка</mat-header-cell>
-              <mat-cell *matCellDef="let row"><app-status-manage-item *ngIf="row.inform" [manage]="this" [statusType]="row"></app-status-manage-item></mat-cell>
+              <mat-cell *matCellDef="let row"><app-status-manage-item [manage]="this" [statusType]="row"></app-status-manage-item></mat-cell>
             </ng-container>
 
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
