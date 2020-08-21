@@ -22,7 +22,8 @@ let PROXY_CONFIG = [
         context: [
             '/api',
             '/get_csrf',
-            '/export'
+            '/export',
+            '/media'
         ],
         target: proxy_remote_server_address,
         secure: false,

@@ -7,7 +7,7 @@ import { of } from 'rxjs/observable/of';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 
-import { Scheme_Detail, Section, Device_Item, Device_Item_Group, Log_Value, Log_Param, DIG_Param, DIG_Param_Type, Chart, Disabled_Status } from './scheme';
+import { Scheme_Detail, Section, Device_Item, Device_Item_Group, Log_Value, Log_Param, DIG_Param, DIG_Param_Type, Chart, Disabled_Status, Help } from './scheme';
 import { Connection_State, Scheme_Group_Member, PaginatorApi } from '../user';
 import { MessageService } from '../message.service';
 import { ISchemeService } from '../ischeme.service';
@@ -442,6 +442,12 @@ export class SchemeService extends ISchemeService {
     {
         const url = `/api/v2/scheme/${this.scheme.id}/disabled_status/`;
         return this.http.post<void>(url, items, httpOptions);
+    }
+
+    getHelp(): Observable<Help[]>
+    {
+        const url = `/api/v2/scheme/${this.scheme.id}/help/`;
+        return this.http.get<Help[]>(url).catch((err: HttpErrorResponse) => of([]));
     }
 
   exportExcel(conf: ExportConfig, path?: string): Observable<HttpResponse<Blob>> {

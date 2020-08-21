@@ -1,5 +1,9 @@
 <h2 i18n="@@HELP">Справка</h2>
-<div>
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+
+<app-help-item [item]="item"></app-help-item>
+
+<div class="contacts">
   <div [style.font-size.px]="19">Контакты</div>
   <div class="desc">
     Кирилл Зимников<br>

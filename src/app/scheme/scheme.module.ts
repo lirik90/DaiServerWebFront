@@ -31,6 +31,8 @@ import {Log2Component} from './log2/log2.component';
 import {Manage2Component} from './manage2/manage2.component';
 import { StatusManageDialogComponent } from './status-manage-dialog/status-manage-dialog.component';
 import { StatusManageItemComponent } from './status-manage-dialog/status-manage-item/status-manage-item.component';
+import { HelpItemComponent } from './doc/help-item/help-item.component';
+import { NoSanitizePipe } from './no-sanitize.pipe';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -73,6 +75,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ParamsDialogComponent,
     DocComponent,
     StatusManageItemComponent,
+    HelpItemComponent,
+    NoSanitizePipe,
   ],
   entryComponents: [
     PageReloadDialogComponent,

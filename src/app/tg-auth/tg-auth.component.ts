@@ -29,7 +29,7 @@ export class TgAuthComponent implements OnInit {
       {
         this.text = "Идёт привязка Telegram пользователя. Пожалуйста ждите...";
         const body = {token};
-        this.http.post('/api/tg_auth/', body).pipe(
+        this.http.post('/api/v2/bot/auth/', body).pipe(
           tap(() => this.text = "Telegram пользователь успешно привязан"),
           catchError((error: any) => this.text = "Не удалось привязать Telegram пользователя: " + error.message)
         ).subscribe();

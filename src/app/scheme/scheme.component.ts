@@ -195,7 +195,6 @@ export class SchemeComponent implements OnInit, OnDestroy {
       this.setConnectionState(connState as Connection_State);
       this.mod_state = modState as boolean;
       this.loses_state = losesState as boolean;
-      console.log(this.connect_state);
     }).unsubscribe();
 
     this.bytes_sub = this.controlService.byte_msg.subscribe(msg => {

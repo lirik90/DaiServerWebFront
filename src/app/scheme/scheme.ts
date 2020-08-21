@@ -240,6 +240,14 @@ export class Disabled_Status {
     scheme_id: number;
 }
 
+export class Help {
+    id: number;
+    name: string;
+    text: string;
+    parent_id: number;
+    scheme_id: number;
+}
+
 export class Scheme_Detail {
     id: number;             // ID проекта
     parent_id: number;
