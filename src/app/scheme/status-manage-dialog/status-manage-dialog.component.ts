@@ -110,7 +110,6 @@ export class StatusManageDialogComponent implements OnInit, OnDestroy {
 
     showCommonToggle(): void {
         this.types = this._types.filter(type => type.group_type_id !== null || this.showCommon);
-        console.log('mobile +', this.mobileQuery.matches, this.displayedColumns.length, this.displayedColumns);
         if (this.showCommon && !this.mobileQuery.matches && this.displayedColumns.length < 5)
             this.displayedColumns.splice(3, 0, 'type');
         else
@@ -131,13 +130,13 @@ export class StatusManageDialogComponent implements OnInit, OnDestroy {
 
         for (const disabled of this.disabled)
         {
-            let arr = this.items[disabled.status_id];
+            let arr = this.items[disabled.status_id ? disabled.status_id : 0];
             if (!arr)
                 continue;
 
             if (disabled.scheme_id !== this.schemeService.scheme.id)
             {
-                this.items[disabled.status_id] = null; // "По управляющей схеме";
+                this.items[disabled.status_id ? disabled.status_id : 0] = null; // "По управляющей схеме";
                 continue;
             }
 
