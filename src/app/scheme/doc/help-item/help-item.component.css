@@ -1,11 +1,8 @@
-
-@media (min-width: 600px) {
-    .mat-expansion-panel-header-title {
-        font-size: 18px;
-    }
-    ::ng-deep .mat-expansion-panel-content {
-        font-size: 16px;
-    }
+.mat-expansion-panel-header-title {
+    font-size: 18px;
+}
+::ng-deep .mat-expansion-panel-content {
+    font-size: 16px;
 }
 
 @media (max-width: 600px) {
