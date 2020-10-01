@@ -13,7 +13,7 @@ import {MatDialog} from '@angular/material/dialog';
     styleUrls: ['./chart-item.component.css']
 })
 export class ChartItemComponent implements OnInit, OnChanges {
-    @Input() chart_: Chart_Info_Interface;
+    @Input() chartInfo: Chart_Info_Interface; // TODO: Assignee:ByMsx fix variable name
     @ViewChild('chart_obj') chart: BaseChartDirective;
 
     options = {

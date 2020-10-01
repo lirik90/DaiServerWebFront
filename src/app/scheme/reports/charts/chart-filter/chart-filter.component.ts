@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import * as moment from 'moment';
 import {Chart_Info_Interface, Chart_Type, ChartFilter, Select_Item_Iface} from '../chart-types';
@@ -37,11 +37,12 @@ function parseDate(date: FormControl, time: string): number {
         {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
     ]
 })
-export class ChartFilterComponent implements OnInit {
+export class ChartFilterComponent implements OnInit, OnChanges {
     chartType = Chart_Type;
+    params: ChartFilter;
 
     @Input() charts: Chart_Info_Interface[];
-    @Input() params: ChartFilter;
+    @Input() user_charts: Chart[];
     @Output() paramsChange: EventEmitter<ChartFilter> = new EventEmitter();
 
     // ngModels
@@ -51,7 +52,6 @@ export class ChartFilterComponent implements OnInit {
     date_to = new FormControl(moment());
     time_to = '23:59:59';
     user_chart: Chart;
-    user_charts: Chart[] = [];
     itemList = [];
     selectedItems = [];
     settings: any = {};
@@ -66,15 +66,16 @@ export class ChartFilterComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.schemeService.get_charts().subscribe(charts => { // TODO: Assignee:ByMsx May be I have to move it out and provide charts as @Input()
-            this.user_charts = charts;
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.user_charts && changes.user_charts.currentValue) {
             if (!this.user_charts.length) {
                 this.charts_type = Chart_Type.CT_DIG_TYPE;
             }
 
             this.OnChartsType();
-            this.buildChart(); // TODO: Assignee:ByMsx do I need emit event
-        });
+        }
     }
 
     OnChartsType(user_chart: Chart = undefined): void {

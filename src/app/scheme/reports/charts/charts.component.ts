@@ -1,35 +1,19 @@
-import { AfterViewInit, Component, OnInit, QueryList, ViewChildren, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import {Component} from '@angular/core';
 
-import { MatDialog } from '@angular/material/dialog';
+import {ISubscription} from 'rxjs/Subscription';
 
-import {
-  MAT_MOMENT_DATE_FORMATS,
-  MomentDateAdapter,
-  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-} from '@angular/material-moment-adapter';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-
-import { ISubscription } from 'rxjs/Subscription';
-
-import { TranslateService } from '@ngx-translate/core';
-import { BaseChartDirective } from 'ng2-charts';
+import {TranslateService} from '@ngx-translate/core';
 // import {ChartComponent} from 'angular2-chartjs';
-
-import { Chart as ChartJS } from 'chart.js';
 import 'chartjs-plugin-zoom';
 
 // import * as moment from 'moment';
 // import * as _moment from 'moment';
 // import {default as _rollupMoment} from 'moment';
 // const moment = _rollupMoment || _moment;
-
-import { SchemeService, ExportConfig, ExportItem, Paginator_Chart_Value } from '../../scheme.service';
-import { Device_Item_Type, DIG_Param, DIG_Type, Section, Device_Item, Log_Value, Log_Param, Register_Type, Save_Algorithm, DIG_Param_Value_Type, Device_Item_Group, Chart } from '../../scheme';
-import { Scheme_Group_Member, PaginatorApi } from '../../../user';
-
-import { ColorPickerDialog } from './color-picker-dialog/color-picker-dialog';
-import {Chart_Info_Interface, Chart_Type, ChartFilter, Select_Item_Iface} from './chart-types';
+import {Paginator_Chart_Value, SchemeService} from '../../scheme.service';
+import {Chart, Device_Item, DIG_Param, Register_Type, Save_Algorithm} from '../../scheme';
+import {Scheme_Group_Member} from '../../../user';
+import {Chart_Info_Interface, Chart_Type, ChartFilter} from './chart-types';
 
 interface Chart_Item_Iface
 {
@@ -57,7 +41,17 @@ export class ChartsComponent {
 
   devItemList = [];
 
-  chartFilter: ChartFilter;
+  chartFilter: ChartFilter = {
+    paramSelected: [],
+    selectedItems: [this.schemeService.scheme.dig_type[0]],
+    timeFrom: 0,
+    timeTo: 0,
+    user_charts: [],
+    charts_type: Chart_Type.CT_DIG_TYPE,
+    user_chart: null,
+    data_part_size: 100000
+  };
+
   charts: Chart_Info_Interface[] = [];
   members: Scheme_Group_Member[] = [];
 
@@ -66,11 +60,28 @@ export class ChartsComponent {
   values_loaded: boolean;
   params_loaded: boolean;
   initialized = false;
+  user_charts: Chart[];
 
   constructor(
     public translate: TranslateService,
     private schemeService: SchemeService,
   ) {
+    const today = new Date();
+    const todayEnd = new Date();
+
+    today.setHours(0, 0, 0, 0);
+    todayEnd.setHours(23, 59, 59, 0);
+
+    this.chartFilter.timeFrom = today.getTime();
+    this.chartFilter.timeTo = todayEnd.getTime();
+  }
+
+  ngOnInit() {
+    this.schemeService.get_charts().subscribe(charts => {
+      this.user_charts = charts;
+
+      this.initCharts(this.chartFilter);
+    });
   }
 
   initCharts(chartFilter: ChartFilter): void
