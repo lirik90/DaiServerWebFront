@@ -1,86 +1,8 @@
 <h2 i18n="@@REPORTS.CHARTS.TITLE">Графики</h2>
 
+<app-chart-filter [charts]="charts" [params]="chartFilter" (paramsChange)="initCharts($event)"></app-chart-filter>
 <ng-container *ngIf="initialized">
-<div class="chart_conf">
-    <div class="chart_type">
-        <mat-form-field>
-          <input type="time" matInput i18n-placeholder="@@REPORTS.TIME_FROM" placeholder="Время от" [(ngModel)]="time_from" required>
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput [matDatepicker]="picker_from" [formControl]="date_from" i18n-placeholder="@@REPORTS.DATE_FROM" placeholder="Дата от" required>
-          <mat-datepicker-toggle matSuffix [for]="picker_from"></mat-datepicker-toggle>
-          <mat-datepicker #picker_from></mat-datepicker>
-        </mat-form-field>
-
-        <mat-form-field>
-          <input type="time" matInput i18n-placeholder="@@REPORTS.TIME_TO" placeholder="Время до" [(ngModel)]="time_to" required>
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput [matDatepicker]="picker_to" [formControl]="date_to" i18n-placeholder="@@REPORTS.DATE_TO" placeholder="Дата до" required>
-          <mat-datepicker-toggle matSuffix [for]="picker_to"></mat-datepicker-toggle>
-          <mat-datepicker #picker_to></mat-datepicker>
-        </mat-form-field>
- 
-      <br>
-      <div class="data-part-block">
-        <mat-form-field>
-            <input matInput type="number" min="100" max="10000000" placeholder="Загружать частями по" [(ngModel)]="data_part_size">
-        </mat-form-field>
-      </div>
-   </div>
-
-  <div class="chart_type">
-    <span i18n="@@REPORTS.CHARTS.DECOMPOSE">Разложить</span>:
-    <mat-radio-group class="charts-type-group" [(ngModel)]="charts_type" (change)="OnChartsType()">
-      <mat-radio-button class="charts-type-button" [value]="chartType.CT_USER" i18n="@@REPORTS.CHARTS.USERCHOICE" [disabled]="!user_charts.length">Пользовательский</mat-radio-button>
-      <mat-radio-button class="charts-type-button" [value]="chartType.CT_DIG_TYPE" i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_GROUPS">По группам элементов</mat-radio-button>
-      <mat-radio-button class="charts-type-button" [value]="chartType.CT_DEVICE_ITEM_TYPE" i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_TYPES">По типам элементов</mat-radio-button>
-      <mat-radio-button class="charts-type-button" [value]="chartType.CT_DEVICE_ITEM" i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_ITEMS">По элементам</mat-radio-button>
-    </mat-radio-group>
-  </div>
-
-  <angular2-multiselect [data]="itemList"
-                        [(ngModel)]="selectedItems"
-                        [settings]="settings"
-                        (onSelect)="onItemSelect($event)"
-                        >
-  </angular2-multiselect>
-
-  <angular2-multiselect *ngIf="paramList" [data]="paramList"
-                        [(ngModel)]="paramSelected"
-                        [settings]="paramSettings"
-                        >
-  </angular2-multiselect>
-    <div *ngIf="charts_type == chartType.CT_USER"
-        class="save-block">
-        <button mat-raised-button (click)="edit_user_chart()" i18n="@@CONTROL.EDIT">Изменить</button>
-        <button mat-raised-button (click)="del_user_chart()" i18n="@@CONTROL.DEL">Удалить</button>
-    </div> 
-
-    <div *ngIf="charts_type == chartType.CT_DEVICE_ITEM"
-        class="save-block">
-        <mat-form-field>
-          <input matInput i18n-placeholder="@@REPORTS.NAME" placeholder="Имя графика" [(ngModel)]="user_chart.name" required>
-        </mat-form-field>
-
-        <button *ngIf="user_chart.id" mat-raised-button (click)="save_user_chart()" i18n="@@CONTROL.EDIT">Изменить</button>
-        <button *ngIf="!user_chart.id" mat-raised-button (click)="save_user_chart()" i18n="@@CONTROL.SAVE">Сохранить</button>
-    </div>
-
-    <button mat-raised-button (click)="initCharts()" i18n="@@CONTROL.SHOW">Построить график</button>
-</div>
-
-  <div *ngFor="let chart of charts">
-    <h2>{{chart.name}}</h2>
-    <chart #chart_obj [type]="type" [data]="chart.data" [options]="options"></chart>
-
-    <div class="legend">
-      <div class="legend__item" *ngFor="let dataset of chart.data.datasets">
-        <div class="legend__item-color" [style.background-color]="dataset.pointBorderColor" (click)="openColorPicker(chart, dataset, chart_obj)" ></div><div class="legend__item-label">{{ dataset.label }}</div>
-      </div>
-      <a (click)="random_color()">Random color</a>
-    </div>
-  </div>
+  <app-chart-item *ngFor="let chart of charts" [chart_]="chart"></app-chart-item>
 </ng-container>
 <ng-container *ngIf="!initialized">
   <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
