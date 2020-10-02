@@ -1,0 +1,9 @@
+<h2>{{chartInfo.name}}</h2>
+<chart #chart_obj [type]="type" [data]="chartInfo.data" [options]="options"></chart>
+
+<div class="legend">
+  <div class="legend__item" *ngFor="let dataset of chartInfo.data.datasets">
+    <div class="legend__item-color" [style.background-color]="dataset.pointBorderColor" (click)="openColorPicker(chartInfo, dataset, chart_obj)" ></div><div class="legend__item-label">{{ dataset.label }}</div>
+  </div>
+  <a (click)="random_color()">Random color</a>
+</div>

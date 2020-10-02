@@ -26,6 +26,8 @@ import { ReportsComponent } from './reports.component';
 import { ChartsComponent } from './charts/charts.component';
 import { ExportComponent } from './export/export.component';
 import { ColorPickerDialog } from './charts/color-picker-dialog/color-picker-dialog';
+import { ChartItemComponent } from './charts/chart-item/chart-item.component';
+import { ChartFilterComponent } from './charts/chart-filter/chart-filter.component';
 
 @NgModule({
   imports: [
@@ -51,6 +53,8 @@ import { ColorPickerDialog } from './charts/color-picker-dialog/color-picker-dia
     ReportsComponent,
     ChartsComponent,
     ExportComponent,
+    ChartItemComponent,
+    ChartFilterComponent,
   ],
   entryComponents: [
       ColorPickerDialog
