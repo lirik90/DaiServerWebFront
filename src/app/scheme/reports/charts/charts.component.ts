@@ -69,7 +69,7 @@ export class ChartsComponent {
     const today = new Date();
     const todayEnd = new Date();
 
-    today.setHours(0, 0, 0, 0);
+    today.setHours(today.getHours() - 6, 0, 0, 0);
     todayEnd.setHours(23, 59, 59, 0);
 
     this.chartFilter.timeFrom = today.getTime();
