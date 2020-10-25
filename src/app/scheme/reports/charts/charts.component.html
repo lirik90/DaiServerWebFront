@@ -3,7 +3,7 @@
 <ng-container *ngIf="initialized">
     <app-chart-filter [user_charts]="user_charts" [charts]="charts"
                       (paramsChange)="initCharts($event)"></app-chart-filter>
-    <app-chart-item *ngFor="let chart of charts" [chartInfo]="chart"></app-chart-item>
+    <app-chart-item *ngFor="let chart of charts" [chartInfo]="chart" (zoom)="chartZoom(chart, $event)"></app-chart-item>
 </ng-container>
 <ng-container *ngIf="!initialized">
     <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>

@@ -1,19 +1,47 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {Chart} from '../../../scheme';
+import {
+    Component,
+    DoCheck,
+    EventEmitter,
+    Input, KeyValueChanges,
+    KeyValueDiffer,
+    KeyValueDiffers,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChanges,
+    ViewChild
+} from '@angular/core';
 import {BaseChartDirective} from 'ng2-charts';
 import {SchemeService} from '../../../scheme.service';
 import {Scheme_Group_Member} from '../../../../user';
 import {ColorPickerDialog} from '../color-picker-dialog/color-picker-dialog';
 import {Chart_Info_Interface} from '../chart-types';
 import {MatDialog} from '@angular/material/dialog';
+import {KeyValue} from '@angular/common';
 
 @Component({
     selector: 'app-chart-item',
     templateUrl: './chart-item.component.html',
     styleUrls: ['./chart-item.component.css']
 })
-export class ChartItemComponent implements OnInit, OnChanges {
-    @Input() chartInfo: Chart_Info_Interface; // TODO: Assignee:ByMsx fix variable name
+export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
+    private _chartInfo: Chart_Info_Interface;
+    private _differ: KeyValueDiffer<number, any>;
+    private _datasetsDiffers: { [key: string]: KeyValueDiffer<any, any> } = {};
+
+    get chartInfo(): Chart_Info_Interface {
+        return this._chartInfo;
+    }
+
+    @Input() set chartInfo(v: Chart_Info_Interface) {
+        this._chartInfo = v;
+        if (!this._differ && v.data?.datasets) {
+            this._differ = this.differs.find(v.data.datasets).create();
+        }
+    }
+
+    @Output() zoom: EventEmitter<any> = new EventEmitter();
+
     @ViewChild('chart_obj') chart: BaseChartDirective;
 
     options = {
@@ -103,6 +131,7 @@ export class ChartItemComponent implements OnInit, OnChanges {
     constructor(
         private schemeService: SchemeService,
         private dialog: MatDialog,
+        private differs: KeyValueDiffers,
     ) {
     }
 
@@ -111,11 +140,43 @@ export class ChartItemComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes.chart_ && changes.chart_.currentValue) {
-            const chart = changes.chart_.currentValue;
+        if (changes.chartInfo && changes.chartInfo.currentValue) {
+            const chart = changes.chartInfo.currentValue;
             const { min_y, max_y } = chart;
             if (chart.datasets) chart.datasets.forEach(dataset => this.adjust_stepped(dataset, min_y, max_y));
-            setTimeout(() => this.onZoom(this.chart), 500);
+            // setTimeout(() => this.onZoom(this.chart), 500);
+        }
+    }
+
+    ngDoCheck(): void {
+        let apply = false;
+
+        if (this._datasetsDiffers) {
+            Object.keys(this._datasetsDiffers).forEach((key) => {
+                const differ = this._datasetsDiffers[key];
+                const changes = differ.diff(this.chartInfo.data.datasets[key]);
+
+                if (changes) {
+                    apply = true;
+                }
+            });
+        }
+
+        if (this._differ) {
+            const changes = this._differ.diff(this.chartInfo.data.datasets);
+            if (changes) {
+                changes.forEachAddedItem((r) => {
+                    this._datasetsDiffers[r.key] = this.differs.find(r.currentValue).create();
+                    apply = true;
+                });
+            }
+        }
+
+        if (apply) {
+            this.applyDatasetChanges();
+        } else {
+            console.dir(this._differ);
+            console.dir(this._datasetsDiffers);
         }
     }
 
@@ -135,13 +196,15 @@ export class ChartItemComponent implements OnInit, OnChanges {
     }
 
     onZoom(chart: any): void {
-        const threshold = this.getDecimationTreshold(chart);
+        const threshold = this.getDecimationThreshold(chart);
         const xAxisInfo = this.getXAxisInfo(chart);
 
-        for (const dataset of chart.chart.data.datasets) {
-            this.dataDecimation(dataset, threshold, xAxisInfo);
-        }
-        chart.chart.update();
+        console.log('#onZoom');
+        console.dir(xAxisInfo);
+        console.dir(threshold);
+        console.dir(chart.chart.data.datasets);
+
+        this.zoom.emit(xAxisInfo);
     }
 
     getXAxisInfo(chart: any): any {
@@ -150,7 +213,7 @@ export class ChartItemComponent implements OnInit, OnChanges {
         return {min: xAxis.min, max: xAxis.max, pixelTime: delta / xAxis.width};
     }
 
-    getDecimationTreshold(chart: any): number {
+    getDecimationThreshold(chart: any): number {
         const yAxis = chart.chart.scales['y-axis-0'];
         const yDelta = yAxis.max - yAxis.min;
         return yDelta / 5;
@@ -281,5 +344,20 @@ export class ChartItemComponent implements OnInit, OnChanges {
 
             this.chart.chart.update();
         });
+    }
+
+    private applyDatasetChanges(changes?: KeyValueChanges<string, any>) {
+        console.log('apply dataset changes');
+
+        const chart = this.chart;
+        if (chart) {
+            const threshold = this.getDecimationThreshold(chart);
+            const xAxisInfo = this.getXAxisInfo(chart);
+
+            for (const dataset of chart.chart.data.datasets) {
+                this.dataDecimation(dataset, threshold, xAxisInfo);
+            }
+            chart.chart.update();
+        }
     }
 }

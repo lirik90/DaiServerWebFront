@@ -14,6 +14,8 @@ import {Paginator_Chart_Value, SchemeService} from '../../scheme.service';
 import {Chart, Device_Item, DIG_Param, Register_Type, Save_Algorithm} from '../../scheme';
 import {Scheme_Group_Member} from '../../../user';
 import {Chart_Info_Interface, Chart_Type, ChartFilter} from './chart-types';
+import {delay, exhaustMap, map, mapTo} from 'rxjs/operators';
+import {of, timer} from 'rxjs';
 
 interface Chart_Item_Iface
 {
@@ -351,11 +353,11 @@ export class ChartsComponent {
                             {
                                 const x0 = new Date(this.time_from_);
                                 item = {x: x0, y};
-                                dataset.data.push(item);
+                                // dataset.data.push(item);
                                 dataset.realData.push(item);
                             }
                             item = {x, y};
-                            dataset.data.push(item);
+                            // dataset.data.push(item);
                             dataset.realData.push(item);
                         }
                     }
@@ -454,8 +456,9 @@ export class ChartsComponent {
                                 dataset.usered_data = {};
                             dataset.usered_data[x.getTime()] = log_item.user_id;
                         }
-                        dataset.data.push(data);
+                        // dataset.data.push(data);
                         dataset.realData.push(data);
+                        console.log('push realData');
                     }
                 }
             }
@@ -467,7 +470,7 @@ export class ChartsComponent {
             .subscribe((logs: Paginator_Chart_Value) => this.fillData(logs));
     }
 
-    fillData(logs: Paginator_Chart_Value): void {
+    fillData(logs: Paginator_Chart_Value, rewrite = false): void {
         if (!logs)
         {
             this.set_initialized(true);
@@ -556,6 +559,18 @@ export class ChartsComponent {
     + ((c >> 8) & 0xFF) + ','
     + ((c >> 16) & 0xFF);
   }
+
+    chartZoom(chart: Chart_Info_Interface, zoomInfo: any) { // TODO: fix any (Assignee:ByMsx)
+        if (this.logSub && !this.logSub.closed) {
+            this.logSub.unsubscribe();
+        }
+
+        this.logSub = timer(400)
+            .pipe(
+                exhaustMap(() => this.schemeService.getChartData(zoomInfo.min, zoomInfo.max, this.data_, this.chartFilter.data_part_size, 0)),
+            )
+            .subscribe((logs: Paginator_Chart_Value) => this.fillData(logs, true));
+    }
 
   randomColor(opacity: number): string {
     return `rgba(${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()},${opacity || '.3'})`;
