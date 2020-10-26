@@ -1,7 +1,7 @@
 <h2 i18n="@@REPORTS.CHARTS.TITLE">Графики</h2>
 
 <ng-container *ngIf="initialized">
-    <app-chart-filter [user_charts]="user_charts" [charts]="charts"
+    <app-chart-filter [user_charts]="user_charts" [charts]="charts" [chart_filter]="chartFilter"
                       (paramsChange)="initCharts($event)"></app-chart-filter>
     <app-chart-item *ngFor="let chart of charts" [chartInfo]="chart"></app-chart-item>
 </ng-container>

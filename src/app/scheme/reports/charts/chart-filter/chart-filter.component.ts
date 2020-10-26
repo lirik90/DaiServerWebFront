@@ -17,6 +17,18 @@ function parseDate(date: FormControl, time: string): number {
     return date_from.getTime();
 }
 
+function zero(n: number): string {
+    return n >= 10 ? `${n}` : `0${n}`;
+}
+
+function parseDateToDateAndTime(date: number, fcRef: FormControl): string {
+    const d = new Date(date);
+
+    fcRef.setValue(moment(d));
+
+    return `${zero(d.getHours())}:${zero(d.getMinutes())}:${zero(d.getSeconds())}`;
+}
+
 @Component({
     selector: 'app-chart-filter',
     templateUrl: './chart-filter.component.html',
@@ -41,6 +53,7 @@ export class ChartFilterComponent implements OnInit, OnChanges {
     chartType = Chart_Type;
     params: ChartFilter;
 
+    @Input() chart_filter: ChartFilter;
     @Input() charts: Chart_Info_Interface[];
     @Input() user_charts: Chart[];
     @Output() paramsChange: EventEmitter<ChartFilter> = new EventEmitter();
@@ -69,6 +82,17 @@ export class ChartFilterComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
+        if (changes.chart_filter && changes.chart_filter.currentValue) {
+            const chartFilter = changes.chart_filter.currentValue as ChartFilter;
+            this.charts_type = chartFilter.charts_type;
+            this.data_part_size = chartFilter.data_part_size;
+            this.selectedItems = chartFilter.selectedItems;
+            this.paramSelected = chartFilter.paramSelected;
+
+            this.time_from = parseDateToDateAndTime(chartFilter.timeFrom, this.date_from);
+            this.time_to = parseDateToDateAndTime(chartFilter.timeTo, this.date_to);
+        }
+
         if (changes.user_charts && changes.user_charts.currentValue) {
             if (!this.user_charts.length) {
                 this.charts_type = Chart_Type.CT_DIG_TYPE;
