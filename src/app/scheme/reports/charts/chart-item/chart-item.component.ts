@@ -25,7 +25,10 @@ export class ChartItemComponent implements OnInit, OnChanges {
     options = {
         elements: {
             point: {radius: 0},
-            line: {tension: 0}
+            line: {
+                tension: 0,
+                borderWidth: 1
+            }
         },
         animation: {duration: 0},
         responsive: true,
@@ -139,18 +142,18 @@ export class ChartItemComponent implements OnInit, OnChanges {
     }
 
     random_color(): void {
-        for (const data of (<any>this.chart.data).datasets) {
-            const rgb_str = `${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()}`;
-            data.borderColor = `rgba(${rgb_str},0.4)`;
-            data.backgroundColor = `rgba(${rgb_str},0.5)`;
-            data.pointBorderColor = `rgba(${rgb_str},0.7)`;
-            data.pointBackgroundColor = `rgba(${rgb_str},0.5)`;
-        }
+        for (const dataset of (<any>this.chart.data).datasets)
+            this.setDataColor(dataset, Math.round(Math.random() * 360));
         this.chart.chart.update();
     }
 
-    randomColorFactor(): number {
-        return Math.round(Math.random() * 255);
+    setDataColor(dataset: any, hue: number): void
+    {
+        const hueStr = `${hue}, 95%, 50%`;
+        dataset.borderColor = `hsl(${hueStr}`;
+        dataset.backgroundColor = `hsla(${hueStr},0.5)`;
+        dataset.pointBorderColor = `hsla(${hueStr},0.7)`;
+        dataset.pointBackgroundColor = `hsla(${hueStr},0.5)`;
     }
 
     onZoom(chart: any): void {
@@ -282,22 +285,16 @@ export class ChartItemComponent implements OnInit, OnChanges {
 
     openColorPicker(chart: Chart_Info_Interface, dataset: any, chart_obj: any): void {
         const dialogRef = this.dialog.open(ColorPickerDialog, {
-            width: '250px',
+            width: '450px',
             data: {chart, dataset, chart_obj}
         });
 
-        dialogRef.afterClosed().subscribe(color => {
-            if (!color) {
-                return;
+        dialogRef.afterClosed().subscribe(hue => {
+            if (hue !== undefined && hue !== null)
+            {
+                this.setDataColor(dataset, hue);
+                this.chart.chart.update();
             }
-
-            const rgb_str = `${color.red},${color.green},${color.blue}`;
-            dataset.borderColor = `rgba(${rgb_str},0.4)`;
-            dataset.backgroundColor = `rgba(${rgb_str},0.5)`;
-            dataset.pointBorderColor = `rgba(${rgb_str},0.7)`;
-            dataset.pointBackgroundColor = `rgba(${rgb_str},0.5)`;
-
-            this.chart.chart.update();
         });
     }
 }

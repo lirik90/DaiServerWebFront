@@ -4,7 +4,7 @@
     <a (click)="random_color()">Random color</a>
     <div class="legend">
       <div class="legend__item" *ngFor="let dataset of chartInfo.data.datasets">
-        <div class="legend__item-color" [style.background-color]="dataset.pointBorderColor" (click)="openColorPicker(chartInfo, dataset, chart_obj)" ></div><div class="legend__item-label">{{ dataset.label }}</div>
+        <div class="legend__item-color" [style.background-color]="dataset.borderColor" (click)="openColorPicker(chartInfo, dataset, chart_obj)" ></div><div class="legend__item-label">{{ dataset.label }}</div>
       </div>
     </div>
 </div>

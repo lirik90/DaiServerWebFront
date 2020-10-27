@@ -15,11 +15,12 @@ import {Chart, Device_Item, DIG_Param, Register_Type, Save_Algorithm} from '../.
 import {Scheme_Group_Member} from '../../../user';
 import {Chart_Info_Interface, Chart_Type, ChartFilter, TimeFilter} from './chart-types';
 import {ChartItemComponent} from './chart-item/chart-item.component';
+import {ColorPickerDialog} from './color-picker-dialog/color-picker-dialog';
 
 interface Chart_Item_Iface
 {
     id: number;
-    color: string;
+    hue: number;
 }
 
 @Component({
@@ -156,7 +157,7 @@ export class ChartsComponent {
       for (const s_pt of selected) {
         if (s_pt.id === param.id) {
           data.params.push(param.id);
-          datasets.push(this.genParamDataset(param, s_pt.color));
+          datasets.push(this.genParamDataset(param, s_pt.hue));
           break;
         }
       }
@@ -205,7 +206,7 @@ export class ChartsComponent {
         {
             const dig_param_id = get_param_id(param_type.id);
             if (dig_param_id)
-                res.push({id: dig_param_id, color: null });
+                res.push({id: dig_param_id, hue: null });
         }
 
         return res;
@@ -269,7 +270,7 @@ export class ChartsComponent {
           for (const s_item of dev_items) {
             if (s_item.id == item.id) {
               data.dev_items.push(item.id);
-              datasets.push(this.genDevItemDataset(item, s_item.color));
+              datasets.push(this.genDevItemDataset(item, s_item.hue));
               break;
             }
           }
@@ -283,40 +284,22 @@ export class ChartsComponent {
 
     initDeviceItemCharts(data: any): void
     {
-        const items = this.chartFilter.selectedItems.map(it => { return {id: it.id, color: null}; });
-        const params = this.chartFilter.paramSelected.map(it => { return {id: it.id, color: null}; });
+        const items = this.chartFilter.selectedItems.map(it => { return {id: it.id, hue: null}; });
+        const params = this.chartFilter.paramSelected.map(it => { return {id: it.id, hue: null}; });
         this.initDeviceItemChartsImpl(data, items, params);
-    }
-
-    randomColorFactor(): number {
-      return Math.round(Math.random() * 255);
     }
 
     initDeviceItemUserCharts(data: any): void
     {
-        const hex2rgb_str = (color: string): string =>
-        {
-            if (!color)
-                return `${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()}`;
-
-            const r = parseInt(color.substr(1,2), 16);
-            const g = parseInt(color.substr(3,2), 16);
-            const b = parseInt(color.substr(5,2), 16);
-            if (isNaN(r) || isNaN(g) || isNaN(b))
-                return `${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()}`;
-
-            return r + ',' + g + ',' + b;
-        };
-
         const user_chart = this.chartFilter.selectedItems[0];
         let items = [];
         let params = [];
         for (const it of user_chart.items)
         {
             if (it.item_id)
-                items.push({id: it.item_id, color: hex2rgb_str(it.color)});
+                items.push({id: it.item_id, hue: ColorPickerDialog.rgbhex2hue(it.color)});
             else
-                params.push({id: it.param_id, color: hex2rgb_str(it.color)});
+                params.push({id: it.param_id, hue: ColorPickerDialog.rgbhex2hue(it.color)});
         }
 
         //const ids = [...new Set(user_chart.items.map(it => it.item_id))];
@@ -470,6 +453,7 @@ export class ChartsComponent {
                     dataset.data.splice(0, dataset.data.length);
         }
         this.chartItems.forEach(chart_item => {
+            console.log('update chart item', chart_item);
             chart_item.update();
         });
         // chart.chart.update();
@@ -520,6 +504,10 @@ export class ChartsComponent {
         this.add_chart_data(logs, 'dev_item');
         this.logs_count += logs.count;
 
+        this.chartItems.forEach(chart_item => {
+            console.log('update chart item 2', chart_item);
+            chart_item.update();
+        });
         if (logs.count >= this.chartFilter.data_part_size && this.logs_count < 10000000)
             this.getLogs(this.logs_count);
         else
@@ -542,40 +530,39 @@ export class ChartsComponent {
     return date_str + time;
   }
 
-  genDevItemDataset(item: Device_Item, rgb_str: string = null): Object {
-    // const rgb_str = `${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()}`;
-
+  genDevItemDataset(item: Device_Item, hue: number = null): Object {
     const label = item.name.length ? item.name : item.type.title;
 
     const RT = Register_Type;
     const rt = item.type.register_type;
     const stepped = rt === RT.RT_COILS || rt === RT.RT_DISCRETE_INPUTS;
 
-    let dataset = this.genDataset(label, stepped, rgb_str);
+    let dataset = this.genDataset(label, stepped, hue);
     dataset['dev_item'] = item;
     return dataset;
   }
 
-  genParamDataset(param: DIG_Param, rgb_str: string = null): Object {
-    let dataset = this.genDataset('⚙️ ' + param.param.title, true, rgb_str);
+  genParamDataset(param: DIG_Param, hue: number = null): Object {
+    let dataset = this.genDataset('⚙️ ' + param.param.title, true, hue);
     dataset['param'] = param;
     return dataset;
   }
 
-  genDataset(label: string, steppedLine: boolean = true, rgb_str: string = null): Object {
-      if (rgb_str === null)
-          rgb_str = this.intToRGB(this.hashCode(label));
-    // const rgb_str = this.intToRGB(this.hashCode(label));
-
+  genDataset(label: string, steppedLine: boolean = true, hue: number = null): Object {
+      if (hue === null)
+          hue = this.hashCode(label);
+      if (hue > 360)
+          hue %= 360;
+      const hslStr = `${hue}, 95%, 50%`;
     return {
       label,
       data: [],
       yAxisID: steppedLine ? 'B' : 'A',
 
-      borderColor: `rgba(${rgb_str},0.8)`,
-      backgroundColor: `rgba(${rgb_str},0.5)`,
-      pointBorderColor: `rgba(${rgb_str},0.9)`,
-      pointBackgroundColor: `rgba(${rgb_str},0.5)`,
+      borderColor: `hsl(${hslStr})`,
+      backgroundColor: `rgba(${hslStr},0.5)`,
+      pointBorderColor: `rgba(${hslStr},0.9)`,
+      pointBackgroundColor: `rgba(${hslStr},0.5)`,
       pointBorderWidth: 1,
 
       hidden: false,
@@ -592,16 +579,4 @@ export class ChartsComponent {
        hash = str.charCodeAt(i) + ((hash << 5) - hash);
     return hash;
   }
-
-  intToRGB(i: number): string {
-    var c = (i & 0x00FFFFFF);
-    return (c & 0xFF) + ','
-    + ((c >> 8) & 0xFF) + ','
-    + ((c >> 16) & 0xFF);
-  }
-
-  randomColor(opacity: number): string {
-    return `rgba(${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()},${opacity || '.3'})`;
-  }
-
 }
