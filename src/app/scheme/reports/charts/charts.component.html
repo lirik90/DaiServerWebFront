@@ -1,9 +1,8 @@
-<h2 i18n="@@REPORTS.CHARTS.TITLE">Графики</h2>
-
 <ng-container *ngIf="initialized">
     <app-chart-filter [user_charts]="user_charts" [charts]="charts" [chart_filter]="chartFilter"
                       (paramsChange)="initCharts($event)"></app-chart-filter>
-    <app-chart-item *ngFor="let chart of charts" [chartInfo]="chart"></app-chart-item>
+    <app-chart-item *ngFor="let chart of charts" [chartInfo]="chart"
+                    (rangeChange)="getNewRange($event)"></app-chart-item>
 </ng-container>
 <ng-container *ngIf="!initialized">
     <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>

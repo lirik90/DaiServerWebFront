@@ -24,10 +24,13 @@ export interface Chart_Info_Interface {
     max_y: number;
 }
 
-export interface ChartFilter {
+export interface TimeFilter
+{
     timeFrom: number;
     timeTo: number;
+}
 
+export interface ChartFilter extends TimeFilter {
     user_chart: Chart;
     user_charts: Chart[];
 

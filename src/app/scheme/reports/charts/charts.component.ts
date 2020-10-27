@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewChildren, QueryList} from '@angular/core';
 
 import {ISubscription} from 'rxjs/Subscription';
 
@@ -7,13 +7,14 @@ import {TranslateService} from '@ngx-translate/core';
 import 'chartjs-plugin-zoom';
 
 // import * as moment from 'moment';
-// import * as _moment from 'moment';
-// import {default as _rollupMoment} from 'moment';
-// const moment = _rollupMoment || _moment;
+ import * as _moment from 'moment';
+ import {default as _rollupMoment} from 'moment';
+ const moment = _rollupMoment || _moment;
 import {Paginator_Chart_Value, SchemeService} from '../../scheme.service';
 import {Chart, Device_Item, DIG_Param, Register_Type, Save_Algorithm} from '../../scheme';
 import {Scheme_Group_Member} from '../../../user';
-import {Chart_Info_Interface, Chart_Type, ChartFilter} from './chart-types';
+import {Chart_Info_Interface, Chart_Type, ChartFilter, TimeFilter} from './chart-types';
+import {ChartItemComponent} from './chart-item/chart-item.component';
 
 interface Chart_Item_Iface
 {
@@ -29,6 +30,8 @@ interface Chart_Item_Iface
 })
 export class ChartsComponent {
 //  date_from = new FormControl(new Date().toISOString().slice(0, -1));
+
+    @ViewChildren(ChartItemComponent) chartItems: QueryList<ChartItemComponent>;
 
   logs_count: number;
   logs_count2: number;
@@ -66,6 +69,8 @@ export class ChartsComponent {
     public translate: TranslateService,
     private schemeService: SchemeService,
   ) {
+      moment.locale('ru');
+
     const today = new Date();
     const todayEnd = new Date();
 
@@ -83,6 +88,21 @@ export class ChartsComponent {
       this.initCharts(this.chartFilter);
     });
   }
+
+    getNewRange(range: TimeFilter): void
+    {
+     this.time_from_ = range.timeFrom;
+    this.time_to_ = range.timeTo;
+    this.is_today = new Date().getTime() < this.time_to_;
+
+    this.logs_count = 0;
+    this.logs_count2 = 0;
+    this.values_loaded = false;
+    this.params_loaded = false;
+    this.getParamData();
+    this.getLogs();
+       console.log('range from', range.timeFrom, 'to', range.timeTo);
+    }
 
   initCharts(chartFilter: ChartFilter): void
   {
@@ -338,25 +358,23 @@ export class ChartsComponent {
                             const log = dataset.dev_item ? dataset.dev_item.val : dataset.param;
                             y = this.getY(chart, log, dataset.steppedLine);
                         }
-                        else if (dataset.realData.length !== 0)
+                        else if (dataset.data.length !== 0)
                         {
-                            const last = dataset.realData[dataset.realData.length - 1];
+                            const last = dataset.data[dataset.data.length - 1];
                             if (last.x < x)
                                 y = last.y;
                         }
 
                         if (y !== undefined && y !== null)
                         {
-                            if (dataset.realData.length === 0)
+                            if (dataset.data.length === 0)
                             {
                                 const x0 = new Date(this.time_from_);
                                 item = {x: x0, y};
                                 dataset.data.push(item);
-                                dataset.realData.push(item);
                             }
                             item = {x, y};
                             dataset.data.push(item);
-                            dataset.realData.push(item);
                         }
                     }
                 }
@@ -377,7 +395,14 @@ export class ChartsComponent {
                 return parseFloat(y);
 
             if (is_stepped)
-                return y;
+            {
+                // TODO: Remove it
+                if (y === 'Норма' || y === 'Открыто')
+                    return 1;
+                else if (y === 'Низкий' || y === 'Закрыто')
+                    return 0;
+                return y.length;
+            }
 
             const v2_type = typeof log.raw_value;
             if (v2_type === 'number' || v2_type === 'boolean')
@@ -415,8 +440,10 @@ export class ChartsComponent {
             return;
         }
 
-        this.add_chart_data(logs, 'param');
+        if (this.logs_count2 == 0)
+            this.clear_dataset('param');
 
+        this.add_chart_data(logs, 'param');
         this.logs_count2 += logs.count;
 
         if (logs.count >= this.chartFilter.data_part_size && this.logs_count2 < 10000000)
@@ -432,6 +459,20 @@ export class ChartsComponent {
                 if (dataset[data_param_name] && dataset[data_param_name].id === data_id)
                     return [chart, dataset];
         return [null, null];
+    }
+
+    clear_dataset(data_param_name: string): void
+    {
+        for (const chart of this.charts)
+        {
+            for (const dataset of chart.data.datasets)
+                if (dataset[data_param_name])
+                    dataset.data.splice(0, dataset.data.length);
+        }
+        this.chartItems.forEach(chart_item => {
+            chart_item.update();
+        });
+        // chart.chart.update();
     }
 
     add_chart_data(logs: Paginator_Chart_Value, data_param_name: string)
@@ -455,7 +496,6 @@ export class ChartsComponent {
                             dataset.usered_data[x.getTime()] = log_item.user_id;
                         }
                         dataset.data.push(data);
-                        dataset.realData.push(data);
                     }
                 }
             }
@@ -473,6 +513,9 @@ export class ChartsComponent {
             this.set_initialized(true);
             return;
         }
+
+        if (this.logs_count == 0)
+            this.clear_dataset('dev_item');
 
         this.add_chart_data(logs, 'dev_item');
         this.logs_count += logs.count;
@@ -527,7 +570,7 @@ export class ChartsComponent {
     return {
       label,
       data: [],
-        realData: [],
+      yAxisID: steppedLine ? 'B' : 'A',
 
       borderColor: `rgba(${rgb_str},0.8)`,
       backgroundColor: `rgba(${rgb_str},0.5)`,

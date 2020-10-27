@@ -1,10 +1,10 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {Chart} from '../../../scheme';
 import {BaseChartDirective} from 'ng2-charts';
 import {SchemeService} from '../../../scheme.service';
 import {Scheme_Group_Member} from '../../../../user';
 import {ColorPickerDialog} from '../color-picker-dialog/color-picker-dialog';
-import {Chart_Info_Interface} from '../chart-types';
+import {Chart_Info_Interface, TimeFilter} from '../chart-types';
 import {MatDialog} from '@angular/material/dialog';
 
 @Component({
@@ -15,6 +15,12 @@ import {MatDialog} from '@angular/material/dialog';
 export class ChartItemComponent implements OnInit, OnChanges {
     @Input() chartInfo: Chart_Info_Interface; // TODO: Assignee:ByMsx fix variable name
     @ViewChild('chart_obj') chart: BaseChartDirective;
+    @Output() rangeChange: EventEmitter<TimeFilter> = new EventEmitter();
+
+    update(): void
+    {
+        this.chart.chart.update();
+    }
 
     options = {
         elements: {
@@ -50,35 +56,49 @@ export class ChartItemComponent implements OnInit, OnChanges {
         },
         scales: {
             xAxes: [{
+                offset: true,
+                stacked: true,
                 type: 'time',
-                // unit: 'hour',
-                // unitStepSize: 1,
                 time: {
-                    // format: 'MM/DD/YYYY HH:mm',
                     tooltipFormat: 'DD MMMM YYYY HH:mm:ss',
-                    // round: 'hour',
                     displayFormats: {
-                        millisecond: 'H:m',
-                        second: 'H:m',
-                        minute: 'H:m',
-                        hour: 'H:m',
-                        day: 'H:m',
+                        millisecond: 'HH:mm:ss.SSS',
+                        second: 'HH:mm:ss',
+                        minute: 'HH:mm',
+                        hour: 'HH:mm',
+                        day: 'DD MMM',
                     },
-                    // min: new Date({{ year }}, {{ month }} - 1, {{ day }}),
-                    // max: new Date({{ year }}, {{ month }} - 1, {{ day }}, 23, 59, 59),
                 },
                 ticks: {
+                    major: {
+                        enabled: true,
+                        fontStyle: 'bold',
+                        fontColor: 'rgb(54, 143, 3)'
+                    },
                     sampleSize: 10,
-                    maxRotation: 45,
-                    minRotation: 45
-                    // min: new Date({{ year }}, {{ month }} - 1, {{ day }}),
-                    // max: new Date({{ year }}, {{ month }} - 1, {{ day }}, 23, 59, 59),
-                    // callback: function(value) {
-                    // console.log(value);
-                    // return value;
-                    // },
+                    maxRotation: 30,
+                    minRotation: 30
                 },
+                afterFit: (scale) => {
+                    scale.height = 40;
+                }
             }],
+            yAxes: [{
+                id: 'A',
+                type: 'linear',
+                position: 'left',
+            }, {
+                id: 'B',
+                type: 'linear',
+                position: 'right',
+                ticks: {
+                    max: 2,
+                    min: -1,
+                    stepSize: 1,
+                    suggestedMin: 0,
+                    suggestedMax: 1
+                }
+            }]
         },
         plugins: {
             zoom: {
@@ -97,7 +117,6 @@ export class ChartItemComponent implements OnInit, OnChanges {
         },
     };
 
-    type = 'line';
     private members: Scheme_Group_Member[];
 
     constructor(
@@ -115,7 +134,7 @@ export class ChartItemComponent implements OnInit, OnChanges {
             const chart = changes.chart_.currentValue;
             const { min_y, max_y } = chart;
             if (chart.datasets) chart.datasets.forEach(dataset => this.adjust_stepped(dataset, min_y, max_y));
-            setTimeout(() => this.onZoom(this.chart), 500);
+            // setTimeout(() => this.onZoom(this.chart), 500);
         }
     }
 
@@ -135,13 +154,14 @@ export class ChartItemComponent implements OnInit, OnChanges {
     }
 
     onZoom(chart: any): void {
-        const threshold = this.getDecimationTreshold(chart);
         const xAxisInfo = this.getXAxisInfo(chart);
 
+        const xAxis = chart.chart.scales['x-axis-0'];
+        this.rangeChange.emit({timeFrom: Math.floor(xAxis.min), timeTo: Math.floor(xAxis.max)});
         for (const dataset of chart.chart.data.datasets) {
-            this.dataDecimation(dataset, threshold, xAxisInfo);
+            this.dataDecimation(dataset, 999, xAxisInfo);
         }
-        chart.chart.update();
+        // chart.chart.update();
     }
 
     getXAxisInfo(chart: any): any {
@@ -150,14 +170,10 @@ export class ChartItemComponent implements OnInit, OnChanges {
         return {min: xAxis.min, max: xAxis.max, pixelTime: delta / xAxis.width};
     }
 
-    getDecimationTreshold(chart: any): number {
-        const yAxis = chart.chart.scales['y-axis-0'];
-        const yDelta = yAxis.max - yAxis.min;
-        return yDelta / 5;
-    }
-
     dataDecimation(dataset: any, threshold: number, xAxisInfo: any): void {
-        if (!dataset.realData.length) {
+      if (true)
+      return;
+        if (!dataset.data.length) {
             return;
         }
 
@@ -168,7 +184,7 @@ export class ChartItemComponent implements OnInit, OnChanges {
         let lastItem;
         let x;
 
-        for (const item of dataset.realData) {
+        for (const item of dataset.data) {
             x = item.x.getTime();
             if (x < xAxisInfo.min) {
                 firstItem = item;
@@ -208,6 +224,8 @@ export class ChartItemComponent implements OnInit, OnChanges {
         if (dataset.hidden || !dataset.steppedLine || !dataset.data.length || !dataset.dev_item) {
             return;
         }
+      else
+      return;
 
         const pr = (y_max - y_min) * 0.1;
         const y0 = y_min + pr;
@@ -243,9 +261,9 @@ export class ChartItemComponent implements OnInit, OnChanges {
     onLabel(item, data): string {
         // console.log('callback label:', item, data);
         const dataset = data.datasets[item.datasetIndex];
-        let text = dataset.steppedLine && dataset.dev_item ?
-            (item.yLabel < dataset['my_cond'] ? '0' : '1') :
-            item.value;
+        let text = item.value; //dataset.steppedLine && dataset.dev_item ?
+//            (item.yLabel < dataset['my_cond'] ? '0' : '1') :
+  //          item.value;
 
         if (dataset.usered_data) {
             const x = dataset.data[item.index].x.getTime();
