@@ -37,6 +37,10 @@
   float: left;
 }
 
+.chart_type {
+  border-radius: 16px;
+}
+
 .save-block {
   text-align: center;
 }
@@ -60,4 +64,19 @@
 }
 .charts-type-button {
   margin: 5px;
+}
+
+.time-filter {
+  border: 1px solid #999;
+  border-radius: 16px;
+  padding: 5px;
+  padding-bottom: 0px;
+  margin-top: 8px;
+}
+
+.chart-time { width: 110px; }
+.chart-date { width: 125px; }
+
+::ng-deep .time-filter .mat-form-field-wrapper {
+   margin-bottom: -1.25em;
 }
