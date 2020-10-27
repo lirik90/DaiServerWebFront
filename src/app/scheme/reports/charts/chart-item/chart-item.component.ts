@@ -1,21 +1,47 @@
-import {Component, Input, Output, EventEmitter, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {Chart} from '../../../scheme';
+import {
+    Component,
+    DoCheck,
+    EventEmitter,
+    Input, KeyValueChanges,
+    KeyValueDiffer,
+    KeyValueDiffers,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChanges,
+    ViewChild
+} from '@angular/core';
 import {BaseChartDirective} from 'ng2-charts';
 import {SchemeService} from '../../../scheme.service';
 import {Scheme_Group_Member} from '../../../../user';
 import {ColorPickerDialog} from '../color-picker-dialog/color-picker-dialog';
-import {Chart_Info_Interface, TimeFilter} from '../chart-types';
+import {Chart_Info_Interface, ZoomInfo} from '../chart-types';
 import {MatDialog} from '@angular/material/dialog';
+import {KeyValue} from '@angular/common';
 
 @Component({
     selector: 'app-chart-item',
     templateUrl: './chart-item.component.html',
     styleUrls: ['./chart-item.component.css']
 })
-export class ChartItemComponent implements OnInit, OnChanges {
-    @Input() chartInfo: Chart_Info_Interface; // TODO: Assignee:ByMsx fix variable name
+export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
+    private _chartInfo: Chart_Info_Interface;
+    private _differ: KeyValueDiffer<number, any>;
+    private _datasetsDiffers: { [key: string]: KeyValueDiffer<any, any> } = {};
+
+    get chartInfo(): Chart_Info_Interface {
+        return this._chartInfo;
+    }
+
+    @Input() set chartInfo(v: Chart_Info_Interface) {
+        this._chartInfo = v;
+        if (!this._differ && v.data?.datasets) {
+            this._differ = this.differs.find(v.data.datasets).create();
+        }
+    }
+
     @ViewChild('chart_obj') chart: BaseChartDirective;
-    @Output() rangeChange: EventEmitter<TimeFilter> = new EventEmitter();
+    @Output() rangeChange: EventEmitter<ZoomInfo> = new EventEmitter();
 
     update(): void
     {
@@ -36,15 +62,11 @@ export class ChartItemComponent implements OnInit, OnChanges {
         legend: {
             // display: false,
             // position: 'bottom',
-            onClick: (e, legendItem) => {
-                const dataset = (<any>this.chart.data).datasets[legendItem.datasetIndex];
-                dataset.hidden = !dataset.hidden;
-
-                const y_axix = (<any>this.chart.chart).scales['y-axis-0'];
-                this.adjust_stepped(dataset, y_axix.min, y_axix.max);
-
-                this.chart.chart.update();
-            }
+            // onClick: (e, legendItem) => {
+            //     const dataset = (<any>this.chart.data).datasets[legendItem.datasetIndex];
+            //     dataset.hidden = !dataset.hidden;
+            //     this.chart.chart.update();
+            // }
         },
         //  maintainAspectRatio: false,
         tooltips: {
@@ -109,12 +131,12 @@ export class ChartItemComponent implements OnInit, OnChanges {
                     enabled: true,
                     mode: 'x',
                     rangeMax: {x: new Date()}, // TODO: update this sometimes
-                    onPanComplete: chart => this.onZoom(chart)
+                    onPanComplete: chart => this.onZoom(chart, false)
                 },
                 zoom: {
                     enabled: true,
                     mode: 'x',
-                    onZoomComplete: chart => this.onZoom(chart)
+                    onZoomComplete: chart => this.onZoom(chart, true)
                 }
             }
         },
@@ -125,6 +147,7 @@ export class ChartItemComponent implements OnInit, OnChanges {
     constructor(
         private schemeService: SchemeService,
         private dialog: MatDialog,
+        private differs: KeyValueDiffers,
     ) {
     }
 
@@ -133,11 +156,42 @@ export class ChartItemComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes.chart_ && changes.chart_.currentValue) {
-            const chart = changes.chart_.currentValue;
+        if (changes.chartInfo && changes.chartInfo.currentValue) {
+            const chart = changes.chartInfo.currentValue;
             const { min_y, max_y } = chart;
-            if (chart.datasets) chart.datasets.forEach(dataset => this.adjust_stepped(dataset, min_y, max_y));
             // setTimeout(() => this.onZoom(this.chart), 500);
+        }
+    }
+
+    ngDoCheck(): void {
+        let apply = false;
+
+        if (this._datasetsDiffers) {
+            Object.keys(this._datasetsDiffers).forEach((key) => {
+                const differ = this._datasetsDiffers[key];
+                const changes = differ.diff(this.chartInfo.data.datasets[key]);
+
+                if (changes) {
+                    apply = true;
+                }
+            });
+        }
+
+        if (this._differ) {
+            const changes = this._differ.diff(this.chartInfo.data.datasets);
+            if (changes) {
+                changes.forEachAddedItem((r) => {
+                    this._datasetsDiffers[r.key] = this.differs.find(r.currentValue).create();
+                    apply = true;
+                });
+            }
+        }
+
+        if (apply) {
+            this.applyDatasetChanges();
+        } else {
+            console.dir(this._differ);
+            console.dir(this._datasetsDiffers);
         }
     }
 
@@ -156,109 +210,9 @@ export class ChartItemComponent implements OnInit, OnChanges {
         dataset.pointBackgroundColor = `hsla(${hueStr},0.5)`;
     }
 
-    onZoom(chart: any): void {
-        const xAxisInfo = this.getXAxisInfo(chart);
-
+    onZoom(chart: any, isZoom: boolean): void {
         const xAxis = chart.chart.scales['x-axis-0'];
-        this.rangeChange.emit({timeFrom: Math.floor(xAxis.min), timeTo: Math.floor(xAxis.max)});
-        for (const dataset of chart.chart.data.datasets) {
-            this.dataDecimation(dataset, 999, xAxisInfo);
-        }
-        // chart.chart.update();
-    }
-
-    getXAxisInfo(chart: any): any {
-        const xAxis = chart.chart.scales['x-axis-0'];
-        const delta = xAxis.max - xAxis.min;
-        return {min: xAxis.min, max: xAxis.max, pixelTime: delta / xAxis.width};
-    }
-
-    dataDecimation(dataset: any, threshold: number, xAxisInfo: any): void {
-      if (true)
-      return;
-        if (!dataset.data.length) {
-            return;
-        }
-
-        const data = [];
-
-        let middled = false;
-        let firstItem;
-        let lastItem;
-        let x;
-
-        for (const item of dataset.data) {
-            x = item.x.getTime();
-            if (x < xAxisInfo.min) {
-                firstItem = item;
-                continue;
-            } else if (x > xAxisInfo.max) {
-                if (lastItem) {
-                    data.push({x: new Date(xAxisInfo.max), y: lastItem.y});
-                }
-                break;
-            } else if (firstItem) {
-                data.push({x: new Date(xAxisInfo.min), y: firstItem.y});
-                firstItem = undefined;
-            }
-
-            if (lastItem
-                && item.y > (lastItem.y - threshold)
-                && item.y < (lastItem.y + threshold)
-                && (x - lastItem.x.getTime()) < xAxisInfo.pixelTime) {
-                if (!middled) {
-                    middled = true;
-                    data[data.length - 1] = lastItem = {...lastItem};
-                }
-
-                lastItem.x = new Date((lastItem.x.getTime() + x) / 2);
-                lastItem.y = (lastItem.y + item.y) / 2;
-            } else {
-                middled = false;
-                data.push(item);
-                lastItem = item;
-            }
-        }
-
-        dataset.data = data;
-    }
-
-    adjust_stepped(dataset: any, y_min: number, y_max: number): void {
-        if (dataset.hidden || !dataset.steppedLine || !dataset.data.length || !dataset.dev_item) {
-            return;
-        }
-      else
-      return;
-
-        const pr = (y_max - y_min) * 0.1;
-        const y0 = y_min + pr;
-        const y1 = y_max - pr;
-
-        dataset['my_cond'] = y1;
-
-        let cond;
-        let finded = false;
-        for (const item of dataset.data) {
-            if (item.y !== null) {
-                if (cond === undefined) {
-                    cond = item.y;
-                } else if (item.y !== cond) {
-                    finded = true;
-                    if (item.y > cond) {
-                        cond = item.y;
-                    }
-                    break;
-                }
-            }
-        }
-
-        if (!finded && cond == 0) {
-            cond = 1;
-        }
-
-        for (const item of dataset.data) {
-            item.y = item.y < cond ? y0 : y1;
-        }
+        this.rangeChange.emit({timeFrom: Math.floor(xAxis.min), timeTo: Math.floor(xAxis.max), isZoom});
     }
 
     onLabel(item, data): string {
@@ -296,5 +250,9 @@ export class ChartItemComponent implements OnInit, OnChanges {
                 this.chart.chart.update();
             }
         });
+    }
+
+    private applyDatasetChanges(changes?: KeyValueChanges<string, any>) {
+        console.log('apply dataset changes');
     }
 }

@@ -13,9 +13,11 @@ import 'chartjs-plugin-zoom';
 import {Paginator_Chart_Value, SchemeService} from '../../scheme.service';
 import {Chart, Device_Item, DIG_Param, Register_Type, Save_Algorithm} from '../../scheme';
 import {Scheme_Group_Member} from '../../../user';
-import {Chart_Info_Interface, Chart_Type, ChartFilter, TimeFilter} from './chart-types';
+import {Chart_Info_Interface, Chart_Type, ChartFilter, ZoomInfo} from './chart-types';
 import {ChartItemComponent} from './chart-item/chart-item.component';
 import {ColorPickerDialog} from './color-picker-dialog/color-picker-dialog';
+import {delay, exhaustMap, map, mapTo} from 'rxjs/operators';
+import {of, timer} from 'rxjs';
 
 interface Chart_Item_Iface
 {
@@ -89,21 +91,6 @@ export class ChartsComponent {
       this.initCharts(this.chartFilter);
     });
   }
-
-    getNewRange(range: TimeFilter): void
-    {
-     this.time_from_ = range.timeFrom;
-    this.time_to_ = range.timeTo;
-    this.is_today = new Date().getTime() < this.time_to_;
-
-    this.logs_count = 0;
-    this.logs_count2 = 0;
-    this.values_loaded = false;
-    this.params_loaded = false;
-    this.getParamData();
-    this.getLogs();
-       console.log('range from', range.timeFrom, 'to', range.timeTo);
-    }
 
   initCharts(chartFilter: ChartFilter): void
   {
@@ -491,7 +478,7 @@ export class ChartsComponent {
             .subscribe((logs: Paginator_Chart_Value) => this.fillData(logs));
     }
 
-    fillData(logs: Paginator_Chart_Value): void {
+    fillData(logs: Paginator_Chart_Value, rewrite = false): void {
         if (!logs)
         {
             this.set_initialized(true);
@@ -579,4 +566,17 @@ export class ChartsComponent {
        hash = str.charCodeAt(i) + ((hash << 5) - hash);
     return hash;
   }
+
+    chartZoom(chart: Chart_Info_Interface, range: ZoomInfo) {
+       console.log('range from', range.timeFrom, 'to', range.timeTo);
+        if (this.logSub && !this.logSub.closed) {
+            this.logSub.unsubscribe();
+        }
+
+        this.logSub = timer(400)
+            .pipe(
+                exhaustMap(() => this.schemeService.getChartData(range.timeFrom, range.timeTo, this.data_, this.chartFilter.data_part_size, 0)),
+            )
+            .subscribe((logs: Paginator_Chart_Value) => this.fillData(logs, true));
+    }
 }

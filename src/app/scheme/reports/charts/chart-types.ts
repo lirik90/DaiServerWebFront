@@ -40,3 +40,8 @@ export interface ChartFilter extends TimeFilter {
     charts_type: Chart_Type;
     data_part_size: number;
 }
+
+export interface ZoomInfo extends TimeFilter {
+    isZoom: boolean;
+}
+

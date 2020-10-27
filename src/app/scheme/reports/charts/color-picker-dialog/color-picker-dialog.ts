@@ -1,5 +1,4 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
-
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export interface DialogData {
@@ -9,8 +8,8 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'color-picker-dialog',
-  templateUrl: 'color-picker-dialog.html',
+    selector: 'color-picker-dialog',
+    templateUrl: 'color-picker-dialog.html',
     styleUrls: ['color-picker-dialog.css']
 })
 export class ColorPickerDialog implements OnInit {
