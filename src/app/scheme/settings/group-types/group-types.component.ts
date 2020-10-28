@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, OnChanges} from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Directive } from '@angular/core';
 
 import { SchemeService } from "../../scheme.service";
 import { Device_Item_Type, Sign_Type, DIG_Type, DIG_Param_Type, DIG_Status_Type, Codes, Save_Timer } from "../../scheme";
@@ -202,6 +202,7 @@ export class StatusesComponent extends ChangeTemplate<DIG_Status_Type> implement
 }
 
 // Deprecated
+@Directive()
 export class OtherTypesComponent implements OnInit {
   paramItems: DIG_Param_Type[];
   itemTypes: Device_Item_Type[];
