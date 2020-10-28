@@ -9,7 +9,8 @@ import {
     OnInit,
     Output,
     SimpleChanges,
-    ViewChild
+    ViewChild,
+    NgZone
 } from '@angular/core';
 import {BaseChartDirective} from 'ng2-charts';
 import {SchemeService} from '../../../scheme.service';
@@ -45,7 +46,8 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
 
     update(): void
     {
-        this.chart.chart.update();
+        this.zone.run(() =>
+        this.chart.chart.update());
     }
 
     options = {
@@ -148,6 +150,7 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         private schemeService: SchemeService,
         private dialog: MatDialog,
         private differs: KeyValueDiffers,
+        private zone: NgZone
     ) {
     }
 
@@ -156,6 +159,7 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
     }
 
     ngOnChanges(changes: SimpleChanges) {
+        console.log('ngOnChanges');
         if (changes.chartInfo && changes.chartInfo.currentValue) {
             const chart = changes.chartInfo.currentValue;
             const { min_y, max_y } = chart;
@@ -164,6 +168,7 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
     }
 
     ngDoCheck(): void {
+        console.log('ngDoCheck');
         let apply = false;
 
         if (this._datasetsDiffers) {
@@ -190,8 +195,8 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         if (apply) {
             this.applyDatasetChanges();
         } else {
-            console.dir(this._differ);
-            console.dir(this._datasetsDiffers);
+            // console.dir(this._differ);
+            // console.dir(this._datasetsDiffers);
         }
     }
 

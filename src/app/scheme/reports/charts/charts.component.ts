@@ -1,4 +1,4 @@
-import {Component, ViewChildren, QueryList} from '@angular/core';
+import { OnInit, Component, ViewChildren, QueryList, NgZone } from '@angular/core';
 
 import {ISubscription} from 'rxjs/Subscription';
 
@@ -31,7 +31,7 @@ interface Chart_Item_Iface
   styleUrls: ['./charts.component.css'],
   providers: [],
 })
-export class ChartsComponent {
+export class ChartsComponent implements OnInit {
 //  date_from = new FormControl(new Date().toISOString().slice(0, -1));
 
     @ViewChildren(ChartItemComponent) chartItems: QueryList<ChartItemComponent>;
@@ -69,8 +69,9 @@ export class ChartsComponent {
   user_charts: Chart[];
 
   constructor(
-    public translate: TranslateService,
-    private schemeService: SchemeService,
+      public translate: TranslateService,
+      private schemeService: SchemeService,
+      private zone: NgZone
   ) {
       moment.locale('ru');
 
@@ -547,9 +548,9 @@ export class ChartsComponent {
       yAxisID: steppedLine ? 'B' : 'A',
 
       borderColor: `hsl(${hslStr})`,
-      backgroundColor: `rgba(${hslStr},0.5)`,
-      pointBorderColor: `rgba(${hslStr},0.9)`,
-      pointBackgroundColor: `rgba(${hslStr},0.5)`,
+      backgroundColor: `hsl(${hslStr},0.5)`,
+      pointBorderColor: `hsl(${hslStr},0.9)`,
+      pointBackgroundColor: `hsl(${hslStr},0.5)`,
       pointBorderWidth: 1,
 
       hidden: false,
@@ -567,16 +568,38 @@ export class ChartsComponent {
     return hash;
   }
 
+    chartZoom1(chart: Chart_Info_Interface, range: ZoomInfo) {
+        this.zone.run(() => this.chartZoom(chart, range));
+    }
+
     chartZoom(chart: Chart_Info_Interface, range: ZoomInfo) {
+      if (this.paramSub)
+          this.paramSub.unsubscribe();
+      if (this.logSub)
+          this.logSub.unsubscribe();
+
        console.log('range from', range.timeFrom, 'to', range.timeTo);
         if (this.logSub && !this.logSub.closed) {
             this.logSub.unsubscribe();
         }
 
-        this.logSub = timer(400)
+        this.logSub = timer(200)
             .pipe(
                 exhaustMap(() => this.schemeService.getChartData(range.timeFrom, range.timeTo, this.data_, this.chartFilter.data_part_size, 0)),
             )
-            .subscribe((logs: Paginator_Chart_Value) => this.fillData(logs, true));
+            .subscribe((logs: Paginator_Chart_Value) => {
+                this.zone.run(() => {
+            this.clear_dataset('dev_item');
+        this.chartItems.forEach(chart_item => {
+            console.log('update chart item 2', chart_item);
+            chart_item.update();
+        });
+                    // this.initialized = false;
+                    setTimeout(() => {
+                        this.fillData(logs, true);
+                    }, 100);
+                });
+                // this.fillData(logs, true);
+            });
     }
 }
