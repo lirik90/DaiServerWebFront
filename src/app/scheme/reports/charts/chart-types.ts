@@ -19,15 +19,15 @@ export interface Chart_Info_Interface {
     data: {
         datasets: any[]
     };
-
-    min_y: number;
-    max_y: number;
 }
 
-export interface ChartFilter {
+export interface TimeFilter
+{
     timeFrom: number;
     timeTo: number;
+}
 
+export interface ChartFilter extends TimeFilter {
     user_chart: Chart;
     user_charts: Chart[];
 
@@ -37,3 +37,8 @@ export interface ChartFilter {
     charts_type: Chart_Type;
     data_part_size: number;
 }
+
+export interface ZoomInfo extends TimeFilter {
+    isZoom: boolean;
+}
+

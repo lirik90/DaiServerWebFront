@@ -17,8 +17,6 @@ import { ChartsModule } from 'ng2-charts';
 
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 
-import { NgColorModule } from 'ng-color';
-
 import { MaterialModule } from '../../material.module';
 
 import { ReportsRoutingModule } from './reports-routing.module';
@@ -46,7 +44,6 @@ import { ChartFilterComponent } from './charts/chart-filter/chart-filter.compone
         deps: [HttpClient]
       }
     }),
-    NgColorModule,
   ],
   declarations: [
     ColorPickerDialog,

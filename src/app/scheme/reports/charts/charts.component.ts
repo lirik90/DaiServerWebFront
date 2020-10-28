@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {OnInit, OnDestroy, Component, ViewChildren, QueryList, NgZone } from '@angular/core';
 
 import {ISubscription} from 'rxjs/Subscription';
 
@@ -7,18 +7,22 @@ import {TranslateService} from '@ngx-translate/core';
 import 'chartjs-plugin-zoom';
 
 // import * as moment from 'moment';
-// import * as _moment from 'moment';
-// import {default as _rollupMoment} from 'moment';
-// const moment = _rollupMoment || _moment;
+ import * as _moment from 'moment';
+ import {default as _rollupMoment} from 'moment';
+ const moment = _rollupMoment || _moment;
 import {Paginator_Chart_Value, SchemeService} from '../../scheme.service';
 import {Chart, Device_Item, DIG_Param, Register_Type, Save_Algorithm} from '../../scheme';
 import {Scheme_Group_Member} from '../../../user';
-import {Chart_Info_Interface, Chart_Type, ChartFilter} from './chart-types';
+import {Chart_Info_Interface, Chart_Type, ChartFilter, ZoomInfo} from './chart-types';
+import {ChartItemComponent} from './chart-item/chart-item.component';
+import {ColorPickerDialog} from './color-picker-dialog/color-picker-dialog';
+import {delay, exhaustMap, map, mapTo} from 'rxjs/operators';
+import {of, timer, combineLatest} from 'rxjs';
 
 interface Chart_Item_Iface
 {
     id: number;
-    color: string;
+    hue: number;
 }
 
 @Component({
@@ -27,8 +31,10 @@ interface Chart_Item_Iface
   styleUrls: ['./charts.component.css'],
   providers: [],
 })
-export class ChartsComponent {
+export class ChartsComponent implements OnInit, OnDestroy {
 //  date_from = new FormControl(new Date().toISOString().slice(0, -1));
+
+    @ViewChildren(ChartItemComponent) chartItems: QueryList<ChartItemComponent>;
 
   logs_count: number;
   logs_count2: number;
@@ -63,9 +69,12 @@ export class ChartsComponent {
   user_charts: Chart[];
 
   constructor(
-    public translate: TranslateService,
-    private schemeService: SchemeService,
+      public translate: TranslateService,
+      private schemeService: SchemeService,
+      private zone: NgZone
   ) {
+      moment.locale('ru');
+
     const today = new Date();
     const todayEnd = new Date();
 
@@ -84,12 +93,17 @@ export class ChartsComponent {
     });
   }
 
+    ngOnDestroy()
+    {
+        this.breakLoad(false);
+    }
+
   initCharts(chartFilter: ChartFilter): void
   {
     this.chartFilter = chartFilter;
 
     if (!this.chartFilter.selectedItems.length) {
-      console.log('Init charts failed', this.chartFilter.charts_type, this.chartFilter.selectedItems);
+      console.warn('Init charts failed', this.chartFilter.charts_type, this.chartFilter.selectedItems);
       return;
     }
 
@@ -136,7 +150,7 @@ export class ChartsComponent {
       for (const s_pt of selected) {
         if (s_pt.id === param.id) {
           data.params.push(param.id);
-          datasets.push(this.genParamDataset(param, s_pt.color));
+          datasets.push(this.genParamDataset(param, s_pt.hue));
           break;
         }
       }
@@ -148,7 +162,6 @@ export class ChartsComponent {
 
     get_dig_param_ids(param_types: any[]): Chart_Item_Iface[]
     {
-        console.log(param_types);
         const get_param_id = (param_type_id: number): number =>
         {
             const find_param = (params: DIG_Param[], type_id: number) =>
@@ -166,7 +179,6 @@ export class ChartsComponent {
                 return null;
             };
 
-            console.log('Search param type id: ' + param_type_id);
             for (const sct of this.schemeService.scheme.section)
             {
                 for (const group of sct.groups)
@@ -176,7 +188,7 @@ export class ChartsComponent {
                         return param_id;
                 }
             }
-            console.log('Search param type id: ' + param_type_id + ' failed', this.schemeService.scheme.section);
+            console.warn('Search param type id: ' + param_type_id + ' failed', this.schemeService.scheme.section);
             return null;
         };
 
@@ -185,7 +197,7 @@ export class ChartsComponent {
         {
             const dig_param_id = get_param_id(param_type.id);
             if (dig_param_id)
-                res.push({id: dig_param_id, color: null });
+                res.push({id: dig_param_id, hue: null });
         }
 
         return res;
@@ -249,7 +261,7 @@ export class ChartsComponent {
           for (const s_item of dev_items) {
             if (s_item.id == item.id) {
               data.dev_items.push(item.id);
-              datasets.push(this.genDevItemDataset(item, s_item.color));
+              datasets.push(this.genDevItemDataset(item, s_item.hue));
               break;
             }
           }
@@ -263,58 +275,33 @@ export class ChartsComponent {
 
     initDeviceItemCharts(data: any): void
     {
-        const items = this.chartFilter.selectedItems.map(it => { return {id: it.id, color: null}; });
-        const params = this.chartFilter.paramSelected.map(it => { return {id: it.id, color: null}; });
+        const items = this.chartFilter.selectedItems.map(it => { return {id: it.id, hue: null}; });
+        const params = this.chartFilter.paramSelected.map(it => { return {id: it.id, hue: null}; });
         this.initDeviceItemChartsImpl(data, items, params);
-    }
-
-    randomColorFactor(): number {
-      return Math.round(Math.random() * 255);
     }
 
     initDeviceItemUserCharts(data: any): void
     {
-        const hex2rgb_str = (color: string): string =>
-        {
-            if (!color)
-                return `${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()}`;
-
-            const r = parseInt(color.substr(1,2), 16);
-            const g = parseInt(color.substr(3,2), 16);
-            const b = parseInt(color.substr(5,2), 16);
-            if (isNaN(r) || isNaN(g) || isNaN(b))
-                return `${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()}`;
-
-            return r + ',' + g + ',' + b;
-        };
-
         const user_chart = this.chartFilter.selectedItems[0];
         let items = [];
         let params = [];
         for (const it of user_chart.items)
         {
             if (it.item_id)
-                items.push({id: it.item_id, color: hex2rgb_str(it.color)});
+                items.push({id: it.item_id, hue: ColorPickerDialog.rgbhex2hue(it.color)});
             else
-                params.push({id: it.param_id, color: hex2rgb_str(it.color)});
+                params.push({id: it.param_id, hue: ColorPickerDialog.rgbhex2hue(it.color)});
         }
 
         //const ids = [...new Set(user_chart.items.map(it => it.item_id))];
         this.initDeviceItemChartsImpl(data, items, params);
     }
 
-  addChart(name: string, datasets: any[]): void {
-    if (datasets.length) {
-      datasets[0].hidden = false;
+    addChart(name: string, datasets: any[]): void {
+        if (datasets.length)
+            datasets[0].hidden = false;
+        this.charts.push({ name, data: {datasets} });
     }
-    this.charts.push({
-      name,
-      data: {datasets},
-
-      min_y: 9999,
-      max_y: -9999,
-    });
-  }
 
     set_initialized(set_values_loaded: boolean): void {
         if (set_values_loaded)
@@ -336,27 +323,25 @@ export class ChartsComponent {
                         if (this.is_today)
                         {
                             const log = dataset.dev_item ? dataset.dev_item.val : dataset.param;
-                            y = this.getY(chart, log, dataset.steppedLine);
+                            y = ChartItemComponent.getY(log, dataset.steppedLine);
                         }
-                        else if (dataset.realData.length !== 0)
+                        else if (dataset.data.length !== 0)
                         {
-                            const last = dataset.realData[dataset.realData.length - 1];
+                            const last = dataset.data[dataset.data.length - 1];
                             if (last.x < x)
                                 y = last.y;
                         }
 
                         if (y !== undefined && y !== null)
                         {
-                            if (dataset.realData.length === 0)
+                            if (dataset.data.length === 0)
                             {
                                 const x0 = new Date(this.time_from_);
                                 item = {x: x0, y};
                                 dataset.data.push(item);
-                                dataset.realData.push(item);
                             }
                             item = {x, y};
                             dataset.data.push(item);
-                            dataset.realData.push(item);
                         }
                     }
                 }
@@ -364,39 +349,6 @@ export class ChartsComponent {
 
             this.initialized = true;
         }
-    }
-
-    getY(chart: any, log: any, is_stepped: boolean): any {
-        let y = log.value;
-        if (y == undefined || y == null)
-            return null;
-
-        if (typeof y === 'string')
-        {
-            if (/^(\-|\+)?([0-9\.]+|Infinity)$/.test(y))
-                return parseFloat(y);
-
-            if (is_stepped)
-                return y;
-
-            const v2_type = typeof log.raw_value;
-            if (v2_type === 'number' || v2_type === 'boolean')
-                y = log.raw_value;
-            else
-                y = y.length;
-        }
-
-        // console.log(`Finded log ${log.item_id} val: ${log.value} date: ${log.timestamp_msecs} t: ${typeof log.timestamp_msecs}`, typeof log.value, log);
-        // if (log.value == null || /^(\-|\+)?([0-9]+|Infinity)$/.test(log.value))
-
-        if (!is_stepped && y !== undefined)
-        {
-            if (chart.min_y > y)
-                chart.min_y = y;
-            if (chart.max_y < y)
-                chart.max_y = y;
-        }
-        return y;
     }
 
     getParamData(offset: number = 0): void {
@@ -416,7 +368,6 @@ export class ChartsComponent {
         }
 
         this.add_chart_data(logs, 'param');
-
         this.logs_count2 += logs.count;
 
         if (logs.count >= this.chartFilter.data_part_size && this.logs_count2 < 10000000)
@@ -443,20 +394,19 @@ export class ChartsComponent {
             {
                 for (const log_item of log.data)
                 {
-                    const y = this.getY(chart, log_item, dataset.steppedLine);
-                    if (y !== undefined)
+                    const y = ChartItemComponent.getY(log_item, dataset.steppedLine);
+                    if (y === undefined)
+                        continue;
+
+                    const x = new Date(log_item.time);
+                    let data = {x, y};
+                    if (log_item.user_id)
                     {
-                        const x = new Date(log_item.time);
-                        let data = {x, y};
-                        if (log_item.user_id)
-                        {
-                            if (!dataset.usered_data)
-                                dataset.usered_data = {};
-                            dataset.usered_data[x.getTime()] = log_item.user_id;
-                        }
-                        dataset.data.push(data);
-                        dataset.realData.push(data);
+                        if (!dataset.usered_data)
+                            dataset.usered_data = {};
+                        dataset.usered_data[x.getTime()] = log_item.user_id;
                     }
+                    dataset.data.push(data);
                 }
             }
         }
@@ -467,7 +417,7 @@ export class ChartsComponent {
             .subscribe((logs: Paginator_Chart_Value) => this.fillData(logs));
     }
 
-    fillData(logs: Paginator_Chart_Value): void {
+    fillData(logs: Paginator_Chart_Value, rewrite = false): void {
         if (!logs)
         {
             this.set_initialized(true);
@@ -477,18 +427,23 @@ export class ChartsComponent {
         this.add_chart_data(logs, 'dev_item');
         this.logs_count += logs.count;
 
+        this.chartItems.forEach(chart_item => {
+            console.log('update chart item 2', chart_item);
+            chart_item.update();
+        });
         if (logs.count >= this.chartFilter.data_part_size && this.logs_count < 10000000)
             this.getLogs(this.logs_count);
         else
             this.set_initialized(true);
     }
 
-  breakLoad(): void {
-      if (this.paramSub)
-          this.paramSub.unsubscribe();
-      if (this.logSub)
+  breakLoad(is_initialized: boolean = true): void {
+      if (this.logSub && !this.logSub.closed)
           this.logSub.unsubscribe();
-      this.set_initialized(true);
+      if (this.paramSub && !this.paramSub.closed)
+          this.paramSub.unsubscribe();
+      if (is_initialized)
+          this.set_initialized(true);
   }
 
   genDateString(date: Date, time: string): string {
@@ -499,40 +454,39 @@ export class ChartsComponent {
     return date_str + time;
   }
 
-  genDevItemDataset(item: Device_Item, rgb_str: string = null): Object {
-    // const rgb_str = `${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()}`;
-
+  genDevItemDataset(item: Device_Item, hue: number = null): Object {
     const label = item.name.length ? item.name : item.type.title;
 
     const RT = Register_Type;
     const rt = item.type.register_type;
     const stepped = rt === RT.RT_COILS || rt === RT.RT_DISCRETE_INPUTS;
 
-    let dataset = this.genDataset(label, stepped, rgb_str);
+    let dataset = this.genDataset(label, stepped, hue);
     dataset['dev_item'] = item;
     return dataset;
   }
 
-  genParamDataset(param: DIG_Param, rgb_str: string = null): Object {
-    let dataset = this.genDataset('⚙️ ' + param.param.title, true, rgb_str);
+  genParamDataset(param: DIG_Param, hue: number = null): Object {
+    let dataset = this.genDataset('⚙️ ' + param.param.title, true, hue);
     dataset['param'] = param;
     return dataset;
   }
 
-  genDataset(label: string, steppedLine: boolean = true, rgb_str: string = null): Object {
-      if (rgb_str === null)
-          rgb_str = this.intToRGB(this.hashCode(label));
-    // const rgb_str = this.intToRGB(this.hashCode(label));
-
+  genDataset(label: string, steppedLine: boolean = true, hue: number = null): Object {
+      if (hue === null)
+          hue = this.hashCode(label);
+      if (hue > 360)
+          hue %= 360;
+      const hslStr = `${hue}, 95%, 50%`;
     return {
       label,
       data: [],
-        realData: [],
+      yAxisID: steppedLine ? 'B' : 'A',
 
-      borderColor: `rgba(${rgb_str},0.8)`,
-      backgroundColor: `rgba(${rgb_str},0.5)`,
-      pointBorderColor: `rgba(${rgb_str},0.9)`,
-      pointBackgroundColor: `rgba(${rgb_str},0.5)`,
+      borderColor: `hsl(${hslStr})`,
+      backgroundColor: `hsl(${hslStr},0.5)`,
+      pointBorderColor: `hsl(${hslStr},0.9)`,
+      pointBackgroundColor: `hsl(${hslStr},0.5)`,
       pointBorderWidth: 1,
 
       hidden: false,
@@ -550,15 +504,53 @@ export class ChartsComponent {
     return hash;
   }
 
-  intToRGB(i: number): string {
-    var c = (i & 0x00FFFFFF);
-    return (c & 0xFF) + ','
-    + ((c >> 8) & 0xFF) + ','
-    + ((c >> 16) & 0xFF);
-  }
+    chartZoom(chart: Chart_Info_Interface, range: ZoomInfo)
+    {
+        this.breakLoad(false);
 
-  randomColor(opacity: number): string {
-    return `rgba(${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()},${opacity || '.3'})`;
-  }
+        this.logSub = timer(200)
+            .pipe(
+                exhaustMap(() => 
+                {
+                    const devItemIds = [];
+                    const paramIds = [];
+                    for (const dataset of chart.data.datasets)
+                    {
+                        if (dataset.dev_item)
+                            devItemIds.push(dataset.dev_item.id);
+                        else if (dataset.param)
+                            paramIds.push(dataset.param.id);
+                    }
 
+                    const logs = devItemIds.length ? 
+                        this.schemeService.getChartData(range.timeFrom, range.timeTo, devItemIds.join(','), this.chartFilter.data_part_size, 0) :
+                        of(null);
+
+                    const params = paramIds.length ? 
+                        this.schemeService.getChartParamData(range.timeFrom, range.timeTo, paramIds.join(','), this.chartFilter.data_part_size, 0) :
+                        of(null);
+
+                    return combineLatest(logs, params);
+                }),
+            )
+            .subscribe(([logs, params]) =>
+            {
+                const findChartItem = (chartInfo) =>
+                {
+                    for (const chartItem of this.chartItems)
+                        if (chartItem.chartInfo === chartInfo)
+                            return chartItem;
+                    return null;
+                };
+
+                const chartItem = findChartItem(chart);
+                if (chartItem)
+                {
+                    if (logs)
+                        chartItem.addDevItemValues(logs);
+                    if (params)
+                        chartItem.addParamValues(params);
+                }
+            });
+    }
 }

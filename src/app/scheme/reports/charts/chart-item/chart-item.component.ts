@@ -1,25 +1,64 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {Chart} from '../../../scheme';
+import {
+    Component,
+    DoCheck,
+    EventEmitter,
+    Input, KeyValueChanges,
+    KeyValueDiffer,
+    KeyValueDiffers,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChanges,
+    ViewChild,
+    NgZone
+} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {KeyValue} from '@angular/common';
+
 import {BaseChartDirective} from 'ng2-charts';
-import {SchemeService} from '../../../scheme.service';
+
+import {Paginator_Chart_Value, SchemeService} from '../../../scheme.service';
 import {Scheme_Group_Member} from '../../../../user';
 import {ColorPickerDialog} from '../color-picker-dialog/color-picker-dialog';
-import {Chart_Info_Interface} from '../chart-types';
-import {MatDialog} from '@angular/material/dialog';
+import {Chart_Info_Interface, ZoomInfo} from '../chart-types';
 
 @Component({
     selector: 'app-chart-item',
     templateUrl: './chart-item.component.html',
     styleUrls: ['./chart-item.component.css']
 })
-export class ChartItemComponent implements OnInit, OnChanges {
-    @Input() chartInfo: Chart_Info_Interface; // TODO: Assignee:ByMsx fix variable name
+export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
+    private _chartInfo: Chart_Info_Interface;
+    private _differ: KeyValueDiffer<number, any>;
+    private _datasetsDiffers: { [key: string]: KeyValueDiffer<any, any> } = {};
+
+    get chartInfo(): Chart_Info_Interface {
+        return this._chartInfo;
+    }
+
+    @Input() set chartInfo(v: Chart_Info_Interface) {
+        this._chartInfo = v;
+        if (!this._differ && v.data?.datasets) {
+            this._differ = this.differs.find(v.data.datasets).create();
+        }
+    }
+
     @ViewChild('chart_obj') chart: BaseChartDirective;
+    @Output() rangeChange: EventEmitter<ZoomInfo> = new EventEmitter();
+
+    update(): void
+    {
+        this.zone.run(() =>
+        this.chart.chart.update());
+    }
 
     options = {
         elements: {
             point: {radius: 0},
-            line: {tension: 0}
+            line: {
+                tension: 0,
+                borderWidth: 1
+            }
         },
         animation: {duration: 0},
         responsive: true,
@@ -27,15 +66,11 @@ export class ChartItemComponent implements OnInit, OnChanges {
         legend: {
             // display: false,
             // position: 'bottom',
-            onClick: (e, legendItem) => {
-                const dataset = (<any>this.chart.data).datasets[legendItem.datasetIndex];
-                dataset.hidden = !dataset.hidden;
-
-                const y_axix = (<any>this.chart.chart).scales['y-axis-0'];
-                this.adjust_stepped(dataset, y_axix.min, y_axix.max);
-
-                this.chart.chart.update();
-            }
+            // onClick: (e, legendItem) => {
+            //     const dataset = (<any>this.chart.data).datasets[legendItem.datasetIndex];
+            //     dataset.hidden = !dataset.hidden;
+            //     this.chart.chart.update();
+            // }
         },
         //  maintainAspectRatio: false,
         tooltips: {
@@ -50,35 +85,49 @@ export class ChartItemComponent implements OnInit, OnChanges {
         },
         scales: {
             xAxes: [{
+                offset: true,
+                stacked: true,
                 type: 'time',
-                // unit: 'hour',
-                // unitStepSize: 1,
                 time: {
-                    // format: 'MM/DD/YYYY HH:mm',
                     tooltipFormat: 'DD MMMM YYYY HH:mm:ss',
-                    // round: 'hour',
                     displayFormats: {
-                        millisecond: 'H:m',
-                        second: 'H:m',
-                        minute: 'H:m',
-                        hour: 'H:m',
-                        day: 'H:m',
+                        millisecond: 'HH:mm:ss.SSS',
+                        second: 'HH:mm:ss',
+                        minute: 'HH:mm',
+                        hour: 'HH:mm',
+                        day: 'DD MMM',
                     },
-                    // min: new Date({{ year }}, {{ month }} - 1, {{ day }}),
-                    // max: new Date({{ year }}, {{ month }} - 1, {{ day }}, 23, 59, 59),
                 },
                 ticks: {
+                    major: {
+                        enabled: true,
+                        fontStyle: 'bold',
+                        fontColor: 'rgb(54, 143, 3)'
+                    },
                     sampleSize: 10,
-                    maxRotation: 45,
-                    minRotation: 45
-                    // min: new Date({{ year }}, {{ month }} - 1, {{ day }}),
-                    // max: new Date({{ year }}, {{ month }} - 1, {{ day }}, 23, 59, 59),
-                    // callback: function(value) {
-                    // console.log(value);
-                    // return value;
-                    // },
+                    maxRotation: 30,
+                    minRotation: 30
                 },
+                afterFit: (scale) => {
+                    scale.height = 40;
+                }
             }],
+            yAxes: [{
+                id: 'A',
+                type: 'linear',
+                position: 'left',
+            }, {
+                id: 'B',
+                type: 'linear',
+                position: 'right',
+                ticks: {
+                    max: 2,
+                    min: -1,
+                    stepSize: 1,
+                    suggestedMin: 0,
+                    suggestedMax: 1
+                }
+            }]
         },
         plugins: {
             zoom: {
@@ -86,23 +135,24 @@ export class ChartItemComponent implements OnInit, OnChanges {
                     enabled: true,
                     mode: 'x',
                     rangeMax: {x: new Date()}, // TODO: update this sometimes
-                    onPanComplete: chart => this.onZoom(chart)
+                    onPanComplete: chart => this.onZoom(chart, false)
                 },
                 zoom: {
                     enabled: true,
                     mode: 'x',
-                    onZoomComplete: chart => this.onZoom(chart)
+                    onZoomComplete: chart => this.onZoom(chart, true)
                 }
             }
         },
     };
 
-    type = 'line';
     private members: Scheme_Group_Member[];
 
     constructor(
         private schemeService: SchemeService,
         private dialog: MatDialog,
+        private differs: KeyValueDiffers,
+        private zone: NgZone
     ) {
     }
 
@@ -111,141 +161,148 @@ export class ChartItemComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes.chart_ && changes.chart_.currentValue) {
-            const chart = changes.chart_.currentValue;
-            const { min_y, max_y } = chart;
-            if (chart.datasets) chart.datasets.forEach(dataset => this.adjust_stepped(dataset, min_y, max_y));
-            setTimeout(() => this.onZoom(this.chart), 500);
+        // console.log('ngOnChanges');
+        if (changes.chartInfo && changes.chartInfo.currentValue) {
+            const chart = changes.chartInfo.currentValue;
+            // setTimeout(() => this.onZoom(this.chart), 500);
         }
     }
 
-    random_color(): void {
-        for (const data of (<any>this.chart.data).datasets) {
-            const rgb_str = `${this.randomColorFactor()},${this.randomColorFactor()},${this.randomColorFactor()}`;
-            data.borderColor = `rgba(${rgb_str},0.4)`;
-            data.backgroundColor = `rgba(${rgb_str},0.5)`;
-            data.pointBorderColor = `rgba(${rgb_str},0.7)`;
-            data.pointBackgroundColor = `rgba(${rgb_str},0.5)`;
+    ngDoCheck(): void {
+        // console.log('ngDoCheck');
+        let apply = false;
+
+        if (this._datasetsDiffers) {
+            Object.keys(this._datasetsDiffers).forEach((key) => {
+                const differ = this._datasetsDiffers[key];
+                const changes = differ.diff(this.chartInfo.data.datasets[key]);
+
+                if (changes) {
+                    apply = true;
+                }
+            });
         }
+
+        if (this._differ) {
+            const changes = this._differ.diff(this.chartInfo.data.datasets);
+            if (changes) {
+                changes.forEachAddedItem((r) => {
+                    this._datasetsDiffers[r.key] = this.differs.find(r.currentValue).create();
+                    apply = true;
+                });
+            }
+        }
+
+        if (apply) {
+            this.applyDatasetChanges();
+        } else {
+            // console.dir(this._differ);
+            // console.dir(this._datasetsDiffers);
+        }
+    }
+
+    static getY(log: any, is_stepped: boolean): any {
+        let y = log.value;
+        if (y == undefined || y == null)
+            return null;
+
+        // if (log.value == null || /^(\-|\+)?([0-9]+|Infinity)$/.test(log.value))
+        if (typeof y !== 'string')
+            return y;
+        if (/^(\-|\+)?([0-9\.]+|Infinity)$/.test(y))
+            return parseFloat(y);
+
+        if (is_stepped)
+        {
+            // TODO: Remove it
+            if (y === 'Норма' || y === 'Открыто')
+                return 1;
+            else if (y === 'Низкий' || y === 'Закрыто')
+                return 0;
+            return y.length;
+        }
+
+        const v2_type = typeof log.raw_value;
+        return (v2_type === 'number' || v2_type === 'boolean') ?
+            log.raw_value : y.length;
+    }
+
+    addData(dataPack: Paginator_Chart_Value, data_param_name: string): void
+    {
+        for (const dataset of this.chartInfo.data.datasets)
+            if (dataset[data_param_name])
+                dataset.data.splice(0, dataset.data.length);
+        const findDataset = (data_param_name: string, id: number) => 
+        {
+            for (const dataset of this.chartInfo.data.datasets)
+                if (dataset[data_param_name] && dataset[data_param_name].id == id)
+                    return dataset;
+            return null;
+        };
+        
+        for (const log of dataPack.results)
+        {
+            const dataset = findDataset(data_param_name, log.item_id);
+            if (!dataset)
+                continue;
+
+            for (const log_item of log.data)
+            {
+                const y = ChartItemComponent.getY(log_item, dataset.steppedLine);
+                if (y === undefined)
+                    continue;
+
+                const x = new Date(log_item.time);
+                let data = {x, y};
+                if (log_item.user_id)
+                {
+                    if (!dataset.usered_data)
+                        dataset.usered_data = {};
+                    dataset.usered_data[x.getTime()] = log_item.user_id;
+                }
+                dataset.data.push(data);
+            }
+        }
+
         this.chart.chart.update();
     }
 
-    randomColorFactor(): number {
-        return Math.round(Math.random() * 255);
+    addDevItemValues(logs: Paginator_Chart_Value): void
+    {
+        this.addData(logs, 'dev_item');
     }
 
-    onZoom(chart: any): void {
-        const threshold = this.getDecimationTreshold(chart);
-        const xAxisInfo = this.getXAxisInfo(chart);
-
-        for (const dataset of chart.chart.data.datasets) {
-            this.dataDecimation(dataset, threshold, xAxisInfo);
-        }
-        chart.chart.update();
+    addParamValues(params: Paginator_Chart_Value): void
+    {
+        this.addData(params, 'param');
     }
 
-    getXAxisInfo(chart: any): any {
+    random_color(): void {
+        for (const dataset of (<any>this.chart.data).datasets)
+            this.setDataColor(dataset, Math.round(Math.random() * 360));
+        this.chart.chart.update();
+    }
+
+    setDataColor(dataset: any, hue: number): void
+    {
+        const hueStr = `${hue}, 95%, 50%`;
+        dataset.borderColor = `hsl(${hueStr}`;
+        dataset.backgroundColor = `hsla(${hueStr},0.5)`;
+        dataset.pointBorderColor = `hsla(${hueStr},0.7)`;
+        dataset.pointBackgroundColor = `hsla(${hueStr},0.5)`;
+    }
+
+    onZoom(chart: any, isZoom: boolean): void {
         const xAxis = chart.chart.scales['x-axis-0'];
-        const delta = xAxis.max - xAxis.min;
-        return {min: xAxis.min, max: xAxis.max, pixelTime: delta / xAxis.width};
-    }
-
-    getDecimationTreshold(chart: any): number {
-        const yAxis = chart.chart.scales['y-axis-0'];
-        const yDelta = yAxis.max - yAxis.min;
-        return yDelta / 5;
-    }
-
-    dataDecimation(dataset: any, threshold: number, xAxisInfo: any): void {
-        if (!dataset.realData.length) {
-            return;
-        }
-
-        const data = [];
-
-        let middled = false;
-        let firstItem;
-        let lastItem;
-        let x;
-
-        for (const item of dataset.realData) {
-            x = item.x.getTime();
-            if (x < xAxisInfo.min) {
-                firstItem = item;
-                continue;
-            } else if (x > xAxisInfo.max) {
-                if (lastItem) {
-                    data.push({x: new Date(xAxisInfo.max), y: lastItem.y});
-                }
-                break;
-            } else if (firstItem) {
-                data.push({x: new Date(xAxisInfo.min), y: firstItem.y});
-                firstItem = undefined;
-            }
-
-            if (lastItem
-                && item.y > (lastItem.y - threshold)
-                && item.y < (lastItem.y + threshold)
-                && (x - lastItem.x.getTime()) < xAxisInfo.pixelTime) {
-                if (!middled) {
-                    middled = true;
-                    data[data.length - 1] = lastItem = {...lastItem};
-                }
-
-                lastItem.x = new Date((lastItem.x.getTime() + x) / 2);
-                lastItem.y = (lastItem.y + item.y) / 2;
-            } else {
-                middled = false;
-                data.push(item);
-                lastItem = item;
-            }
-        }
-
-        dataset.data = data;
-    }
-
-    adjust_stepped(dataset: any, y_min: number, y_max: number): void {
-        if (dataset.hidden || !dataset.steppedLine || !dataset.data.length || !dataset.dev_item) {
-            return;
-        }
-
-        const pr = (y_max - y_min) * 0.1;
-        const y0 = y_min + pr;
-        const y1 = y_max - pr;
-
-        dataset['my_cond'] = y1;
-
-        let cond;
-        let finded = false;
-        for (const item of dataset.data) {
-            if (item.y !== null) {
-                if (cond === undefined) {
-                    cond = item.y;
-                } else if (item.y !== cond) {
-                    finded = true;
-                    if (item.y > cond) {
-                        cond = item.y;
-                    }
-                    break;
-                }
-            }
-        }
-
-        if (!finded && cond == 0) {
-            cond = 1;
-        }
-
-        for (const item of dataset.data) {
-            item.y = item.y < cond ? y0 : y1;
-        }
+        this.rangeChange.emit({timeFrom: Math.floor(xAxis.min), timeTo: Math.floor(xAxis.max), isZoom});
     }
 
     onLabel(item, data): string {
         // console.log('callback label:', item, data);
         const dataset = data.datasets[item.datasetIndex];
-        let text = dataset.steppedLine && dataset.dev_item ?
-            (item.yLabel < dataset['my_cond'] ? '0' : '1') :
-            item.value;
+        let text = item.value; //dataset.steppedLine && dataset.dev_item ?
+//            (item.yLabel < dataset['my_cond'] ? '0' : '1') :
+  //          item.value;
 
         if (dataset.usered_data) {
             const x = dataset.data[item.index].x.getTime();
@@ -264,22 +321,20 @@ export class ChartItemComponent implements OnInit, OnChanges {
 
     openColorPicker(chart: Chart_Info_Interface, dataset: any, chart_obj: any): void {
         const dialogRef = this.dialog.open(ColorPickerDialog, {
-            width: '250px',
+            width: '450px',
             data: {chart, dataset, chart_obj}
         });
 
-        dialogRef.afterClosed().subscribe(color => {
-            if (!color) {
-                return;
+        dialogRef.afterClosed().subscribe(hue => {
+            if (hue !== undefined && hue !== null)
+            {
+                this.setDataColor(dataset, hue);
+                this.chart.chart.update();
             }
-
-            const rgb_str = `${color.red},${color.green},${color.blue}`;
-            dataset.borderColor = `rgba(${rgb_str},0.4)`;
-            dataset.backgroundColor = `rgba(${rgb_str},0.5)`;
-            dataset.pointBorderColor = `rgba(${rgb_str},0.7)`;
-            dataset.pointBackgroundColor = `rgba(${rgb_str},0.5)`;
-
-            this.chart.chart.update();
         });
+    }
+
+    private applyDatasetChanges(changes?: KeyValueChanges<string, any>) {
+        // console.log('apply dataset changes');
     }
 }

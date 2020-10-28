@@ -311,10 +311,10 @@ export class ChartFilterComponent implements OnInit, OnChanges {
             for (const dataset of chart.data.datasets) {
                 if (item_id !== null) {
                     if (dataset.dev_item && dataset.dev_item.id === item_id) {
-                        return ColorPickerDialog.rgba2hex(dataset.pointBorderColor);
+                        return ColorPickerDialog.hsl2rgbhex(dataset.borderColor);
                     }
                 } else if (dataset.param && dataset.param.id === param_id) {
-                    return ColorPickerDialog.rgba2hex(dataset.pointBorderColor);
+                    return ColorPickerDialog.hsl2rgbhex(dataset.borderColor);
                 }
             }
             return '';
