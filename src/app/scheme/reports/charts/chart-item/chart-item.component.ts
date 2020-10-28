@@ -12,13 +12,15 @@ import {
     ViewChild,
     NgZone
 } from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {KeyValue} from '@angular/common';
+
 import {BaseChartDirective} from 'ng2-charts';
-import {SchemeService} from '../../../scheme.service';
+
+import {Paginator_Chart_Value, SchemeService} from '../../../scheme.service';
 import {Scheme_Group_Member} from '../../../../user';
 import {ColorPickerDialog} from '../color-picker-dialog/color-picker-dialog';
 import {Chart_Info_Interface, ZoomInfo} from '../chart-types';
-import {MatDialog} from '@angular/material/dialog';
-import {KeyValue} from '@angular/common';
 
 @Component({
     selector: 'app-chart-item',
@@ -159,16 +161,15 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        console.log('ngOnChanges');
+        // console.log('ngOnChanges');
         if (changes.chartInfo && changes.chartInfo.currentValue) {
             const chart = changes.chartInfo.currentValue;
-            const { min_y, max_y } = chart;
             // setTimeout(() => this.onZoom(this.chart), 500);
         }
     }
 
     ngDoCheck(): void {
-        console.log('ngDoCheck');
+        // console.log('ngDoCheck');
         let apply = false;
 
         if (this._datasetsDiffers) {
@@ -198,6 +199,82 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
             // console.dir(this._differ);
             // console.dir(this._datasetsDiffers);
         }
+    }
+
+    static getY(log: any, is_stepped: boolean): any {
+        let y = log.value;
+        if (y == undefined || y == null)
+            return null;
+
+        // if (log.value == null || /^(\-|\+)?([0-9]+|Infinity)$/.test(log.value))
+        if (typeof y !== 'string')
+            return y;
+        if (/^(\-|\+)?([0-9\.]+|Infinity)$/.test(y))
+            return parseFloat(y);
+
+        if (is_stepped)
+        {
+            // TODO: Remove it
+            if (y === 'Норма' || y === 'Открыто')
+                return 1;
+            else if (y === 'Низкий' || y === 'Закрыто')
+                return 0;
+            return y.length;
+        }
+
+        const v2_type = typeof log.raw_value;
+        return (v2_type === 'number' || v2_type === 'boolean') ?
+            log.raw_value : y.length;
+    }
+
+    addData(dataPack: Paginator_Chart_Value, data_param_name: string): void
+    {
+        for (const dataset of this.chartInfo.data.datasets)
+            if (dataset[data_param_name])
+                dataset.data.splice(0, dataset.data.length);
+        const findDataset = (data_param_name: string, id: number) => 
+        {
+            for (const dataset of this.chartInfo.data.datasets)
+                if (dataset[data_param_name] && dataset[data_param_name].id == id)
+                    return dataset;
+            return null;
+        };
+        
+        for (const log of dataPack.results)
+        {
+            const dataset = findDataset(data_param_name, log.item_id);
+            if (!dataset)
+                continue;
+
+            for (const log_item of log.data)
+            {
+                const y = ChartItemComponent.getY(log_item, dataset.steppedLine);
+                if (y === undefined)
+                    continue;
+
+                const x = new Date(log_item.time);
+                let data = {x, y};
+                if (log_item.user_id)
+                {
+                    if (!dataset.usered_data)
+                        dataset.usered_data = {};
+                    dataset.usered_data[x.getTime()] = log_item.user_id;
+                }
+                dataset.data.push(data);
+            }
+        }
+
+        this.chart.chart.update();
+    }
+
+    addDevItemValues(logs: Paginator_Chart_Value): void
+    {
+        this.addData(logs, 'dev_item');
+    }
+
+    addParamValues(params: Paginator_Chart_Value): void
+    {
+        this.addData(params, 'param');
     }
 
     random_color(): void {
@@ -258,6 +335,6 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
     }
 
     private applyDatasetChanges(changes?: KeyValueChanges<string, any>) {
-        console.log('apply dataset changes');
+        // console.log('apply dataset changes');
     }
 }

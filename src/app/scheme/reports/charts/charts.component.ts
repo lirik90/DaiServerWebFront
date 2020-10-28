@@ -1,4 +1,4 @@
-import { OnInit, Component, ViewChildren, QueryList, NgZone } from '@angular/core';
+import {OnInit, OnDestroy, Component, ViewChildren, QueryList, NgZone } from '@angular/core';
 
 import {ISubscription} from 'rxjs/Subscription';
 
@@ -17,7 +17,7 @@ import {Chart_Info_Interface, Chart_Type, ChartFilter, ZoomInfo} from './chart-t
 import {ChartItemComponent} from './chart-item/chart-item.component';
 import {ColorPickerDialog} from './color-picker-dialog/color-picker-dialog';
 import {delay, exhaustMap, map, mapTo} from 'rxjs/operators';
-import {of, timer} from 'rxjs';
+import {of, timer, combineLatest} from 'rxjs';
 
 interface Chart_Item_Iface
 {
@@ -31,7 +31,7 @@ interface Chart_Item_Iface
   styleUrls: ['./charts.component.css'],
   providers: [],
 })
-export class ChartsComponent implements OnInit {
+export class ChartsComponent implements OnInit, OnDestroy {
 //  date_from = new FormControl(new Date().toISOString().slice(0, -1));
 
     @ViewChildren(ChartItemComponent) chartItems: QueryList<ChartItemComponent>;
@@ -93,12 +93,17 @@ export class ChartsComponent implements OnInit {
     });
   }
 
+    ngOnDestroy()
+    {
+        this.breakLoad(false);
+    }
+
   initCharts(chartFilter: ChartFilter): void
   {
     this.chartFilter = chartFilter;
 
     if (!this.chartFilter.selectedItems.length) {
-      console.log('Init charts failed', this.chartFilter.charts_type, this.chartFilter.selectedItems);
+      console.warn('Init charts failed', this.chartFilter.charts_type, this.chartFilter.selectedItems);
       return;
     }
 
@@ -157,7 +162,6 @@ export class ChartsComponent implements OnInit {
 
     get_dig_param_ids(param_types: any[]): Chart_Item_Iface[]
     {
-        console.log(param_types);
         const get_param_id = (param_type_id: number): number =>
         {
             const find_param = (params: DIG_Param[], type_id: number) =>
@@ -175,7 +179,6 @@ export class ChartsComponent implements OnInit {
                 return null;
             };
 
-            console.log('Search param type id: ' + param_type_id);
             for (const sct of this.schemeService.scheme.section)
             {
                 for (const group of sct.groups)
@@ -185,7 +188,7 @@ export class ChartsComponent implements OnInit {
                         return param_id;
                 }
             }
-            console.log('Search param type id: ' + param_type_id + ' failed', this.schemeService.scheme.section);
+            console.warn('Search param type id: ' + param_type_id + ' failed', this.schemeService.scheme.section);
             return null;
         };
 
@@ -294,18 +297,11 @@ export class ChartsComponent implements OnInit {
         this.initDeviceItemChartsImpl(data, items, params);
     }
 
-  addChart(name: string, datasets: any[]): void {
-    if (datasets.length) {
-      datasets[0].hidden = false;
+    addChart(name: string, datasets: any[]): void {
+        if (datasets.length)
+            datasets[0].hidden = false;
+        this.charts.push({ name, data: {datasets} });
     }
-    this.charts.push({
-      name,
-      data: {datasets},
-
-      min_y: 9999,
-      max_y: -9999,
-    });
-  }
 
     set_initialized(set_values_loaded: boolean): void {
         if (set_values_loaded)
@@ -327,7 +323,7 @@ export class ChartsComponent implements OnInit {
                         if (this.is_today)
                         {
                             const log = dataset.dev_item ? dataset.dev_item.val : dataset.param;
-                            y = this.getY(chart, log, dataset.steppedLine);
+                            y = ChartItemComponent.getY(log, dataset.steppedLine);
                         }
                         else if (dataset.data.length !== 0)
                         {
@@ -355,46 +351,6 @@ export class ChartsComponent implements OnInit {
         }
     }
 
-    getY(chart: any, log: any, is_stepped: boolean): any {
-        let y = log.value;
-        if (y == undefined || y == null)
-            return null;
-
-        if (typeof y === 'string')
-        {
-            if (/^(\-|\+)?([0-9\.]+|Infinity)$/.test(y))
-                return parseFloat(y);
-
-            if (is_stepped)
-            {
-                // TODO: Remove it
-                if (y === 'Норма' || y === 'Открыто')
-                    return 1;
-                else if (y === 'Низкий' || y === 'Закрыто')
-                    return 0;
-                return y.length;
-            }
-
-            const v2_type = typeof log.raw_value;
-            if (v2_type === 'number' || v2_type === 'boolean')
-                y = log.raw_value;
-            else
-                y = y.length;
-        }
-
-        // console.log(`Finded log ${log.item_id} val: ${log.value} date: ${log.timestamp_msecs} t: ${typeof log.timestamp_msecs}`, typeof log.value, log);
-        // if (log.value == null || /^(\-|\+)?([0-9]+|Infinity)$/.test(log.value))
-
-        if (!is_stepped && y !== undefined)
-        {
-            if (chart.min_y > y)
-                chart.min_y = y;
-            if (chart.max_y < y)
-                chart.max_y = y;
-        }
-        return y;
-    }
-
     getParamData(offset: number = 0): void {
         if (this.param_data_.length) {
             this.paramSub = this.schemeService.getChartParamData(this.time_from_, this.time_to_, this.param_data_, this.chartFilter.data_part_size, offset)
@@ -410,9 +366,6 @@ export class ChartsComponent implements OnInit {
             this.set_initialized(false);
             return;
         }
-
-        if (this.logs_count2 == 0)
-            this.clear_dataset('param');
 
         this.add_chart_data(logs, 'param');
         this.logs_count2 += logs.count;
@@ -432,21 +385,6 @@ export class ChartsComponent implements OnInit {
         return [null, null];
     }
 
-    clear_dataset(data_param_name: string): void
-    {
-        for (const chart of this.charts)
-        {
-            for (const dataset of chart.data.datasets)
-                if (dataset[data_param_name])
-                    dataset.data.splice(0, dataset.data.length);
-        }
-        this.chartItems.forEach(chart_item => {
-            console.log('update chart item', chart_item);
-            chart_item.update();
-        });
-        // chart.chart.update();
-    }
-
     add_chart_data(logs: Paginator_Chart_Value, data_param_name: string)
     {
         for (const log of logs.results)
@@ -456,19 +394,19 @@ export class ChartsComponent implements OnInit {
             {
                 for (const log_item of log.data)
                 {
-                    const y = this.getY(chart, log_item, dataset.steppedLine);
-                    if (y !== undefined)
+                    const y = ChartItemComponent.getY(log_item, dataset.steppedLine);
+                    if (y === undefined)
+                        continue;
+
+                    const x = new Date(log_item.time);
+                    let data = {x, y};
+                    if (log_item.user_id)
                     {
-                        const x = new Date(log_item.time);
-                        let data = {x, y};
-                        if (log_item.user_id)
-                        {
-                            if (!dataset.usered_data)
-                                dataset.usered_data = {};
-                            dataset.usered_data[x.getTime()] = log_item.user_id;
-                        }
-                        dataset.data.push(data);
+                        if (!dataset.usered_data)
+                            dataset.usered_data = {};
+                        dataset.usered_data[x.getTime()] = log_item.user_id;
                     }
+                    dataset.data.push(data);
                 }
             }
         }
@@ -486,9 +424,6 @@ export class ChartsComponent implements OnInit {
             return;
         }
 
-        if (this.logs_count == 0)
-            this.clear_dataset('dev_item');
-
         this.add_chart_data(logs, 'dev_item');
         this.logs_count += logs.count;
 
@@ -502,12 +437,13 @@ export class ChartsComponent implements OnInit {
             this.set_initialized(true);
     }
 
-  breakLoad(): void {
-      if (this.paramSub)
-          this.paramSub.unsubscribe();
-      if (this.logSub)
+  breakLoad(is_initialized: boolean = true): void {
+      if (this.logSub && !this.logSub.closed)
           this.logSub.unsubscribe();
-      this.set_initialized(true);
+      if (this.paramSub && !this.paramSub.closed)
+          this.paramSub.unsubscribe();
+      if (is_initialized)
+          this.set_initialized(true);
   }
 
   genDateString(date: Date, time: string): string {
@@ -568,38 +504,53 @@ export class ChartsComponent implements OnInit {
     return hash;
   }
 
-    chartZoom1(chart: Chart_Info_Interface, range: ZoomInfo) {
-        this.zone.run(() => this.chartZoom(chart, range));
-    }
-
-    chartZoom(chart: Chart_Info_Interface, range: ZoomInfo) {
-      if (this.paramSub)
-          this.paramSub.unsubscribe();
-      if (this.logSub)
-          this.logSub.unsubscribe();
-
-       console.log('range from', range.timeFrom, 'to', range.timeTo);
-        if (this.logSub && !this.logSub.closed) {
-            this.logSub.unsubscribe();
-        }
+    chartZoom(chart: Chart_Info_Interface, range: ZoomInfo)
+    {
+        this.breakLoad(false);
 
         this.logSub = timer(200)
             .pipe(
-                exhaustMap(() => this.schemeService.getChartData(range.timeFrom, range.timeTo, this.data_, this.chartFilter.data_part_size, 0)),
+                exhaustMap(() => 
+                {
+                    const devItemIds = [];
+                    const paramIds = [];
+                    for (const dataset of chart.data.datasets)
+                    {
+                        if (dataset.dev_item)
+                            devItemIds.push(dataset.dev_item.id);
+                        else if (dataset.param)
+                            paramIds.push(dataset.param.id);
+                    }
+
+                    const logs = devItemIds.length ? 
+                        this.schemeService.getChartData(range.timeFrom, range.timeTo, devItemIds.join(','), this.chartFilter.data_part_size, 0) :
+                        of(null);
+
+                    const params = paramIds.length ? 
+                        this.schemeService.getChartParamData(range.timeFrom, range.timeTo, paramIds.join(','), this.chartFilter.data_part_size, 0) :
+                        of(null);
+
+                    return combineLatest(logs, params);
+                }),
             )
-            .subscribe((logs: Paginator_Chart_Value) => {
-                this.zone.run(() => {
-            this.clear_dataset('dev_item');
-        this.chartItems.forEach(chart_item => {
-            console.log('update chart item 2', chart_item);
-            chart_item.update();
-        });
-                    // this.initialized = false;
-                    setTimeout(() => {
-                        this.fillData(logs, true);
-                    }, 100);
-                });
-                // this.fillData(logs, true);
+            .subscribe(([logs, params]) =>
+            {
+                const findChartItem = (chartInfo) =>
+                {
+                    for (const chartItem of this.chartItems)
+                        if (chartItem.chartInfo === chartInfo)
+                            return chartItem;
+                    return null;
+                };
+
+                const chartItem = findChartItem(chart);
+                if (chartItem)
+                {
+                    if (logs)
+                        chartItem.addDevItemValues(logs);
+                    if (params)
+                        chartItem.addParamValues(params);
+                }
             });
     }
 }

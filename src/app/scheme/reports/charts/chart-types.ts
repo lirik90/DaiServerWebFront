@@ -19,9 +19,6 @@ export interface Chart_Info_Interface {
     data: {
         datasets: any[]
     };
-
-    min_y: number;
-    max_y: number;
 }
 
 export interface TimeFilter
