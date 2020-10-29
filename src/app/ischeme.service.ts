@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { pipe } from 'rxjs/util/pipe';
+import { pipe } from 'rxjs-compat/util/pipe';
 import { UnaryFunction } from 'rxjs/interfaces';
 import { catchError, tap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
@@ -25,19 +25,19 @@ export class ISchemeService {
     this.messageService.add('SchemeService: ' + message);
   }
 
-  protected pipe<T> (succes_string: string, operation: string, result?: T): UnaryFunction<Observable<T>, Observable<T>> {
+  protected piping<T> (succes_string: string, operation: string, result?: T): UnaryFunction<Observable<T>, Observable<T>> {
     return pipe(
       tap(() => this.log(succes_string)),
       catchError(this.handleError(operation, result))
     );
   }
 
-  protected get<T> (url_postfix: string): Observable<T> {
+  protected httpGet<T> (url_postfix: string): Observable<T> {
     return this.http.get<T>(this.apiUrl + url_postfix);
   }
 
   public getPiped<T> (url_postfix: string, succes_string: string, operation: string, result?: T): Observable<T> {
-    return this.get<T>(url_postfix).let(this.pipe<T>(succes_string, operation, result));
+    return this.httpGet<T>(url_postfix).pipe(this.piping<T>(succes_string, operation, result));
   }
 
   public put<T> (url_postfix: string, obj: T): Observable<T> {
@@ -45,7 +45,7 @@ export class ISchemeService {
   }
 
   public putPiped<T> (url_postfix: string, obj: T, succes_string: string, operation: string, result?: T): Observable<T> {
-    return this.put<T>(url_postfix, obj).let(this.pipe<T>(succes_string, operation, result));
+    return this.put<T>(url_postfix, obj).pipe(this.piping<T>(succes_string, operation, result));
   }
 
   protected post<T> (url_postfix: string, obj: T): Observable<T> {
@@ -53,7 +53,7 @@ export class ISchemeService {
   }
 
   public postPiped<T> (url_postfix: string, obj: T, succes_string: string, operation: string, result?: T): Observable<T> {
-    return this.post<T>(url_postfix, obj).let(this.pipe<T>(succes_string, operation, result));
+    return this.post<T>(url_postfix, obj).pipe(this.piping<T>(succes_string, operation, result));
   }
 
   protected patch<T> (url_postfix: string, obj: T): Observable<T> {
@@ -61,7 +61,7 @@ export class ISchemeService {
   }
 
   public patchPiped<T> (url_postfix: string, obj: T, succes_string: string, operation: string, result?: T): Observable<T> {
-    return this.patch<T>(url_postfix, obj).let(this.pipe<T>(succes_string, operation, result));
+    return this.patch<T>(url_postfix, obj).pipe(this.piping<T>(succes_string, operation, result));
   }
 
   protected delete<T> (url_postfix: string): Observable<T> {
@@ -69,7 +69,7 @@ export class ISchemeService {
   }
 
   public deletePiped<T> (url_postfix: string, succes_string: string, operation: string, result?: T): Observable<T> {
-    return this.delete<T>(url_postfix).let(this.pipe<T>(succes_string, operation, result));
+    return this.delete<T>(url_postfix).pipe(this.piping<T>(succes_string, operation, result));
   }
 
   /**

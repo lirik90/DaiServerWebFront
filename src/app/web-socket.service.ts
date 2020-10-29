@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable, Subscription }    from 'rxjs/Rx';
+import { Subject, Observable, Subscription }    from 'rxjs';
 import { map } from 'rxjs/operators';
 import { WebSocketSubject, WebSocketSubjectConfig } from 'rxjs/observable/dom/WebSocketSubject';
 import { webSocket } from 'rxjs/webSocket';
@@ -415,7 +415,7 @@ export class WebSocketBytesService {
       deserializer: function (e) { return e.data; },
       serializer: function (value) { return value; },
     };
-    this.ws = Observable.webSocket(webSockConf);
+    this.ws = webSocket(webSockConf);
 
     this.socket = this.ws.subscribe({
       next: (msg: ArrayBuffer) => {

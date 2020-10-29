@@ -1,7 +1,7 @@
 import { Inject, Injectable} from '@angular/core';
 import { DOCUMENT } from "@angular/common";
 import { ISubscription} from 'rxjs/Subscription';
-import { Subject} from 'rxjs/Subject';
+import { Subject} from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 

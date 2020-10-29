@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { switchMap, catchError, map, tap, finalize, flatMap } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
+import { BehaviorSubject } from 'rxjs';
+import { catchError, switchMap, map, tap, finalize, flatMap } from 'rxjs/operators';
+import { of } from 'rxjs-compat/observable/of';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 
@@ -231,7 +231,7 @@ export class SchemeService extends ISchemeService {
       lang = match[1];
     }
 
-    return this.get<Scheme_Detail>(`detail/?name=${scheme_name}&lang=${lang}`).pipe(
+    return this.httpGet<Scheme_Detail>(`detail/?name=${scheme_name}&lang=${lang}`).pipe(
       switchMap(detail => {
         for (const param of detail.dig_param_type) {
           if (param.parent_id) {
