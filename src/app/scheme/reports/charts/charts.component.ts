@@ -1,8 +1,9 @@
 import {OnInit, OnDestroy, Component, ViewChildren, QueryList, NgZone } from '@angular/core';
-
-import {ISubscription} from 'rxjs/Subscription';
-
 import {TranslateService} from '@ngx-translate/core';
+
+import {delay, exhaustMap, map, mapTo} from 'rxjs/operators';
+import {SubscriptionLike, of, timer, combineLatest} from 'rxjs';
+
 // import {ChartComponent} from 'angular2-chartjs';
 import 'chartjs-plugin-zoom';
 
@@ -16,8 +17,6 @@ import {Scheme_Group_Member} from '../../../user';
 import {Chart_Info_Interface, Chart_Type, ChartFilter, ZoomInfo} from './chart-types';
 import {ChartItemComponent} from './chart-item/chart-item.component';
 import {ColorPickerDialog} from './color-picker-dialog/color-picker-dialog';
-import {delay, exhaustMap, map, mapTo} from 'rxjs/operators';
-import {of, timer, combineLatest} from 'rxjs';
 
 interface Chart_Item_Iface
 {
@@ -61,8 +60,8 @@ export class ChartsComponent implements OnInit, OnDestroy {
   charts: Chart_Info_Interface[] = [];
   members: Scheme_Group_Member[] = [];
 
-  private logSub: ISubscription;
-  private paramSub: ISubscription;
+  private logSub: SubscriptionLike;
+  private paramSub: SubscriptionLike;
   values_loaded: boolean;
   params_loaded: boolean;
   initialized = false;

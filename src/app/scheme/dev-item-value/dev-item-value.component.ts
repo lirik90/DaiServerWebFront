@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, OnDestroy, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-
-import {ISubscription} from 'rxjs/Subscription';
 import {TranslateService} from '@ngx-translate/core';
+
+import {SubscriptionLike} from 'rxjs';
 
 import { ControlService } from "../control.service";
 import { AuthenticationService } from "../../authentication.service";
@@ -29,7 +29,7 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
   is_loading: boolean = false;
 
   timer_: number;
-  changed_sub: ISubscription = null;
+  changed_sub: SubscriptionLike = null;
 
   constructor(
 	  public translate: TranslateService,

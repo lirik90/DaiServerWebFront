@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ISubscription } from "rxjs/Subscription";
+import { SubscriptionLike } from "rxjs";
 
 import { ByteMessage, ByteTools } from '../../../web-socket.service';
 import { ControlService, WebSockCmd } from "../../control.service";
@@ -31,7 +31,7 @@ export class VideoStreamDialogComponent implements OnInit, OnDestroy {
 
     need_adjust: boolean = true;
 
-    sub: ISubscription;
+    sub: SubscriptionLike;
   
     constructor(
       private controlService: ControlService,

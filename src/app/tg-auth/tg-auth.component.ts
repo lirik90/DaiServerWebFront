@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 import { catchError, tap } from 'rxjs/operators';
-import { pipe } from 'rxjs/util/pipe';
+import { pipe } from 'rxjs';
 
 @Component({
   selector: 'app-tg-auth',

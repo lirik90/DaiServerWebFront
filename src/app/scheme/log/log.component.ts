@@ -3,24 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ISubscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import { merge } from 'rxjs/observable/merge';
-import { of as observableOf } from 'rxjs/observable/of';
-import { catchError } from 'rxjs/operators/catchError';
-import { map } from 'rxjs/operators/map';
-import { startWith } from 'rxjs/operators/startWith';
-import { switchMap } from 'rxjs/operators/switchMap';
+import { TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute } from '@angular/router';
+import { PageEvent } from '@angular/material/paginator';
+import { CookieService } from 'ngx-cookie-service';
+import { SubscriptionLike, Observable, merge, of } from 'rxjs';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 
 import { Log_Event, Log_Event_Type } from '../scheme';
 import { Scheme_Group_Member, PaginatorApi } from '../../user';
 import { AuthenticationService } from '../../authentication.service';
 import { SchemeService } from '../scheme.service';
 import { ControlService, WebSockCmd } from '../control.service';
-import { TranslateService } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
-import { PageEvent } from '@angular/material/paginator';
-import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-log',
@@ -40,7 +34,7 @@ export class LogComponent implements OnInit, OnDestroy {
 
   itemsPerPage;
 
-  sub: ISubscription;
+  sub: SubscriptionLike;
 
   members: Scheme_Group_Member[] = [];
 
@@ -117,7 +111,7 @@ export class LogComponent implements OnInit, OnDestroy {
           this.isLoadingResults = false;
           // Catch if the GitHub API has reached its rate limit. Return empty data.
           this.isRateLimitReached = true;
-          return observableOf([]);
+          return of([]);
         })
       ).subscribe(data => this.dataSource.data = data);
 

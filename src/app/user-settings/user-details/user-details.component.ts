@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthenticationService} from '../../authentication.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ISchemeService} from '../../ischeme.service';
-import {catchError, tap} from 'rxjs/operators';
-import {of} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {TranslateService} from '@ngx-translate/core';
+
+import {catchError, tap} from 'rxjs/operators';
+import {of} from 'rxjs';
+
+import {ISchemeService} from '../../ischeme.service';
+import {AuthenticationService} from '../../authentication.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })

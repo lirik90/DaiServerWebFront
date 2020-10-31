@@ -3,9 +3,8 @@ import { DOCUMENT } from "@angular/common";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-import 'rxjs/add/operator/map';
-import { catchError} from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 import { User } from './user';
 

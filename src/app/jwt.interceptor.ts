@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
+import { throwError } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
@@ -42,7 +43,7 @@ export class JwtInterceptor implements HttpInterceptor {
           // logout users, redirect to login page
           // this.authService.logout(); // Logout automaticaly on /login page
           this.authService.goToLogin();
-          return Observable.throw(error);
+          return throwError(error);
         }
 
         /*if (error.status === 419) {

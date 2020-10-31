@@ -3,14 +3,14 @@ import { ActivatedRoute, Router} from '@angular/router';
 import { MediaMatcher} from '@angular/cdk/layout';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
+import { TranslateService } from '@ngx-translate/core';
 
-import { ISubscription } from 'rxjs/Subscription';
+import { SubscriptionLike } from 'rxjs';
 
 import { SchemeService } from './scheme.service';
 import { Connection_State } from '../user';
 import { ControlService, WebSockCmd } from './control.service';
 import { AuthenticationService } from '../authentication.service';
-import { TranslateService } from '@ngx-translate/core';
 import { FavService } from '../fav.service';
 
 interface NavLink {
@@ -49,8 +49,8 @@ export class SchemeComponent implements OnInit, OnDestroy {
   dt_interval: any;
   dt_text = '';
 
-  private bytes_sub: ISubscription;
-  private opened_sub: ISubscription;
+  private bytes_sub: SubscriptionLike;
+  private opened_sub: SubscriptionLike;
 
   isFav = false;
 

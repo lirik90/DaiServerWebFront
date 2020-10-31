@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs';
-import { catchError, switchMap, map, tap, finalize, flatMap } from 'rxjs/operators';
-import { of } from 'rxjs-compat/observable/of';
-import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable, BehaviorSubject, of } from 'rxjs';
+import { catchError, switchMap, map, tap, finalize, flatMap } from 'rxjs/operators';
 
 import { Scheme_Detail, Section, Device_Item, Device_Item_Group, Log_Value, Log_Param, DIG_Param, DIG_Param_Type, Chart, Disabled_Status, Help } from './scheme';
 import { Connection_State, Scheme_Group_Member, PaginatorApi } from '../user';

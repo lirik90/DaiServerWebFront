@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { pipe } from 'rxjs-compat/util/pipe';
+import { Observable, pipe, of } from 'rxjs';
 import { UnaryFunction } from 'rxjs/interfaces';
 import { catchError, tap } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
 
 import { MessageService } from './message.service';
 

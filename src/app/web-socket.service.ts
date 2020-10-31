@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable, Subscription }    from 'rxjs';
-import { map } from 'rxjs/operators';
-import { WebSocketSubject, WebSocketSubjectConfig } from 'rxjs/observable/dom/WebSocketSubject';
-import { webSocket } from 'rxjs/webSocket';
 
-import { Observer } from 'rxjs/Observer';
-import { Subscriber } from 'rxjs';
+import { Subject, Observable, Subscription, Observer, Subscriber }    from 'rxjs';
+import { map } from 'rxjs/operators';
+import { webSocket, WebSocketSubject, WebSocketSubjectConfig } from 'rxjs/webSocket';
 
 import { AuthenticationService } from './authentication.service';
 

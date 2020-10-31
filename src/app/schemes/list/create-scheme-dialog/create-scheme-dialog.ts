@@ -2,10 +2,9 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, FormGroupDirective, NgForm, Validators, ValidatorFn, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ISubscription } from "rxjs/Subscription";
-import { Observable } from 'rxjs/Observable';
+
+import { SubscriptionLike, Observable, of } from 'rxjs';
 import { catchError, switchMap, map, delay } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
 
 import { Scheme, Scheme_Group } from '../../../user';
 import { SchemesService } from '../../schemes.service';

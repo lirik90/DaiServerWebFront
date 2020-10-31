@@ -1,13 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 
 import {Subject} from 'rxjs';
-import 'rxjs/add/operator/map';
-
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {map, debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 import {Scheme} from '../../user';
 import {SchemesService} from '../schemes.service';
-import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-scheme-search',

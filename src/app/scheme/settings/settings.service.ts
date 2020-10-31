@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
 
 import { SchemeService } from '../scheme.service';
 import { Section, Codes, Plugin_Type, Save_Timer } from '../scheme';

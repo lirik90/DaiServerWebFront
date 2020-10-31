@@ -1,9 +1,7 @@
 import { Inject, Injectable} from '@angular/core';
 import { DOCUMENT } from "@angular/common";
-import { ISubscription} from 'rxjs/Subscription';
-import { Subject} from 'rxjs';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/filter';
+import { SubscriptionLike, Subject } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
 
 import { SchemeService } from './scheme.service';
 import { ByteMessage, ByteTools, WebSocketBytesService } from '../web-socket.service';
@@ -63,7 +61,7 @@ export class ControlService {
   public dev_item_changed: Subject<Device_Item[]> = new Subject<Device_Item[]>();
   public opened: Subject<boolean>;
 
-  private bmsg_sub: ISubscription;
+  private bmsg_sub: SubscriptionLike;
 
   constructor(
     private wsbService: WebSocketBytesService,
