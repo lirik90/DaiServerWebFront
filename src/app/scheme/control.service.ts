@@ -1,7 +1,6 @@
 import { Inject, Injectable} from '@angular/core';
 import { DOCUMENT } from "@angular/common";
 import { SubscriptionLike, Subject } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
 
 import { SchemeService } from './scheme.service';
 import { ByteMessage, ByteTools, WebSocketBytesService } from '../web-socket.service';

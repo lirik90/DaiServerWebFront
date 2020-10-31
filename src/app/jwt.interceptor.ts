@@ -4,7 +4,6 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/c
 import { Observable } from 'rxjs/Observable';
 import { throwError } from 'rxjs';
 import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
 
 import { AuthenticationService } from "./authentication.service";
  
@@ -56,7 +55,7 @@ export class JwtInterceptor implements HttpInterceptor {
         }*/
 
         //return all others errors 
-        return Observable.throw(error);
+        return throwError(error);
       }) as any;
   }
 }

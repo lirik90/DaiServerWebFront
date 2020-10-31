@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
 import {Subject} from 'rxjs';
-import {map, debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 import {Scheme} from '../../user';
 import {SchemesService} from '../schemes.service';
