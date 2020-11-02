@@ -16,12 +16,12 @@ import {Chart, Device_Item, DIG_Param, Register_Type, Save_Algorithm} from '../.
 import {Scheme_Group_Member} from '../../../user';
 import {Chart_Info_Interface, Chart_Type, ChartFilter, ZoomInfo} from './chart-types';
 import {ChartItemComponent} from './chart-item/chart-item.component';
-import {ColorPickerDialog} from './color-picker-dialog/color-picker-dialog';
+import {Hsl, ColorPickerDialog} from './color-picker-dialog/color-picker-dialog';
 
 interface Chart_Item_Iface
 {
     id: number;
-    hue: number;
+    hsl: Hsl;
 }
 
 @Component({
@@ -149,7 +149,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
       for (const s_pt of selected) {
         if (s_pt.id === param.id) {
           data.params.push(param.id);
-          datasets.push(this.genParamDataset(param, s_pt.hue));
+          datasets.push(this.genParamDataset(param, datasets.length, s_pt.hsl));
           break;
         }
       }
@@ -196,7 +196,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
         {
             const dig_param_id = get_param_id(param_type.id);
             if (dig_param_id)
-                res.push({id: dig_param_id, hue: null });
+                res.push({id: dig_param_id, hsl: null });
         }
 
         return res;
@@ -213,7 +213,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
               for (const item of group.items) {
                 if (item.type.save_algorithm > Save_Algorithm.SA_OFF) {
                   data.dev_items.push(item.id);
-                  datasets.push(this.genDevItemDataset(item));
+                  datasets.push(this.genDevItemDataset(item, datasets.length));
                 }
               }
 
@@ -236,7 +236,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
               for (const type of this.chartFilter.selectedItems) {
                 if (type.id == item.type.id) {
                   data.dev_items.push(item.id);
-                  datasets.push(this.genDevItemDataset(item));
+                  datasets.push(this.genDevItemDataset(item, datasets.length));
                   break;
                 }
               }
@@ -260,7 +260,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
           for (const s_item of dev_items) {
             if (s_item.id == item.id) {
               data.dev_items.push(item.id);
-              datasets.push(this.genDevItemDataset(item, s_item.hue));
+              datasets.push(this.genDevItemDataset(item, datasets.length, s_item.hsl));
               break;
             }
           }
@@ -274,8 +274,8 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
     initDeviceItemCharts(data: any): void
     {
-        const items = this.chartFilter.selectedItems.map(it => { return {id: it.id, hue: null}; });
-        const params = this.chartFilter.paramSelected.map(it => { return {id: it.id, hue: null}; });
+        const items = this.chartFilter.selectedItems.map(it => { return {id: it.id, hsl: null}; });
+        const params = this.chartFilter.paramSelected.map(it => { return {id: it.id, hsl: null}; });
         this.initDeviceItemChartsImpl(data, items, params);
     }
 
@@ -287,9 +287,9 @@ export class ChartsComponent implements OnInit, OnDestroy {
         for (const it of user_chart.items)
         {
             if (it.item_id)
-                items.push({id: it.item_id, hue: ColorPickerDialog.rgbhex2hue(it.color)});
+                items.push({id: it.item_id, hsl: ColorPickerDialog.rgbhex2hsl(it.color)});
             else
-                params.push({id: it.param_id, hue: ColorPickerDialog.rgbhex2hue(it.color)});
+                params.push({id: it.param_id, hsl: ColorPickerDialog.rgbhex2hsl(it.color)});
         }
 
         //const ids = [...new Set(user_chart.items.map(it => it.item_id))];
@@ -453,30 +453,30 @@ export class ChartsComponent implements OnInit, OnDestroy {
     return date_str + time;
   }
 
-  genDevItemDataset(item: Device_Item, hue: number = null): Object {
+  genDevItemDataset(item: Device_Item, colorIndex: number, hsl: Hsl = null): Object {
     const label = item.name.length ? item.name : item.type.title;
 
     const RT = Register_Type;
     const rt = item.type.register_type;
     const stepped = rt === RT.RT_COILS || rt === RT.RT_DISCRETE_INPUTS;
 
-    let dataset = this.genDataset(label, stepped, hue);
+    let dataset = this.genDataset(label, colorIndex, stepped, hsl);
     dataset['dev_item'] = item;
     return dataset;
   }
 
-  genParamDataset(param: DIG_Param, hue: number = null): Object {
-    let dataset = this.genDataset('⚙️ ' + param.param.title, true, hue);
+  genParamDataset(param: DIG_Param, colorIndex: number, hsl: Hsl = null): Object {
+    let dataset = this.genDataset('⚙️ ' + param.param.title, colorIndex, true, hsl);
     dataset['param'] = param;
     return dataset;
   }
 
-  genDataset(label: string, steppedLine: boolean = true, hue: number = null): Object {
-      if (hue === null)
-          hue = this.hashCode(label);
-      if (hue > 360)
-          hue %= 360;
-      const hslStr = `${hue}, 95%, 50%`;
+  genDataset(label: string, colorIndex: number, steppedLine: boolean = true, hsl: Hsl = null): Object {
+      if (hsl === null)
+          hsl = this.getColorByIndex(colorIndex, label);
+      if (hsl.h > 360)
+          hsl.h %= 360;
+      const hslStr = `${hsl.h}, ${hsl.s}%, ${hsl.l}%`;
     return {
       label,
       data: [],
@@ -495,6 +495,27 @@ export class ChartsComponent implements OnInit, OnDestroy {
       //      lineTension: 0,
     };
   }
+
+    getColorByIndex(index: number, label: string): Hsl
+    {
+        switch (index)
+        {
+            case 0: return { h: 0, s: 100, l: 35 }; // red
+            case 1: return { h: 120, s: 100, l: 35 }; // green
+            case 2: return { h: 240, s: 100, l: 35 }; // blue
+            case 3: return { h: 60, s: 100, l: 35 }; // yellow
+            case 4: return { h: 180, s: 100, l: 35 }; // cyan
+            case 5: return { h: 300, s: 100, l: 35 }; // magenta
+            case 6: return { h: 30, s: 100, l: 35 }; // brown
+            case 7: return { h: 90, s: 100, l: 35 }; // green
+            case 8: return { h: 150, s: 100, l: 35 }; // 
+            case 9: return { h: 210, s: 100, l: 35 }; // 
+            case 10: return { h: 270, s: 100, l: 35 }; // 
+            case 11: return { h: 330, s: 100, l: 35 }; // 
+            default:
+                return { h:this.hashCode(label), s: 95, l: 35 } as Hsl;
+        }
+    }
 
   hashCode(str: string): number { // java String#hashCode
     var hash = 0;

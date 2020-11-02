@@ -1,6 +1,12 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
+export interface Hsl {
+    h: number;
+    s: number;
+    l: number;
+}
+
 export interface DialogData {
   chart: any;
   dataset: any;
@@ -21,13 +27,13 @@ export class ColorPickerDialog implements OnInit {
     curColor: string = 'white';
     color: string;
     
-    get hue(): number
+    get hsl(): Hsl
     {
         if (this.cur)
         {
             const p = this.ctx.getImageData(this.cur, this.canvas.height / 2, 1, 1).data;
-            const hsl = ColorPickerDialog.rgb2hsl(p[0], p[1], p[2]);
-            return hsl.h;
+            console.log(p, ColorPickerDialog.rgb2hsl(p[0], p[1], p[2]));
+            return ColorPickerDialog.rgb2hsl(p[0], p[1], p[2]);
         }
         return null;
     }
@@ -76,13 +82,13 @@ export class ColorPickerDialog implements OnInit {
         this.ctx.strokeRect(0.5, 2.5, this.canvas.width - 1, this.canvas.height - 5);
 
         let gradient = this.ctx.createLinearGradient(0, 0, this.canvas.width, 0);
-        gradient.addColorStop(0, 'hsl(0, 95%, 50%)');
-        gradient.addColorStop(0.16, 'hsl(60, 95%, 50%)');
-        gradient.addColorStop(0.32, 'hsl(120, 95%, 50%)');
-        gradient.addColorStop(0.48, 'hsl(180, 95%, 50%)');
-        gradient.addColorStop(0.64, 'hsl(240, 95%, 50%)');
-        gradient.addColorStop(0.8, 'hsl(300, 95%, 50%)');
-        gradient.addColorStop(1, 'hsl(360, 95%, 50%)');
+        gradient.addColorStop(0, 'hsl(0, 100%, 30%)');
+        gradient.addColorStop(0.16, 'hsl(60, 100%, 30%');
+        gradient.addColorStop(0.32, 'hsl(120, 100%, 30%)');
+        gradient.addColorStop(0.48, 'hsl(180, 100%, 30%)');
+        gradient.addColorStop(0.64, 'hsl(240, 100%, 30%)');
+        gradient.addColorStop(0.8, 'hsl(300, 100%, 30%)');
+        gradient.addColorStop(1, 'hsl(360, 100%, 30%)');
 
         this.ctx.fillStyle = gradient;
         this.ctx.fillRect(2, 3, this.canvas.width - 4, this.canvas.height - 6);
@@ -183,7 +189,7 @@ export class ColorPickerDialog implements OnInit {
 		// return "rgb("+ (+r + "," + +g + "," + +b) + ")";
     }
 
-    static rgbhex2hue(rgbHex: string): number
+    static rgbhex2hsl(rgbHex: string): Hsl
     {
         if (!rgbHex)
             return null;
@@ -194,13 +200,17 @@ export class ColorPickerDialog implements OnInit {
         if (isNaN(r) || isNaN(g) || isNaN(b))
             return null;
 
-        const hsl = ColorPickerDialog.rgb2hsl(r, g, b);
-        return hsl.h;
+        return ColorPickerDialog.rgb2hsl(r, g, b);
 		// return "hsl(" + h + "," + s + "%," + l + "%)";
     }
 
-    static rgb2hsl(r: number, g: number, b: number): any
+    static rgb2hsl(r: number, g: number, b: number): Hsl
     {
+        // Make r, g, and b fractions of 1
+        r /= 255;
+        g /= 255;
+        b /= 255;
+
         // find greatest and smallest channel values
         let cmin = Math.min(r,g,b),
 			cmax = Math.max(r,g,b),
@@ -237,7 +247,7 @@ export class ColorPickerDialog implements OnInit {
 		s = +(s * 100).toFixed(1);
 		l = +(l * 100).toFixed(1);
 
-        return { h, s, l };
+        return { h, s, l } as Hsl;
     }
 }
 

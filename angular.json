@@ -192,12 +192,12 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "device-access:build",
-            "proxyConfig": "./proxy.conf.js",
-              "sourceMap": false
+            "proxyConfig": "./proxy.conf.js"
           },
           "configurations": {
             "production": {
-              "browserTarget": "device-access:build:production"
+              "browserTarget": "device-access:build:production",
+              "sourceMap": true
             },
             "ru": {
               "browserTarget": "device-access:build:ru"

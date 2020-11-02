@@ -19,7 +19,7 @@ import {BaseChartDirective} from 'ng2-charts';
 
 import {Paginator_Chart_Value, SchemeService} from '../../../scheme.service';
 import {Scheme_Group_Member} from '../../../../user';
-import {ColorPickerDialog} from '../color-picker-dialog/color-picker-dialog';
+import {Hsl, ColorPickerDialog} from '../color-picker-dialog/color-picker-dialog';
 import {Chart_Info_Interface, ZoomInfo} from '../chart-types';
 
 @Component({
@@ -279,17 +279,21 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
 
     random_color(): void {
         for (const dataset of (<any>this.chart.data).datasets)
-            this.setDataColor(dataset, Math.round(Math.random() * 360));
+            this.setDataColor(dataset, {
+                h: Math.round(Math.random() * 360),
+                s: Math.round(Math.random() * 100),
+                l: Math.round(Math.random() * 100) });
         this.chart.chart.update();
     }
 
-    setDataColor(dataset: any, hue: number): void
+    setDataColor(dataset: any, hsl: Hsl): void
     {
-        const hueStr = `${hue}, 95%, 50%`;
-        dataset.borderColor = `hsl(${hueStr}`;
-        dataset.backgroundColor = `hsla(${hueStr},0.5)`;
-        dataset.pointBorderColor = `hsla(${hueStr},0.7)`;
-        dataset.pointBackgroundColor = `hsla(${hueStr},0.5)`;
+        const hslStr = `${hsl.h}, ${hsl.s}%, ${hsl.l}%`;
+        console.log(hsl, hslStr);
+        dataset.borderColor = `hsl(${hslStr}`;
+        dataset.backgroundColor = `hsla(${hslStr},0.5)`;
+        dataset.pointBorderColor = `hsla(${hslStr},0.7)`;
+        dataset.pointBackgroundColor = `hsla(${hslStr},0.5)`;
     }
 
     onZoom(chart: any, isZoom: boolean): void {
@@ -325,10 +329,10 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
             data: {chart, dataset, chart_obj}
         });
 
-        dialogRef.afterClosed().subscribe(hue => {
-            if (hue !== undefined && hue !== null)
+        dialogRef.afterClosed().subscribe(hsl => {
+            if (hsl !== undefined && hsl !== null)
             {
-                this.setDataColor(dataset, hue);
+                this.setDataColor(dataset, hsl);
                 this.chart.chart.update();
             }
         });
