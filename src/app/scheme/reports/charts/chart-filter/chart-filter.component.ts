@@ -11,9 +11,8 @@ import {MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdap
 function parseDate(date: FormControl, time: string): number {
     let time_arr = time.split(':');
     let date_from = date.value.toDate();
-    date_from.setHours(+time_arr[0]);
-    date_from.setMinutes(+time_arr[1]);
-    date_from.setSeconds(+time_arr[2]);
+    date_from.setHours(+time_arr[0], +time_arr[1], +time_arr[2] || 0);
+
     return date_from.getTime();
 }
 
@@ -55,7 +54,6 @@ export class ChartFilterComponent implements OnInit, OnChanges {
 
     @Input() chart_filter: ChartFilter;
     @Input() charts: Chart_Info_Interface[];
-    @Input() user_charts: Chart[];
     @Output() paramsChange: EventEmitter<ChartFilter> = new EventEmitter();
 
     // ngModels
@@ -68,6 +66,7 @@ export class ChartFilterComponent implements OnInit, OnChanges {
     itemList = [];
     selectedItems = [];
     settings: any = {};
+    user_charts: Chart[];
 
     paramList: Select_Item_Iface[] = [];
     paramSelected: Select_Item_Iface[] = [];
@@ -84,21 +83,28 @@ export class ChartFilterComponent implements OnInit, OnChanges {
     ngOnChanges(changes: SimpleChanges) {
         if (changes.chart_filter && changes.chart_filter.currentValue) {
             const chartFilter = changes.chart_filter.currentValue as ChartFilter;
+
+            console.group('input');
+            console.dir(chartFilter);
+            console.groupEnd();
             this.charts_type = chartFilter.charts_type;
             this.data_part_size = chartFilter.data_part_size;
-            this.selectedItems = chartFilter.selectedItems;
-            this.paramSelected = chartFilter.paramSelected;
+            this.user_charts = chartFilter.user_charts;
+            this.user_chart = chartFilter.user_chart;
 
             this.time_from = parseDateToDateAndTime(chartFilter.timeFrom, this.date_from);
             this.time_to = parseDateToDateAndTime(chartFilter.timeTo, this.date_to);
-        }
 
-        if (changes.user_charts && changes.user_charts.currentValue) {
-            if (!this.user_charts.length) {
+            if (!this.user_charts.length && !this.charts_type) {
                 this.charts_type = Chart_Type.CT_DIG_TYPE;
             }
 
             this.OnChartsType();
+
+            if (chartFilter.selectedItems && chartFilter.selectedItems.length > 0) {
+                this.selectedItems = chartFilter.selectedItems;
+                this.paramSelected = chartFilter.paramSelected;
+            }
         }
     }
 
@@ -374,7 +380,7 @@ export class ChartFilterComponent implements OnInit, OnChanges {
         this.paramsChange.emit({
             timeFrom: parseDate(this.date_from, this.time_from),
             timeTo: parseDate(this.date_to, this.time_to),
-            selectedItems: this.selectedItems,
+            selectedItems: this.selectedItems.concat([]),
             user_chart: this.user_chart,
             user_charts: this.user_charts,
             charts_type: this.charts_type,
