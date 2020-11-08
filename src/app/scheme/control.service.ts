@@ -128,12 +128,7 @@ export class ControlService {
             break;
           }
 
-          /*
-          console.log('dev_value');
-          console.log('item_id:' + item_id);
-          console.log('raw_value:' + raw_value);
-          console.log('value:' + value);
-*/
+          // console.log('dev_value item_id:', item_id, 'raw_value:', raw_value, 'value:' + value);
 
           // console.log(`Parse value ${item_id} ${raw_value} ${value}`);
           const dev_item = this.procDevItemValue(item_id, raw_value, value);

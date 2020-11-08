@@ -301,6 +301,11 @@ export class SchemeComponent implements OnInit, OnDestroy {
     this.favService.removeFromFav(this.schemeService.scheme.name);
     this.isFav = this.favService.isFav(this.schemeService.scheme.name);
   }
+
+    onRouterOutletActivate(event: any): void
+    {
+        console.log('hello', event);
+    }
 }
 
 @Component({

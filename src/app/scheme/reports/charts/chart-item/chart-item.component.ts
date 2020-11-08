@@ -219,12 +219,10 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
                 return 1;
             else if (y === 'Низкий' || y === 'Закрыто')
                 return 0;
-            return y.length;
         }
 
-        const v2_type = typeof log.raw_value;
-        return (v2_type === 'number' || v2_type === 'boolean') ?
-            log.raw_value : y.length;
+        console.log('Value dropped', log);
+        return null;
     }
 
     addData(dataPack: Paginator_Chart_Value, data_param_name: string): void
