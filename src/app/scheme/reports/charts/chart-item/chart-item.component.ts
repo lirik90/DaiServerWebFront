@@ -277,10 +277,7 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
 
     random_color(): void {
         for (const dataset of (<any>this.chart.data).datasets)
-            this.setDataColor(dataset, {
-                h: Math.round(Math.random() * 360),
-                s: Math.round(Math.random() * 100),
-                l: Math.round(Math.random() * 100) });
+            this.setDataColor(dataset, { h: Math.round(Math.random() * 360), s: 100, l: 35 });
         this.chart.chart.update();
     }
 
