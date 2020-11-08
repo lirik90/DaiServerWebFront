@@ -100,6 +100,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
   initCharts(chartFilter: ChartFilter): void
   {
     this.chartFilter = chartFilter;
+    console.dir(this.chartFilter);
 
     if (!this.chartFilter.selectedItems.length) {
       console.warn('Init charts failed', this.chartFilter.charts_type, this.chartFilter.selectedItems);
@@ -508,10 +509,10 @@ export class ChartsComponent implements OnInit, OnDestroy {
             case 5: return { h: 300, s: 100, l: 35 }; // magenta
             case 6: return { h: 30, s: 100, l: 35 }; // brown
             case 7: return { h: 90, s: 100, l: 35 }; // green
-            case 8: return { h: 150, s: 100, l: 35 }; // 
-            case 9: return { h: 210, s: 100, l: 35 }; // 
-            case 10: return { h: 270, s: 100, l: 35 }; // 
-            case 11: return { h: 330, s: 100, l: 35 }; // 
+            case 8: return { h: 150, s: 100, l: 35 }; //
+            case 9: return { h: 210, s: 100, l: 35 }; //
+            case 10: return { h: 270, s: 100, l: 35 }; //
+            case 11: return { h: 330, s: 100, l: 35 }; //
             default:
                 return { h:this.hashCode(label), s: 95, l: 35 } as Hsl;
         }
@@ -530,7 +531,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
         this.logSub = timer(200)
             .pipe(
-                exhaustMap(() => 
+                exhaustMap(() =>
                 {
                     const devItemIds = [];
                     const paramIds = [];
@@ -542,11 +543,11 @@ export class ChartsComponent implements OnInit, OnDestroy {
                             paramIds.push(dataset.param.id);
                     }
 
-                    const logs = devItemIds.length ? 
+                    const logs = devItemIds.length ?
                         this.schemeService.getChartData(range.timeFrom, range.timeTo, devItemIds.join(','), this.chartFilter.data_part_size, 0) :
                         of(null);
 
-                    const params = paramIds.length ? 
+                    const params = paramIds.length ?
                         this.schemeService.getChartParamData(range.timeFrom, range.timeTo, paramIds.join(','), this.chartFilter.data_part_size, 0) :
                         of(null);
 

@@ -1,5 +1,5 @@
 <ng-container *ngIf="initialized">
-    <app-chart-filter [user_charts]="user_charts" [charts]="charts" [chart_filter]="chartFilter"
+    <app-chart-filter [charts]="charts" [chart_filter]="chartFilter"
                       (paramsChange)="initCharts($event)"></app-chart-filter>
     <app-chart-item *ngFor="let chart of charts" [chartInfo]="chart" (rangeChange)="chartZoom(chart, $event)"></app-chart-item>
 </ng-container>
