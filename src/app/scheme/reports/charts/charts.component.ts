@@ -5,7 +5,7 @@ import {delay, exhaustMap, map, mapTo} from 'rxjs/operators';
 import {SubscriptionLike, of, timer, combineLatest} from 'rxjs';
 
 // import {ChartComponent} from 'angular2-chartjs';
-import 'chartjs-plugin-zoom';
+import 'chartjs-plugin-zoom-plus2';
 
 // import * as moment from 'moment';
  import * as _moment from 'moment';

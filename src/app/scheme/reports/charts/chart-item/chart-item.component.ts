@@ -133,13 +133,15 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
             zoom: {
                 pan: {
                     enabled: true,
-                    mode: 'x',
+                    mode: 'xy',
+                    overScaleMode: 'y',
                     rangeMax: {x: new Date()}, // TODO: update this sometimes
                     onPanComplete: chart => this.onZoom(chart, false)
                 },
                 zoom: {
                     enabled: true,
-                    mode: 'x',
+                    mode: 'xy',
+                    overScaleMode: 'y',
                     onZoomComplete: chart => this.onZoom(chart, true)
                 }
             }
