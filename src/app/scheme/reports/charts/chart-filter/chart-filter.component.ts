@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import * as moment from 'moment';
 import {Chart_Info_Interface, Chart_Type, ChartFilter, Select_Item_Iface} from '../chart-types';
@@ -7,6 +7,7 @@ import {SchemeService} from '../../../scheme.service';
 import {ColorPickerDialog} from '../color-picker-dialog/color-picker-dialog';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
+import {SidebarService} from '../../../sidebar.service';
 
 function parseDate(date: FormControl, time: string): number {
     let time_arr = time.split(':');
@@ -48,13 +49,12 @@ function parseDateToDateAndTime(date: number, fcRef: FormControl): string {
         {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
     ]
 })
-export class ChartFilterComponent implements OnInit, OnChanges {
+export class ChartFilterComponent implements OnInit {
     chartType = Chart_Type;
     params: ChartFilter;
 
-    @Input() chart_filter: ChartFilter;
-    @Input() charts: Chart_Info_Interface[];
-    @Output() paramsChange: EventEmitter<ChartFilter> = new EventEmitter();
+    chart_filter: ChartFilter;
+    charts: Chart_Info_Interface[];
 
     // ngModels
     charts_type: Chart_Type = Chart_Type.CT_USER;
@@ -74,37 +74,40 @@ export class ChartFilterComponent implements OnInit, OnChanges {
 
     data_part_size = 100000;
 
-    constructor(private schemeService: SchemeService) {
+    constructor(private schemeService: SchemeService, private sidebar: SidebarService) {
+        this.sidebar.getSidebarActionBroadcast()
+            .subscribe((action) => {
+                if (action.type === 'chart_filter') {
+                    this.chartFilterUpdated(action.data);
+                }
+
+                if (action.type === 'charts') {
+                    this.charts = action.data;
+                }
+            });
     }
 
     ngOnInit(): void {
     }
 
-    ngOnChanges(changes: SimpleChanges) {
-        if (changes.chart_filter && changes.chart_filter.currentValue) {
-            const chartFilter = changes.chart_filter.currentValue as ChartFilter;
+    chartFilterUpdated(chartFilter: ChartFilter) {
+        this.charts_type = chartFilter.charts_type;
+        this.data_part_size = chartFilter.data_part_size;
+        this.user_charts = chartFilter.user_charts;
+        this.user_chart = chartFilter.user_chart;
 
-            // console.group('input');
-            // console.dir(chartFilter);
-            // console.groupEnd();
-            this.charts_type = chartFilter.charts_type;
-            this.data_part_size = chartFilter.data_part_size;
-            this.user_charts = chartFilter.user_charts;
-            this.user_chart = chartFilter.user_chart;
+        this.time_from = parseDateToDateAndTime(chartFilter.timeFrom, this.date_from);
+        this.time_to = parseDateToDateAndTime(chartFilter.timeTo, this.date_to);
 
-            this.time_from = parseDateToDateAndTime(chartFilter.timeFrom, this.date_from);
-            this.time_to = parseDateToDateAndTime(chartFilter.timeTo, this.date_to);
+        if (!this.user_charts.length && !this.charts_type) {
+            this.charts_type = Chart_Type.CT_DIG_TYPE;
+        }
 
-            if (!this.user_charts.length && !this.charts_type) {
-                this.charts_type = Chart_Type.CT_DIG_TYPE;
-            }
+        this.OnChartsType();
 
-            this.OnChartsType();
-
-            if (chartFilter.selectedItems && chartFilter.selectedItems.length > 0) {
-                this.selectedItems = chartFilter.selectedItems;
-                this.paramSelected = chartFilter.paramSelected;
-            }
+        if (chartFilter.selectedItems && chartFilter.selectedItems.length > 0) {
+            this.selectedItems = chartFilter.selectedItems;
+            this.paramSelected = chartFilter.paramSelected;
         }
     }
 
@@ -377,15 +380,18 @@ export class ChartFilterComponent implements OnInit, OnChanges {
     }
 
     buildChart() {
-        this.paramsChange.emit({
-            timeFrom: parseDate(this.date_from, this.time_from),
-            timeTo: parseDate(this.date_to, this.time_to),
-            selectedItems: this.selectedItems.concat([]),
-            user_chart: this.user_chart,
-            user_charts: this.user_charts,
-            charts_type: this.charts_type,
-            paramSelected: this.paramSelected,
-            data_part_size: this.data_part_size,
+        this.sidebar.performActionToContent({
+            type: 'params_change',
+            data: {
+                timeFrom: parseDate(this.date_from, this.time_from),
+                timeTo: parseDate(this.date_to, this.time_to),
+                selectedItems: this.selectedItems.concat([]),
+                user_chart: this.user_chart,
+                user_charts: this.user_charts,
+                charts_type: this.charts_type,
+                paramSelected: this.paramSelected,
+                data_part_size: this.data_part_size,
+            },
         });
     }
 }

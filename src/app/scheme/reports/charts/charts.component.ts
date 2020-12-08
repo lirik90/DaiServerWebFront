@@ -17,6 +17,7 @@ import {Scheme_Group_Member} from '../../../user';
 import {Chart_Info_Interface, Chart_Type, ChartFilter, ZoomInfo} from './chart-types';
 import {ChartItemComponent} from './chart-item/chart-item.component';
 import {Hsl, ColorPickerDialog} from './color-picker-dialog/color-picker-dialog';
+import {SidebarService} from '../../sidebar.service';
 
 interface Chart_Item_Iface
 {
@@ -51,7 +52,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
   devItemList = [];
 
-  chartFilter: ChartFilter = {
+  private _chartFilter: ChartFilter = {
     paramSelected: [],
     selectedItems: [this.schemeService.scheme.dig_type[0]],
     timeFrom: 0,
@@ -61,6 +62,18 @@ export class ChartsComponent implements OnInit, OnDestroy {
     user_chart: null,
     data_part_size: 100000
   };
+
+  get chartFilter(): ChartFilter {
+      return this._chartFilter;
+  }
+
+  set chartFilter(v: ChartFilter) {
+      this._chartFilter = v;
+      this.sidebarService.performActionToSidebar({
+          type: 'chart_filter',
+          data: this._chartFilter,
+      });
+  }
 
   charts: Chart_Info_Interface[] = [];
   members: Scheme_Group_Member[] = [];
@@ -76,7 +89,8 @@ export class ChartsComponent implements OnInit, OnDestroy {
       public translate: TranslateService,
       private schemeService: SchemeService,
       private changeDetectorRef: ChangeDetectorRef,
-      private zone: NgZone
+      private zone: NgZone,
+      private sidebarService: SidebarService,
   ) {
       moment.locale('ru');
 
@@ -88,6 +102,18 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
     this.chartFilter.timeFrom = today.getTime();
     this.chartFilter.timeTo = todayEnd.getTime();
+
+    this.sidebarService.performActionToSidebar({
+      type: 'chart_filter',
+      data: this.chartFilter,
+    });
+
+    this.sidebarService.getContentActionBroadcast()
+        .subscribe((action) => {
+            if (action.type === 'params_change') {
+                this.initCharts(action.data);
+            }
+        });
   }
 
   ngOnInit() {
@@ -133,6 +159,11 @@ export class ChartsComponent implements OnInit, OnDestroy {
     default:
         break;
     }
+
+    this.sidebarService.performActionToSidebar({
+      type: 'charts',
+      data: this.charts,
+    });
 
     this.data_ = data_ptr.dev_items.join(',');
     this.param_data_ = data_ptr.params.join(',');

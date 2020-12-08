@@ -1227,6 +1227,7 @@ h2:lang(ko).localnav-title {
 .sidenav-menu-items {
   list-style: none;
   padding: 0;
+    flex-basis: 50%;
 }
 
 .sidenav-menu-item {
@@ -1269,6 +1270,13 @@ h2:lang(ko).localnav-title {
   bottom: 0;
   top: 48px;
   align-self: flex-start;
+
+  flex-basis: 0;
+  flex-grow: 0;
+
+    height: 75vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .timestring {
@@ -1297,6 +1305,13 @@ h2:lang(ko).localnav-title {
   .fav-btn {
     box-sizing: border-box !important;
   }
+}
+
+.sidebar-wrapper {
+    overflow-y: auto;
+    flex-basis: 50%;
+    flex-grow: 1;
+    flex-shrink: 0;
 }
 
 .sidenav-menu-item {

@@ -50,8 +50,11 @@
         <div *ngIf="link.isActive" class="active-arrow"></div>
       </li>
     </ul>
+    <div class="sidebar-wrapper">
+        <ng-container #sidebar></ng-container>
+    </div>
   </div>
   <div class="router-outlet-wrap">
-    <router-outlet (activate)="onRouterOutletActivate($event)"></router-outlet>
+    <router-outlet *ngIf="this.sidebarContainerRef" (activate)="onRouterOutletActivate($event)"></router-outlet>
   </div>
 </div>

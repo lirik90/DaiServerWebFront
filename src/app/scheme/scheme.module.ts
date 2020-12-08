@@ -33,6 +33,7 @@ import { StatusManageDialogComponent } from './status-manage-dialog/status-manag
 import { StatusManageItemComponent } from './status-manage-dialog/status-manage-item/status-manage-item.component';
 import { HelpItemComponent } from './doc/help-item/help-item.component';
 import { NoSanitizePipe } from './no-sanitize.pipe';
+import {SidebarService} from './sidebar.service';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -79,11 +80,11 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     NoSanitizePipe,
   ],
   entryComponents: [
-    PageReloadDialogComponent,
-    HoldingRegisterDialogComponent,
-    VideoStreamDialogComponent,
-    ParamsDialogComponent,
-      StatusManageDialogComponent
+      PageReloadDialogComponent,
+      HoldingRegisterDialogComponent,
+      VideoStreamDialogComponent,
+      ParamsDialogComponent,
+      StatusManageDialogComponent,
   ],
   exports: [
     ParamComponent
@@ -92,6 +93,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     SchemeLoadGuard,
     ControlService,
     SchemeService,
+    SidebarService,
   ]
 })
 export class SchemeModule {

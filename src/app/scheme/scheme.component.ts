@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import { ActivatedRoute, Router} from '@angular/router';
+import {AfterViewInit, ChangeDetectorRef, Component, ComponentRef, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {ActivatedRoute, Router, RouterEvent} from '@angular/router';
 import { MediaMatcher} from '@angular/cdk/layout';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
@@ -12,6 +12,7 @@ import { Connection_State } from '../user';
 import { ControlService, WebSockCmd } from './control.service';
 import { AuthenticationService } from '../authentication.service';
 import { FavService } from '../fav.service';
+import {needSidebarHelper, NeedSidebar} from './sidebar.service';
 
 interface NavLink {
   link: string;
@@ -25,7 +26,9 @@ interface NavLink {
   templateUrl: './scheme.component.html',
   styleUrls: ['./scheme.component.css'],
 })
-export class SchemeComponent implements OnInit, OnDestroy {
+export class SchemeComponent implements OnInit, OnDestroy, AfterViewInit {
+    @ViewChild('sidebar', { read: ViewContainerRef }) sidebarContainerRef: ViewContainerRef;
+
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
@@ -134,7 +137,8 @@ export class SchemeComponent implements OnInit, OnDestroy {
     private authService: AuthenticationService,
     private dialog: MatDialog,
     private router: Router,
-    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
+    private changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher,
     private favService: FavService,
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
@@ -164,7 +168,11 @@ export class SchemeComponent implements OnInit, OnDestroy {
     this.isFav = this.favService.isFav(this.schemeService.scheme.name);
   }
 
-  ngOnDestroy() {
+  ngAfterViewInit() {
+      this.changeDetectorRef.detectChanges();
+  }
+
+    ngOnDestroy() {
     // this.mobileQuery.removeListener(this._mobileQueryListener);
 
     this.opened_sub.unsubscribe();
@@ -176,7 +184,7 @@ export class SchemeComponent implements OnInit, OnDestroy {
     setConnectionState(state: Connection_State): void
     {
         this.connect_state = state;
-        this.schemeService.isSchemeConnected = 
+        this.schemeService.isSchemeConnected =
             state !== Connection_State.CS_DISCONNECTED
             && state !== Connection_State.CS_DISCONNECTED_JUST_NOW
             && state !== Connection_State.CS_SERVER_DOWN;
@@ -302,9 +310,13 @@ export class SchemeComponent implements OnInit, OnDestroy {
     this.isFav = this.favService.isFav(this.schemeService.scheme.name);
   }
 
-    onRouterOutletActivate(event: any): void
+    onRouterOutletActivate(component: Component): void
     {
-        console.log('hello', event);
+        console.log('hello', component);
+        if (needSidebarHelper(component)) {
+            const sidebarWidget = (component as NeedSidebar).getSidebarWidget(this.sidebarContainerRef);
+            console.log('Really need sidebar widget!!!');
+        }
     }
 }
 
