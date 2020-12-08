@@ -23,10 +23,4 @@ export class ReportsComponent implements OnInit, NeedSidebar {
 
         return this.filterRef;
     }
-
-    chartSettingsInteraction($event: ChartsComponent | ExportComponent) {
-        if ($event instanceof ChartsComponent) {
-
-        }
-    }
 }

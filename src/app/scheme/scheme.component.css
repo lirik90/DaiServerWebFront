@@ -1312,6 +1312,7 @@ h2:lang(ko).localnav-title {
     flex-basis: 50%;
     flex-grow: 1;
     flex-shrink: 0;
+    padding-left: 10px;
 }
 
 .sidenav-menu-item {

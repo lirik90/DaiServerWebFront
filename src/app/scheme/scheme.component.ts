@@ -314,8 +314,7 @@ export class SchemeComponent implements OnInit, OnDestroy, AfterViewInit {
     {
         console.log('hello', component);
         if (needSidebarHelper(component)) {
-            const sidebarWidget = (component as NeedSidebar).getSidebarWidget(this.sidebarContainerRef);
-            console.log('Really need sidebar widget!!!');
+            (component as NeedSidebar).getSidebarWidget(this.sidebarContainerRef);
         }
     }
 }
