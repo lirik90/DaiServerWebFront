@@ -7,6 +7,7 @@ import { SchemeLoadGuard } from "../scheme-load.guard";
 import { ReportsComponent } from "./reports.component";
 import { ChartsComponent } from "./charts/charts.component";
 import { ExportComponent } from "./export/export.component";
+import {ChartFilterComponent} from './charts/chart-filter/chart-filter.component';
 
 const reportRoutes: Routes = [
   {

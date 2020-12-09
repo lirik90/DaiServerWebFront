@@ -79,10 +79,3 @@
 ::ng-deep .time-filter .mat-form-field-wrapper {
    margin-bottom: -1.25em;
 }
-
-nav {
-    display: inline-block;
-    margin: 0px;
-    margin-right: 10px;
-    margin-bottom: 8px;
-}

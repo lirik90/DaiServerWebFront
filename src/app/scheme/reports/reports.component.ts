@@ -1,8 +1,7 @@
-import {Component, ComponentFactoryResolver, ComponentRef, EventEmitter, OnInit, ViewContainerRef} from '@angular/core';
+import {Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewContainerRef} from '@angular/core';
 import {NeedSidebar} from '../sidebar.service';
 import {ChartFilterComponent} from './charts/chart-filter/chart-filter.component';
-import {ChartsComponent} from './charts/charts.component';
-import {ExportComponent} from './export/export.component';
+import {ReportsMenuComponent} from './reports-menu/reports-menu.component';
 
 @Component({
   selector: 'app-reports',
@@ -10,7 +9,7 @@ import {ExportComponent} from './export/export.component';
   styleUrls: ['./reports.component.css']
 })
 export class ReportsComponent implements OnInit, NeedSidebar {
-    private filterRef: ComponentRef<ChartFilterComponent>;
+    private menuRef: ComponentRef<ReportsMenuComponent>;
 
     constructor(private resolver: ComponentFactoryResolver) {}
 
@@ -18,9 +17,9 @@ export class ReportsComponent implements OnInit, NeedSidebar {
     }
 
     getSidebarWidget(viewContainerRef: ViewContainerRef): ComponentRef<any> {
-        const factory = this.resolver.resolveComponentFactory(ChartFilterComponent);
-        this.filterRef = viewContainerRef.createComponent(factory);
+        const factory = this.resolver.resolveComponentFactory(ReportsMenuComponent);
+        this.menuRef = viewContainerRef.createComponent(factory);
 
-        return this.filterRef;
+        return this.menuRef;
     }
 }
