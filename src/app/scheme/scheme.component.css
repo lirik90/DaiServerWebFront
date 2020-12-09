@@ -1198,7 +1198,7 @@ h2:lang(ko).localnav-title {
 
 .router-outlet-wrap {
   height: 100%;
-  padding: 16px;
+  margin: 16px;
   box-sizing: border-box;
   flex-grow: 1;
   flex-shrink: 1;
@@ -1215,12 +1215,12 @@ h2:lang(ko).localnav-title {
 }
 @media all and (max-width: 400px) {
   .router-outlet-wrap {
-    padding: 5px;
+    margin: 5px;
   }
 }
 @media all and (max-width: 355px) {
   .router-outlet-wrap {
-    padding: 0px;
+    margin: 0;
   }
 }
 
