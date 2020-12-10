@@ -42,6 +42,11 @@ export class ChartsComponent implements OnInit, OnDestroy {
   param_data_: string;
   time_from_: number;
   time_to_: number;
+
+  // Time_from and time_to with additional 10%
+  time_from_ext_: number;
+  time_to_ext_: number;
+
   is_today: boolean;
 
   devItemList = [];
@@ -134,6 +139,15 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
     this.time_from_ = this.chartFilter.timeFrom;
     this.time_to_ = this.chartFilter.timeTo;
+
+    const additional_range = (this.time_to_ - this.time_from_) * .5;
+
+    this.time_from_ext_ = Math.round(this.time_from_ - additional_range);
+    this.time_to_ext_ = Math.round(this.time_to_ + additional_range);
+
+    console.log(this.time_from_, this.time_from_ext_);
+    console.log(this.time_to_, this.time_to_ext_);
+
     this.is_today = new Date().getTime() < this.time_to_;
 
     this.logs_count = 0;
@@ -304,6 +318,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
     }
 
     set_initialized(set_values_loaded: boolean): void {
+      console.log('#set_initialized');
         if (set_values_loaded)
             this.values_loaded = true;
         else
@@ -351,29 +366,39 @@ export class ChartsComponent implements OnInit, OnDestroy {
         }
     }
 
-    getParamData(offset: number = 0): void {
-        if (this.param_data_.length) {
-            this.paramSub = this.schemeService.getChartParamData(this.time_from_, this.time_to_, this.param_data_, this.chartFilter.data_part_size, offset)
-                .subscribe((logs: Paginator_Chart_Value) => this.fillParamData(logs));
+    getParamData(offset: number = 0, param_data = this.param_data_, first_and_last = false): void {
+        if (param_data.length) {
+            this.paramSub = this.schemeService.getChartParamData(this.time_from_ext_, this.time_to_ext_, param_data, this.chartFilter.data_part_size, offset, first_and_last)
+                .subscribe((logs: Paginator_Chart_Value) => this.fillParamData(logs, first_and_last));
         }
         else
           this.params_loaded = true;
     }
 
-    fillParamData(logs: Paginator_Chart_Value): void {
+    fillParamData(logs: Paginator_Chart_Value, additional = false): void {
         if (!logs)
         {
             this.set_initialized(false);
             return;
         }
 
-        this.add_chart_data(logs, 'param');
+        const fetched_data_bounds = this.add_chart_data(logs, 'param', additional);
         this.logs_count2 += logs.count;
+
+        this.update_charts_();
 
         if (logs.count >= this.chartFilter.data_part_size && this.logs_count2 < 10000000)
             this.getParamData(this.logs_count2);
         else
             this.set_initialized(false);
+
+        if (!additional) {
+            const needAdditionalData: number[] = this.check_fetched_data_bounds_(fetched_data_bounds);
+
+            if (needAdditionalData.length > 0) {
+                this.getParamData(0, needAdditionalData.join(','), true);
+            }
+        }
     }
 
     find_dataset(data_param_name: string, data_id): [any, any]
@@ -385,15 +410,36 @@ export class ChartsComponent implements OnInit, OnDestroy {
         return [null, null];
     }
 
-    add_chart_data(logs: Paginator_Chart_Value, data_param_name: string)
+    /**
+     *
+     * @param logs
+     * @param data_param_name
+     * @param additional If true, function will insert values to dataset instead of pushing to the end
+     * @returns Map of min/max dates for each item_id
+     */
+    add_chart_data(logs: Paginator_Chart_Value, data_param_name: string, additional: boolean): Map<number, { minDate: number, maxDate: number }>
     {
+        const dataBounds: Map<number, { minDate: number, maxDate: number }> = new Map();
+
         for (const log of logs.results)
         {
             const [chart, dataset] = this.find_dataset(data_param_name, log.item_id);
             if (dataset)
             {
+                const itemBounds = dataBounds.has(log.item_id) ? dataBounds.get(log.item_id) : {
+                    minDate: log.data[0].time,
+                    maxDate: log.data[0].time,
+                };
                 for (const log_item of log.data)
                 {
+                    if (itemBounds.minDate > log_item.time) {
+                        itemBounds.minDate = log_item.time;
+                    }
+
+                    if (itemBounds.maxDate < log_item.time) {
+                        itemBounds.maxDate = log_item.time;
+                    }
+
                     const y = ChartItemComponent.getY(log_item, dataset.steppedLine);
                     if (y === undefined)
                         continue;
@@ -406,35 +452,49 @@ export class ChartsComponent implements OnInit, OnDestroy {
                             dataset.usered_data = {};
                         dataset.usered_data[x.getTime()] = log_item.user_id;
                     }
-                    dataset.data.push(data);
+                    if (additional) {
+                        const idx = dataset.data.findIndex(v => v.x > x);
+                        dataset.data.splice(idx, 0, data);
+                    } else {
+                        dataset.data.push(data);
+                    }
                 }
+
+                dataBounds.set(log.item_id, itemBounds);
             }
         }
+
+        return dataBounds;
     }
 
-    getLogs(offset: number = 0): void {
-        this.logSub = this.schemeService.getChartData(this.time_from_, this.time_to_, this.data_, this.chartFilter.data_part_size, offset)
-            .subscribe((logs: Paginator_Chart_Value) => this.fillData(logs));
+    getLogs(offset: number = 0, data: string = this.data_, first_and_last = false): void {
+        this.logSub = this.schemeService.getChartData(this.time_from_ext_, this.time_to_ext_, data, this.chartFilter.data_part_size, offset, 'value', first_and_last)
+            .subscribe((logs: Paginator_Chart_Value) => this.fillData(logs, first_and_last));
     }
 
-    fillData(logs: Paginator_Chart_Value, rewrite = false): void {
-        if (!logs)
+    fillData(logs: Paginator_Chart_Value, additional = false): void {
+        if (!logs) // TODO: This condition true until backend supports first_last
         {
             this.set_initialized(true);
             return;
         }
 
-        this.add_chart_data(logs, 'dev_item');
+        const fetched_data_bounds = this.add_chart_data(logs, 'dev_item', additional);
         this.logs_count += logs.count;
 
-        this.chartItems.forEach(chart_item => {
-            console.log('update chart item 2', chart_item);
-            chart_item.update();
-        });
+        this.update_charts_();
+
         if (logs.count >= this.chartFilter.data_part_size && this.logs_count < 10000000)
             this.getLogs(this.logs_count);
         else
             this.set_initialized(true);
+
+        if (!additional) {
+            const need_additional_data = this.check_fetched_data_bounds_(fetched_data_bounds);
+            if (need_additional_data.length > 0) {
+                this.getLogs(0, need_additional_data.join(','), true);
+            }
+        }
     }
 
   breakLoad(is_initialized: boolean = true): void {
@@ -580,5 +640,22 @@ export class ChartsComponent implements OnInit, OnDestroy {
             }, (error) => {
                 chartItem.errorLoading(error);
             });
+    }
+
+    private check_fetched_data_bounds_(fetched_data_bounds: Map<number, { minDate: number; maxDate: number }>): number[] {
+        const need_additional_data: number[] = [];
+        fetched_data_bounds.forEach((value, key) => {
+            if (value.minDate >= this.time_from_ || value.maxDate <= this.time_to_) {
+                need_additional_data.push(key);
+            }
+        });
+        return need_additional_data;
+    }
+
+    private update_charts_() {
+        this.chartItems.forEach(chart_item => {
+            console.log('update chart item 2', chart_item);
+            chart_item.update();
+        });
     }
 }

@@ -199,9 +199,6 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
 
         if (apply) {
             this.applyDatasetChanges();
-        } else {
-            // console.dir(this._differ);
-            // console.dir(this._datasetsDiffers);
         }
     }
 
@@ -343,7 +340,8 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
     }
 
     private applyDatasetChanges(changes?: KeyValueChanges<string, any>) {
-        // console.log('apply dataset changes');
+        console.log('apply dataset changes');
+        this.chart?.chart.update();
     }
 
     startLoading() {
