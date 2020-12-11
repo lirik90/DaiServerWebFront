@@ -26,6 +26,8 @@ import { ExportComponent } from './export/export.component';
 import { ColorPickerDialog } from './charts/color-picker-dialog/color-picker-dialog';
 import { ChartItemComponent } from './charts/chart-item/chart-item.component';
 import { ChartFilterComponent } from './charts/chart-filter/chart-filter.component';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   imports: [
@@ -35,6 +37,8 @@ import { ChartFilterComponent } from './charts/chart-filter/chart-filter.compone
     ReportsRoutingModule,
     MaterialModule,
     MatMomentDateModule,
+    MatProgressBarModule,
+    MatSnackBarModule,
     ChartsModule,
     AngularMultiSelectModule,
     TranslateModule.forChild({

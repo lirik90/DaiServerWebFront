@@ -103,7 +103,7 @@ export class SchemeService extends ISchemeService {
       }
       return of(true);
     }), catchError((error: any): Observable<boolean> => {
-        
+
       console.error(error); // log to console instead
       this.log(`updateStatusItems failed: ${error.message}`);
 
@@ -397,8 +397,8 @@ export class SchemeService extends ISchemeService {
     del_chart(chart: Chart): Observable<boolean> {
         const url = `/api/v2/scheme/${this.scheme.id}/chart/${chart.id}/`;
         return this.http.delete<any>(url).pipe(
-            switchMap(resp => of(resp.result)), 
-            catchError((err: any): Observable<boolean> => 
+            switchMap(resp => of(resp.result)),
+            catchError((err: any): Observable<boolean> =>
             {
                 alert(err.error + '\n' + err.message);
                 return of(false);
@@ -416,7 +416,11 @@ export class SchemeService extends ISchemeService {
     getChartData(date_from: number, date_to: number, data: string, limit: number = 1000, offset: number = 0, data_type: string = 'value'): Observable<Paginator_Chart_Value> {
         let url = `/api/v2/scheme/${this.scheme.id}/chart_${data_type}/?ts_from=${date_from}&ts_to=${+date_to}&limit=${limit}&offset=${offset}&data=${data}`;
         return this.http.get<Paginator_Chart_Value>(url).pipe(
-            catchError(this.handleError<Paginator_Chart_Value>('chart_' + data_type, undefined)));
+            tap(
+                () => {},
+                this.handleError<Paginator_Chart_Value>('chart_' + data_type, undefined),
+            ),
+        );
         // return this.getPiped<PaginatorApi<Log_Value>>(url, `fetched chart data list`, 'getChartData');
     }
 
@@ -472,7 +476,7 @@ export class SchemeService extends ISchemeService {
     {
         const url = `/api/v2/scheme/${this.scheme.id}/copy/`;
         return this.http.post<any>(url, { scheme_id, dry_run }).pipe(
-            catchError((err: any): Observable<boolean> => 
+            catchError((err: any): Observable<boolean> =>
             {
                 alert(err.error + '\n' + err.message);
                 return of(undefined);

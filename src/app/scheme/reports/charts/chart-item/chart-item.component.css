@@ -43,3 +43,12 @@
   margin: 4px;
   display: inline-block;
 }
+
+.progress-bar-container {
+    opacity: 0;
+    transition: 400ms;
+}
+
+.progress-bar-container.show {
+    opacity: 1;
+}
