@@ -527,6 +527,16 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
     chartZoom(chart: Chart_Info_Interface, range: ZoomInfo)
     {
+        const findChartItem = (chartInfo: Chart_Info_Interface) =>
+        {
+            for (const chartItem of this.chartItems)
+                if (chartItem.chartInfo === chartInfo)
+                    return chartItem;
+            return null;
+        };
+
+        const chartItem = findChartItem(chart);
+
         this.breakLoad(false);
 
         this.logSub = timer(200)
@@ -543,6 +553,8 @@ export class ChartsComponent implements OnInit, OnDestroy {
                             paramIds.push(dataset.param.id);
                     }
 
+                    chartItem.startLoading();
+
                     const logs = devItemIds.length ?
                         this.schemeService.getChartData(range.timeFrom, range.timeTo, devItemIds.join(','), this.chartFilter.data_part_size, 0) :
                         of(null);
@@ -556,22 +568,17 @@ export class ChartsComponent implements OnInit, OnDestroy {
             )
             .subscribe(([logs, params]) =>
             {
-                const findChartItem = (chartInfo) =>
-                {
-                    for (const chartItem of this.chartItems)
-                        if (chartItem.chartInfo === chartInfo)
-                            return chartItem;
-                    return null;
-                };
-
-                const chartItem = findChartItem(chart);
                 if (chartItem)
                 {
                     if (logs)
                         chartItem.addDevItemValues(logs);
                     if (params)
                         chartItem.addParamValues(params);
+
+                    chartItem.finishedLoading();
                 }
+            }, (error) => {
+                chartItem.errorLoading(error);
             });
     }
 }

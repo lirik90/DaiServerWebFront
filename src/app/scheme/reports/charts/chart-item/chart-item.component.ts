@@ -10,10 +10,9 @@ import {
     Output,
     SimpleChanges,
     ViewChild,
-    NgZone
+    NgZone, ChangeDetectorRef
 } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {KeyValue} from '@angular/common';
 
 import {BaseChartDirective} from 'ng2-charts';
 
@@ -21,6 +20,9 @@ import {Paginator_Chart_Value, SchemeService} from '../../../scheme.service';
 import {Scheme_Group_Member} from '../../../../user';
 import {Hsl, ColorPickerDialog} from '../color-picker-dialog/color-picker-dialog';
 import {Chart_Info_Interface, ZoomInfo} from '../chart-types';
+import {ProgressBarMode} from '@angular/material/progress-bar/progress-bar';
+import {ThemePalette} from '@angular/material/core/common-behaviors/color';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-chart-item',
@@ -31,6 +33,12 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
     private _chartInfo: Chart_Info_Interface;
     private _differ: KeyValueDiffer<number, any>;
     private _datasetsDiffers: { [key: string]: KeyValueDiffer<any, any> } = {};
+
+    loading: boolean;
+    showProgressBar: boolean;
+    progressBarMode: ProgressBarMode;
+    progressBarColor: ThemePalette;
+    progressBarValue: number;
 
     get chartInfo(): Chart_Info_Interface {
         return this._chartInfo;
@@ -154,7 +162,9 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         private schemeService: SchemeService,
         private dialog: MatDialog,
         private differs: KeyValueDiffers,
-        private zone: NgZone
+        private zone: NgZone,
+        private snackBar: MatSnackBar,
+        private changeDetectorRef: ChangeDetectorRef,
     ) {
     }
 
@@ -232,14 +242,14 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         for (const dataset of this.chartInfo.data.datasets)
             if (dataset[data_param_name])
                 dataset.data.splice(0, dataset.data.length);
-        const findDataset = (data_param_name: string, id: number) => 
+        const findDataset = (data_param_name: string, id: number) =>
         {
             for (const dataset of this.chartInfo.data.datasets)
                 if (dataset[data_param_name] && dataset[data_param_name].id == id)
                     return dataset;
             return null;
         };
-        
+
         for (const log of dataPack.results)
         {
             const dataset = findDataset(data_param_name, log.item_id);
@@ -337,5 +347,61 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
 
     private applyDatasetChanges(changes?: KeyValueChanges<string, any>) {
         // console.log('apply dataset changes');
+    }
+
+    startLoading() {
+        this.loading = true;
+
+        this.showProgressBar = true;
+        this.progressBarMode = 'indeterminate';
+        this.progressBarColor = 'primary';
+
+        this.changeDetectorRef.detectChanges();
+    }
+
+    finishedLoading() {
+        this.loading = false;
+        this.progressBarColor = 'primary';
+        this.progressBarMode = 'determinate';
+        this.progressBarValue = 50;
+        this.setProgressBarValueTimeout(100);
+
+        this.changeDetectorRef.detectChanges();
+
+        setTimeout(() => this.hideProgressBar(), 600);
+    }
+
+    errorLoading(error: Error) {
+        this.loading = false;
+        this.progressBarColor = 'warn';
+        this.progressBarMode = 'determinate';
+        this.setProgressBarValueTimeout(100);
+
+        this.changeDetectorRef.detectChanges();
+
+        setTimeout(() => {
+            this.hideProgressBar();
+            this.showLoadingError(error);
+        }, 1000);
+    }
+
+    showLoadingError(error: Error) {
+        this.snackBar.open(error.message, 'Hide', {
+            duration: 10000,
+            horizontalPosition: 'end',
+            verticalPosition: 'bottom',
+        });
+    }
+
+    hideProgressBar() {
+        this.showProgressBar = false;
+        this.changeDetectorRef.detectChanges();
+    }
+
+    private setProgressBarValueTimeout(number: number) {
+        setTimeout(() => {
+            this.progressBarValue = number;
+            this.changeDetectorRef.detectChanges();
+        }, 50);
     }
 }
