@@ -1193,19 +1193,22 @@ h2:lang(ko).localnav-title {
 }
 
 :host {
-  height: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .router-outlet-wrap {
-  height: 100%;
-  margin: 16px;
-  box-sizing: border-box;
-  flex-grow: 1;
-  flex-shrink: 1;
+    display: block;
+    margin: 16px;
+    box-sizing: border-box;
+    flex-grow: 1;
+    flex-shrink: 1;
+    overflow-y: auto;
 }
 
 .row {
-  display: flex;
+    display: flex;
 }
 
 @media all and (max-width: 600px) {
@@ -1225,9 +1228,9 @@ h2:lang(ko).localnav-title {
 }
 
 .sidenav-menu-items {
-  list-style: none;
-  padding: 0;
-    flex-basis: 50%;
+    list-style: none;
+    padding: 0;
+    flex: 1 0;
 }
 
 .sidenav-menu-item {
@@ -1265,16 +1268,15 @@ h2:lang(ko).localnav-title {
 }
 
 .sidenav {
-  position: sticky;
-  position: -webkit-sticky;
-  bottom: 0;
-  top: 48px;
-  align-self: flex-start;
+    bottom: 0;
+    top: 48px;
+    overflow-y: hidden;
 
-  flex-basis: 0;
-  flex-grow: 0;
+    width: 20%;
+    min-width: 300px;
 
-    height: 75vh;
+    height: 100%;
+    max-height: calc(100vh - 90px);
     display: flex;
     flex-direction: column;
 }
@@ -1309,9 +1311,9 @@ h2:lang(ko).localnav-title {
 
 .sidebar-wrapper {
     overflow-y: auto;
-    flex-basis: 50%;
+    /*flex-basis: 50%;*/
     flex-grow: 1;
-    flex-shrink: 0;
+    flex-shrink: 1;
     padding-left: 10px;
 }
 
