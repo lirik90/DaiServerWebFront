@@ -162,7 +162,10 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
     this.sidebarService.performActionToSidebar({
       type: 'charts',
-      data: this.charts,
+      data: {
+          charts: this.charts,
+          chart_filter: this.chartFilter,
+      },
     });
 
     this.data_ = data_ptr.dev_items.join(',');

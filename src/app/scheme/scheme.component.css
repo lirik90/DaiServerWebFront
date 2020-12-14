@@ -1213,7 +1213,7 @@ h2:lang(ko).localnav-title {
 
 @media all and (max-width: 600px) {
   .sidenav {
-    display: none;
+    display: none !important;
   }
 }
 @media all and (max-width: 400px) {

@@ -28,6 +28,7 @@ interface NavLink {
 })
 export class SchemeComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('sidebar', { read: ViewContainerRef }) sidebarContainerRef: ViewContainerRef;
+    @ViewChild('sidebarMobile', { read: ViewContainerRef }) sidebarMobileContainerRef: ViewContainerRef;
 
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
@@ -40,6 +41,7 @@ export class SchemeComponent implements OnInit, OnDestroy, AfterViewInit {
   connect_state: Connection_State = Connection_State.CS_DISCONNECTED;
   private mod_state: boolean;
   private loses_state: boolean;
+    private active_route_component_: Component;
 
   get connected(): boolean {
     return this.connect_state !== Connection_State.CS_DISCONNECTED;
@@ -144,6 +146,7 @@ export class SchemeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     // this.mobileQuery.addListener(this._mobileQueryListener);
+      this.mobileQuery.addEventListener('change', () => this.redrawSidebar_());
   }
 
   addMenu(name: string, icon: string): void {
@@ -313,8 +316,18 @@ export class SchemeComponent implements OnInit, OnDestroy, AfterViewInit {
     onRouterOutletActivate(component: Component): void
     {
         console.log('hello', component);
-        if (needSidebarHelper(component)) {
-            (component as NeedSidebar).getSidebarWidget(this.sidebarContainerRef);
+        this.active_route_component_ = component;
+        this.redrawSidebar_();
+    }
+
+    private redrawSidebar_(): void {
+        this.sidebarContainerRef.clear();
+        this.sidebarMobileContainerRef.clear();
+
+        const containerRef = this.mobileQuery.matches ? this.sidebarMobileContainerRef : this.sidebarContainerRef;
+
+        if (needSidebarHelper(this.active_route_component_)) {
+            (this.active_route_component_ as NeedSidebar).getSidebarWidget(containerRef);
         }
     }
 }

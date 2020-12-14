@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import * as moment from 'moment';
 import {Chart_Info_Interface, Chart_Type, ChartFilter, Select_Item_Iface} from '../chart-types';
@@ -7,7 +7,8 @@ import {SchemeService} from '../../../scheme.service';
 import {ColorPickerDialog} from '../color-picker-dialog/color-picker-dialog';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
-import {SidebarService} from '../../../sidebar.service';
+import {SidebarAction, SidebarService} from '../../../sidebar.service';
+import {Subscription} from 'rxjs';
 
 function parseDate(date: FormControl, time: string): number {
     let time_arr = time.split(':');
@@ -49,7 +50,7 @@ function parseDateToDateAndTime(date: number, fcRef: FormControl): string {
         {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
     ]
 })
-export class ChartFilterComponent implements OnInit {
+export class ChartFilterComponent implements OnInit, OnDestroy {
     chartType = Chart_Type;
     params: ChartFilter;
 
@@ -73,21 +74,18 @@ export class ChartFilterComponent implements OnInit {
     paramSettings: any = {};
 
     data_part_size = 100000;
+    private sidebarActionBroadcast$: Subscription;
 
     constructor(private schemeService: SchemeService, private sidebar: SidebarService) {
-        this.sidebar.getSidebarActionBroadcast()
-            .subscribe((action) => {
-                if (action.type === 'chart_filter') {
-                    this.chartFilterUpdated(action.data);
-                }
-
-                if (action.type === 'charts') {
-                    this.charts = action.data;
-                }
-            });
+        this.sidebarActionBroadcast$ = this.sidebar.getSidebarActionBroadcast()
+            .subscribe((action) => this.sidebarAction(action));
     }
 
     ngOnInit(): void {
+    }
+
+    ngOnDestroy(): void {
+        this.sidebarActionBroadcast$.unsubscribe();
     }
 
     chartFilterUpdated(chartFilter: ChartFilter) {
@@ -393,5 +391,19 @@ export class ChartFilterComponent implements OnInit {
                 data_part_size: this.data_part_size,
             },
         });
+    }
+
+    private sidebarAction(action: SidebarAction<any>) {
+        if (action.type === 'chart_filter') {
+            this.chartFilterUpdated(action.data);
+        }
+
+        if (action.type === 'charts') {
+            this.charts = action.data.charts;
+
+            if (!this.chart_filter) {
+                this.chartFilterUpdated(action.data.chart_filter);
+            }
+        }
     }
 }

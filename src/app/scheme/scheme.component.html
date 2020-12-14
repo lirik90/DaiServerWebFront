@@ -34,6 +34,9 @@
               </a>
             </li>
           </ul>
+          <div class="sidebar-wrapper">
+              <ng-container #sidebarMobile></ng-container>
+          </div>
         </div>
       </div>
     </div>
@@ -55,6 +58,6 @@
     </div>
   </div>
   <div class="router-outlet-wrap">
-    <router-outlet *ngIf="sidebarContainerRef" (activate)="onRouterOutletActivate($event)"></router-outlet>
+    <router-outlet *ngIf="sidebarContainerRef && sidebarMobileContainerRef" (activate)="onRouterOutletActivate($event)"></router-outlet>
   </div>
 </div>
