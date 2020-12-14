@@ -71,15 +71,7 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         animation: {duration: 0},
         responsive: true,
         responsiveAnimationDuration: 0,
-        legend: {
-            // display: false,
-            // position: 'bottom',
-            // onClick: (e, legendItem) => {
-            //     const dataset = (<any>this.chart.data).datasets[legendItem.datasetIndex];
-            //     dataset.hidden = !dataset.hidden;
-            //     this.chart.chart.update();
-            // }
-        },
+        legend: { display: false },
         //  maintainAspectRatio: false,
         tooltips: {
             mode: 'nearest',
@@ -343,6 +335,11 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
                 this.chart.chart.update();
             }
         });
+    }
+
+    toggleDatasetVisibility(dataset: any): void {
+        dataset.hidden = !dataset.hidden;
+        this.chart.chart.update();
     }
 
     private applyDatasetChanges(changes?: KeyValueChanges<string, any>) {
