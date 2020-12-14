@@ -368,21 +368,31 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
     getParamData(offset: number = 0, param_data = this.param_data_, first_and_last = false): void {
         if (param_data.length) {
-            this.paramSub = this.schemeService.getChartParamData(this.time_from_ext_, this.time_to_ext_, param_data, this.chartFilter.data_part_size, offset, first_and_last)
-                .subscribe((logs: Paginator_Chart_Value) => this.fillParamData(logs, first_and_last));
+            this.paramSub = this.schemeService.getChartParamData(
+                first_and_last ? this.time_from_ext_ : this.time_from_,
+                first_and_last ? this.time_to_ext_ : this.time_to_,
+                param_data,
+                this.chartFilter.data_part_size,
+                offset,
+                first_and_last,
+            )
+                .subscribe(
+                    (logs: Paginator_Chart_Value) => first_and_last
+                            ? this.add_additional_chart_data(logs, 'param') : this.fillParamData(logs),
+                );
         }
         else
           this.params_loaded = true;
     }
 
-    fillParamData(logs: Paginator_Chart_Value, additional = false): void {
+    fillParamData(logs: Paginator_Chart_Value): void {
         if (!logs)
         {
             this.set_initialized(false);
             return;
         }
 
-        const fetched_data_bounds = this.add_chart_data(logs, 'param', additional);
+        const fetched_data_bounds = this.add_chart_data(logs, 'param');
         this.logs_count2 += logs.count;
 
         this.update_charts_();
@@ -392,7 +402,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
         else
             this.set_initialized(false);
 
-        if (!additional) {
+        if (fetched_data_bounds) {
             const needAdditionalData: number[] = this.check_fetched_data_bounds_(fetched_data_bounds);
 
             if (needAdditionalData.length > 0) {
@@ -401,7 +411,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
         }
     }
 
-    find_dataset(data_param_name: string, data_id): [any, any]
+    find_dataset(data_param_name: string, data_id): [Chart_Info_Interface, any]
     {
         for (const chart of this.charts)
             for (const dataset of chart.data.datasets)
@@ -414,10 +424,9 @@ export class ChartsComponent implements OnInit, OnDestroy {
      *
      * @param logs
      * @param data_param_name
-     * @param additional If true, function will insert values to dataset instead of pushing to the end
      * @returns Map of min/max dates for each item_id
      */
-    add_chart_data(logs: Paginator_Chart_Value, data_param_name: string, additional: boolean): Map<number, { minDate: number, maxDate: number }>
+    add_chart_data(logs: Paginator_Chart_Value, data_param_name: string): Map<number, { minDate: number, maxDate: number }>
     {
         const dataBounds: Map<number, { minDate: number, maxDate: number }> = new Map();
 
@@ -452,12 +461,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
                             dataset.usered_data = {};
                         dataset.usered_data[x.getTime()] = log_item.user_id;
                     }
-                    if (additional) {
-                        const idx = dataset.data.findIndex(v => v.x > x);
-                        dataset.data.splice(idx, 0, data);
-                    } else {
-                        dataset.data.push(data);
-                    }
+                    dataset.data.push(data);
                 }
 
                 dataBounds.set(log.item_id, itemBounds);
@@ -468,18 +472,29 @@ export class ChartsComponent implements OnInit, OnDestroy {
     }
 
     getLogs(offset: number = 0, data: string = this.data_, first_and_last = false): void {
-        this.logSub = this.schemeService.getChartData(this.time_from_ext_, this.time_to_ext_, data, this.chartFilter.data_part_size, offset, 'value', first_and_last)
-            .subscribe((logs: Paginator_Chart_Value) => this.fillData(logs, first_and_last));
+        this.logSub = this.schemeService.getChartData(
+            first_and_last ? this.time_from_ext_ : this.time_from_,
+            first_and_last ? this.time_to_ext_ : this.time_to_,
+            data,
+            this.chartFilter.data_part_size,
+            offset,
+            'value',
+            first_and_last,
+            ).subscribe(
+                (logs: Paginator_Chart_Value) => first_and_last
+                    ? this.add_additional_chart_data(logs, 'dev_item') : this.fillData(logs),
+                );
     }
 
     fillData(logs: Paginator_Chart_Value, additional = false): void {
-        if (!logs) // TODO: This condition true until backend supports first_last
+        if (!logs)
         {
             this.set_initialized(true);
             return;
         }
 
-        const fetched_data_bounds = this.add_chart_data(logs, 'dev_item', additional);
+        const fetched_data_bounds = additional
+            ? this.add_additional_chart_data(logs, 'dev_item') : this.add_chart_data(logs, 'dev_item');
         this.logs_count += logs.count;
 
         this.update_charts_();
@@ -489,7 +504,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
         else
             this.set_initialized(true);
 
-        if (!additional) {
+        if (!additional && fetched_data_bounds) {
             const need_additional_data = this.check_fetched_data_bounds_(fetched_data_bounds);
             if (need_additional_data.length > 0) {
                 this.getLogs(0, need_additional_data.join(','), true);
@@ -642,6 +657,10 @@ export class ChartsComponent implements OnInit, OnDestroy {
             });
     }
 
+    private find_chart_item_(chart: Chart_Info_Interface): ChartItemComponent {
+        return this.chartItems.find(chartItem => chartItem.chartInfo === chart);
+    }
+
     private check_fetched_data_bounds_(fetched_data_bounds: Map<number, { minDate: number; maxDate: number }>): number[] {
         const need_additional_data: number[] = [];
         fetched_data_bounds.forEach((value, key) => {
@@ -657,5 +676,14 @@ export class ChartsComponent implements OnInit, OnDestroy {
             console.log('update chart item 2', chart_item);
             chart_item.update();
         });
+    }
+
+    private add_additional_chart_data(logs: Paginator_Chart_Value, data_param_name: string) {
+        for (const log of logs.results) {
+            const [chart] = this.find_dataset(data_param_name, log.item_id);
+            const chartItem = this.find_chart_item_(chart);
+
+            chartItem.addData(logs, data_param_name, true);
+        }
     }
 }

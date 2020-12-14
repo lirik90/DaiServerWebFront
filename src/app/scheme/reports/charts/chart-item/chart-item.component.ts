@@ -29,7 +29,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
     templateUrl: './chart-item.component.html',
     styleUrls: ['./chart-item.component.css']
 })
-export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
+export class ChartItemComponent implements OnInit, DoCheck {
     private _chartInfo: Chart_Info_Interface;
     private _differ: KeyValueDiffer<number, any>;
     private _datasetsDiffers: { [key: string]: KeyValueDiffer<any, any> } = {};
@@ -164,16 +164,7 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         this.schemeService.getMembers().subscribe(members => this.members = members.results);
     }
 
-    ngOnChanges(changes: SimpleChanges) {
-        // console.log('ngOnChanges');
-        if (changes.chartInfo && changes.chartInfo.currentValue) {
-            const chart = changes.chartInfo.currentValue;
-            // setTimeout(() => this.onZoom(this.chart), 500);
-        }
-    }
-
     ngDoCheck(): void {
-        // console.log('ngDoCheck');
         let apply = false;
 
         if (this._datasetsDiffers) {
@@ -226,11 +217,16 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         return null;
     }
 
-    addData(dataPack: Paginator_Chart_Value, data_param_name: string): void
+    addData(dataPack: Paginator_Chart_Value, data_param_name: string, additional = false): void
     {
-        for (const dataset of this.chartInfo.data.datasets)
-            if (dataset[data_param_name])
-                dataset.data.splice(0, dataset.data.length);
+        if (!additional) {
+            for (const dataset of this.chartInfo.data.datasets) {
+                if (dataset[data_param_name]) {
+                    dataset.data.splice(0, dataset.data.length);
+                }
+            }
+        }
+
         const findDataset = (data_param_name: string, id: number) =>
         {
             for (const dataset of this.chartInfo.data.datasets)
@@ -238,6 +234,27 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
                     return dataset;
             return null;
         };
+
+        if (additional) {
+            const { ticks } = this.chart.chart.options.scales.xAxes[0];
+
+            if (!ticks || !ticks.min || !ticks.max) {
+                const xBounds = this.chartInfo.data.datasets
+                    .map((dataset) => ({
+                        min: dataset.data[0].x,
+                        max: dataset.data[dataset.data.length - 1].x,
+                    }))
+                    .reduce((prev, curr) => ({
+                        min: (prev.min < curr.min) ? prev.min : curr.min,
+                        max: (prev.max > curr.max) ? curr.max : curr.max,
+                    }));
+
+                console.log(data_param_name, xBounds.min, xBounds.max);
+
+                ticks.min = xBounds.min;
+                ticks.max = xBounds.max;
+            }
+        }
 
         for (const log of dataPack.results)
         {
@@ -259,21 +276,26 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
                         dataset.usered_data = {};
                     dataset.usered_data[x.getTime()] = log_item.user_id;
                 }
-                dataset.data.push(data);
+                if (additional) {
+                    const idx = dataset.data.findIndex(v => v.x > x);
+                    dataset.data.splice(idx, 0, data);
+                } else {
+                    dataset.data.push(data);
+                }
             }
         }
 
         this.chart.chart.update();
     }
 
-    addDevItemValues(logs: Paginator_Chart_Value): void
+    addDevItemValues(logs: Paginator_Chart_Value, additional = false): void
     {
-        this.addData(logs, 'dev_item');
+        this.addData(logs, 'dev_item', additional);
     }
 
-    addParamValues(params: Paginator_Chart_Value): void
+    addParamValues(params: Paginator_Chart_Value, additional = false): void
     {
-        this.addData(params, 'param');
+        this.addData(params, 'param', additional);
     }
 
     random_color(): void {
