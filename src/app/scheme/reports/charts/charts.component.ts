@@ -704,8 +704,9 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
             chartItem.addData(logs, data_param_name, true);
             chartItem.setViewportBounds(this.time_from_, this.time_to_, true);
-            chartItem.finishedLoading();
         });
+
+        this.chartItems.forEach(chartItem => chartItem.finishedLoading());
 
         console.groupEnd();
     }
