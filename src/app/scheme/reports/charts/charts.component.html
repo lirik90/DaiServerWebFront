@@ -1,7 +1,11 @@
 <ng-container *ngIf="initialized">
     <app-chart-filter [charts]="charts" [chart_filter]="chartFilter"
                       (paramsChange)="initCharts($event)"></app-chart-filter>
-    <app-chart-item *ngFor="let chart of charts" [chartInfo]="chart" (rangeChange)="chartZoom(chart, $event)"></app-chart-item>
+    <app-chart-item *ngFor="let chart of charts"
+                    [chartInfo]="chart"
+                    [viewportMin]="time_from_"
+                    [viewportMax]="time_to_"
+                    (rangeChange)="chartZoom(chart, $event)"></app-chart-item>
 </ng-container>
 <ng-container *ngIf="!initialized">
     <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>

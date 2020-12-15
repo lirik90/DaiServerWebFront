@@ -29,7 +29,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
     templateUrl: './chart-item.component.html',
     styleUrls: ['./chart-item.component.css']
 })
-export class ChartItemComponent implements OnInit, DoCheck {
+export class ChartItemComponent implements OnInit, DoCheck, OnChanges {
     private _chartInfo: Chart_Info_Interface;
     private _differ: KeyValueDiffer<number, any>;
     private _datasetsDiffers: { [key: string]: KeyValueDiffer<any, any> } = {};
@@ -50,6 +50,9 @@ export class ChartItemComponent implements OnInit, DoCheck {
             this._differ = this.differs.find(v.data.datasets).create();
         }
     }
+
+    @Input() viewportMin: number;
+    @Input() viewportMax: number;
 
     @ViewChild('chart_obj') chart: BaseChartDirective;
     @Output() rangeChange: EventEmitter<ZoomInfo> = new EventEmitter();
@@ -164,6 +167,31 @@ export class ChartItemComponent implements OnInit, DoCheck {
         this.schemeService.getMembers().subscribe(members => this.members = members.results);
     }
 
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.viewportMin || changes.viewportMax) {
+            if (changes.viewportMin.currentValue) {
+                const value = changes.viewportMin.currentValue;
+                if (this.chart && this.chart.chart) {
+                    this.chart.chart.options.scales.xAxes[0].ticks.min = value;
+                } else {
+                    // @ts-ignore
+                    this.options.scales.xAxes[0].ticks.min = value;
+                }
+            }
+
+            if (changes.viewportMax.currentValue) {
+                const value = changes.viewportMax.currentValue;
+
+                if (this.chart && this.chart.chart) {
+                    this.chart.chart.options.scales.xAxes[0].ticks.max = value;
+                } else {
+                    // @ts-ignore
+                    this.options.scales.xAxes[0].ticks.max = value;
+                }
+            }
+        }
+    }
+
     ngDoCheck(): void {
         let apply = false;
 
@@ -236,24 +264,22 @@ export class ChartItemComponent implements OnInit, DoCheck {
         };
 
         if (additional) {
-            const { ticks } = this.chart.chart.options.scales.xAxes[0];
-
-            if (!ticks || !ticks.min || !ticks.max) {
-                const xBounds = this.chartInfo.data.datasets
-                    .map((dataset) => ({
-                        min: dataset.data[0].x,
-                        max: dataset.data[dataset.data.length - 1].x,
-                    }))
-                    .reduce((prev, curr) => ({
-                        min: (prev.min < curr.min) ? prev.min : curr.min,
-                        max: (prev.max > curr.max) ? curr.max : curr.max,
-                    }));
-
-                console.log(data_param_name, xBounds.min, xBounds.max);
-
-                ticks.min = xBounds.min;
-                ticks.max = xBounds.max;
-            }
+            // const { ticks } = this.chart.chart.options.scales.xAxes[0];
+            //
+            // if (!ticks || !ticks.min || !ticks.max) {
+            //     const xBounds = this.chartInfo.data.datasets
+            //         .map((dataset) => ({
+            //             min: dataset.data[0].x,
+            //             max: dataset.data[dataset.data.length - 1].x,
+            //         }))
+            //         .reduce((prev, curr) => ({
+            //             min: (prev.min < curr.min) ? prev.min : curr.min,
+            //             max: (prev.max > curr.max) ? curr.max : curr.max,
+            //         }));
+            //
+            //     ticks.min = xBounds.min;
+            //     ticks.max = xBounds.max;
+            // }
         }
 
         for (const log of dataPack.results)
@@ -278,7 +304,11 @@ export class ChartItemComponent implements OnInit, DoCheck {
                 }
                 if (additional) {
                     const idx = dataset.data.findIndex(v => v.x > x);
-                    dataset.data.splice(idx, 0, data);
+                    if (idx < 0 || idx >= dataset.data.length) {
+                        dataset.data.push(data);
+                    } else {
+                        dataset.data.splice(idx, 0, data);
+                    }
                 } else {
                     dataset.data.push(data);
                 }
@@ -361,8 +391,17 @@ export class ChartItemComponent implements OnInit, DoCheck {
         this.chart.chart.update();
     }
 
+    setViewportBounds(start: Date | number, end: Date | number, forceUpdate = true) {
+        const min = typeof start === 'number' ? new Date(start) : start;
+        const max = typeof end === 'number' ? new Date(end) : end;
+
+        this.chart.options.scales.xAxes[0].ticks.min = min;
+        this.chart.options.scales.xAxes[0].ticks.max = max;
+
+        forceUpdate && this.chart.chart.update();
+    }
+
     private applyDatasetChanges(changes?: KeyValueChanges<string, any>) {
-        console.log('apply dataset changes');
         this.chart?.chart.update();
     }
 
