@@ -598,11 +598,12 @@ export class ChartsComponent implements OnInit, OnDestroy {
             {
                 if (chartItem)
                 {
+                    let isAnyAdditionalRequests = false;
                     if (logs) {
                         const needAdditionalData = this.need_additional_(logs, devItemIds);
                         if (needAdditionalData) {
-                            console.log('#zoom()#getLogs()');
                             this.getLogs(0, needAdditionalData.join(','), true);
+                            isAnyAdditionalRequests = true;
                         }
 
                         chartItem.addDevItemValues(logs);
@@ -610,14 +611,16 @@ export class ChartsComponent implements OnInit, OnDestroy {
                     if (params) {
                         const needAdditionalData = this.need_additional_(params, paramIds);
                         if (needAdditionalData) {
-                            console.log('#zoom()#getParamData()');
                             this.getParamData(0, needAdditionalData.join(','), true);
+                            isAnyAdditionalRequests = true;
                         }
 
                         chartItem.addParamValues(params);
                     }
 
-                    chartItem.finishedLoading();
+                    if (!isAnyAdditionalRequests) {
+                        chartItem.finishedLoading();
+                    }
                 }
             }, (error) => {
                 chartItem.errorLoading(error);
@@ -647,7 +650,6 @@ export class ChartsComponent implements OnInit, OnDestroy {
     }
 
     private add_additional_chart_data(logs: Paginator_Chart_Value, data_param_name: string, requested_data: string) {
-        console.group('#add_additional_chart_data');
         const chartsToUpdate = [];
 
         for (const item_id of requested_data.split(',').map(i => parseInt(i, 10))) {
@@ -657,8 +659,6 @@ export class ChartsComponent implements OnInit, OnDestroy {
             }
 
             chartsToUpdate.push(chart);
-
-            console.log('Pass dataset check', item_id);
 
             const log = logs.results.find(log => log.item_id === item_id);
 
@@ -671,8 +671,6 @@ export class ChartsComponent implements OnInit, OnDestroy {
                 haveDataBefore = item.time < dataset.data[0].x.getTime();
                 haveDataAfter = item.time > dataset.data[dataset.data.length - 1].x.getTime();
             });
-
-            console.log('have data (before/after):', haveDataBefore, haveDataAfter);
 
             if (!haveDataBefore) {
                 const firstNotNullValue = dataset.data.find(v => v.y !== null)?.y;
@@ -706,6 +704,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
             chartItem.addData(logs, data_param_name, true);
             chartItem.setViewportBounds(this.time_from_, this.time_to_, true);
+            chartItem.finishedLoading();
         });
 
         console.groupEnd();

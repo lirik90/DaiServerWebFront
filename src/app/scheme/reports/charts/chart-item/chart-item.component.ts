@@ -416,6 +416,8 @@ export class ChartItemComponent implements OnInit, DoCheck, OnChanges {
     }
 
     finishedLoading() {
+        if (!this.loading) { return; } // just for safety
+
         this.loading = false;
         this.progressBarColor = 'primary';
         this.progressBarMode = 'determinate';
