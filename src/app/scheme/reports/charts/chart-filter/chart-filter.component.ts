@@ -84,9 +84,9 @@ export class ChartFilterComponent implements OnInit, OnChanges {
         if (changes.chart_filter && changes.chart_filter.currentValue) {
             const chartFilter = changes.chart_filter.currentValue as ChartFilter;
 
-            console.group('input');
-            console.dir(chartFilter);
-            console.groupEnd();
+            // console.group('input');
+            // console.dir(chartFilter);
+            // console.groupEnd();
             this.charts_type = chartFilter.charts_type;
             this.data_part_size = chartFilter.data_part_size;
             this.user_charts = chartFilter.user_charts;

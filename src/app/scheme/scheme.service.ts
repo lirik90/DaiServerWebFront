@@ -413,8 +413,8 @@ export class SchemeService extends ISchemeService {
         });
     }
 
-    getChartData(date_from: number, date_to: number, data: string, limit: number = 1000, offset: number = 0, data_type: string = 'value'): Observable<Paginator_Chart_Value> {
-        let url = `/api/v2/scheme/${this.scheme.id}/chart_${data_type}/?ts_from=${date_from}&ts_to=${+date_to}&limit=${limit}&offset=${offset}&data=${data}`;
+    getChartData(date_from: number, date_to: number, data: string, limit: number = 1000, offset: number = 0, data_type: string = 'value', bounds_only: boolean = false): Observable<Paginator_Chart_Value> {
+        let url = `/api/v2/scheme/${this.scheme.id}/chart_${data_type}/?ts_from=${date_from}&ts_to=${+date_to}&limit=${limit}&offset=${offset}&data=${data}&bounds_only=${+bounds_only}`;
         return this.http.get<Paginator_Chart_Value>(url).pipe(
             tap(
                 () => {},
@@ -424,8 +424,8 @@ export class SchemeService extends ISchemeService {
         // return this.getPiped<PaginatorApi<Log_Value>>(url, `fetched chart data list`, 'getChartData');
     }
 
-    getChartParamData(date_from: number, date_to: number, data: string, limit: number = 1000, offset: number = 0): Observable<Paginator_Chart_Value> {
-        return this.getChartData(date_from, date_to, data, limit, offset, 'param');
+    getChartParamData(date_from: number, date_to: number, data: string, limit: number = 1000, offset: number = 0, bounds_only: boolean = false): Observable<Paginator_Chart_Value> {
+        return this.getChartData(date_from, date_to, data, limit, offset, 'param', bounds_only);
     }
 
     getDisabledStatuses(dig_id: number): Observable<Disabled_Status[]>

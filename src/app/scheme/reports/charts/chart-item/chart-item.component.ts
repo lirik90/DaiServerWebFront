@@ -1,16 +1,18 @@
 import {
+    ChangeDetectorRef,
     Component,
     DoCheck,
     EventEmitter,
-    Input, KeyValueChanges,
+    Input,
+    KeyValueChanges,
     KeyValueDiffer,
     KeyValueDiffers,
+    NgZone,
     OnChanges,
     OnInit,
     Output,
     SimpleChanges,
-    ViewChild,
-    NgZone, ChangeDetectorRef
+    ViewChild
 } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 
@@ -18,7 +20,7 @@ import {BaseChartDirective} from 'ng2-charts';
 
 import {Paginator_Chart_Value, SchemeService} from '../../../scheme.service';
 import {Scheme_Group_Member} from '../../../../user';
-import {Hsl, ColorPickerDialog} from '../color-picker-dialog/color-picker-dialog';
+import {ColorPickerDialog, Hsl} from '../color-picker-dialog/color-picker-dialog';
 import {Chart_Info_Interface, ZoomInfo} from '../chart-types';
 import {ProgressBarMode} from '@angular/material/progress-bar/progress-bar';
 import {ThemePalette} from '@angular/material/core/common-behaviors/color';
@@ -51,6 +53,9 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         }
     }
 
+    @Input() viewportMin: number;
+    @Input() viewportMax: number;
+
     @ViewChild('chart_obj') chart: BaseChartDirective;
     @Output() rangeChange: EventEmitter<ZoomInfo> = new EventEmitter();
 
@@ -62,13 +67,10 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
 
     options = {
         elements: {
-            point: {radius: 0},
-            line: {
-                tension: 0,
-                borderWidth: 1
-            }
+            point: { radius: 0 },
+            line: { tension: 0, borderWidth: 1 }
         },
-        animation: {duration: 0},
+        animation: { duration: 0 },
         responsive: true,
         responsiveAnimationDuration: 0,
         legend: { display: false },
@@ -106,7 +108,8 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
                     },
                     sampleSize: 10,
                     maxRotation: 30,
-                    minRotation: 30
+                    minRotation: 30,
+                    min: undefined, max: undefined
                 },
                 afterFit: (scale) => {
                     scale.height = 40;
@@ -165,15 +168,16 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        // console.log('ngOnChanges');
-        if (changes.chartInfo && changes.chartInfo.currentValue) {
-            const chart = changes.chartInfo.currentValue;
-            // setTimeout(() => this.onZoom(this.chart), 500);
+        if (changes.viewportMin || changes.viewportMax) {
+            if (changes.viewportMin.currentValue)
+                this.options.scales.xAxes[0].ticks.min = changes.viewportMin.currentValue;
+
+            if (changes.viewportMax.currentValue)
+                this.options.scales.xAxes[0].ticks.max = changes.viewportMax.currentValue;
         }
     }
 
     ngDoCheck(): void {
-        // console.log('ngDoCheck');
         let apply = false;
 
         if (this._datasetsDiffers) {
@@ -199,9 +203,6 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
 
         if (apply) {
             this.applyDatasetChanges();
-        } else {
-            // console.dir(this._differ);
-            // console.dir(this._datasetsDiffers);
         }
     }
 
@@ -229,11 +230,16 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         return null;
     }
 
-    addData(dataPack: Paginator_Chart_Value, data_param_name: string): void
+    addData(dataPack: Paginator_Chart_Value, data_param_name: string, additional = false): void
     {
-        for (const dataset of this.chartInfo.data.datasets)
-            if (dataset[data_param_name])
-                dataset.data.splice(0, dataset.data.length);
+        if (!additional) {
+            for (const dataset of this.chartInfo.data.datasets) {
+                if (dataset[data_param_name]) {
+                    dataset.data.splice(0, dataset.data.length);
+                }
+            }
+        }
+
         const findDataset = (data_param_name: string, id: number) =>
         {
             for (const dataset of this.chartInfo.data.datasets)
@@ -262,21 +268,30 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
                         dataset.usered_data = {};
                     dataset.usered_data[x.getTime()] = log_item.user_id;
                 }
-                dataset.data.push(data);
+                if (additional) {
+                    const idx = dataset.data.findIndex(v => v.x > x);
+                    if (idx < 0 || idx >= dataset.data.length) {
+                        dataset.data.push(data);
+                    } else {
+                        dataset.data.splice(idx, 0, data);
+                    }
+                } else {
+                    dataset.data.push(data);
+                }
             }
         }
 
         this.chart.chart.update();
     }
 
-    addDevItemValues(logs: Paginator_Chart_Value): void
+    addDevItemValues(logs: Paginator_Chart_Value, additional = false): void
     {
-        this.addData(logs, 'dev_item');
+        this.addData(logs, 'dev_item', additional);
     }
 
-    addParamValues(params: Paginator_Chart_Value): void
+    addParamValues(params: Paginator_Chart_Value, additional = false): void
     {
-        this.addData(params, 'param');
+        this.addData(params, 'param', additional);
     }
 
     random_color(): void {
@@ -342,8 +357,16 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         this.chart.chart.update();
     }
 
+    setViewportBounds(start: Date | number, end: Date | number, forceUpdate = true) {
+        const ticks = this.options.scales.xAxes[0].ticks;
+        ticks.min = typeof start === 'number' ? new Date(start) : start;
+        ticks.max = typeof end === 'number' ? new Date(end) : end;
+
+        forceUpdate && this.chart.chart.update();
+    }
+
     private applyDatasetChanges(changes?: KeyValueChanges<string, any>) {
-        // console.log('apply dataset changes');
+        this.chart?.chart.update();
     }
 
     startLoading() {
@@ -357,6 +380,8 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
     }
 
     finishedLoading() {
+        if (!this.loading) return; // just for safety
+
         this.loading = false;
         this.progressBarColor = 'primary';
         this.progressBarMode = 'determinate';
