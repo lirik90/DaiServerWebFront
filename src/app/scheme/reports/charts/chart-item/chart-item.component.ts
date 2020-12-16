@@ -67,13 +67,10 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
 
     options = {
         elements: {
-            point: {radius: 0},
-            line: {
-                tension: 0,
-                borderWidth: 1
-            }
+            point: { radius: 0 },
+            line: { tension: 0, borderWidth: 1 }
         },
-        animation: {duration: 0},
+        animation: { duration: 0 },
         responsive: true,
         responsiveAnimationDuration: 0,
         legend: { display: false },
@@ -111,7 +108,8 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
                     },
                     sampleSize: 10,
                     maxRotation: 30,
-                    minRotation: 30
+                    minRotation: 30,
+                    min: undefined, max: undefined
                 },
                 afterFit: (scale) => {
                     scale.height = 40;
@@ -171,15 +169,11 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.viewportMin || changes.viewportMax) {
-            if (changes.viewportMin.currentValue) {
-                // @ts-ignore
+            if (changes.viewportMin.currentValue)
                 this.options.scales.xAxes[0].ticks.min = changes.viewportMin.currentValue;
-            }
 
-            if (changes.viewportMax.currentValue) {
-                // @ts-ignore
+            if (changes.viewportMax.currentValue)
                 this.options.scales.xAxes[0].ticks.max = changes.viewportMax.currentValue;
-            }
         }
     }
 
@@ -364,11 +358,9 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
     }
 
     setViewportBounds(start: Date | number, end: Date | number, forceUpdate = true) {
-        const min = typeof start === 'number' ? new Date(start) : start;
-        const max = typeof end === 'number' ? new Date(end) : end;
-
-        this.chart.options.scales.xAxes[0].ticks.min = min;
-        this.chart.options.scales.xAxes[0].ticks.max = max;
+        const ticks = this.options.scales.xAxes[0].ticks;
+        ticks.min = typeof start === 'number' ? new Date(start) : start;
+        ticks.max = typeof end === 'number' ? new Date(end) : end;
 
         forceUpdate && this.chart.chart.update();
     }

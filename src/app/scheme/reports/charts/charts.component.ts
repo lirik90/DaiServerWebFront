@@ -11,7 +11,7 @@ import 'chartjs-plugin-zoom-plus2';
  import * as _moment from 'moment';
  import {default as _rollupMoment} from 'moment';
  const moment = _rollupMoment || _moment;
-import {Paginator_Chart_Value, SchemeService} from '../../scheme.service';
+import {Paginator_Chart_Value, Chart_Value_Item, SchemeService} from '../../scheme.service';
 import {Chart, Device_Item, DIG_Param, Register_Type, Save_Algorithm} from '../../scheme';
 import {Scheme_Group_Member} from '../../../user';
 import {Chart_Info_Interface, Chart_Type, ChartFilter, ZoomInfo} from './chart-types';
@@ -388,9 +388,9 @@ export class ChartsComponent implements OnInit, OnDestroy {
         else
             this.set_initialized(false);
 
-        const needAdditionalData = this.need_additional_(logs, this.param_data_);
-        if (needAdditionalData) {
-            this.getParamData(0, needAdditionalData.join(','), true);
+        const nodeIds = this.need_bounds(logs.results, this.param_data_);
+        if (nodeIds.length) {
+            this.getParamData(0, nodeIds.join(','), true);
         }
     }
 
@@ -454,9 +454,9 @@ export class ChartsComponent implements OnInit, OnDestroy {
         else
             this.set_initialized(true);
 
-        const needAdditionalData = this.need_additional_(logs, this.data_);
-        if (needAdditionalData) {
-            this.getLogs(0, needAdditionalData.join(','), true);
+        const nodeIds = this.need_bounds(logs.results, this.data_);
+        if (nodeIds.length) {
+            this.getLogs(0, nodeIds.join(','), true);
         }
     }
 
@@ -598,27 +598,27 @@ export class ChartsComponent implements OnInit, OnDestroy {
             {
                 if (chartItem)
                 {
-                    let isAnyAdditionalRequests = false;
+                    let isAnyBoundsRequests = false;
                     if (logs) {
-                        const needAdditionalData = this.need_additional_(logs, devItemIds);
-                        if (needAdditionalData) {
-                            this.getLogs(0, needAdditionalData.join(','), true);
-                            isAnyAdditionalRequests = true;
+                        const nodeIds = this.need_bounds(logs.results, devItemIds);
+                        if (nodeIds.length) {
+                            this.getLogs(0, nodeIds.join(','), true);
+                            isAnyBoundsRequests = true;
                         }
 
                         chartItem.addDevItemValues(logs);
                     }
                     if (params) {
-                        const needAdditionalData = this.need_additional_(params, paramIds);
-                        if (needAdditionalData) {
-                            this.getParamData(0, needAdditionalData.join(','), true);
-                            isAnyAdditionalRequests = true;
+                        const nodeIds = this.need_bounds(params.results, paramIds);
+                        if (nodeIds.length) {
+                            this.getParamData(0, nodeIds.join(','), true);
+                            isAnyBoundsRequests = true;
                         }
 
                         chartItem.addParamValues(params);
                     }
 
-                    if (!isAnyAdditionalRequests) {
+                    if (!isAnyBoundsRequests) {
                         chartItem.finishedLoading();
                     }
                 }
@@ -629,18 +629,6 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
     private find_chart_item_(chart: Chart_Info_Interface): ChartItemComponent {
         return this.chartItems.find(chartItem => chartItem.chartInfo === chart);
-    }
-
-    private check_fetched_data_bounds_(fetched_data_bounds: Map<number, { minDate: number; maxDate: number }>, ids: number[]): number[] {
-        const need_additional_data: number[] = ids.filter(id => !fetched_data_bounds.has(id));
-
-        fetched_data_bounds.forEach((value, key) => {
-            if (value.minDate >= this.time_from_ || value.maxDate <= this.time_to_) {
-                need_additional_data.push(key);
-            }
-        });
-
-        return need_additional_data;
     }
 
     private update_charts_() {
@@ -708,39 +696,17 @@ export class ChartsComponent implements OnInit, OnDestroy {
         });
 
         this.chartItems.forEach(chartItem => chartItem.finishedLoading());
-
-        console.groupEnd();
     }
 
-    private get_data_bounds_(logs: Paginator_Chart_Value): Map<number, { minDate: number, maxDate: number }> {
-        const dataBounds: Map<number, { minDate: number, maxDate: number }> = new Map();
-
-        for (const log of logs.results) {
-            const itemBounds = {
-                minDate: log.data[0].time,
-                maxDate: log.data[log.data.length - 1].time,
-            };
-
-            dataBounds.set(log.item_id, itemBounds);
-        }
-
-        return dataBounds;
-    }
-
-    private need_additional_(logs: Paginator_Chart_Value, requested_data: string | number[]): number[] | null {
+    private need_bounds(logs: Chart_Value_Item[], requested_data: string | number[]): number[] {
         const ids = typeof requested_data !== 'string' ? requested_data
             : requested_data.split(',').map(id => parseInt(id, 10));
-        const fetched_data_bounds = this.get_data_bounds_(logs);
-
-        if (fetched_data_bounds) {
-            const needAdditionalData: number[] = this.check_fetched_data_bounds_(fetched_data_bounds, ids);
-
-            if (needAdditionalData.length > 0) {
-                return needAdditionalData;
-            }
-        }
-
-        return null;
+        return ids.filter(id => {
+            const log = logs.find(log => log.item_id === id);
+            return !log || !log.data.length
+                   || log.data[0].time >= this.time_from_
+                   || log.data[log.data.length - 1].time <= this.time_to_;
+        });
     }
 
     private recalculate_time_ext_() {
