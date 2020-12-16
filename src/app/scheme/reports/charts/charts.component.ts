@@ -673,12 +673,13 @@ export class ChartsComponent implements OnInit, OnDestroy {
             });
 
             if (!haveDataBefore) {
-                const firstNotNullValue = dataset.data.find(v => v.y !== null)?.y;
-
-                log.data.splice(0, 0, {
-                    time: this.time_from_ext_,
-                    value: firstNotNullValue,
-                });
+                const value = dataset.data[0].y;
+                if (value !== null) {
+                    log.data.splice(0, 0, {
+                        time: this.time_from_ext_,
+                        value,
+                    });
+                }
             }
 
             if (!haveDataAfter) {
@@ -715,20 +716,10 @@ export class ChartsComponent implements OnInit, OnDestroy {
         const dataBounds: Map<number, { minDate: number, maxDate: number }> = new Map();
 
         for (const log of logs.results) {
-            const itemBounds = dataBounds.has(log.item_id) ? dataBounds.get(log.item_id) : {
+            const itemBounds = {
                 minDate: log.data[0].time,
-                maxDate: log.data[0].time,
+                maxDate: log.data[log.data.length - 1].time,
             };
-
-            for (const log_item of log.data) {
-                if (itemBounds.minDate > log_item.time) {
-                    itemBounds.minDate = log_item.time;
-                }
-
-                if (itemBounds.maxDate < log_item.time) {
-                    itemBounds.maxDate = log_item.time;
-                }
-            }
 
             dataBounds.set(log.item_id, itemBounds);
         }

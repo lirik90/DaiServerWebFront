@@ -1,16 +1,18 @@
 import {
+    ChangeDetectorRef,
     Component,
     DoCheck,
     EventEmitter,
-    Input, KeyValueChanges,
+    Input,
+    KeyValueChanges,
     KeyValueDiffer,
     KeyValueDiffers,
+    NgZone,
     OnChanges,
     OnInit,
     Output,
     SimpleChanges,
-    ViewChild,
-    NgZone, ChangeDetectorRef
+    ViewChild
 } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 
@@ -18,7 +20,7 @@ import {BaseChartDirective} from 'ng2-charts';
 
 import {Paginator_Chart_Value, SchemeService} from '../../../scheme.service';
 import {Scheme_Group_Member} from '../../../../user';
-import {Hsl, ColorPickerDialog} from '../color-picker-dialog/color-picker-dialog';
+import {ColorPickerDialog, Hsl} from '../color-picker-dialog/color-picker-dialog';
 import {Chart_Info_Interface, ZoomInfo} from '../chart-types';
 import {ProgressBarMode} from '@angular/material/progress-bar/progress-bar';
 import {ThemePalette} from '@angular/material/core/common-behaviors/color';
@@ -29,7 +31,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
     templateUrl: './chart-item.component.html',
     styleUrls: ['./chart-item.component.css']
 })
-export class ChartItemComponent implements OnInit, DoCheck, OnChanges {
+export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
     private _chartInfo: Chart_Info_Interface;
     private _differ: KeyValueDiffer<number, any>;
     private _datasetsDiffers: { [key: string]: KeyValueDiffer<any, any> } = {};
@@ -170,24 +172,13 @@ export class ChartItemComponent implements OnInit, DoCheck, OnChanges {
     ngOnChanges(changes: SimpleChanges) {
         if (changes.viewportMin || changes.viewportMax) {
             if (changes.viewportMin.currentValue) {
-                const value = changes.viewportMin.currentValue;
-                if (this.chart && this.chart.chart) {
-                    this.chart.chart.options.scales.xAxes[0].ticks.min = value;
-                } else {
-                    // @ts-ignore
-                    this.options.scales.xAxes[0].ticks.min = value;
-                }
+                // @ts-ignore
+                this.options.scales.xAxes[0].ticks.min = changes.viewportMin.currentValue;
             }
 
             if (changes.viewportMax.currentValue) {
-                const value = changes.viewportMax.currentValue;
-
-                if (this.chart && this.chart.chart) {
-                    this.chart.chart.options.scales.xAxes[0].ticks.max = value;
-                } else {
-                    // @ts-ignore
-                    this.options.scales.xAxes[0].ticks.max = value;
-                }
+                // @ts-ignore
+                this.options.scales.xAxes[0].ticks.max = changes.viewportMax.currentValue;
             }
         }
     }
@@ -262,25 +253,6 @@ export class ChartItemComponent implements OnInit, DoCheck, OnChanges {
                     return dataset;
             return null;
         };
-
-        if (additional) {
-            // const { ticks } = this.chart.chart.options.scales.xAxes[0];
-            //
-            // if (!ticks || !ticks.min || !ticks.max) {
-            //     const xBounds = this.chartInfo.data.datasets
-            //         .map((dataset) => ({
-            //             min: dataset.data[0].x,
-            //             max: dataset.data[dataset.data.length - 1].x,
-            //         }))
-            //         .reduce((prev, curr) => ({
-            //             min: (prev.min < curr.min) ? prev.min : curr.min,
-            //             max: (prev.max > curr.max) ? curr.max : curr.max,
-            //         }));
-            //
-            //     ticks.min = xBounds.min;
-            //     ticks.max = xBounds.max;
-            // }
-        }
 
         for (const log of dataPack.results)
         {
