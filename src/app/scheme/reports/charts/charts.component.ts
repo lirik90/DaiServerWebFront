@@ -662,29 +662,14 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
             if (!haveDataBefore) {
                 const value = dataset.data[0].y;
-                if (value !== null) {
-                    log.data.splice(0, 0, {
-                        time: this.time_from_ext_,
-                        value,
-                    });
-                }
+                if (value !== null)
+                    log.data.splice(0, 0, { value, time: this.time_from_ext_ });
             }
 
             if (!haveDataAfter) {
-                let value;
-
-                if (data_param_name === 'dev_item') {
-                    value = dataset.dev_item.val.value;
-                } else if (data_param_name === 'param') {
-                    value = dataset.param.value;
-                } else {
-                    throw new Error('Unknown data_param_name: ' + data_param_name);
-                }
-
-                log.data.push({
-                    time: this.time_to_ext_,
-                    value,
-                });
+                let value = dataset.dev_item ? dataset.dev_item.val?.value : dataset.param.value;
+                if (value !== null)
+                    log.data.push({ value, time: this.time_to_ext_ });
             }
         }
 
