@@ -378,7 +378,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.add_chart_data(logs, 'param')
+        this.add_chart_data(logs, 'param');
         this.logs_count2 += logs.count;
 
         this.update_charts_();
