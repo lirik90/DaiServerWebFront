@@ -44,18 +44,20 @@
 </div>
 
 <div class="row">
-  <div class="sidenav">
-    <ul class="sidenav-menu-items">
-      <li class="sidenav-menu-item" *ngFor="let nav of fillerNav">
-        <a [routerLink]="nav.link" routerLinkActive="active" #link="routerLinkActive" class="sidenav-menu-link" (click)="closeMenu()">
-          <mat-icon>{{nav.icon}}</mat-icon>{{nav.text}}
-        </a>
-        <div *ngIf="link.isActive" class="active-arrow"></div>
-      </li>
-    </ul>
-    <div class="sidebar-wrapper">
-        <ng-container #sidebar></ng-container>
-    </div>
+  <div class="sidenav-wrapper">
+      <div class="sidenav">
+          <ul class="sidenav-menu-items">
+              <li class="sidenav-menu-item" *ngFor="let nav of fillerNav">
+                  <a [routerLink]="nav.link" routerLinkActive="active" #link="routerLinkActive" class="sidenav-menu-link" (click)="closeMenu()">
+                      <mat-icon>{{nav.icon}}</mat-icon>{{nav.text}}
+                  </a>
+                  <div *ngIf="link.isActive" class="active-arrow"></div>
+              </li>
+          </ul>
+          <div class="sidebar-wrapper">
+              <ng-container #sidebar></ng-container>
+          </div>
+      </div>
   </div>
   <div class="router-outlet-wrap">
     <router-outlet *ngIf="sidebarContainerRef && sidebarMobileContainerRef" (activate)="onRouterOutletActivate($event)"></router-outlet>

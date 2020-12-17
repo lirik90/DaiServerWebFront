@@ -20,6 +20,11 @@
   float: right;
 }
 
+.chart-wrapper {
+    width: 95%;
+    margin: 0 auto;
+}
+
 .about a {
     display: inline-block;
     float: right;
@@ -27,7 +32,7 @@
     border-radius: 3px;
     margin-top: 8px;
     margin-right: 8px;
-    padding: 0px 3px 1px 2px;
+    padding: 0 3px 1px 2px;
     background-color: #dcc999;
     color: #000;
     font-size: 13px;
