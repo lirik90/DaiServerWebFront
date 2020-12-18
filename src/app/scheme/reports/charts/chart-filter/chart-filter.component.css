@@ -69,6 +69,7 @@ fieldset.chart_type {
 }
 .charts-type-button {
   margin: 5px;
+    font-size: 0.8rem;
 }
 
 .time-filter {

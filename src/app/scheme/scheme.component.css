@@ -1213,7 +1213,7 @@ h2:lang(ko).localnav-title {
 }
 
 @media all and (max-width: 600px) {
-  .sidenav {
+  .sidenav-wrapper {
     display: none !important;
   }
 }
@@ -1273,9 +1273,13 @@ h2:lang(ko).localnav-title {
 
     overflow-y: auto;
 
-    width: 20%;
-    min-width: 300px;
+    min-width: 190px;
     min-height: 270px;
+}
+
+.sidenav-wrapper_wider {
+    min-width: 300px;
+    width: 20%;
 }
 
 .sidenav {

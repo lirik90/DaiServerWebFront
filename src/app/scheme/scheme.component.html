@@ -44,7 +44,7 @@
 </div>
 
 <div class="row">
-  <div class="sidenav-wrapper">
+  <div class="sidenav-wrapper" [class.sidenav-wrapper_wider]="haveSidebar">
       <div class="sidenav">
           <ul class="sidenav-menu-items">
               <li class="sidenav-menu-item" *ngFor="let nav of fillerNav">

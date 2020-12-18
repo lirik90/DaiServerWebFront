@@ -30,6 +30,8 @@ export class SchemeComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('sidebar', { read: ViewContainerRef }) sidebarContainerRef: ViewContainerRef;
     @ViewChild('sidebarMobile', { read: ViewContainerRef }) sidebarMobileContainerRef: ViewContainerRef;
 
+    haveSidebar = false;
+
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
@@ -326,7 +328,8 @@ export class SchemeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         const containerRef = this.mobileQuery.matches ? this.sidebarMobileContainerRef : this.sidebarContainerRef;
 
-        if (needSidebarHelper(this.active_route_component_)) {
+        this.haveSidebar = needSidebarHelper(this.active_route_component_);
+        if (this.haveSidebar) {
             (this.active_route_component_ as NeedSidebar).getSidebarWidget(containerRef);
         }
     }
