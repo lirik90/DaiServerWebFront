@@ -10,6 +10,7 @@ import { SchemeService } from '../scheme.service';
 import {Section, Device_Item, Device_Item_Group, DIG_Mode_Type, DIG_Param} from '../scheme';
 import { ControlService } from '../control.service';
 import {AuthenticationService} from '../../authentication.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-manage',
@@ -143,7 +144,9 @@ export class ManageComponent implements OnInit, AfterViewInit {
   styleUrls: ['./manage.component.css'],
 })
 
-export class ParamsDialogComponent implements OnInit{
+export class ParamsDialogComponent implements OnInit {
+  pending = false;
+
   groupId: number;
 
   sct: Section;
@@ -151,6 +154,9 @@ export class ParamsDialogComponent implements OnInit{
   cantChange: boolean;
 
   changed_values: DIG_Param[] = [];
+  private group_param_values_changed$: Subscription;
+  private changing_timeout: number;
+  private unchanged_params: DIG_Param[];
 
   constructor(
     private route: ActivatedRoute,
@@ -159,6 +165,7 @@ export class ParamsDialogComponent implements OnInit{
     private controlService: ControlService,
     private location: Location,
     public dialogRef: MatDialogRef<ParamsDialogComponent>,
+    private snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.groupId = data.groupId;
@@ -212,7 +219,7 @@ export class ParamsDialogComponent implements OnInit{
            control.focus();
            return true;
          }
-     
+
       for (const node of control.childNodes)
         if (findNode(node))
           return true;
@@ -225,9 +232,18 @@ export class ParamsDialogComponent implements OnInit{
   onSubmit() {
     console.log('param form submit', this.changed_values);
     if (this.changed_values) {
-      this.controlService.changeParamValues(this.changed_values);
+        this.group_param_values_changed$ = this.controlService.group_param_values_changed.subscribe((changed_params: DIG_Param[]) => {
+            this.clear_changing_timeuot();
+            const changed_ids = this.changed_values.map(p => p.id);
+            this.unchanged_params = changed_params.filter(param => !changed_ids.includes(param.id));
+
+            if (this.unchanged_params.length === 0) {
+                this.close();
+            }
+        });
+        this.set_changing_timeout();
+        this.controlService.changeParamValues(this.changed_values);
     }
-    this.close();
   }
 
   goBack(): void {
@@ -238,4 +254,36 @@ export class ParamsDialogComponent implements OnInit{
   close() {
     this.dialogRef.close();
   }
+
+    private set_changing_timeout() {
+        this.changing_timeout = window.setTimeout(() => {
+            this.group_param_values_changed$.unsubscribe();
+
+            if (this.unchanged_params?.length > 0) {
+                this.changing_error_unchanged();
+            } else {
+                this.changing_error_timeout();
+            }
+        }, 10000);
+    }
+
+    private clear_changing_timeuot() {
+        clearTimeout(this.changing_timeout);
+    }
+
+    private changing_error_unchanged() {
+        this.snackBar.open('Have unchanged values', 'Hide', {
+            duration: 10000,
+            horizontalPosition: 'end',
+            verticalPosition: 'bottom',
+        });
+    }
+
+    private changing_error_timeout() {
+        this.snackBar.open('Changing timeout', 'Hide', {
+            duration: 10000,
+            horizontalPosition: 'end',
+            verticalPosition: 'bottom',
+        });
+    }
 }

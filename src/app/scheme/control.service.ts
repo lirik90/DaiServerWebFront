@@ -58,6 +58,7 @@ export class ControlService {
   public byte_msg: Subject<ByteMessage> = new Subject<ByteMessage>();
   public stream_msg: Subject<ByteMessage> = new Subject<ByteMessage>();
   public dev_item_changed: Subject<Device_Item[]> = new Subject<Device_Item[]>();
+  public group_param_values_changed: Subject<DIG_Param[]> = new Subject<DIG_Param[]>();
   public opened: Subject<boolean>;
 
   private bmsg_sub: SubscriptionLike;
@@ -144,15 +145,10 @@ export class ControlService {
         }
       } else if (msg.cmd == WebSockCmd.WS_CHANGE_GROUP_PARAM_VALUES) {
         const set_param_impl = (group: Device_Item_Group, prm_id: number, value: string) => {
-          if (group !== undefined && group.params !== undefined) {
-            for (const param of group.params) {
-              if (param.id == prm_id) {
-                param.value = value;
-                return true;
-              }
-            }
-          }
-          return false;
+            const param = group?.params?.find(param => param.id === prm_id);
+            if (!param) { return false; }
+            param.value = value;
+            return true;
         };
 
         let last_group: Device_Item_Group;
@@ -171,12 +167,15 @@ export class ControlService {
             }
           }
         };
+        const get_param_from_last_group = (prm_id: number) => last_group.params.find(param => param.id === prm_id);
 
         const view = new Uint8Array(msg.data);
         let [idx, count] = ByteTools.parseUInt32(view);
         let param_id: number;
         let user_id: number;
         let ts: number;
+
+        const changed_params: DIG_Param[] = [];
         while (count--) {
           ts = ByteTools.parseInt64(view, idx)[1];
           ts &= ~0x80000000000000;
@@ -190,6 +189,11 @@ export class ControlService {
           idx = last_pos;
 
           set_param(param_id, value);
+          changed_params.push(get_param_from_last_group(param_id));
+        }
+
+        if (changed_params.length > 0) {
+            this.group_param_values_changed.next(changed_params);
         }
       } else if (msg.cmd == WebSockCmd.WS_GROUP_STATUS_ADDED) {
         const view = new Uint8Array(msg.data);
@@ -260,7 +264,7 @@ export class ControlService {
             }
           }
         }
-      } else if (msg.cmd === WebSockCmd.WS_STREAM_DATA 
+      } else if (msg.cmd === WebSockCmd.WS_STREAM_DATA
                  || msg.cmd === WebSockCmd.WS_STREAM_TOGGLE
                  || msg.cmd === WebSockCmd.WS_STREAM_TEXT) {
         this.stream_msg.next(msg);
