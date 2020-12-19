@@ -27,8 +27,8 @@
 }
 
 .chart_conf > button {
-  width: 100%;
-  margin-top: 16px;
+  width: calc(100% - 36px);
+  margin: 16px 9px;
 }
 
 .chart_type {
