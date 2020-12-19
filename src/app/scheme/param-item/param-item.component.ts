@@ -30,7 +30,6 @@ export class ParamItemComponent implements OnInit {
 
   getTimeString(p: DIG_Param): string
   {
-      console.log('#getTimeString', p.id);
     let pad = (val: number) => {
       return ('0' + val.toFixed(0)).slice(-2);
     };
@@ -43,7 +42,6 @@ export class ParamItemComponent implements OnInit {
 
   setTimeParam(p: DIG_Param, val: string): void
   {
-      console.log(val);
       let arr = val.split(':');
       if (arr.length)
       {
