@@ -27,15 +27,14 @@
 }
 
 .chart_conf > button {
-  width: calc(100% - 36px);
+  width: calc(100% - 18px);
   margin: 16px 9px;
 }
 
 .chart_type {
   display: inline-block;
-  float: left;
   margin: 0 auto;
-  width: 95%;
+  width: 100%;
 }
 
 .chart_type {
@@ -43,7 +42,7 @@
 }
 
 fieldset.chart_type {
-    width: calc(calc(95% - 1.5em) - 6px);
+    width: calc(calc(100% - 1.5em) - 4px);
 }
 
 .save-block {
@@ -56,11 +55,8 @@ fieldset.chart_type {
 
 .chart-type-data {
   display: inline-block;
-  width: calc(100% - 36px);
+  width: calc(100% - 22px);
   vertical-align: middle;
-}
-.ctd-items {
-  margin-right: 32px;
 }
 
 .charts-type-group {

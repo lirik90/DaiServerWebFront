@@ -47,7 +47,7 @@
   <div class="sidenav-wrapper" [class.sidenav-wrapper_wider]="haveSidebar">
       <div class="sidenav">
           <ul class="sidenav-menu-items">
-              <li class="sidenav-menu-item" *ngFor="let nav of fillerNav">
+              <li *ngFor="let nav of fillerNav">
                   <a [routerLink]="nav.link" routerLinkActive="active" #link="routerLinkActive" class="sidenav-menu-link" (click)="closeMenu()">
                       <mat-icon>{{nav.icon}}</mat-icon>{{nav.text}}
                   </a>

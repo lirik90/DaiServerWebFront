@@ -1200,7 +1200,6 @@ h2:lang(ko).localnav-title {
 
 .router-outlet-wrap {
     display: block;
-    margin: 16px;
     box-sizing: border-box;
     flex-grow: 1;
     flex-shrink: 1;
@@ -1231,10 +1230,11 @@ h2:lang(ko).localnav-title {
 .sidenav-menu-items {
     list-style: none;
     padding: 0;
+    margin-bottom: 0;
     flex: 1 0;
 }
 
-.sidenav-menu-item {
+.sidenav-menu-items li {
   margin-bottom: 4px;
 }
 
@@ -1325,9 +1325,9 @@ h2:lang(ko).localnav-title {
     /*flex-basis: 50%;*/
     flex-grow: 1;
     flex-shrink: 1;
-    padding-left: 10px;
+    padding: 0 4px;
 }
 
-.sidenav-menu-item {
+.sidenav-menu-items li {
   overflow: hidden;
 }
