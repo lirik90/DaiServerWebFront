@@ -45,9 +45,15 @@ export class ParamItemComponent implements OnInit {
       let arr = val.split(':');
       if (arr.length)
       {
-          let new_value = parseInt(arr[0]) * 3600;
-          if (arr.length > 1) new_value += parseInt(arr[1]) * 60;
-          if (arr.length > 2) new_value += parseInt(arr[2]);
+          let v = parseInt(arr[0]) * 3600;
+          let new_value = !Number.isNaN(v) ? v : 0;
+
+          if (arr.length > 1) v = parseInt(arr[1]) * 60;
+          new_value += !Number.isNaN(v) ? v : 0;
+
+          if (arr.length > 2) v = parseInt(arr[2]);
+          new_value += !Number.isNaN(v) ? v : 0;
+
           p.value = new_value.toString();
       }
   }
