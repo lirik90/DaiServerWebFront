@@ -12,7 +12,7 @@ label > textarea {
   padding-left: .4em;
 }
 .desc_label {
-  width: 100%;
+  width: calc(100% - 32px);
 }
 input {
   height: 2em;

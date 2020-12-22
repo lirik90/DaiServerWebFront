@@ -1,6 +1,6 @@
 <ng-container *ngIf="initialized">
-    <app-chart-filter [charts]="charts" [chart_filter]="chartFilter"
-                      (paramsChange)="initCharts($event)"></app-chart-filter>
+<!--    <app-chart-filter [charts]="charts" [chart_filter]="chartFilter"-->
+<!--                      (paramsChange)="initCharts($event)"></app-chart-filter>-->
     <app-chart-item *ngFor="let chart of charts"
                     [chartInfo]="chart"
                     [viewportMin]="time_from_"

@@ -17,6 +17,7 @@ import {Scheme_Group_Member} from '../../../user';
 import {Chart_Info_Interface, Chart_Type, ChartFilter, ZoomInfo} from './chart-types';
 import {ChartItemComponent} from './chart-item/chart-item.component';
 import {Hsl, ColorPickerDialog} from './color-picker-dialog/color-picker-dialog';
+import {SidebarService} from '../../sidebar.service';
 
 interface Chart_Item_Iface
 {
@@ -51,7 +52,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
   devItemList = [];
 
-  chartFilter: ChartFilter = {
+  private _chartFilter: ChartFilter = {
     paramSelected: [],
     selectedItems: [this.schemeService.scheme.dig_type[0]],
     timeFrom: 0,
@@ -61,6 +62,18 @@ export class ChartsComponent implements OnInit, OnDestroy {
     user_chart: null,
     data_part_size: 100000
   };
+
+  get chartFilter(): ChartFilter {
+      return this._chartFilter;
+  }
+
+  set chartFilter(v: ChartFilter) {
+      this._chartFilter = v;
+      this.sidebarService.performActionToSidebar({
+          type: 'chart_filter',
+          data: this._chartFilter,
+      });
+  }
 
   charts: Chart_Info_Interface[] = [];
   members: Scheme_Group_Member[] = [];
@@ -76,7 +89,8 @@ export class ChartsComponent implements OnInit, OnDestroy {
       public translate: TranslateService,
       private schemeService: SchemeService,
       private changeDetectorRef: ChangeDetectorRef,
-      private zone: NgZone
+      private zone: NgZone,
+      private sidebarService: SidebarService,
   ) {
       moment.locale('ru');
 
@@ -88,6 +102,18 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
     this.chartFilter.timeFrom = today.getTime();
     this.chartFilter.timeTo = todayEnd.getTime();
+
+    this.sidebarService.performActionToSidebar({
+      type: 'chart_filter',
+      data: this.chartFilter,
+    });
+
+    this.sidebarService.getContentActionBroadcast()
+        .subscribe((action) => {
+            if (action.type === 'params_change') {
+                this.initCharts(action.data);
+            }
+        });
   }
 
   ngOnInit() {
@@ -133,6 +159,14 @@ export class ChartsComponent implements OnInit, OnDestroy {
     default:
         break;
     }
+
+    this.sidebarService.performActionToSidebar({
+      type: 'charts',
+      data: {
+          charts: this.charts,
+          chart_filter: this.chartFilter,
+      },
+    });
 
     this.data_ = data_ptr.dev_items.join(',');
     this.param_data_ = data_ptr.params.join(',');
@@ -650,26 +684,28 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
             const log = logs.results.find(log => log.item_id === item_id);
 
-            let haveDataBefore = false;
-            let haveDataAfter = false;
+            if (log?.data) {
+                let haveDataBefore = false;
+                let haveDataAfter = false;
 
-            log.data = log.data.filter(item => item.value !== null);
+                log.data = log.data.filter(item => item.value !== null);
 
-            log.data.forEach((item) => {
-                haveDataBefore = item.time < dataset.data[0].x.getTime();
-                haveDataAfter = item.time > dataset.data[dataset.data.length - 1].x.getTime();
-            });
+                log.data.forEach((item) => {
+                    haveDataBefore = item.time < dataset.data[0].x.getTime();
+                    haveDataAfter = item.time > dataset.data[dataset.data.length - 1].x.getTime();
+                });
 
-            if (!haveDataBefore) {
-                const value = dataset.data[0].y;
-                if (value !== null)
-                    log.data.splice(0, 0, { value, time: this.time_from_ext_ });
-            }
+                if (!haveDataBefore) {
+                    const value = dataset.data[0].y;
+                    if (value !== null)
+                        log.data.splice(0, 0, { value, time: this.time_from_ext_ });
+                }
 
-            if (!haveDataAfter) {
-                let value = dataset.dev_item ? dataset.dev_item.val?.value : dataset.param.value;
-                if (value !== null)
-                    log.data.push({ value, time: this.time_to_ext_ });
+                if (!haveDataAfter) {
+                    let value = dataset.dev_item ? dataset.dev_item.val?.value : dataset.param.value;
+                    if (value !== null)
+                        log.data.push({ value, time: this.time_to_ext_ });
+                }
             }
         }
 
