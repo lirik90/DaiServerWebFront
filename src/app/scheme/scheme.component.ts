@@ -332,6 +332,8 @@ export class SchemeComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.haveSidebar) {
             (this.active_route_component_ as NeedSidebar).getSidebarWidget(containerRef);
         }
+
+        this.changeDetectorRef.detectChanges();
     }
 }
 

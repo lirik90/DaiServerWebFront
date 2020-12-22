@@ -684,26 +684,28 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
             const log = logs.results.find(log => log.item_id === item_id);
 
-            let haveDataBefore = false;
-            let haveDataAfter = false;
+            if (log?.data) {
+                let haveDataBefore = false;
+                let haveDataAfter = false;
 
-            log.data = log.data.filter(item => item.value !== null);
+                log.data = log.data.filter(item => item.value !== null);
 
-            log.data.forEach((item) => {
-                haveDataBefore = item.time < dataset.data[0].x.getTime();
-                haveDataAfter = item.time > dataset.data[dataset.data.length - 1].x.getTime();
-            });
+                log.data.forEach((item) => {
+                    haveDataBefore = item.time < dataset.data[0].x.getTime();
+                    haveDataAfter = item.time > dataset.data[dataset.data.length - 1].x.getTime();
+                });
 
-            if (!haveDataBefore) {
-                const value = dataset.data[0].y;
-                if (value !== null)
-                    log.data.splice(0, 0, { value, time: this.time_from_ext_ });
-            }
+                if (!haveDataBefore) {
+                    const value = dataset.data[0].y;
+                    if (value !== null)
+                        log.data.splice(0, 0, { value, time: this.time_from_ext_ });
+                }
 
-            if (!haveDataAfter) {
-                let value = dataset.dev_item ? dataset.dev_item.val?.value : dataset.param.value;
-                if (value !== null)
-                    log.data.push({ value, time: this.time_to_ext_ });
+                if (!haveDataAfter) {
+                    let value = dataset.dev_item ? dataset.dev_item.val?.value : dataset.param.value;
+                    if (value !== null)
+                        log.data.push({ value, time: this.time_to_ext_ });
+                }
             }
         }
 
