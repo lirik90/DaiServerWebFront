@@ -69,6 +69,11 @@
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
 
-  <mat-paginator [length]="resultsLength" [pageSize]="this.itemsPerPage" [pageSizeOptions]="[15, 35, 50, 85, 100]" (page)="pageEvent = handlePage($event)">
+  <mat-paginator
+      [length]="resultsLength"
+      [pageSize]="this.itemsPerPage"
+      [pageSizeOptions]="[15, 35, 50, 85, 100]"
+      (page)="pageEvent = handlePage($event)"
+      appRememberPageLimit="log2_items_per_page">
   </mat-paginator>
 </div>
