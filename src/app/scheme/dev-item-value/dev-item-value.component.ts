@@ -6,7 +6,7 @@ import {SubscriptionLike} from 'rxjs';
 
 import { ControlService } from "../control.service";
 import { AuthenticationService } from "../../authentication.service";
-import { Device_Item, Register_Type } from '../scheme';
+import {Device_Item, Register_Type, Value_View} from '../scheme';
 import { SchemeService } from "../scheme.service";
 
 import { VideoStreamDialogComponent } from "./video-stream-dialog/video-stream-dialog.component";
@@ -19,6 +19,7 @@ import { VideoStreamDialogComponent } from "./video-stream-dialog/video-stream-d
 export class DevItemValueComponent implements OnInit, OnDestroy {
 
   @Input() item: Device_Item;
+  @Input() value_view: Value_View[];
 
   cantChange: boolean;
   is_toggle: boolean;
@@ -30,6 +31,7 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
 
   timer_: number;
   changed_sub: SubscriptionLike = null;
+  view: Value_View;
 
   constructor(
 	  public translate: TranslateService,
@@ -40,6 +42,8 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.view = this.value_view?.find(vv => vv.type_id === this.item.type_id && vv.value === this.item.val.raw_value);
+
     this.cantChange = !this.authService.canChangeValue();
     this.is_toggle = this.item.type.register_type == Register_Type.RT_COILS;
     this.is_holding = this.item.type.register_type == Register_Type.RT_HOLDING_REGISTERS;
@@ -58,6 +62,10 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
   }
 
   get text_value(): string {
+    if (this.view) {
+        return this.view.view;
+    }
+
     const val = this.item.val ? this.item.val.value : null;
     if (val === undefined || val === null) {
       return this.translate.instant("NOT_CONNECTED");

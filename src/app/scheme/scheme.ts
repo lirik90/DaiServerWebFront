@@ -248,6 +248,12 @@ export class Help {
     scheme_id: number;
 }
 
+export interface Value_View {
+    type_id: number;
+    value: any;
+    view: any;
+}
+
 export class Scheme_Detail {
     id: number;             // ID проекта
     parent_id: number;
@@ -266,5 +272,6 @@ export class Scheme_Detail {
     disabled_param: number[]; // Недоступные для пользователя параметры
 
     conn: Observable<number>;
+    value_view: Value_View[];
 }
 

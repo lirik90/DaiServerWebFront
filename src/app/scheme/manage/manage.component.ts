@@ -1,16 +1,15 @@
-import {AfterViewInit, Component, Inject, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import {filter} from 'rxjs/operators';
 
 import { SchemeService } from '../scheme.service';
-import {Section, Device_Item, Device_Item_Group, DIG_Mode_Type, DIG_Param} from '../scheme';
+import {Section, Device_Item, Device_Item_Group, DIG_Mode_Type, DIG_Param, Value_View} from '../scheme';
 import { ControlService } from '../control.service';
 import {AuthenticationService} from '../../authentication.service';
 import {Subscription} from 'rxjs';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-manage',
@@ -26,6 +25,7 @@ export class ManageComponent implements OnInit, AfterViewInit {
   currentGroup: number;
 
   canChangeMode: boolean;
+  value_view: Value_View[];
 
     get isAdmin(): boolean
     {
@@ -67,6 +67,7 @@ export class ManageComponent implements OnInit, AfterViewInit {
     this.canChangeMode = this.authService.canChangeMode();
 
     this.schemeName = this.schemeService.scheme.name;
+    this.value_view = this.schemeService.scheme.value_view;
     this.groupModes = this.schemeService.scheme.dig_mode_type;
     this.sections = this.schemeService.scheme.section;
     this.sctCount = this.sections.length;
