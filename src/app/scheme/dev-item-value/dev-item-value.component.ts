@@ -42,7 +42,7 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.view = this.value_view?.find(vv => vv.type_id === this.item.type_id && vv.value === this.item.val.raw_value);
+    this.view = this.value_view?.find(vv => vv.type_id === this.item.type_id && vv.value === this.item.val?.raw_value);
 
     this.cantChange = !this.authService.canChangeValue();
     this.is_toggle = this.item.type.register_type == Register_Type.RT_COILS;
