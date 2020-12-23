@@ -156,17 +156,17 @@ export class ParamsDialogComponent implements OnInit {
   changed_values: DIG_Param[] = [];
   private group_param_values_changed$: Subscription;
   private changing_timeout: number;
-  private unchanged_params: DIG_Param[];
+  private unsaved_params_ids: number[];
 
   constructor(
-    private route: ActivatedRoute,
-    private schemeService: SchemeService,
-    private authService: AuthenticationService,
-    private controlService: ControlService,
-    private location: Location,
-    public dialogRef: MatDialogRef<ParamsDialogComponent>,
-    private snackBar: MatSnackBar,
-    @Inject(MAT_DIALOG_DATA) public data: any
+      private route: ActivatedRoute,
+      public schemeService: SchemeService,
+      private authService: AuthenticationService,
+      private controlService: ControlService,
+      private location: Location,
+      public dialogRef: MatDialogRef<ParamsDialogComponent>,
+      private snackBar: MatSnackBar,
+      @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.groupId = data.groupId;
   }
@@ -230,14 +230,21 @@ export class ParamsDialogComponent implements OnInit {
   }
 
   onSubmit() {
+    if (!this.schemeService.isSchemeConnected) return;
+
     console.log('param form submit', this.changed_values);
     if (this.changed_values) {
+        this.pending = true;
         this.group_param_values_changed$ = this.controlService.group_param_values_changed.subscribe((changed_params: DIG_Param[]) => {
-            this.clear_changing_timeuot();
-            const changed_ids = this.changed_values.map(p => p.id);
-            this.unchanged_params = changed_params.filter(param => !changed_ids.includes(param.id));
+            if (!this.unsaved_params_ids) {
+                this.unsaved_params_ids = this.changed_values.map(p => p.id);
+            }
 
-            if (this.unchanged_params.length === 0) {
+            this.clear_changing_timeout();
+            this.unsaved_params_ids = this.unsaved_params_ids.filter(id => !changed_params.find(p => p.id === id));
+
+            if (this.unsaved_params_ids.length === 0) {
+                this.pending = false;
                 this.close();
             }
         });
@@ -259,7 +266,7 @@ export class ParamsDialogComponent implements OnInit {
         this.changing_timeout = window.setTimeout(() => {
             this.group_param_values_changed$.unsubscribe();
 
-            if (this.unchanged_params?.length > 0) {
+            if (this.unsaved_params_ids?.length > 0) {
                 this.changing_error_unchanged();
             } else {
                 this.changing_error_timeout();
@@ -267,22 +274,26 @@ export class ParamsDialogComponent implements OnInit {
         }, 10000);
     }
 
-    private clear_changing_timeuot() {
+    private clear_changing_timeout() {
         clearTimeout(this.changing_timeout);
     }
 
     private changing_error_unchanged() {
-        this.snackBar.open('Have unchanged values', 'Hide', {
+        this.pending = false;
+
+        this.snackBar.open('Не все значения изменены', 'Скрыть', {
             duration: 10000,
-            horizontalPosition: 'end',
+            horizontalPosition: 'center',
             verticalPosition: 'bottom',
         });
     }
 
     private changing_error_timeout() {
-        this.snackBar.open('Changing timeout', 'Hide', {
+        this.pending = false;
+
+        this.snackBar.open('Тайм-аут обновления', 'Скрыть', {
             duration: 10000,
-            horizontalPosition: 'end',
+            horizontalPosition: 'center',
             verticalPosition: 'bottom',
         });
     }
