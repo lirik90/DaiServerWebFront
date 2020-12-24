@@ -33,6 +33,7 @@ import { UserSettingsModule } from './user-settings/user-settings.module';
 import { CookieService } from 'ngx-cookie-service';
 import { FavService } from './fav.service';
 import { TgAuthComponent } from './tg-auth/tg-auth.component';
+import { RememberPageLimitDirective } from './remember-page-limit.directive';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -49,6 +50,7 @@ export function createTranslateLoader(http: HttpClient) {
     LoginComponent,
     RegisterComponent,
     TgAuthComponent,
+    RememberPageLimitDirective,
   ],
     entryComponents: [
         Create_Scheme_Dialog

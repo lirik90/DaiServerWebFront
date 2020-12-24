@@ -25,7 +25,9 @@
                [pageSize]="limit"
                [pageSizeOptions]="[5, 10, 25, 100]"
                (page)="pageEvent = getPaginatorData($event)"
-               [pageIndex]="start">
+               [pageIndex]="start"
+
+               appRememberPageLimit="schemes_list_items_per_page">
 </mat-paginator>
 
 <ul class="schemes">
@@ -46,10 +48,11 @@
                [pageSize]="limit"
                [pageSizeOptions]="[5, 10, 25, 100]"
                (page)="pageEvent = getPaginatorData($event)"
-               [pageIndex]="start">
+               [pageIndex]="start"
+
+               appRememberPageLimit="schemes_list_items_per_page">
 </mat-paginator>
 
 <div class="create-btn">
     <button mat-raised-button i18n="@@CREATE_SCHEME.CAPTION" (click)="open_create_scheme_dialog()">Создать новую схему</button>
-<div>
-
+</div>
