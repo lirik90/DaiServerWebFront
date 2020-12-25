@@ -704,7 +704,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
                 if (!haveDataAfter) {
                     let value = dataset.dev_item ? dataset.dev_item.val?.value : dataset.param.value;
                     if (value !== null)
-                        log.data.push({ value, time: Date.now() });
+                        log.data.push({ value, time: this.time_to_ext_ > Date.now() ? Date.now() : this.time_to_ext_ });
                 }
             }
         }
