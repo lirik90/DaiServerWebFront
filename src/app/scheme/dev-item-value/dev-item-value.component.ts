@@ -1,4 +1,15 @@
-import { Component, Input, OnInit, OnDestroy, Inject } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnInit,
+    OnDestroy,
+    Inject,
+    SimpleChanges,
+    OnChanges,
+    DoCheck,
+    IterableDiffers,
+    IterableDiffer, KeyValueDiffer, KeyValueDiffers
+} from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {TranslateService} from '@ngx-translate/core';
 
@@ -6,7 +17,7 @@ import {SubscriptionLike} from 'rxjs';
 
 import { ControlService } from "../control.service";
 import { AuthenticationService } from "../../authentication.service";
-import {Device_Item, Register_Type, Value_View} from '../scheme';
+import {Device_Item, Device_Item_Value, Register_Type, Value_View} from '../scheme';
 import { SchemeService } from "../scheme.service";
 
 import { VideoStreamDialogComponent } from "./video-stream-dialog/video-stream-dialog.component";
@@ -16,10 +27,22 @@ import { VideoStreamDialogComponent } from "./video-stream-dialog/video-stream-d
   templateUrl: './dev-item-value.component.html',
   styleUrls: ['./dev-item-value.component.css']
 })
-export class DevItemValueComponent implements OnInit, OnDestroy {
+export class DevItemValueComponent implements OnInit, DoCheck, OnDestroy {
+  private item_val_: Device_Item_Value;
+  private value_view_: Value_View[];
+  private value_view_differ_: IterableDiffer<Value_View>;
+  private value_view_differs_: KeyValueDiffer<string, any>[] = [];
 
   @Input() item: Device_Item;
-  @Input() value_view: Value_View[];
+  @Input() set value_view(v: Value_View[]) {
+      this.value_view_ = v;
+      if (!this.value_view_differ_ && v) {
+          this.value_view_differ_ = this.iterable_differs_.find(v).create();
+      }
+  }
+  get value_view(): Value_View[] {
+      return this.value_view_;
+  }
 
   cantChange: boolean;
   is_toggle: boolean;
@@ -35,14 +58,16 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
 
   constructor(
 	  public translate: TranslateService,
-    public dialog: MatDialog,
-    private controlService: ControlService,
-    private authService: AuthenticationService,
-	  private schemeService: SchemeService
+      public dialog: MatDialog,
+      private controlService: ControlService,
+      private authService: AuthenticationService,
+	  private schemeService: SchemeService,
+      private iterable_differs_: IterableDiffers,
+      private keyvalue_differs_: KeyValueDiffers,
   ) { }
 
   ngOnInit() {
-    this.view = this.value_view?.find(vv => vv.type_id === this.item.type_id && vv.value === this.item.val?.raw_value);
+    this.update_view();
 
     this.cantChange = !this.authService.canChangeValue();
     this.is_toggle = this.item.type.register_type == Register_Type.RT_COILS;
@@ -50,6 +75,49 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
 	this.is_button = this.item.type.register_type == Register_Type.RT_SIMPLE_BUTTON;
 	this.is_file = this.item.type.register_type == Register_Type.RT_FILE;
 	this.is_video = this.item.type.register_type == Register_Type.RT_VIDEO_STREAM;
+  }
+
+  ngDoCheck() {
+      let need_update_view = false;
+
+      // Check item.val changing
+      if (
+          (!!this.item?.val && !this.item_val_)
+          || this.item?.val?.raw_value !== this.item_val_.raw_value
+          || this.item?.val?.value !== this.item_val_.value
+      ) {
+          this.item_val_ = { ...this.item.val };
+          need_update_view = true;
+      }
+
+      // Check value_view array changing
+      if (this.value_view_differ_) {
+          const changes = this.value_view_differ_.diff(this.value_view);
+          if (changes) {
+              changes.forEachAddedItem((item) => {
+                  if (!this.value_view_differs_[item.currentIndex] && item.item) {
+                      this.value_view_differs_.splice(item.currentIndex, 0, this.keyvalue_differs_.find(item.item).create());
+                  }
+              });
+
+              changes.forEachRemovedItem((item) => {
+                  this.value_view_differs_.splice(item.previousIndex, 1);
+              });
+          }
+
+          let is_value_view_items_touched = false;
+          this.value_view_differs_.forEach((differ, idx) => {
+              is_value_view_items_touched = is_value_view_items_touched || !!differ.diff(this.value_view[idx]);
+          });
+
+          if (is_value_view_items_touched) {
+              need_update_view = true;
+          }
+      }
+
+      if (need_update_view) {
+          this.update_view();
+      }
   }
 
   ngOnDestroy() {
@@ -170,6 +238,10 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
         this.is_loading = false
       });
   }
+
+    private update_view() {
+        this.view = this.value_view?.find(vv => vv.type_id === this.item.type_id && vv.value === this.item.val?.raw_value);
+    }
 }
 
 @Component({
