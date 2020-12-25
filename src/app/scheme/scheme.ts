@@ -270,8 +270,7 @@ export class Scheme_Detail {
     dig_status_category: DIG_Status_Category[];  // Категории состояний
     dig_mode_type: DIG_Mode_Type[];
     disabled_param: number[]; // Недоступные для пользователя параметры
+    value_view: Value_View[];
 
     conn: Observable<number>;
-    value_view: Value_View[];
 }
-
