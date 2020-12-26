@@ -27,7 +27,7 @@ h4 {
   display: flex;
 }
 .module {
-  padding: 20px;
+  padding: 10px 20px;
   text-align: center;
   color: #eee;
   height: 120px;
@@ -37,6 +37,9 @@ h4 {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  border: 2px solid rgba(0,0,0,.4);
+  box-shadow: 5px 5px 5px 0 rgba(0,0,0,0.75);
 }
 .module:hover {
   background-color: #EEE;
@@ -67,5 +70,10 @@ h4 {
 }
 
 .module h4 {
-  margin: none;
+  margin: 0;
 }
+
+.mat-icon {
+    position: relative;
+}
+

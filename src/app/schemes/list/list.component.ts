@@ -3,45 +3,24 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { SubCommandDescription } from '@angular/cli/models/interface';
+import { MatDialog} from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 
-import { Observable, of, Subject, Subscription } from 'rxjs';
+import { of, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
 
-import { Connection_State, Scheme, PaginatorApi} from '../../user';
+import { Scheme} from '../../user';
 import { SchemesService } from '../schemes.service';
 import { AuthenticationService } from '../../authentication.service';
-import { ControlService } from '../../scheme/control.service';
 import { Create_Scheme_Dialog } from './create-scheme-dialog/create-scheme-dialog';
-
-class StatusItems {
-  connection: number;
-  items: {
-      args: any;
-      group_id: number;
-      id: number;
-      status_id: number;
-      title: string;
-    }[];
-}
-
-class StatusInfo {
-  groupType_id: number;
-  id: number;
-  inform: boolean;
-  name: string;
-  text: string;
-  category_id: number;
-}
+import {SchemesList} from '../schemes-list';
 
 @Component({
   selector: 'app-schemes',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+  styleUrls: ['./list.component.css', '../schemes-list.css']
 })
-export class SchemeListComponent implements OnInit, OnDestroy {
+export class SchemeListComponent extends SchemesList implements OnInit, OnDestroy {
   timeout: any;
   is_admin: boolean;
   start = 0;
@@ -50,25 +29,20 @@ export class SchemeListComponent implements OnInit, OnDestroy {
   constructor(private router: Router,
               private schemesService: SchemesService,
               private authService: AuthenticationService,
-              protected http: HttpClient,
-              public translate: TranslateService,
+              http: HttpClient,
+              translate: TranslateService,
               public dialog: MatDialog
-  ) {}
+  ) {
+      super(http, translate);
+  }
 
-  httpReqs: Subject<void> = new Subject<void>();
   searchString: Subject<string> = new Subject<string>();
 
-  statusItemSubs: Subscription[] = [];
   schemesSubs: Subscription;
 
   searchQ: Subject<string>;
 
-  schemes: Scheme[] = [];
-
   resultsLength = 0;
-
-  statusInfo = {};
-  statusQueue = {};
 
   @ViewChildren(MatPaginator) paginator: QueryList<MatPaginator>;
   citySelected = null;
@@ -78,18 +52,6 @@ export class SchemeListComponent implements OnInit, OnDestroy {
   pageEvent: PageEvent;
 
   @ViewChild('searchBox', {static: true}) searchBox;
-
-  httpGet<T>(req: string): Observable<T> {
-    return this.http.get<T>(req)
-      .pipe( takeUntil(this.httpReqs) );
-  }
-
-  ngOnDestroy(): void {
-    // This aborts all HTTP requests.
-    this.httpReqs.next();
-    // This completes the subject properlly.
-    this.httpReqs.complete();
-  }
 
   ngOnInit() {
     this.is_admin = this.authService.isAdmin();
@@ -157,20 +119,10 @@ export class SchemeListComponent implements OnInit, OnDestroy {
         this.schemes = dat.results;
 
         //console.log(this.schemes);
-        this.timeout = setTimeout(this.getStatuses, 1000, this);
+        this.timeout = setTimeout(() => this.getStatuses(), 1000);
 
         this.schemesSubs.unsubscribe();
       });
-  }
-
-  parseConnectNumber(n: number) {
-    // tslint:disable:no-bitwise
-    const connState = n & ~Connection_State.CS_CONNECTED_MODIFIED & ~Connection_State.CS_CONNECTED_WITH_LOSSES;
-    const modState = (n & Connection_State.CS_CONNECTED_MODIFIED) === Connection_State.CS_CONNECTED_MODIFIED;
-    const losesState = (n & Connection_State.CS_CONNECTED_WITH_LOSSES) === Connection_State.CS_CONNECTED_WITH_LOSSES;
-    // tslint:enable:no-bitwise
-
-    return [connState, modState, losesState];
   }
 
   delete(scheme: Scheme): void {
@@ -194,154 +146,6 @@ export class SchemeListComponent implements OnInit, OnDestroy {
     this.search(q);
 
     return event;
-  }
-
-  status_desc(h): string {
-    if (h.connection_str !== undefined && h.connection_str !== ' ') {
-      return h.connection_str;
-    }
-
-    let result = '';
-
-    if (h.mod_state) {
-      result += this.translate.instant('MODIFIED') + '. ';
-    }
-
-
-    if (h.loses_state) {
-      result += 'С потерями пакетов. ';
-    }
-
-    if (h.status_checked) {
-      switch (h.connect_state) {
-        case Connection_State.CS_SERVER_DOWN:
-          return this.translate.instant('SERVER_DOWN');
-        case Connection_State.CS_DISCONNECTED:
-          return result + this.translate.instant('OFFLINE');
-        case Connection_State.CS_CONNECTED:
-          return result + this.translate.instant('ONLINE');
-        case Connection_State.CS_CONNECTED_MODIFIED:
-          return result + this.translate.instant('MODIFIED');
-        case Connection_State.CS_DISCONNECTED_JUST_NOW:
-          return result + this.translate.instant('DISCONNECTED_JUST_NOW');
-        case Connection_State.CS_CONNECTED_JUST_NOW:
-          return result + this.translate.instant('CONNECTED_JUST_NOW');
-        case Connection_State.CS_CONNECTED_SYNC_TIMEOUT:
-          return result + this.translate.instant('CONNECTED_SYNC_TIMEOUT');
-      }
-    }
-    return this.translate.instant('WAIT') + '...';
-  }
-
-  status_class(h): string {
-    if (h.connection_str !== undefined && h.connection_str !== ' ') {
-      return 'status_fail';
-    }
-
-    if (!h.status_checked) {
-      return 'status_check';
-    }
-
-    if (h.mod_state) {
-      return 'status_modified';
-    }
-
-    switch (h.connect_state) {
-      case Connection_State.CS_SERVER_DOWN:
-        return 'status_server_down';
-      case Connection_State.CS_DISCONNECTED:
-        return 'status_bad';
-      case Connection_State.CS_CONNECTED_SYNC_TIMEOUT:
-      //  return 'status_sync_fail';
-      case Connection_State.CS_CONNECTED:
-        return 'status_ok';
-      case Connection_State.CS_CONNECTED_MODIFIED:
-        return 'status_modified';
-      case Connection_State.CS_DISCONNECTED_JUST_NOW:
-        return 'status_bad_just';
-      case Connection_State.CS_CONNECTED_JUST_NOW:
-        return 'status_sync';
-    }
-  }
-
-  private getStatusInfo(id: number, real_id: number) {
-    const statusInfoSubs = this.http.get<any[]>(`/api/v2/scheme/${real_id}/dig_status_type`).subscribe(statusInfo => {
-      this.statusInfo[id] = statusInfo;
-
-      /*
-      console.log(`${id} is loaded`);
-      console.log(statusInfo);
-       */
-
-      if (this.statusQueue[id]) {
-        // parse a queue
-
-        this.statusQueue[id].depSchemes.map(dh => {
-          this.putMessages(dh.id, dh.si, statusInfo);
-        });
-      }
-
-      statusInfoSubs.unsubscribe();
-    });
-  }
-
-  private putMessages(id: number, statusItems: StatusItems, st: StatusInfo[]) {
-    const scheme = this.schemes.find(h => h.id === id);
-
-    for (let i = 0; i < statusItems.items.length; i++) {
-      const si = statusItems.items[i];
-
-      const st_item = st.find(sti => sti.id === si.status_id);
-      scheme.messages.push({status: st_item.category_id, text: st_item.text, where: si.title});
-    }
-  }
-
-  private getStatuses(th: SchemeListComponent) {
-    console.log(th.schemes);
-    th.schemes.map(h => {
-      const id = h.parent || h.id;
-
-      h.mod_state = false;
-      h.loses_state = false;
-      h.status_checked = false;
-      h.connect_state = Connection_State.CS_SERVER_DOWN;
-
-      // get status
-      const sub = th.httpGet<StatusItems>(`/api/v2/scheme/${h.id}/dig_status`).subscribe(statusItems => {
-        h.messages = []; // 0 messages, wait
-
-        // set connection status
-        h.connection = statusItems.connection;
-        const [connState, modState, losesState] = th.parseConnectNumber(h.connection);
-        h.mod_state = <boolean>modState;
-        h.loses_state = <boolean>losesState;
-        h.status_checked = true;
-        h.connect_state = <Connection_State>connState;
-
-        // set messages
-        if (th.statusInfo[id]) { // if we have StatusInfo
-          // do it now
-          th.putMessages(h.id, statusItems, th.statusInfo[id]);
-        } else { // if we haven't StatusInfo
-          // put into queue
-          if (!th.statusQueue[id]) {
-            th.statusQueue[id] = {isLoading: false, depSchemes: []}; // create a place in queue
-          }
-          th.statusQueue[id].depSchemes.push({id: h.id, si: statusItems}); // put scheme as a depeneded
-
-          if (!th.statusQueue[id].isLoading) {
-            // start loading if was not started
-            th.statusQueue[id].isLoading = true;
-            th.getStatusInfo(id, h.id);
-          }
-        }
-
-        sub.unsubscribe();
-      });
-
-      th.statusItemSubs.push(sub);
-
-    });
   }
 
     open_create_scheme_dialog(): void

@@ -1,24 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { Router } from "@angular/router";
 
-import { Scheme } from '../../user';
+import {Scheme} from '../../user';
 import { SchemesService } from '../schemes.service';
 import {FavService} from '../../fav.service';
+import {TranslateService} from '@ngx-translate/core';
+import {HttpClient} from '@angular/common/http';
+import {SchemesList} from '../schemes-list';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css', '../../sections.css']
+  styleUrls: ['./dashboard.component.css', '../../sections.css', '../schemes-list.css']
 })
-export class DashboardComponent implements OnInit {
-
-  schemes: Scheme[] = [];
+export class DashboardComponent extends SchemesList implements OnInit, OnDestroy {
   favschemes: any[];
 
   constructor(
 	  private router: Router,
 	  private schemesService: SchemesService,
-    private favService: FavService) { }
+      private favService: FavService,
+      http: HttpClient,
+      translate: TranslateService,
+  ) {
+      super(http, translate);
+  }
 
   ngOnInit() {
     this.getSchemes();
@@ -28,12 +34,15 @@ export class DashboardComponent implements OnInit {
 
   getSchemes(): void {
     this.schemesService.getSchemes(5, 0, '-last_usage')
-      .subscribe(data => this.schemes = data.results.slice(0, 5));
+      .subscribe(data => {
+          this.schemes = data.results.slice(0, 5);
+          this.getStatuses();
+      });
   }
 
   getFavSchemes(): void {
     this.favschemes = this.favService.getFavs();
 
-    console.log(this.favschemes);1
+    console.log(this.favschemes);
   }
 }
