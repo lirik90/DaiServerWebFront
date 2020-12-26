@@ -75,8 +75,8 @@ export class ParamItemComponent implements OnInit {
     const copy = {...item};
     if (item.param.value_type === DIG_Param_Value_Type.VT_TIME)
       this.setTimeParam(copy, new_value);
-    else if (item.value !== new_value)
-      item.value = new_value;
+    else if (copy.value !== new_value)
+      copy.value = new_value;
 
     this.changed.push(copy);
   }

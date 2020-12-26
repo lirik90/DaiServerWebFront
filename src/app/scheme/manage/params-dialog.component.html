@@ -9,12 +9,16 @@
             mat-raised-button
             class="custom_button"
             [color]="!pending ? 'primary' : null"
-            [disabled]="cantChange || !paramForm.form.valid"
-            i18n="@@CONTROL.SAVE">
-        <mat-icon *ngIf="pending; else save">
+            [disabled]="cantChange || !paramForm.form.valid || !schemeService.isSchemeConnected">
+        <mat-icon *ngIf="pending; else text">
             <mat-progress-spinner color="primary" mode="indeterminate" diameter="20"></mat-progress-spinner>
         </mat-icon>
-        <ng-template #save>Сохранить</ng-template>
+        <ng-template #text>
+            <span *ngIf="schemeService.isSchemeConnected; else unavailable" i18n="@@PARAMS.SAVE">Сохранить</span>
+            <ng-template #unavailable>
+                <span i18n="@@PARAMS.UNAVAILABLE">Устройство не доступно</span>
+            </ng-template>
+        </ng-template>
     </button>
     <button type="button" mat-raised-button class="custom_button" (click)="close()" i18n="@@CONTROL.BACK">Назад</button>
 
