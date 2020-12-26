@@ -143,7 +143,6 @@ export class ManageComponent implements OnInit, AfterViewInit {
   templateUrl: './params-dialog.component.html',
   styleUrls: ['./manage.component.css'],
 })
-
 export class ParamsDialogComponent implements OnInit {
   pending = false;
 
