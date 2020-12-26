@@ -672,7 +672,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
     }
 
     private add_additional_chart_data(logs: Paginator_Chart_Value, data_param_name: string, requested_data: string) {
-        const chartsToUpdate = [];
+        const chartsToUpdate: Set<Chart_Info_Interface> = new Set();
 
         for (const item_id of requested_data.split(',').map(i => parseInt(i, 10))) {
             const [chart, dataset] = this.find_dataset(data_param_name, item_id);
@@ -680,7 +680,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
                 continue;
             }
 
-            chartsToUpdate.push(chart);
+            chartsToUpdate.add(chart);
 
             const log = logs.results.find(log => log.item_id === item_id);
 
@@ -691,8 +691,8 @@ export class ChartsComponent implements OnInit, OnDestroy {
                 log.data = log.data.filter(item => item.value !== null);
 
                 log.data.forEach((item) => {
-                    haveDataBefore = item.time < dataset.data[0].x.getTime();
-                    haveDataAfter = item.time > dataset.data[dataset.data.length - 1].x.getTime();
+                    haveDataBefore = haveDataBefore || item.time < dataset.data[0].x.getTime();
+                    haveDataAfter = haveDataAfter || item.time > dataset.data[dataset.data.length - 1].x.getTime();
                 });
 
                 if (!haveDataBefore) {
@@ -704,7 +704,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
                 if (!haveDataAfter) {
                     let value = dataset.dev_item ? dataset.dev_item.val?.value : dataset.param.value;
                     if (value !== null)
-                        log.data.push({ value, time: this.time_to_ext_ });
+                        log.data.push({ value, time: this.time_to_ext_ > Date.now() ? Date.now() : this.time_to_ext_ });
                 }
             }
         }
