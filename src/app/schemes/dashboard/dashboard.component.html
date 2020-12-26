@@ -2,17 +2,17 @@
 
 <ng-template #items_grid let-items="items">
     <div class="grid grid-pad">
-        <a *ngFor="let scheme of items" class="col-1-4" routerLink="/scheme/{{scheme.name}}/elements">
+        <div *ngFor="let scheme of items" class="col-1-4 scheme-link" (click)="onClick2($event, scheme.name)">
             <!--a class="detail" routerLink="/detail/{{scheme.name}}">?</a-->
             <div class="module scheme">
                 <mat-icon [matTooltip]="status_desc(scheme)" [ngClass]="status_class(scheme)"
-                          #tooltip="matTooltip" (click)="$event.stopPropagation();tooltip.toggle()"></mat-icon>
+                          #tooltip="matTooltip" (click)="tooltip.toggle()"></mat-icon>
                 <app-scheme-state-list [messages]="scheme.messages"></app-scheme-state-list>
                 <h4>
                     {{scheme.title}}
                 </h4>
             </div>
-        </a>
+        </div>
     </div>
 </ng-template>
 

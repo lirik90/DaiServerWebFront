@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { Router } from "@angular/router";
 
-import {Scheme} from '../../user';
 import { SchemesService } from '../schemes.service';
 import {FavService} from '../../fav.service';
 import {TranslateService} from '@ngx-translate/core';
@@ -44,5 +43,13 @@ export class DashboardComponent extends SchemesList implements OnInit, OnDestroy
     this.favschemes = this.favService.getFavs();
 
     console.log(this.favschemes);
+  }
+
+  onClick2($event: MouseEvent, scheme_name: string) {
+      if (!($event.target as HTMLDivElement).classList.contains('scheme-state-icon__num')) {
+          console.log(1);
+          this.router.navigate([`/scheme/${scheme_name}/elements`]);
+          return false;
+      }
   }
 }

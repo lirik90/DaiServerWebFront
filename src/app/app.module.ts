@@ -28,7 +28,6 @@ import { JwtInterceptor } from './jwt.interceptor';
 import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { UIService } from './ui.service';
-import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { UserSettingsModule } from './user-settings/user-settings.module';
 import { CookieService } from 'ngx-cookie-service';
 import { FavService } from './fav.service';
