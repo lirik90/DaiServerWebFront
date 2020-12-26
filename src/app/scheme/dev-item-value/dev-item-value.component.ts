@@ -64,7 +64,7 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
   }
 
   get text_value(): string {
-    const vv = this.value_view?.find(vv => vv.value === this.item.val?.raw_value);
+    const vv = this.value_view?.find(vv => vv.value === this.item.val?.value);
     if (vv) {
       return vv.view;
     }
