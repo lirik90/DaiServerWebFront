@@ -25,7 +25,6 @@ export class ManageComponent implements OnInit, AfterViewInit {
   currentGroup: number;
 
   canChangeMode: boolean;
-  value_view: Value_View[];
 
     get isAdmin(): boolean
     {
@@ -67,7 +66,6 @@ export class ManageComponent implements OnInit, AfterViewInit {
     this.canChangeMode = this.authService.canChangeMode();
 
     this.schemeName = this.schemeService.scheme.name;
-    this.value_view = this.schemeService.scheme.value_view;
     this.groupModes = this.schemeService.scheme.dig_mode_type;
     this.sections = this.schemeService.scheme.section;
     this.sctCount = this.sections.length;
