@@ -2,7 +2,8 @@
 
 <ng-template #items_grid let-items="items">
     <div class="grid grid-pad">
-        <div *ngFor="let scheme of items" class="col-1-4 scheme-link" (click)="onClick2($event, scheme.name)">
+        <div *ngFor="let scheme of items" class="col-1-4" 
+             routerLink="/scheme/{{scheme.name}}/elements">
             <!--a class="detail" routerLink="/detail/{{scheme.name}}">?</a-->
             <div class="module scheme">
                 <mat-icon [matTooltip]="status_desc(scheme)" [ngClass]="status_class(scheme)"

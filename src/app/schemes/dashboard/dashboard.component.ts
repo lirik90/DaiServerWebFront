@@ -44,12 +44,4 @@ export class DashboardComponent extends SchemesList implements OnInit, OnDestroy
 
     console.log(this.favschemes);
   }
-
-  onClick2($event: MouseEvent, scheme_name: string) {
-      if (!($event.target as HTMLDivElement).classList.contains('scheme-state-icon__num')) {
-          console.log(1);
-          this.router.navigate([`/scheme/${scheme_name}/elements`]);
-          return false;
-      }
-  }
 }

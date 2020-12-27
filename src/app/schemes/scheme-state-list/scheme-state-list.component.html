@@ -1,12 +1,12 @@
 <div class="scheme-state">
-  <button class="scheme-state-icon scheme-state-icon--{{status_class[most_bad_status]}}" (click)="toggleModal()">
+  <button class="scheme-state-icon scheme-state-icon--{{status_class[most_bad_status]}}" (click)="toggleModal($event)">
     <div class="scheme-state-icon__num">{{messages.length}}</div>
   </button>
 
   <div class="scheme-state-modal" *ngIf="isModalOpen">
     <div class="scheme-state-modal__tooblar">
       <div class="scheme-state-modal__tooblar-spacer"></div>
-      <button i18n="@@SCHEME_STATE.CLOSE" class="scheme-state-modal__close-btn" (click)="closeModal()">Закрыть</button>
+      <button i18n="@@SCHEME_STATE.CLOSE" class="scheme-state-modal__close-btn" (click)="toggleModal($event)">Закрыть</button>
     </div>
 
     <div class="scheme-state-msgs-list">

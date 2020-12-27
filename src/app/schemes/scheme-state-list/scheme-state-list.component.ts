@@ -62,12 +62,9 @@ export class SchemeStateListComponent implements OnInit, OnChanges {
     */
   }
 
-  toggleModal() {
-    this.isModalOpen = !this.isModalOpen;
-  }
-
-  closeModal() {
-    this.isModalOpen = false;
+  toggleModal(e: any) {
+      this.isModalOpen = !this.isModalOpen;
+      e.stopPropagation();
   }
 
 }
