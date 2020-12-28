@@ -461,8 +461,8 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         const leftKey = this.getAxisLocalStorageKey(this.leftYAxisLsKey, 'A');
         const rightKey = this.getAxisLocalStorageKey(this.rightYAxisLsKey, 'B');
 
-        leftKey && ChartItemComponent.saveScaleParams(leftKey, leftYAxis);
-        rightKey && ChartItemComponent.saveScaleParams(rightKey, rightYAxis);
+        leftKey && ChartItemComponent.saveScaleParamsToLocalStorage(leftKey, leftYAxis);
+        rightKey && ChartItemComponent.saveScaleParamsToLocalStorage(rightKey, rightYAxis);
     }
 
     private getAxisLocalStorageKey(axisKey: string, axisId: string) {
@@ -483,7 +483,7 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         return JSON.parse(json);
     }
 
-    private static saveScaleParams(axisKey: string, axis: any) {
+    private static saveScaleParamsToLocalStorage(axisKey: string, axis: any) {
         localStorage.setItem(axisKey, JSON.stringify({
             min: axis.min,
             max: axis.max,
