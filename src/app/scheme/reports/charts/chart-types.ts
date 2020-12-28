@@ -16,6 +16,7 @@ export interface Select_Item_Iface {
 
 export interface Chart_Info_Interface {
     name: string;
+    charts_type: Chart_Type;
     data: {
         datasets: any[]
     };

@@ -21,7 +21,7 @@ import {BaseChartDirective} from 'ng2-charts';
 import {Paginator_Chart_Value, SchemeService} from '../../../scheme.service';
 import {Scheme_Group_Member} from '../../../../user';
 import {ColorPickerDialog, Hsl} from '../color-picker-dialog/color-picker-dialog';
-import {Chart_Info_Interface, ZoomInfo} from '../chart-types';
+import {Chart_Info_Interface, Chart_Type, ZoomInfo} from '../chart-types';
 import {ProgressBarMode} from '@angular/material/progress-bar/progress-bar';
 import {ThemePalette} from '@angular/material/core/common-behaviors/color';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -35,6 +35,9 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
     private _chartInfo: Chart_Info_Interface;
     private _differ: KeyValueDiffer<number, any>;
     private _datasetsDiffers: { [key: string]: KeyValueDiffer<any, any> } = {};
+
+    private readonly leftYAxisLsKey: string = 'scale-a-params';
+    private readonly rightYAxisLsKey: string = 'scale-b-params';
 
     loading: boolean;
     showProgressBar: boolean;
@@ -164,6 +167,11 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
     }
 
     ngOnInit(): void {
+        if (this.chartInfo.charts_type === Chart_Type.CT_DIG_TYPE) {
+            this.setupYAxisScale(this.leftYAxisLsKey, 0);
+            this.setupYAxisScale(this.rightYAxisLsKey, 1);
+        }
+
         this.schemeService.getMembers().subscribe(members => this.members = members.results);
     }
 
@@ -313,6 +321,10 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
     onZoom(chart: any, isZoom: boolean): void {
         const xAxis = chart.chart.scales['x-axis-0'];
         this.rangeChange.emit({timeFrom: Math.floor(xAxis.min), timeTo: Math.floor(xAxis.max), isZoom});
+
+        if (this.chartInfo.charts_type === Chart_Type.CT_DIG_TYPE) {
+            this.storeScaleParamsToLocalStorage();
+        }
     }
 
     onLabel(item, data): string {
@@ -425,5 +437,56 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
             this.progressBarValue = number;
             this.changeDetectorRef.detectChanges();
         }, 50);
+    }
+
+    private setupYAxisScale(axisKey: string, idx: number) {
+        const axis = this.options.scales.yAxes[idx];
+
+        const key = this.getAxisLocalStorageKey(axisKey, axis.id);
+        if (key) {
+            const params = ChartItemComponent.loadScaleParamsFromLocalStorage(key);
+            if (params) {
+                if (!axis.ticks) {
+                    axis.ticks = {} as any;
+                }
+
+                axis.ticks.min = params.min;
+                axis.ticks.max = params.max;
+            }
+        }
+    }
+
+    private storeScaleParamsToLocalStorage() {
+        const { A: leftYAxis, B: rightYAxis } = (this.chart.chart as any).scales;
+        const leftKey = this.getAxisLocalStorageKey(this.leftYAxisLsKey, 'A');
+        const rightKey = this.getAxisLocalStorageKey(this.rightYAxisLsKey, 'B');
+
+        leftKey && ChartItemComponent.saveScaleParams(leftKey, leftYAxis);
+        rightKey && ChartItemComponent.saveScaleParams(rightKey, rightYAxis);
+    }
+
+    private getAxisLocalStorageKey(axisKey: string, axisId: string) {
+        const dataset = this.chartInfo.data.datasets.find(ds => ds.yAxisID === axisId);
+        if (!dataset) return null;
+
+        const { group_id } = dataset.dev_item || dataset.param;
+
+        return `${axisKey}_${group_id}`;
+    }
+
+    private static loadScaleParamsFromLocalStorage(axisKey: string): { min: number, max: number } {
+        const json = localStorage.getItem(axisKey);
+        if (!json) {
+            return null;
+        }
+
+        return JSON.parse(json);
+    }
+
+    private static saveScaleParams(axisKey: string, axis: any) {
+        localStorage.setItem(axisKey, JSON.stringify({
+            min: axis.min,
+            max: axis.max,
+        }));
     }
 }

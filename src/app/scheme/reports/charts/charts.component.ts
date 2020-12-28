@@ -342,7 +342,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
     addChart(name: string, datasets: any[]): void {
         if (datasets.length)
             datasets[0].hidden = false;
-        this.charts.push({ name, data: {datasets} });
+        this.charts.push({ name, data: {datasets}, charts_type: this.chartFilter.charts_type });
     }
 
     set_initialized(set_values_loaded: boolean): void {
