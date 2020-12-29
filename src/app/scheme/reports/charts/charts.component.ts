@@ -688,8 +688,6 @@ export class ChartsComponent implements OnInit, OnDestroy {
                 let haveDataBefore = false;
                 let haveDataAfter = false;
 
-                log.data = log.data.filter(item => item.value !== null);
-
                 log.data.forEach((item) => {
                     haveDataBefore = haveDataBefore || item.time < dataset.data[0].x.getTime();
                     haveDataAfter = haveDataAfter || item.time > dataset.data[dataset.data.length - 1].x.getTime();
