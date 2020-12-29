@@ -13,6 +13,10 @@
   font-weight: bold;
 }
 
+[class*='col-'] {
+    padding: 0 8px !important;
+}
+
 .detail:hover {
   background-color: #eee;
 }
@@ -27,24 +31,35 @@ h4 {
   display: flex;
 }
 .module {
-  padding: 10px 20px;
+  padding: 8px;
   text-align: center;
   color: #eee;
+  text-shadow: 1px 2px 3px black;
   height: 120px;
   min-width: 120px;
   background-color: #607D8B;
   border-radius: 2px;
+  border: 5px outset #9ea9af;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  border: 2px solid rgba(0,0,0,.4);
-  box-shadow: 5px 5px 5px 0 rgba(0,0,0,0.75);
+  box-shadow: 2px 3px 10px 3px rgb(31, 28, 28), inset -5px -7px 20px #98a2a7;
 }
 .module:hover {
-  background-color: #EEE;
+  background-color: #8b9da7;
+  border: 5px outset #909496;
+  animation: module 0,5s;
+  box-shadow: 0 0 5px 3px #393d3f, inset -2px -2px 5px 0px #525758;
   cursor: pointer;
-  color: #607d8b;
+  color: #233036;
+  text-shadow: 1px 2px 3px white;
+  transform: translateY(2px);
+}
+@keyframes module {
+  0% { box-shadow: 0 0 0 0 var(--hover); }
+}
+.module:hover {
+  transition: 0.5s;
 }
 .grid-pad {
   padding: 10px 0;
@@ -64,6 +79,10 @@ h4 {
 }
 @media only screen and (max-width: 768px) {
   /* For mobile phones: */
+    [class*='col-'] {
+        padding: 8px 0 !important;
+    }
+
   .grid {
     display: unset;
   }
@@ -74,6 +93,5 @@ h4 {
 }
 
 .mat-icon {
-    position: relative;
+    text-shadow: none;
 }
-
