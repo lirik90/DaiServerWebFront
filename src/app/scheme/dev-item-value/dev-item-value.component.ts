@@ -42,9 +42,6 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.value_view = this.schemeService.scheme.value_view.filter(vv => vv.type_id === this.item.type_id);
-    if (!this.value_view.length) {
-      this.value_view = null;
-    }
 
     this.cantChange = !this.authService.canChangeValue();
     this.is_toggle = this.item.type.register_type == Register_Type.RT_COILS;
@@ -64,31 +61,20 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
   }
 
   get text_value(): string {
-    const vv = this.value_view?.find(vv => vv.value === this.item.val?.value);
-    if (vv) {
-      return vv.view;
-    }
+    const vv = this.value_view.find(vv => vv.value === this.item.val?.value);
+    if (vv)
+        return vv.view;
 
     const val = this.item.val ? this.item.val.value : null;
-    if (val === undefined || val === null) {
-      return this.translate.instant("NOT_CONNECTED");
-    }
+    if (val === undefined || val === null)
+        return this.translate.instant("NOT_CONNECTED");
 
-    if (typeof(val) === 'object') {
-      return val[this.item.val.raw_value];
-    }
+    if (typeof(val) === 'object')
+        return val[this.item.val.raw_value];
 
-    if (this.item.type.register_type === Register_Type.RT_DISCRETE_INPUTS) {
-      //console.log(val);
-
-      if (val == 0) {
-        return '0';
-      }
-
-      if (val == 1) {
-        return '1';
-      }
-    }
+    if (this.item.type.register_type === Register_Type.RT_DISCRETE_INPUTS
+        && typeof val === "boolean")
+        return val ? '1' : '0';
 
     return val;
   }
