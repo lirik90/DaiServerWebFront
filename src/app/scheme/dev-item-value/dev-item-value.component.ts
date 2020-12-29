@@ -6,7 +6,7 @@ import {SubscriptionLike} from 'rxjs';
 
 import { ControlService } from "../control.service";
 import { AuthenticationService } from "../../authentication.service";
-import { Device_Item, Register_Type } from '../scheme';
+import {Device_Item, Register_Type, Value_View} from '../scheme';
 import { SchemeService } from "../scheme.service";
 
 import { VideoStreamDialogComponent } from "./video-stream-dialog/video-stream-dialog.component";
@@ -20,6 +20,7 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
 
   @Input() item: Device_Item;
 
+  value_view: Value_View[];
   cantChange: boolean;
   is_toggle: boolean;
   is_holding: boolean;
@@ -33,13 +34,15 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
 
   constructor(
 	  public translate: TranslateService,
-    public dialog: MatDialog,
-    private controlService: ControlService,
-    private authService: AuthenticationService,
-	  private schemeService: SchemeService
+      public dialog: MatDialog,
+      private controlService: ControlService,
+      private authService: AuthenticationService,
+	  private schemeService: SchemeService,
   ) { }
 
   ngOnInit() {
+    this.value_view = this.schemeService.scheme.value_view.filter(vv => vv.type_id === this.item.type_id);
+
     this.cantChange = !this.authService.canChangeValue();
     this.is_toggle = this.item.type.register_type == Register_Type.RT_COILS;
     this.is_holding = this.item.type.register_type == Register_Type.RT_HOLDING_REGISTERS;
@@ -58,26 +61,20 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
   }
 
   get text_value(): string {
+    const vv = this.value_view.find(vv => vv.value === this.item.val?.value);
+    if (vv)
+        return vv.view;
+
     const val = this.item.val ? this.item.val.value : null;
-    if (val === undefined || val === null) {
-      return this.translate.instant("NOT_CONNECTED");
-    }
+    if (val === undefined || val === null)
+        return this.translate.instant("NOT_CONNECTED");
 
-    if (typeof(val) === 'object') {
-      return val[this.item.val.raw_value];
-    }
+    if (typeof(val) === 'object')
+        return val[this.item.val.raw_value];
 
-    if (this.item.type.register_type === Register_Type.RT_DISCRETE_INPUTS) {
-      //console.log(val);
-
-      if (val == 0) {
-        return '0';
-      }
-
-      if (val == 1) {
-        return '1';
-      }
-    }
+    if (this.item.type.register_type === Register_Type.RT_DISCRETE_INPUTS
+        && typeof val === "boolean")
+        return val ? '1' : '0';
 
     return val;
   }
