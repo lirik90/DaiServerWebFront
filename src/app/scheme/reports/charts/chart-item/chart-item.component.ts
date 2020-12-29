@@ -441,19 +441,19 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
 
     private setupYAxisScale(axisKey: string, idx: number) {
         const axis = this.options.scales.yAxes[idx];
-
         const key = this.getAxisLocalStorageKey(axisKey, axis.id);
-        if (key) {
-            const params = ChartItemComponent.loadScaleParamsFromLocalStorage(key);
-            if (params) {
-                if (!axis.ticks) {
-                    axis.ticks = {} as any;
-                }
+        if (!key)
+            return;
 
-                axis.ticks.min = params.min;
-                axis.ticks.max = params.max;
-            }
-        }
+        const params = ChartItemComponent.loadScaleParamsFromLocalStorage(key);
+        if (!params)
+            return;
+
+        if (!axis.ticks)
+            axis.ticks = {} as any;
+
+        axis.ticks.min = params.min;
+        axis.ticks.max = params.max;
     }
 
     private storeScaleParamsToLocalStorage() {
@@ -467,19 +467,17 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
 
     private getAxisLocalStorageKey(axisKey: string, axisId: string) {
         const dataset = this.chartInfo.data.datasets.find(ds => ds.yAxisID === axisId);
-        if (!dataset) return null;
+        if (!dataset)
+            return null;
 
         const { group_id } = dataset.dev_item || dataset.param;
-
         return `${axisKey}_${group_id}`;
     }
 
     private static loadScaleParamsFromLocalStorage(axisKey: string): { min: number, max: number } {
         const json = localStorage.getItem(axisKey);
-        if (!json) {
+        if (!json)
             return null;
-        }
-
         return JSON.parse(json);
     }
 
