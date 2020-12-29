@@ -22,11 +22,11 @@ import { SchemeStateListComponent } from './scheme-state-list/scheme-state-list.
   ],
   declarations: [
     SchemeDetailComponent,
-    SchemeStateListComponent
+    SchemeStateListComponent,
   ],
   exports: [
     SchemeDetailComponent,
-    SchemeStateListComponent
+    SchemeStateListComponent,
   ]
 })
 export class SchemesDetailModule { }
