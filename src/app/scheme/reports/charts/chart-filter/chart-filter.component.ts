@@ -445,7 +445,7 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
         for (const param of params) {
             for (const s_pt of selected) {
                 if (s_pt.id === param.id) {
-                    ChartFilterComponent.pushToDatasetParams(datasets, param);
+                    ChartFilterComponent.pushToDatasetParams(datasets, param, true);
                     break;
                 }
             }

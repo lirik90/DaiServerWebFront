@@ -37,6 +37,7 @@
                         [(ngModel)]="selectedItems"
                         [settings]="settings"
                         (onSelect)="onItemSelect($event)"
+                        (ngModelChange)="rebuild()"
   >
   </angular2-multiselect>
 
