@@ -14,16 +14,18 @@ import 'chartjs-plugin-zoom-plus2';
 import {Paginator_Chart_Value, Chart_Value_Item, SchemeService} from '../../scheme.service';
 import {Chart, Device_Item, DIG_Param, Register_Type, Save_Algorithm} from '../../scheme';
 import {Scheme_Group_Member} from '../../../user';
-import {Chart_Info_Interface, Chart_Type, ChartFilter, ZoomInfo} from './chart-types';
+import {
+    Chart_Info_Interface,
+    Chart_Type,
+    ChartFilter,
+    DeviceItemTypeChartFilter,
+    GroupChartFilter,
+    UserChartFilter,
+    ZoomInfo
+} from './chart-types';
 import {ChartItemComponent} from './chart-item/chart-item.component';
 import {Hsl, ColorPickerDialog} from './color-picker-dialog/color-picker-dialog';
 import {SidebarService} from '../../sidebar.service';
-
-interface Chart_Item_Iface
-{
-    id: number;
-    hsl: Hsl;
-}
 
 @Component({
   selector: 'app-charts',
@@ -52,7 +54,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
   devItemList = [];
 
-  private _chartFilter: ChartFilter = {
+  private _chartFilter: ChartFilter<any> = {
     paramSelected: [],
     selectedItems: [this.schemeService.scheme.dig_type[0]],
     timeFrom: 0,
@@ -63,11 +65,11 @@ export class ChartsComponent implements OnInit, OnDestroy {
     data_part_size: 100000
   };
 
-  get chartFilter(): ChartFilter {
+  get chartFilter(): ChartFilter<any> {
       return this._chartFilter;
   }
 
-  set chartFilter(v: ChartFilter) {
+  set chartFilter(v: ChartFilter<any>) {
       this._chartFilter = v;
       this.sidebarService.performActionToSidebar({
           type: 'chart_filter',
@@ -129,36 +131,55 @@ export class ChartsComponent implements OnInit, OnDestroy {
         this.breakLoad(false);
     }
 
-  initCharts(chartFilter: ChartFilter): void
+  initCharts(chartFilter: ChartFilter<any>): void
   {
     this.chartFilter = chartFilter;
 
-    if (!this.chartFilter.selectedItems.length) {
-      console.warn('Init charts failed', this.chartFilter.charts_type, this.chartFilter.selectedItems);
-      return;
-    }
+    // if (!this.chartFilter.selected_charts.length) { TODO:
+    //   console.warn('Init charts failed', this.chartFilter.charts_type, this.chartFilter.selectedItems);
+    //   return;
+    // }
 
     this.charts = [];
 
     let data_ptr = { dev_items: [], params: [] };
 
-    switch(this.chartFilter.charts_type)
-    {
-    case Chart_Type.CT_USER:
-        this.initDeviceItemUserCharts(data_ptr);
-        break;
-    case Chart_Type.CT_DIG_TYPE:
-        this.initDIGTypeCharts(data_ptr);
-        break;
-    case Chart_Type.CT_DEVICE_ITEM_TYPE:
-        this.initDeviceItemTypeCharts(data_ptr);
-        break;
-    case Chart_Type.CT_DEVICE_ITEM:
-        this.initDeviceItemCharts(data_ptr);
-        break;
-    default:
-        break;
-    }
+    // TODO: refactor
+    this.chartFilter.selected_charts?.forEach(chart => {
+        const datasets = chart.dataset_params.map((ds_param) => {
+            const { item, legend: { color, idx } } = ds_param;
+            let dataset: any;
+            if (ds_param.isParam) {
+                dataset = this.genParamDataset(item, idx, color);
+                data_ptr.params.push(item.id);
+            } else {
+                dataset = this.genDevItemDataset(item, idx, color);
+                data_ptr.dev_items.push(item.id);
+            }
+
+            return dataset;
+        });
+
+        this.addChart(chart.name, datasets);
+    });
+
+    // switch(this.chartFilter.charts_type)
+    // {
+    // case Chart_Type.CT_USER:
+    //     this.initDeviceItemUserCharts(data_ptr);
+    //     break;
+    // case Chart_Type.CT_DIG_TYPE:
+    //     this.initDIGTypeCharts(data_ptr);
+    //     break;
+    // case Chart_Type.CT_DEVICE_ITEM_TYPE:
+    //     this.initDeviceItemTypeCharts(data_ptr);
+    //     break;
+    // case Chart_Type.CT_DEVICE_ITEM:
+    //     this.initDeviceItemCharts(data_ptr);
+    //     break;
+    // default:
+    //     break;
+    // }
 
     this.sidebarService.performActionToSidebar({
       type: 'charts',
@@ -186,158 +207,6 @@ export class ChartsComponent implements OnInit, OnDestroy {
     this.getParamData();
     this.getLogs();
   }
-
-  addParam2Dataset(datasets: any[], data: any, params: DIG_Param[], selected: Chart_Item_Iface[]): void {
-    for (const param of params) {
-      for (const s_pt of selected) {
-        if (s_pt.id === param.id) {
-          data.params.push(param.id);
-          datasets.push(this.genParamDataset(param, datasets.length, s_pt.hsl));
-          break;
-        }
-      }
-
-      if (param.childs)
-        this.addParam2Dataset(datasets, data, param.childs, selected);
-    }
-  }
-
-    get_dig_param_ids(param_types: any[]): Chart_Item_Iface[]
-    {
-        const get_param_id = (param_type_id: number): number =>
-        {
-            const find_param = (params: DIG_Param[], type_id: number) =>
-            {
-                if (params)
-                    for (const param of params)
-                    {
-                        if (param.param_id === type_id)
-                            return param.id;
-
-                        const param_id = find_param(param.childs, type_id);
-                        if (param_id)
-                            return param_id;
-                    }
-                return null;
-            };
-
-            for (const sct of this.schemeService.scheme.section)
-            {
-                for (const group of sct.groups)
-                {
-                    const param_id = find_param(group.params, param_type_id);
-                    if (param_id)
-                        return param_id;
-                }
-            }
-            console.warn('Search param type id: ' + param_type_id + ' failed', this.schemeService.scheme.section);
-            return null;
-        };
-
-        let res = [];
-        for (const param_type of param_types)
-        {
-            const dig_param_id = get_param_id(param_type.id);
-            if (dig_param_id)
-                res.push({id: dig_param_id, hsl: null });
-        }
-
-        return res;
-    }
-
-    initDIGTypeCharts(data: any): void {
-        const params = this.get_dig_param_ids(this.chartFilter.paramSelected);
-        const sections = this.schemeService.scheme.section;
-        for (const sct of sections) {
-          for (const group of sct.groups) {
-            if (group.type_id === this.chartFilter.selectedItems[0].id) {
-              const datasets: any[] = [];
-
-              for (const item of group.items) {
-                if (item.type.save_algorithm > Save_Algorithm.SA_OFF) {
-                  data.dev_items.push(item.id);
-                  datasets.push(this.genDevItemDataset(item, datasets.length));
-                }
-              }
-
-              this.addParam2Dataset(datasets, data, group.params, params);
-
-              this.addChart(sct.name, datasets);
-              break;
-            }
-          }
-        }
-    }
-
-    initDeviceItemTypeCharts(data: any): void {
-        const params = this.get_dig_param_ids(this.chartFilter.paramSelected);
-        const sections = this.schemeService.scheme.section;
-        for (const sct of sections) {
-          for (const group of sct.groups) {
-            const datasets: any[] = [];
-            for (const item of group.items) {
-              for (const type of this.chartFilter.selectedItems) {
-                if (type.id == item.type.id) {
-                  data.dev_items.push(item.id);
-                  datasets.push(this.genDevItemDataset(item, datasets.length));
-                  break;
-                }
-              }
-            }
-
-            this.addParam2Dataset(datasets, data, group.params, params);
-
-            if (datasets.length) {
-              this.addChart(sct.name, datasets);
-            }
-          }
-        }
-    }
-
-  initDeviceItemChartsImpl(data: any, dev_items: Chart_Item_Iface[], params: Chart_Item_Iface[]): void {
-    const datasets: any[] = [];
-    const sections = this.schemeService.scheme.section;
-    for (const sct of sections) {
-      for (const group of sct.groups) {
-        for (const item of group.items) {
-          for (const s_item of dev_items) {
-            if (s_item.id == item.id) {
-              data.dev_items.push(item.id);
-              datasets.push(this.genDevItemDataset(item, datasets.length, s_item.hsl));
-              break;
-            }
-          }
-        }
-
-        this.addParam2Dataset(datasets, data, group.params, params);
-      }
-    }
-    this.addChart(this.translate.instant('REPORTS.CHARTS_ELEMENTS'), datasets);
-  }
-
-    initDeviceItemCharts(data: any): void
-    {
-        const items = this.chartFilter.selectedItems.map(it => { return {id: it.id, hsl: null}; });
-        const params = this.chartFilter.paramSelected.map(it => { return {id: it.id, hsl: null}; });
-        this.initDeviceItemChartsImpl(data, items, params);
-    }
-
-    initDeviceItemUserCharts(data: any): void
-    {
-        const user_chart = this.chartFilter.selectedItems[0];
-        let items = [];
-        let params = [];
-        for (const it of user_chart.items)
-        {
-            if (it.item_id)
-                items.push({id: it.item_id, hsl: ColorPickerDialog.rgbhex2hsl(it.color)});
-            else
-                params.push({id: it.param_id, hsl: ColorPickerDialog.rgbhex2hsl(it.color)});
-        }
-
-        //const ids = [...new Set(user_chart.items.map(it => it.item_id))];
-        this.initDeviceItemChartsImpl(data, items, params);
-    }
 
     addChart(name: string, datasets: any[]): void {
         if (datasets.length)

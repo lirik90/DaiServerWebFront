@@ -43,6 +43,7 @@
   <angular2-multiselect *ngIf="paramList" [data]="paramList"
                         [(ngModel)]="paramSelected"
                         [settings]="paramSettings"
+                        (ngModelChange)="rebuild()"
   >
   </angular2-multiselect>
   <div *ngIf="charts_type == chartType.CT_USER"
@@ -61,5 +62,16 @@
     <button *ngIf="!user_chart.id" mat-raised-button (click)="save_user_chart()" i18n="@@CONTROL.SAVE">Сохранить</button>
   </div>
 
-  <button mat-raised-button (click)="buildChart()" i18n="@@CONTROL.SHOW">Построить график</button>
+    <div class="legend-container" *ngFor="let chart of selected_charts">
+        <p>{{ chart.name }}</p>
+        <a>Random color <!-- TODO:  (click)="random_color()" --></a>
+        <div class="legend">
+            <div class="legend__item" *ngFor="let ds of chart.dataset_params">
+                <div class="legend__item-color" [style.background-color]="ds.legend.displayColor" (click)="openColorPicker(chart, ds)"></div>
+                <div class="legend__item-label" [style.text-decoration]="ds.legend.hidden ? 'line-through' : 'inherit'">{{ ds.item.param?.title || ds.item.type?.title }}</div><!-- TODO: (click)="toggleDatasetVisibility(item)" -->
+            </div>
+        </div>
+    </div>
+
+    <button mat-raised-button (click)="buildChart()" i18n="@@CONTROL.SHOW">Построить график</button>
 </div>

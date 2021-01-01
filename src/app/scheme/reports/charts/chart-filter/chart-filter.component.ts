@@ -1,15 +1,28 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import * as moment from 'moment';
-import {Chart_Info_Interface, Chart_Type, ChartFilter, Select_Item_Iface} from '../chart-types';
-import {Chart, Device_Item_Group, DIG_Param, DIG_Param_Value_Type, Section} from '../../../scheme';
+import {
+    Chart_Info_Interface,
+    Chart_Type,
+    ChartFilter,
+    ItemWithLegend,
+    Select_Item_Iface,
+    Chart_Params,
+} from '../chart-types';
+import {Chart, Device_Item, Device_Item_Group, DIG_Param, DIG_Param_Value_Type, DIG_Type, Save_Algorithm, Section} from '../../../scheme';
 import {SchemeService} from '../../../scheme.service';
-import {ColorPickerDialog} from '../color-picker-dialog/color-picker-dialog';
+import {ColorPickerDialog, Hsl} from '../color-picker-dialog/color-picker-dialog';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {SidebarAction, SidebarService} from '../../../sidebar.service';
 import {Subscription} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
+import {MatDialog} from '@angular/material/dialog';
+
+interface Chart_Item_Iface {
+    id: number;
+    hsl: Hsl;
+}
 
 function parseDate(date: FormControl, time: string): number {
     let time_arr = time.split(':');
@@ -53,9 +66,9 @@ function parseDateToDateAndTime(date: number, fcRef: FormControl): string {
 })
 export class ChartFilterComponent implements OnInit, OnDestroy {
     chartType = Chart_Type;
-    params: ChartFilter;
+    params: ChartFilter<any>;
 
-    chart_filter: ChartFilter;
+    chart_filter: ChartFilter<any>;
     charts: Chart_Info_Interface[];
 
     // ngModels
@@ -67,6 +80,7 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
     user_chart: Chart;
     itemList = [];
     selectedItems = [];
+    selected_charts: Chart_Params[] = [];
     settings: any = {};
     user_charts: Chart[];
 
@@ -77,9 +91,14 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
     data_part_size = 100000;
     private sidebarActionBroadcast$: Subscription;
 
-    constructor(private schemeService: SchemeService, private sidebar: SidebarService, private dateAdapter: DateAdapter<any>, private translate: TranslateService) {
+    constructor(
+        private schemeService: SchemeService,
+        private sidebar: SidebarService,
+        private dateAdapter: DateAdapter<any>,
+        private translate: TranslateService,
+        private dialog: MatDialog,
+    ) {
         this.dateAdapter.setLocale(this.translate.currentLang);
-
         this.sidebarActionBroadcast$ = this.sidebar.getSidebarActionBroadcast()
             .subscribe((action) => this.sidebarAction(action));
     }
@@ -91,7 +110,7 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
         this.sidebarActionBroadcast$.unsubscribe();
     }
 
-    chartFilterUpdated(chartFilter: ChartFilter) {
+    chartFilterUpdated(chartFilter: ChartFilter<any>) {
         this.charts_type = chartFilter.charts_type;
         this.data_part_size = chartFilter.data_part_size;
         this.user_charts = chartFilter.user_charts;
@@ -106,10 +125,11 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
 
         this.OnChartsType();
 
-        if (chartFilter.selectedItems && chartFilter.selectedItems.length > 0) {
-            this.selectedItems = chartFilter.selectedItems;
-            this.paramSelected = chartFilter.paramSelected;
-        }
+        // TODO: process input
+        // if (chartFilter.selectedItems && chartFilter.selectedItems.length > 0) {
+        //     this.selectedItems = chartFilter.selectedItems;
+        //     this.paramSelected = chartFilter.paramSelected;
+        // }
     }
 
     OnChartsType(user_chart: Chart = undefined): void {
@@ -195,6 +215,206 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
             this.paramList = this.getParamTypeList().filter((param_type: Select_Item_Iface) => {
                 return accepted_param_type_ids.includes(param_type.id);
             });
+        }
+
+        this.rebuild();
+    }
+
+    rebuild() {
+        // ByMsx: rebuilding datasets
+        this.selected_charts = [];
+        switch (this.charts_type) {
+            case Chart_Type.CT_USER:
+                this.initDeviceUserDatasets();
+                break;
+            case Chart_Type.CT_DIG_TYPE:
+                this.initDigTypeDatasets();
+                break;
+            case Chart_Type.CT_DEVICE_ITEM:
+                this.initDeviceItemDatasets();
+                break;
+            case Chart_Type.CT_DEVICE_ITEM_TYPE:
+                this.initDeviceItemTypeDatasets();
+                break;
+        }
+    }
+
+    private static pushToDatasetParams(dataset_params_ref: ItemWithLegend<Device_Item | DIG_Param>[], item: Device_Item | DIG_Param, isParam: boolean = false) {
+        const idx = dataset_params_ref.length;
+        let title;
+        if (item instanceof Device_Item) {
+            title = item.type?.title;
+        } else {
+            title =  item.param?.title;
+        }
+
+        const color = ChartFilterComponent.getColorByIndex(idx, title);
+        const displayColor = `hsl(${color.h}, ${color.s}%, ${color.l}%)`;
+
+        dataset_params_ref.push({
+            label: title,
+            item,
+            isParam,
+            legend: {
+                hidden: false,
+                scale: null,
+                displayColor,
+                color,
+                idx,
+            }
+        });
+    }
+
+    initDeviceItemDatasetsImpl(dev_items: Chart_Item_Iface[], params: Chart_Item_Iface[]): void {
+        const dataset_params: ItemWithLegend<any>[] = [];
+        const sections = this.schemeService.scheme.section;
+        for (const sct of sections) {
+            for (const group of sct.groups) {
+                for (const item of group.items) {
+                    for (const s_item of dev_items) {
+                        if (s_item.id == item.id) {
+                            ChartFilterComponent.pushToDatasetParams(dataset_params, item);
+                            break;
+                        }
+                    }
+                }
+
+                this.addParam2Dataset(dataset_params, group.params, params);
+            }
+        }
+
+        this.selected_charts.push({
+            name: this.translate.instant('REPORTS.CHARTS_ELEMENTS'),
+            dataset_params,
+        })
+    }
+
+    initDeviceUserDatasets(): void {
+        const user_chart = this.selectedItems[0];
+        let items = [];
+        let params = [];
+        for (const it of user_chart.items)
+        {
+            if (it.item_id)
+                items.push({id: it.item_id, hsl: ColorPickerDialog.rgbhex2hsl(it.color)});
+            else
+                params.push({id: it.param_id, hsl: ColorPickerDialog.rgbhex2hsl(it.color)});
+        }
+
+        this.initDeviceItemDatasetsImpl(items, params);
+    }
+
+    initDeviceItemDatasets(): void {
+        const items = this.selectedItems.map(it => { return {id: it.id, hsl: null}; });
+        const params = this.paramSelected.map(it => { return {id: it.id, hsl: null}; });
+        this.initDeviceItemDatasetsImpl(items, params);
+    }
+
+    initDeviceItemTypeDatasets(): void {
+        const sections = this.schemeService.scheme.section;
+        for (const sct of sections) {
+            for (const group of sct.groups) {
+                const dataset_params: ItemWithLegend<any>[] = [];
+                for (const item of group.items) {
+                    for (const type of this.selectedItems) {
+                        if (type.id == item.type.id) {
+                            ChartFilterComponent.pushToDatasetParams(dataset_params, item);
+                            break;
+                        }
+                    }
+                }
+
+                this.addParam2Dataset(dataset_params, group.params, this.paramSelected.map(i => ({ id: i.id, hsl: null })));
+
+                if (dataset_params.length) {
+                    this.selected_charts.push({
+                        name: sct.name,
+                        dataset_params,
+                    });
+                }
+            }
+        }
+    }
+
+    initDigTypeDatasets(): void {
+        const params = this.get_dig_param_ids(this.paramSelected);
+        const sections = this.schemeService.scheme.section;
+        for (const sct of sections) {
+            for (const group of sct.groups) {
+                if (group.type_id === this.selectedItems[0].id) {
+                    const dataset_params: ItemWithLegend<Device_Item>[] = [];
+
+                    for (const item of group.items) {
+                        if (item.type.save_algorithm > Save_Algorithm.SA_OFF) {
+                            ChartFilterComponent.pushToDatasetParams(dataset_params, item);
+                        }
+                    }
+
+                    this.addParam2Dataset(dataset_params, group.params, params);
+                    this.selected_charts.push({
+                        name: sct.name,
+                        dataset_params,
+                    });
+                    break;
+                }
+            }
+        }
+    }
+
+    get_dig_param_ids(param_types: any[]): Chart_Item_Iface[]
+    {
+        const get_param_id = (param_type_id: number): number =>
+        {
+            const find_param = (params: DIG_Param[], type_id: number) =>
+            {
+                if (params)
+                    for (const param of params)
+                    {
+                        if (param.param_id === type_id)
+                            return param.id;
+
+                        const param_id = find_param(param.childs, type_id);
+                        if (param_id)
+                            return param_id;
+                    }
+                return null;
+            };
+
+            for (const sct of this.schemeService.scheme.section)
+            {
+                for (const group of sct.groups)
+                {
+                    const param_id = find_param(group.params, param_type_id);
+                    if (param_id)
+                        return param_id;
+                }
+            }
+            console.warn('Search param type id: ' + param_type_id + ' failed', this.schemeService.scheme.section);
+            return null;
+        };
+
+        let res = [];
+        for (const param_type of param_types)
+        {
+            const dig_param_id = get_param_id(param_type.id);
+            if (dig_param_id)
+                res.push({id: dig_param_id, hsl: null });
+        }
+
+        return res;
+    }
+
+    addParam2Dataset(datasets: ItemWithLegend<any>[], params: DIG_Param[], selected: Chart_Item_Iface[]): void {
+        for (const param of params) {
+            for (const s_pt of selected) {
+                if (s_pt.id === param.id) {
+                    ChartFilterComponent.pushToDatasetParams(datasets, param);
+                    break;
+                }
+            }
+
+            if (param.childs)
+                this.addParam2Dataset(datasets, param.childs, selected);
         }
     }
 
@@ -386,11 +606,10 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
             data: {
                 timeFrom: parseDate(this.date_from, this.time_from),
                 timeTo: parseDate(this.date_to, this.time_to),
-                selectedItems: this.selectedItems.concat([]),
+                selected_charts: this.selected_charts,
                 user_chart: this.user_chart,
                 user_charts: this.user_charts,
                 charts_type: this.charts_type,
-                paramSelected: this.paramSelected,
                 data_part_size: this.data_part_size,
             },
         });
@@ -408,5 +627,54 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
                 this.chartFilterUpdated(action.data.chart_filter);
             }
         }
+    }
+
+    openColorPicker(chart_params: Chart_Params, dataset: ItemWithLegend<any>): void {
+        const dialogRef = this.dialog.open(ColorPickerDialog, {
+            width: '450px',
+            data: {dataset, chart_params}
+        });
+
+        dialogRef.afterClosed().subscribe(hsl => {
+            if (hsl !== undefined && hsl !== null)
+            {
+                dataset.legend.color = hsl;
+                dataset.legend.displayColor = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+                // this.chart.chart.update(); TODO:
+            }
+        });
+    }
+
+    toggleDatasetVisibility(dataset: any): void {
+        dataset.hidden = !dataset.hidden;
+        // this.chart.chart.update(); TODO:
+    }
+
+    private static getColorByIndex(index: number, label: string): Hsl
+    {
+        switch (index)
+        {
+            case 0: return { h: 0, s: 100, l: 35 }; // red
+            case 1: return { h: 120, s: 100, l: 35 }; // green
+            case 2: return { h: 240, s: 100, l: 35 }; // blue
+            case 3: return { h: 60, s: 100, l: 35 }; // yellow
+            case 4: return { h: 180, s: 100, l: 35 }; // cyan
+            case 5: return { h: 300, s: 100, l: 35 }; // magenta
+            case 6: return { h: 30, s: 100, l: 35 }; // brown
+            case 7: return { h: 90, s: 100, l: 35 }; // green
+            case 8: return { h: 150, s: 100, l: 35 }; //
+            case 9: return { h: 210, s: 100, l: 35 }; //
+            case 10: return { h: 270, s: 100, l: 35 }; //
+            case 11: return { h: 330, s: 100, l: 35 }; //
+            default:
+                return { h: this.hashCode(label), s: 95, l: 35 } as Hsl;
+        }
+    }
+
+    private static hashCode(str: string): number { // java String#hashCode
+        var hash = 0;
+        for (var i = 0; i < str.length; i++)
+            hash = str.charCodeAt(i) + ((hash << 5) - hash);
+        return hash;
     }
 }

@@ -158,7 +158,6 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
 
     constructor(
         private schemeService: SchemeService,
-        private dialog: MatDialog,
         private differs: KeyValueDiffers,
         private zone: NgZone,
         private snackBar: MatSnackBar,
@@ -352,26 +351,6 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
             }
         }
         return dataset.label + ': ' + text;
-    }
-
-    openColorPicker(chart: Chart_Info_Interface, dataset: any, chart_obj: any): void {
-        const dialogRef = this.dialog.open(ColorPickerDialog, {
-            width: '450px',
-            data: {chart, dataset, chart_obj}
-        });
-
-        dialogRef.afterClosed().subscribe(hsl => {
-            if (hsl !== undefined && hsl !== null)
-            {
-                this.setDataColor(dataset, hsl);
-                this.chart.chart.update();
-            }
-        });
-    }
-
-    toggleDatasetVisibility(dataset: any): void {
-        dataset.hidden = !dataset.hidden;
-        this.chart.chart.update();
     }
 
     setViewportBounds(start: Date | number, end: Date | number, forceUpdate = true) {
