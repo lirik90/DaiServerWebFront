@@ -151,9 +151,9 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
             this.charts_type = Chart_Type.CT_DIG_TYPE;
         }
 
-        this.OnChartsType();
-
         if (chartFilter.selectedItems && chartFilter.selectedItems.length > 0) {
+            this.OnChartsType();
+
             this.selectedItems = chartFilter.selectedItems;
             this.paramSelected = chartFilter.paramSelected;
 
@@ -259,7 +259,6 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
             return;
         }
 
-        // ByMsx: rebuilding datasets
         this.selected_charts = [];
         switch (this.charts_type) {
             case Chart_Type.CT_USER:
@@ -678,14 +677,14 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
             {
                 dataset.legend.color = hsl;
                 dataset.legend.displayColor = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
-                // this.chart.chart.update(); TODO:
+                this.dataset_legend_updated(dataset);
             }
         });
     }
 
-    toggleDatasetVisibility(dataset: any): void {
-        dataset.hidden = !dataset.hidden;
-        // this.chart.chart.update(); TODO:
+    toggleDatasetVisibility(dataset: ItemWithLegend<any>): void {
+        dataset.legend.hidden = !dataset.legend.hidden;
+        this.dataset_legend_updated(dataset);
     }
 
     private static getColorByIndex(index: number, label: string): Hsl
@@ -710,9 +709,16 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
     }
 
     private static hashCode(str: string): number { // java String#hashCode
-        var hash = 0;
-        for (var i = 0; i < str.length; i++)
+        let hash = 0;
+        for (let i = 0; i < str.length; i++)
             hash = str.charCodeAt(i) + ((hash << 5) - hash);
         return hash;
+    }
+
+    private dataset_legend_updated(dataset: ItemWithLegend<any>) {
+        this.sidebar.performActionToContent({
+            type: 'legend_updated',
+            data: dataset,
+        });
     }
 }

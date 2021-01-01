@@ -68,7 +68,7 @@
         <div class="legend">
             <div class="legend__item" *ngFor="let ds of chart.dataset_params">
                 <div class="legend__item-color" [style.background-color]="ds.legend.displayColor" (click)="openColorPicker(chart, ds)"></div>
-                <div class="legend__item-label" [style.text-decoration]="ds.legend.hidden ? 'line-through' : 'inherit'">{{ ds.item.param?.title || ds.item.type?.title }}</div><!-- TODO: (click)="toggleDatasetVisibility(item)" -->
+                <div class="legend__item-label" [style.text-decoration]="ds.legend.hidden ? 'line-through' : 'inherit'" (click)="toggleDatasetVisibility(ds)">{{ ds.item.param?.title || ds.item.type?.title }}</div>
             </div>
         </div>
     </div>

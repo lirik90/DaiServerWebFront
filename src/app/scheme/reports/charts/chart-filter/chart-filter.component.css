@@ -95,12 +95,8 @@ fieldset.chart_type {
 }
 
 .legend__item {
-    display: inline-flex;
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
     align-items: center;
     margin: 8px;
-}
-
-.legend {
-    float: right;
 }

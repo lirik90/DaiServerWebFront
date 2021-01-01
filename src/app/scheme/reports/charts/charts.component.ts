@@ -1,30 +1,26 @@
 import {OnInit, OnDestroy, Component, ViewChildren, QueryList, NgZone, ChangeDetectorRef} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 
-import {delay, exhaustMap, map, mapTo} from 'rxjs/operators';
+import {exhaustMap} from 'rxjs/operators';
 import {SubscriptionLike, of, timer, combineLatest} from 'rxjs';
 
-// import {ChartComponent} from 'angular2-chartjs';
 import 'chartjs-plugin-zoom-plus2';
 
-// import * as moment from 'moment';
- import * as _moment from 'moment';
- import {default as _rollupMoment} from 'moment';
- const moment = _rollupMoment || _moment;
+import * as _moment from 'moment';
+import {default as _rollupMoment} from 'moment';
+
+const moment = _rollupMoment || _moment;
 import {Paginator_Chart_Value, Chart_Value_Item, SchemeService} from '../../scheme.service';
-import {Chart, Device_Item, DIG_Param, Register_Type, Save_Algorithm} from '../../scheme';
+import {Chart, Device_Item, DIG_Param, Register_Type} from '../../scheme';
 import {Scheme_Group_Member} from '../../../user';
 import {
     Chart_Info_Interface,
     Chart_Type,
-    ChartFilter,
-    DeviceItemTypeChartFilter,
-    GroupChartFilter,
-    UserChartFilter,
+    ChartFilter, ItemWithLegend,
     ZoomInfo
 } from './chart-types';
 import {ChartItemComponent} from './chart-item/chart-item.component';
-import {Hsl, ColorPickerDialog} from './color-picker-dialog/color-picker-dialog';
+import {Hsl} from './color-picker-dialog/color-picker-dialog';
 import {SidebarService} from '../../sidebar.service';
 
 @Component({
@@ -113,7 +109,11 @@ export class ChartsComponent implements OnInit, OnDestroy {
     this.sidebarService.getContentActionBroadcast()
         .subscribe((action) => {
             if (action.type === 'params_change') {
-                this.initCharts(action.data);
+                this.init_charts_(action.data);
+            }
+
+            if (action.type === 'legend_updated') {
+                this.update_dataset_legend_(action.data);
             }
         });
   }
@@ -124,12 +124,12 @@ export class ChartsComponent implements OnInit, OnDestroy {
     });
   }
 
-    ngOnDestroy()
-    {
-        this.breakLoad(false);
-    }
+  ngOnDestroy()
+  {
+      this.breakLoad(false);
+  }
 
-  initCharts(chartFilter: ChartFilter<any>): void
+  private init_charts_(chartFilter: ChartFilter<any>): void
   {
     this.chartFilter = chartFilter;
 
@@ -142,7 +142,6 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
     let data_ptr = { dev_items: [], params: [] };
 
-    // TODO: refactor
     this.chartFilter.selected_charts?.forEach(chart => {
         const datasets = chart.dataset_params.map((ds_param) => {
             const { item, legend: { color, idx } } = ds_param;
@@ -379,56 +378,19 @@ export class ChartsComponent implements OnInit, OnDestroy {
   }
 
   genDataset(label: string, colorIndex: number, steppedLine: boolean = true, hsl: Hsl = null): Object {
-      if (hsl === null)
-          hsl = this.getColorByIndex(colorIndex, label);
       if (hsl.h > 360)
           hsl.h %= 360;
-      const hslStr = `${hsl.h}, ${hsl.s}%, ${hsl.l}%`;
-    return {
-      label,
-      data: [],
-      yAxisID: steppedLine ? 'B' : 'A',
 
-      borderColor: `hsl(${hslStr})`,
-      backgroundColor: `hsl(${hslStr},0.5)`,
-      pointBorderColor: `hsl(${hslStr},0.9)`,
-      pointBackgroundColor: `hsl(${hslStr},0.5)`,
-      pointBorderWidth: 1,
+      return {
+          label,
+          data: [],
+          yAxisID: steppedLine ? 'B' : 'A',
 
-      hidden: false,
-      fill: false, //steppedLine,
-      steppedLine,
-      cubicInterpolationMode: 'monotone',
-      //      lineTension: 0,
-    };
-  }
-
-    getColorByIndex(index: number, label: string): Hsl
-    {
-        switch (index)
-        {
-            case 0: return { h: 0, s: 100, l: 35 }; // red
-            case 1: return { h: 120, s: 100, l: 35 }; // green
-            case 2: return { h: 240, s: 100, l: 35 }; // blue
-            case 3: return { h: 60, s: 100, l: 35 }; // yellow
-            case 4: return { h: 180, s: 100, l: 35 }; // cyan
-            case 5: return { h: 300, s: 100, l: 35 }; // magenta
-            case 6: return { h: 30, s: 100, l: 35 }; // brown
-            case 7: return { h: 90, s: 100, l: 35 }; // green
-            case 8: return { h: 150, s: 100, l: 35 }; //
-            case 9: return { h: 210, s: 100, l: 35 }; //
-            case 10: return { h: 270, s: 100, l: 35 }; //
-            case 11: return { h: 330, s: 100, l: 35 }; //
-            default:
-                return { h:this.hashCode(label), s: 95, l: 35 } as Hsl;
-        }
-    }
-
-  hashCode(str: string): number { // java String#hashCode
-    var hash = 0;
-    for (var i = 0; i < str.length; i++)
-       hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    return hash;
+          fill: false, //steppedLine,
+          steppedLine,
+          cubicInterpolationMode: 'monotone',
+          ...ChartsComponent.get_dataset_legend_params_(hsl),
+      };
   }
 
     chartZoom(chart: Chart_Info_Interface, range: ZoomInfo)
@@ -582,5 +544,27 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
         this.time_from_ext_ = Math.round(this.time_from_ - additional_range);
         this.time_to_ext_ = Math.round(this.time_to_ + additional_range);
+    }
+
+    private update_dataset_legend_(newDataset: ItemWithLegend<any>) {
+        const [chart, dataset] = this.find_dataset(newDataset.isParam ? 'param' : 'dev_item', newDataset.item.id);
+        Object.assign(dataset, ChartsComponent.get_dataset_legend_params_(newDataset.legend.color, newDataset.legend.hidden));
+
+        const chart_item = this.find_chart_item_(chart);
+        chart_item.update();
+    }
+
+    private static get_dataset_legend_params_(hsl: Hsl, hidden = false) {
+        const hslStr = `${hsl.h}, ${hsl.s}%, ${hsl.l}%`;
+
+        return {
+            borderColor: `hsl(${hslStr})`,
+            backgroundColor: `hsl(${hslStr},0.5)`,
+            pointBorderColor: `hsl(${hslStr},0.9)`,
+            pointBackgroundColor: `hsl(${hslStr},0.5)`,
+            pointBorderWidth: 1,
+
+            hidden,
+        };
     }
 }
