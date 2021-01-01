@@ -121,8 +121,6 @@ export class ChartsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.schemeService.get_charts().subscribe(charts => {
       this.user_charts = charts;
-
-      this.initCharts(this.chartFilter);
     });
   }
 
@@ -135,10 +133,10 @@ export class ChartsComponent implements OnInit, OnDestroy {
   {
     this.chartFilter = chartFilter;
 
-    // if (!this.chartFilter.selected_charts.length) { TODO:
-    //   console.warn('Init charts failed', this.chartFilter.charts_type, this.chartFilter.selectedItems);
-    //   return;
-    // }
+    if (!this.chartFilter.selected_charts?.length) {
+      console.warn('Init charts failed', this.chartFilter.charts_type, this.chartFilter.selectedItems);
+      return;
+    }
 
     this.charts = [];
 
@@ -162,24 +160,6 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
         this.addChart(chart.name, datasets);
     });
-
-    // switch(this.chartFilter.charts_type)
-    // {
-    // case Chart_Type.CT_USER:
-    //     this.initDeviceItemUserCharts(data_ptr);
-    //     break;
-    // case Chart_Type.CT_DIG_TYPE:
-    //     this.initDIGTypeCharts(data_ptr);
-    //     break;
-    // case Chart_Type.CT_DEVICE_ITEM_TYPE:
-    //     this.initDeviceItemTypeCharts(data_ptr);
-    //     break;
-    // case Chart_Type.CT_DEVICE_ITEM:
-    //     this.initDeviceItemCharts(data_ptr);
-    //     break;
-    // default:
-    //     break;
-    // }
 
     this.sidebarService.performActionToSidebar({
       type: 'charts',

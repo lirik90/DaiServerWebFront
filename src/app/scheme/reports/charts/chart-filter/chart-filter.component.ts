@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, IterableDiffer, IterableDiffers, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import * as moment from 'moment';
 import {
@@ -79,17 +79,44 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
     time_to = '23:59:59';
     user_chart: Chart;
     itemList = [];
-    selectedItems = [];
     selected_charts: Chart_Params[] = [];
     settings: any = {};
     user_charts: Chart[];
 
     paramList: Select_Item_Iface[] = [];
-    paramSelected: Select_Item_Iface[] = [];
     paramSettings: any = {};
+
+    private selectedItems_ = [];
+    private paramSelected_: Select_Item_Iface[] = [];
+
+    get selectedItems() {
+        return this.selectedItems_;
+    }
+
+    get paramSelected() {
+        return this.paramSelected_;
+    }
+
+    set selectedItems(v) {
+        this.selectedItems_ = v;
+        if (!this.selectedItemsDiffer && v) {
+            this.selectedItemsDiffer = this.differs.find(v).create();
+        }
+    }
+
+    set paramSelected(v) {
+        this.paramSelected_ = v;
+        if (!this.paramSelectedDiffer && v) {
+            this.paramSelectedDiffer = this.differs.find(v).create();
+        }
+    }
+
+    private selectedItemsDiffer: IterableDiffer<any>;
+    private paramSelectedDiffer: IterableDiffer<any>;
 
     data_part_size = 100000;
     private sidebarActionBroadcast$: Subscription;
+    private is_first_update = true;
 
     constructor(
         private schemeService: SchemeService,
@@ -97,6 +124,7 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
         private dateAdapter: DateAdapter<any>,
         private translate: TranslateService,
         private dialog: MatDialog,
+        private differs: IterableDiffers,
     ) {
         this.dateAdapter.setLocale(this.translate.currentLang);
         this.sidebarActionBroadcast$ = this.sidebar.getSidebarActionBroadcast()
@@ -125,11 +153,17 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
 
         this.OnChartsType();
 
-        // TODO: process input
-        // if (chartFilter.selectedItems && chartFilter.selectedItems.length > 0) {
-        //     this.selectedItems = chartFilter.selectedItems;
-        //     this.paramSelected = chartFilter.paramSelected;
-        // }
+        if (chartFilter.selectedItems && chartFilter.selectedItems.length > 0) {
+            this.selectedItems = chartFilter.selectedItems;
+            this.paramSelected = chartFilter.paramSelected;
+
+            this.onItemSelect(this.selectedItems[0]);
+        }
+
+        if (this.is_first_update) {
+            this.is_first_update = false;
+            this.buildChart();
+        }
     }
 
     OnChartsType(user_chart: Chart = undefined): void {
@@ -221,6 +255,10 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
     }
 
     rebuild() {
+        if (!this.selectedItemsDiffer.diff(this.selectedItems) && !this.paramSelectedDiffer.diff(this.paramSelected)) {
+            return;
+        }
+
         // ByMsx: rebuilding datasets
         this.selected_charts = [];
         switch (this.charts_type) {

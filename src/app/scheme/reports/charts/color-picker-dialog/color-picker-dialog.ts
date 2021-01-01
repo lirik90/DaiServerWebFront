@@ -32,7 +32,6 @@ export class ColorPickerDialog implements OnInit {
         if (this.cur)
         {
             const p = this.ctx.getImageData(this.cur, this.canvas.height / 2, 1, 1).data;
-            console.log(p, ColorPickerDialog.rgb2hsl(p[0], p[1], p[2]));
             return ColorPickerDialog.rgb2hsl(p[0], p[1], p[2]);
         }
         return null;
