@@ -9,7 +9,7 @@ import {
     Select_Item_Iface,
     Chart_Params,
 } from '../chart-types';
-import {Chart, Device_Item, Device_Item_Group, DIG_Param, DIG_Param_Value_Type, DIG_Type, Save_Algorithm, Section} from '../../../scheme';
+import {Chart, Device_Item, Device_Item_Group, DIG_Param, DIG_Param_Value_Type, Save_Algorithm, Section} from '../../../scheme';
 import {SchemeService} from '../../../scheme.service';
 import {ColorPickerDialog, Hsl} from '../color-picker-dialog/color-picker-dialog';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
@@ -219,13 +219,6 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
 
                 this.paramSettings.text = this.translate.instant('REPORTS.SELECT_PARAM_TYPE');
                 break;
-            case Chart_Type.CT_DEVICE_ITEM_TYPE:
-                this.itemList = this.schemeService.scheme.device_item_type;
-                this.settings.text = this.translate.instant('REPORTS.SELECT_ITEM_TYPE');
-
-                this.paramList = this.getParamTypeList();
-                this.paramSettings.text = this.translate.instant('REPORTS.SELECT_PARAM_TYPE');
-                break;
             case Chart_Type.CT_DEVICE_ITEM:
                 this.itemList = this.getDevItemList();
                 this.settings.text = this.translate.instant('REPORTS.SELECT_ITEM');
@@ -269,9 +262,6 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
                 break;
             case Chart_Type.CT_DEVICE_ITEM:
                 this.initDeviceItemDatasets();
-                break;
-            case Chart_Type.CT_DEVICE_ITEM_TYPE:
-                this.initDeviceItemTypeDatasets();
                 break;
         }
     }
@@ -345,32 +335,6 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
         const items = this.selectedItems.map(it => { return {id: it.id, hsl: null}; });
         const params = this.paramSelected.map(it => { return {id: it.id, hsl: null}; });
         this.initDeviceItemDatasetsImpl(items, params);
-    }
-
-    initDeviceItemTypeDatasets(): void {
-        const sections = this.schemeService.scheme.section;
-        for (const sct of sections) {
-            for (const group of sct.groups) {
-                const dataset_params: ItemWithLegend<any>[] = [];
-                for (const item of group.items) {
-                    for (const type of this.selectedItems) {
-                        if (type.id == item.type.id) {
-                            ChartFilterComponent.pushToDatasetParams(dataset_params, item);
-                            break;
-                        }
-                    }
-                }
-
-                this.addParam2Dataset(dataset_params, group.params, this.paramSelected.map(i => ({ id: i.id, hsl: null })));
-
-                if (dataset_params.length) {
-                    this.selected_charts.push({
-                        name: sct.name,
-                        dataset_params,
-                    });
-                }
-            }
-        }
     }
 
     initDigTypeDatasets(): void {

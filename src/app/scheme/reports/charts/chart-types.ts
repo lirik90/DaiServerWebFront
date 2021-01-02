@@ -5,7 +5,6 @@ export enum Chart_Type {
     CT_UNKNOWN,
     CT_USER,
     CT_DIG_TYPE,
-    CT_DEVICE_ITEM_TYPE,
     CT_DEVICE_ITEM,
 }
 
@@ -70,10 +69,6 @@ export interface ChartFilter<T> extends TimeFilter {
 
 export interface GroupChartFilter extends ChartFilter<DIG_Type> {
     charts_type: Chart_Type.CT_DIG_TYPE;
-}
-
-export interface DeviceItemTypeChartFilter extends ChartFilter<Device_Item_Type> {
-    charts_type: Chart_Type.CT_DEVICE_ITEM_TYPE;
 }
 
 export interface DeviceItemChartFilter extends ChartFilter<Select_Item_Iface> {

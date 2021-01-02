@@ -28,7 +28,6 @@
     <mat-radio-group class="charts-type-group" [(ngModel)]="charts_type" (change)="OnChartsType()">
       <mat-radio-button class="charts-type-button" [value]="chartType.CT_USER" i18n="@@REPORTS.CHARTS.USERCHOICE" [disabled]="!user_charts || !user_charts.length">Пользовательский</mat-radio-button>
       <mat-radio-button class="charts-type-button" [value]="chartType.CT_DIG_TYPE" i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_GROUPS">По группам элементов</mat-radio-button>
-      <mat-radio-button class="charts-type-button" [value]="chartType.CT_DEVICE_ITEM_TYPE" i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_TYPES">По типам элементов</mat-radio-button>
       <mat-radio-button class="charts-type-button" [value]="chartType.CT_DEVICE_ITEM" i18n="@@REPORTS.CHARTS.DECOMPOSE_BY_ITEMS">По элементам</mat-radio-button>
     </mat-radio-group>
   </fieldset>
