@@ -100,3 +100,25 @@ fieldset.chart_type {
     align-items: center;
     margin: 8px;
 }
+
+.legend__item-axis-modal {
+    display: block;
+    position: absolute;
+    width: 14em;
+    background-color: white;
+    z-index: 30;
+    left: 1em;
+    padding: 3%;
+    border: 1px solid black;
+}
+
+.legend__item-axis-modal div {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 0.3em;
+}
+
+.legend__item-label div > * {
+    flex: 1 1;
+}

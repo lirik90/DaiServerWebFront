@@ -226,6 +226,13 @@ export class Chart_Item {
     color: string;
     item_id: number;
     param_id: number;
+
+    // axis: { TODO:
+    //     isRight: boolean;
+    //     from: number;
+    //     to: number;
+    //     order: number;
+    // };
 }
 
 export class Chart {

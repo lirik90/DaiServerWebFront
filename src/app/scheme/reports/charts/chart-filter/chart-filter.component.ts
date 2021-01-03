@@ -230,6 +230,8 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
             default:
                 break;
         }
+
+        this.rebuild();
     }
 
     onItemSelect(item: any): void {
@@ -284,7 +286,12 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
             isParam,
             legend: {
                 hidden: false,
-                scale: null,
+                scale: {
+                    from: null,
+                    to: null,
+                    isRight: null,
+                    order: idx,
+                },
                 displayColor,
                 color,
                 idx,
@@ -640,7 +647,6 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
             if (hsl !== undefined && hsl !== null)
             {
                 dataset.legend.color = hsl;
-                dataset.legend.displayColor = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
                 this.dataset_legend_updated(dataset);
             }
         });
@@ -649,6 +655,13 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
     toggleDatasetVisibility(dataset: ItemWithLegend<any>): void {
         dataset.legend.hidden = !dataset.legend.hidden;
         this.dataset_legend_updated(dataset);
+    }
+
+    random_color(ch: Chart_Params): void {
+        ch.dataset_params.forEach(ds => {
+            ds.legend.color = { h: Math.round(Math.random() * 360), s: 100, l: 35 };
+            this.dataset_legend_updated(ds);
+        });
     }
 
     private static getColorByIndex(index: number, label: string): Hsl
@@ -680,9 +693,36 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
     }
 
     private dataset_legend_updated(dataset: ItemWithLegend<any>) {
+        const hsl = dataset.legend.color;
+        dataset.legend.displayColor = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+
         this.sidebar.performActionToContent({
             type: 'legend_updated',
             data: dataset,
         });
+    }
+
+    toggleLegendModal(ds: ItemWithLegend<any>) {
+        ds.showModal = !ds.showModal;
+
+        if (ds.showModal) {
+            return;
+        }
+
+        // Process inputted values if modal closed
+        const { scale } = ds.legend;
+        if (scale) {
+            if (scale.from && typeof scale.from === 'string') {
+                scale.from = parseFloat(scale.from);
+            }
+
+            if (scale.to && typeof scale.to === 'string') {
+                scale.to = parseFloat(scale.to);
+            }
+
+            if (scale.order && typeof scale.order === 'string') {
+                scale.order = parseInt(scale.order, 10);
+            }
+        }
     }
 }

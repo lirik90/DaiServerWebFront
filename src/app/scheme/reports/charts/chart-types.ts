@@ -18,14 +18,25 @@ export interface Chart_Info_Interface {
     name: string;
     charts_type: Chart_Type;
     data: {
-        datasets: any[]
+        datasets: any[];
     };
+
+    axes?: any[];
 }
 
 export interface TimeFilter
 {
     timeFrom: number;
     timeTo: number;
+}
+
+export interface Axis_Params {
+    id: string;
+
+    isRight: boolean;
+    from: number | string;
+    to: number | string;
+    order: number | string;
 }
 
 export interface Legend_Options {
@@ -35,18 +46,16 @@ export interface Legend_Options {
     displayColor: string;
     hidden: boolean;
 
-    scale: {
-        from: number;
-        to: number;
-        // TODO: more params
-    };
+    scale: Omit<Axis_Params, 'id'>;
 }
 
-export interface ItemWithLegend<T> { // TODO:  extends { title: string } ??
-    isParam: boolean; // TODO: may be remove
+export interface ItemWithLegend<T> {
+    isParam: boolean;
     item: T;
     legend: Legend_Options;
     label: string;
+
+    showModal?: boolean; // this param is needed to show/hide axis configuration modal
 }
 
 export interface Chart_Params {
@@ -54,7 +63,7 @@ export interface Chart_Params {
     dataset_params: ItemWithLegend<any>[],
 }
 
-export interface ChartFilter<T> extends TimeFilter {
+export interface ChartFilter extends TimeFilter {
     user_chart: Chart;
     user_charts: Chart[];
 
@@ -65,19 +74,6 @@ export interface ChartFilter<T> extends TimeFilter {
 
     paramSelected?: any[];
     selectedItems?: any[];
-}
-
-export interface GroupChartFilter extends ChartFilter<DIG_Type> {
-    charts_type: Chart_Type.CT_DIG_TYPE;
-}
-
-export interface DeviceItemChartFilter extends ChartFilter<Select_Item_Iface> {
-    charts_type: Chart_Type.CT_DEVICE_ITEM;
-}
-
-// @ts-ignore TODO: remove
-export interface UserChartFilter extends ChartFilter<Chart> {
-    charts_type: Chart_Type.CT_USER;
 }
 
 export interface ZoomInfo extends TimeFilter {

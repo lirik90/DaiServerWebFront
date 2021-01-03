@@ -32,6 +32,23 @@ import {Chart_Info_Interface, Chart_Type, ZoomInfo} from '../chart-types';
     styleUrls: ['./chart-item.component.css']
 })
 export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
+    private readonly defaultYAxes_: any = [{
+        id: 'A',
+        type: 'linear',
+        position: 'left',
+    }, {
+        id: 'B',
+        type: 'linear',
+        position: 'right',
+        ticks: {
+            max: 2,
+            min: -1,
+            stepSize: 1,
+            suggestedMin: 0,
+            suggestedMax: 1
+        }
+    }];
+
     private _chartInfo: Chart_Info_Interface;
     private _differ: KeyValueDiffer<number, any>;
     private _datasetsDiffers: { [key: string]: KeyValueDiffer<any, any> } = {};
@@ -58,6 +75,8 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
 
     @Input() viewportMin: number;
     @Input() viewportMax: number;
+
+    @Input() yAxes: any[];
 
     @ViewChild('chart_obj') chart: BaseChartDirective;
     @Output() rangeChange: EventEmitter<ZoomInfo> = new EventEmitter();
@@ -118,22 +137,7 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
                     scale.height = 40;
                 }
             }],
-            yAxes: [{
-                id: 'A',
-                type: 'linear',
-                position: 'left',
-            }, {
-                id: 'B',
-                type: 'linear',
-                position: 'right',
-                ticks: {
-                    max: 2,
-                    min: -1,
-                    stepSize: 1,
-                    suggestedMin: 0,
-                    suggestedMax: 1
-                }
-            }]
+            yAxes: this.defaultYAxes_,
         },
         plugins: {
             zoom: {
@@ -169,6 +173,11 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         if (this.chartInfo.charts_type === Chart_Type.CT_DIG_TYPE) {
             this.setupYAxisScale(this.leftYAxisLsKey, 0);
             this.setupYAxisScale(this.rightYAxisLsKey, 1);
+        } else {
+            this.options.scales.yAxes = this.yAxes;
+            if (!this.options.scales.yAxes?.length) {
+                this.options.scales.yAxes = this.defaultYAxes_;
+            }
         }
 
         this.schemeService.getMembers().subscribe(members => this.members = members.results);
@@ -299,12 +308,6 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
     addParamValues(params: Paginator_Chart_Value, additional = false): void
     {
         this.addData(params, 'param', additional);
-    }
-
-    random_color(): void {
-        for (const dataset of (<any>this.chart.data).datasets)
-            this.setDataColor(dataset, { h: Math.round(Math.random() * 360), s: 100, l: 35 });
-        this.chart.chart.update();
     }
 
     setDataColor(dataset: any, hsl: Hsl): void
