@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
@@ -31,7 +31,8 @@ export class SchemeListComponent extends SchemesList implements OnInit, OnDestro
               private authService: AuthenticationService,
               http: HttpClient,
               translate: TranslateService,
-              public dialog: MatDialog
+              public dialog: MatDialog,
+              private changeDetectorRef: ChangeDetectorRef,
   ) {
       super(http, translate);
   }
@@ -145,6 +146,7 @@ export class SchemeListComponent extends SchemesList implements OnInit, OnDestro
     console.log(q);
     this.search(q);
 
+    this.changeDetectorRef.detectChanges();
     return event;
   }
 

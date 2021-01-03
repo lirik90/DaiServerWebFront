@@ -1,4 +1,4 @@
-import {Directive, Input, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Directive, Input, OnInit} from '@angular/core';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 
 @Directive({
@@ -14,6 +14,11 @@ export class RememberPageLimitDirective implements OnInit {
         const limit = this.load();
         if (limit) {
             this.elementRef.pageSize = limit;
+            this.elementRef.page.emit({
+                length: this.elementRef.length,
+                pageIndex: this.elementRef.pageIndex,
+                pageSize: limit,
+            });
         }
 
         this.elementRef.page.subscribe((event: PageEvent) => {
