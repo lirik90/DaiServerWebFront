@@ -2,7 +2,7 @@
   <button *ngIf="is_button" mat-button class="button" (click)="click_button()">{{text_value}}</button>
   <button *ngIf="is_video" mat-button class="button" (click)="open_video()"
                     [disabled]="!item.val || item.val.value == null"
-      ><mat-icon>play_arrow</mat-icon><span>Пуск</span></button>
+      ><mat-icon>play_arrow</mat-icon><span i18n="@@CONTROL.START">Пуск</span></button>
 
   <ng-container *ngIf="is_file">
     <div *ngIf="!is_loading">

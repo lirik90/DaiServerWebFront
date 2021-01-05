@@ -5,17 +5,17 @@
                 <span *ngIf="item.state != itemState.Adding; else edit" [class.green-btn]="item.state != itemState.Init">{{item.title}}</span>
                 <ng-template #edit>
                     <mat-form-field appearance="fill">
-                        <mat-label>Группа элементов</mat-label>
+                        <mat-label i18n="@@STATUS.ITEMS_GROUP">Группа элементов</mat-label>
                         <mat-select [value]="0" #elem>
-                            <mat-option [value]="0">Текущая</mat-option>
-                            <mat-option [value]="1">Все</mat-option>
+                            <mat-option [value]="0" i18n="@@STATUS.ITEMS_GROUP_CURRENT">Текущая</mat-option>
+                            <mat-option [value]="1" i18n="@@ALL">Все</mat-option>
                         </mat-select>
                     </mat-form-field>
 
                     <mat-form-field appearance="fill">
-                        <mat-label>Группа пользователей</mat-label>
+                        <mat-label i18n="@@STATUS.USERS_GROUP">Группа пользователей</mat-label>
                         <mat-select [value]="0" #auth>
-                            <mat-option [value]="0">Все</mat-option>
+                            <mat-option [value]="0" i18n="@@ALL">Все</mat-option>
                             <mat-option *ngFor="let x of manage.authGroups" [value]="x.id">{{x.name}}</mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -38,6 +38,6 @@
     </button>
 </div>
 <ng-template #noItems>
-    <span *ngIf="statusType.inform">По управляющей схеме</span>
-    <span *ngIf="!statusType.inform">В схеме</span>
+    <span *ngIf="statusType.inform" i18n="@@STATUS_TYPE.BY_SCHEME">По управляющей схеме</span>
+    <span *ngIf="!statusType.inform" i18n="@@STATUS_TYPE.IN_SCHEME">В схеме</span>
 </ng-template>

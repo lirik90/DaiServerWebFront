@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="ru" datatype="plaintext" original="ng2.template">
     <body>
@@ -23,49 +23,56 @@
           <context context-type="linenumber">5</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/schemes/list/list.component.html</context>
-          <context context-type="linenumber">44</context>
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">4</context>
         </context-group>
+      </trans-unit>
+      <trans-unit id="DETAILS.VERSION" datatype="html">
+        <source>Версия</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/schemes/list/list.component.html</context>
-          <context context-type="linenumber">44</context>
+          <context context-type="sourcefile">app/schemes/detail/detail.component.html</context>
+          <context context-type="linenumber">10</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DETAILS.TITLE" datatype="html">
         <source>Заголовок</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/schemes/detail/detail.component.html</context>
-          <context context-type="linenumber">7</context>
+          <context context-type="linenumber">12</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/schemes/list/list.component.html</context>
-          <context context-type="linenumber">46</context>
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">27</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CITY" datatype="html">
         <source>Город</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/schemes/detail/detail.component.html</context>
-          <context context-type="linenumber">13</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">40</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/schemes/list/list.component.html</context>
           <context context-type="linenumber">7</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">32</context>
         </context-group>
       </trans-unit>
       <trans-unit id="NOT_SELECTED" datatype="html">
         <source>Не выбрано</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/schemes/detail/detail.component.html</context>
-          <context context-type="linenumber">15</context>
+          <context context-type="linenumber">20</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/schemes/detail/detail.component.html</context>
-          <context context-type="linenumber">25</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">56</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/schemes/list/list.component.html</context>
@@ -75,58 +82,53 @@
           <context context-type="sourcefile">app/schemes/list/list.component.html</context>
           <context context-type="linenumber">17</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">33</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">40</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="COMPANY" datatype="html">
         <source>Компания</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/schemes/detail/detail.component.html</context>
-          <context context-type="linenumber">23</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">47</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/schemes/list/list.component.html</context>
           <context context-type="linenumber">15</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">39</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DETAILS.DESCRIPTION" datatype="html">
         <source>Описание</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/schemes/detail/detail.component.html</context>
-          <context context-type="linenumber">31</context>
+          <context context-type="linenumber">36</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/schemes/detail/detail.component.html</context>
-          <context context-type="linenumber">32</context>
+          <context context-type="linenumber">37</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/schemes/list/list.component.html</context>
-          <context context-type="linenumber">48</context>
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">75</context>
         </context-group>
+      </trans-unit>
+      <trans-unit id="DETAILS.COPY_ALL_PARAMS_FROM" datatype="html">
+        <source>Скопировать все уставки из...</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/schemes/list/list.component.html</context>
-          <context context-type="linenumber">48</context>
+          <context context-type="sourcefile">app/schemes/detail/detail.component.html</context>
+          <context context-type="linenumber">41</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CONTROL.BACK" datatype="html">
         <source>Назад</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/schemes/detail/detail.component.html</context>
-          <context context-type="linenumber">36</context>
+          <context context-type="linenumber">43</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/manage/params-dialog.component.html</context>
-          <context context-type="linenumber">9</context>
+          <context context-type="linenumber">23</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/param/param.component.html</context>
@@ -144,35 +146,31 @@
           <context context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
           <context context-type="linenumber">57</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">20</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">82</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="CONTROL.OPEN" datatype="html">
         <source>Открыть</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/schemes/detail/detail.component.html</context>
-          <context context-type="linenumber">37</context>
+          <context context-type="linenumber">44</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CONTROL.SAVE" datatype="html">
         <source>Сохранить</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/schemes/detail/detail.component.html</context>
-          <context context-type="linenumber">38</context>
+          <context context-type="linenumber">45</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/manage/params-dialog.component.html</context>
-          <context context-type="linenumber">8</context>
+          <context context-type="sourcefile">app/scheme/status-manage-dialog/status-manage-dialog.component.html</context>
+          <context context-type="linenumber">49</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/param/param.component.html</context>
           <context context-type="linenumber">8</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/reports/charts/chart-filter/chart-filter.component.html</context>
+          <context context-type="linenumber">61</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SCHEME_STATE.CLOSE" datatype="html">
@@ -183,7 +181,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/scheme-state/scheme-state.component.html</context>
-          <context context-type="linenumber">9</context>
+          <context context-type="linenumber">10</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SCHEME_STATE.ALL_RIGHT" datatype="html">
@@ -196,7 +194,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/scheme-state/scheme-state.component.html</context>
-          <context context-type="linenumber">20</context>
+          <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="THIS_SITE_USE" datatype="html">
@@ -219,6 +217,14 @@
           <context context-type="sourcefile">app/app.component.html</context>
           <context context-type="linenumber">6</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/status-manage-dialog/status-manage-dialog.component.html</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/dev-item-value/video-stream-dialog/video-stream-dialog.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="HOME.PANEL" datatype="html">
         <source>Избранное</source>
@@ -228,7 +234,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/schemes/dashboard/dashboard.component.html</context>
-          <context context-type="linenumber">14</context>
+          <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="HOME.SCHEMES" datatype="html">
@@ -256,7 +262,135 @@
         <source>Часто посещаемые проекты</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/schemes/dashboard/dashboard.component.html</context>
-          <context context-type="linenumber">3</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CREATE_SCHEME.CAPTION" datatype="html">
+        <source>Создать новую схему</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/schemes/list/list.component.html</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DETAILS.NAME_EX" datatype="html">
+        <source>Например: my_scheme_01</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CREATE_SCHEME.NAME_DESC" datatype="html">
+        <source>Уникальное имя схемы используется для подключения к серверу</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CREATE_SCHEME.VALIDATING" datatype="html">
+        <source>
+            Проверка...
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CREATE_SCHEME.NAME_UNIQUE" datatype="html">
+        <source>
+            Такое имя уже используется.
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CREATE_SCHEME.NAME_MINLEN" datatype="html">
+        <source>
+            Имя должно быть не короче 3-х символов.
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CREATE_SCHEME.NAME_FORBIDDEN" datatype="html">
+        <source>
+            Имя должно начинаться с буквы и содержать в себе только буквы латинского алфавита, цифры или знак нижнего подчёркивания
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CREATE_SCHEME.NAME_IS_REQUIRED" datatype="html">
+        <source>
+            Ввод имени <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>обязателен<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/>
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DETAILS.TITLE_EX" datatype="html">
+        <source>Например: Моя схема №1</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CREATE_SCHEME.TITLE_DESC" datatype="html">
+        <source>Имя которое видно в списке аппаратов</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DETAILS.ADDRESS" datatype="html">
+        <source>Адрес</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DETAILS.ADDRESS_EX" datatype="html">
+        <source>Например: ул. Центральная д.1</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CREATE_SCHEME.PARENT" datatype="html">
+        <source>Управляющая схема</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CREATE_SCHEME.SCHEME_GROUPS_IS_REQUIRED" datatype="html">
+        <source>
+            Выберите хотя бы одну группу
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">69</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="DETAILS.DESC_EX" datatype="html">
+        <source>Например: Моё первое тестовое устройство которое находится в гостинной...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.CREATE" datatype="html">
+        <source>Создать</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/schemes/list/create-scheme-dialog/create-scheme-dialog.html</context>
+          <context context-type="linenumber">81</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CONTROL.SEARCH" datatype="html">
@@ -268,41 +402,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/schemes/search/search.component.html</context>
           <context context-type="linenumber">3</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="DETAILS.SCHEME" datatype="html">
-        <source>Проект</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/schemes/list/list.component.html</context>
-          <context context-type="linenumber">43</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="DETAILS.HINT.NAME" datatype="html">
-        <source>Display name</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/schemes/list/list.component.html</context>
-          <context context-type="linenumber">46</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="DETAILS.UUID" datatype="html">
-        <source>Уникальный номер</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/schemes/list/list.component.html</context>
-          <context context-type="linenumber">50</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="DETAILS.HINT.UUID" datatype="html">
-        <source>Device UUID</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/schemes/list/list.component.html</context>
-          <context context-type="linenumber">50</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="CONTROL.ADD" datatype="html">
-        <source>Добавить</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/schemes/list/list.component.html</context>
-          <context context-type="linenumber">52</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SYSTEM.MSG.TITLE" datatype="html">
@@ -319,11 +418,40 @@
           <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="CONTROL.FOUND" datatype="html">
+        <source>Найдено</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/schemes/search/search.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="LOGIN.TITLE" datatype="html">
         <source>Вход</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/login/login.component.html</context>
           <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LOGIN.USERNAME" datatype="html">
+        <source>Имя пользователя</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/login/login.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/register/register.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="LOGIN.PASSWORD" datatype="html">
+        <source>Пароль</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/login/login.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/register/register.component.html</context>
+          <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="LOGIN.WRONG_PASSWORD" datatype="html">
@@ -400,25 +528,11 @@
           <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="LOGIN.USERNAME" datatype="html">
-        <source>Имя пользователя</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/register/register.component.html</context>
-          <context context-type="linenumber">20</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="LOGIN.USERNAME_HINT" datatype="html">
         <source>Имя пользователя нужно ввести</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/register/register.component.html</context>
           <context context-type="linenumber">22</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="LOGIN.PASSWORD" datatype="html">
-        <source>Пароль</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/register/register.component.html</context>
-          <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="LOGIN.PASSWORD_HINT" datatype="html">
@@ -446,25 +560,18 @@
           <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="RESTART" datatype="html">
-        <source>Перезагрузить</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/scheme.component.html</context>
-          <context context-type="linenumber">16</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="ADD_TO_FAV" datatype="html">
-        <source>Добавить<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>в избранное</source>
+        <source>Добавить в избранное</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/scheme.component.html</context>
-          <context context-type="linenumber">18</context>
+          <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit>
       <trans-unit id="IN_FAV" datatype="html">
         <source>В избранном</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/scheme.component.html</context>
-          <context context-type="linenumber">19</context>
+          <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="HOME.DIALOG.TITLE" datatype="html">
@@ -490,17 +597,14 @@
           <context context-type="linenumber">6</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="OVERVIEW.TITLE" datatype="html">
-        <source>Управление</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/view/view.component.html</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="MANAGEMENT.TITLE" datatype="html">
-        <source>Управление проектом</source>
+        <source>Управление схемой</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/manage/manage.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/manage2/manage2.component.html</context>
           <context context-type="linenumber">1</context>
         </context-group>
       </trans-unit>
@@ -508,7 +612,14 @@
         <source>Режим</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/manage/manage.component.html</context>
-          <context context-type="linenumber">22</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="RESTART" datatype="html">
+        <source>Перезагрузить ПО</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/manage/manage.component.html</context>
+          <context context-type="linenumber">51</context>
         </context-group>
       </trans-unit>
       <trans-unit id="PARAMS.TITLE" datatype="html">
@@ -522,18 +633,81 @@
           <context context-type="linenumber">2</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="PARAMS.SAVE" datatype="html">
+        <source>Сохранить</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/manage/params-dialog.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PARAMS.UNAVAILABLE" datatype="html">
+        <source>Устройство не доступно</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/manage/params-dialog.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="MANAGE.STATUS" datatype="html">
+        <source>Управление состояниями</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/status-manage-dialog/status-manage-dialog.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="STATUS.SHOW_COMMON" datatype="html">
+        <source>Показывать состояния общие для всех групп</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/status-manage-dialog/status-manage-dialog.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="STATUS.TABLE.TEXT" datatype="html">
+        <source>Текст</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/status-manage-dialog/status-manage-dialog.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="STATUS.TABLE.CATEGORY" datatype="html">
+        <source>Категория</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/status-manage-dialog/status-manage-dialog.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="STATUS.TABLE.TYPE" datatype="html">
+        <source>Общий</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/status-manage-dialog/status-manage-dialog.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="STATUS.TABLE.INFORM" datatype="html">
+        <source>Блокировка</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/status-manage-dialog/status-manage-dialog.component.html</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.START" datatype="html">
+        <source>Пуск</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/dev-item-value/dev-item-value.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="CONTROL.LOAD" datatype="html">
         <source>Загрузить</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/dev-item-value/dev-item-value.component.html</context>
-          <context context-type="linenumber">7</context>
+          <context context-type="linenumber">10</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DEVICE_ITEM.LOADING" datatype="html">
         <source>Загрузка</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/dev-item-value/dev-item-value.component.html</context>
-          <context context-type="linenumber">10</context>
+          <context context-type="linenumber">13</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/dev-item-value/holding-register-dialog.component.html</context>
@@ -577,7 +751,7 @@
       </trans-unit>
       <trans-unit id="LOG.WARNING" datatype="html">
         <source>
-      EventLog's API rate limit has been reached. It will be reset in one minute.
+      EventLog&apos;s API rate limit has been reached. It will be reset in one minute.
     </source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/log/log.component.html</context>
@@ -630,7 +804,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/log2/log2.component.html</context>
-          <context context-type="linenumber">59</context>
+          <context context-type="linenumber">61</context>
         </context-group>
       </trans-unit>
       <trans-unit id="LOG2.TITLE" datatype="html">
@@ -654,25 +828,39 @@
           <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="LOG2.VIEW" datatype="html">
+        <source>Посмотреть</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/log2/log2.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="LOG2.ELEMENT" datatype="html">
         <source>Элемент</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/log2/log2.component.html</context>
-          <context context-type="linenumber">35</context>
+          <context context-type="linenumber">37</context>
         </context-group>
       </trans-unit>
       <trans-unit id="LOG2.GROUP" datatype="html">
         <source>Группа</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/log2/log2.component.html</context>
-          <context context-type="linenumber">42</context>
+          <context context-type="linenumber">44</context>
         </context-group>
       </trans-unit>
       <trans-unit id="LOG2.SECTION" datatype="html">
         <source>Секция</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/log2/log2.component.html</context>
-          <context context-type="linenumber">49</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="NO_SETTINGS" datatype="html">
+        <source>В этом разделе нет настроек</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/param-item/param-item.component.html</context>
+          <context context-type="linenumber">43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="HELP" datatype="html">
@@ -682,150 +870,193 @@
           <context context-type="linenumber">1</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="REPORTS.TITLE" datatype="html">
-        <source>Отчёты</source>
+      <trans-unit id="HELP.CONTACT_HEADER" datatype="html">
+        <source>Контакты</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/reports.component.html</context>
-          <context context-type="linenumber">1</context>
+          <context context-type="sourcefile">app/scheme/doc/doc.component.html</context>
+          <context context-type="linenumber">7</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="REPORTS.CHARTS" datatype="html">
-        <source>Графики</source>
+      <trans-unit id="HELP.CONTACTS" datatype="html">
+        <source>
+    Кирилл Зимников<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/>
+    Программист<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/>
+    +79833141588<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/>
+    kirill@zimnikov.ru
+  </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/reports.component.html</context>
-          <context context-type="linenumber">3</context>
+          <context context-type="sourcefile">app/scheme/doc/doc.component.html</context>
+          <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="REPORTS.EXPORT" datatype="html">
-        <source>Экспорт</source>
+      <trans-unit id="STATUS.ITEMS_GROUP" datatype="html">
+        <source>Группа элементов</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/reports.component.html</context>
-          <context context-type="linenumber">4</context>
+          <context context-type="sourcefile">app/scheme/status-manage-dialog/status-manage-item/status-manage-item.component.html</context>
+          <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="REPORTS.CHARTS.TITLE" datatype="html">
-        <source>Графики</source>
+      <trans-unit id="STATUS.ITEMS_GROUP_CURRENT" datatype="html">
+        <source>Текущая</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
-          <context context-type="linenumber">1</context>
+          <context context-type="sourcefile">app/scheme/status-manage-dialog/status-manage-item/status-manage-item.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ALL" datatype="html">
+        <source>Все</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/status-manage-dialog/status-manage-item/status-manage-item.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/status-manage-dialog/status-manage-item/status-manage-item.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="STATUS.USERS_GROUP" datatype="html">
+        <source>Группа пользователей</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/status-manage-dialog/status-manage-item/status-manage-item.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="STATUS_TYPE.BY_SCHEME" datatype="html">
+        <source>По управляющей схеме</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/status-manage-dialog/status-manage-item/status-manage-item.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="STATUS_TYPE.IN_SCHEME" datatype="html">
+        <source>В схеме</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/status-manage-dialog/status-manage-item/status-manage-item.component.html</context>
+          <context context-type="linenumber">42</context>
         </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.TIME_FROM" datatype="html">
         <source>Время от</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
+          <context context-type="sourcefile">app/scheme/reports/charts/chart-filter/chart-filter.component.html</context>
           <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.DATE_FROM" datatype="html">
         <source>Дата от</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
+          <context context-type="sourcefile">app/scheme/reports/charts/chart-filter/chart-filter.component.html</context>
           <context context-type="linenumber">8</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
           <context context-type="linenumber">23</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">72</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.TIME_TO" datatype="html">
         <source>Время до</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
-          <context context-type="linenumber">14</context>
+          <context context-type="sourcefile">app/scheme/reports/charts/chart-filter/chart-filter.component.html</context>
+          <context context-type="linenumber">16</context>
         </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.DATE_TO" datatype="html">
         <source>Дата до</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
-          <context context-type="linenumber">17</context>
+          <context context-type="sourcefile">app/scheme/reports/charts/chart-filter/chart-filter.component.html</context>
+          <context context-type="linenumber">19</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
           <context context-type="linenumber">28</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">77</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.CHARTS.DECOMPOSE" datatype="html">
         <source>Разложить</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
-          <context context-type="linenumber">23</context>
+          <context context-type="sourcefile">app/scheme/reports/charts/chart-filter/chart-filter.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.CHARTS.USERCHOICE" datatype="html">
+        <source>Пользовательский</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/reports/charts/chart-filter/chart-filter.component.html</context>
+          <context context-type="linenumber">29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.CHARTS.DECOMPOSE_BY_GROUPS" datatype="html">
         <source>По группам элементов</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
-          <context context-type="linenumber">25</context>
+          <context context-type="sourcefile">app/scheme/reports/charts/chart-filter/chart-filter.component.html</context>
+          <context context-type="linenumber">30</context>
         </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.CHARTS.DECOMPOSE_BY_TYPES" datatype="html">
         <source>По типам элементов</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
-          <context context-type="linenumber">26</context>
+          <context context-type="sourcefile">app/scheme/reports/charts/chart-filter/chart-filter.component.html</context>
+          <context context-type="linenumber">31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.CHARTS.DECOMPOSE_BY_ITEMS" datatype="html">
         <source>По элементам</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
-          <context context-type="linenumber">27</context>
+          <context context-type="sourcefile">app/scheme/reports/charts/chart-filter/chart-filter.component.html</context>
+          <context context-type="linenumber">32</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="REPORTS.CHARTS.ADD_TYPE" datatype="html">
-        <source>Добавить тип элемента</source>
+      <trans-unit id="CONTROL.EDIT" datatype="html">
+        <source>Изменить</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
-          <context context-type="linenumber">36</context>
+          <context context-type="sourcefile">app/scheme/reports/charts/chart-filter/chart-filter.component.html</context>
+          <context context-type="linenumber">50</context>
         </context-group>
-      </trans-unit>
-      <trans-unit id="REPORTS.CHARTS.SELECT_TYPE" datatype="html">
-        <source>Выберите тип элемента</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
-          <context context-type="linenumber">42</context>
+          <context context-type="sourcefile">app/scheme/reports/charts/chart-filter/chart-filter.component.html</context>
+          <context context-type="linenumber">60</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="CONTROL.DELETE" datatype="html">
+      <trans-unit id="CONTROL.DEL" datatype="html">
         <source>Удалить</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
-          <context context-type="linenumber">46</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
-          <context context-type="linenumber">62</context>
+          <context context-type="sourcefile">app/scheme/reports/charts/chart-filter/chart-filter.component.html</context>
+          <context context-type="linenumber">51</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="REPORTS.CHARTS.ADD_ITEM" datatype="html">
-        <source>Добавить элемент</source>
+      <trans-unit id="REPORTS.NAME" datatype="html">
+        <source>Имя графика</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
-          <context context-type="linenumber">52</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="REPORTS.CHARTS.SELECT_ITEM" datatype="html">
-        <source>Выберите элемент</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
-          <context context-type="linenumber">58</context>
+          <context context-type="sourcefile">app/scheme/reports/charts/chart-filter/chart-filter.component.html</context>
+          <context context-type="linenumber">57</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CONTROL.SHOW" datatype="html">
-        <source>Показать</source>
+        <source>Построить график</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/reports/charts/chart-filter/chart-filter.component.html</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.CHARTS" datatype="html">
+        <source>Графики</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/reports/reports-menu/reports-menu.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="REPORTS.EXPORT" datatype="html">
+        <source>Экспорт</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/reports/reports-menu/reports-menu.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CHARTS.BREAK_LOAD" datatype="html">
+        <source>Прервать загрузку</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
-          <context context-type="linenumber">68</context>
+          <context context-type="linenumber">12</context>
         </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.EXPORT.TITLE" datatype="html">
@@ -834,19 +1065,11 @@
           <context context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
           <context context-type="linenumber">1</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.EXPORT.WAITING" datatype="html">
         <source>Подождите! Идёт генерация отчёта...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
-          <context context-type="linenumber">2</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
           <context context-type="linenumber">2</context>
         </context-group>
       </trans-unit>
@@ -860,24 +1083,12 @@
           <context context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
           <context context-type="linenumber">9</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">6</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">28</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.EXPORT.SELECT_THIS" datatype="html">
         <source>Только этот проект</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
           <context context-type="linenumber">7</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.EXPORT.SELECTED" datatype="html">
@@ -905,28 +1116,12 @@
           <context context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
           <context context-type="linenumber">58</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">21</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">64</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">83</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.EXPORT.SELECT_TIME" datatype="html">
         <source>Укажите период</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
           <context context-type="linenumber">21</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">70</context>
         </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.TIMEZONE" datatype="html">
@@ -963,10 +1158,6 @@
           <context context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
           <context context-type="linenumber">63</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">88</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.EXPORT.READY" datatype="html">
         <source>Для генерации отчёта всё готово.</source>
@@ -981,17 +1172,6 @@
           <context context-type="sourcefile">app/scheme/reports/export/export.component.html</context>
           <context context-type="linenumber">66</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">90</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="SELECT_ALL" datatype="html">
-        <source>Выбрать все</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/export2/export2.component.html</context>
-          <context context-type="linenumber">59</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="SETTINGS.TITLE" datatype="html">
         <source>Настройки</source>
@@ -1000,39 +1180,46 @@
           <context context-type="linenumber">1</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="SETTINGS.COPY_TO" datatype="html">
+        <source>Скопировать в...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/settings/settings.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="SETTINGS.ITEM.DEVICES" datatype="html">
         <source>Устройства и элементы</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/settings/settings.component.html</context>
-          <context context-type="linenumber">3</context>
+          <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SETTINGS.ITEM.SECTIONS" datatype="html">
         <source>Секции и группы</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/settings/settings.component.html</context>
-          <context context-type="linenumber">4</context>
+          <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SETTINGS.ITEM.GROUPTYPES" datatype="html">
         <source>Типы групп и элементов</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/settings/settings.component.html</context>
-          <context context-type="linenumber">5</context>
+          <context context-type="linenumber">6</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="SETTINGS.ITEM.STATUSTYPES" datatype="html">
+      <trans-unit id="SETTINGS.ITEM.DIG_STATUS_CATEGORY" datatype="html">
         <source>Типы состояний</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/settings/settings.component.html</context>
-          <context context-type="linenumber">6</context>
+          <context context-type="linenumber">7</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SETTINGS.ITEM.SIGNTYPES" datatype="html">
         <source>Единицы измерения</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/settings/settings.component.html</context>
-          <context context-type="linenumber">7</context>
+          <context context-type="linenumber">8</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/settings/group-types/item-types.component.html</context>
@@ -1041,13 +1228,6 @@
       </trans-unit>
       <trans-unit id="SETTINGS.ITEM.PLUGINS" datatype="html">
         <source>Плагины</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/settings.component.html</context>
-          <context context-type="linenumber">8</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="SETTINGS.ITEM.VIEWS" datatype="html">
-        <source>Представления</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/settings/settings.component.html</context>
           <context context-type="linenumber">9</context>
@@ -1065,6 +1245,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/settings/settings.component.html</context>
           <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CREATE_SCHEME.SCHEME" datatype="html">
+        <source>Схема</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/settings/settings.component.ts</context>
+          <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SETTINGS.DEVICES.TITLE" datatype="html">
@@ -1117,7 +1304,7 @@
           <context context-type="linenumber">5</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/status-types/status-types.component.html</context>
+          <context context-type="sourcefile">app/scheme/settings/dig-status-category/dig-status-category.component.html</context>
           <context context-type="linenumber">6</context>
         </context-group>
         <context-group purpose="location">
@@ -1129,16 +1316,8 @@
           <context context-type="linenumber">8</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/checker-types/checker-types.component.html</context>
+          <context context-type="sourcefile">app/scheme/settings/plugin-types/plugin-types.component.html</context>
           <context context-type="linenumber">6</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/views/views.component.html</context>
-          <context context-type="linenumber">6</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/views/viewitems.component.html</context>
-          <context context-type="linenumber">5</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/settings/save-timers/save-timers.component.html</context>
@@ -1198,7 +1377,7 @@
           <context context-type="linenumber">27</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/status-types/status-types.component.html</context>
+          <context context-type="sourcefile">app/scheme/settings/dig-status-category/dig-status-category.component.html</context>
           <context context-type="linenumber">28</context>
         </context-group>
         <context-group purpose="location">
@@ -1210,16 +1389,8 @@
           <context context-type="linenumber">30</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/checker-types/checker-types.component.html</context>
+          <context context-type="sourcefile">app/scheme/settings/plugin-types/plugin-types.component.html</context>
           <context context-type="linenumber">28</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/views/views.component.html</context>
-          <context context-type="linenumber">28</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/views/viewitems.component.html</context>
-          <context context-type="linenumber">27</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/settings/save-timers/save-timers.component.html</context>
@@ -1257,7 +1428,7 @@
           <context context-type="linenumber">30</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/status-types/status-types.component.html</context>
+          <context context-type="sourcefile">app/scheme/settings/dig-status-category/dig-status-category.component.html</context>
           <context context-type="linenumber">34</context>
         </context-group>
         <context-group purpose="location">
@@ -1269,11 +1440,7 @@
           <context context-type="linenumber">39</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/checker-types/checker-types.component.html</context>
-          <context context-type="linenumber">34</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/views/views.component.html</context>
+          <context context-type="sourcefile">app/scheme/settings/plugin-types/plugin-types.component.html</context>
           <context context-type="linenumber">34</context>
         </context-group>
       </trans-unit>
@@ -1445,6 +1612,13 @@
           <context context-type="linenumber">34</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="SETTINGS.GROUPS.ITEMS" datatype="html">
+        <source>Элементы в группе</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/scheme/settings/sections/groups.component.html</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="SETTINGS.PARAMS_IN_GROUP.TITLE" datatype="html">
         <source>Уставки в группе</source>
         <context-group purpose="location">
@@ -1517,7 +1691,7 @@
           <context context-type="linenumber">31</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/status-types/status-types.component.html</context>
+          <context context-type="sourcefile">app/scheme/settings/dig-status-category/dig-status-category.component.html</context>
           <context context-type="linenumber">37</context>
         </context-group>
       </trans-unit>
@@ -1668,40 +1842,40 @@
       <trans-unit id="SETTINGS.STATUS_TYPE.TITLE" datatype="html">
         <source>Типы состояний</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/status-types/status-types.component.html</context>
+          <context context-type="sourcefile">app/scheme/settings/dig-status-category/dig-status-category.component.html</context>
           <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SETTINGS.STATUS_TYPE.ADD" datatype="html">
         <source>Добавить тип состояния</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/status-types/status-types.component.html</context>
+          <context context-type="sourcefile">app/scheme/settings/dig-status-category/dig-status-category.component.html</context>
           <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SETTINGS.STATUS_TYPE.DELETE" datatype="html">
         <source>Удалить тип состояния</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/status-types/status-types.component.html</context>
+          <context context-type="sourcefile">app/scheme/settings/dig-status-category/dig-status-category.component.html</context>
           <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SETTINGS.COLOR" datatype="html">
         <source>Цвет</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/status-types/status-types.component.html</context>
+          <context context-type="sourcefile">app/scheme/settings/dig-status-category/dig-status-category.component.html</context>
           <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SETTINGS.SIGN_TYPES.TITLE" datatype="html">
-        <source>Еденицы измерения</source>
+        <source>Единицы измерения</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/settings/sign-types/sign-types.component.html</context>
           <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SETTINGS.SIGN_TYPES.ADD" datatype="html">
-        <source>Добавить еденицу измерения</source>
+        <source>Добавить единицу измерения</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/settings/sign-types/sign-types.component.html</context>
           <context context-type="linenumber">13</context>
@@ -1745,71 +1919,22 @@
       <trans-unit id="SETTINGS.PLUGINS.TITLE" datatype="html">
         <source>Плагины</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/checker-types/checker-types.component.html</context>
+          <context context-type="sourcefile">app/scheme/settings/plugin-types/plugin-types.component.html</context>
           <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SETTINGS.PLUGINS.ADD" datatype="html">
         <source>Добавить плагин</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/checker-types/checker-types.component.html</context>
+          <context context-type="sourcefile">app/scheme/settings/plugin-types/plugin-types.component.html</context>
           <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SETTINGS.PLUGINS.DELETE" datatype="html">
         <source>Удалить плагин</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/checker-types/checker-types.component.html</context>
+          <context context-type="sourcefile">app/scheme/settings/plugin-types/plugin-types.component.html</context>
           <context context-type="linenumber">21</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="SETTINGS.VIEWS.TITLE" datatype="html">
-        <source>Представления</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/views/views.component.html</context>
-          <context context-type="linenumber">4</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="SETTINGS.VIEWS.ADD" datatype="html">
-        <source>Добавить представление</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/views/views.component.html</context>
-          <context context-type="linenumber">13</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="SETTINGS.VIEWS.DELETE" datatype="html">
-        <source>Удалить представление</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/views/views.component.html</context>
-          <context context-type="linenumber">21</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="SETTINGS.VIEW_ITEMS.TITLE" datatype="html">
-        <source>Элементы представления</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/views/viewitems.component.html</context>
-          <context context-type="linenumber">3</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="SETTINGS.VIEW_ITEMS.ADD" datatype="html">
-        <source>Добавить элемент</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/views/viewitems.component.html</context>
-          <context context-type="linenumber">12</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="SETTINGS.VIEW_ITEMS.DELETE" datatype="html">
-        <source>Удалить элемент</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/views/viewitems.component.html</context>
-          <context context-type="linenumber">20</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="SETTINGS.VIEW_ITEMS.ELEMENT" datatype="html">
-        <source>Элемент</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/settings/views/viewitems.component.html</context>
-          <context context-type="linenumber">31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SETTINGS.SAVE_TIMERS.TITLE" datatype="html">
@@ -1861,11 +1986,25 @@
           <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="PROFILE.PHONE" datatype="html">
+        <source>Телефон:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="PROFILE.SUCCESS2" datatype="html">
         <source>Данные успешно изменены!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
           <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CONTROL.APPLY" datatype="html">
+        <source>Применить</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context>
+          <context context-type="linenumber">29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="PROFILE.CHANGE_PASSWORD" datatype="html">
