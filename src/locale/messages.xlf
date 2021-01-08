@@ -1605,6 +1605,9 @@
           <context context-type="linenumber">32</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="CONTROL.YES" datatype="html">
+        <source>Да</source>
+      </trans-unit>
       <trans-unit id="SETTINGS.GROUP_TYPE" datatype="html">
         <source>Тип группы</source>
         <context-group purpose="location">

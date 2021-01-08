@@ -30,7 +30,10 @@
             <!-- Type Column -->
             <ng-container matColumnDef="type">
               <mat-header-cell *matHeaderCellDef i18n="@@STATUS.TABLE.TYPE">Общий</mat-header-cell>
-              <mat-cell *matCellDef="let row" i18n="{{ row.group_type_id ? '@@CONTROL.NO' : '@@CONTROL.YES' }}">{{ row.group_type_id ? 'Нет' : 'Да' }}</mat-cell>
+              <mat-cell *matCellDef="let row">
+                  <span *ngIf="row.group_type_id" i18n="@@CONTROL.NO">Нет</span>
+                  <span *ngIf="!row.group_type_id" i18n="@@CONTROL.YES">Да</span>
+              </mat-cell>
             </ng-container>
 
             <!-- Block Column -->
