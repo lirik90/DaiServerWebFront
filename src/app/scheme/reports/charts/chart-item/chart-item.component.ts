@@ -15,6 +15,9 @@ import {
     ViewChild
 } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
+import {ProgressBarMode} from '@angular/material/progress-bar/progress-bar';
+import {ThemePalette} from '@angular/material/core/common-behaviors/color';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 import {BaseChartDirective} from 'ng2-charts';
 
@@ -22,10 +25,6 @@ import {Paginator_Chart_Value, SchemeService} from '../../../scheme.service';
 import {Scheme_Group_Member} from '../../../../user';
 import {ColorPickerDialog, Hsl} from '../color-picker-dialog/color-picker-dialog';
 import {Chart_Info_Interface, Chart_Type, ZoomInfo} from '../chart-types';
-import {ProgressBarMode} from '@angular/material/progress-bar/progress-bar';
-import {ThemePalette} from '@angular/material/core/common-behaviors/color';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {Device_Item} from '../../../scheme';
 
 @Component({
     selector: 'app-chart-item',
@@ -329,13 +328,16 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
     }
 
     onLabel(item, data): string {
-        // console.log('callback label:', item, data);
+        let text = item.value;
         const dataset = data.datasets[item.datasetIndex];
-        const dev_item: Device_Item = dataset['dev_item'];
-        const value_view = this.schemeService.scheme.value_view.find(vv => vv.type_id === dev_item.type_id && vv.value === item.value);
-        let text = value_view ? value_view.view : item.value; //dataset.steppedLine && dataset.dev_item ?
-//            (item.yLabel < dataset['my_cond'] ? '0' : '1') :
-  //          item.value;
+
+        const dev_item = dataset['dev_item'];
+        if (dev_item)
+        {
+            const value_view = dev_item.type.views?.find(vv => vv.value == item.value);
+            if (value_view)
+                text = value_view.view;
+        }
 
         if (dataset.usered_data) {
             const x = dataset.data[item.index].x.getTime();

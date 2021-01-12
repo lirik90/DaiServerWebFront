@@ -20,7 +20,6 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
 
   @Input() item: Device_Item;
 
-  value_view: Value_View[];
   cantChange: boolean;
   is_toggle: boolean;
   is_holding: boolean;
@@ -41,8 +40,6 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.value_view = this.schemeService.scheme.value_view.filter(vv => vv.type_id === this.item.type_id);
-
     this.cantChange = !this.authService.canChangeValue();
     this.is_toggle = this.item.type.register_type == Register_Type.RT_COILS;
     this.is_holding = this.item.type.register_type == Register_Type.RT_HOLDING_REGISTERS;
@@ -61,7 +58,7 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
   }
 
   get text_value(): string {
-    const vv = this.value_view.find(vv => vv.value === this.item.val?.value);
+    const vv = this.item.type.views?.find(vv => vv.value === this.item.val?.value);
     if (vv)
         return vv.view;
 

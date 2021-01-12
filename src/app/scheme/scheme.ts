@@ -53,6 +53,8 @@ export class Device_Item_Type { // Тип элемента
   register_type: number;     // Тип данных элемента
   save_algorithm: number;    // Алгоритм сохранения изменений значения
   save_timer_id: number;    // ID таймера если выбран такой алгоритм сохранения
+
+    views: Value_View[];
 }
 
 export class Section {
