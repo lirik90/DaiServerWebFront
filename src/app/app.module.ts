@@ -33,6 +33,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { FavService } from './fav.service';
 import { TgAuthComponent } from './tg-auth/tg-auth.component';
 import { RememberPageLimitDirective } from './remember-page-limit.directive';
+import {PaginatorIntlService} from './paginator-intl.service';
+import {MatPaginatorIntl} from '@angular/material/paginator';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -91,7 +93,16 @@ export function createTranslateLoader(http: HttpClient) {
     	provide: HTTP_INTERCEPTORS,
     	useClass: JwtInterceptor,
     	multi: true
-    }
+    },
+      {
+          provide: MatPaginatorIntl,
+          useFactory: (translate) => {
+              const service = new PaginatorIntlService();
+              service.injectTranslateService(translate);
+              return service;
+          },
+          deps: [TranslateService]
+      }
   ],
   bootstrap: [AppComponent]
 })

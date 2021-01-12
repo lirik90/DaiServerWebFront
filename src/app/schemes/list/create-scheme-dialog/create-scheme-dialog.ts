@@ -8,6 +8,7 @@ import { catchError, switchMap, map, delay } from 'rxjs/operators';
 
 import { Scheme, Scheme_Group } from '../../../user';
 import { SchemesService } from '../../schemes.service';
+import {TranslateService} from '@ngx-translate/core';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -77,7 +78,7 @@ export class Create_Scheme_Dialog implements OnInit {
     cities: any[];
     comps: any[];
     schemes: any[] = [];
-  
+
     scheme_groups: Scheme_Group[] = [];
     scheme_group_selected: Scheme_Group[] = [];
     scheme_group_settings = {};
@@ -86,13 +87,14 @@ export class Create_Scheme_Dialog implements OnInit {
 
     constructor(
         private schemesService: SchemesService,
+        private translate: TranslateService,
         public dialogRef: MatDialogRef<Create_Scheme_Dialog>,
         @Inject(MAT_DIALOG_DATA) public data: any)
     {
         this.cities = data.cities;
         this.comps = data.comps;
     }
-  
+
     ngOnInit(): void
     {
         this.is_title_gen = true;
@@ -100,9 +102,9 @@ export class Create_Scheme_Dialog implements OnInit {
         this.schemesService.get_scheme_groups().subscribe(scheme_groups => this.scheme_groups = scheme_groups);
 
         this.scheme_group_settings = {
-            text: "Выберите группы схем",
-            selectAllText: 'Выбрать все',
-            unSelectAllText: 'Снять все',
+            text: this.translate.instant('SELECT_SCHEME_GROUP'),
+            selectAllText: this.translate.instant('SELECT_ALL'),
+            unSelectAllText: this.translate.instant('DESELECT_ALL'),
             classes: "scheme-groups",
             labelKey: 'name'
         };

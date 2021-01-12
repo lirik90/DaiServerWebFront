@@ -26,13 +26,28 @@
 	"LOG": {
 		"UNKNOWN_USER": "Unknow user ID:"
 	},
+    "SELECT_SCHEME_GROUP": "Select schemes groups",
+    "SELECT_ALL": "Select all",
+    "DESELECT_ALL": "Deselect all",
 	"REPORTS": {
-		"CHARTS_ELEMENTS": "Selected items"
+		"CHARTS_ELEMENTS": "Selected items",
+        "SELECT_CHART": "Select chart",
+        "SELECT_GROUP_TYPE": "Select group type",
+        "SELECT_ITEM_TYPE": "Select item type",
+        "SELECT_PARAM_TYPE": "Select param type",
+        "SELECT_ITEM": "Select item",
+        "SELECT_PARAM": "Select param"
 	},
 	"MONTHS": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
   "USER": {
     "NOTIFICATIONS": {
       "TITLE": "Notifications"
     }
-  }
+  },
+    "PAGINATOR": {
+        "NEXT_PAGE": "Next page",
+        "PREV_PAGE": "Previous page",
+        "ITEMS_PER_PAGE": "Items per page",
+        "OF": "of"
+    }
 }
