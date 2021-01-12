@@ -246,6 +246,10 @@ export class SchemeService extends ISchemeService {
         }
 
         for (const itemType of detail.device_item_type) {
+            const views = detail.value_view.filter(vv => vv.type_id === itemType.id);
+            if (views && views.length)
+                itemType.views = views;
+
           for (const sign of detail.sign_type) {
             if (sign.id === itemType.sign_id) {
               itemType.sign = sign;
