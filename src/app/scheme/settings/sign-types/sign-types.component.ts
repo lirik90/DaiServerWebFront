@@ -17,7 +17,7 @@ export class SignTypesComponent extends ChangeTemplate<Sign_Type> implements OnI
     wsbService: WebSocketBytesService,
     schemeService: SchemeService,
   ) {
-    super(StructType.Signs, wsbService, schemeService, Sign_Type);
+    super(StructType.Signs, wsbService, schemeService, Sign_Type, 'signtypes');
   }
 
   getObjects(): Sign_Type[] {

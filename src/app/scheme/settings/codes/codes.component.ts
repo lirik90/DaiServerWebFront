@@ -34,7 +34,7 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit {
     private settingsService: SettingsService,
       private metadataService: MetadataService
   ) {
-    super(StructType.Scripts, wsbService, schemeService, Codes);
+    super(StructType.Scripts, wsbService, schemeService, Codes, 'codes');
   }
 
   getObjects(): Codes[] {

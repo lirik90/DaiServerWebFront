@@ -38,7 +38,7 @@ export interface ChangeInfo<T> {
   obj: T;
 }
 
-export abstract class ChangeTemplate<T> {
+export abstract class ChangeTemplate<T extends { id: number }> {
   changeState = ChangeState;
   changed: boolean;
 
@@ -49,7 +49,9 @@ export abstract class ChangeTemplate<T> {
     private cmd: number,
     protected wsbService: WebSocketBytesService,
     public schemeService: SchemeService,
-    private itemType: new () => T) {
+    private itemType: new () => T,
+    private settingName: string,
+  ) {
   }
 
   abstract getObjects(): T[];
@@ -83,8 +85,8 @@ export abstract class ChangeTemplate<T> {
     if (evnt !== undefined) {
       evnt.stopPropagation();
     }
-    let data = this.getChangedData();
-    this.wsbService.send(WebSockCmd.WS_STRUCT_MODIFY, this.schemeService.scheme.id, data);
+    this.getChangedData();
+
     this.items = [];
     this.sel_item = null;
   }
@@ -94,8 +96,9 @@ export abstract class ChangeTemplate<T> {
     if (evnt !== undefined) {
       evnt.stopPropagation();
     }
+    // TODO
     let data = this.getChangedData();
-    this.wsbService.send(WebSockCmd.WS_STRUCT_MODIFY, this.schemeService.scheme.id, data);
+    // this.wsbService.send(WebSockCmd.WS_STRUCT_MODIFY, this.schemeService.scheme.id, data);
 
     this.changed = false;
     this.sel_item.state = ChangeState.NoChange;
@@ -137,54 +140,24 @@ export abstract class ChangeTemplate<T> {
 
   abstract saveObject(obj: T): Uint8Array;
 
-  getChangedData(): Uint8Array {
-    let data;
-    let updateSize = 0;
-    let insertSize = 0;
-    let updateList = [];
-    let insertList = [];
-    let deleteList = [];
+  getChangedData() {
+    let data: (T | { id: number })[] = [];
     for (const item of this.items) {
       if (item.state === ChangeState.Delete) {
-        deleteList.push((<any>item.obj).id);
+        data.push({ id: item.obj.id });
       } else if (item.state === ChangeState.Upsert) {
-        data = this.saveObject(item.obj);
-
-        if ((<any>item.obj).id > 0) {
-          updateSize += data.length;
-          updateList.push(data);
+        if (item.obj.id > 0) {
+          data.push(item.obj);
         } else {
-          insertSize += data.length;
-          insertList.push(data);
+          const itemWithoutId = { ...item.obj };
+          delete itemWithoutId.id;
+          data.push(itemWithoutId);
         }
       }
     }
 
-    let view = new Uint8Array(13 + updateSize + insertSize + (deleteList.length * 4));
-    view[0] = this.cmd;
-
-    let pos = 1;
-    ByteTools.saveInt32(updateList.length, view, pos);
-    pos += 4;
-    for (const data of updateList) {
-      view.set(data, pos);
-      pos += data.length;
+    if (data.length > 0) {
+        this.schemeService.postSettings(this.settingName, data);
     }
-
-    ByteTools.saveInt32(insertList.length, view, pos);
-    pos += 4;
-    for (const data of insertList) {
-      view.set(data, pos);
-      pos += data.length;
-    }
-
-    ByteTools.saveInt32(deleteList.length, view, pos);
-    pos += 4;
-    for (const id of deleteList) {
-      ByteTools.saveInt32(id, view, pos);
-      pos += 4;
-    }
-
-    return view;
   }
 }

@@ -16,7 +16,7 @@ export class DevicesComponent extends ChangeTemplate<Device> implements OnInit {
     wsbService: WebSocketBytesService,
     schemeService: SchemeService,
   ) {
-    super(StructType.Devices, wsbService, schemeService, Device);
+    super(StructType.Devices, wsbService, schemeService, Device, 'devices');
   }
 
   getObjects(): Device[] {
@@ -76,7 +76,7 @@ export class DeviceItemsComponent extends ChangeTemplate<Device_Item> implements
     wsbService: WebSocketBytesService,
     schemeService: SchemeService,
   ) {
-    super(StructType.DeviceItems, wsbService, schemeService, Device_Item);
+    super(StructType.DeviceItems, wsbService, schemeService, Device_Item, 'deviceitems');
   }
 
   getObjects(): Device_Item[] {

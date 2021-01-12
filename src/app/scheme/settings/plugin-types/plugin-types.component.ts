@@ -21,7 +21,7 @@ export class PluginTypesComponent extends ChangeTemplate<Plugin_Type> implements
     schemeService: SchemeService,
     private settingsService: SettingsService,
   ) {
-    super(StructType.PluginType, wsbService, schemeService, Plugin_Type);
+    super(StructType.PluginType, wsbService, schemeService, Plugin_Type, 'plugintypes');
   }
 
   getObjects(): Plugin_Type[] {
@@ -40,7 +40,7 @@ export class PluginTypesComponent extends ChangeTemplate<Plugin_Type> implements
     let view = new Uint8Array(12 + name.length);
     let pos = 0;
     ByteTools.saveInt32(obj.id, view, pos); pos += 4;
-    view.set(name, pos); pos += name.length; 
+    view.set(name, pos); pos += name.length;
     ByteTools.saveInt32(0, view, pos); pos += 4;
     ByteTools.saveInt32(0, view, pos); pos += 4;
     return view;

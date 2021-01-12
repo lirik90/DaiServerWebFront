@@ -17,7 +17,7 @@ export class DIG_Status_Category_Component extends ChangeTemplate<DIG_Status_Cat
     wsbService: WebSocketBytesService,
     schemeService: SchemeService,
   ) {
-    super(StructType.DIG_STATUS_CATEGORY, wsbService, schemeService, DIG_Status_Category);
+    super(StructType.DIG_STATUS_CATEGORY, wsbService, schemeService, DIG_Status_Category, 'digstatuscategory');
   }
 
   getObjects(): DIG_Status_Category[] {

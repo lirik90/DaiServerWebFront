@@ -482,4 +482,9 @@ export class SchemeService extends ISchemeService {
                 return of(undefined);
             }));
     }
+
+    public postSettings<T>(settingName: string, data: (T | { id: number })[]) {
+        const url = `/api/v2/scheme/${this.scheme.id}/${settingName}/`;
+        return this.http.post(url, data);
+    }
 }

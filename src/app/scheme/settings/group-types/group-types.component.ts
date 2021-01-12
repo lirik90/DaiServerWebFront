@@ -24,7 +24,7 @@ export class GroupTypesComponent extends ChangeTemplate<DIG_Type> implements OnI
     schemeService: SchemeService,
     private settingsService: SettingsService,
   ) {
-    super(StructType.GroupTypes, wsbService, schemeService, DIG_Type);
+    super(StructType.GroupTypes, wsbService, schemeService, DIG_Type, 'grouptypes');
   }
 
   getObjects(): DIG_Type[] {
@@ -70,7 +70,7 @@ export class ItemTypesComponent extends ChangeTemplate<Device_Item_Type> impleme
     schemeService: SchemeService,
     private settingsService: SettingsService
   ) {
-    super(StructType.DeviceItemTypes, wsbService, schemeService, Device_Item_Type);
+    super(StructType.DeviceItemTypes, wsbService, schemeService, Device_Item_Type, 'itemtypes');
   }
 
   ngOnChanges() {
@@ -124,7 +124,7 @@ export class ParamTypesComponent extends ChangeTemplate<DIG_Param_Type> implemen
     wsbService: WebSocketBytesService,
     schemeService: SchemeService,
   ) {
-    super(StructType.GroupParamTypes, wsbService, schemeService, DIG_Param_Type);
+    super(StructType.GroupParamTypes, wsbService, schemeService, DIG_Param_Type, 'paramtypes');
   }
 
   getObjects(): DIG_Param_Type[] {
@@ -170,7 +170,7 @@ export class StatusesComponent extends ChangeTemplate<DIG_Status_Type> implement
     wsbService: WebSocketBytesService,
     schemeService: SchemeService,
   ) {
-    super(StructType.GroupStatusInfo, wsbService, schemeService, DIG_Status_Type);
+    super(StructType.GroupStatusInfo, wsbService, schemeService, DIG_Status_Type, 'statuses');
   }
 
   getObjects(): DIG_Status_Type[] {

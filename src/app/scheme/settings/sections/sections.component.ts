@@ -17,7 +17,7 @@ export class SectionsComponent extends ChangeTemplate<Section> implements OnInit
     schemeService: SchemeService,
     private settingsService: SettingsService,
   ) {
-    super(StructType.Sections, wsbService, schemeService, Section);
+    super(StructType.Sections, wsbService, schemeService, Section, 'sections');
   }
 
   getObjects(): Section[] {
@@ -60,7 +60,7 @@ export class GroupsComponent extends ChangeTemplate<Device_Item_Group> implement
     wsbService: WebSocketBytesService,
     schemeService: SchemeService,
   ) {
-    super(StructType.Groups, wsbService, schemeService, Device_Item_Group);
+    super(StructType.Groups, wsbService, schemeService, Device_Item_Group, 'groups');
   }
 
   getObjects(): Device_Item_Group[] {
@@ -72,7 +72,7 @@ export class GroupsComponent extends ChangeTemplate<Device_Item_Group> implement
     this.fillItems();
   }
 
-  title(item: Device_Item_Group = undefined): string 
+  title(item: Device_Item_Group = undefined): string
   {
     if (item === undefined)
     {
@@ -81,12 +81,12 @@ export class GroupsComponent extends ChangeTemplate<Device_Item_Group> implement
     return item.title ? item.title : (item.type ? item.type.title : '');
   }
 
-  initItem(obj: Device_Item_Group): void 
+  initItem(obj: Device_Item_Group): void
   {
     obj.section_id = this.sct.id;
   }
 
-  saveObject(obj: Device_Item_Group): Uint8Array 
+  saveObject(obj: Device_Item_Group): Uint8Array
   {
     let title = ByteTools.saveQString(obj.title);
     let view = new Uint8Array(12 + title.length);
@@ -108,37 +108,37 @@ export class GroupsComponent extends ChangeTemplate<Device_Item_Group> implement
   templateUrl: './params-in-group.component.html',
   styleUrls: ['../settings.css', './sections.component.css']
 })
-export class ParamsInGroupComponent extends ChangeTemplate<DIG_Param> implements OnInit 
+export class ParamsInGroupComponent extends ChangeTemplate<DIG_Param> implements OnInit
 {
   @Input() group: Device_Item_Group;
-  
+
   params: DIG_Param_Type[];
 
   constructor(
     wsbService: WebSocketBytesService,
     schemeService: SchemeService,
   ) {
-    super(StructType.Group_Param, wsbService, schemeService, DIG_Param);
+    super(StructType.Group_Param, wsbService, schemeService, DIG_Param, 'paramsingroup');
   }
 
-  getObjects(): DIG_Param[] 
-  { 
+  getObjects(): DIG_Param[]
+  {
     return this.group.params;
   }
 
-  ngOnInit() 
+  ngOnInit()
   {
     this.fillItems();
     this.params = this.schemeService.scheme.dig_param_type.filter(obj => obj.group_type_id === this.group.type_id);
   }
 
-  initItem(obj: DIG_Param): void 
+  initItem(obj: DIG_Param): void
   {
     obj.param = new DIG_Param_Type();
     obj.group_id = this.group.id;
   }
 
-  saveObject(obj: DIG_Param): Uint8Array 
+  saveObject(obj: DIG_Param): Uint8Array
   {
     console.log(obj);
     let view = new Uint8Array(16);

@@ -19,7 +19,7 @@ export class SaveTimersComponent extends ChangeTemplate<Save_Timer> implements O
     schemeService: SchemeService,
     private settingsService: SettingsService
   ) {
-    super(StructType.SaveTimers, wsbService, schemeService, Save_Timer);
+    super(StructType.SaveTimers, wsbService, schemeService, Save_Timer, 'savetimers');
   }
 
   save_timers: Save_Timer[];
