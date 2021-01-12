@@ -77,7 +77,9 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
     data_part_size = 100000;
     private sidebarActionBroadcast$: Subscription;
 
-    constructor(private schemeService: SchemeService, private sidebar: SidebarService, private translate: TranslateService) {
+    constructor(private schemeService: SchemeService, private sidebar: SidebarService, private dateAdapter: DateAdapter<any>, private translate: TranslateService) {
+        this.dateAdapter.setLocale(this.translate.currentLang);
+
         this.sidebarActionBroadcast$ = this.sidebar.getSidebarActionBroadcast()
             .subscribe((action) => this.sidebarAction(action));
     }
