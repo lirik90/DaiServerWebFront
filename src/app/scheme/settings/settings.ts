@@ -85,7 +85,7 @@ export abstract class ChangeTemplate<T extends { id: number }> {
     if (evnt !== undefined) {
       evnt.stopPropagation();
     }
-    this.getChangedData();
+    this.saveSettings();
 
     this.items = [];
     this.sel_item = null;
@@ -98,7 +98,7 @@ export abstract class ChangeTemplate<T extends { id: number }> {
     }
     // TODO
     let data = this.getChangedData();
-    // this.wsbService.send(WebSockCmd.WS_STRUCT_MODIFY, this.schemeService.scheme.id, data);
+    this.wsbService.send(WebSockCmd.WS_STRUCT_MODIFY, this.schemeService.scheme.id, data);
 
     this.changed = false;
     this.sel_item.state = ChangeState.NoChange;
@@ -140,7 +140,7 @@ export abstract class ChangeTemplate<T extends { id: number }> {
 
   abstract saveObject(obj: T): Uint8Array;
 
-  getChangedData() {
+  saveSettings(): void {
     let data: (T | { id: number })[] = [];
     for (const item of this.items) {
       if (item.state === ChangeState.Delete) {
@@ -157,7 +157,58 @@ export abstract class ChangeTemplate<T extends { id: number }> {
     }
 
     if (data.length > 0) {
-        this.schemeService.postSettings(this.settingName, data);
+        this.schemeService.postSettings(this.settingName, data).subscribe(() => {});
     }
   }
+
+    getChangedData(): Uint8Array {
+        let data;
+        let updateSize = 0;
+        let insertSize = 0;
+        let updateList = [];
+        let insertList = [];
+        let deleteList = [];
+        for (const item of this.items) {
+            if (item.state === ChangeState.Delete) {
+                deleteList.push((<any>item.obj).id);
+            } else if (item.state === ChangeState.Upsert) {
+                data = this.saveObject(item.obj);
+
+                if ((<any>item.obj).id > 0) {
+                    updateSize += data.length;
+                    updateList.push(data);
+                } else {
+                    insertSize += data.length;
+                    insertList.push(data);
+                }
+            }
+        }
+
+        let view = new Uint8Array(13 + updateSize + insertSize + (deleteList.length * 4));
+        view[0] = this.cmd;
+
+        let pos = 1;
+        ByteTools.saveInt32(updateList.length, view, pos);
+        pos += 4;
+        for (const data of updateList) {
+            view.set(data, pos);
+            pos += data.length;
+        }
+
+        ByteTools.saveInt32(insertList.length, view, pos);
+        pos += 4;
+        for (const data of insertList) {
+            view.set(data, pos);
+            pos += data.length;
+        }
+
+        ByteTools.saveInt32(deleteList.length, view, pos);
+        pos += 4;
+        for (const id of deleteList) {
+            ByteTools.saveInt32(id, view, pos);
+            pos += 4;
+        }
+
+        return view;
+    }
 }
