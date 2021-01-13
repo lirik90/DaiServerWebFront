@@ -8,6 +8,7 @@ import { catchError } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
 
 import { User } from './user';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class AuthenticationService {
@@ -123,6 +124,10 @@ export class AuthenticationService {
   login(username: string, password: string) {
     return this.http.post<any>(this.tokenUrl + 'auth/', { username: username, password: password })
         .map(user => this.setCurrentUser(user));
+  }
+
+  needCaptchaOnLogin(): Observable<boolean> {
+      return of(true); // TODO: replace with real request to backend
   }
 
   logout() {
