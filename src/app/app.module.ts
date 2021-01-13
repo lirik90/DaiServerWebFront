@@ -7,6 +7,7 @@ import { HttpClient, HttpClientModule, HttpClientXsrfModule, HTTP_INTERCEPTORS }
 
 import { MaterialModule } from './material.module';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
+import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
 
 import { SchemesDetailModule } from './schemes/schemes-detail.module';
 import { AppComponent } from './app.component';
@@ -60,7 +61,9 @@ export function createTranslateLoader(http: HttpClient) {
     BrowserAnimationsModule,
 //    BrowserModule,
     FormsModule,
-      ReactiveFormsModule,
+    ReactiveFormsModule,
+    RecaptchaModule,
+    RecaptchaFormsModule,
     AppRoutingModule,
     SchemesDetailModule,
     HttpClientModule,
