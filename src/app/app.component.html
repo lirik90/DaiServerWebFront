@@ -13,7 +13,7 @@
     <h1 class="branding__text" *ngIf="!mobileQuery.matches">DEVICE ACCESS</h1>
   </div>
 
-  <ng-container *ngIf="authService.currentUser">
+  <ng-container *ngIf="authorized">
     <nav class="app-toolbar__menu" role="navigation">
       <ul class="app-toolbar__menu-list">
         <li class="app-toolbar__menu-list-item">

@@ -3,7 +3,7 @@ import { DOCUMENT } from "@angular/common";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-import { of } from 'rxjs';
+import {BehaviorSubject, of} from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
 
@@ -13,6 +13,7 @@ import {Observable} from 'rxjs/Observable';
 @Injectable()
 export class AuthenticationService {
 
+  private isAuthorized_: BehaviorSubject<boolean>;
   private currentUser_: User;
   timeout_handle: any;
 
@@ -25,6 +26,13 @@ export class AuthenticationService {
   set currentUser(usr) {
     //console.log('!!!!!!!!!!!!');
     this.currentUser_ = usr;
+    const haveUser = !!usr;
+
+    if (!this.isAuthorized_) {
+        this.isAuthorized_ = new BehaviorSubject(haveUser);
+    } else {
+        this.isAuthorized_.next(haveUser);
+    }
   }
 
   constructor(
@@ -37,6 +45,10 @@ export class AuthenticationService {
 
   isAdmin(): boolean {
     return this.checkPermission('change_logentry');
+  }
+
+  authorized(): Observable<boolean> {
+      return this.isAuthorized_.asObservable();
   }
 
   isFullAccess(): boolean {
