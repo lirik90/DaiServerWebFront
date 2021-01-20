@@ -14,6 +14,11 @@ export class Auth_Group extends Named_Object {}
 export class Scheme_Group extends Named_Object {}
 export class Scheme_Group_Member extends Named_Object {}
 
+export enum Group_User_Roles {
+    ADMIN = 'admin',
+    USER = 'user',
+}
+
 export class User {
     id: number;
     username: string;

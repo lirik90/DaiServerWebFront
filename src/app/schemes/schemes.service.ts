@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
-import { Auth_Group, Scheme, Scheme_Group, PaginatorApi } from '../user';
+import {Auth_Group, Scheme, Scheme_Group, PaginatorApi, Group_User_Roles} from '../user';
 import { MessageService } from '../message.service';
 import { ISchemeService } from '../ischeme.service';
 
@@ -32,30 +32,76 @@ export class SchemesService extends ISchemeService {
 
   constructor(
     http: HttpClient,
-    messageService: MessageService) {
+    messageService: MessageService,
+  ) {
     super(http, messageService);
   }
 
     private v2_url = '/api/v2/';
     private v2_scheme_url = this.v2_url + 'scheme/';
 
-  private schemeUrl = 'scheme/';  // URL to web api
-  private cityUrl = 'city/';
-  private compUrl = 'company/';
+    private schemeUrl = 'scheme/';  // URL to web api
+    private cityUrl = 'city/';
+    private compUrl = 'company/';
 
-  getSchemes(limit: number, page: number = 0, ordering?: string, query?: string): Observable<PaginatorApi<Scheme>> {
-    let url = this.schemeUrl + `?limit=${limit}&offset=${limit * page}`;
-    if (ordering && ordering.length) {
-      url += '&ordering=' + ordering;
+    getSchemes(limit: number, page: number = 0, ordering?: string, query?: string): Observable<PaginatorApi<Scheme>> {
+        let url = this.schemeUrl + `?limit=${limit}&offset=${limit * page}`;
+        if (ordering && ordering.length) {
+            url += '&ordering=' + ordering;
+        }
+
+        if (query && query.length) {
+            url += '&search=' + query;
+        }
+
+        return this.getPiped<PaginatorApi<Scheme>>(url,
+            `fetched client devices`, 'getSchemes', {} as PaginatorApi<Scheme>);
     }
 
-    if (query && query.length) {
-      url += '&search=' + query;
+    getGroupSchemeUsers(id: number): Observable<any[]> {
+        // TODO: make real request and fix return type
+
+        return of([{
+            last_name: 'test',
+            first_name: 'test',
+            username: 'login',
+            role: Group_User_Roles.ADMIN,
+        }, {
+            last_name: 'last',
+            first_name: 'first',
+            username: 'login-2',
+            role: Group_User_Roles.USER,
+        }]);
     }
 
-    return this.getPiped<PaginatorApi<Scheme>>(url,
-      `fetched client devices`, 'getSchemes', {} as PaginatorApi<Scheme>);
-  }
+    getGroupSchemeDevices(id: number): Observable<any[]> {
+        // TODO: make real request and fix return type
+        return of([{
+            name: 'test dev',
+        }, {
+            name: 'test dev 2',
+        }]);
+    }
+
+    addUserToGroupScheme(groupSchemeId: number, data: any): Observable<any> {
+        // TODO: make real request and fix type when backend will be ready
+        return of();
+    }
+
+    addDeviceToGroupSchema(groupSchemeId: number, deviceId: number): Observable<any> {
+        // TODO: make real request and fix type when backend will be ready
+        return of();
+    }
+
+    removeDeviceFromGroup(groupId: number, deviceId: number): Observable<void> {
+        // TODO: make real request
+        return of();
+    }
+
+    removeUserFromGroup(groupId: number, userId: number): Observable<void> {
+        // TODO: make real request
+        return of();
+    }
 
     get_scheme_groups(): Observable<Scheme_Group[]>
     {
@@ -71,19 +117,19 @@ export class SchemesService extends ISchemeService {
         return this.http.get<Titled_Object[]>(url);
     }
 
-  getCities(): Observable<PaginatorApi<any>> {
-    const url = this.cityUrl;
+    getCities(): Observable<PaginatorApi<any>> {
+        const url = this.cityUrl;
 
-    return this.getPiped<PaginatorApi<any>>(url,
-      `fetched cities`, 'getCities', {} as PaginatorApi<Scheme>);
-  }
+        return this.getPiped<PaginatorApi<any>>(url,
+            `fetched cities`, 'getCities', {} as PaginatorApi<Scheme>);
+    }
 
-  getCompanies(): Observable<PaginatorApi<any>> {
-    const url = this.compUrl;
+    getCompanies(): Observable<PaginatorApi<any>> {
+        const url = this.compUrl;
 
-    return this.getPiped<PaginatorApi<any>>(url,
-      `fetched cities`, 'getCities', {} as PaginatorApi<Scheme>);
-  }
+        return this.getPiped<PaginatorApi<any>>(url,
+            `fetched cities`, 'getCities', {} as PaginatorApi<Scheme>);
+    }
 
     getAuthGroups(): Observable<Auth_Group[]>
     {

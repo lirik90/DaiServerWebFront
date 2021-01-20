@@ -1,0 +1,88 @@
+<div class="table-wrapper" id="users">
+    <h2>Пользователи</h2>
+    <table mat-table [dataSource]="groupUsers">
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Имя</th>
+            <td mat-cell *matCellDef="let element">{{ element.last_name }} {{ element.first_name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="username">
+            <th mat-header-cell *matHeaderCellDef>Логин</th>
+            <td mat-cell *matCellDef="let element">{{ element.username }}</td>
+        </ng-container>
+        <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef>Роль</th>
+            <td mat-cell *matCellDef="let element">{{ element.role }}</td>
+        </ng-container>
+        <ng-container matColumnDef="control">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button type="button" (click)="removeUserFromGroup(element)"><mat-icon>delete</mat-icon></button>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="addUser">
+            <td mat-footer-cell *matFooterCellDef colspan="4">
+                <form [formGroup]="userAddFg" (ngSubmit)="userAddFormSubmit()">
+                    <mat-form-field *ngIf="!invitingUser; else emailInput">
+                        <mat-label>Пользователь</mat-label>
+                        <mat-select formControlName="userId">
+                            <mat-option *ngFor="let user of users" [value]="user.id">{{ user.last_name }} {{ user.first_name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <ng-template #emailInput>
+                        <mat-form-field>
+                            <mat-label>E-mail</mat-label>
+                            <input type="text" matInput formControlName="email">
+                        </mat-form-field>
+                    </ng-template>
+                    <mat-form-field>
+                        <mat-label>Роль</mat-label>
+                        <mat-select formControlName="role">
+                            <mat-option [value]="Group_User_Roles.ADMIN">Администратор</mat-option>
+                            <mat-option [value]="Group_User_Roles.USER">Оператор</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button mat-button type="submit">Добавить</button>
+                </form>
+                <a href="javascript:void(0)" (click)="toggleInvitingUser()"><small>Пригласить</small></a>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedUsersColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedUsersColumns;"></tr>
+        <tr mat-footer-row *matFooterRowDef="['addUser']"></tr>
+    </table>
+</div>
+<div class="table-wrapper" id="devices">
+    <h2>Устройства</h2>
+    <table mat-table [dataSource]="groupDevices">
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Название</th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="control">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button type="button" (click)="removeDeviceFromGroup(element)"><mat-icon>delete</mat-icon></button>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="addDevice">
+            <td mat-footer-cell *matFooterCellDef colspan="2">
+                <form [formGroup]="deviceAddFg" (ngSubmit)="deviceAddFormSubmit()">
+                    <mat-form-field>
+                        <mat-label>Устройство</mat-label>
+                        <mat-select formControlName="deviceId">
+                            <mat-option *ngFor="let device of devices" [value]="device.id">{{ device.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button mat-button type="submit">Добавить</button>
+                </form>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['name', 'control']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['name', 'control'];"></tr>
+        <tr mat-footer-row *matFooterRowDef="['addDevice']"></tr>
+    </table>
+</div>

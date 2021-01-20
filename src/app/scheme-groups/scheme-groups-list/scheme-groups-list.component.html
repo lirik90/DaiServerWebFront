@@ -1,0 +1,5 @@
+<ul>
+    <li *ngFor="let group of schemeGroups">
+        <a [routerLink]="['users-and-devices', group.id]" routerLinkActive="active">{{ group.name }}</a>
+    </li>
+</ul>
