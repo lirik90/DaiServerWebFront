@@ -32,7 +32,7 @@ export class UsersAndDevicesComponent implements OnInit {
     ) {
         this.userAddFg = fb.group({
             email: [null, []],
-            userId: [null, []],
+            userId: [null, [Validators.required]],
             role: [null, [Validators.required]],
         }, {
             validators: [this.emailOrUserIdValidator()],
