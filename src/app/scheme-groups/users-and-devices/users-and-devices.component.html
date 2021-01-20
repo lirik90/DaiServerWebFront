@@ -44,7 +44,10 @@
                     <button mat-button type="submit" i18n="@@SCHEME_GROUPS.ADD">Добавить</button>
                 </form>
                 <a href="javascript:void(0)" (click)="toggleInvitingUser()">
-                    <small i18n="@@SCHEME_GROUPS.INVITE_USER">Пригласить пользователя</small>
+                    <small *ngIf="!invitingUser; else existingUser" i18n="@@SCHEME_GROUPS.INVITE_USER">Пригласить пользователя</small>
+                    <ng-template #existingUser>
+                        <small i18n="@@SCHEME_GROUPS.SELECT_EXISTING_USER">Выбрать существующего</small>
+                    </ng-template>
                 </a>
             </td>
         </ng-container>
