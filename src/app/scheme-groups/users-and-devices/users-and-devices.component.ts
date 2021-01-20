@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {SchemesService} from '../../schemes/schemes.service';
 import {Group_User_Roles, User} from '../../user';
@@ -10,11 +10,11 @@ import {FormBuilder, FormGroup, ValidatorFn, Validators} from '@angular/forms';
     templateUrl: './users-and-devices.component.html',
     styleUrls: ['./users-and-devices.component.css']
 })
-export class UsersAndDevicesComponent implements OnInit {
+export class UsersAndDevicesComponent implements OnInit, OnChanges {
     readonly Group_User_Roles = Group_User_Roles;
     readonly displayedUsersColumns = ['name', 'username', 'role', 'control'];
 
-    private id: number;
+    @Input() id: number;
 
     groupUsers: (User & { role: Group_User_Roles })[]; // TODO: fix type when backend will be ready
     groupDevices: Device[];
@@ -28,7 +28,6 @@ export class UsersAndDevicesComponent implements OnInit {
     constructor(
         private schemes: SchemesService,
         fb: FormBuilder,
-        route: ActivatedRoute,
     ) {
         this.userAddFg = fb.group({
             email: [null, []],
@@ -41,14 +40,15 @@ export class UsersAndDevicesComponent implements OnInit {
         this.deviceAddFg = fb.group({
             deviceId: [null, [Validators.required]],
         });
-
-        route.queryParamMap.subscribe((qp) => {
-            this.id = +qp.get('id');
-            this.getData();
-        });
     }
 
     ngOnInit(): void {
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.id && changes.id.currentValue) {
+            this.getData();
+        }
     }
 
     private getData() {

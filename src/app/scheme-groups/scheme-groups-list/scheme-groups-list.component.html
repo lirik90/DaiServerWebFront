@@ -1,5 +1,9 @@
 <ul>
     <li *ngFor="let group of schemeGroups">
-        <a [routerLink]="['users-and-devices', group.id]" routerLinkActive="active">{{ group.name }}</a>
+        <a [routerLink]="['group', group.id]" routerLinkActive="active">{{ group.name }}</a>
+        <button mat-icon-button (click)="remove(group)"><mat-icon>delete</mat-icon></button>
+    </li>
+    <li>
+        <a [routerLink]="['group', 'new']" routerLinkActive="active" i18n="@@SCHEME_GROUPS.CREATE_NEW">Создать...</a>
     </li>
 </ul>

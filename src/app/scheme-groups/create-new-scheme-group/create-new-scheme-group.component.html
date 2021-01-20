@@ -1,0 +1,8 @@
+<form [formGroup]="fg" (ngSubmit)="submit()">
+    <mat-form-field>
+        <mat-label i18n="@@SCHEME_GROUPS.GROUP_TITLE">Название</mat-label>
+        <input type="text" matInput formControlName="name">
+    </mat-form-field>
+
+    <button mat-button i18n="@@SCHEME_GROUPS.CREATE" type="submit">Создать</button>
+</form>

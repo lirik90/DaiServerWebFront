@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UsersAndDevicesComponent } from './users-and-devices/users-and-devices.component';
 import { SchemeGroupsComponent } from './scheme-groups/scheme-groups.component';
+import {EditSchemeGroupComponent} from './edit-scheme-group/edit-scheme-group.component';
 
 const routes: Routes = [
     {
         path: '',
         component: SchemeGroupsComponent,
         children: [
-            { path: 'users-and-devices/:id', component: UsersAndDevicesComponent },
+            { path: 'group/:id', component: EditSchemeGroupComponent },
         ],
     },
 ];

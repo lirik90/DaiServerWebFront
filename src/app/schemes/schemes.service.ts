@@ -6,6 +6,8 @@ import { of } from 'rxjs/observable/of';
 import {Auth_Group, Scheme, Scheme_Group, PaginatorApi, Group_User_Roles} from '../user';
 import { MessageService } from '../message.service';
 import { ISchemeService } from '../ischeme.service';
+import {BehaviorSubject} from 'rxjs';
+import {tap} from 'rxjs/operators';
 
 export interface Titled_Object
 {
@@ -30,11 +32,15 @@ export const nullSearchResult: SearchResult = {
 @Injectable()
 export class SchemesService extends ISchemeService {
 
+    schemeGroupsSubject: BehaviorSubject<Scheme_Group[]> = new BehaviorSubject([]);
+
   constructor(
     http: HttpClient,
     messageService: MessageService,
   ) {
     super(http, messageService);
+
+    this.get_scheme_groups_();
   }
 
     private v2_url = '/api/v2/';
@@ -103,10 +109,39 @@ export class SchemesService extends ISchemeService {
         return of();
     }
 
+    createSchemeGroup(value: Scheme_Group): Observable<Scheme_Group> {
+        // TODO: make real request
+        return of(value).pipe(tap(() => this.get_scheme_groups_()));
+    }
+
+    updateSchemeGroup(value: Scheme_Group): Observable<Scheme_Group> {
+        // TODO: make real request
+        return of(value).pipe(tap(() => this.get_scheme_groups_()));
+    }
+
+    removeSchemeGroup(id: number): Observable<void> {
+        // TODO: make real request
+        return of(null).pipe(tap(() => this.get_scheme_groups_()));
+    }
+
+    getSchemeGroup(id: number): Observable<Scheme_Group> {
+        // TODO: make real request
+        return of({
+            id,
+            name: `test-${id}`,
+        });
+    }
+
     get_scheme_groups(): Observable<Scheme_Group[]>
     {
+        return this.schemeGroupsSubject.asObservable();
+    }
+
+    private get_scheme_groups_()
+    {
         const url = this.v2_url + 'scheme_group/';
-        return this.http.get<Scheme_Group[]>(url);
+        this.http.get<Scheme_Group[]>(url)
+            .subscribe(v => this.schemeGroupsSubject.next(v));
     }
 
     get_parent_schemes(exclude_id: number = undefined): Observable<Titled_Object[]>
