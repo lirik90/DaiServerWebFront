@@ -16,9 +16,4 @@ export class SchemeGroupsListComponent implements OnInit {
     ngOnInit(): void {
         this.schemes.get_scheme_groups().subscribe(groups => this.schemeGroups = groups);
     }
-
-    remove(group: Scheme_Group) {
-        this.schemes.removeSchemeGroup(group.id)
-            .subscribe(() => null);
-    }
 }

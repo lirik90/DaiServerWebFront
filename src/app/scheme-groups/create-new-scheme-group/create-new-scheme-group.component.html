@@ -5,4 +5,5 @@
     </mat-form-field>
 
     <button mat-button i18n="@@SCHEME_GROUPS.CREATE" type="submit">Создать</button>
+    <button *ngIf="fg.value.id" mat-button i18n="@@SCHEME_GROUPS.REMOVE" type="button" (click)="remove()">Удалить</button>
 </form>
