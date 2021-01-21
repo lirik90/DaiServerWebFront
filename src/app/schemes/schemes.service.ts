@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
-import {Auth_Group, Scheme, Scheme_Group, PaginatorApi, Group_User_Roles} from '../user';
+import {Auth_Group, Scheme, Scheme_Group, PaginatorApi, Group_User_Roles, User} from '../user';
 import { MessageService } from '../message.service';
 import { ISchemeService } from '../ischeme.service';
 import {BehaviorSubject} from 'rxjs';
@@ -132,9 +132,25 @@ export class SchemesService extends ISchemeService {
         });
     }
 
+    getSchemeGroupsForScheme(schemeId: number): Observable<Scheme_Group[]> {
+        // TODO: make real request
+        return of([{
+            id: 1,
+            name: 'test-1',
+        }]);
+    }
+
     get_scheme_groups(): Observable<Scheme_Group[]>
     {
         return this.schemeGroupsSubject.asObservable();
+    }
+
+    getSchemeGroupsForUser(currentUser: User) {
+        // TODO: make real request
+        return of([{
+            id: 1,
+            name: 'test-1',
+        }]);
     }
 
     private get_scheme_groups_()

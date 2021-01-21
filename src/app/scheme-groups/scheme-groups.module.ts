@@ -8,6 +8,7 @@ import { MaterialModule } from '../material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CreateNewSchemeGroupComponent } from './create-new-scheme-group/create-new-scheme-group.component';
 import { EditSchemeGroupComponent } from './edit-scheme-group/edit-scheme-group.component';
+import { ItemSchemeGroupsListComponent } from './item-scheme-groups-list/item-scheme-groups-list.component';
 
 @NgModule({
     declarations: [
@@ -16,6 +17,7 @@ import { EditSchemeGroupComponent } from './edit-scheme-group/edit-scheme-group.
         UsersAndDevicesComponent,
         CreateNewSchemeGroupComponent,
         EditSchemeGroupComponent,
+        ItemSchemeGroupsListComponent,
     ],
     imports: [
         CommonModule,
@@ -25,6 +27,7 @@ import { EditSchemeGroupComponent } from './edit-scheme-group/edit-scheme-group.
     ],
     exports: [
         SchemeGroupsComponent,
+        ItemSchemeGroupsListComponent,
     ],
 })
 export class SchemeGroupsModule { }
