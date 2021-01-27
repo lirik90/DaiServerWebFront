@@ -9,6 +9,7 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/
 import {MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {SidebarAction, SidebarService} from '../../../sidebar.service';
 import {Subscription} from 'rxjs';
+import {TranslateService} from '@ngx-translate/core';
 
 function parseDate(date: FormControl, time: string): number {
     let time_arr = time.split(':');
@@ -76,7 +77,9 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
     data_part_size = 100000;
     private sidebarActionBroadcast$: Subscription;
 
-    constructor(private schemeService: SchemeService, private sidebar: SidebarService) {
+    constructor(private schemeService: SchemeService, private sidebar: SidebarService, private dateAdapter: DateAdapter<any>, private translate: TranslateService) {
+        this.dateAdapter.setLocale(this.translate.currentLang);
+
         this.sidebarActionBroadcast$ = this.sidebar.getSidebarActionBroadcast()
             .subscribe((action) => this.sidebarAction(action));
     }
@@ -119,7 +122,7 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
         this.selectedItems = [];
         this.settings = {
             text: '',
-            selectAllText: 'Выбрать все',
+            selectAllText: this.translate.instant('SELECT_ALL'),
             // unSelectAllText: 'Снять все',
             classes: 'chart-type-data ctd-items',
             enableSearchFilter: true,
@@ -131,7 +134,7 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
         this.paramSelected = [];
         this.paramSettings = {
             text: '',
-            selectAllText: 'Выбрать все',
+            selectAllText: this.translate.instant('SELECT_ALL'),
             classes: 'chart-type-data custom-class',
             enableSearchFilter: true,
             labelKey: 'title',
@@ -144,7 +147,7 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
                 if (this.itemList.length) {
                     this.selectedItems.push(this.itemList[0]);
                 }
-                this.settings.text = 'Выберите график';
+                this.settings.text = this.translate.instant('REPORTS.SELECT_CHART');
                 this.settings.singleSelection = true;
                 this.settings.labelKey = 'name';
 
@@ -157,25 +160,25 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
                     this.selectedItems.push(this.itemList[0]);
                     this.onItemSelect(this.selectedItems[0]);
                 }
-                this.settings.text = 'Выберите тип группы';
+                this.settings.text = this.translate.instant('REPORTS.SELECT_GROUP_TYPE');
                 this.settings.singleSelection = true;
 
-                this.paramSettings.text = 'Выберите тип уставки';
+                this.paramSettings.text = this.translate.instant('REPORTS.SELECT_PARAM_TYPE');
                 break;
             case Chart_Type.CT_DEVICE_ITEM_TYPE:
                 this.itemList = this.schemeService.scheme.device_item_type;
-                this.settings.text = 'Выберите тип элемента';
+                this.settings.text = this.translate.instant('REPORTS.SELECT_ITEM_TYPE');
 
                 this.paramList = this.getParamTypeList();
-                this.paramSettings.text = 'Выберите тип уставки';
+                this.paramSettings.text = this.translate.instant('REPORTS.SELECT_PARAM_TYPE');
                 break;
             case Chart_Type.CT_DEVICE_ITEM:
                 this.itemList = this.getDevItemList();
-                this.settings.text = 'Выберите элемент';
+                this.settings.text = this.translate.instant('REPORTS.SELECT_ITEM');
                 this.settings.groupBy = 'category';
 
                 this.paramList = this.getParamList();
-                this.paramSettings.text = 'Выберите уставку';
+                this.paramSettings.text = this.translate.instant('REPORTS.SELECT_PARAM');
                 break;
             default:
                 break;

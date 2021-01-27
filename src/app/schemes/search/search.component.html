@@ -4,7 +4,7 @@
   </mat-form-field>
 
   <div class="search-result-wrap" *ngIf="schemes.length > 0">
-    Найдено: {{schemes.length}}
+    <span i18n="@@CONTROL.FOUND">Найдено</span>: {{schemes.length}}
     <ul class="search-result">
       <li *ngFor="let scheme of schemes" >
         <a routerLink="/scheme/{{scheme.name}}/elements">{{scheme.title}}</a>
