@@ -1,6 +1,9 @@
 /* ManageComponent's private CSS styles */
 h2 {
   margin-left: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 h3, h4 {
   text-align: center;
@@ -67,12 +70,44 @@ h4 {
 }
 
 .dig {
+  position: relative;
   border: 2px solid;
   border-radius: 16px;
   break-inside: avoid;
   padding: 5px;
   margin: 5px;
   background-color: #639679;
+}
+
+.dig.editor-mode {
+    padding: 20px 5px 5px;
+    transition: 500ms;
+}
+
+.dig-header-buttons {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.hidden-buttons {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.editor-mode div.scheme:hover > .hidden-buttons,
+.editor-mode .dig:hover > .hidden-buttons,
+.editor-mode .device-item:hover .hidden-buttons
+{
+    opacity: 1;
+    transition: 500ms;
+    visibility: visible;
+}
+
+.device-item button, .device-item mat-icon {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
 }
 
 .dig > div:not(:first-child) {
@@ -99,6 +134,13 @@ h2 .mat-icon {
   height: 32px;
   width: 32px;
   line-height: 32px;
+}
+
+h2 button {
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    vertical-align: top;
 }
 
 app-group-status {

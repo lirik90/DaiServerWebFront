@@ -34,6 +34,9 @@ import { StatusManageItemComponent } from './status-manage-dialog/status-manage-
 import { HelpItemComponent } from './doc/help-item/help-item.component';
 import { NoSanitizePipe } from './no-sanitize.pipe';
 import {SidebarService} from './sidebar.service';
+import { SectionDetailDialogComponent } from './manage/section-detail-dialog/section-detail-dialog.component';
+import { DeviceItemGroupDetailDialogComponent } from './manage/device-item-group-detail-dialog/device-item-group-detail-dialog.component';
+import { DeviceItemDetailDialogComponent } from './manage/device-item-detail-dialog/device-item-detail-dialog.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -78,6 +81,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     StatusManageItemComponent,
     HelpItemComponent,
     NoSanitizePipe,
+    SectionDetailDialogComponent,
+    DeviceItemGroupDetailDialogComponent,
+    DeviceItemDetailDialogComponent,
   ],
   entryComponents: [
       PageReloadDialogComponent,
@@ -85,6 +91,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       VideoStreamDialogComponent,
       ParamsDialogComponent,
       StatusManageDialogComponent,
+      SectionDetailDialogComponent,
   ],
   exports: [
     ParamComponent

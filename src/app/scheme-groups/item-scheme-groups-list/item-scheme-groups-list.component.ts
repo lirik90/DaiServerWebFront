@@ -46,7 +46,7 @@ export class ItemSchemeGroupsListComponent implements OnInit, OnChanges {
                 role.clearValidators();
             }
         }
-        
+
         if (changes.items) {
             const items = changes.items.currentValue;
             this.schemeGroups = this._schemeGroups

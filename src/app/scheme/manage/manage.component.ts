@@ -10,6 +10,13 @@ import { ControlService } from '../control.service';
 import {AuthenticationService} from '../../authentication.service';
 import {Subscription} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {Section_Details, SectionDetailDialogComponent} from './section-detail-dialog/section-detail-dialog.component';
+import {
+  Device_Item_Group_Details,
+  DeviceItemGroupDetailDialogComponent
+} from './device-item-group-detail-dialog/device-item-group-detail-dialog.component';
+import {Device_Item_Details, DeviceItemDetailDialogComponent} from './device-item-detail-dialog/device-item-detail-dialog.component';
+import {UIService} from '../../ui.service';
 
 @Component({
   selector: 'app-manage',
@@ -37,6 +44,7 @@ export class ManageComponent implements OnInit, AfterViewInit {
   }
 
   sctCount: number;
+  isEditorModeEnabled: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,7 +52,8 @@ export class ManageComponent implements OnInit, AfterViewInit {
     private authService: AuthenticationService,
     private controlService: ControlService,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private ui: UIService,
   ) {
     router.events.subscribe(s => {
       if (s instanceof NavigationEnd) {
@@ -135,6 +144,94 @@ export class ManageComponent implements OnInit, AfterViewInit {
     this.controlService.restart();
   }
 
+  newGroup(parentSection: Section) {
+    this.dialog
+      .open(DeviceItemGroupDetailDialogComponent, { data: null })
+      .afterClosed()
+      .subscribe((group?: Device_Item_Group_Details) => {
+        if (!group) return;
+
+        // TODO: create group
+      })
+  }
+
+  newItem(parentGroup: Device_Item_Group) {
+    this.dialog
+      .open(DeviceItemDetailDialogComponent, { data: null })
+      .afterClosed()
+      .subscribe((itemDetails?: Device_Item_Details) => {
+        if (!itemDetails) return;
+
+        // TODO: create item
+      });
+  }
+
+  newSection() {
+    this.dialog
+      .open(SectionDetailDialogComponent, { data: null })
+      .afterClosed()
+      .subscribe((sectionDetails?: Section_Details) => {
+        if (!sectionDetails) return;
+
+        // TODO: create section
+      });
+  }
+
+  editSection(section: Section) {
+    this.dialog
+      .open(SectionDetailDialogComponent, { data: section })
+      .afterClosed()
+      .subscribe((sectionDetails?: Section_Details) => {
+        if (!sectionDetails) return;
+
+        // TODO: update section
+      });
+  }
+
+  editItem(item: Device_Item) {
+    this.dialog
+      .open(DeviceItemDetailDialogComponent, { data: item })
+      .afterClosed()
+      .subscribe((itemDetails?: Device_Item_Details) => {
+        if (!itemDetails) return;
+        // TODO: update item
+      });
+  }
+
+  editGroup(group: Device_Item_Group) {
+    this.dialog
+      .open(DeviceItemGroupDetailDialogComponent, { data: group })
+      .afterClosed()
+      .subscribe((groupDetails?: Device_Item_Group_Details) => {
+        if (!groupDetails) return;
+        // TODO: update group
+      });
+  }
+
+  removeSection(sct: Section) {
+    this.ui.confirmationDialog()
+      .subscribe((confirm) => {
+        if (!confirm) return;
+
+        // TODO: remove section
+      });
+  }
+
+  removeGroup(group: Device_Item_Group) {
+    this.ui.confirmationDialog()
+      .subscribe((confirm) => {
+        if (!confirm) return;
+
+        // TODO: remove group
+      });
+  }
+
+  removeItem(item: Device_Item) {
+    this.ui.confirmationDialog()
+      .subscribe((confirm) => {
+        if (!confirm) return;
+      });
+  }
 }
 
 @Component({
