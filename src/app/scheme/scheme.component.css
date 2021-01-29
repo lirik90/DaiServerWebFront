@@ -1310,6 +1310,7 @@ h2:lang(ko).localnav-title {
 
 .fav-btn {
   color: #000;
+  background-color: rgba(0, 0, 0, 0);
   flex-shrink: 0;
 }
 

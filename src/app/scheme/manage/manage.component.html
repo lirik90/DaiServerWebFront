@@ -60,8 +60,7 @@
       </app-scheme-section>
     </div>
   </ng-container>
-    <button (click)="newSection()">Добавить секцию</button>
 </div>
-
+<button *ngIf="isEditorModeEnabled" mat-flat-button (click)="newSection()">Добавить секцию</button>
 <button *ngIf="isAdmin" mat-flat-button (click)="restart()" class="reboot-btn"><mat-icon>replay</mat-icon><span class="reboot-btn__label" i18n="@@RESTART">Перезагрузить ПО</span></button>
 

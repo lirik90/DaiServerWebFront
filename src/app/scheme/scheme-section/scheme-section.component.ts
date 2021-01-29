@@ -44,4 +44,16 @@ export class SchemeSectionComponent implements OnInit {
     this.isExpanded = !this.isExpanded;
     this._isForceExpanded = false;
   }
+
+  onEdit($event) {
+      $event.stopPropagation();
+      $event.preventDefault();
+      this.edit.emit();
+  }
+
+  onRemove($event) {
+      $event.stopPropagation();
+      $event.preventDefault();
+      this.remove.emit();
+  }
 }

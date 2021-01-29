@@ -3,10 +3,10 @@
     <h3>{{ title }}</h3>
     <div class="scheme-section__spacer"></div>
     <ng-container *ngIf="enableEditor">
-        <button mat-icon-button (click)="remove.emit()">
+        <button mat-icon-button (click)="onRemove($event)">
             <mat-icon>delete</mat-icon>
         </button>
-        <button mat-icon-button (click)="edit.emit()">
+        <button mat-icon-button (click)="onEdit($event)">
             <mat-icon>edit</mat-icon>
         </button>
     </ng-container>
