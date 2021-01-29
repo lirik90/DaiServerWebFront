@@ -24,7 +24,7 @@ export class DeviceItemDetailDialogComponent {
         this.devItemTypes = this.schemeService.scheme.device_item_type;
 
         this.fg = fb.group({
-            name: ['', [Validators.required]],
+            name: ['', []],
             device_id: ['', Validators.required],
             type_id: [null, [Validators.required]],
             extra: [null],
