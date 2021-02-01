@@ -165,7 +165,7 @@ export class ColorPickerDialog implements OnInit {
     }
 
     static hsl2RgbStr(hsl: Hsl): string {
-        const h = hsl.h, s = hsl.s, l = hsl.l;
+        const h = hsl.h, s = hsl.s / 100, l = hsl.l / 100;
 
         let c = (1 - Math.abs(2 * l - 1)) * s,
             x = c * (1 - Math.abs((h / 60) % 2 - 1)),

@@ -132,6 +132,7 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.fetchUserCharts();
     }
 
     ngOnDestroy(): void {
@@ -325,6 +326,8 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
 
     initDeviceUserDatasets(): void {
         const user_chart = this.selectedItems[0];
+        if (!user_chart) return;
+
         let items = [];
         let params = [];
         for (const it of user_chart.items)
@@ -548,20 +551,6 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const chart = this.charts[0];
-        const get_color = (item_id: number, param_id: number): string => {
-            for (const dataset of chart.data.datasets) {
-                if (item_id !== null) {
-                    if (dataset.dev_item && dataset.dev_item.id === item_id) {
-                        return ColorPickerDialog.hslStr2RgbHex(dataset.borderColor);
-                    }
-                } else if (dataset.param && dataset.param.id === param_id) {
-                    return ColorPickerDialog.hslStr2RgbHex(dataset.borderColor);
-                }
-            }
-            return '';
-        };
-
         let user_chart = new Chart;
         user_chart.id = this.user_chart.id;
         user_chart.name = this.user_chart.name;
@@ -757,15 +746,25 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
             const legendPatch = {
                 scale: axeItem.extra.axis_params,
                 color: hsl,
-                displayColor: `hsl(${h}, ${s}, ${l})`,
+                displayColor: `hsl(${h}, ${s}%, ${l}%)`,
                 hidden: false,
             };
 
-            if (!datasetItem.legend) {
-                datasetItem.legend = legendPatch as any;
-            } else {
-                Object.assign(datasetItem.legend, legendPatch);
-            }
+            Object.assign(datasetItem.legend, legendPatch);
+        });
+    }
+
+    private fetchUserCharts() {
+        this.schemeService.get_charts().subscribe(charts => {
+            this.user_charts = charts
+                .filter(chart => !!chart)
+                .map(chart => ({
+                    ...chart,
+                    items: chart.items.map(item => ({
+                        ...item,
+                        extra: JSON.parse(item.extra as unknown as string),
+                    })),
+                }));
         });
     }
 }

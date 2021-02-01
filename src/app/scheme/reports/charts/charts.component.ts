@@ -9,9 +9,9 @@ import 'chartjs-plugin-zoom-plus2';
 import * as _moment from 'moment';
 import {default as _rollupMoment} from 'moment';
 import {Chart_Value_Item, Paginator_Chart_Value, SchemeService} from '../../scheme.service';
-import {Chart, Device_Item, DIG_Param, Register_Type} from '../../scheme';
+import {Axis_Params, Chart, Device_Item, DIG_Param, Register_Type} from '../../scheme';
 import {Scheme_Group_Member} from '../../../user';
-import {Chart_Info_Interface, Chart_Type, ChartFilter, ItemWithLegend, ZoomInfo, Axis_Params} from './chart-types';
+import {Chart_Info_Interface, Chart_Type, ChartFilter, ItemWithLegend, ZoomInfo} from './chart-types';
 import {ChartItemComponent} from './chart-item/chart-item.component';
 import {Hsl} from './color-picker-dialog/color-picker-dialog';
 import {SidebarService} from '../../sidebar.service';
@@ -76,7 +76,6 @@ export class ChartsComponent implements OnInit, OnDestroy {
   values_loaded: boolean;
   params_loaded: boolean;
   initialized = false;
-  user_charts: Chart[];
 
   constructor(
       public translate: TranslateService,
@@ -114,9 +113,6 @@ export class ChartsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.schemeService.get_charts().subscribe(charts => {
-      this.user_charts = charts;
-    });
   }
 
   ngOnDestroy()
