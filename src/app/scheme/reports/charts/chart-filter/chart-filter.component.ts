@@ -9,7 +9,7 @@ import {
     Select_Item_Iface,
     Chart_Params,
 } from '../chart-types';
-import {Chart, Device_Item, Device_Item_Group, DIG_Param, DIG_Param_Value_Type, Save_Algorithm, Section} from '../../../scheme';
+import {Chart, Chart_Item, Device_Item, Device_Item_Group, DIG_Param, DIG_Param_Value_Type, Save_Algorithm, Section} from '../../../scheme';
 import {SchemeService} from '../../../scheme.service';
 import {ColorPickerDialog, Hsl} from '../color-picker-dialog/color-picker-dialog';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
@@ -66,9 +66,9 @@ function parseDateToDateAndTime(date: number, fcRef: FormControl): string {
 })
 export class ChartFilterComponent implements OnInit, OnDestroy {
     chartType = Chart_Type;
-    params: ChartFilter<any>;
+    params: ChartFilter;
 
-    chart_filter: ChartFilter<any>;
+    chart_filter: ChartFilter;
     charts: Chart_Info_Interface[];
 
     // ngModels
@@ -138,7 +138,7 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
         this.sidebarActionBroadcast$.unsubscribe();
     }
 
-    chartFilterUpdated(chartFilter: ChartFilter<any>) {
+    chartFilterUpdated(chartFilter: ChartFilter) {
         this.charts_type = chartFilter.charts_type;
         this.data_part_size = chartFilter.data_part_size;
         this.user_charts = chartFilter.user_charts;
@@ -549,10 +549,10 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
             for (const dataset of chart.data.datasets) {
                 if (item_id !== null) {
                     if (dataset.dev_item && dataset.dev_item.id === item_id) {
-                        return ColorPickerDialog.hsl2rgbhex(dataset.borderColor);
+                        return ColorPickerDialog.hslStr2RgbHex(dataset.borderColor);
                     }
                 } else if (dataset.param && dataset.param.id === param_id) {
-                    return ColorPickerDialog.hsl2rgbhex(dataset.borderColor);
+                    return ColorPickerDialog.hslStr2RgbHex(dataset.borderColor);
                 }
             }
             return '';
@@ -563,13 +563,30 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
         user_chart.name = this.user_chart.name;
         user_chart.items = [];
 
-        for (const item of this.selectedItems) {
-            const chart_item = {color: get_color(item.id, null), item_id: item.id, param_id: null};
-            user_chart.items.push(chart_item);
-        }
+        for (const item of this.selected_charts[0].dataset_params) {
+            let item_id = null;
+            let param_id = null;
+            let extra: Chart_Item['extra'] = null;
 
-        for (const item of this.paramSelected) {
-            const chart_item = {color: get_color(null, item.id), item_id: null, param_id: item.id};
+            if (item.isParam) {
+                param_id = item.item.id;
+            } else {
+                item_id = item.item.id;
+            }
+
+            if (item.legend) {
+                const { scale, color } = item.legend;
+                extra = {
+                    color: ColorPickerDialog.hsl2RgbStr(color),
+                    axis_params: scale,
+                } as Chart_Item['extra'];
+            }
+
+            const chart_item: Chart_Item = {
+                extra,
+                item_id,
+                param_id,
+            };
             user_chart.items.push(chart_item);
         }
 

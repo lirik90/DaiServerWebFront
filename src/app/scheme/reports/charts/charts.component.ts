@@ -45,7 +45,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
   devItemList = [];
 
-  private _chartFilter: ChartFilter<any> = {
+  private _chartFilter: ChartFilter = {
     paramSelected: [],
     selectedItems: [this.schemeService.scheme.dig_type[0]],
     timeFrom: 0,
@@ -56,11 +56,11 @@ export class ChartsComponent implements OnInit, OnDestroy {
     data_part_size: 100000
   };
 
-  get chartFilter(): ChartFilter<any> {
+  get chartFilter(): ChartFilter {
       return this._chartFilter;
   }
 
-  set chartFilter(v: ChartFilter<any>) {
+  set chartFilter(v: ChartFilter) {
       this._chartFilter = v;
       this.sidebarService.performActionToSidebar({
           type: 'chart_filter',
@@ -124,7 +124,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
       this.breakLoad(false);
   }
 
-  private initCharts(chartFilter: ChartFilter<any>): void
+  private initCharts(chartFilter: ChartFilter): void
   {
     this.chartFilter = chartFilter;
 

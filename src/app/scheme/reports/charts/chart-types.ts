@@ -1,4 +1,4 @@
-import {Chart, Device_Item_Type, DIG_Param, DIG_Type} from '../../scheme';
+import {Chart, Axis_Params} from '../../scheme';
 import {Hsl} from './color-picker-dialog/color-picker-dialog';
 
 export enum Chart_Type {
@@ -28,15 +28,6 @@ export interface TimeFilter
 {
     timeFrom: number;
     timeTo: number;
-}
-
-export interface Axis_Params {
-    id: string;
-
-    isRight: boolean;
-    from: number | string;
-    to: number | string;
-    order: number | string;
 }
 
 export interface Legend_Options {
