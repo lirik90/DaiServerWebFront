@@ -15,7 +15,7 @@ import {BuiltChartParams, Chart_Info_Interface, Chart_Type, ChartFilter, ItemWit
 import {ChartItemComponent} from './chart-item/chart-item.component';
 import {Hsl} from './color-picker-dialog/color-picker-dialog';
 import {SidebarService} from '../../sidebar.service';
-import {ChartData, ChartDataSets, CommonAxe} from 'chart.js';
+import {ChartDataSets, CommonAxe} from 'chart.js';
 
 const moment = _rollupMoment || _moment;
 
@@ -300,7 +300,7 @@ export class ChartsComponent implements OnDestroy {
         return [null, null];
     }
 
-    private add_chart_data(logs: Paginator_Chart_Value, data_param_name: string) {
+    private add_chart_data(logs: Paginator_Chart_Value, data_param_name: string, additional = false) {
         for (const log of logs.results) {
             const [, dataset] = this.find_dataset(data_param_name, log.item_id);
             if (dataset) {
@@ -316,7 +316,17 @@ export class ChartsComponent implements OnDestroy {
                             dataset.usered_data = {};
                         dataset.usered_data[x.getTime()] = log_item.user_id;
                     }
-                    dataset.data.push(data);
+
+                    if (additional) {
+                        const idx = dataset.data.findIndex(v => v.x > x);
+                        if (idx < 0 || idx >= dataset.data.length) {
+                            dataset.data.push(data);
+                        } else {
+                            dataset.data.splice(idx, 0, data);
+                        }
+                    } else {
+                        dataset.data.push(data);
+                    }
                 }
             }
         }
@@ -545,8 +555,12 @@ export class ChartsComponent implements OnDestroy {
         chartsToUpdate.forEach((chart) => {
             const chartItem = this.find_chart_item_(chart);
 
-            chartItem.addData(logs, data_param_name, true);
-            chartItem.setViewportBounds(this.time_from_, this.time_to_, true);
+            if (!chartItem) {
+                this.add_chart_data(logs, data_param_name, true);
+            } else {
+                chartItem.addData(logs, data_param_name, true);
+                chartItem.setViewportBounds(this.time_from_, this.time_to_, true);
+            }
         });
 
         this.chartItems.forEach(chartItem => chartItem.finishedLoading());
@@ -593,21 +607,30 @@ export class ChartsComponent implements OnDestroy {
     }
 
     onChartBuilt(chart: Chart_Info_Interface, $event: BuiltChartParams) {
+        this.reportChartAxes(chart, $event);
+    }
+
+    onChartAxeChange(chart: Chart_Info_Interface, $event: BuiltChartParams) {
+        this.reportChartAxes(chart, $event);
+    }
+
+    private reportChartAxes(chart: Chart_Info_Interface, params: BuiltChartParams) {
         const axes = chart.data.datasets.map((dataset) => {
-            const axe = $event.axes.find(a => a.id === dataset.yAxisID);
+            const axe = params.axes.find(a => a.id === dataset.yAxisID);
+            const { min: from, max: to, options: { position }} = axe as any;
 
             return {
                 id: dataset.dev_item?.id || dataset.param?.id,
                 isParam: !dataset.dev_item,
+                isRight: position === 'right',
 
-                from: (<any>axe).min,
-                to: (<any>axe).max,
-                isRight: (<any>axe).options.position === 'right',
+                from,
+                to,
             };
         });
 
         this.sidebarService.performActionToSidebar({
-            type: 'chart_built',
+            type: 'chart_axes',
             data: { axes },
         });
     }

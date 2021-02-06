@@ -77,7 +77,7 @@
                     {{ ds.item.param?.title || ds.item.type?.title }}
                 </div>
                 <div class="legend__item-axis"
-                     *ngIf="charts_type == chartType.CT_USER || charts_type == chartType.CT_DEVICE_ITEM"
+                     *ngIf="charts_type == chartType.CT_DEVICE_ITEM"
                 >
                     <button (click)="toggleLegendModal(ds)">
                         <mat-icon>{{ ds.showModal ? 'close' : 'settings' }}</mat-icon>

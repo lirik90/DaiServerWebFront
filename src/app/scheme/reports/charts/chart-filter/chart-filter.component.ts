@@ -660,14 +660,13 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
             }
         }
 
-        if (action.type === 'chart_built') {
+        if (action.type === 'chart_axes') {
             this.selected_charts[0].dataset_params.forEach((dsp) => {
                 const axe = action.data.axes.find(axe => axe.id === dsp.item.id && axe.isParam === dsp.isParam);
-                if (!dsp.legend.scale.from && !dsp.legend.scale.to) {
-                    dsp.legend.scale.from = axe.from;
-                    dsp.legend.scale.to = axe.to;
-                    dsp.legend.scale.isRight = axe.isRight;
-                }
+
+                dsp.legend.scale.from = axe.from;
+                dsp.legend.scale.to = axe.to;
+                dsp.legend.scale.isRight = axe.isRight;
             });
         }
     }
@@ -777,9 +776,14 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
             this.user_charts = charts;
             this.is_user_charts_loaded = true;
 
-            if (this.user_charts.length > 0 && this.is_first_update) {
+            if (this.is_first_update) {
                 this.is_first_update = false;
-                this.selectUserChart(this.user_charts[0]);
+
+                if (this.user_charts.length > 0) {
+                    this.selectUserChart(this.user_charts[0]);
+                } else {
+                    this.buildChart();
+                }
             }
         });
     }

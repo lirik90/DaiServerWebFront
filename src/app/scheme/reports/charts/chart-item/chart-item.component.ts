@@ -79,6 +79,7 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
 
     @ViewChild('chart_obj') chart: BaseChartDirective;
     @Output() rangeChange: EventEmitter<ZoomInfo> = new EventEmitter();
+    @Output() axeChange: EventEmitter<BuiltChartParams> = new EventEmitter();
     @Output() built: EventEmitter<BuiltChartParams> = new EventEmitter();
 
     update(): void
@@ -333,6 +334,11 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         if (this.chartInfo.charts_type === Chart_Type.CT_DIG_TYPE) {
             this.storeScaleParamsToLocalStorage();
         }
+
+        this.axeChange.emit({
+            axes: (<any>this.chart.chart).boxes.filter(box => box.id && box.id.length === 1),
+            datasets: (<any>this.chart.data).datasets,
+        });
     }
 
     onLabel(item, data): string {

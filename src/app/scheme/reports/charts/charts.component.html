@@ -6,6 +6,7 @@
                     [viewportMin]="time_from_"
                     [viewportMax]="time_to_"
                     [yAxes]="chart.axes"
+                    (axeChange)="onChartAxeChange(chart, $event)"
                     (built)="onChartBuilt(chart, $event)"
                     (rangeChange)="chartZoom(chart, $event)"></app-chart-item>
 </ng-container>
