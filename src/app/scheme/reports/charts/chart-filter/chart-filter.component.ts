@@ -1,14 +1,7 @@
 import {Component, IterableDiffer, IterableDiffers, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import * as moment from 'moment';
-import {
-    Chart_Info_Interface,
-    Chart_Type,
-    ChartFilter,
-    ItemWithLegend,
-    Select_Item_Iface,
-    Chart_Params,
-} from '../chart-types';
+import {Chart_Info_Interface, Chart_Params, Chart_Type, ChartFilter, ItemWithLegend, Select_Item_Iface} from '../chart-types';
 import {Chart, Chart_Item, Device_Item, Device_Item_Group, DIG_Param, DIG_Param_Value_Type, Save_Algorithm, Section} from '../../../scheme';
 import {SchemeService} from '../../../scheme.service';
 import {ColorPickerDialog, Hsl} from '../color-picker-dialog/color-picker-dialog';
@@ -81,7 +74,7 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
     itemList = [];
     selected_charts: Chart_Params[] = [];
     settings: any = {};
-    user_charts: Chart[];
+    user_charts: Chart[] = [];
 
     paramList: Select_Item_Iface[] = [];
     paramSettings: any = {};
@@ -117,6 +110,7 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
     data_part_size = 100000;
     private sidebarActionBroadcast$: Subscription;
     private is_first_update = true;
+    private is_user_charts_loaded = false;
 
     constructor(
         private schemeService: SchemeService,
@@ -142,7 +136,6 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
     chartFilterUpdated(chartFilter: ChartFilter) {
         this.charts_type = chartFilter.charts_type;
         this.data_part_size = chartFilter.data_part_size;
-        this.user_charts = chartFilter.user_charts;
         this.user_chart = chartFilter.user_chart;
 
         this.time_from = parseDateToDateAndTime(chartFilter.timeFrom, this.date_from);
@@ -161,7 +154,7 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
             this.onItemSelect(this.selectedItems[0]);
         }
 
-        if (this.is_first_update) {
+        if (this.is_first_update && this.is_user_charts_loaded) {
             this.is_first_update = false;
             this.buildChart();
         }
@@ -183,7 +176,8 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
             enableSearchFilter: true,
             labelKey: 'title',
             singleSelection: false,
-            groupBy: ''
+            groupBy: '',
+            clearAll: false,
         };
 
         this.paramSelected = [];
@@ -199,8 +193,12 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
         switch (this.charts_type) {
             case Chart_Type.CT_USER:
                 this.itemList = this.user_charts;
-                if (this.itemList.length) {
-                    this.selectedItems.push(this.itemList[0]);
+                if (user_chart) {
+                    this.selectedItems.push(user_chart);
+                } else {
+                    if (this.itemList.length) {
+                        this.selectedItems.push(this.itemList[0]);
+                    }
                 }
                 this.settings.text = this.translate.instant('REPORTS.SELECT_CHART');
                 this.settings.singleSelection = true;
@@ -224,6 +222,7 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
                 this.itemList = this.getDevItemList();
                 this.settings.text = this.translate.instant('REPORTS.SELECT_ITEM');
                 this.settings.groupBy = 'category';
+                this.settings.clearAll = true;
 
                 this.paramList = this.getParamList();
                 this.paramSettings.text = this.translate.instant('REPORTS.SELECT_PARAM');
@@ -248,6 +247,10 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
         }
 
         this.rebuild();
+
+        if (this.charts_type === Chart_Type.CT_USER) {
+            this.selectUserChart(item);
+        }
     }
 
     rebuild() {
@@ -551,6 +554,10 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
             return;
         }
 
+        if (!this.selectedItems.length && !this.paramSelected.length) {
+            return;
+        }
+
         let user_chart = new Chart;
         user_chart.id = this.user_chart.id;
         user_chart.name = this.user_chart.name;
@@ -584,15 +591,22 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
         }
 
         this.schemeService.save_chart(user_chart).subscribe(new_chart => {
+            let found = false;
             for (let chart of this.user_charts) {
                 if (chart.id === new_chart.id) {
                     chart.name = new_chart.name;
                     chart.items = new_chart.items;
-                    return;
+                    found = true;
+                    break;
                 }
             }
 
-            this.user_charts.push(new_chart);
+            if (!found) {
+                this.user_charts.push(new_chart);
+            }
+
+            const idx = this.user_charts.findIndex(chart => chart.id === new_chart.id);
+            this.selectUserChart(this.user_charts[idx]);
         });
     }
 
@@ -613,7 +627,7 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
 
             this.selectedItems = [];
             if (this.user_charts.length) {
-                this.selectedItems.push(this.user_charts[0]);
+                this.selectUserChart(this.user_charts[0]);
             }
         });
     }
@@ -645,6 +659,17 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
                 this.chartFilterUpdated(action.data.chart_filter);
             }
         }
+
+        if (action.type === 'chart_built') {
+            this.selected_charts[0].dataset_params.forEach((dsp) => {
+                const axe = action.data.axes.find(axe => axe.id === dsp.item.id && axe.isParam === dsp.isParam);
+                if (!dsp.legend.scale.from && !dsp.legend.scale.to) {
+                    dsp.legend.scale.from = axe.from;
+                    dsp.legend.scale.to = axe.to;
+                    dsp.legend.scale.isRight = axe.isRight;
+                }
+            });
+        }
     }
 
     openColorPicker(chart_params: Chart_Params, dataset: ItemWithLegend<any>): void {
@@ -665,13 +690,6 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
     toggleDatasetVisibility(dataset: ItemWithLegend<any>): void {
         dataset.legend.hidden = !dataset.legend.hidden;
         this.dataset_legend_updated(dataset);
-    }
-
-    random_color(ch: Chart_Params): void {
-        ch.dataset_params.forEach(ds => {
-            ds.legend.color = { h: Math.round(Math.random() * 360), s: 100, l: 35 };
-            this.dataset_legend_updated(ds);
-        });
     }
 
     private static getColorByIndex(index: number, label: string): Hsl
@@ -756,15 +774,23 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
 
     private fetchUserCharts() {
         this.schemeService.get_charts().subscribe(charts => {
-            this.user_charts = charts
-                .filter(chart => !!chart)
-                .map(chart => ({
-                    ...chart,
-                    items: chart.items.map(item => ({
-                        ...item,
-                        extra: JSON.parse(item.extra as unknown as string),
-                    })),
-                }));
+            this.user_charts = charts;
+            this.is_user_charts_loaded = true;
+
+            if (this.user_charts.length > 0 && this.is_first_update) {
+                this.is_first_update = false;
+                this.selectUserChart(this.user_charts[0]);
+            }
         });
+    }
+
+    private selectUserChart(chart: Chart) {
+        this.charts_type = Chart_Type.CT_USER;
+
+        this.selectedItems = [];
+        this.paramSelected = [];
+
+        this.OnChartsType(chart);
+        this.buildChart();
     }
 }

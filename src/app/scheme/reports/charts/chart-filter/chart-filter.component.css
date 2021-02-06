@@ -99,15 +99,16 @@ fieldset.chart_type {
     flex-direction: row;
     align-items: center;
     margin: 8px;
+    justify-content: space-between;
 }
 
 .legend__item-axis-modal {
     display: block;
     position: absolute;
-    width: 14em;
+    width: 93%;
     background-color: white;
-    z-index: 30;
-    left: 1em;
+    z-index: 9999;
+    left: 0;
     padding: 3%;
     border: 1px solid black;
 }
@@ -117,6 +118,10 @@ fieldset.chart_type {
     width: 100%;
     justify-content: space-between;
     margin-top: 0.3em;
+}
+
+.legend__item-axis-modal input {
+    width: 60%;
 }
 
 .legend__item-label div > * {

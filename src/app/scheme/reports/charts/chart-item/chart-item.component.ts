@@ -14,17 +14,16 @@ import {
     SimpleChanges,
     ViewChild
 } from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
+
 import {ProgressBarMode} from '@angular/material/progress-bar/progress-bar';
 import {ThemePalette} from '@angular/material/core/common-behaviors/color';
 import {MatSnackBar} from '@angular/material/snack-bar';
-
 import {BaseChartDirective} from 'ng2-charts';
 
 import {Paginator_Chart_Value, SchemeService} from '../../../scheme.service';
 import {Scheme_Group_Member} from '../../../../user';
-import {ColorPickerDialog, Hsl} from '../color-picker-dialog/color-picker-dialog';
-import {Chart_Info_Interface, Chart_Type, ZoomInfo} from '../chart-types';
+import {Hsl} from '../color-picker-dialog/color-picker-dialog';
+import {BuiltChartParams, Chart_Info_Interface, Chart_Type, ZoomInfo} from '../chart-types';
 
 @Component({
     selector: 'app-chart-item',
@@ -80,11 +79,18 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
 
     @ViewChild('chart_obj') chart: BaseChartDirective;
     @Output() rangeChange: EventEmitter<ZoomInfo> = new EventEmitter();
+    @Output() built: EventEmitter<BuiltChartParams> = new EventEmitter();
 
     update(): void
     {
-        this.zone.run(() =>
-        this.chart.chart.update());
+        if (!this.chart || !this.chart.chart) return;
+
+        this.zone.run(() => this.chart.chart.update());
+
+        this.built.emit({
+            axes: (<any>this.chart.chart).boxes.filter(box => box.id && box.id.length === 1),
+            datasets: (<any>this.chart.data).datasets,
+        });
     }
 
     options = {
@@ -297,7 +303,7 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
             }
         }
 
-        this.chart.chart.update();
+        this.update();
     }
 
     addDevItemValues(logs: Paginator_Chart_Value, additional = false): void
@@ -361,11 +367,11 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         ticks.min = typeof start === 'number' ? new Date(start) : start;
         ticks.max = typeof end === 'number' ? new Date(end) : end;
 
-        forceUpdate && this.chart.chart.update();
+        forceUpdate && this.update();
     }
 
     private applyDatasetChanges(changes?: KeyValueChanges<string, any>) {
-        this.chart?.chart.update();
+        this.update();
     }
 
     startLoading() {

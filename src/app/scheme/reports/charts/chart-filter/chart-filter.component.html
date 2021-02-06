@@ -64,25 +64,28 @@
 
     <div class="legend-container" *ngFor="let chart of selected_charts">
         <p>{{ chart.name }}</p>
-        <a (click)="random_color(chart)">Random color</a>
         <div class="legend">
             <div class="legend__item" *ngFor="let ds of chart.dataset_params">
-                <div class="legend__item-color"
-                     [style.background-color]="ds.legend.displayColor"
-                     (click)="openColorPicker(chart, ds)"
-                ></div>
                 <div class="legend__item-label"
                      [style.text-decoration]="ds.legend.hidden ? 'line-through' : 'inherit'"
                      (click)="toggleDatasetVisibility(ds)"
-                >{{ ds.item.param?.title || ds.item.type?.title }}</div>
+                >
+                    <div class="legend__item-color"
+                         [style.background-color]="ds.legend.displayColor"
+                         (click)="openColorPicker(chart, ds)"
+                    ></div>
+                    {{ ds.item.param?.title || ds.item.type?.title }}
+                </div>
                 <div class="legend__item-axis"
                      *ngIf="charts_type == chartType.CT_USER || charts_type == chartType.CT_DEVICE_ITEM"
                 >
-                    <button (click)="toggleLegendModal(ds)">{{ ds.showModal ? 'X' : 'V' }}</button>
+                    <button (click)="toggleLegendModal(ds)">
+                        <mat-icon>{{ ds.showModal ? 'close' : 'settings' }}</mat-icon>
+                    </button>
                     <div class="legend__item-axis-modal" *ngIf="ds.showModal">
                         <div><label for="axisFromInput">От: </label><input id="axisFromInput" type="text" [(ngModel)]="ds.legend.scale.from"></div>
                         <div><label for="axisToInput">До: </label><input id="axisToInput" type="text" [(ngModel)]="ds.legend.scale.to"></div>
-                        <div>
+                        <div style="justify-content: space-around;">
                             <label>Слева</label>
                             <mat-slide-toggle [(ngModel)]="ds.legend.scale.isRight"></mat-slide-toggle>
                             <label>Справа</label>

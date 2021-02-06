@@ -1,5 +1,6 @@
-import {Chart, Axis_Params} from '../../scheme';
+import {Chart, Axis_Params, Device_Item, DIG_Param} from '../../scheme';
 import {Hsl} from './color-picker-dialog/color-picker-dialog';
+import {ChartDataSets} from 'chart.js';
 
 export enum Chart_Type {
     CT_UNKNOWN,
@@ -18,7 +19,7 @@ export interface Chart_Info_Interface {
     name: string;
     charts_type: Chart_Type;
     data: {
-        datasets: any[];
+        datasets: (ChartDataSets & { dev_item?: Device_Item, param?: DIG_Param } & any)[];
     };
 
     axes?: any[];
@@ -69,5 +70,10 @@ export interface ChartFilter extends TimeFilter {
 
 export interface ZoomInfo extends TimeFilter {
     isZoom: boolean;
+}
+
+export interface BuiltChartParams {
+    axes: Axis_Params[];
+    datasets: any[];
 }
 

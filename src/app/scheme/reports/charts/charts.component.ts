@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {ChangeDetectorRef, Component, NgZone, OnDestroy, QueryList, ViewChildren} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 
 import {exhaustMap} from 'rxjs/operators';
@@ -9,12 +9,13 @@ import 'chartjs-plugin-zoom-plus2';
 import * as _moment from 'moment';
 import {default as _rollupMoment} from 'moment';
 import {Chart_Value_Item, Paginator_Chart_Value, SchemeService} from '../../scheme.service';
-import {Axis_Params, Chart, Device_Item, DIG_Param, Register_Type} from '../../scheme';
+import {Axis_Params, Device_Item, DIG_Param, Register_Type} from '../../scheme';
 import {Scheme_Group_Member} from '../../../user';
-import {Chart_Info_Interface, Chart_Type, ChartFilter, ItemWithLegend, ZoomInfo} from './chart-types';
+import {BuiltChartParams, Chart_Info_Interface, Chart_Type, ChartFilter, ItemWithLegend, ZoomInfo} from './chart-types';
 import {ChartItemComponent} from './chart-item/chart-item.component';
 import {Hsl} from './color-picker-dialog/color-picker-dialog';
 import {SidebarService} from '../../sidebar.service';
+import {ChartData, ChartDataSets, CommonAxe} from 'chart.js';
 
 const moment = _rollupMoment || _moment;
 
@@ -24,205 +25,198 @@ const moment = _rollupMoment || _moment;
   styleUrls: ['./charts.component.css'],
   providers: [],
 })
-export class ChartsComponent implements OnInit, OnDestroy {
-//  date_from = new FormControl(new Date().toISOString().slice(0, -1));
-
+export class ChartsComponent implements OnDestroy {
     @ViewChildren(ChartItemComponent) chartItems: QueryList<ChartItemComponent>;
 
-  logs_count: number;
-  logs_count2: number;
+    logs_count: number;
+    logs_count2: number;
 
-  data_: string;
-  param_data_: string;
-  time_from_: number;
-  time_to_: number;
+    data_: string;
+    param_data_: string;
+    time_from_: number;
+    time_to_: number;
 
-  // Time_from and time_to with additional 10%
-  time_from_ext_: number;
-  time_to_ext_: number;
+    // Time_from and time_to with additional 10%
+    time_from_ext_: number;
+    time_to_ext_: number;
 
-  is_today: boolean;
+    is_today: boolean;
 
-  devItemList = [];
+    devItemList = [];
 
-  private _chartFilter: ChartFilter = {
-    paramSelected: [],
-    selectedItems: [this.schemeService.scheme.dig_type[0]],
-    timeFrom: 0,
-    timeTo: 0,
-    user_charts: [],
-    charts_type: Chart_Type.CT_DIG_TYPE,
-    user_chart: null,
-    data_part_size: 100000
-  };
+    private _chartFilter: ChartFilter = {
+        paramSelected: [],
+        selectedItems: [this.schemeService.scheme.dig_type[0]],
+        timeFrom: 0,
+        timeTo: 0,
+        user_charts: [],
+        charts_type: Chart_Type.CT_DIG_TYPE,
+        user_chart: null,
+        data_part_size: 100000
+    };
 
-  get chartFilter(): ChartFilter {
-      return this._chartFilter;
-  }
-
-  set chartFilter(v: ChartFilter) {
-      this._chartFilter = v;
-      this.sidebarService.performActionToSidebar({
-          type: 'chart_filter',
-          data: this._chartFilter,
-      });
-  }
-
-  charts: Chart_Info_Interface[] = [];
-  members: Scheme_Group_Member[] = [];
-
-  private logSub: SubscriptionLike;
-  private paramSub: SubscriptionLike;
-  values_loaded: boolean;
-  params_loaded: boolean;
-  initialized = false;
-
-  constructor(
-      public translate: TranslateService,
-      private schemeService: SchemeService,
-      private changeDetectorRef: ChangeDetectorRef,
-      private zone: NgZone,
-      private sidebarService: SidebarService,
-  ) {
-      moment.locale('ru');
-
-    const today = new Date();
-    const todayEnd = new Date();
-
-    today.setHours(today.getHours() - 6, 0, 0, 0);
-    todayEnd.setHours(23, 59, 59, 0);
-
-    this.chartFilter.timeFrom = today.getTime();
-    this.chartFilter.timeTo = todayEnd.getTime();
-
-    this.sidebarService.performActionToSidebar({
-      type: 'chart_filter',
-      data: this.chartFilter,
-    });
-
-    this.sidebarService.getContentActionBroadcast()
-        .subscribe((action) => {
-            if (action.type === 'params_change') {
-                this.initCharts(action.data);
-            }
-
-            if (action.type === 'legend_updated') {
-                this.update_dataset_legend_(action.data);
-            }
-        });
-  }
-
-  ngOnInit() {
-  }
-
-  ngOnDestroy()
-  {
-      this.breakLoad(false);
-  }
-
-  private initCharts(chartFilter: ChartFilter): void
-  {
-    this.chartFilter = chartFilter;
-
-    if (!this.chartFilter.selected_charts?.length) {
-      console.warn('Init charts failed', this.chartFilter.charts_type, this.chartFilter.selectedItems);
-      return;
+    get chartFilter(): ChartFilter {
+        return this._chartFilter;
     }
 
-    this.charts = [];
+    set chartFilter(v: ChartFilter) {
+        this._chartFilter = v;
+        this.sidebarService.performActionToSidebar({
+            type: 'chart_filter',
+            data: this._chartFilter,
+        });
+    }
 
-    let data_ptr = { dev_items: [], params: [] };
+    charts: Chart_Info_Interface[] = [];
+    members: Scheme_Group_Member[] = [];
 
-    const a = 'A'.charCodeAt(0);
-    const enableUserAxes = this.chartFilter.charts_type !== Chart_Type.CT_DIG_TYPE;
+    private logSub: SubscriptionLike;
+    private paramSub: SubscriptionLike;
+    values_loaded: boolean;
+    params_loaded: boolean;
+    initialized = false;
 
-    this.chartFilter.selected_charts?.forEach(chart => {
-        const axes: Axis_Params[] = [];
+    constructor(
+        public translate: TranslateService,
+        private schemeService: SchemeService,
+        private changeDetectorRef: ChangeDetectorRef,
+        private zone: NgZone,
+        private sidebarService: SidebarService,
+    ) {
+        moment.locale('ru');
 
-        const datasets = chart.dataset_params.map((ds_param) => {
-            const { item, legend: { color, idx, scale } } = ds_param;
+        const today = new Date();
+        const todayEnd = new Date();
 
-            let dataset: any;
-            if (ds_param.isParam) {
-                dataset = this.genParamDataset(item, idx, color);
-                data_ptr.params.push(item.id);
-            } else {
-                dataset = this.genDevItemDataset(item, idx, color);
-                data_ptr.dev_items.push(item.id);
-            }
+        today.setHours(today.getHours() - 6, 0, 0, 0);
+        todayEnd.setHours(23, 59, 59, 0);
 
-            if (enableUserAxes) {
-                let yAxisID;
-                const existingAxis = axes.find(axis => axis.from === scale.from && axis.to === scale.to && axis.isRight === scale.isRight);
-                if (!existingAxis) {
-                    if (scale.from || scale.to) {
-                        // create and assign new axis if valid params
-                        yAxisID = String.fromCharCode(a + axes.length);
-                        axes.push({
-                            id: yAxisID,
-                            ...scale,
-                        });
-                    } else if (axes.length > 0) {
-                        // assign previous if one or more exist
-                        yAxisID = axes[axes.length - 1]?.id;
-                    }
-                } else {
-                    // assign found
-                    yAxisID = existingAxis.id;
-                }
+        this.chartFilter.timeFrom = today.getTime();
+        this.chartFilter.timeTo = todayEnd.getTime();
 
-                // overwrite yAxisID if found/assigned
-                yAxisID && (dataset.yAxisID = yAxisID);
-            }
-
-            return dataset;
+        this.sidebarService.performActionToSidebar({
+            type: 'chart_filter',
+            data: this.chartFilter,
         });
 
-        if (enableUserAxes) {
-            axes.sort((a, b) => <number>a.order - <number>b.order);
-            const chartAxes = axes.map(axe => this.genAxis(
-                axe.id,
-                axe.isRight ? 'right' : 'left',
-                <number>axe.from,
-                <number>axe.to,
-            ));
-            this.addChart(chart.name, datasets, chartAxes);
-        } else {
-            this.addChart(chart.name, datasets);
+        this.sidebarService.getContentActionBroadcast()
+            .subscribe((action) => {
+                if (action.type === 'params_change') {
+                    this.initCharts(action.data);
+                }
+
+                if (action.type === 'legend_updated') {
+                    this.update_dataset_legend_(action.data);
+                }
+            });
+    }
+
+    ngOnDestroy() {
+        this.breakLoad(false);
+    }
+
+    private initCharts(chartFilter: ChartFilter): void {
+        this.chartFilter = chartFilter;
+
+        if (!this.chartFilter.selected_charts?.length) {
+            console.warn('Init charts failed', this.chartFilter.charts_type, this.chartFilter.selectedItems);
+            return;
         }
-    });
 
-    this.sidebarService.performActionToSidebar({
-      type: 'charts',
-      data: {
-          charts: this.charts,
-          chart_filter: this.chartFilter,
-      },
-    });
+        this.charts = [];
 
-    this.data_ = data_ptr.dev_items.join(',');
-    this.param_data_ = data_ptr.params.join(',');
+        let data_ptr = {dev_items: [], params: []};
 
-    this.time_from_ = this.chartFilter.timeFrom;
-    this.time_to_ = this.chartFilter.timeTo;
+        const a = 'A'.charCodeAt(0);
+        const enableUserAxes = this.chartFilter.charts_type !== Chart_Type.CT_DIG_TYPE;
 
-    this.recalculate_time_ext_();
+        this.chartFilter.selected_charts?.forEach(chart => {
+            const axes: Axis_Params[] = [];
 
-    this.is_today = new Date().getTime() < this.time_to_;
+            const datasets = chart.dataset_params.map((ds_param) => {
+                const {item, legend: {color, idx, scale}} = ds_param;
 
-    this.logs_count = 0;
-    this.logs_count2 = 0;
-    this.initialized = false;
-    this.values_loaded = false;
-    this.params_loaded = false;
-    this.getParamData();
-    this.getLogs();
-  }
+                let dataset: ChartDataSets;
+                if (ds_param.isParam) {
+                    dataset = this.genParamDataset(item, idx, color);
+                    data_ptr.params.push(item.id);
+                } else {
+                    dataset = this.genDevItemDataset(item, idx, color);
+                    data_ptr.dev_items.push(item.id);
+                }
 
-    private addChart(name: string, datasets: any[], chartAxes?: any[]): void {
+                if (enableUserAxes) {
+                    let yAxisID;
+                    const existingAxis = axes.find(axis => axis.from === scale.from && axis.to === scale.to && axis.isRight === scale.isRight);
+                    if (!existingAxis) {
+                        if (scale.from || scale.to) {
+                            // create and assign new axis if valid params
+                            yAxisID = String.fromCharCode(a + axes.length);
+                            axes.push({
+                                id: yAxisID,
+                                ...scale,
+                            });
+                        } else if (axes.length > 0) {
+                            // assign previous if one or more exist
+                            yAxisID = axes[axes.length - 1]?.id;
+                        }
+                    } else {
+                        // assign found
+                        yAxisID = existingAxis.id;
+                    }
+
+                    // overwrite yAxisID if found/assigned
+                    yAxisID && (dataset.yAxisID = yAxisID);
+                }
+
+                return dataset;
+            });
+
+            if (enableUserAxes) {
+                axes.sort((a, b) => <number>a.order - <number>b.order);
+                const chartAxes = axes.map(axe => ChartsComponent.genAxis(
+                    axe.id,
+                    axe.isRight ? 'right' : 'left',
+                    <number>axe.from,
+                    <number>axe.to,
+                ));
+                this.addChart(chart.name, datasets, chartAxes);
+            } else {
+                this.addChart(chart.name, datasets);
+            }
+        });
+
+        this.sidebarService.performActionToSidebar({
+            type: 'charts',
+            data: {
+                charts: this.charts,
+                chart_filter: this.chartFilter,
+            },
+        });
+
+        this.data_ = data_ptr.dev_items.join(',');
+        this.param_data_ = data_ptr.params.join(',');
+
+        this.time_from_ = this.chartFilter.timeFrom;
+        this.time_to_ = this.chartFilter.timeTo;
+
+        this.recalculate_time_ext_();
+
+        this.is_today = new Date().getTime() < this.time_to_;
+
+        this.logs_count = 0;
+        this.logs_count2 = 0;
+        this.initialized = false;
+        this.values_loaded = false;
+        this.params_loaded = false;
+        this.getParamData();
+        this.getLogs();
+    }
+
+    private addChart(name: string, datasets: ChartDataSets[], chartAxes?: any[]): void {
         if (datasets.length)
             datasets[0].hidden = false;
-        this.charts.push({ name, data: {datasets}, charts_type: this.chartFilter.charts_type, axes: chartAxes });
+        this.charts.push({name, data: {datasets}, charts_type: this.chartFilter.charts_type, axes: chartAxes});
     }
 
     private set_initialized(set_values_loaded: boolean): void {
@@ -231,33 +225,25 @@ export class ChartsComponent implements OnInit, OnDestroy {
         else
             this.params_loaded = true;
 
-        if (this.values_loaded && this.params_loaded)
-        {
+        if (this.values_loaded && this.params_loaded) {
             // if (this.is_today)
             {
                 let item;
                 const x = this.is_today ? new Date() : new Date(this.time_to_);
-                for (const chart of this.charts)
-                {
-                    for (const dataset of chart.data.datasets)
-                    {
+                for (const chart of this.charts) {
+                    for (const dataset of chart.data.datasets) {
                         let y;
-                        if (this.is_today)
-                        {
+                        if (this.is_today) {
                             const log = dataset.dev_item ? dataset.dev_item.val : dataset.param;
                             y = ChartItemComponent.getY(log, dataset.steppedLine);
-                        }
-                        else if (dataset.data.length !== 0)
-                        {
+                        } else if (dataset.data.length !== 0) {
                             const last = dataset.data[dataset.data.length - 1];
                             if (last.x < x)
                                 y = last.y;
                         }
 
-                        if (y !== undefined && y !== null)
-                        {
-                            if (dataset.data.length === 0)
-                            {
+                        if (y !== undefined && y !== null) {
+                            if (dataset.data.length === 0) {
                                 const x0 = new Date(this.time_from_);
                                 item = {x: x0, y};
                                 dataset.data.push(item);
@@ -278,16 +264,14 @@ export class ChartsComponent implements OnInit, OnDestroy {
             this.paramSub = this.schemeService.getChartParamData(this.time_from_ext_, this.time_to_ext_, param_data, this.chartFilter.data_part_size, offset, first_and_last)
                 .subscribe(
                     (logs: Paginator_Chart_Value) => first_and_last
-                            ? this.add_additional_chart_data(logs, 'param', param_data) : this.fillParamData(logs),
+                        ? this.add_additional_chart_data(logs, 'param', param_data) : this.fillParamData(logs),
                 );
-        }
-        else
-          this.params_loaded = true;
+        } else
+            this.params_loaded = true;
     }
 
     private fillParamData(logs: Paginator_Chart_Value): void {
-        if (!logs)
-        {
+        if (!logs) {
             this.set_initialized(false);
             return;
         }
@@ -308,8 +292,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
         }
     }
 
-    private find_dataset(data_param_name: string, data_id): [Chart_Info_Interface, any]
-    {
+    private find_dataset(data_param_name: string, data_id): [Chart_Info_Interface, any] {
         for (const chart of this.charts)
             for (const dataset of chart.data.datasets)
                 if (dataset[data_param_name] && dataset[data_param_name].id === data_id)
@@ -317,23 +300,18 @@ export class ChartsComponent implements OnInit, OnDestroy {
         return [null, null];
     }
 
-    private add_chart_data(logs: Paginator_Chart_Value, data_param_name: string)
-    {
-        for (const log of logs.results)
-        {
+    private add_chart_data(logs: Paginator_Chart_Value, data_param_name: string) {
+        for (const log of logs.results) {
             const [, dataset] = this.find_dataset(data_param_name, log.item_id);
-            if (dataset)
-            {
-                for (const log_item of log.data)
-                {
+            if (dataset) {
+                for (const log_item of log.data) {
                     const y = ChartItemComponent.getY(log_item, dataset.steppedLine);
                     if (y === undefined)
                         continue;
 
                     const x = new Date(log_item.time);
                     let data = {x, y};
-                    if (log_item.user_id)
-                    {
+                    if (log_item.user_id) {
                         if (!dataset.usered_data)
                             dataset.usered_data = {};
                         dataset.usered_data[x.getTime()] = log_item.user_id;
@@ -347,13 +325,12 @@ export class ChartsComponent implements OnInit, OnDestroy {
     private getLogs(offset: number = 0, data: string = this.data_, first_and_last = false): void {
         this.logSub = this.schemeService.getChartData(this.time_from_ext_, this.time_to_ext_, data, this.chartFilter.data_part_size, offset, 'value', first_and_last)
             .subscribe((logs: Paginator_Chart_Value) => first_and_last
-                    ? this.add_additional_chart_data(logs, 'dev_item', data) : this.fillData(logs),
-                );
+                ? this.add_additional_chart_data(logs, 'dev_item', data) : this.fillData(logs),
+            );
     }
 
     private fillData(logs: Paginator_Chart_Value): void {
-        if (!logs)
-        {
+        if (!logs) {
             this.set_initialized(true);
             return;
         }
@@ -374,82 +351,80 @@ export class ChartsComponent implements OnInit, OnDestroy {
         }
     }
 
-  breakLoad(is_initialized: boolean = true): void {
-      if (this.logSub && !this.logSub.closed)
-          this.logSub.unsubscribe();
-      if (this.paramSub && !this.paramSub.closed)
-          this.paramSub.unsubscribe();
-      if (is_initialized)
-          this.set_initialized(true);
-  }
+    breakLoad(is_initialized: boolean = true): void {
+        if (this.logSub && !this.logSub.closed)
+            this.logSub.unsubscribe();
+        if (this.paramSub && !this.paramSub.closed)
+            this.paramSub.unsubscribe();
+        if (is_initialized)
+            this.set_initialized(true);
+    }
 
-  genDateString(date: Date, time: string): string {
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    let date_str: string = date.getFullYear().toString();
-    date_str += `-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day} `;
-    return date_str + time;
-  }
+    genDateString(date: Date, time: string): string {
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        let date_str: string = date.getFullYear().toString();
+        date_str += `-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day} `;
+        return date_str + time;
+    }
 
-  genDevItemDataset(item: Device_Item, colorIndex: number, hsl: Hsl = null): Object {
-    const label = item.name.length ? item.name : item.type.title;
+    genDevItemDataset(item: Device_Item, colorIndex: number, hsl: Hsl = null): ChartDataSets {
+        const label = item.name.length ? item.name : item.type.title;
 
-    const RT = Register_Type;
-    const rt = item.type.register_type;
-    const stepped = rt === RT.RT_COILS || rt === RT.RT_DISCRETE_INPUTS;
+        const RT = Register_Type;
+        const rt = item.type.register_type;
+        const stepped = rt === RT.RT_COILS || rt === RT.RT_DISCRETE_INPUTS;
 
-    let dataset = this.genDataset(label, colorIndex, stepped, hsl);
-    dataset['dev_item'] = item;
-    return dataset;
-  }
+        let dataset = this.genDataset(label, colorIndex, stepped, hsl);
+        dataset['dev_item'] = item;
+        return dataset;
+    }
 
-  genParamDataset(param: DIG_Param, colorIndex: number, hsl: Hsl = null): Object {
-    let dataset = this.genDataset('⚙️ ' + param.param.title, colorIndex, true, hsl);
-    dataset['param'] = param;
-    return dataset;
-  }
+    genParamDataset(param: DIG_Param, colorIndex: number, hsl: Hsl = null): ChartDataSets {
+        let dataset = this.genDataset('⚙️ ' + param.param.title, colorIndex, true, hsl);
+        dataset['param'] = param;
+        return dataset;
+    }
 
-  genDataset(label: string, colorIndex: number, steppedLine: boolean = true, hsl: Hsl = null): Object {
-      if (hsl.h > 360)
-          hsl.h %= 360;
+    genDataset(label: string, colorIndex: number, steppedLine: boolean = true, hsl: Hsl = null): ChartDataSets {
+        if (hsl.h > 360)
+            hsl.h %= 360;
 
-      return {
-          label,
-          data: [],
-          yAxisID: steppedLine ? 'B' : 'A',
+        return {
+            label,
+            data: [],
+            yAxisID: steppedLine ? 'B' : 'A',
 
-          fill: false, //steppedLine,
-          steppedLine,
-          cubicInterpolationMode: 'monotone',
-          ...ChartsComponent.get_dataset_legend_params_(hsl),
-      };
-  }
+            fill: false, //steppedLine,
+            steppedLine,
+            cubicInterpolationMode: 'monotone',
+            ...ChartsComponent.get_dataset_legend_params_(hsl),
+        };
+    }
 
-  private genAxis(id: string, position: string, min: number, max: number, step = 1, type = 'linear') {
-      const axis: any = {
-          id,
-          type,
-          position,
-      };
+    private static genAxis(id: string, position: string, min: number, max: number, step = 1, type = 'linear'): CommonAxe {
+        const axis: any = {
+            id,
+            type,
+            position,
+        };
 
-      if (min !== null || max !== null) {
-          axis.ticks = { step };
-          if (min !== null) {
-              axis.ticks.min = min;
-          }
+        if (min !== null || max !== null) {
+            axis.ticks = {step};
+            if (min !== null) {
+                axis.ticks.min = min;
+            }
 
-          if (max !== null) {
-              axis.ticks.max = max;
-          }
-      }
+            if (max !== null) {
+                axis.ticks.max = max;
+            }
+        }
 
-      return axis;
-  }
+        return axis;
+    }
 
-    chartZoom(chart: Chart_Info_Interface, range: ZoomInfo)
-    {
-        const findChartItem = (chartInfo: Chart_Info_Interface) =>
-        {
+    chartZoom(chart: Chart_Info_Interface, range: ZoomInfo) {
+        const findChartItem = (chartInfo: Chart_Info_Interface) => {
             for (const chartItem of this.chartItems)
                 if (chartItem.chartInfo === chartInfo)
                     return chartItem;
@@ -465,10 +440,8 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
         this.logSub = timer(200)
             .pipe(
-                exhaustMap(() =>
-                {
-                    for (const dataset of chart.data.datasets)
-                    {
+                exhaustMap(() => {
+                    for (const dataset of chart.data.datasets) {
                         if (dataset.dev_item)
                             devItemIds.push(dataset.dev_item.id);
                         else if (dataset.param)
@@ -492,10 +465,8 @@ export class ChartsComponent implements OnInit, OnDestroy {
                     return combineLatest(logs, params);
                 }),
             )
-            .subscribe(([logs, params]) =>
-            {
-                if (chartItem)
-                {
+            .subscribe(([logs, params]) => {
+                if (chartItem) {
                     let isAnyBoundsRequests = false;
                     if (logs) {
                         const nodeIds = this.need_bounds(logs.results, devItemIds);
@@ -560,13 +531,13 @@ export class ChartsComponent implements OnInit, OnDestroy {
                 if (!haveDataBefore) {
                     const value = dataset.data[0].y;
                     if (value !== null)
-                        log.data.splice(0, 0, { value, time: this.time_from_ext_ });
+                        log.data.splice(0, 0, {value, time: this.time_from_ext_});
                 }
 
                 if (!haveDataAfter) {
                     let value = dataset.dev_item ? dataset.dev_item.val?.value : dataset.param.value;
                     if (value !== null)
-                        log.data.push({ value, time: this.time_to_ext_ > Date.now() ? Date.now() : this.time_to_ext_ });
+                        log.data.push({value, time: this.time_to_ext_ > Date.now() ? Date.now() : this.time_to_ext_});
                 }
             }
         }
@@ -587,8 +558,8 @@ export class ChartsComponent implements OnInit, OnDestroy {
         return ids.filter(id => {
             const log = logs.find(log => log.item_id === id);
             return !log || !log.data.length
-                   || log.data[0].time >= this.time_from_
-                   || log.data[log.data.length - 1].time <= this.time_to_;
+                || log.data[0].time >= this.time_from_
+                || log.data[log.data.length - 1].time <= this.time_to_;
         });
     }
 
@@ -619,5 +590,25 @@ export class ChartsComponent implements OnInit, OnDestroy {
 
             hidden,
         };
+    }
+
+    onChartBuilt(chart: Chart_Info_Interface, $event: BuiltChartParams) {
+        const axes = chart.data.datasets.map((dataset) => {
+            const axe = $event.axes.find(a => a.id === dataset.yAxisID);
+
+            return {
+                id: dataset.dev_item?.id || dataset.param?.id,
+                isParam: !dataset.dev_item,
+
+                from: (<any>axe).min,
+                to: (<any>axe).max,
+                isRight: (<any>axe).options.position === 'right',
+            };
+        });
+
+        this.sidebarService.performActionToSidebar({
+            type: 'chart_built',
+            data: { axes },
+        });
     }
 }
