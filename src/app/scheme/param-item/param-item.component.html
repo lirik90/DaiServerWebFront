@@ -3,13 +3,13 @@
     <ng-template [ngIf]="value.childs" [ngIfElse]="no_childs">
       <mat-card>
         <p>{{value.param.title}}</p>
-        <app-param-item [values]="value.childs" [changed]="changed" [parent_param]="value.param"></app-param-item>
+        <app-param-item [groupTypeId]="groupTypeId" [editorModeEnabled]="editorModeEnabled" [values]="value.childs" [changed]="changed" [parent_param]="value.param"></app-param-item>
       </mat-card>
     </ng-template>
 
     <ng-template #no_childs>
-      <ng-container *ngIf="!parent_param == (value.param.parent_id == null)" [ngSwitch]="value.param.value_type">
-        <div class="full-width" *ngSwitchCase="value_type.VT_BOOL">
+      <div class="full-width" *ngIf="!parent_param == (value.param.parent_id == null)" [ngSwitch]="value.param.value_type">
+        <div *ngSwitchCase="value_type.VT_BOOL" class="flex-1-1">
           <mat-checkbox name="{{value.id}}" [ngModel]="value.value" (ngModelChange)="change(value, $event)"
               [disabled]="isDisabled(value)">
             {{value.param.title}} ({{value.param.name}})
@@ -17,7 +17,7 @@
           <div><mat-hint class ="custom_hint" *ngIf="value.param.description">{{value.param.description}}</mat-hint></div>
         </div>
 
-        <mat-form-field class="full-width" appearance="fill" *ngSwitchCase="value_type.VT_TIME">
+        <mat-form-field appearance="fill" *ngSwitchCase="value_type.VT_TIME" class="flex-1-1">
           <mat-label>{{value.param.title}} ({{value.param.name}})</mat-label>
           <input matInput
                name="{{value.id}}"
@@ -25,20 +25,39 @@
                [ngModel]="getTimeString(value)"
                (ngModelChange)="change(value, $event)"
                [disabled]="isDisabled(value)" required>
-          <mat-hint *ngIf="value.param.description">{{value.param.description}}</mat-hint>
+          <mat-hint *ngIf="value.param.description">{{value.param.description}}</mat-hint><!-- TODO: insert icon for editing/removing -->
         </mat-form-field>
 
-        <mat-form-field class="full-width" appearance="fill" *ngSwitchDefault>
+        <mat-form-field appearance="fill" *ngSwitchDefault class="flex-1-1">
           <mat-label>{{value.param.title}} ({{value.param.name}})</mat-label>
           <input matInput
                name="{{value.id}}" [ngModel]="value.value" (ngModelChange)="change(value, $event)"
                [disabled]="isDisabled(value)">
           <mat-hint *ngIf="value.param.description">{{value.param.description}}</mat-hint>
         </mat-form-field>
-      </ng-container>
+
+        <div *ngIf="editorModeEnabled">
+            <button mat-icon-button type="button" (click)="editParamForm(value)"><mat-icon>edit</mat-icon></button>
+            <button mat-icon-button type="button" (click)="removeParam(value)"><mat-icon>delete</mat-icon></button>
+        </div>
+      </div>
     </ng-template>
   </ng-container>
 </ng-container>
 <ng-container *ngIf="!values.length">
   <div class="gray-text" i18n="@@NO_SETTINGS">В этом разделе нет настроек</div>
+</ng-container>
+<button *ngIf="editorModeEnabled" mat-flat-button (click)="addParamForm()">Добавить уставку</button>
+
+<ng-container *ngIf="showForm">
+<div>
+    <h3>Добавить/изменить уставку</h3>
+    <mat-form-field appearance="fill" class="full-width">
+        <mat-select [formControl]="paramTypeIdFormControl" placeholder="Тип">
+            <mat-option *ngFor="let param of params" [value]="param.id">{{ param.title }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button mat-flat-button type="button" color="primary" (click)="submitForm()">Сохранить</button>
+    <button mat-flat-button type="button" (click)="resetForm()">Отмена</button>
+</div>
 </ng-container>

@@ -133,11 +133,15 @@ export class ManageComponent implements OnInit, AfterViewInit {
   }
 
   openParamsDialog(groupId) {
-    this.dialog.open(ParamsDialogComponent, {panelClass: 'dig-param-dialog', width: '80%', data: { groupId: groupId }})
-      .afterClosed().pipe(
-      filter(name => name)
-    ).subscribe(res => {
-    });
+    this.dialog.open(ParamsDialogComponent, {
+        panelClass: 'dig-param-dialog',
+        width: '80%',
+        data: { groupId: groupId, isEditorModeEnabled: this.isEditorModeEnabled },
+    })
+        .afterClosed()
+        .pipe(filter(name => name))
+        .subscribe(res => {
+        });
   }
 
   restart(): void {
@@ -246,6 +250,7 @@ export class ParamsDialogComponent implements OnInit {
 
   sct: Section;
   group: Device_Item_Group = undefined;
+  isEditorModeEnabled: boolean;
   cantChange: boolean;
 
   changed_values: DIG_Param[] = [];
@@ -261,9 +266,10 @@ export class ParamsDialogComponent implements OnInit {
       private location: Location,
       public dialogRef: MatDialogRef<ParamsDialogComponent>,
       private snackBar: MatSnackBar,
-      @Inject(MAT_DIALOG_DATA) public data: any
+      @Inject(MAT_DIALOG_DATA) public data: { groupId: number, isEditorModeEnabled: boolean },
   ) {
     this.groupId = data.groupId;
+    this.isEditorModeEnabled = data.isEditorModeEnabled;
   }
 
   ngOnInit() {
