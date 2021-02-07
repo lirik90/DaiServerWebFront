@@ -624,8 +624,8 @@ export class ChartsComponent implements OnDestroy {
                 isParam: !dataset.dev_item,
                 isRight: position === 'right',
 
-                from,
-                to,
+                from: from.toFixed(2),
+                to: to.toFixed(2),
             };
         });
 
