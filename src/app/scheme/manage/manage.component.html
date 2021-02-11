@@ -52,15 +52,15 @@
                   <app-dev-item-value #itemValue [item]="item"></app-dev-item-value>
                 </span>
               </div>
-              <button class="hidden-buttons" mat-raised-button (click)="newItem(group)">Добавить элемент</button>
+              <button class="hidden-buttons" mat-raised-button (click)="newItem(group)" i18n="@@MANAGEMENT.ADD_ITEM">Добавить элемент</button>
             </div>
           </div>
-          <button class="hidden-buttons" mat-raised-button (click)="newGroup(sct)">Добавить группу</button>
+          <button class="hidden-buttons" mat-raised-button (click)="newGroup(sct)" i18n="@@MANAGEMENT.ADD_GROUP">Добавить группу</button>
         </div>
       </app-scheme-section>
     </div>
   </ng-container>
 </div>
-<button *ngIf="isEditorModeEnabled" mat-flat-button (click)="newSection()">Добавить секцию</button>
+<button *ngIf="isEditorModeEnabled" mat-flat-button (click)="newSection()" i18n="@@MANAGEMENT.ADD_SECTION">Добавить секцию</button>
 <button *ngIf="isAdmin" mat-flat-button (click)="restart()" class="reboot-btn"><mat-icon>replay</mat-icon><span class="reboot-btn__label" i18n="@@RESTART">Перезагрузить ПО</span></button>
 

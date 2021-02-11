@@ -151,10 +151,10 @@ export class DIG_Param_Type {  // Тип уставки
   parent_id: number;        // ID родителя
   childs: DIG_Param_Type[] = []; // Дочерние типы
 
-  title: string;            // Отображаемое имя
-  name: string;             // Имя латиницей используется в скриптах
-  description: string;      // Описание
-  value_type: number;       // Тип значения уставки
+  title: string;                      // Отображаемое имя
+  name: string;                       // Имя латиницей используется в скриптах
+  description: string;                // Описание
+  value_type: DIG_Param_Value_Type;   // Тип значения уставки
 }
 
 export class DIG_Param { // Уставка

@@ -3,7 +3,7 @@
   <p *ngIf="description">{{group.type.description}}</p>
 
   <form class="example-form" (ngSubmit)="onSubmit()" (keydown.enter)="onEnter($event)" #paramForm="ngForm">
-    <app-param-item [groupTypeId]="group.type_id" [editorModeEnabled]="isEditorModeEnabled" [values]="group.params" [changed]="changed_values"></app-param-item>
+    <app-param-item [groupTypeId]="group.type_id" [groupId]="group.id" [editorModeEnabled]="isEditorModeEnabled" [values]="group.params" [changed]="changed_values"></app-param-item>
 
     <button type="submit"
             mat-raised-button

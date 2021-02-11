@@ -2,7 +2,7 @@ import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 
 import {SchemeService} from '../scheme.service';
 import {DIG_Param, DIG_Param_Type, DIG_Param_Value_Type} from '../scheme';
-import {FormControl} from '@angular/forms';
+import {FormControl, Validators} from '@angular/forms';
 
 @Component({
     selector: 'app-param-item',
@@ -11,6 +11,7 @@ import {FormControl} from '@angular/forms';
 })
 export class ParamItemComponent implements OnChanges {
     @Input() groupTypeId: number;
+    @Input() groupId: number;
     @Input() values: DIG_Param[];
     @Input() changed: DIG_Param[];
     @Input() parent_param: DIG_Param_Type = null;
@@ -20,21 +21,49 @@ export class ParamItemComponent implements OnChanges {
     params: DIG_Param_Type[];
 
     showForm = false;
+    showNestedParamTypeForm = false;
+
     paramTypeIdFormControl: FormControl;
+    paramTypeFormControl: FormControl;
     currentEditingParam: DIG_Param;
 
     constructor(
         private schemeService: SchemeService,
     ) {
-        this.paramTypeIdFormControl = new FormControl(null, []);
+        this.paramTypeFormControl = new FormControl(null, []);
+        this.paramTypeIdFormControl = new FormControl(null, [Validators.required]);
+
+        this.paramTypeIdFormControl.valueChanges.subscribe((v) => {
+            this.showNestedParamTypeForm = v === 'new';
+
+            if (this.showNestedParamTypeForm) {
+                this.paramTypeFormControl.setValidators([Validators.required]);
+            } else {
+                this.paramTypeFormControl.clearValidators();
+            }
+        });
     }
 
     ngOnChanges(changes: SimpleChanges) {
+        const paramTypePatch: Partial<DIG_Param_Type> = {};
+
         if (changes.parent_param || changes.groupTypeId) {
             this.params = this.schemeService.scheme.dig_param_type.filter((param) => {
                 if (param.group_type_id !== this.groupTypeId) return false;
                 return (!this.parent_param && param.parent_id === null) || (this.parent_param?.id === param.parent_id);
             });
+
+            if (changes.groupTypeId) {
+                paramTypePatch.group_type_id = changes.groupTypeId.currentValue;
+            }
+
+            if (changes.parent_param) {
+                paramTypePatch.parent_id = changes.parent_param.currentValue.id;
+            }
+        }
+
+        if (Object.keys(paramTypePatch).length > 0) {
+            this.paramTypeFormControl.setValue(paramTypePatch);
         }
     }
 
@@ -114,10 +143,28 @@ export class ParamItemComponent implements OnChanges {
     }
 
     submitForm() {
-        console.dir(this.paramTypeIdFormControl.value);
+        if (this.showNestedParamTypeForm) {
+            // TODO: createParamType (this.paramTypeFormControl.value) & call this.createParam(createdParam.id) in .subscribe()
+        } else {
+            if (this.paramTypeIdFormControl.valid) {
+                this.createParam(this.paramTypeIdFormControl.value);
+            }
+        }
+    }
+
+    createParam(paramTypeId: number) {
+        // TODO: create param with paramTypeId
+        const param: Pick<DIG_Param, 'param_id' | 'group_id'> = {
+            param_id: paramTypeId,
+            group_id: this.groupId,
+        };
     }
 
     resetForm() {
+        if (this.showNestedParamTypeForm) {
+            this.showNestedParamTypeForm = false;
+        }
+
         this.showForm = false;
         this.currentEditingParam = null;
         this.paramTypeIdFormControl.reset();

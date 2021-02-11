@@ -3,7 +3,7 @@
     <ng-template [ngIf]="value.childs" [ngIfElse]="no_childs">
       <mat-card>
         <p>{{value.param.title}}</p>
-        <app-param-item [groupTypeId]="groupTypeId" [editorModeEnabled]="editorModeEnabled" [values]="value.childs" [changed]="changed" [parent_param]="value.param"></app-param-item>
+        <app-param-item [groupTypeId]="groupTypeId" [groupId]="groupId" [editorModeEnabled]="editorModeEnabled" [values]="value.childs" [changed]="changed" [parent_param]="value.param"></app-param-item>
       </mat-card>
     </ng-template>
 
@@ -25,7 +25,7 @@
                [ngModel]="getTimeString(value)"
                (ngModelChange)="change(value, $event)"
                [disabled]="isDisabled(value)" required>
-          <mat-hint *ngIf="value.param.description">{{value.param.description}}</mat-hint><!-- TODO: insert icon for editing/removing -->
+          <mat-hint *ngIf="value.param.description">{{value.param.description}}</mat-hint>
         </mat-form-field>
 
         <mat-form-field appearance="fill" *ngSwitchDefault class="flex-1-1">
@@ -47,17 +47,19 @@
 <ng-container *ngIf="!values.length">
   <div class="gray-text" i18n="@@NO_SETTINGS">В этом разделе нет настроек</div>
 </ng-container>
-<button *ngIf="editorModeEnabled" mat-flat-button (click)="addParamForm()">Добавить уставку</button>
+<button *ngIf="editorModeEnabled" mat-flat-button (click)="addParamForm()" i18n="@@SETTINGS.PARAMS_IN_GROUP.ADD">Добавить уставку</button>
 
 <ng-container *ngIf="showForm">
 <div>
-    <h3>Добавить/изменить уставку</h3>
+    <h3 i18n="@@SCHEME.PARAM_ITEM.FORM_HEADER">Добавить/изменить уставку</h3>
     <mat-form-field appearance="fill" class="full-width">
         <mat-select [formControl]="paramTypeIdFormControl" placeholder="Тип">
             <mat-option *ngFor="let param of params" [value]="param.id">{{ param.title }}</mat-option>
+            <mat-option [value]="'new'" i18n="@@SCHEME.PARAM_ITEM.NEW_PARAM_TYPE">Новая</mat-option>
         </mat-select>
     </mat-form-field>
-    <button mat-flat-button type="button" color="primary" (click)="submitForm()">Сохранить</button>
-    <button mat-flat-button type="button" (click)="resetForm()">Отмена</button>
+    <app-param-type-form [formControl]="paramTypeFormControl" *ngIf="showNestedParamTypeForm"></app-param-type-form>
+    <button mat-flat-button type="button" color="primary" (click)="submitForm()" i18n="@@CONTROL.SAVE">Сохранить</button>
+    <button mat-flat-button type="button" (click)="resetForm()" i18n="@@CONTROL.CANCEL">Отмена</button>
 </div>
 </ng-container>
