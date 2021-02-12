@@ -11,7 +11,15 @@
                         <div class="dig-header">
                             <a><h4>{{ device.name }}</h4></a>
                         </div>
+                        <div class="dig-header-buttons hidden-buttons">
+                            <button mat-icon-button (click)="editDevice(device)"><mat-icon>edit</mat-icon></button>
+                            <button mat-icon-button (click)="removeDevice(device)"><mat-icon>delete</mat-icon></button>
+                        </div>
                         <div class="device-item" *ngFor="let item of device.items">
+                            <span class="hidden-buttons">
+                              <button mat-icon-button (click)="editItem(item)"><mat-icon>edit</mat-icon></button>
+                              <button mat-icon-button (click)="removeItem(item)"><mat-icon>delete</mat-icon></button>
+                            </span>
                             <span>
                               {{item.name || item.type.title}}
                             </span>
@@ -20,8 +28,10 @@
                               <app-dev-item-value [item]="item"></app-dev-item-value>
                             </span>
                         </div>
+                        <button class="hidden-buttons" mat-raised-button (click)="newItem(device)" i18n="@@MANAGEMENT.ADD_ITEM">Добавить элемент</button>
                     </div>
                 </div>
+                <button class="hidden-buttons" mat-raised-button (click)="newDevice()" i18n="@@MANAGEMENT.ADD_DEVICE">Добавить устройство</button>
             </div>
         </app-scheme-section>
     </div>
