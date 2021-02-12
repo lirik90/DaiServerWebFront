@@ -1,1 +1,28 @@
-<p>manage-devices works!</p>
+<h2>
+    <span i18n="@@DEVICE_MANAGEMENT.TITLE">Управление устройствами</span>
+    <button *ngIf="isAdmin" mat-icon-button (click)="isEditorModeEnabled = !isEditorModeEnabled"><mat-icon>edit</mat-icon></button>
+</h2>
+<div class="grid grid-pad" [class.editor-mode]="isEditorModeEnabled">
+    <div class="col-1-3">
+        <app-scheme-section [title]="'&nbsp;'">
+            <div class="module scheme eqTable sct-1">
+                <div *ngFor="let device of devices">
+                    <div class="dig">
+                        <div class="dig-header">
+                            <a><h4>{{ device.name }}</h4></a>
+                        </div>
+                        <div class="device-item" *ngFor="let item of device.items">
+                            <span>
+                              {{item.name || item.type.title}}
+                            </span>
+                            <span class="value">
+                              <div [style.display]="'none'">{{item.type.name}}</div>
+                              <app-dev-item-value [item]="item"></app-dev-item-value>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </app-scheme-section>
+    </div>
+</div>
