@@ -3,11 +3,9 @@ import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs';
 
 import { SchemeService } from '../../scheme.service';
-import { Codes } from '../../scheme';
+import { Code_Item } from '../../scheme';
 
-import { ByteTools, WebSocketBytesService } from '../../../web-socket.service';
-
-import { StructType, ChangeState, ChangeInfo, ChangeTemplate } from '../settings';
+import { ChangeState, ChangeInfo, ChangeTemplate } from '../settings';
 import { SettingsService } from '../settings.service';
 
 import { WebSockCmd } from '../../control.service';
@@ -20,8 +18,8 @@ import { MetadataService } from './services/metadata.service';
   templateUrl: './codes.component.html',
   styleUrls: ['../settings.css'/*, '../../../../assets/anonymous/stylesheet.css'*/, './codes.component.css']
 })
-export class CodesComponent extends ChangeTemplate<Codes> implements OnInit {
-  codes: Codes[];
+export class Code_Item_Component extends ChangeTemplate<Code_Item> implements OnInit {
+  codes: Code_Item[];
 
     metadata$ = this.metadataService.getMetadata();
 
@@ -29,15 +27,14 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit {
   private newOpened = false;
 
   constructor(
-    wsbService: WebSocketBytesService,
     schemeService: SchemeService,
     private settingsService: SettingsService,
       private metadataService: MetadataService
   ) {
-    super(StructType.Scripts, wsbService, schemeService, Codes, 'codes');
+    super(schemeService, Code_Item, 'code_item');
   }
 
-  getObjects(): Codes[] {
+  getObjects(): Code_Item[] {
     return this.codes;
   }
 
@@ -48,30 +45,18 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit {
     });
   }
 
-  initItem(obj: Codes): void {
+  initItem(obj: Code_Item): void {
     obj.name = '';
   }
 
-  saveObject(obj: Codes): Uint8Array {
-    const name = ByteTools.saveQString(obj.name);
-    const text = ByteTools.saveQString(obj.text, false);
-    const view = new Uint8Array(8 + name.length + text.length);
-    let pos = 0;
-    ByteTools.saveInt32(obj.id, view, pos); pos += 4;
-    view.set(name, pos); pos += name.length;
-    ByteTools.saveInt32(obj.global_id, view, pos); pos += 4;
-    view.set(text, pos); pos += text.length;
-    return view;
-  }
-
-  name(obj: Codes): string {
+  name(obj: Code_Item): string {
     if (obj.name.length) {
       return obj.name;
     }
     return (<any>obj).d_name !== undefined ? (<any>obj).d_name : '<Empty>';
   }
 
-  code_select(item: ChangeInfo<Codes>): void {
+  code_select(item: ChangeInfo<Code_Item>): void {
     if (this.sel_item !== item && !item.obj.text) {
       this.getCode(item);
     } else {
@@ -79,7 +64,7 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit {
     }
   }
 
-  select(item: ChangeInfo<Codes>): void {
+  select(item: ChangeInfo<Code_Item>): void {
     super.select(item);
 
     if (item.obj.text) {
@@ -88,7 +73,7 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit {
     }
   }
 
-  getCode(code: ChangeInfo<Codes>): void {
+  getCode(code: ChangeInfo<Code_Item>): void {
     this.settingsService.getCode(code.obj.id).subscribe(full_code => {
       const state = code.state;
       code.obj.text = full_code.text;
@@ -98,29 +83,7 @@ export class CodesComponent extends ChangeTemplate<Codes> implements OnInit {
   }
 
   code_save(evnt): void {
-    const code_arr: Observable<any>[] = [];
-
-    for (const item of this.items) {
-      if (item.state === ChangeState.Upsert) {
-        if (item.obj.id) {
-          code_arr.push(this.settingsService.updateCode(item.obj));
-        } else {
-          console.error('Insert code isn\'t implemented');
-        }
-      } else if (item.state === ChangeState.Delete) {
-        console.error('Delete code isn\'t implemented');
-      }
-    }
-
-    if (code_arr.length) {
-      forkJoin(...code_arr).subscribe(() => {
-        this.save2(evnt);
-      });
-    } else {
-      console.warn('code_arr empty');
-      this.save2(evnt);
-    }
-
+    this.save(evnt);
     const elem = document.getElementById('editor-pane');
     elem.classList.remove('editor-pane-fullscreen');
 
