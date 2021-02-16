@@ -484,7 +484,7 @@ export class SchemeService extends ISchemeService {
     }
 
     public postSettings<T>(settingName: string, data: (T | { id: number })[]) {
-        const url = `/api/v2/scheme/${this.scheme.id}/${settingName}/`;
+        const url = `/api/v2/scheme/${this.scheme.id}/structure/${settingName}/`;
         return this.http.post(url, data);
     }
 }
