@@ -135,15 +135,9 @@ export abstract class ChangeTemplate<T extends { id: number }> {
     let data: (T | { id: number })[] = [];
     for (const item of this.items) {
       if (item.state === ChangeState.Delete) {
-        data.push({ id: item.obj.id });
+          data.push({ id: item.obj.id });
       } else if (item.state === ChangeState.Upsert) {
-        if (item.obj.id > 0) {
           data.push(item.obj);
-        } else {
-          const itemWithoutId = { ...item.obj };
-          delete itemWithoutId.id;
-          data.push(itemWithoutId);
-        }
       }
     }
 
