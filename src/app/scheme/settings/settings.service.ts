@@ -31,11 +31,6 @@ export class SettingsService {
     return this.hServ.getPiped<Code_Item>(this.hServ.url('code_item', code_id), `fetched code ${code_id}`, 'getCode', {} as Code_Item);
   }
 
-  updateCode(code: Code_Item): Observable<any> {
-    const url = this.hServ.url('code_item', code.id);
-    return this.hServ.patchPiped(url, { text: code.text }, `updated code id=${code.id}`, 'updateCode');
-  }
-
   getSection(id: number): Observable<Section> {
     const url = this.hServ.url(this.sct_s, id);
     return this.hServ.getPiped<Section>(url, `fetched section id=${id}`, `getSection id=${id}`);
