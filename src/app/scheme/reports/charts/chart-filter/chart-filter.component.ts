@@ -246,8 +246,6 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
             });
         }
 
-        this.rebuild();
-
         if (this.charts_type === Chart_Type.CT_USER) {
             this.selectUserChart(item);
         }

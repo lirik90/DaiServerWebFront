@@ -177,8 +177,8 @@ export class ChartsComponent implements OnDestroy {
                 const chartAxes = axes.map(axe => ChartsComponent.genAxis(
                     axe.id,
                     axe.isRight ? 'right' : 'left',
-                    <number>axe.from,
-                    <number>axe.to,
+                    +axe.from,
+                    +axe.to,
                 ));
                 this.addChart(chart.name, datasets, chartAxes);
             } else {
