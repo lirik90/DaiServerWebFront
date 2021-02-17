@@ -31,6 +31,12 @@
   margin: 16px 9px;
 }
 
+.chart_conf .user-chart-select {
+    width: 90%;
+    margin: 0 auto;
+    display: block;
+}
+
 .chart_type {
   display: inline-block;
   margin: 0 auto;

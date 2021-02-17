@@ -80,7 +80,17 @@
         </mat-radio-group>
     </fieldset>
 
-    <angular2-multiselect [data]="itemList"
+    <mat-form-field *ngIf="userChartSelect" class="user-chart-select">
+        <mat-label>Выберите график</mat-label>
+        <mat-select [(ngModel)]="selectedItems[0]"
+                    (selectionChange)="onItemSelect($event.value)"
+                    (ngModelChange)="rebuild()"
+        >
+            <mat-option *ngFor="let item of itemList" [value]="item">{{ item.name }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <angular2-multiselect *ngIf="!userChartSelect" [data]="itemList"
                           [(ngModel)]="selectedItems"
                           [settings]="settings"
                           (onSelect)="onItemSelect($event)"

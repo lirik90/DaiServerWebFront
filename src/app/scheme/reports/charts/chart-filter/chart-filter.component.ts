@@ -79,6 +79,8 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
     paramList: Select_Item_Iface[] = [];
     paramSettings: any = {};
 
+    userChartSelect = false;
+
     private selectedItems_ = [];
     private paramSelected_: Select_Item_Iface[] = [];
 
@@ -200,14 +202,14 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
                         this.selectedItems.push(this.itemList[0]);
                     }
                 }
-                this.settings.text = this.translate.instant('REPORTS.SELECT_CHART');
-                this.settings.singleSelection = true;
-                this.settings.labelKey = 'name';
 
+                this.userChartSelect = true;
                 this.paramList = null;
 
                 break;
             case Chart_Type.CT_DIG_TYPE:
+                this.userChartSelect = false;
+
                 this.itemList = this.schemeService.scheme.dig_type;
                 if (this.itemList.length) {
                     this.selectedItems.push(this.itemList[0]);
@@ -219,6 +221,8 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
                 this.paramSettings.text = this.translate.instant('REPORTS.SELECT_PARAM_TYPE');
                 break;
             case Chart_Type.CT_DEVICE_ITEM:
+                this.userChartSelect = false;
+
                 this.itemList = this.getDevItemList();
                 this.settings.text = this.translate.instant('REPORTS.SELECT_ITEM');
                 this.settings.groupBy = 'category';
