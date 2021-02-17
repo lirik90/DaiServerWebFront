@@ -226,35 +226,6 @@ export class ChartsComponent implements OnDestroy {
             this.params_loaded = true;
 
         if (this.values_loaded && this.params_loaded) {
-            // if (this.is_today)
-            {
-                let item;
-                const x = this.is_today ? new Date() : new Date(this.time_to_);
-                for (const chart of this.charts) {
-                    for (const dataset of chart.data.datasets) {
-                        let y;
-                        if (this.is_today) {
-                            const log = dataset.dev_item ? dataset.dev_item.val : dataset.param;
-                            y = ChartItemComponent.getY(log, dataset.steppedLine);
-                        } else if (dataset.data.length !== 0) {
-                            const last = dataset.data[dataset.data.length - 1];
-                            if (last.x < x)
-                                y = last.y;
-                        }
-
-                        if (y !== undefined && y !== null) {
-                            if (dataset.data.length === 0) {
-                                const x0 = new Date(this.time_from_);
-                                item = {x: x0, y};
-                                dataset.data.push(item);
-                            }
-                            item = {x, y};
-                            dataset.data.push(item);
-                        }
-                    }
-                }
-            }
-
             this.initialized = true;
         }
     }
@@ -521,7 +492,8 @@ export class ChartsComponent implements OnDestroy {
 
         for (const item_id of requested_data.split(',').map(i => parseInt(i, 10))) {
             const [chart, dataset] = this.find_dataset(data_param_name, item_id);
-            if (!dataset || !dataset.data.length) {
+
+            if (!dataset) {
                 continue;
             }
 
@@ -529,7 +501,7 @@ export class ChartsComponent implements OnDestroy {
 
             const log = logs.results.find(log => log.item_id === item_id);
 
-            if (log?.data) {
+            if (log?.data && dataset.data?.length > 0) {
                 let haveDataBefore = false;
                 let haveDataAfter = false;
 
