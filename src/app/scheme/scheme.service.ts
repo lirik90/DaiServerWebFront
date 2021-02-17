@@ -483,8 +483,8 @@ export class SchemeService extends ISchemeService {
             }));
     }
 
-    public postSettings<T>(settingName: string, data: (T | { id: number })[]) {
+    public modify_structure<T>(settingName: string, data: (T | { id: number })[]) {
         const url = `/api/v2/scheme/${this.scheme.id}/structure/${settingName}/`;
-        return this.http.post(url, data);
+        return this.http.patch(url, data);
     }
 }

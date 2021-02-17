@@ -142,7 +142,7 @@ export abstract class ChangeTemplate<T extends { id: number }> {
     }
 
     if (data.length > 0) {
-        this.schemeService.postSettings(this.settingName, data).subscribe(() => {});
+        this.schemeService.modify_structure(this.settingName, data).subscribe(() => {});
     }
   }
 }
