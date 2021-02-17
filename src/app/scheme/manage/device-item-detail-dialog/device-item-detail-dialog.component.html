@@ -1,5 +1,5 @@
-<h2 i18n="@@SCHEME_DIALOGS.DEVICE_ITEM.HEADER">Элемент</h2>
-<form [formGroup]="fg" (ngSubmit)="submit()">
+<h2 i18n="@@SCHEME_DIALOGS.DEVICE_ITEM.HEADER" mat-dialog-title>Элемент</h2>
+<form [formGroup]="fg" (ngSubmit)="submit()" mat-dialog-content>
     <mat-form-field>
         <mat-label i18n="@@SCHEME_DIALOGS.DEVICE_ITEM.NAME">Название</mat-label>
         <input type="text" matInput formControlName="name">
@@ -10,10 +10,14 @@
             <mat-option *ngFor="let type of devItemTypes" [value]="type.id">{{ type.title }}</mat-option>
         </mat-select>
     </mat-form-field>
+    <a class="add-new_link" href="#" (click)="$event.preventDefault();newItemType()"><small i18n="@@SCHEME_DIALOGS.ADD_NEW">Добавить новый(ую)</small></a>
     <mat-form-field>
         <mat-label i18n="@@SCHEME_DIALOGS.DEVICE_ITEM.DEVICE_ID">ID устройства</mat-label>
-        <input type="text" formControlName="device_id" matInput>
+        <mat-select formControlName="device_id">
+            <mat-option *ngFor="let device of devices" [value]="device.id">{{ device.name }}</mat-option>
+        </mat-select>
     </mat-form-field>
+    <a class="add-new_link" href="#" (click)="$event.preventDefault();newDevice()"><small i18n="@@SCHEME_DIALOGS.ADD_NEW">Добавить новый(ую)</small></a>
     <mat-form-field>
         <mat-label i18n="@@SCHEME_DIALOGS.DEVICE_ITEM.EXTRA">Пользовательские параметры</mat-label>
         <input type="text" matInput formControlName="extra">

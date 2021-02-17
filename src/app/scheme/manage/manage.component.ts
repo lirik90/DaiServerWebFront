@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, Inject, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {filter} from 'rxjs/operators';
 
 import { SchemeService } from '../scheme.service';
@@ -21,7 +21,7 @@ import {UIService} from '../../ui.service';
 @Component({
   selector: 'app-manage',
   templateUrl: './manage.component.html',
-  styleUrls: ['../../sections.css', './manage.component.css']
+  styleUrls: ['../../sections.css', './manage.component.css'],
 })
 export class ManageComponent implements OnInit, AfterViewInit {
   schemeName: string;
@@ -150,7 +150,7 @@ export class ManageComponent implements OnInit, AfterViewInit {
 
   newGroup(parentSection: Section) {
     this.dialog
-      .open(DeviceItemGroupDetailDialogComponent, { data: null })
+      .open(DeviceItemGroupDetailDialogComponent, { width: '80%', data: null })
       .afterClosed()
       .subscribe((group?: Device_Item_Group_Details) => {
         if (!group) return;
@@ -161,7 +161,7 @@ export class ManageComponent implements OnInit, AfterViewInit {
 
   newItem(parentGroup: Device_Item_Group) {
     this.dialog
-      .open(DeviceItemDetailDialogComponent, { data: null })
+      .open(DeviceItemDetailDialogComponent, { width: '80%', data: null })
       .afterClosed()
       .subscribe((itemDetails?: Device_Item_Details) => {
         if (!itemDetails) return;
@@ -172,7 +172,7 @@ export class ManageComponent implements OnInit, AfterViewInit {
 
   newSection() {
     this.dialog
-      .open(SectionDetailDialogComponent, { data: null })
+      .open(SectionDetailDialogComponent, { width: '80%', data: null })
       .afterClosed()
       .subscribe((sectionDetails?: Section_Details) => {
         if (!sectionDetails) return;
@@ -183,7 +183,7 @@ export class ManageComponent implements OnInit, AfterViewInit {
 
   editSection(section: Section) {
     this.dialog
-      .open(SectionDetailDialogComponent, { data: section })
+      .open(SectionDetailDialogComponent, { width: '80%', data: section })
       .afterClosed()
       .subscribe((sectionDetails?: Section_Details) => {
         if (!sectionDetails) return;
@@ -194,7 +194,7 @@ export class ManageComponent implements OnInit, AfterViewInit {
 
   editItem(item: Device_Item) {
     this.dialog
-      .open(DeviceItemDetailDialogComponent, { data: item })
+      .open(DeviceItemDetailDialogComponent, { width: '80%', data: item })
       .afterClosed()
       .subscribe((itemDetails?: Device_Item_Details) => {
         if (!itemDetails) return;
@@ -204,7 +204,7 @@ export class ManageComponent implements OnInit, AfterViewInit {
 
   editGroup(group: Device_Item_Group) {
     this.dialog
-      .open(DeviceItemGroupDetailDialogComponent, { data: group })
+      .open(DeviceItemGroupDetailDialogComponent, { width: '80%', data: group })
       .afterClosed()
       .subscribe((groupDetails?: Device_Item_Group_Details) => {
         if (!groupDetails) return;

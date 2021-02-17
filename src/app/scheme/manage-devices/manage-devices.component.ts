@@ -32,10 +32,10 @@ export class ManageDevicesComponent implements OnInit {
     }
 
     editDevice(device: Device) {
-        this.dialog.open(DeviceDetailDialogComponent, { data: device })
+        this.dialog.open(DeviceDetailDialogComponent, { data: device, width: '450px' })
             .afterClosed()
             .subscribe((newDevice: Device) => {
-                // TODO: perform update request
+                // TODO: update list if needed
             });
     }
 
@@ -49,10 +49,10 @@ export class ManageDevicesComponent implements OnInit {
     }
 
     editItem(item: Device_Item) {
-        this.dialog.open(DeviceItemDetailDialogComponent, { data: item })
+        this.dialog.open(DeviceItemDetailDialogComponent, { data: item, width: '450px' })
             .afterClosed()
             .subscribe((updatedItem: Device_Item) => {
-                // TODO: perform update request
+                // TODO: update list if needed
             });
     }
 
@@ -67,21 +67,22 @@ export class ManageDevicesComponent implements OnInit {
 
     newItem(device: Device) {
         this.dialog.open(DeviceItemDetailDialogComponent, {
+            width: '80%',
             data: {
                 device_id: device.id,
-            }
+            },
         })
             .afterClosed()
             .subscribe((newItem: Device_Item) => {
-                // TODO: perform create request
+                // TODO: update list if needed
             });
     }
 
     newDevice() {
-        this.dialog.open(DeviceDetailDialogComponent, {})
+        this.dialog.open(DeviceDetailDialogComponent, { width: '80%' })
             .afterClosed()
             .subscribe((device: Device) => {
-                // TODO: create device.
+                // TODO: update list if needed
             });
     }
 }

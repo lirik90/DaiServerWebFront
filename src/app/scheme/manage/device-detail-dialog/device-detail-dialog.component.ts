@@ -18,6 +18,7 @@ export class DeviceDetailDialogComponent implements OnInit {
         private dialogRef: MatDialogRef<DeviceDetailDialogComponent>,
     ) {
         this.fg = fb.group({
+            id: [null, []],
             name: ['', [Validators.required]],
             plugin_id: [null, []],
             check_interval: [50, [Validators.min(50)]],
@@ -40,6 +41,7 @@ export class DeviceDetailDialogComponent implements OnInit {
     submit() {
         if (this.fg.invalid) return;
 
+        // TODO: make request (create/update)
         this.dialogRef.close(this.fg.value);
     }
 

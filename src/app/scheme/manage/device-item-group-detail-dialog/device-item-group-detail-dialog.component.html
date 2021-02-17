@@ -11,6 +11,7 @@
             <mat-option *ngFor="let groupType of groupTypes" [value]="groupType.id">{{ groupType.title }}</mat-option>
         </mat-select>
     </mat-form-field>
+    <a href="#" (click)="$event.preventDefault();newGroupType()"><small i18n="@@SCHEME_DIALOGS.ADD_NEW">Добавить новый(ую)</small></a>
     <mat-form-field>
         <mat-label i18n="@@SCHEME_DIALOGS.DEVICE_ITEM_GROUP.MODE">Режим автоматизации</mat-label>
         <mat-select formControlName="mode">

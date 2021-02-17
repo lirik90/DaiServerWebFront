@@ -1,8 +1,9 @@
 import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Device_Item_Group, DIG_Mode_Type, DIG_Type} from '../../scheme';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SchemeService} from '../../scheme.service';
+import {DeviceItemGroupTypeDetailDialogComponent} from '../device-item-group-type-detail-dialog/device-item-group-type-detail-dialog.component';
 
 export type Device_Item_Group_Details = Pick<Device_Item_Group, "title" | "type_id" | "mode">;
 
@@ -21,6 +22,7 @@ export class DeviceItemGroupDetailDialogComponent {
         fb: FormBuilder,
         private dialogRef: MatDialogRef<DeviceItemGroupDetailDialogComponent>,
         private schemeService: SchemeService,
+        private dialog: MatDialog,
         @Inject(MAT_DIALOG_DATA) private devItemGroup: Device_Item_Group,
     ) {
         this.groupTypes = this.schemeService.scheme.dig_type;
@@ -40,10 +42,20 @@ export class DeviceItemGroupDetailDialogComponent {
     submit() {
         if (this.fg.invalid) return;
 
+        // TODO: perform request, waiting for MR#40
         this.dialogRef.close(this.fg.value as Device_Item_Group);
     }
 
     cancel() {
         this.dialogRef.close(null);
+    }
+
+    newGroupType() {
+        this.dialog.open(DeviceItemGroupTypeDetailDialogComponent, { width: '80%' })
+            .afterClosed()
+            .subscribe((groupType?: DIG_Type) => {
+                if (!groupType) return;
+                // TODO: update list if needed
+            });
     }
 }

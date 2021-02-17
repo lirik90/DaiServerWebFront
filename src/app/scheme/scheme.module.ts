@@ -41,6 +41,9 @@ import { ElementsComponent } from './elements/elements.component';
 import { ManageDevicesComponent } from './manage-devices/manage-devices.component';
 import { ParamTypeFormComponent } from './manage/param-type-form/param-type-form.component';
 import { DeviceDetailDialogComponent } from './manage/device-detail-dialog/device-detail-dialog.component';
+import { DeviceItemTypeDetailDialogComponent } from './manage/device-item-type-detail-dialog/device-item-type-detail-dialog.component';
+import { DeviceItemGroupTypeDetailDialogComponent } from './manage/device-item-group-type-detail-dialog/device-item-group-type-detail-dialog.component';
+import { SignTypeDetailDialogComponent } from './manage/sign-type-detail-dialog/sign-type-detail-dialog.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -92,6 +95,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ManageDevicesComponent,
     ParamTypeFormComponent,
     DeviceDetailDialogComponent,
+    DeviceItemTypeDetailDialogComponent,
+    DeviceItemGroupTypeDetailDialogComponent,
+    SignTypeDetailDialogComponent,
   ],
   entryComponents: [
       PageReloadDialogComponent,
