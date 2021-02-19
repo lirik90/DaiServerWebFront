@@ -81,7 +81,7 @@
     </fieldset>
 
     <mat-form-field *ngIf="userChartSelect" class="user-chart-select">
-        <mat-label>Выберите график</mat-label>
+        <mat-label i18n="@@REPORTS.SELECT_CHART">Выберите график</mat-label>
         <mat-select [(ngModel)]="selectedItems[0]"
                     (selectionChange)="onItemSelect($event.value)"
                     (ngModelChange)="rebuild()"
