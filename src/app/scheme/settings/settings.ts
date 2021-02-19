@@ -137,7 +137,11 @@ export abstract class ChangeTemplate<T extends { id: number }> {
       if (item.state === ChangeState.Delete) {
           data.push({ id: item.obj.id });
       } else if (item.state === ChangeState.Upsert) {
-          data.push(item.obj);
+          const obj = {...item.obj};
+          for (const n in obj)
+              if (typeof obj[n] === 'object')
+                  delete obj[n];
+          data.push(obj);
       }
     }
 

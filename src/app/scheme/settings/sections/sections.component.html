@@ -33,9 +33,9 @@
     <mat-form-field>
       <input matInput (ngModelChange)="itemChanged()" i18n-placeholder="@@SETTINGS.NAME" placeholder="Имя" [(ngModel)]="sel_item.obj.name"/></mat-form-field>
     <mat-form-field>
-      <input matInput (ngModelChange)="itemChanged()" i18n-placeholder="@@SETTINGS.SECTIONS.DAY" placeholder="День" [(ngModel)]="sel_item.obj.dayStart"/></mat-form-field>
+      <input matInput (ngModelChange)="itemChanged()" i18n-placeholder="@@SETTINGS.SECTIONS.DAY" placeholder="День" [(ngModel)]="sel_item.obj.day_start"/></mat-form-field>
     <mat-form-field>
-      <input matInput (ngModelChange)="itemChanged()" i18n-placeholder="@@SETTINGS.SECTIONS.NIGHT" placeholder="Ночь" [(ngModel)]="sel_item.obj.dayEnd"/></mat-form-field>
+      <input matInput (ngModelChange)="itemChanged()" i18n-placeholder="@@SETTINGS.SECTIONS.NIGHT" placeholder="Ночь" [(ngModel)]="sel_item.obj.day_end"/></mat-form-field>
   </mat-expansion-panel>
   <app-groups *ngIf="!changed && sel_item" [sct]="sel_item.obj"></app-groups>
 </mat-accordion>

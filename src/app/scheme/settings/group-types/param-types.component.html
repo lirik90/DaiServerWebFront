@@ -31,7 +31,7 @@
   <mat-form-field><input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.title" i18n-placeholder="@@SETTINGS.HEADER" placeholder="Заголовок"/></mat-form-field>
   <mat-form-field><input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.description" i18n-placeholder="@@SETTINGS.DESCRIPTION" placeholder="Описание"/></mat-form-field>
   <mat-form-field><input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.parent_id" i18n-placeholder="@@SETTINGS.PARENT" placeholder="Предок"/></mat-form-field>
-  <mat-form-field><mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.type" i18n-placeholder="@@SETTINGS.DATA_TYPE" placeholder="Тип данных">
+  <mat-form-field><mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.value_type" i18n-placeholder="@@SETTINGS.DATA_TYPE" placeholder="Тип данных">
       <mat-option [value]="0">Unknown</mat-option>
       <mat-option [value]="1">Int</mat-option>
       <mat-option [value]="2">Bool</mat-option>
