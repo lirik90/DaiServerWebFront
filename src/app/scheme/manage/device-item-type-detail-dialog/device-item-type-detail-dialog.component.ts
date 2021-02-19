@@ -5,6 +5,7 @@ import {Device_Item_Type, DIG_Type, Register_Type, Save_Algorithm, Save_Timer, S
 import {SchemeService} from '../../scheme.service';
 import {DeviceItemGroupTypeDetailDialogComponent} from '../device-item-group-type-detail-dialog/device-item-group-type-detail-dialog.component';
 import {SignTypeDetailDialogComponent} from '../sign-type-detail-dialog/sign-type-detail-dialog.component';
+import {SettingsService} from '../../settings.service';
 
 @Component({
     selector: 'app-device-item-type-detail-dialog',
@@ -16,7 +17,7 @@ export class DeviceItemTypeDetailDialogComponent {
     signTypes: Sign_Type[];
     registerTypes = this.enumToArray(Register_Type);
     saveAlgos = this.enumToArray(Save_Algorithm);
-    saveTimers: Save_Timer[] = []; // TODO: load from backend, when #40 will be merged
+    saveTimers: Save_Timer[];
     Save_Algorithm = Save_Algorithm;
     groupTypes: DIG_Type[];
 
@@ -26,6 +27,7 @@ export class DeviceItemTypeDetailDialogComponent {
         private dialog: MatDialog,
         @Inject(MAT_DIALOG_DATA) private data: Device_Item_Type,
         private schemeService: SchemeService,
+        private settings: SettingsService,
     ) {
         this.fg = fb.group({
             id: [null, []],
@@ -40,6 +42,7 @@ export class DeviceItemTypeDetailDialogComponent {
 
         this.signTypes = this.schemeService.scheme.sign_type;
         this.groupTypes = this.schemeService.scheme.dig_type;
+        this.settings.getSaveTimers().subscribe(timers => this.saveTimers = timers.results);
 
         this.fg.controls.save_algorithm.valueChanges.subscribe((v) => {
             const control = this.fg.controls.save_timer_id;
@@ -55,8 +58,11 @@ export class DeviceItemTypeDetailDialogComponent {
     }
 
     submit() {
-        // TODO: perform request
-        this.dialogRef.close(); // TODO: return result from request
+        if (this.fg.invalid) return;
+        this.schemeService.modify_structure('dig_type', [{ ...this.fg.value }])
+            .subscribe(() => {
+                this.dialogRef.close(this.fg.value);
+            });
     }
 
     cancel() {

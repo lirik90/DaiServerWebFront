@@ -35,6 +35,7 @@ export class DeviceItemDetailDialogComponent {
             type_id: [null, [Validators.required]],
             extra: [null],
             parent_id: ['', []],
+            group_id: [null, []],
         });
 
         if (this.devItem) {
@@ -45,8 +46,10 @@ export class DeviceItemDetailDialogComponent {
     submit() {
         if (this.fg.invalid) return;
 
-        // TODO: create/update request
-        this.dialogRef.close(this.fg.value);
+        this.schemeService.modify_structure('device_item', [{ ...this.fg.value }])
+            .subscribe(() => {
+                this.dialogRef.close(this.fg.value);
+            });
     }
 
     cancel() {

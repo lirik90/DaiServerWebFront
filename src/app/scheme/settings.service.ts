@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { SchemeService } from '../scheme.service';
-import { Section, Code_Item, Plugin_Type, Save_Timer } from '../scheme';
-import { PaginatorApi } from "../../user";
+import { SchemeService } from './scheme.service';
+import { Section, Code_Item, Plugin_Type, Save_Timer } from './scheme';
+import { PaginatorApi } from "../user";
 
 @Injectable()
 export class SettingsService {

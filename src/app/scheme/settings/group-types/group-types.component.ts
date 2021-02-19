@@ -5,7 +5,7 @@ import { Device_Item_Type, Sign_Type, DIG_Type, DIG_Param_Type, DIG_Status_Type,
 
 import { ChangeInfo, ChangeTemplate } from "../settings";
 
-import { SettingsService } from "../settings.service";
+import { SettingsService } from "../../settings.service";
 
 @Component({
   selector: 'app-group-types',

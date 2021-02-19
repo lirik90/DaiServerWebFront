@@ -6,7 +6,7 @@ import { SchemeService } from '../../scheme.service';
 import { Code_Item } from '../../scheme';
 
 import { ChangeState, ChangeInfo, ChangeTemplate } from '../settings';
-import { SettingsService } from '../settings.service';
+import { SettingsService } from '../../settings.service';
 
 import { WebSockCmd } from '../../control.service';
 import { MatPaginator } from '@angular/material/paginator';

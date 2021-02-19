@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {SchemeService} from '../../scheme.service';
 
 @Component({
     selector: 'app-sign-type-detail-dialog',
@@ -12,6 +13,7 @@ export class SignTypeDetailDialogComponent {
 
     constructor(
         private dialogRef: MatDialogRef<SignTypeDetailDialogComponent>,
+        private schemeService: SchemeService,
         fb: FormBuilder,
     ) {
         this.fg = fb.group({
@@ -22,8 +24,11 @@ export class SignTypeDetailDialogComponent {
 
     submit() {
         if (this.fg.invalid) return;
-        // TODO: perform request
-        this.dialogRef.close(this.fg.value);
+
+        this.schemeService.modify_structure('sign_type', [{ ...this.fg.value }])
+            .subscribe(() => {
+                this.dialogRef.close(this.fg.value);
+            });
     }
 
     cancel() {

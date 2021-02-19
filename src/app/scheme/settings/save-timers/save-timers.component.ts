@@ -4,7 +4,7 @@ import { SchemeService } from "../../scheme.service";
 import { Save_Timer } from "../../scheme";
 
 import { ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
-import { SettingsService } from "../settings.service";
+import { SettingsService } from "../../settings.service";
 
 @Component({
   selector: 'app-save-timers',

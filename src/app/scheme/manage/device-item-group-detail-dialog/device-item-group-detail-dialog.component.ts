@@ -23,7 +23,7 @@ export class DeviceItemGroupDetailDialogComponent {
         private dialogRef: MatDialogRef<DeviceItemGroupDetailDialogComponent>,
         private schemeService: SchemeService,
         private dialog: MatDialog,
-        @Inject(MAT_DIALOG_DATA) private devItemGroup: Device_Item_Group,
+        @Inject(MAT_DIALOG_DATA) private devItemGroup: Partial<Device_Item_Group>,
     ) {
         this.groupTypes = this.schemeService.scheme.dig_type;
         this.groupModes = this.schemeService.scheme.dig_mode_type;
@@ -32,6 +32,7 @@ export class DeviceItemGroupDetailDialogComponent {
             title: ['', [Validators.required]],
             type_id: [null, [Validators.required]],
             mode: [null, [Validators.required]],
+            section_id: [null, []],
         });
 
         if (this.devItemGroup) {
@@ -42,8 +43,11 @@ export class DeviceItemGroupDetailDialogComponent {
     submit() {
         if (this.fg.invalid) return;
 
-        // TODO: perform request, waiting for MR#40
-        this.dialogRef.close(this.fg.value as Device_Item_Group);
+        this.schemeService.modify_structure('group', [{
+            ...this.fg.value,
+        }]).subscribe(() => {
+            this.dialogRef.close(this.fg.value as Device_Item_Group);
+        });
     }
 
     cancel() {

@@ -2,7 +2,7 @@ import { Input, Component, OnInit } from '@angular/core';
 
 import { SchemeService } from "../../scheme.service";
 import { Section, Device_Item_Group, DIG_Type, DIG_Param_Type, DIG_Param } from "../../scheme";
-import { SettingsService } from "../settings.service";
+import { SettingsService } from "../../settings.service";
 import { ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
 
 @Component({

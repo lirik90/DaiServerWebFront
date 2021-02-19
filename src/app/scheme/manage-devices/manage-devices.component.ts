@@ -44,7 +44,10 @@ export class ManageDevicesComponent implements OnInit {
             .subscribe((confirmation: boolean) => {
                 if (!confirmation) return;
 
-                // TODO: perform delete request
+                this.schemeService.modify_structure('device', [{ id: device.id }])
+                    .subscribe(() => {
+                        // TODO: update
+                    });
             });
     }
 
@@ -61,7 +64,10 @@ export class ManageDevicesComponent implements OnInit {
             .subscribe((confirmation) => {
                 if (!confirmation) return;
 
-                // TODO: perform delete request
+                this.schemeService.modify_structure('device_item', [{ id: item.id }])
+                    .subscribe(() => {
+                        // TODO: update
+                    });
             });
     }
 

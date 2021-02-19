@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from "../../material.module";
 
 import { SettingsRoutingModule } from './settings-routing.module';
-import { SettingsService } from './settings.service';
 
 import { SettingsComponent, Scheme_Copy_Dialog } from './settings.component';
 import { DevicesComponent, DeviceItemsComponent } from './devices/devices.component';
@@ -54,7 +53,6 @@ import { AceEditorModule } from 'ng2-ace-editor';
   providers: [
 //    SchemeLoadGuard,
 //    ControlService,
-    SettingsService,
       MetadataService, CompleterService
   ]
 })
