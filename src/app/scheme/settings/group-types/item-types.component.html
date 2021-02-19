@@ -29,7 +29,7 @@
   </mat-expansion-panel-header>
   <mat-form-field><input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.name" i18n-placeholder="@@SETTINGS.NAME" placeholder="Имя" /></mat-form-field>
   <mat-form-field><input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.title" i18n-placeholder="@@SETTINGS.HEADER" placeholder="Заголовок" /></mat-form-field>
-  <mat-form-field><mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.registerType" i18n-placeholder="@@SETTINGS.DATA_TYPE" placeholder="Тип данных">
+  <mat-form-field><mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.register_type" i18n-placeholder="@@SETTINGS.DATA_TYPE" placeholder="Тип данных">
       <mat-option><span i18n="@@CONTROL.NO">Нет</span></mat-option>
       <mat-option [value]="1">DiscreteInputs</mat-option>
       <mat-option [value]="2">Coils</mat-option>
@@ -44,8 +44,7 @@
       <mat-option *ngFor="let sign of signTypes" [value]="sign.id">{{sign.name}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-checkbox (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.isRaw" i18n="@@SETTINGS.ITEM_TYPES.NEED_NORMALIZE">Требует нормализации</mat-checkbox>
-  <mat-form-field><mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.saveAlgorithm" i18n-placeholder="@@SETTINGS.ALG_SAVE.TITLE" placeholder="Алгоритм сохранения изменений">
+  <mat-form-field><mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.save_algorithm" i18n-placeholder="@@SETTINGS.ALG_SAVE.TITLE" placeholder="Алгоритм сохранения изменений">
       <mat-option [value]="1" i18n="@@SETTINGS.ALG_SAVE.NOT_SAVE">Не сохранять автоматически</mat-option>
       <mat-option [value]="2" i18n="@@SETTINGS.ALG_SAVE.SAVE_NOW">Сохранять немедленно</mat-option>
       <mat-option [value]="3" i18n="@@SETTINGS.ALG_SAVE.SAVE_LATER">Сохранять по таймеру</mat-option>

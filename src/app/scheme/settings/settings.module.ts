@@ -14,7 +14,7 @@ import { GroupTypesComponent, ItemTypesComponent, ParamTypesComponent, StatusesC
 import { DIG_Status_Category_Component } from './dig-status-category/dig-status-category.component';
 import { SignTypesComponent } from './sign-types/sign-types.component';
 
-import { CodesComponent } from './codes/codes.component';
+import { Code_Item_Component } from './codes/codes.component';
 import { EditorComponent } from './codes/editor/editor.component';
 import { CompleterService } from './codes/services/completer.service';
 import { MetadataService } from './codes/services/metadata.service';
@@ -42,7 +42,7 @@ import { AceEditorModule } from 'ng2-ace-editor';
     GroupTypesComponent, ItemTypesComponent, ParamTypesComponent, StatusesComponent ,
     DIG_Status_Category_Component,
     SignTypesComponent,
-    CodesComponent,
+    Code_Item_Component,
     EditorComponent,
     PluginTypesComponent,
     SaveTimersComponent,

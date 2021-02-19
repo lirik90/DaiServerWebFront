@@ -1,6 +1,6 @@
 import {Observable} from 'rxjs';
 
-export class Codes { // Скрипт автоматизации
+export class Code_Item { // Скрипт автоматизации
   id: number;   // ID
   name: string; // Имя
   text: string; // Скрипт

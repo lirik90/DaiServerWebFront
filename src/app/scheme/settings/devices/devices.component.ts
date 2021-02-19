@@ -2,9 +2,8 @@ import {Component, OnInit, Input, OnChanges} from '@angular/core';
 
 import {Device, Device_Item, Device_Item_Type, Section} from '../../scheme';
 import {SchemeService} from '../../scheme.service';
-import {ByteTools, WebSocketBytesService} from '../../../web-socket.service';
 
-import {StructType, ChangeTemplate} from '../settings';
+import {ChangeTemplate} from '../settings';
 
 @Component({
   selector: 'app-devices',
@@ -13,10 +12,9 @@ import {StructType, ChangeTemplate} from '../settings';
 })
 export class DevicesComponent extends ChangeTemplate<Device> implements OnInit {
   constructor(
-    wsbService: WebSocketBytesService,
     schemeService: SchemeService,
   ) {
-    super(StructType.Devices, wsbService, schemeService, Device);
+    super(schemeService, Device, 'device');
   }
 
   getObjects(): Device[] {
@@ -31,24 +29,6 @@ export class DevicesComponent extends ChangeTemplate<Device> implements OnInit {
   initItem(obj: Device): void {
     obj.extra = null;
     obj.check_interval = 0;
-  }
-
-  saveObject(obj: Device): Uint8Array {
-    const name = ByteTools.saveQString(obj.name);
-    const extra = ByteTools.saveQVariantList(obj.extra ? obj.extra.trim().split(',') : []);
-    const view = new Uint8Array(12 + name.length + extra.length);
-    let pos = 0;
-    ByteTools.saveInt32(obj.id, view, pos);
-    pos += 4;
-    view.set(name, pos);
-    pos += name.length;
-    view.set(extra, pos);
-    pos += extra.length;
-    ByteTools.saveInt32(obj.plugin_id, view, pos);
-    pos += 4;
-    ByteTools.saveInt32(obj.check_interval, view, pos);
-    // pos += 4;
-    return view;
   }
 
   parse_extra(): void {
@@ -73,10 +53,9 @@ export class DeviceItemsComponent extends ChangeTemplate<Device_Item> implements
   sections: Section[];
 
   constructor(
-    wsbService: WebSocketBytesService,
     schemeService: SchemeService,
   ) {
-    super(StructType.DeviceItems, wsbService, schemeService, Device_Item);
+    super(schemeService, Device_Item, 'device_item');
   }
 
   getObjects(): Device_Item[] {
@@ -127,28 +106,6 @@ export class DeviceItemsComponent extends ChangeTemplate<Device_Item> implements
     obj.device_id = this.dev.id;
     obj.type_id = 0;
     obj.extra = null;
-  }
-
-  saveObject(obj: Device_Item): Uint8Array {
-    const name = ByteTools.saveQString(obj.name);
-    const extra = ByteTools.saveQVariantList(obj.extra ? obj.extra.trim().split(',') : []);
-    const view = new Uint8Array(20 + name.length + extra.length);
-    let pos = 0;
-    ByteTools.saveInt32(obj.id, view);
-    pos += 4;
-    view.set(name, pos);
-    pos += name.length;
-    ByteTools.saveInt32(obj.type_id, view, pos);
-    pos += 4;
-    view.set(extra, pos);
-    pos += extra.length;
-    ByteTools.saveInt32(obj.parent_id, view, pos);
-    pos += 4;
-    ByteTools.saveInt32(obj.device_id, view, pos);
-    pos += 4;
-    ByteTools.saveInt32(obj.group_id, view, pos);
-    pos += 4;
-    return view;
   }
 
   parse_extra(): void {

@@ -41,6 +41,7 @@
   </mat-form-field>
   <mat-form-field>
     <mat-select [(ngModel)]="sel_item.obj.type_id" i18n-placeholder="@@SETTINGS.TYPE" placeholder="Тип" (ngModelChange)="typeChanged()">
+      <mat-option>-- <span i18n-placeholder="@@CONTROL.NO">Нет</span> --</mat-option>
       <mat-option *ngFor="let type of itemtypes" [value]="type.id">{{type.title}}</mat-option>
     </mat-select>
   </mat-form-field>
@@ -50,7 +51,7 @@
       <mat-optgroup *ngFor="let sct of sections" [label]="sct.name">
         <ng-container *ngFor="let grp of sct.groups">
 
-          <mat-option *ngIf="sel_item.obj.type_id == 0 || sel_item.obj.type.groupType_id == grp.type_id" [value]="grp.id">{{grp.title ? grp.title : grp.type.title}}</mat-option>
+          <mat-option *ngIf="!sel_item.obj.type_id || sel_item.obj.type.group_type_id == grp.type_id" [value]="grp.id">{{grp.title ? grp.title : grp.type.title}}</mat-option>
         </ng-container>
       </mat-optgroup>
     </mat-select>

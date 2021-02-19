@@ -1,30 +1,38 @@
-import {WebSockCmd} from '../control.service';
-import {ByteTools, WebSocketBytesService} from '../../web-socket.service';
 import {SchemeService} from '../scheme.service';
 
-export enum StructType {
-  Unknown,
-  Devices,
-  PluginType,
-  DeviceItems,
-  DeviceItemTypes,
-  SaveTimers,
-  Sections,
-  Groups,
-  GroupTypes,
-  GroupModeTypes,
-  GroupParamTypes,
-  GroupStatusInfo,
-  DIG_STATUS_CATEGORY,
-  Group_Param,
-  Signs,
-  Scripts,
+export enum Structure_Type {
+    ST_UNKNOWN,
+    ST_DEVICE,
+    ST_PLUGIN_TYPE,
+    ST_DEVICE_ITEM,
+    ST_DEVICE_ITEM_TYPE,
+    ST_SAVE_TIMER,
+    ST_SECTION,
+    ST_DEVICE_ITEM_GROUP,
+    ST_DIG_TYPE,
+    ST_DIG_MODE_TYPE,
+    ST_DIG_PARAM_TYPE,
+    ST_DIG_STATUS_TYPE,
+    ST_DIG_STATUS_CATEGORY,
+    ST_DIG_PARAM,
+    ST_SIGN_TYPE,
+    ST_CODE_ITEM,
+    ST_TRANSLATION,
+    ST_NODE,
+    ST_DISABLED_PARAM,
+    ST_DISABLED_STATUS,
+    ST_CHART,
+    ST_CHART_ITEM,
+    ST_VALUE_VIEW,
+    ST_AUTH_GROUP,
+    ST_AUTH_GROUP_PERMISSION,
+    ST_USER,
+    ST_USER_GROUP,
 
   // Часто изменяемые
-  DeviceItemValues,
-  GroupMode,
-  GroupStatus,
-  Group_Param_Value,
+    ST_DEVICE_ITEM_VALUE,
+    ST_DIG_MODE,
+    ST_DIG_PARAM_VALUE,
 }
 
 export enum ChangeState {
@@ -38,7 +46,7 @@ export interface ChangeInfo<T> {
   obj: T;
 }
 
-export abstract class ChangeTemplate<T> {
+export abstract class ChangeTemplate<T extends { id: number }> {
   changeState = ChangeState;
   changed: boolean;
 
@@ -46,10 +54,10 @@ export abstract class ChangeTemplate<T> {
   sel_item: ChangeInfo<T>;
 
   constructor(
-    private cmd: number,
-    protected wsbService: WebSocketBytesService,
     public schemeService: SchemeService,
-    private itemType: new () => T) {
+    private itemType: new () => T,
+    private settingName: string,
+  ) {
   }
 
   abstract getObjects(): T[];
@@ -83,22 +91,10 @@ export abstract class ChangeTemplate<T> {
     if (evnt !== undefined) {
       evnt.stopPropagation();
     }
-    let data = this.getChangedData();
-    this.wsbService.send(WebSockCmd.WS_STRUCT_MODIFY, this.schemeService.scheme.id, data);
+    this.saveSettings();
+
     this.items = [];
     this.sel_item = null;
-  }
-
-  // TODO: rename and refactor. save2 is for code saving
-  save2(evnt: any = undefined): void {
-    if (evnt !== undefined) {
-      evnt.stopPropagation();
-    }
-    let data = this.getChangedData();
-    this.wsbService.send(WebSockCmd.WS_STRUCT_MODIFY, this.schemeService.scheme.id, data);
-
-    this.changed = false;
-    this.sel_item.state = ChangeState.NoChange;
   }
 
   cancel(evnt: any = undefined): void {
@@ -135,56 +131,22 @@ export abstract class ChangeTemplate<T> {
     // Dialog
   }
 
-  abstract saveObject(obj: T): Uint8Array;
-
-  getChangedData(): Uint8Array {
-    let data;
-    let updateSize = 0;
-    let insertSize = 0;
-    let updateList = [];
-    let insertList = [];
-    let deleteList = [];
+  saveSettings(): void {
+    let data: (T | { id: number })[] = [];
     for (const item of this.items) {
       if (item.state === ChangeState.Delete) {
-        deleteList.push((<any>item.obj).id);
+          data.push({ id: item.obj.id });
       } else if (item.state === ChangeState.Upsert) {
-        data = this.saveObject(item.obj);
-
-        if ((<any>item.obj).id > 0) {
-          updateSize += data.length;
-          updateList.push(data);
-        } else {
-          insertSize += data.length;
-          insertList.push(data);
-        }
+          const obj = {...item.obj};
+          for (const n in obj)
+              if (typeof obj[n] === 'object')
+                  delete obj[n];
+          data.push(obj);
       }
     }
 
-    let view = new Uint8Array(13 + updateSize + insertSize + (deleteList.length * 4));
-    view[0] = this.cmd;
-
-    let pos = 1;
-    ByteTools.saveInt32(updateList.length, view, pos);
-    pos += 4;
-    for (const data of updateList) {
-      view.set(data, pos);
-      pos += data.length;
+    if (data.length > 0) {
+        this.schemeService.modify_structure(this.settingName, data).subscribe(() => {});
     }
-
-    ByteTools.saveInt32(insertList.length, view, pos);
-    pos += 4;
-    for (const data of insertList) {
-      view.set(data, pos);
-      pos += data.length;
-    }
-
-    ByteTools.saveInt32(deleteList.length, view, pos);
-    pos += 4;
-    for (const id of deleteList) {
-      ByteTools.saveInt32(id, view, pos);
-      pos += 4;
-    }
-
-    return view;
   }
 }

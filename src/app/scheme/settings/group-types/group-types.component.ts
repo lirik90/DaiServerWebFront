@@ -1,11 +1,9 @@
 import { Component, OnInit, Input, OnChanges, Directive } from '@angular/core';
 
 import { SchemeService } from "../../scheme.service";
-import { Device_Item_Type, Sign_Type, DIG_Type, DIG_Param_Type, DIG_Status_Type, Codes, Save_Timer } from "../../scheme";
+import { Device_Item_Type, Sign_Type, DIG_Type, DIG_Param_Type, DIG_Status_Type, Save_Timer } from "../../scheme";
 
-import { ByteTools, WebSocketBytesService } from "../../../web-socket.service";
-
-import { StructType, ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
+import { ChangeInfo, ChangeTemplate } from "../settings";
 
 import { SettingsService } from "../settings.service";
 
@@ -16,15 +14,11 @@ import { SettingsService } from "../settings.service";
 })
 export class GroupTypesComponent extends ChangeTemplate<DIG_Type> implements OnInit
 {
-
-  codes: Codes[];
-
   constructor(
-    wsbService: WebSocketBytesService,
     schemeService: SchemeService,
     private settingsService: SettingsService,
   ) {
-    super(StructType.GroupTypes, wsbService, schemeService, DIG_Type);
+    super(schemeService, DIG_Type, 'dig_type');
   }
 
   getObjects(): DIG_Type[] {
@@ -32,25 +26,7 @@ export class GroupTypesComponent extends ChangeTemplate<DIG_Type> implements OnI
   }
 
   ngOnInit() {
-    //this.fillItems();
-    this.settingsService.getCodes().subscribe(codes => {
-      this.codes = codes;
-      this.fillItems();
-    });
-  }
-
-
-
-  saveObject(obj: DIG_Type): Uint8Array {
-    let name = ByteTools.saveQString(obj.name);
-    let title = ByteTools.saveQString(obj.title);
-    let desc = ByteTools.saveQString(obj.description);
-    let view = new Uint8Array(8 + name.length + title.length + desc.length);
-    ByteTools.saveInt32(obj.id, view);
-    view.set(name, 4);
-    view.set(title, 4 + name.length);
-    view.set(desc, 4 + name.length + title.length);
-    return view;
+    this.fillItems();
   }
 }
 
@@ -66,11 +42,10 @@ export class ItemTypesComponent extends ChangeTemplate<Device_Item_Type> impleme
   save_timers: Save_Timer[];
 
   constructor(
-    wsbService: WebSocketBytesService,
     schemeService: SchemeService,
     private settingsService: SettingsService
   ) {
-    super(StructType.DeviceItemTypes, wsbService, schemeService, Device_Item_Type);
+    super(schemeService, Device_Item_Type, 'device_item_type');
   }
 
   ngOnChanges() {
@@ -94,22 +69,6 @@ export class ItemTypesComponent extends ChangeTemplate<Device_Item_Type> impleme
     obj.title = '';
     obj.group_type_id = this.grouptype.id;
   }
-
-  saveObject(obj: Device_Item_Type): Uint8Array {
-    let name = ByteTools.saveQString(obj.name);
-    let title = ByteTools.saveQString(obj.title);
-    let view = new Uint8Array(19 + name.length + title.length);
-    let pos = 0;
-    ByteTools.saveInt32(obj.id, view); pos += 4;
-    view.set(name, pos); pos += name.length;
-    view.set(title, pos); pos += title.length;
-    ByteTools.saveInt32(obj.group_type_id, view, pos); pos += 4;
-    ByteTools.saveInt32(obj.sign_id, view, pos); pos += 4;
-    view[pos] = obj.register_type; pos += 1;
-    view[pos] = obj.save_algorithm; pos += 1;
-    ByteTools.saveInt32(obj.save_timer_id, view, pos); pos += 4;
-    return view;
-  }
 }
 
 @Component({
@@ -121,10 +80,9 @@ export class ParamTypesComponent extends ChangeTemplate<DIG_Param_Type> implemen
   @Input() grouptype: DIG_Type;
 
   constructor(
-    wsbService: WebSocketBytesService,
     schemeService: SchemeService,
   ) {
-    super(StructType.GroupParamTypes, wsbService, schemeService, DIG_Param_Type);
+    super(schemeService, DIG_Param_Type, 'dig_param_type');
   }
 
   getObjects(): DIG_Param_Type[] {
@@ -140,22 +98,6 @@ export class ParamTypesComponent extends ChangeTemplate<DIG_Param_Type> implemen
     obj.title = '';
     obj.group_type_id = this.grouptype.id;
   }
-
-  saveObject(obj: DIG_Param_Type): Uint8Array {
-    let name = ByteTools.saveQString(obj.name);
-    let title = ByteTools.saveQString(obj.title);
-    let desc = ByteTools.saveQString(obj.description);
-    let view = new Uint8Array(13 + name.length + title.length + desc.length);
-    let pos = 0;
-    ByteTools.saveInt32(obj.id, view); pos += 4;
-    view.set(name, pos); pos += name.length;
-    view.set(title, pos); pos += title.length;
-    view.set(desc, pos); pos += desc.length;
-    view[pos] = obj.value_type; pos += 1;
-    ByteTools.saveInt32(obj.group_type_id, view, pos); pos += 4;
-    ByteTools.saveInt32(obj.parent_id, view, pos); pos += 4;
-    return view;
-  }
 }
 
 @Component({
@@ -167,10 +109,9 @@ export class StatusesComponent extends ChangeTemplate<DIG_Status_Type> implement
   @Input() grouptype: DIG_Type;
 
   constructor(
-    wsbService: WebSocketBytesService,
     schemeService: SchemeService,
   ) {
-    super(StructType.GroupStatusInfo, wsbService, schemeService, DIG_Status_Type);
+    super(schemeService, DIG_Status_Type, 'dig_status_type');
   }
 
   getObjects(): DIG_Status_Type[] {
@@ -184,20 +125,6 @@ export class StatusesComponent extends ChangeTemplate<DIG_Status_Type> implement
   initItem(obj: DIG_Status_Type): void {
     obj.name = '';
     obj.group_type_id = this.grouptype.id;
-  }
-
-  saveObject(obj: DIG_Status_Type): Uint8Array {
-    let name = ByteTools.saveQString(obj.name);
-    let title = ByteTools.saveQString(obj.text);
-    let view = new Uint8Array(13 + name.length + title.length);
-    let pos = 0;
-    ByteTools.saveInt32(obj.id, view); pos += 4;
-    view.set(name, pos); pos += name.length;
-    view.set(title, pos); pos += title.length;
-    ByteTools.saveInt32(obj.category_id, view, pos); pos += 4;
-    ByteTools.saveInt32(obj.group_type_id, view, pos); pos += 4;
-    view[pos] = obj.inform ? 1 : 0; pos += 1;
-    return view;
   }
 }
 

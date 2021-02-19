@@ -486,4 +486,9 @@ export class SchemeService extends ISchemeService {
                 return of(undefined);
             }));
     }
+
+    public modify_structure<T>(settingName: string, data: (T | { id: number })[]) {
+        const url = `/api/v2/scheme/${this.scheme.id}/structure/${settingName}/`;
+        return this.http.patch(url, data);
+    }
 }
