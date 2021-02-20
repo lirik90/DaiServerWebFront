@@ -133,6 +133,8 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.sidebarActionBroadcast$.unsubscribe();
+        this.sidebar.resetSidebar();
+        this.sidebar.resetContent();
     }
 
     chartFilterUpdated(chartFilter: ChartFilter) {

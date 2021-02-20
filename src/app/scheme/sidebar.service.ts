@@ -17,14 +17,19 @@ export interface SidebarAction<T> {
 
 @Injectable()
 export class SidebarService {
-    private _sidebarEvents: BehaviorSubject<SidebarAction<any>> = new BehaviorSubject({
+    private static readonly defaultInitAction = {
         type: 'init',
         data: null,
-    });
-    private _contentActions: BehaviorSubject<SidebarAction<any>> = new BehaviorSubject({
-        type: 'init',
-        data: null,
-    });
+    };
+
+    private _sidebarEvents: BehaviorSubject<SidebarAction<any>>;
+    private _contentActions: BehaviorSubject<SidebarAction<any>>;
+
+    constructor() {
+        this.resetContent();
+        this.resetSidebar();
+    }
+
 
     getSidebarActionBroadcast(): Observable<SidebarAction<any>> {
         return this._sidebarEvents.asObservable();
@@ -40,5 +45,13 @@ export class SidebarService {
 
     performActionToSidebar<T>(action: SidebarAction<T>) {
         this._sidebarEvents.next(action);
+    }
+
+    resetSidebar(): void {
+        this._sidebarEvents = new BehaviorSubject(SidebarService.defaultInitAction);
+    }
+
+    resetContent(): void {
+        this._contentActions = new BehaviorSubject(SidebarService.defaultInitAction);
     }
 }
