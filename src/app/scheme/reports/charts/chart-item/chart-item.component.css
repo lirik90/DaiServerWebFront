@@ -1,30 +1,11 @@
 .chart-wrapper {
     width: 99%;
+    height: 99%;
     margin: 0 auto;
 }
 
-.about a {
-    display: inline-block;
-    float: right;
-    border: 1px solid;
-    border-radius: 3px;
-    margin-top: 8px;
-    margin-right: 8px;
-    padding: 0 3px 1px 2px;
-    background-color: #dcc999;
-    color: #000;
-    font-size: 13px;
-}
-
-.about a:hover {
-    background-color: #000;
-    color: #dcc999;
-    cursor: pointer;
-}
-
-.about > h2 {
-  margin: 4px;
-  display: inline-block;
+.chart-wrapper chart {
+    height: 100%;
 }
 
 .progress-bar-container {

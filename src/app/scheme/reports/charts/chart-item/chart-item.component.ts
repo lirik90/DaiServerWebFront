@@ -101,9 +101,9 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         },
         animation: { duration: 0 },
         responsive: true,
+        maintainAspectRatio: false,
         responsiveAnimationDuration: 0,
         legend: { display: false },
-        //  maintainAspectRatio: false,
         tooltips: {
             mode: 'nearest',
             intersect: false,
