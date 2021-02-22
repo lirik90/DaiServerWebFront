@@ -1,14 +1,3 @@
-<div class="about">
-    <h2>{{chartInfo.name}}</h2>
-
-    <a (click)="random_color()">Random color</a>
-    <div class="legend">
-      <div class="legend__item" *ngFor="let dataset of chartInfo.data.datasets">
-        <div class="legend__item-color" [style.background-color]="dataset.borderColor" (click)="openColorPicker(chartInfo, dataset, chart_obj)" ></div>
-        <div class="legend__item-label" [style.text-decoration]="dataset.hidden ? 'line-through' : 'inherit'" (click)="toggleDatasetVisibility(dataset)">{{ dataset.label }}</div>
-      </div>
-    </div>
-</div>
 <div class="progress-bar-container" [class.show]="showProgressBar">
     <mat-progress-bar [mode]="progressBarMode" [color]="progressBarColor" [value]="progressBarValue"></mat-progress-bar>
 </div>

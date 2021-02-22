@@ -14,17 +14,16 @@ import {
     SimpleChanges,
     ViewChild
 } from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
+
 import {ProgressBarMode} from '@angular/material/progress-bar/progress-bar';
 import {ThemePalette} from '@angular/material/core/common-behaviors/color';
 import {MatSnackBar} from '@angular/material/snack-bar';
-
 import {BaseChartDirective} from 'ng2-charts';
 
 import {Paginator_Chart_Value, SchemeService} from '../../../scheme.service';
 import {Scheme_Group_Member} from '../../../../user';
-import {ColorPickerDialog, Hsl} from '../color-picker-dialog/color-picker-dialog';
-import {Chart_Info_Interface, Chart_Type, ZoomInfo} from '../chart-types';
+import {Hsl} from '../color-picker-dialog/color-picker-dialog';
+import {BuiltChartParams, Chart_Info_Interface, Chart_Type, ZoomInfo} from '../chart-types';
 
 @Component({
     selector: 'app-chart-item',
@@ -32,6 +31,23 @@ import {Chart_Info_Interface, Chart_Type, ZoomInfo} from '../chart-types';
     styleUrls: ['./chart-item.component.css']
 })
 export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
+    private readonly defaultYAxes_: any = [{
+        id: 'A',
+        type: 'linear',
+        position: 'left',
+    }, {
+        id: 'B',
+        type: 'linear',
+        position: 'right',
+        ticks: {
+            max: 2,
+            min: -1,
+            stepSize: 1,
+            suggestedMin: 0,
+            suggestedMax: 1
+        }
+    }];
+
     private _chartInfo: Chart_Info_Interface;
     private _differ: KeyValueDiffer<number, any>;
     private _datasetsDiffers: { [key: string]: KeyValueDiffer<any, any> } = {};
@@ -59,13 +75,23 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
     @Input() viewportMin: number;
     @Input() viewportMax: number;
 
+    @Input() yAxes: any[];
+
     @ViewChild('chart_obj') chart: BaseChartDirective;
     @Output() rangeChange: EventEmitter<ZoomInfo> = new EventEmitter();
+    @Output() axeChange: EventEmitter<BuiltChartParams> = new EventEmitter();
+    @Output() built: EventEmitter<BuiltChartParams> = new EventEmitter();
 
     update(): void
     {
-        this.zone.run(() =>
-        this.chart.chart.update());
+        if (!this.chart || !this.chart.chart) return;
+
+        this.zone.run(() => this.chart.chart.update());
+
+        this.built.emit({
+            axes: (<any>this.chart.chart).boxes.filter(box => box.id && box.id.length === 1),
+            datasets: (<any>this.chart.data).datasets,
+        });
     }
 
     options = {
@@ -75,9 +101,9 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         },
         animation: { duration: 0 },
         responsive: true,
+        maintainAspectRatio: false,
         responsiveAnimationDuration: 0,
         legend: { display: false },
-        //  maintainAspectRatio: false,
         tooltips: {
             mode: 'nearest',
             intersect: false,
@@ -118,22 +144,7 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
                     scale.height = 40;
                 }
             }],
-            yAxes: [{
-                id: 'A',
-                type: 'linear',
-                position: 'left',
-            }, {
-                id: 'B',
-                type: 'linear',
-                position: 'right',
-                ticks: {
-                    max: 2,
-                    min: -1,
-                    stepSize: 1,
-                    suggestedMin: 0,
-                    suggestedMax: 1
-                }
-            }]
+            yAxes: this.defaultYAxes_,
         },
         plugins: {
             zoom: {
@@ -158,7 +169,6 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
 
     constructor(
         private schemeService: SchemeService,
-        private dialog: MatDialog,
         private differs: KeyValueDiffers,
         private zone: NgZone,
         private snackBar: MatSnackBar,
@@ -170,6 +180,11 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         if (this.chartInfo.charts_type === Chart_Type.CT_DIG_TYPE) {
             this.setupYAxisScale(this.leftYAxisLsKey, 0);
             this.setupYAxisScale(this.rightYAxisLsKey, 1);
+        } else {
+            this.options.scales.yAxes = this.yAxes;
+            if (!this.options.scales.yAxes?.length) {
+                this.options.scales.yAxes = this.defaultYAxes_;
+            }
         }
 
         this.schemeService.getMembers().subscribe(members => this.members = members.results);
@@ -289,7 +304,7 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
             }
         }
 
-        this.chart.chart.update();
+        this.update();
     }
 
     addDevItemValues(logs: Paginator_Chart_Value, additional = false): void
@@ -300,12 +315,6 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
     addParamValues(params: Paginator_Chart_Value, additional = false): void
     {
         this.addData(params, 'param', additional);
-    }
-
-    random_color(): void {
-        for (const dataset of (<any>this.chart.data).datasets)
-            this.setDataColor(dataset, { h: Math.round(Math.random() * 360), s: 100, l: 35 });
-        this.chart.chart.update();
     }
 
     setDataColor(dataset: any, hsl: Hsl): void
@@ -325,6 +334,11 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         if (this.chartInfo.charts_type === Chart_Type.CT_DIG_TYPE) {
             this.storeScaleParamsToLocalStorage();
         }
+
+        this.axeChange.emit({
+            axes: (<any>this.chart.chart).boxes.filter(box => box.id && box.id.length === 1),
+            datasets: (<any>this.chart.data).datasets,
+        });
     }
 
     onLabel(item, data): string {
@@ -354,36 +368,16 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         return dataset.label + ': ' + text;
     }
 
-    openColorPicker(chart: Chart_Info_Interface, dataset: any, chart_obj: any): void {
-        const dialogRef = this.dialog.open(ColorPickerDialog, {
-            width: '450px',
-            data: {chart, dataset, chart_obj}
-        });
-
-        dialogRef.afterClosed().subscribe(hsl => {
-            if (hsl !== undefined && hsl !== null)
-            {
-                this.setDataColor(dataset, hsl);
-                this.chart.chart.update();
-            }
-        });
-    }
-
-    toggleDatasetVisibility(dataset: any): void {
-        dataset.hidden = !dataset.hidden;
-        this.chart.chart.update();
-    }
-
     setViewportBounds(start: Date | number, end: Date | number, forceUpdate = true) {
         const ticks = this.options.scales.xAxes[0].ticks;
         ticks.min = typeof start === 'number' ? new Date(start) : start;
         ticks.max = typeof end === 'number' ? new Date(end) : end;
 
-        forceUpdate && this.chart.chart.update();
+        forceUpdate && this.update();
     }
 
     private applyDatasetChanges(changes?: KeyValueChanges<string, any>) {
-        this.chart?.chart.update();
+        this.update();
     }
 
     startLoading() {

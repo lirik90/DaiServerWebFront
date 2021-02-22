@@ -1,10 +1,11 @@
 <ng-container *ngIf="initialized">
-<!--    <app-chart-filter [charts]="charts" [chart_filter]="chartFilter"-->
-<!--                      (paramsChange)="initCharts($event)"></app-chart-filter>-->
     <app-chart-item *ngFor="let chart of charts"
                     [chartInfo]="chart"
                     [viewportMin]="time_from_"
                     [viewportMax]="time_to_"
+                    [yAxes]="chart.axes"
+                    (axeChange)="onChartAxeChange(chart, $event)"
+                    (built)="onChartBuilt(chart, $event)"
                     (rangeChange)="chartZoom(chart, $event)"></app-chart-item>
 </ng-container>
 <ng-container *ngIf="!initialized">

@@ -317,7 +317,6 @@ export class SchemeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     onRouterOutletActivate(component: Component): void
     {
-        console.log('hello', component);
         this.active_route_component_ = component;
         this.redrawSidebar_();
     }

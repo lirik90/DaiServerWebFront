@@ -399,7 +399,7 @@ export class SchemeService extends ISchemeService {
     }
 
     del_chart(chart: Chart): Observable<boolean> {
-        const url = `/api/v2/scheme/${this.scheme.id}/chart/${chart.id}/`;
+        const url = `/api/v2/scheme/${this.scheme.parent_id || this.scheme.id}/chart/${chart.id}/`;
         return this.http.delete<any>(url).pipe(
             switchMap(resp => of(resp.result)),
             catchError((err: any): Observable<boolean> =>
@@ -410,7 +410,7 @@ export class SchemeService extends ISchemeService {
     }
 
     save_chart(chart: Chart): Observable<Chart> {
-        const url = `/api/v2/scheme/${this.scheme.id}/chart/`;
+        const url = `/api/v2/scheme/${this.scheme.parent_id || this.scheme.id}/chart/`;
         return this.http.put<any>(url, chart).catch((err: HttpErrorResponse) => {
             alert(err.error + '\n' + err.message);
             return of(null as Chart);

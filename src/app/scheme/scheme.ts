@@ -222,10 +222,23 @@ export class DIG_Mode_Type {
   group_type_id: number;
 }
 
+export interface Axis_Params {
+    id: string;
+
+    isRight: boolean;
+    from: number | string;
+    to: number | string;
+    order: number | string;
+}
+
 export class Chart_Item {
-    color: string;
     item_id: number;
     param_id: number;
+
+    extra?: {
+        axis_params?: Omit<Axis_Params, "id">
+        color: string;
+    };
 }
 
 export class Chart {
