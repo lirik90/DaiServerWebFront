@@ -6,6 +6,7 @@ import {SchemeService} from '../../scheme.service';
 import {DeviceItemGroupTypeDetailDialogComponent} from '../device-item-group-type-detail-dialog/device-item-group-type-detail-dialog.component';
 import {SignTypeDetailDialogComponent} from '../sign-type-detail-dialog/sign-type-detail-dialog.component';
 import {SettingsService} from '../../settings.service';
+import {Structure_Type} from '../../settings/settings';
 
 @Component({
     selector: 'app-device-item-type-detail-dialog',
@@ -59,7 +60,7 @@ export class DeviceItemTypeDetailDialogComponent {
 
     submit() {
         if (this.fg.invalid) return;
-        this.schemeService.modify_structure('dig_type', [{ ...this.fg.value }])
+        this.schemeService.upsert_structure(Structure_Type.ST_DEVICE_ITEM_TYPE, { ...this.fg.value })
             .subscribe(() => {
                 this.dialogRef.close(this.fg.value);
             });

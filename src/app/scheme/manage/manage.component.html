@@ -6,7 +6,7 @@
      [class.editor-mode]="isEditorModeEnabled"
      [class.disabled-box]="isDisabled()">
   <ng-container *ngFor="let sct of sections">
-    <div *ngIf="sct.groups.length" class="col-1-3">
+    <div class="col-1-3">
       <app-scheme-section [enableEditor]="isEditorModeEnabled" [title]="sct.name" [forceExpand]="currentSection === sct.id"
                           (edit)="editSection(sct)" (remove)="removeSection(sct)">
         <div
@@ -16,10 +16,10 @@
           >
           <div *ngFor="let group of sct.groups">
             <div class="dig"
-                 [ngStyle]="{'border-color': group.status_info.color}">
+                 [ngStyle]="{'border-color': group.status_info?.color}">
               <div class="dig-header">
                 <div class="invisible-anchor" id="scheme-group-{{group.id}}" ></div>
-                <a (click)="openParamsDialog(group.id)" *ngIf="group.params.length !== 0">
+                <a (click)="openParamsDialog(group.id)"><!--  *ngIf="group.params.length !== 0" -->
                   <h4>{{group.title ? group.title : group.type.title}}</h4>
                 </a>
                 <h4 *ngIf="group.params.length === 0">{{group.title ? group.title : group.type.title}}</h4>
@@ -44,7 +44,7 @@
                   <button mat-icon-button (click)="editItem(item)"><mat-icon>edit</mat-icon></button>
                   <button mat-icon-button (click)="removeItem(item)"><mat-icon>delete</mat-icon></button>
                 </span>
-                <span [ngStyle]="{'border-color': group.status_info.color}" class="title">
+                <span [ngStyle]="{'border-color': group.status_info?.color}" class="title">
                   {{item.name || item.type.title}}
                 </span>
                 <span (click)="itemValue.openDialog()" class="value">

@@ -6,6 +6,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {DeviceDetailDialogComponent} from '../manage/device-detail-dialog/device-detail-dialog.component';
 import {DeviceItemDetailDialogComponent} from '../manage/device-item-detail-dialog/device-item-detail-dialog.component';
 import {UIService} from '../../ui.service';
+import {Structure_Type} from '../settings/settings';
 
 @Component({
     selector: 'app-manage-devices',
@@ -44,7 +45,7 @@ export class ManageDevicesComponent implements OnInit {
             .subscribe((confirmation: boolean) => {
                 if (!confirmation) return;
 
-                this.schemeService.modify_structure('device', [{ id: device.id }])
+                this.schemeService.remove_structure(Structure_Type.ST_DEVICE, device)
                     .subscribe(() => {
                         // TODO: update
                     });
@@ -64,7 +65,7 @@ export class ManageDevicesComponent implements OnInit {
             .subscribe((confirmation) => {
                 if (!confirmation) return;
 
-                this.schemeService.modify_structure('device_item', [{ id: item.id }])
+                this.schemeService.remove_structure(Structure_Type.ST_DEVICE_ITEM, item)
                     .subscribe(() => {
                         // TODO: update
                     });

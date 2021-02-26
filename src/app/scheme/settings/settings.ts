@@ -2,37 +2,37 @@ import {SchemeService} from '../scheme.service';
 
 export enum Structure_Type {
     ST_UNKNOWN,
-    ST_DEVICE,
-    ST_PLUGIN_TYPE,
-    ST_DEVICE_ITEM,
-    ST_DEVICE_ITEM_TYPE,
-    ST_SAVE_TIMER,
-    ST_SECTION,
-    ST_DEVICE_ITEM_GROUP,
-    ST_DIG_TYPE,
-    ST_DIG_MODE_TYPE,
-    ST_DIG_PARAM_TYPE,
-    ST_DIG_STATUS_TYPE,
-    ST_DIG_STATUS_CATEGORY,
-    ST_DIG_PARAM,
-    ST_SIGN_TYPE,
-    ST_CODE_ITEM,
-    ST_TRANSLATION,
-    ST_NODE,
-    ST_DISABLED_PARAM,
-    ST_DISABLED_STATUS,
-    ST_CHART,
-    ST_CHART_ITEM,
-    ST_VALUE_VIEW,
-    ST_AUTH_GROUP,
-    ST_AUTH_GROUP_PERMISSION,
-    ST_USER,
-    ST_USER_GROUP,
+    ST_DEVICE= 'device',
+    ST_PLUGIN_TYPE = 'plugin_type',
+    ST_DEVICE_ITEM = 'device_item',
+    ST_DEVICE_ITEM_TYPE = 'device_item_type',
+    ST_SAVE_TIMER = 'save_timer',
+    ST_SECTION = 'section',
+    ST_DEVICE_ITEM_GROUP = 'device_item_group',
+    ST_DIG_TYPE = 'dig_type',
+    ST_DIG_MODE_TYPE = '',
+    ST_DIG_PARAM_TYPE = 'dig_param_type',
+    ST_DIG_STATUS_TYPE = 'dig_status_type',
+    ST_DIG_STATUS_CATEGORY = 'dig_status_category',
+    ST_DIG_PARAM = 'dig_param',
+    ST_SIGN_TYPE = 'sign_type',
+    ST_CODE_ITEM = 'code_item',
+    ST_TRANSLATION = '',
+    ST_NODE = '',
+    ST_DISABLED_PARAM = '',
+    ST_DISABLED_STATUS = '',
+    ST_CHART = '',
+    ST_CHART_ITEM = '',
+    ST_VALUE_VIEW = '',
+    ST_AUTH_GROUP = '',
+    ST_AUTH_GROUP_PERMISSION = '',
+    ST_USER = '',
+    ST_USER_GROUP = '',
 
   // Часто изменяемые
-    ST_DEVICE_ITEM_VALUE,
-    ST_DIG_MODE,
-    ST_DIG_PARAM_VALUE,
+    ST_DEVICE_ITEM_VALUE = '',
+    ST_DIG_MODE = '',
+    ST_DIG_PARAM_VALUE = '',
 }
 
 export enum ChangeState {
@@ -44,6 +44,7 @@ export enum ChangeState {
 export interface ChangeInfo<T> {
   state: ChangeState;
   obj: T;
+  prev?: T;
 }
 
 export abstract class ChangeTemplate<T extends { id: number }> {
@@ -56,7 +57,7 @@ export abstract class ChangeTemplate<T extends { id: number }> {
   constructor(
     public schemeService: SchemeService,
     private itemType: new () => T,
-    private settingName: string,
+    private settingName: Structure_Type,
   ) {
   }
 
@@ -91,10 +92,11 @@ export abstract class ChangeTemplate<T extends { id: number }> {
     if (evnt !== undefined) {
       evnt.stopPropagation();
     }
-    this.saveSettings();
-
-    this.items = [];
-    this.sel_item = null;
+    this.saveSettings()
+        .subscribe(() => {
+            this.sel_item = null;
+            this.fillItems();
+        });
   }
 
   cancel(evnt: any = undefined): void {
@@ -131,22 +133,7 @@ export abstract class ChangeTemplate<T extends { id: number }> {
     // Dialog
   }
 
-  saveSettings(): void {
-    let data: (T | { id: number })[] = [];
-    for (const item of this.items) {
-      if (item.state === ChangeState.Delete) {
-          data.push({ id: item.obj.id });
-      } else if (item.state === ChangeState.Upsert) {
-          const obj = {...item.obj};
-          for (const n in obj)
-              if (typeof obj[n] === 'object')
-                  delete obj[n];
-          data.push(obj);
-      }
-    }
-
-    if (data.length > 0) {
-        this.schemeService.modify_structure(this.settingName, data).subscribe(() => {});
-    }
+  saveSettings() {
+    return this.schemeService.modify_structure(this.settingName, this.items);
   }
 }

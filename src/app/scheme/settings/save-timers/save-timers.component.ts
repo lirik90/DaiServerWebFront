@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { SchemeService } from "../../scheme.service";
-import { Save_Timer } from "../../scheme";
+import {SchemeService} from '../../scheme.service';
+import {Save_Timer} from '../../scheme';
 
-import { ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
-import { SettingsService } from "../../settings.service";
+import {ChangeTemplate, Structure_Type} from '../settings';
+import {SettingsService} from '../../settings.service';
 
 @Component({
   selector: 'app-save-timers',
@@ -16,7 +16,7 @@ export class SaveTimersComponent extends ChangeTemplate<Save_Timer> implements O
     schemeService: SchemeService,
     private settingsService: SettingsService
   ) {
-    super(schemeService, Save_Timer, 'save_timer');
+    super(schemeService, Save_Timer, Structure_Type.ST_SAVE_TIMER);
   }
 
   save_timers: Save_Timer[];

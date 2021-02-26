@@ -1,9 +1,9 @@
-import {Component, OnInit, Input, OnChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 
 import {Device, Device_Item, Device_Item_Type, Section} from '../../scheme';
 import {SchemeService} from '../../scheme.service';
 
-import {ChangeTemplate} from '../settings';
+import {ChangeTemplate, Structure_Type} from '../settings';
 
 @Component({
   selector: 'app-devices',
@@ -14,7 +14,7 @@ export class DevicesComponent extends ChangeTemplate<Device> implements OnInit {
   constructor(
     schemeService: SchemeService,
   ) {
-    super(schemeService, Device, 'device');
+    super(schemeService, Device, Structure_Type.ST_DEVICE);
   }
 
   getObjects(): Device[] {
@@ -55,7 +55,7 @@ export class DeviceItemsComponent extends ChangeTemplate<Device_Item> implements
   constructor(
     schemeService: SchemeService,
   ) {
-    super(schemeService, Device_Item, 'device_item');
+    super(schemeService, Device_Item, Structure_Type.ST_DEVICE_ITEM);
   }
 
   getObjects(): Device_Item[] {

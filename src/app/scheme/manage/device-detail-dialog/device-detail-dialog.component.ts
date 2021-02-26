@@ -4,6 +4,7 @@ import {Device, Plugin_Type} from '../../scheme';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {SettingsService} from '../../settings.service';
 import {SchemeService} from '../../scheme.service';
+import {Structure_Type} from '../../settings/settings';
 
 @Component({
     selector: 'app-device-detail-dialog',
@@ -43,8 +44,12 @@ export class DeviceDetailDialogComponent implements OnInit {
 
     submit() {
         if (this.fg.invalid) return;
+        const device: Device = {
+            ...this.fg.value,
+            items: [],
+        };
 
-        this.schemeService.modify_structure('device', [{ ...this.fg.value }])
+        this.schemeService.upsert_structure(Structure_Type.ST_DEVICE, device)
             .subscribe((data) => {
                 this.dialogRef.close(this.fg.value);
             });

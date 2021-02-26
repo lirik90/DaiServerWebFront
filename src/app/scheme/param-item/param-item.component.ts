@@ -3,6 +3,10 @@ import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {SchemeService} from '../scheme.service';
 import {DIG_Param, DIG_Param_Type, DIG_Param_Value_Type} from '../scheme';
 import {FormControl, Validators} from '@angular/forms';
+import {Structure_Type} from '../settings/settings';
+import {UIService} from '../../ui.service';
+import {tap} from 'rxjs/operators';
+import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
     selector: 'app-param-item',
@@ -29,6 +33,8 @@ export class ParamItemComponent implements OnChanges {
 
     constructor(
         private schemeService: SchemeService,
+        private ui: UIService,
+        private dialogRef: MatDialogRef<ParamItemComponent>,
     ) {
         this.paramTypeFormControl = new FormControl(null, []);
         this.paramTypeIdFormControl = new FormControl(null, [Validators.required]);
@@ -48,10 +54,7 @@ export class ParamItemComponent implements OnChanges {
         const paramTypePatch: Partial<DIG_Param_Type> = {};
 
         if (changes.parent_param || changes.groupTypeId) {
-            this.params = this.schemeService.scheme.dig_param_type.filter((param) => {
-                if (param.group_type_id !== this.groupTypeId) return false;
-                return (!this.parent_param && param.parent_id === null) || (this.parent_param?.id === param.parent_id);
-            });
+            this.getParamTypes();
 
             if (changes.groupTypeId) {
                 paramTypePatch.group_type_id = changes.groupTypeId.currentValue;
@@ -139,25 +142,52 @@ export class ParamItemComponent implements OnChanges {
     }
 
     removeParam(param: DIG_Param) {
+        this.ui.confirmationDialog()
+            .subscribe((result) => {
+                if (!result) return;
 
+                this.schemeService.remove_structure(Structure_Type.ST_DIG_PARAM, param)
+                    .subscribe(() => {});
+            });
     }
 
     submitForm() {
         if (this.showNestedParamTypeForm) {
-            // TODO: createParamType (this.paramTypeFormControl.value) & call this.createParam(createdParam.id) in .subscribe()
+            this.createParamType().subscribe((response) => {
+                this.createParam(response.inserted[0].id)
+                    .subscribe((response) => {
+                        this.dialogRef.close(response.inserted[0]);
+                    });
+            });
         } else {
             if (this.paramTypeIdFormControl.valid) {
-                this.createParam(this.paramTypeIdFormControl.value);
+                const paramId = this.paramTypeIdFormControl.value;
+                this.createParam(paramId)
+                    .subscribe((response) => {
+                        this.dialogRef.close(response.inserted[0]);
+                    });
             }
         }
     }
 
+    createParamType() {
+        const paramType: Omit<DIG_Param_Type, 'id'> = this.paramTypeFormControl.value;
+        return this.schemeService.upsert_structure<DIG_Param_Type>(Structure_Type.ST_DIG_PARAM_TYPE, paramType)
+            .pipe(tap(() => this.getParamTypes()));
+    }
+
     createParam(paramTypeId: number) {
-        // TODO: create param with paramTypeId
-        const param: Pick<DIG_Param, 'param_id' | 'group_id'> = {
+        const param: Omit<DIG_Param, 'value' | 'id'> = {
             param_id: paramTypeId,
             group_id: this.groupId,
+            param: this.params.find(p => p.id === paramTypeId),
+            childs: [],
         };
+
+        return this.schemeService.upsert_structure(
+            Structure_Type.ST_DIG_PARAM,
+            param as any, // TODO: possible TypeScript bug with nested Omit<>
+        );
     }
 
     resetForm() {
@@ -168,5 +198,12 @@ export class ParamItemComponent implements OnChanges {
         this.showForm = false;
         this.currentEditingParam = null;
         this.paramTypeIdFormControl.reset();
+    }
+
+    private getParamTypes() {
+        this.params = this.schemeService.scheme.dig_param_type.filter((param) => {
+            if (param.group_type_id !== this.groupTypeId) return false;
+            return (!this.parent_param && param.parent_id === null) || (this.parent_param?.id === param.parent_id);
+        });
     }
 }

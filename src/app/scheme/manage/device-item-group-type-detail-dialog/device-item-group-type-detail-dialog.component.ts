@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SchemeService} from '../../scheme.service';
+import {Structure_Type} from '../../settings/settings';
 
 @Component({
     selector: 'app-device-item-group-type-detail-dialog',
@@ -27,7 +28,7 @@ export class DeviceItemGroupTypeDetailDialogComponent {
     submit() {
         if (this.fg.invalid) return;
 
-        this.schemeService.modify_structure('group', [{ ...this.fg.value }])
+        this.schemeService.upsert_structure(Structure_Type.ST_DIG_TYPE, { ...this.fg.value })
             .subscribe(() => {
                 this.dialogRef.close(this.fg.value);
             });

@@ -2,6 +2,8 @@ import {Component, Inject} from '@angular/core';
 import {Section} from '../../scheme';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {SchemeService} from '../../scheme.service';
+import {Structure_Type} from '../../settings/settings';
 
 export type Section_Details = Pick<Section, "name" | "day_start" | "day_end">
 
@@ -16,6 +18,7 @@ export class SectionDetailDialogComponent {
     constructor(
         @Inject(MAT_DIALOG_DATA) private section: Section,
         private dialogRef: MatDialogRef<SectionDetailDialogComponent>,
+        private schemeService: SchemeService,
         fb: FormBuilder,
     ) {
         this.fg = fb.group({
@@ -44,8 +47,8 @@ export class SectionDetailDialogComponent {
     private convertTimeStringToSeconds(str: string): number {
         const [hours, minutes, seconds] = str.split(':');
         return parseInt(hours, 10) * 3600
-            + parseInt(minutes, 10) * 60
-            + parseInt(seconds);
+            + (parseInt(minutes, 10) || 0) * 60
+            + parseInt(seconds, 10) || 0;
     }
 
     submitForm() {
@@ -55,9 +58,11 @@ export class SectionDetailDialogComponent {
             ...this.fg.value,
             day_start: this.convertTimeStringToSeconds(this.fg.value.day_start),
             day_end: this.convertTimeStringToSeconds(this.fg.value.day_end),
+            groups: [],
         };
 
-        this.dialogRef.close(section);
+        this.schemeService.upsert_structure(Structure_Type.ST_SECTION, section)
+            .subscribe(() => this.dialogRef.close(section));
     }
 
     cancel() {

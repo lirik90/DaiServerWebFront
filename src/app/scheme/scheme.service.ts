@@ -1,26 +1,26 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
-import {Observable, BehaviorSubject, of} from 'rxjs';
-import {catchError, switchMap, map, tap, finalize, flatMap} from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
+import {catchError, flatMap, switchMap, tap} from 'rxjs/operators';
 
 import {
-    Scheme_Detail,
-    Section,
+    Chart,
+    Device,
     Device_Item,
     Device_Item_Group,
-    Log_Value,
-    Log_Param,
     DIG_Param,
     DIG_Param_Type,
-    Chart,
     Disabled_Status,
-    Help
+    Help,
+    Scheme_Detail,
+    Section,
 } from './scheme';
-import {Connection_State, Scheme_Group_Member, PaginatorApi} from '../user';
+import {Connection_State, PaginatorApi, Scheme_Group_Member} from '../user';
 import {MessageService} from '../message.service';
 import {ISchemeService} from '../ischeme.service';
+import {ChangeInfo, ChangeState, Structure_Type} from './settings/settings';
 
 const httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -31,6 +31,13 @@ export interface Chart_Value_Data_Item {
     user_id?: number;
     value: any;
     raw?: any;
+}
+
+export interface Patch_Structure_Response<T> {
+    deleted: number;
+    inserted: T[];
+    updated: number;
+    result: boolean;
 }
 
 export interface Chart_Value_Item {
@@ -73,6 +80,8 @@ class StatusItems {
         title: string;
     }[];
 }
+
+export type Modify_Structure_Type = Device_Item_Group|Section|Device_Item|DIG_Param_Type|Omit<DIG_Param, 'value'>|Device;
 
 @Injectable()
 export class SchemeService extends ISchemeService {
@@ -498,8 +507,171 @@ export class SchemeService extends ISchemeService {
             }));
     }
 
-    public modify_structure<T>(settingName: string, data: (T | { id: number })[]) {
+    private static getSchemeFieldKey(setting: Structure_Type): keyof Scheme_Detail {
+        const keys: Record<Structure_Type, keyof Scheme_Detail> = {
+            [Structure_Type.ST_DEVICE]: 'device',
+            [Structure_Type.ST_SECTION]: 'section',
+            [Structure_Type.ST_DEVICE_ITEM_TYPE]: 'device_item_type',
+            [Structure_Type.ST_DIG_PARAM_TYPE]: 'dig_param_type',
+            [Structure_Type.ST_DIG_TYPE]: 'dig_type',
+            [Structure_Type.ST_DIG_STATUS_TYPE]: 'dig_status_type',
+            [Structure_Type.ST_DIG_STATUS_CATEGORY]: 'dig_status_category',
+            [Structure_Type.ST_DIG_MODE_TYPE]: 'dig_mode_type',
+            [Structure_Type.ST_VALUE_VIEW]: 'value_view',
+        } as any;
+        return keys[setting];
+    }
+
+    public remove_structure<T extends Modify_Structure_Type>(settingName: Structure_Type, item: T): Observable<Patch_Structure_Response<T>> {
+        return this.modify_structure<T>(settingName, [{
+            state: ChangeState.Delete,
+            obj: item,
+        }]);
+    }
+
+    public upsert_structure<T extends Modify_Structure_Type>(settingName: Structure_Type, item: T|Omit<T,'id'>, prev?: T): Observable<Patch_Structure_Response<T>> {
+        return this.modify_structure<T>(settingName, [{
+            state: ChangeState.Upsert,
+            obj: item,
+            prev,
+        }]);
+    }
+
+    public modify_structure<T extends Modify_Structure_Type, Y=Omit<T, 'id'>>(settingName: Structure_Type, data: ChangeInfo<T | Y>[]): Observable<Patch_Structure_Response<T>> {
+        let dataToUpdate: (Y | T | { id: number })[] = [];
+        for (const item of data) {
+            if (item.state === ChangeState.Delete) {
+                dataToUpdate.push({ id: (item.obj as T).id });
+            } else if (item.state === ChangeState.Upsert) {
+                const obj = {...item.obj};
+                for (const n in obj as any)
+                    if (typeof obj[n] === 'object' && obj[n] !== null)
+                        delete obj[n];
+
+                dataToUpdate.push(obj);
+            }
+        }
+
+        if (dataToUpdate.length === 0) return of(null);
+
         const url = `/api/v2/scheme/${this.scheme.id}/structure/${settingName}/`;
-        return this.http.patch(url, data);
+        return this.http.patch<Patch_Structure_Response<T>>(url, dataToUpdate)
+            .pipe(tap((response) => {
+                if (!response.result) return;
+
+                const findObj = (array: Array<T>, item: T, ignoreKeys = ['id']) => {
+                    return array.find((i) => {
+                        const keys = this.diff(item, i);
+                        return keys.filter(key => ignoreKeys.indexOf(key as string) === -1).length === 0;
+                    }) as T;
+                };
+
+                const findGroup = (id: number) => {
+                    return this.scheme.section.map(sct => sct.groups)
+                        .reduce((prev, curr) => {
+                            prev.push(...curr);
+                            return prev;
+                        }, [])
+                        .find(group => id === group.id);
+                };
+
+                const findAndUpdate = (array: Array<T>, item: T): boolean => {
+                    const itemToUpdate = array.find(({ id }) => item.id === id);
+                    if (!itemToUpdate) {
+                        return false;
+                    }
+
+                    Object.assign(itemToUpdate, item);
+                    return true;
+                };
+
+                const findAndRemove = (array: Array<T>, item: T) => {
+                    const itemIdx = array.findIndex(({ id }) => item.id === id);
+                    if (itemIdx >= 0) {
+                        array.splice(itemIdx, 1);
+                    }
+                };
+
+                const findDevice = (device_id: number) => {
+                    return this.scheme.device.find(dev => dev.id === device_id);
+                };
+
+                const findSection = (section_id: number) => {
+                    return this.scheme.section.find(sct => sct.id === section_id);
+                };
+
+                data.forEach((changeInfo) => {
+                    let array: Array<T>;
+                    let array2: Array<T>;
+
+                    const { obj, prev, state } = changeInfo;
+
+                    if (settingName === Structure_Type.ST_DEVICE_ITEM_GROUP) {
+                        array = findSection((<Device_Item_Group>obj).section_id)?.groups as any;
+                    } else if (settingName === Structure_Type.ST_DEVICE_ITEM) {
+                        const devItem = obj as Device_Item;
+                        array = findGroup(devItem.group_id).items as any;
+                        array2 = findDevice(devItem.device_id).items as any;
+                    } else if (settingName === Structure_Type.ST_DIG_PARAM) {
+                        array = findGroup((<Omit<DIG_Param, 'value'>>obj).group_id).params as any;
+                    } else {
+                        const key = SchemeService.getSchemeFieldKey(settingName);
+
+                        array = this.scheme[key] as Array<T>;
+                        array2 = undefined;
+                    }
+
+                    if (state === ChangeState.Delete) {
+                        findAndRemove(array, obj as T);
+                        array2 && findAndRemove(array2, obj as T);
+                    } else if (state === ChangeState.Upsert) {
+                        if ((<T>obj).id) {
+                            if (!findAndUpdate(array, obj as T)) {
+                                let arrayFromRemove: Array<T>;
+                                switch (settingName) {
+                                    case Structure_Type.ST_DIG_PARAM:
+                                        arrayFromRemove = findGroup((<Omit<DIG_Param, 'value'>>prev).group_id)?.params as any;
+                                        break;
+                                    case Structure_Type.ST_DEVICE_ITEM_GROUP:
+                                        arrayFromRemove = findSection((<Device_Item_Group>prev).section_id)?.groups as any;
+                                        break;
+                                    case Structure_Type.ST_DEVICE_ITEM:
+                                        arrayFromRemove = findGroup((<Device_Item>prev).group_id)?.items as any;
+                                        break;
+                                }
+
+                                if (arrayFromRemove) {
+                                    findAndRemove(arrayFromRemove, <T>prev);
+                                }
+
+                                array.push(obj as T);
+                            }
+
+                            if (array2 && settingName === Structure_Type.ST_DEVICE_ITEM) {
+                                if (!findAndUpdate(array2, obj as T)) {
+                                    findAndRemove(
+                                        findDevice((<Device_Item>prev).device_id).items as any,
+                                        prev as T,
+                                    );
+
+                                    array2.push(obj as T);
+                                }
+                            }
+                        } else {
+                            const tObj = obj as T;
+                            const insertedItem = findObj(response.inserted, tObj, ['parent_id', 'scheme_id', 'value', 'id']);
+                            tObj.id = insertedItem.id;
+                            array.push(tObj);
+                            array2 && array2.push(tObj);
+                        }
+                    }
+                });
+            }));
+    }
+
+    diff<T>(a: T, b: T): (keyof T)[] {
+        return Object.keys(a)
+            .filter(key => typeof a[key] !== 'object' && typeof b[key] !== 'object')
+            .filter(key => a[key] !== b[key]) as (keyof T)[];
     }
 }

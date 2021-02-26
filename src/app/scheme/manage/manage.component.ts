@@ -5,7 +5,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog
 import {filter} from 'rxjs/operators';
 
 import {SchemeService} from '../scheme.service';
-import {Section, Device_Item, Device_Item_Group, DIG_Mode_Type, DIG_Param} from '../scheme';
+import {Device_Item, Device_Item_Group, DIG_Mode_Type, DIG_Param, Section} from '../scheme';
 import {ControlService} from '../control.service';
 import {AuthenticationService} from '../../authentication.service';
 import {Subscription} from 'rxjs';
@@ -17,6 +17,7 @@ import {
 } from './device-item-group-detail-dialog/device-item-group-detail-dialog.component';
 import {Device_Item_Details, DeviceItemDetailDialogComponent} from './device-item-detail-dialog/device-item-detail-dialog.component';
 import {UIService} from '../../ui.service';
+import {Structure_Type} from '../settings/settings';
 
 @Component({
     selector: 'app-manage',
@@ -151,39 +152,21 @@ export class ManageComponent implements OnInit, AfterViewInit {
         this.dialog
             .open(DeviceItemGroupDetailDialogComponent, {width: '80%', data: { section_id: parentSection.id }})
             .afterClosed()
-            .subscribe((group?: Device_Item_Group_Details) => {
-                if (!group) {
-                    return;
-                }
-
-                // TODO: create group
-            });
+            .subscribe((group?: Device_Item_Group_Details) => {});
     }
 
     newItem(parentGroup: Device_Item_Group) {
         this.dialog
             .open(DeviceItemDetailDialogComponent, {width: '80%', data: { group_id: parentGroup.id }})
             .afterClosed()
-            .subscribe((itemDetails?: Device_Item_Details) => {
-                if (!itemDetails) {
-                    return;
-                }
-
-                // TODO: create item
-            });
+            .subscribe((itemDetails?: Device_Item_Details) => {});
     }
 
     newSection() {
         this.dialog
             .open(SectionDetailDialogComponent, {width: '80%', data: null})
             .afterClosed()
-            .subscribe((sectionDetails?: Section_Details) => {
-                if (!sectionDetails) {
-                    return;
-                }
-
-                // TODO: create section
-            });
+            .subscribe((sectionDetails?: Section_Details) => {});
     }
 
     editSection(section: Section) {
@@ -230,7 +213,7 @@ export class ManageComponent implements OnInit, AfterViewInit {
                     return;
                 }
 
-                this.schemeService.modify_structure('section', [{id: sct.id}])
+                this.schemeService.remove_structure(Structure_Type.ST_SECTION, sct)
                     .subscribe(() => {
                         // TODO: update list
                     });
@@ -244,7 +227,7 @@ export class ManageComponent implements OnInit, AfterViewInit {
                     return;
                 }
 
-                this.schemeService.modify_structure('group', [{id: group.id}])
+                this.schemeService.remove_structure(Structure_Type.ST_DEVICE_ITEM_GROUP, group)
                     .subscribe(() => {
                         // TODO: update list
                     });
@@ -258,7 +241,7 @@ export class ManageComponent implements OnInit, AfterViewInit {
                     return;
                 }
 
-                this.schemeService.modify_structure('device_item', [{id: item.id}])
+                this.schemeService.remove_structure(Structure_Type.ST_DEVICE_ITEM,  item)
                     .subscribe(() => {
                         // TODO: update list
                     });

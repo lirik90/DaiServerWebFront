@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, OnChanges, Directive } from '@angular/core';
+import {Component, Directive, Input, OnChanges, OnInit} from '@angular/core';
 
-import { SchemeService } from "../../scheme.service";
-import { Device_Item_Type, Sign_Type, DIG_Type, DIG_Param_Type, DIG_Status_Type, Save_Timer } from "../../scheme";
+import {SchemeService} from '../../scheme.service';
+import {Device_Item_Type, DIG_Param_Type, DIG_Status_Type, DIG_Type, Save_Timer, Sign_Type} from '../../scheme';
 
-import { ChangeInfo, ChangeTemplate } from "../settings";
+import {ChangeTemplate, Structure_Type} from '../settings';
 
-import { SettingsService } from "../../settings.service";
+import {SettingsService} from '../../settings.service';
 
 @Component({
   selector: 'app-group-types',
@@ -18,7 +18,7 @@ export class GroupTypesComponent extends ChangeTemplate<DIG_Type> implements OnI
     schemeService: SchemeService,
     private settingsService: SettingsService,
   ) {
-    super(schemeService, DIG_Type, 'dig_type');
+    super(schemeService, DIG_Type, Structure_Type.ST_DIG_TYPE);
   }
 
   getObjects(): DIG_Type[] {
@@ -45,7 +45,7 @@ export class ItemTypesComponent extends ChangeTemplate<Device_Item_Type> impleme
     schemeService: SchemeService,
     private settingsService: SettingsService
   ) {
-    super(schemeService, Device_Item_Type, 'device_item_type');
+    super(schemeService, Device_Item_Type, Structure_Type.ST_DEVICE_ITEM_TYPE);
   }
 
   ngOnChanges() {
@@ -82,7 +82,7 @@ export class ParamTypesComponent extends ChangeTemplate<DIG_Param_Type> implemen
   constructor(
     schemeService: SchemeService,
   ) {
-    super(schemeService, DIG_Param_Type, 'dig_param_type');
+    super(schemeService, DIG_Param_Type, Structure_Type.ST_DIG_PARAM_TYPE);
   }
 
   getObjects(): DIG_Param_Type[] {
@@ -111,7 +111,7 @@ export class StatusesComponent extends ChangeTemplate<DIG_Status_Type> implement
   constructor(
     schemeService: SchemeService,
   ) {
-    super(schemeService, DIG_Status_Type, 'dig_status_type');
+    super(schemeService, DIG_Status_Type, Structure_Type.ST_DIG_STATUS_TYPE);
   }
 
   getObjects(): DIG_Status_Type[] {
