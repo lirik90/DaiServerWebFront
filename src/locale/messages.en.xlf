@@ -1093,8 +1093,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.CHARTS.DECOMPOSE" datatype="html">
-        <source>Разложить</source>
-        <target>Decompose</target>
+        <source>График</source>
+        <target>Сhart</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
           <context context-type="linenumber">23</context>
@@ -1109,24 +1109,16 @@
         </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.CHARTS.DECOMPOSE_BY_GROUPS" datatype="html">
-        <source>По группам элементов</source>
-        <target>By group of elements</target>
+        <source>Группы элементов</source>
+        <target>Groups of elements</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
           <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="REPORTS.CHARTS.DECOMPOSE_BY_TYPES" datatype="html">
-        <source>По типам элементов</source>
-        <target>By type of element</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
-          <context context-type="linenumber">26</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="REPORTS.CHARTS.DECOMPOSE_BY_ITEMS" datatype="html">
-        <source>По элементам</source>
-        <target>By elements</target>
+        <source>Элементы</source>
+        <target>Elements</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
           <context context-type="linenumber">27</context>
