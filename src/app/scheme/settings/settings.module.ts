@@ -21,6 +21,9 @@ import { MetadataService } from './codes/services/metadata.service';
 import { PluginTypesComponent } from './plugin-types/plugin-types.component';
 import { SaveTimersComponent } from './save-timers/save-timers.component';
 import { AceEditorModule } from 'ng2-ace-editor';
+import { DigModeTypeComponent } from './dig-mode-type/dig-mode-type.component';
+import { TranslationComponent } from './translation/translation.component';
+import { ValueViewComponent } from './value-view/value-view.component';
 
 @NgModule({
   imports: [
@@ -45,7 +48,10 @@ import { AceEditorModule } from 'ng2-ace-editor';
     EditorComponent,
     PluginTypesComponent,
     SaveTimersComponent,
-      Scheme_Copy_Dialog
+      Scheme_Copy_Dialog,
+      DigModeTypeComponent,
+      TranslationComponent,
+      ValueViewComponent
   ],
   entryComponents: [
       Scheme_Copy_Dialog

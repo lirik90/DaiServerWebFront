@@ -263,6 +263,13 @@ export class Help {
     scheme_id: number;
 }
 
+export class Translation {
+    id: number;
+    data: string;
+    lang: string;
+    scheme_id: number;
+}
+
 export interface Value_View {
     type_id: number;
     value: any;
