@@ -3,38 +3,31 @@ import {MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SchemeService} from '../../scheme.service';
 import {Structure_Type} from '../../settings/settings';
+import {DetailDialog} from '../detail-dialog';
+import {DIG_Type} from '../../scheme';
 
 @Component({
     selector: 'app-device-item-group-type-detail-dialog',
     templateUrl: './device-item-group-type-detail-dialog.component.html',
     styleUrls: ['./device-item-group-type-detail-dialog.component.css']
 })
-export class DeviceItemGroupTypeDetailDialogComponent {
+export class DeviceItemGroupTypeDetailDialogComponent extends DetailDialog<DIG_Type, DeviceItemGroupTypeDetailDialogComponent> {
     fg: FormGroup;
 
     constructor(
-        private dialogRef: MatDialogRef<DeviceItemGroupTypeDetailDialogComponent>,
-        private schemeService: SchemeService,
+        dialogRef: MatDialogRef<DeviceItemGroupTypeDetailDialogComponent>,
+        schemeService: SchemeService,
         fb: FormBuilder,
     ) {
-        this.fg = fb.group({
+        super(dialogRef, null, schemeService, Structure_Type.ST_DIG_TYPE, fb);
+    }
+
+    createFormGroup(): FormGroup {
+        return this.fb.group({
             id: [null, []],
             name: ['', [Validators.required]],
             title: ['', []],
             description: ['', []],
         });
-    }
-
-    submit() {
-        if (this.fg.invalid) return;
-
-        this.schemeService.upsert_structure(Structure_Type.ST_DIG_TYPE, { ...this.fg.value })
-            .subscribe(() => {
-                this.dialogRef.close(this.fg.value);
-            });
-    }
-
-    cancel() {
-        this.dialogRef.close(null);
     }
 }

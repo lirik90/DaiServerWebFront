@@ -3,9 +3,10 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Device, Device_Item, Device_Item_Group, Device_Item_Type} from '../../scheme';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {SchemeService} from '../../scheme.service';
+import {Structure_Type} from '../../settings/settings';
+import {DetailDialog} from '../detail-dialog';
 import {DeviceDetailDialogComponent} from '../device-detail-dialog/device-detail-dialog.component';
 import {DeviceItemTypeDetailDialogComponent} from '../device-item-type-detail-dialog/device-item-type-detail-dialog.component';
-import {Structure_Type} from '../../settings/settings';
 
 export type Device_Item_Details = Pick<Device_Item, "name" | "device_id" | "type_id" | "extra" | "parent_id">;
 
@@ -14,19 +15,20 @@ export type Device_Item_Details = Pick<Device_Item, "name" | "device_id" | "type
   templateUrl: './device-item-detail-dialog.component.html',
   styleUrls: ['./device-item-detail-dialog.component.css']
 })
-export class DeviceItemDetailDialogComponent {
-    fg: FormGroup;
+export class DeviceItemDetailDialogComponent extends DetailDialog<Device_Item, DeviceItemDetailDialogComponent> {
     devItemTypes: Device_Item_Type[];
     devices: Device[];
     groups: Device_Item_Group[];
 
     constructor(
         fb: FormBuilder,
-        @Inject(MAT_DIALOG_DATA) private devItem: Device_Item,
-        private dialogRef: MatDialogRef<DeviceItemDetailDialogComponent>,
+        @Inject(MAT_DIALOG_DATA) devItem: Device_Item,
+        dialogRef: MatDialogRef<DeviceItemDetailDialogComponent>,
+        schemeService: SchemeService,
         private dialog: MatDialog,
-        private schemeService: SchemeService,
     ) {
+        super(dialogRef, devItem, schemeService, Structure_Type.ST_DEVICE_ITEM, fb);
+
         this.devItemTypes = this.schemeService.scheme.device_item_type;
         this.devices = this.schemeService.scheme.device;
         this.groups = this.schemeService.scheme.section
@@ -36,7 +38,10 @@ export class DeviceItemDetailDialogComponent {
                 return prev;
             }, []);
 
-        this.fg = fb.group({
+    }
+
+    createFormGroup(): FormGroup {
+        return this.fb.group({
             id: [null, []],
             name: ['', []],
             device_id: ['', Validators.required],
@@ -45,38 +50,26 @@ export class DeviceItemDetailDialogComponent {
             extra: [null],
             parent_id: [null, []],
         });
-
-        if (this.devItem) {
-            this.fg.patchValue(this.devItem);
-        }
     }
 
-    submit() {
-        if (this.fg.invalid) return;
-
+    createItem(formValue: any): Device_Item {
         const devItem = new Device_Item();
-        Object.assign(devItem, this.fg.value);
+
+        Object.assign(devItem, formValue);
         devItem.type = this.devItemTypes.find(t => t.id === devItem.type_id);
 
-        this.schemeService.upsert_structure(Structure_Type.ST_DEVICE_ITEM, devItem, this.devItem?.id ? this.devItem : null)
-            .subscribe(() => {
-                this.dialogRef.close(this.fg.value);
-            });
-    }
-
-    cancel() {
-        this.dialogRef.close(null);
-    }
-
-    newItemType() {
-        this.dialog.open(DeviceItemTypeDetailDialogComponent, { width: '80%' })
-            .afterClosed()
-            .subscribe((deviceItemType?: Device_Item_Type) => {});
+        return devItem;
     }
 
     newDevice() {
         this.dialog.open(DeviceDetailDialogComponent, { width: '80%' })
             .afterClosed()
             .subscribe((device?: Device) => {});
+    }
+
+    newItemType() {
+        this.dialog.open(DeviceItemTypeDetailDialogComponent, { width: '80%' })
+            .afterClosed()
+            .subscribe((deviceItemType?: Device_Item_Type) => {});
     }
 }

@@ -9,9 +9,9 @@ import {
     Chart,
     Device,
     Device_Item,
-    Device_Item_Group,
+    Device_Item_Group, Device_Item_Type,
     DIG_Param,
-    DIG_Param_Type,
+    DIG_Param_Type, DIG_Type,
     Disabled_Status,
     Help,
     Scheme_Detail,
@@ -81,7 +81,7 @@ class StatusItems {
     }[];
 }
 
-export type Modify_Structure_Type = Device_Item_Group|Section|Device_Item|DIG_Param_Type|Omit<DIG_Param, 'value'>|Device;
+export type Modify_Structure_Type = DIG_Type|Device_Item_Type|Device_Item_Group|Section|Device_Item|DIG_Param_Type|DIG_Param|Device;
 
 @Injectable()
 export class SchemeService extends ISchemeService {
