@@ -972,7 +972,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.CHARTS.DECOMPOSE" datatype="html">
-        <source>Разложить</source>
+        <source>График</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/reports/charts/chart-filter/chart-filter.component.html</context>
           <context context-type="linenumber">27</context>
@@ -986,21 +986,14 @@
         </context-group>
       </trans-unit>
       <trans-unit id="REPORTS.CHARTS.DECOMPOSE_BY_GROUPS" datatype="html">
-        <source>По группам элементов</source>
+        <source>Группы элементов</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/reports/charts/chart-filter/chart-filter.component.html</context>
           <context context-type="linenumber">30</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="REPORTS.CHARTS.DECOMPOSE_BY_TYPES" datatype="html">
-        <source>По типам элементов</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/scheme/reports/charts/chart-filter/chart-filter.component.html</context>
-          <context context-type="linenumber">31</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="REPORTS.CHARTS.DECOMPOSE_BY_ITEMS" datatype="html">
-        <source>По элементам</source>
+        <source>Элементы</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/scheme/reports/charts/chart-filter/chart-filter.component.html</context>
           <context context-type="linenumber">32</context>
