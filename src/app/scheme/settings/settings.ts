@@ -1,4 +1,5 @@
 import {SchemeService} from '../scheme.service';
+import {UIService} from '../../ui.service';
 import {Observable} from 'rxjs/Observable';
 
 export enum Structure_Type {
@@ -59,6 +60,7 @@ export abstract class ChangeTemplate<T extends { id: number }> {
     public schemeService: SchemeService,
     private itemType: new () => T,
     private settingName: Structure_Type,
+    private ui: UIService,
   ) {
   }
 
@@ -93,6 +95,9 @@ export abstract class ChangeTemplate<T extends { id: number }> {
     if (evnt !== undefined) {
       evnt.stopPropagation();
     }
+
+    // TODO: call this.ui.confirmationDialog here
+
     this.saveSettings()
         .subscribe(() => {
             this.sel_item = null;
