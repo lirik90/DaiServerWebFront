@@ -5,6 +5,7 @@ import {Plugin_Type} from '../../scheme';
 
 import {ChangeTemplate, Structure_Type} from '../settings';
 import {SettingsService} from '../../settings.service';
+import {UIService} from '../../../ui.service';
 
 @Component({
   selector: 'app-plugin-types',
@@ -17,8 +18,9 @@ export class PluginTypesComponent extends ChangeTemplate<Plugin_Type> implements
   constructor(
     schemeService: SchemeService,
     private settingsService: SettingsService,
+    ui: UIService,
   ) {
-    super(schemeService, Plugin_Type, Structure_Type.ST_PLUGIN_TYPE);
+    super(schemeService, Plugin_Type, Structure_Type.ST_PLUGIN_TYPE, ui);
   }
 
   getObjects(): Plugin_Type[] {

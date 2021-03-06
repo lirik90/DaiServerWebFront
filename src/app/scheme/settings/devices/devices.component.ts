@@ -4,6 +4,7 @@ import {Device, Device_Item, Device_Item_Type, Section} from '../../scheme';
 import {SchemeService} from '../../scheme.service';
 
 import {ChangeTemplate, Structure_Type} from '../settings';
+import {UIService} from '../../../ui.service';
 
 @Component({
   selector: 'app-devices',
@@ -13,8 +14,9 @@ import {ChangeTemplate, Structure_Type} from '../settings';
 export class DevicesComponent extends ChangeTemplate<Device> implements OnInit {
   constructor(
     schemeService: SchemeService,
+    ui: UIService,
   ) {
-    super(schemeService, Device, Structure_Type.ST_DEVICE);
+    super(schemeService, Device, Structure_Type.ST_DEVICE, ui);
   }
 
   getObjects(): Device[] {
@@ -54,8 +56,9 @@ export class DeviceItemsComponent extends ChangeTemplate<Device_Item> implements
 
   constructor(
     schemeService: SchemeService,
+    ui: UIService,
   ) {
-    super(schemeService, Device_Item, Structure_Type.ST_DEVICE_ITEM);
+    super(schemeService, Device_Item, Structure_Type.ST_DEVICE_ITEM, ui);
   }
 
   getObjects(): Device_Item[] {

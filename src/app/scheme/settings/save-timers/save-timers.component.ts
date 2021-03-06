@@ -5,6 +5,7 @@ import {Save_Timer} from '../../scheme';
 
 import {ChangeTemplate, Structure_Type} from '../settings';
 import {SettingsService} from '../../settings.service';
+import {UIService} from '../../../ui.service';
 
 @Component({
   selector: 'app-save-timers',
@@ -14,9 +15,10 @@ import {SettingsService} from '../../settings.service';
 export class SaveTimersComponent extends ChangeTemplate<Save_Timer> implements OnInit {
   constructor(
     schemeService: SchemeService,
-    private settingsService: SettingsService
+    ui: UIService,
+    private settingsService: SettingsService,
   ) {
-    super(schemeService, Save_Timer, Structure_Type.ST_SAVE_TIMER);
+    super(schemeService, Save_Timer, Structure_Type.ST_SAVE_TIMER, ui);
   }
 
   save_timers: Save_Timer[];
