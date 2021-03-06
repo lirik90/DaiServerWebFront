@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { SchemeService } from './scheme.service';
-import {Section, Code_Item, Plugin_Type, Save_Timer, Translation} from './scheme';
+import {Section, Code_Item, Plugin_Type, Save_Timer, Translation, Value_View_Detail} from './scheme';
 import { PaginatorApi } from "../user";
 import {HttpClient} from '@angular/common/http';
 
@@ -15,12 +15,12 @@ export class SettingsService {
     private http: HttpClient,
   ) {}
 
-  getTranslations(): Observable<Translation[]> { // TODO: refactor
+  getTranslations(): Observable<Translation[]> {
       return this.http.get<Translation[]>(`/api/v2/scheme/${this.hServ.scheme.id}/structure/translation/`);
   }
 
-  getValueView(): Observable<any[]> { // TODO: refactor
-      return this.http.get<Translation[]>(`/api/v2/scheme/${this.hServ.scheme.id}/structure/value_view/`);
+  getValueViewsDetail(): Observable<Value_View_Detail[]> {
+      return this.http.get<Value_View_Detail[]>(`/api/v2/scheme/${this.hServ.scheme.id}/structure/value_view/`);
   }
 
   getPluginTypes(): Observable<PaginatorApi<Plugin_Type>> {

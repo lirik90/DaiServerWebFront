@@ -276,6 +276,14 @@ export interface Value_View {
     view: any;
 }
 
+export class Value_View_Detail {
+    id: number;
+    scheme_id: number;
+    type_id: number;
+    value: any;
+    view: any;
+}
+
 export class Scheme_Detail {
     id: number;             // ID проекта
     parent_id: number;
