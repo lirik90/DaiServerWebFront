@@ -64,8 +64,10 @@ export class SchemesService extends ISchemeService {
             `fetched client devices`, 'getSchemes', {} as PaginatorApi<Scheme>);
     }
 
-    getGroupSchemeUsers(id: number): Observable<any[]> {
-        // TODO: make real request and fix return type
+    getSchemeGroupUsers(id: number): Observable<any[]> {
+        // TODO: fix return type
+        const url = this.v2_url + `scheme_group/${id}/user/`;
+        return this.http.get<any[]>(url);
 
         return of([{
             last_name: 'test',
@@ -80,8 +82,10 @@ export class SchemesService extends ISchemeService {
         }]);
     }
 
-    getGroupSchemeDevices(id: number): Observable<any[]> {
-        // TODO: make real request and fix return type
+    getSchemeGroupSchemes(id: number): Observable<any[]> {
+        // TODO: fix return type
+        const url = this.v2_url + `scheme_group/${id}/scheme/`;
+        return this.http.get<any[]>(url);
         return of([{
             name: 'test dev',
         }, {
@@ -89,55 +93,54 @@ export class SchemesService extends ISchemeService {
         }]);
     }
 
-    addUserToGroupScheme(groupSchemeId: number, data: any): Observable<any> {
-        // TODO: make real request and fix type when backend will be ready
-        return of();
+    addSchemeToSchemeGroup(groupId: number, schemeId: number): Observable<any> {
+        // TODO: fix return type
+        const url = this.v2_url + `scheme_group/${groupId}/scheme/${schemeId}/`;
+        return this.http.post<void>(url, {});
     }
 
-    addDeviceToGroupSchema(groupSchemeId: number, deviceId: number): Observable<any> {
-        // TODO: make real request and fix type when backend will be ready
-        return of();
+    removeSchemeFromSchemeGroup(groupId: number, schemeId: number): Observable<void> {
+        const url = this.v2_url + `scheme_group/${groupId}/scheme/${schemeId}/`;
+        return this.http.delete<void>(url);
     }
 
-    removeDeviceFromGroup(groupId: number, deviceId: number): Observable<void> {
-        // TODO: make real request
-        return of();
+    addUserToSchemeGroup(groupId: number, userId: number, role: any): Observable<any> {
+        // TODO: fix return type
+        const url = this.v2_url + `scheme_group/${groupId}/user/${userId}/?role=${role}`;
+        return this.http.post<void>(url, {});
     }
 
-    removeUserFromGroup(groupId: number, userId: number): Observable<void> {
-        // TODO: make real request
-        return of();
+    removeUserFromSchemeGroup(groupId: number, userId: number): Observable<void> {
+        const url = this.v2_url + `scheme_group/${groupId}/user/${userId}/`;
+        return this.http.delete<void>(url);
     }
 
     createSchemeGroup(value: Scheme_Group): Observable<Scheme_Group> {
-        // TODO: make real request
-        return of(value).pipe(tap(() => this.get_scheme_groups_()));
+        const url = this.v2_url + `scheme_group/`;
+        return this.http.post<Scheme_Group>(url, value)
+            .pipe(tap(() => this.get_scheme_groups_()));
     }
 
     updateSchemeGroup(value: Scheme_Group): Observable<Scheme_Group> {
-        // TODO: make real request
-        return of(value).pipe(tap(() => this.get_scheme_groups_()));
+        const url = this.v2_url + `scheme_group/`;
+        return this.http.put<Scheme_Group>(url, value)
+            .pipe(tap(() => this.get_scheme_groups_()));
     }
 
     removeSchemeGroup(id: number): Observable<void> {
-        // TODO: make real request
-        return of(null).pipe(tap(() => this.get_scheme_groups_()));
+        const url = this.v2_url + `scheme_group/${id}/`;
+        return this.http.delete<void>(url)
+            .pipe(tap(() => this.get_scheme_groups_()));
     }
 
     getSchemeGroup(id: number): Observable<Scheme_Group> {
-        // TODO: make real request
-        return of({
-            id,
-            name: `test-${id}`,
-        });
+        const url = this.v2_url + `scheme_group/${id}/`;
+        return this.http.get<Scheme_Group>(url);
     }
 
     getSchemeGroupsForScheme(schemeId: number): Observable<Scheme_Group[]> {
-        // TODO: make real request
-        return of([{
-            id: 1,
-            name: 'test-1',
-        }]);
+        const url = this.v2_url + `scheme_group/?scheme_id=${schemeId}`;
+        return this.http.get<Scheme_Group[]>(url);
     }
 
     get_scheme_groups(): Observable<Scheme_Group[]>
@@ -145,12 +148,9 @@ export class SchemesService extends ISchemeService {
         return this.schemeGroupsSubject.asObservable();
     }
 
-    getSchemeGroupsForUser(currentUser: User) {
-        // TODO: make real request
-        return of([{
-            id: 1,
-            name: 'test-1',
-        }]);
+    getSchemeGroupsForUser(userId: number): Observable<Scheme_Group[]> {
+        const url = this.v2_url + `scheme_group/?user_id=${userId}`;
+        return this.http.get<Scheme_Group[]>(url);
     }
 
     private get_scheme_groups_()

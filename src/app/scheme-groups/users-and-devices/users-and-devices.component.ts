@@ -52,31 +52,32 @@ export class UsersAndDevicesComponent implements OnInit, OnChanges {
     }
 
     private getData() {
-        this.schemes.getGroupSchemeUsers(this.id).subscribe(users => this.groupUsers = users);
-        this.schemes.getGroupSchemeDevices(this.id).subscribe(devices => this.groupDevices = devices);
+        this.schemes.getSchemeGroupUsers(this.id).subscribe(users => this.groupUsers = users);
+        this.schemes.getSchemeGroupSchemes(this.id).subscribe(devices => this.groupDevices = devices);
     }
 
     deviceAddFormSubmit() {
         if (this.deviceAddFg.invalid) return;
 
-        this.schemes.addDeviceToGroupSchema(this.id, this.deviceAddFg.value)
+        this.schemes.addSchemeToSchemeGroup(this.id, this.deviceAddFg.value)
             .subscribe(() => this.getData());
     }
 
     userAddFormSubmit() {
         if (this.userAddFg.invalid) return;
 
-        this.schemes.addUserToGroupScheme(this.id, this.userAddFg.value)
+        const user = this.userAddFg.value;
+        this.schemes.addUserToSchemeGroup(this.id, user.id, user.role)
             .subscribe(() => this.getData());
     }
 
     removeUserFromGroup(user: User & { role: Group_User_Roles }) {
-        this.schemes.removeUserFromGroup(this.id, user.id)
+        this.schemes.removeUserFromSchemeGroup(this.id, user.id)
             .subscribe(() => this.getData());
     }
 
     removeDeviceFromGroup(device: Device) {
-        this.schemes.removeDeviceFromGroup(this.id, device.id)
+        this.schemes.removeSchemeFromSchemeGroup(this.id, device.id)
             .subscribe(() => this.getData());
     }
 

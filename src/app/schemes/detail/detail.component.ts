@@ -99,13 +99,13 @@ export class SchemeDetailComponent implements OnInit {
         return this.route.parent.snapshot.paramMap.get(p_str);
     }
 
-    removeFromDeviceGroup(element: Scheme_Group) {
-        this.schemesService.removeSchemeGroup(element.id)
+    removeFromSchemeGroup(element: Scheme_Group) {
+        this.schemesService.removeSchemeFromSchemeGroup(element.id, this.scheme.id)
             .subscribe(() => this.fetchGroupsForScheme());
     }
 
     addSchemeGroup($event: Scheme_Group) {
-        this.schemesService.addDeviceToGroupSchema($event.id, this.scheme.id)
+        this.schemesService.addSchemeToSchemeGroup($event.id, this.scheme.id)
             .subscribe(() => this.fetchGroupsForScheme());
     }
 

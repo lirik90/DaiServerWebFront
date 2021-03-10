@@ -19,19 +19,17 @@ export class SchemeGroupsComponent implements OnInit {
     }
 
     addUserSchemeGroup($event: Scheme_Group & { role?: Group_User_Roles }) {
-        this.schemes.addUserToGroupScheme($event.id, {
-            id: this.auth.currentUser.id,
-            role: $event.role,
-        }).subscribe(() => this.fetchGroups());
+        this.schemes.addUserToSchemeGroup($event.id, this.auth.currentUser.id, $event.role)
+            .subscribe(() => this.fetchGroups());
     }
 
     removeSchemeGroup($event: Scheme_Group) {
-        this.schemes.removeUserFromGroup($event.id, this.auth.currentUser.id)
+        this.schemes.removeUserFromSchemeGroup($event.id, this.auth.currentUser.id)
             .subscribe(() => this.fetchGroups());
     }
 
     private fetchGroups() {
-        this.schemes.getSchemeGroupsForUser(this.auth.currentUser)
+        this.schemes.getSchemeGroupsForUser(this.auth.currentUser.id)
             .subscribe(groups => this.userSchemeGroups = groups);
     }
 }
