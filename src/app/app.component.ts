@@ -38,6 +38,10 @@ export class AppComponent implements OnInit, OnDestroy {
   cookieGot: boolean;
   showDropDown = false;
 
+  get isAdmin(): boolean {
+      return this.authService.isAdmin();
+  }
+
   constructor(
     public translate: TranslateService,
     public authService: AuthenticationService,

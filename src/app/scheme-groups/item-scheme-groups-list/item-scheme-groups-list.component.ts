@@ -28,7 +28,11 @@ export class ItemSchemeGroupsListComponent implements OnInit, OnChanges {
             role: [null, []],
         });
 
-        this.schemesService.get_scheme_groups().subscribe(groups => this.schemeGroups = groups);
+        this.schemesService.get_scheme_groups()
+            .subscribe((groups) => {
+                this.schemeGroups = groups
+                    .filter(group => !this.items.find(i => i.id === group.id));
+            });
     }
 
     ngOnInit(): void {

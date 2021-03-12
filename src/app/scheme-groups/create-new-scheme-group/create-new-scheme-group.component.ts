@@ -49,8 +49,8 @@ export class CreateNewSchemeGroupComponent implements OnInit, OnChanges {
         }
     }
 
-    remove(group: Scheme_Group) {
-        this.schemesService.removeSchemeGroup(group.id)
+    remove() {
+        this.schemesService.removeSchemeGroup(this.group.id)
             .subscribe(() => null);
     }
 }

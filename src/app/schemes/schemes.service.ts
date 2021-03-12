@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
-import {Auth_Group, Scheme, Scheme_Group, PaginatorApi, Group_User_Roles, User} from '../user';
+import {Auth_Group, Scheme, Scheme_Group, PaginatorApi, Group_User_Roles, User, UserHeaderWithRole} from '../user';
 import { MessageService } from '../message.service';
 import { ISchemeService } from '../ischeme.service';
 import {BehaviorSubject} from 'rxjs';
@@ -64,10 +64,21 @@ export class SchemesService extends ISchemeService {
             `fetched client devices`, 'getSchemes', {} as PaginatorApi<Scheme>);
     }
 
-    getSchemeGroupUsers(id: number): Observable<any[]> {
+    getUsers(): Observable<User[]> {
+        // return this.http.get<User[]>(`${this.v2_url}/api/v2/users/`);
+        // TODO: uncomment real request
+        return of([{
+            id: 1,
+            last_name: 'test',
+            first_name: 'test',
+            username: 'test-user',
+        }] as any[]);
+    }
+
+    getSchemeGroupUsers(id: number): Observable<UserHeaderWithRole[]> {
         // TODO: fix return type
         const url = this.v2_url + `scheme_group/${id}/user/`;
-        return this.http.get<any[]>(url);
+        return this.http.get<UserHeaderWithRole[]>(url);
 
         return of([{
             last_name: 'test',
@@ -79,18 +90,18 @@ export class SchemesService extends ISchemeService {
             first_name: 'first',
             username: 'login-2',
             role: Group_User_Roles.USER,
-        }]);
+        }] as any[]);
     }
 
-    getSchemeGroupSchemes(id: number): Observable<any[]> {
+    getSchemeGroupSchemes(id: number): Observable<Pick<Scheme, 'id' | 'name' | 'title'>[]> {
         // TODO: fix return type
         const url = this.v2_url + `scheme_group/${id}/scheme/`;
-        return this.http.get<any[]>(url);
+        return this.http.get<Pick<Scheme, 'id' | 'name' | 'title'>[]>(url);
         return of([{
             name: 'test dev',
         }, {
             name: 'test dev 2',
-        }]);
+        }] as any[]);
     }
 
     addSchemeToSchemeGroup(groupId: number, schemeId: number): Observable<any> {

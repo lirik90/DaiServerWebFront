@@ -4,6 +4,10 @@
         <input type="text" matInput formControlName="name">
     </mat-form-field>
 
-    <button mat-button i18n="@@SCHEME_GROUPS.CREATE" type="submit">Создать</button>
-    <button *ngIf="fg.value.id" mat-button i18n="@@SCHEME_GROUPS.REMOVE" type="button" (click)="remove()">Удалить</button>
+    <button *ngIf="!fg.value.id; else editRemoveButtons" mat-button i18n="@@CONTROL.CREATE" type="submit">Создать</button>
+
+    <ng-template #editRemoveButtons>
+        <button mat-button i18n="@@CONTROL.EDIT" type="submit">Изменить</button>
+        <button mat-button i18n="@@SCHEME_GROUPS.REMOVE" type="button" (click)="remove()">Удалить</button>
+    </ng-template>
 </form>

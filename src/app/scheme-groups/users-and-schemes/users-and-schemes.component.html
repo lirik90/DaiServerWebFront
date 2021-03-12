@@ -2,7 +2,7 @@
     <h2 i18n="@@SCHEME_GROUPS.USERS">Пользователи</h2>
     <table mat-table [dataSource]="groupUsers">
         <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef>Имя</th>
+            <th mat-header-cell *matHeaderCellDef i18n="@@SCHEME_GROUPS.NAME">Имя</th>
             <td mat-cell *matCellDef="let element">{{ element.last_name }} {{ element.first_name }}</td>
         </ng-container>
         <ng-container matColumnDef="username">
@@ -22,12 +22,15 @@
         <ng-container matColumnDef="addUser">
             <td mat-footer-cell *matFooterCellDef colspan="4">
                 <form [formGroup]="userAddFg" (ngSubmit)="userAddFormSubmit()">
-                    <mat-form-field *ngIf="!invitingUser; else emailInput">
-                        <mat-label i18n="@@SCHEME_GROUPS.USER">Пользователь</mat-label>
-                        <mat-select formControlName="userId">
-                            <mat-option *ngFor="let user of users" [value]="user.id">{{ user.last_name }} {{ user.first_name }}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                    <div *ngIf="!invitingUser; else emailInput" class="select-field">
+                        <angular2-multiselect
+                            formControlName="userId"
+                            [loading]="usersLoading"
+                            [data]="users"
+                            [settings]="usersMultiselectSettings"
+                            (onScrollToEnd)="fetchMoreUsers($event)"
+                        ></angular2-multiselect>
+                    </div>
                     <ng-template #emailInput>
                         <mat-form-field>
                             <mat-label i18n="@@SCHEME_GROUPS.EMAIL">E-mail</mat-label>
@@ -57,9 +60,9 @@
         <tr mat-footer-row *matFooterRowDef="['addUser']"></tr>
     </table>
 </div>
-<div class="table-wrapper" id="devices">
-    <h2 i18n="@@SCHEME_GROUPS.DEVICES">Устройства</h2>
-    <table mat-table [dataSource]="groupDevices">
+<div class="table-wrapper" id="schemes">
+    <h2 i18n="@@SCHEME_GROUPS.SCHEMES">Схемы</h2>
+    <table mat-table [dataSource]="groupSchemes">
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef i18n="@@SCHEME_GROUPS.TITLE">Название</th>
             <td mat-cell *matCellDef="let element">{{ element.name }}</td>
@@ -68,26 +71,29 @@
         <ng-container matColumnDef="control">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element">
-                <button mat-icon-button type="button" (click)="removeDeviceFromGroup(element)"><mat-icon>delete</mat-icon></button>
+                <button mat-icon-button type="button" (click)="removeSchemeFromGroup(element)"><mat-icon>delete</mat-icon></button>
             </td>
         </ng-container>
 
-        <ng-container matColumnDef="addDevice">
+        <ng-container matColumnDef="addScheme">
             <td mat-footer-cell *matFooterCellDef colspan="2">
-                <form [formGroup]="deviceAddFg" (ngSubmit)="deviceAddFormSubmit()">
-                    <mat-form-field>
-                        <mat-label i18n="@@SCHEME_GROUPS.DEVICE">Устройство</mat-label>
-                        <mat-select formControlName="deviceId">
-                            <mat-option *ngFor="let device of devices" [value]="device.id">{{ device.name }}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <button mat-button type="submit" i18n="@@SCHEME_GROUPS.ADD">Добавить</button>
+                <form [formGroup]="schemeAddFg" (ngSubmit)="schemeAddFormSubmit()">
+                    <div class="select-field">
+                        <angular2-multiselect
+                            [data]="schemes"
+                            [settings]="schemesMultiselectSettings"
+                            [loading]="schemesLoading"
+                            formControlName="schemeId"
+                            (onScrollToEnd)="fetchMoreSchemes($event)"
+                        ></angular2-multiselect>
+                    </div>
+                    <button mat-button type="submit" i18n="@@CONTROL.ADD">Добавить</button>
                 </form>
             </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="['name', 'control']"></tr>
         <tr mat-row *matRowDef="let row; columns: ['name', 'control'];"></tr>
-        <tr mat-footer-row *matFooterRowDef="['addDevice']"></tr>
+        <tr mat-footer-row *matFooterRowDef="['addScheme']"></tr>
     </table>
 </div>
