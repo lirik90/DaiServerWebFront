@@ -18,12 +18,12 @@ export class SchemeGroupsComponent implements OnInit {
         this.fetchGroups();
     }
 
-    addUserSchemeGroup($event: Scheme_Group & { role?: Group_User_Roles }) {
+    addUserToSchemeGroup($event: Scheme_Group & { role?: Group_User_Roles }) {
         this.schemes.addUserToSchemeGroup($event.id, this.auth.currentUser.id, $event.role)
             .subscribe(() => this.fetchGroups());
     }
 
-    removeSchemeGroup($event: Scheme_Group) {
+    removeUserFromSchemeGroup($event: Scheme_Group) {
         this.schemes.removeUserFromSchemeGroup($event.id, this.auth.currentUser.id)
             .subscribe(() => this.fetchGroups());
     }

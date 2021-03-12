@@ -5,7 +5,6 @@ import {Location} from '@angular/common';
 import {Scheme, Scheme_Group} from '../../user';
 import {SchemesService} from '../schemes.service';
 import {AuthenticationService} from '../../authentication.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
     selector: 'app-scheme-detail',
@@ -19,7 +18,7 @@ export class SchemeDetailComponent implements OnInit {
     nameEditing: boolean = false;
     cities: any[];
     comps: any[];
-    deviceSchemeGroups: Scheme_Group[];
+    schemeGroups: Scheme_Group[];
 
     constructor(
         private route: ActivatedRoute,
@@ -111,6 +110,6 @@ export class SchemeDetailComponent implements OnInit {
 
     private fetchGroupsForScheme() {
         this.schemesService.getSchemeGroupsForScheme(this.scheme.id)
-            .subscribe(groups => this.deviceSchemeGroups = groups);
+            .subscribe(groups => this.schemeGroups = groups);
     }
 }
