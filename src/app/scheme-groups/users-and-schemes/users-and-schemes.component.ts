@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {SchemesService} from '../../schemes/schemes.service';
-import {Group_User_Roles, Scheme, User, UserHeaderWithRole} from '../../user';
+import {Group_User_Roles, Scheme, User, UserHeader, UserHeaderWithRole} from '../../user';
 import {FormBuilder, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {DropdownSettings} from 'angular2-multiselect-dropdown/lib/multiselect.interface';
 import {TranslateService} from '@ngx-translate/core';
@@ -24,10 +24,10 @@ export class UsersAndSchemesComponent implements OnInit, OnChanges {
     invitingUser = false;
 
     schemes: Pick<Scheme, 'id' | 'name' | 'title'>[] = [];
-    users: User[] = [];
+    users: UserHeader[] = [];
 
-    usersLoading: boolean = true;
-    schemesLoading: boolean = true;
+    usersLoading: boolean = false;
+    schemesLoading: boolean = false;
 
     private readonly defaultMultiselectSettings: Partial<DropdownSettings> = {
         singleSelection: true,
@@ -54,14 +54,14 @@ export class UsersAndSchemesComponent implements OnInit, OnChanges {
     ) {
         this.userAddFg = fb.group({
             email: [null, []],
-            userId: [null, [Validators.required]],
+            user: [null, [Validators.required]],
             role: [null, [Validators.required]],
         }, {
-            validators: [this.emailOrUserIdValidator()],
+            validators: [this.emailOrUserValidator()],
         });
 
         this.schemeAddFg = fb.group({
-            schemeId: [null, [Validators.required]],
+            scheme: [null, [Validators.required]],
         });
     }
 
@@ -75,25 +75,25 @@ export class UsersAndSchemesComponent implements OnInit, OnChanges {
     }
 
     fetchMoreUsers(event) {
-        if (event.end === this.users.length - 1) {
+        if (this.usersLoading === false && event.endIndex === this.users.length - 1) {
             this.usersLoading = true;
-            this.schemesService.getUsers()
+            this.schemesService.getUserHeaders(10, Math.ceil(this.users.length / 10))
                 .subscribe((users) => {
                     this.users = this.users.concat(
                         users.map(user => ({
                             ...user,
-                            label: `${user.first_name} ${user.last_name}`,
+                            label: `${user.first_name} ${user.last_name} (${user.username})`,
                         })),
                     );
-                    this.usersLoading = false;
+                    this.usersLoading = users.length ? false : null;
                 });
         }
     }
 
     fetchMoreSchemes(event) {
-        if (event.end === this.schemes.length - 1) {
+        if (this.schemesLoading === false && event.endIndex === this.schemes.length - 1) {
             this.schemesLoading = true;
-            this.schemesService.getSchemes(10, Math.round(this.schemes.length / 10))
+            this.schemesService.getSchemes(10, Math.ceil(this.schemes.length / 10))
                 .subscribe((schemes) => {
                     this.schemes = this.schemes.concat(
                         schemes.results.map(scheme => ({
@@ -101,7 +101,7 @@ export class UsersAndSchemesComponent implements OnInit, OnChanges {
                             label: scheme.title || scheme.name,
                         })),
                     );
-                    this.schemesLoading = false;
+                    this.schemesLoading = schemes.results.length ? false : null;
                 });
         }
     }
@@ -113,21 +113,28 @@ export class UsersAndSchemesComponent implements OnInit, OnChanges {
 
     schemeAddFormSubmit() {
         if (this.schemeAddFg.invalid) return;
-        console.dir(this.schemeAddFg.value);
-        return;
 
-        this.schemesService.addSchemeToSchemeGroup(this.id, this.schemeAddFg.value)
-            .subscribe(() => this.getData());
+        const schemes = this.schemeAddFg.value.scheme;
+        if (schemes && schemes.length) {
+            this.schemesService.addSchemeToSchemeGroup(this.id, schemes[0].id)
+                .subscribe(() => this.getData());
+            this.schemeAddFg.reset();
+        }
     }
 
     userAddFormSubmit() {
         if (this.userAddFg.invalid) return;
-        console.dir(this.userAddFg.value);
-        return;
 
-        const user = this.userAddFg.value;
-        this.schemesService.addUserToSchemeGroup(this.id, user.id, user.role)
-            .subscribe(() => this.getData());
+        const users = this.userAddFg.value.user;
+        if (users && users.length) {
+            this.schemesService.addUserToSchemeGroup(this.id, users[0].id, this.userAddFg.value.role)
+                .subscribe(() => this.getData());
+        }
+        else if (this.userAddFg.value.email) {
+            console.warn("Not implemented");
+        }
+
+        this.userAddFg.reset();
     }
 
     removeUserFromGroup(user: User & { role: Group_User_Roles }) {
@@ -140,9 +147,9 @@ export class UsersAndSchemesComponent implements OnInit, OnChanges {
             .subscribe(() => this.getData());
     }
 
-    emailOrUserIdValidator(): ValidatorFn {
+    emailOrUserValidator(): ValidatorFn {
         return (fg: FormGroup) => {
-            const ctrl = this.invitingUser ? fg.controls.email : fg.controls.userId;
+            const ctrl = this.invitingUser ? fg.controls.email : fg.controls.user;
 
             if (ctrl.untouched || ctrl.invalid) {
                 return { 'userRequired': true };
@@ -155,14 +162,16 @@ export class UsersAndSchemesComponent implements OnInit, OnChanges {
     toggleInvitingUser() {
         this.invitingUser = !this.invitingUser;
 
-        const { userId, email } = this.userAddFg.controls;
+        const { user, email } = this.userAddFg.controls;
 
         if (this.invitingUser) {
-            userId.clearValidators();
+            user.clearValidators();
+            user.setValue(null);
             email.setValidators([Validators.required, Validators.email]);
         } else {
             email.clearValidators();
-            userId.setValidators(Validators.required);
+            email.setValue(null);
+            user.setValidators([Validators.required]);
         }
     }
 }

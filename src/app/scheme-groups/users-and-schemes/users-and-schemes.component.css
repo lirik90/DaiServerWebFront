@@ -25,11 +25,19 @@ mat-form-field {
 }
 
 .select-field .select {
-    width: 70%;
+    width: 90%;
     display: block;
 }
 
 form {
     display: flex;
     justify-content: space-between;
+}
+
+.role {
+    max-width: 80px;
+}
+
+::ng-deep .user-list .dropdown-list {
+    width: 150%;
 }

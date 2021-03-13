@@ -64,8 +64,8 @@ export class SchemesService extends ISchemeService {
             `fetched client devices`, 'getSchemes', {} as PaginatorApi<Scheme>);
     }
 
-    getUsers(): Observable<UserHeader[]> {
-        return this.http.get<UserHeader[]>(this.v2_url + `user/`);
+    getUserHeaders(limit: number, page: number = 0): Observable<UserHeader[]> {
+        return this.http.get<UserHeader[]>(this.v2_url + `user/?limit=${limit}&offset=${limit * page}&header=1`);
     }
 
     getSchemeGroupUsers(id: number): Observable<UserHeaderWithRole[]> {
