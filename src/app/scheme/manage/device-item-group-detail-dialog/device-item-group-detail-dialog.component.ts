@@ -12,7 +12,7 @@ export type Device_Item_Group_Details = Pick<Device_Item_Group, "title" | "type_
 @Component({
     selector: 'app-device-item-group-detail-dialog',
     templateUrl: './device-item-group-detail-dialog.component.html',
-    styleUrls: ['./device-item-group-detail-dialog.component.css']
+    styleUrls: ['./device-item-group-detail-dialog.component.css', '../detail-dialog.css']
 })
 export class DeviceItemGroupDetailDialogComponent extends DetailDialog<Device_Item_Group, DeviceItemGroupDetailDialogComponent> {
     groupTypes: DIG_Type[];

@@ -10,7 +10,7 @@ import {DetailDialog} from '../detail-dialog';
 @Component({
     selector: 'app-device-detail-dialog',
     templateUrl: './device-detail-dialog.component.html',
-    styleUrls: ['./device-detail-dialog.component.css']
+    styleUrls: ['./device-detail-dialog.component.css', '../detail-dialog.css']
 })
 export class DeviceDetailDialogComponent extends DetailDialog<Device, DeviceDetailDialogComponent> {
     plugins: Plugin_Type[];

@@ -14,7 +14,7 @@ export type Device_Item_Details = Pick<Device_Item, "name" | "device_id" | "type
 @Component({
   selector: 'app-device-item-detail-dialog',
   templateUrl: './device-item-detail-dialog.component.html',
-  styleUrls: ['./device-item-detail-dialog.component.css']
+  styleUrls: ['./device-item-detail-dialog.component.css', '../detail-dialog.css']
 })
 export class DeviceItemDetailDialogComponent extends DetailDialog<Device_Item, DeviceItemDetailDialogComponent> {
     devItemTypes: Device_Item_Type[];
