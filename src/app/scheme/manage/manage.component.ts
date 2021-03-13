@@ -173,40 +173,24 @@ export class ManageComponent implements OnInit, AfterViewInit {
         this.dialog
             .open(SectionDetailDialogComponent, {width: '80%', data: section})
             .afterClosed()
-            .subscribe((sectionDetails?: Section_Details) => {
-                if (!sectionDetails) {
-                    return;
-                }
-
-                // TODO: update section
-            });
+            .subscribe((sectionDetails?: Section_Details) => {});
     }
 
     editItem(item: Device_Item) {
         this.dialog
             .open(DeviceItemDetailDialogComponent, {width: '80%', data: item})
             .afterClosed()
-            .subscribe((itemDetails?: Device_Item_Details) => {
-                if (!itemDetails) {
-                    return;
-                }
-                // TODO: update item
-            });
+            .subscribe((itemDetails?: Device_Item_Details) => {});
     }
 
     editGroup(group: Device_Item_Group) {
         this.dialog
             .open(DeviceItemGroupDetailDialogComponent, {width: '80%', data: group})
             .afterClosed()
-            .subscribe((groupDetails?: Device_Item_Group_Details) => {
-                if (!groupDetails) {
-                    return;
-                }
-                // TODO: update group
-            });
+            .subscribe((groupDetails?: Device_Item_Group_Details) => {});
     }
 
-    removeSection(sct: Section) {
+    removeSection(sct: Section) { // TODO: refactor remove methods below to use confirmationDialog().pipe() instead of nested subscribe
         this.ui.confirmationDialog()
             .subscribe((confirm) => {
                 if (!confirm) {
@@ -214,9 +198,7 @@ export class ManageComponent implements OnInit, AfterViewInit {
                 }
 
                 this.schemeService.remove_structure(Structure_Type.ST_SECTION, sct)
-                    .subscribe(() => {
-                        // TODO: update list
-                    });
+                    .subscribe(() => {});
             });
     }
 
@@ -228,9 +210,7 @@ export class ManageComponent implements OnInit, AfterViewInit {
                 }
 
                 this.schemeService.remove_structure(Structure_Type.ST_DEVICE_ITEM_GROUP, group)
-                    .subscribe(() => {
-                        // TODO: update list
-                    });
+                    .subscribe(() => {});
             });
     }
 
@@ -242,9 +222,7 @@ export class ManageComponent implements OnInit, AfterViewInit {
                 }
 
                 this.schemeService.remove_structure(Structure_Type.ST_DEVICE_ITEM,  item)
-                    .subscribe(() => {
-                        // TODO: update list
-                    });
+                    .subscribe(() => {});
             });
     }
 }

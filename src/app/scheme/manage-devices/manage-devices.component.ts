@@ -35,29 +35,23 @@ export class ManageDevicesComponent implements OnInit {
     editDevice(device: Device) {
         this.dialog.open(DeviceDetailDialogComponent, { data: device, width: '450px' })
             .afterClosed()
-            .subscribe((newDevice: Device) => {
-                // TODO: update list if needed
-            });
+            .subscribe((newDevice: Device) => {});
     }
 
-    removeDevice(device: Device) {
+    removeDevice(device: Device) { // TODO: refactor remove methods below to use confirmationDialog().pipe() instead of nested subscribe
         this.ui.confirmationDialog()
             .subscribe((confirmation: boolean) => {
                 if (!confirmation) return;
 
                 this.schemeService.remove_structure(Structure_Type.ST_DEVICE, device)
-                    .subscribe(() => {
-                        // TODO: update
-                    });
+                    .subscribe(() => {});
             });
     }
 
     editItem(item: Device_Item) {
         this.dialog.open(DeviceItemDetailDialogComponent, { data: item, width: '450px' })
             .afterClosed()
-            .subscribe((updatedItem: Device_Item) => {
-                // TODO: update list if needed
-            });
+            .subscribe((updatedItem: Device_Item) => {});
     }
 
     removeItem(item: Device_Item) {
@@ -66,9 +60,7 @@ export class ManageDevicesComponent implements OnInit {
                 if (!confirmation) return;
 
                 this.schemeService.remove_structure(Structure_Type.ST_DEVICE_ITEM, item)
-                    .subscribe(() => {
-                        // TODO: update
-                    });
+                    .subscribe(() => {});
             });
     }
 
@@ -80,16 +72,12 @@ export class ManageDevicesComponent implements OnInit {
             },
         })
             .afterClosed()
-            .subscribe((newItem: Device_Item) => {
-                // TODO: update list if needed
-            });
+            .subscribe((newItem: Device_Item) => {});
     }
 
     newDevice() {
         this.dialog.open(DeviceDetailDialogComponent, { width: '80%' })
             .afterClosed()
-            .subscribe((device: Device) => {
-                // TODO: update list if needed
-            });
+            .subscribe((device: Device) => {});
     }
 }
