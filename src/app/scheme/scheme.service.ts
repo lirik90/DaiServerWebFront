@@ -446,8 +446,7 @@ export class SchemeService extends ISchemeService {
         let url = `/api/v2/scheme/${this.scheme.id}/chart_${data_type}/?ts_from=${date_from}&ts_to=${+date_to}&limit=${limit}&offset=${offset}&data=${data}&bounds_only=${+bounds_only}`;
         return this.http.get<Paginator_Chart_Value>(url).pipe(
             tap(
-                () => {
-                },
+                () => {},
                 this.handleError<Paginator_Chart_Value>('chart_' + data_type, undefined),
             ),
         );
@@ -508,18 +507,18 @@ export class SchemeService extends ISchemeService {
     }
 
     private static getSchemeFieldKey(setting: Structure_Type): keyof Scheme_Detail {
-        const keys: Record<Structure_Type, keyof Scheme_Detail> = {
-            [Structure_Type.ST_DEVICE]: 'device',
-            [Structure_Type.ST_SECTION]: 'section',
-            [Structure_Type.ST_DEVICE_ITEM_TYPE]: 'device_item_type',
-            [Structure_Type.ST_DIG_PARAM_TYPE]: 'dig_param_type',
-            [Structure_Type.ST_DIG_TYPE]: 'dig_type',
-            [Structure_Type.ST_DIG_STATUS_TYPE]: 'dig_status_type',
-            [Structure_Type.ST_DIG_STATUS_CATEGORY]: 'dig_status_category',
-            [Structure_Type.ST_DIG_MODE_TYPE]: 'dig_mode_type',
-            [Structure_Type.ST_VALUE_VIEW]: 'value_view',
-        } as any;
-        return keys[setting];
+        const keys: Array<Structure_Type> = [
+            Structure_Type.ST_DEVICE,
+            Structure_Type.ST_SECTION,
+            Structure_Type.ST_DEVICE_ITEM_TYPE,
+            Structure_Type.ST_DIG_PARAM_TYPE,
+            Structure_Type.ST_DIG_TYPE,
+            Structure_Type.ST_DIG_STATUS_TYPE,
+            Structure_Type.ST_DIG_STATUS_CATEGORY,
+            Structure_Type.ST_DIG_MODE_TYPE,
+            Structure_Type.ST_VALUE_VIEW,
+        ];
+        return keys.includes(setting) ? setting as keyof Scheme_Detail : null;
     }
 
     public remove_structure<T extends Modify_Structure_Type>(settingName: Structure_Type, item: T): Observable<Patch_Structure_Response<T>> {

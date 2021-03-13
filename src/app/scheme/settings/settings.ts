@@ -1,4 +1,5 @@
 import {SchemeService} from '../scheme.service';
+import {Observable} from 'rxjs/Observable';
 
 export enum Structure_Type {
     ST_UNKNOWN,
@@ -133,7 +134,7 @@ export abstract class ChangeTemplate<T extends { id: number }> {
     // Dialog
   }
 
-  saveSettings() {
+  saveSettings(): Observable<any> {
     return this.schemeService.modify_structure(this.settingName, this.items);
   }
 }

@@ -35,13 +35,13 @@ const schemeRoutes: Routes = [
           { path: 'detail', component: SchemeDetailComponent, data: { req_perms: true }},
           { path: 'elements', component: ElementsComponent, data: { req_perms: true }, children: [
                   {
-                      path: 'by-section', component: ManageComponent,
+                      path: 'sections', component: ManageComponent,
                   },
                   {
                       path: 'devices', component: ManageDevicesComponent,
                   },
                   {
-                      path: '', pathMatch: 'full', redirectTo: 'by-section',
+                      path: '', pathMatch: 'full', redirectTo: 'sections',
                   },
           ]},
           { path: 'log_event', component: LogComponent, data: { req_perms: true }},
