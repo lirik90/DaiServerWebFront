@@ -3,6 +3,7 @@ import {ChangeInfo, ChangeTemplate, Structure_Type} from '../settings';
 import {SchemeService} from '../../scheme.service';
 import {SettingsService} from '../../settings.service';
 import {Translation} from '../../scheme';
+import {UIService} from '../../../ui.service';
 
 interface TranslationData {
     section: Array<{ id: number, name: string }>;
@@ -62,8 +63,8 @@ export class TranslationComponent extends ChangeTemplate<Translation> implements
 
     keys = Object.keys;
 
-    constructor(schemeService: SchemeService, private settings: SettingsService) {
-        super(schemeService, Translation, Structure_Type.ST_TRANSLATION);
+    constructor(schemeService: SchemeService, private settings: SettingsService, ui: UIService) {
+        super(schemeService, Translation, Structure_Type.ST_TRANSLATION, ui);
     }
 
     ngOnInit(): void {

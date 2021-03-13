@@ -3,6 +3,7 @@ import {Device_Item_Type, Value_View, Value_View_Detail} from '../../scheme';
 import {ChangeTemplate, Structure_Type} from '../settings';
 import {SchemeService} from '../../scheme.service';
 import {SettingsService} from '../../settings.service';
+import {UIService} from '../../../ui.service';
 
 @Component({
     selector: 'app-value-view',
@@ -13,8 +14,8 @@ export class ValueViewComponent extends ChangeTemplate<Value_View_Detail & { typ
     value_views: (Value_View_Detail & { type?: Device_Item_Type })[];
     types: Device_Item_Type[];
 
-    constructor(schemeService: SchemeService, private settingsService: SettingsService) {
-        super(schemeService, Value_View_Detail, Structure_Type.ST_VALUE_VIEW);
+    constructor(schemeService: SchemeService, private settingsService: SettingsService, ui: UIService) {
+        super(schemeService, Value_View_Detail, Structure_Type.ST_VALUE_VIEW, ui);
 
         this.types = this.schemeService.scheme.device_item_type;
         this.settingsService.getValueViewsDetail().subscribe(d => {

@@ -96,12 +96,15 @@ export abstract class ChangeTemplate<T extends { id: number }> {
       evnt.stopPropagation();
     }
 
-    // TODO: call this.ui.confirmationDialog here
+    this.ui.confirmationDialog()
+        .subscribe((confirmed) => {
+            if (!confirmed) return;
 
-    this.saveSettings()
-        .subscribe(() => {
-            this.sel_item = null;
-            this.fillItems();
+            this.saveSettings()
+                .subscribe(() => {
+                    this.sel_item = null;
+                    this.fillItems();
+                });
         });
   }
 
