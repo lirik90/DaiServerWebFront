@@ -7,7 +7,6 @@ import { SchemeDetailComponent } from './schemes/detail/detail.component';
 import { AuthGuard } from './auth.guard';
 import { RegisterComponent } from "./register/register.component";
 import { LoginComponent } from "./login/login.component";
-import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { TgAuthComponent } from './tg-auth/tg-auth.component';
 
 const routes: Routes = [
@@ -17,15 +16,20 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
   { path: 'list', component: SchemeListComponent, canActivate: [AuthGuard]  },
   { path: 'detail/:name', component: SchemeDetailComponent, canActivate: [AuthGuard]  },
-
+  {
+      path: 'scheme-groups',
+      loadChildren: () => import('app/scheme-groups/scheme-groups.module').then(m => m.SchemeGroupsModule),
+      canLoad: [AuthGuard],
+  },
   {
     path: 'scheme',
     loadChildren: () => import('app/scheme/scheme.module').then(m => m.SchemeModule),
     canLoad: [AuthGuard]
   },
-
   {
-    path: 'user', loadChildren: () => import('app/user-settings/user-settings.module').then(m => m.UserSettingsModule), canActivate: [AuthGuard]
+      path: 'user',
+      loadChildren: () => import('app/user-settings/user-settings.module').then(m => m.UserSettingsModule),
+      canActivate: [AuthGuard],
   },
 
   { path: 'tg_auth/:token', component: TgAuthComponent, canActivate: [AuthGuard]  },
