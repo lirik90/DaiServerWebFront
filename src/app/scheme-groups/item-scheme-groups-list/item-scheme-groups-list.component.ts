@@ -18,6 +18,7 @@ export class ItemSchemeGroupsListComponent implements OnInit, OnChanges {
 
     addToSchemeGroupFg: FormGroup;
     schemeGroups: Scheme_Group[];
+    private _schemeGroups: Scheme_Group[];
 
     constructor(
         private schemesService: SchemesService,
@@ -29,10 +30,7 @@ export class ItemSchemeGroupsListComponent implements OnInit, OnChanges {
         });
 
         this.schemesService.get_scheme_groups()
-            .subscribe((groups) => {
-                this.schemeGroups = groups
-                    .filter(group => !this.items.find(i => i.id === group.id));
-            });
+            .subscribe((groups) => this._schemeGroups = groups);
     }
 
     ngOnInit(): void {
@@ -47,6 +45,12 @@ export class ItemSchemeGroupsListComponent implements OnInit, OnChanges {
             } else {
                 role.clearValidators();
             }
+        }
+        
+        if (changes.items) {
+            const items = changes.items.currentValue;
+            this.schemeGroups = this._schemeGroups
+                    .filter(group => !items.find(i => i.id === group.id));
         }
     }
 

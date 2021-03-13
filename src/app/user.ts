@@ -31,7 +31,8 @@ export class User {
     phone_number: string;
 }
 
-export type UserHeaderWithRole = Pick<User, 'id' | 'first_name' | 'last_name' | 'username'> & { role: Group_User_Roles };
+export type UserHeader = Pick<User, 'id' | 'first_name' | 'last_name' | 'username'>;
+export type UserHeaderWithRole = UserHeader & { role: Group_User_Roles };
 
 export enum Connection_State {
   CS_SERVER_DOWN,
@@ -63,4 +64,3 @@ export class Scheme {
   status_checked: boolean;
   connect_state: Connection_State;
 }
-

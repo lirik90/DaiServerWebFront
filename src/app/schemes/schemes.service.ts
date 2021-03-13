@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
-import {Auth_Group, Scheme, Scheme_Group, PaginatorApi, Group_User_Roles, User, UserHeaderWithRole} from '../user';
+import {Auth_Group, Scheme, Scheme_Group, PaginatorApi, Group_User_Roles, User, UserHeader, UserHeaderWithRole} from '../user';
 import { MessageService } from '../message.service';
 import { ISchemeService } from '../ischeme.service';
 import {BehaviorSubject} from 'rxjs';
@@ -64,50 +64,23 @@ export class SchemesService extends ISchemeService {
             `fetched client devices`, 'getSchemes', {} as PaginatorApi<Scheme>);
     }
 
-    getUsers(): Observable<User[]> {
-        // return this.http.get<User[]>(`${this.v2_url}/api/v2/users/`);
-        // TODO: uncomment real request
-        return of([{
-            id: 1,
-            last_name: 'test',
-            first_name: 'test',
-            username: 'test-user',
-        }] as any[]);
+    getUsers(): Observable<UserHeader[]> {
+        return this.http.get<UserHeader[]>(this.v2_url + `user/`);
     }
 
     getSchemeGroupUsers(id: number): Observable<UserHeaderWithRole[]> {
-        // TODO: fix return type
         const url = this.v2_url + `scheme_group/${id}/user/`;
         return this.http.get<UserHeaderWithRole[]>(url);
-
-        return of([{
-            last_name: 'test',
-            first_name: 'test',
-            username: 'login',
-            role: Group_User_Roles.ADMIN,
-        }, {
-            last_name: 'last',
-            first_name: 'first',
-            username: 'login-2',
-            role: Group_User_Roles.USER,
-        }] as any[]);
     }
 
     getSchemeGroupSchemes(id: number): Observable<Pick<Scheme, 'id' | 'name' | 'title'>[]> {
-        // TODO: fix return type
         const url = this.v2_url + `scheme_group/${id}/scheme/`;
         return this.http.get<Pick<Scheme, 'id' | 'name' | 'title'>[]>(url);
-        return of([{
-            name: 'test dev',
-        }, {
-            name: 'test dev 2',
-        }] as any[]);
     }
 
-    addSchemeToSchemeGroup(groupId: number, schemeId: number): Observable<any> {
-        // TODO: fix return type
+    addSchemeToSchemeGroup(groupId: number, schemeId: number): Observable<{scheme_group_id: number, scheme_id: number}> {
         const url = this.v2_url + `scheme_group/${groupId}/scheme/${schemeId}/`;
-        return this.http.post<void>(url, {});
+        return this.http.post<{scheme_group_id: number, scheme_id: number}>(url, {});
     }
 
     removeSchemeFromSchemeGroup(groupId: number, schemeId: number): Observable<void> {
@@ -115,10 +88,9 @@ export class SchemesService extends ISchemeService {
         return this.http.delete<void>(url);
     }
 
-    addUserToSchemeGroup(groupId: number, userId: number, role: any): Observable<any> {
-        // TODO: fix return type
+    addUserToSchemeGroup(groupId: number, userId: number, role: any): Observable<{group_id: number, user_id: number, role: string}> {
         const url = this.v2_url + `scheme_group/${groupId}/user/${userId}/?role=${role}`;
-        return this.http.post<void>(url, {});
+        return this.http.post<{group_id: number, user_id: number, role: string}>(url, {});
     }
 
     removeUserFromSchemeGroup(groupId: number, userId: number): Observable<void> {

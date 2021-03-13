@@ -103,7 +103,7 @@ export class SchemeDetailComponent implements OnInit {
             .subscribe(() => this.fetchGroupsForScheme());
     }
 
-    addSchemeGroup($event: Scheme_Group) {
+    addToSchemeGroup($event: Scheme_Group) {
         this.schemesService.addSchemeToSchemeGroup($event.id, this.scheme.id)
             .subscribe(() => this.fetchGroupsForScheme());
     }
