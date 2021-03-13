@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {Chart_Params, ItemWithLegend} from '../chart-types';
 
 export interface Hsl {
     h: number;
@@ -7,10 +8,15 @@ export interface Hsl {
     l: number;
 }
 
+export interface Rgb {
+    r: number;
+    g: number;
+    b: number;
+}
+
 export interface DialogData {
-  chart: any;
-  dataset: any;
-  chart_obj: any;
+  chart_params: Chart_Params;
+  dataset: ItemWithLegend<any>;
 }
 
 @Component({
@@ -26,13 +32,12 @@ export class ColorPickerDialog implements OnInit {
     cur: number = null; // X pos
     curColor: string = 'white';
     color: string;
-    
+
     get hsl(): Hsl
     {
         if (this.cur)
         {
             const p = this.ctx.getImageData(this.cur, this.canvas.height / 2, 1, 1).data;
-            console.log(p, ColorPickerDialog.rgb2hsl(p[0], p[1], p[2]));
             return ColorPickerDialog.rgb2hsl(p[0], p[1], p[2]);
         }
         return null;
@@ -47,7 +52,7 @@ export class ColorPickerDialog implements OnInit {
         this.ctx = this.canvas.getContext('2d');
         this.draw();
 
-        this.color = this.data.dataset.borderColor;
+        this.color = this.data.dataset.legend.displayColor;
         this.cur = this.findColor(this.color);
         if (this.cur)
         {
@@ -149,36 +154,41 @@ export class ColorPickerDialog implements OnInit {
         return { h, s, l };
     }
 
-    static hsl2rgbhex(hslStr: string): string
+    static hslStr2RgbHex(hslStr: string): string
     {
         const hsl = ColorPickerDialog.parseHsl(hslStr);
         if (!hsl)
             return null;
 
-        const h = hsl.h, s = hsl.s, l = hsl.l;
+        return this.hsl2RgbStr(hsl);
+		// return "rgb("+ (+r + "," + +g + "," + +b) + ")";
+    }
 
-		let c = (1 - Math.abs(2 * l - 1)) * s,
-			x = c * (1 - Math.abs((h / 60) % 2 - 1)),
-			m = l - c/2,
-			r = 0, g = 0, b = 0;
-		
-		if (0 <= h && h < 60) {
-			r = c; g = x; b = 0;
-		} else if (60 <= h && h < 120) {
-			r = x; g = c; b = 0;
-		} else if (120 <= h && h < 180) {
-			r = 0; g = c; b = x;
-		} else if (180 <= h && h < 240) {
-			r = 0; g = x; b = c;
-		} else if (240 <= h && h < 300) {
-			r = x; g = 0; b = c;
-		} else if (300 <= h && h < 360) {
-			r = c; g = 0; b = x;
-		}
+    static hsl2RgbStr(hsl: Hsl): string {
+        const h = hsl.h, s = hsl.s / 100, l = hsl.l / 100;
 
-		r = Math.round((r + m) * 255);
-		g = Math.round((g + m) * 255);
-		b = Math.round((b + m) * 255);
+        let c = (1 - Math.abs(2 * l - 1)) * s,
+            x = c * (1 - Math.abs((h / 60) % 2 - 1)),
+            m = l - c/2,
+            r = 0, g = 0, b = 0;
+
+        if (0 <= h && h < 60) {
+            r = c; g = x; b = 0;
+        } else if (60 <= h && h < 120) {
+            r = x; g = c; b = 0;
+        } else if (120 <= h && h < 180) {
+            r = 0; g = c; b = x;
+        } else if (180 <= h && h < 240) {
+            r = 0; g = x; b = c;
+        } else if (240 <= h && h < 300) {
+            r = x; g = 0; b = c;
+        } else if (300 <= h && h < 360) {
+            r = c; g = 0; b = x;
+        }
+
+        r = Math.round((r + m) * 255);
+        g = Math.round((g + m) * 255);
+        b = Math.round((b + m) * 255);
 
         let cToHex = num => {
             const hex = num.toString(16);
@@ -186,7 +196,6 @@ export class ColorPickerDialog implements OnInit {
         };
 
         return `#${cToHex(r)}${cToHex(g)}${cToHex(b)}`;
-		// return "rgb("+ (+r + "," + +g + "," + +b) + ")";
     }
 
     static rgbhex2hsl(rgbHex: string): Hsl

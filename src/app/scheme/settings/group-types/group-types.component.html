@@ -37,14 +37,6 @@
       <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.title" i18n-placeholder="@@SETTINGS.HEADER" placeholder="Заголовок" />
     </mat-form-field>
     <mat-form-field>
-      <mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.code_id" i18n-placeholder="@@SETTINGS.CODE" placeholder="Скрипт">
-        <mat-option i18n="@@SETTINGS.NONE">Не выбран</mat-option>
-        <mat-option *ngFor="let item of this.codes" [value]="item.id">
-          {{item.id}} {{item.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
       <textarea matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.description" i18n-placeholder="@@SETTINGS.DESCRIPTION" placeholder="Описание"></textarea>
     </mat-form-field>    
   </mat-expansion-panel>

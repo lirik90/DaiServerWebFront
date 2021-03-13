@@ -3,9 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { SchemeService } from "../../scheme.service";
 import { Sign_Type } from "../../scheme";
 
-import { ByteTools, WebSocketBytesService } from "../../../web-socket.service";
-
-import { StructType, ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
+import { ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
 
 @Component({
   selector: 'app-sign-types',
@@ -14,10 +12,9 @@ import { StructType, ChangeState, ChangeInfo, ChangeTemplate } from "../settings
 })
 export class SignTypesComponent extends ChangeTemplate<Sign_Type> implements OnInit {
   constructor(
-    wsbService: WebSocketBytesService,
     schemeService: SchemeService,
   ) {
-    super(StructType.Signs, wsbService, schemeService, Sign_Type);
+    super(schemeService, Sign_Type, 'sign_type');
   }
 
   getObjects(): Sign_Type[] {
@@ -26,13 +23,5 @@ export class SignTypesComponent extends ChangeTemplate<Sign_Type> implements OnI
 
   ngOnInit() {
     this.fillItems();
-  }
-
-  saveObject(obj: Sign_Type): Uint8Array {
-    let name = ByteTools.saveQString(obj.name);
-    let view = new Uint8Array(4 + name.length);
-    ByteTools.saveInt32(obj.id, view);
-    view.set(name, 4);
-    return view;
   }
 }

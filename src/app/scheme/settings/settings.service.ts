@@ -3,7 +3,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { SchemeService } from '../scheme.service';
-import { Section, Codes, Plugin_Type, Save_Timer } from '../scheme';
+import { Section, Code_Item, Plugin_Type, Save_Timer } from '../scheme';
 import { PaginatorApi } from "../../user";
 
 @Injectable()
@@ -23,17 +23,12 @@ export class SettingsService {
     return this.hServ.getPiped<PaginatorApi<Save_Timer>>(this.hServ.url('savetimer'), `fetched save timer list`, 'getSaveTimers', {} as PaginatorApi<Save_Timer>);
   }
 
-  getCodes(): Observable<Codes[]> {
-    return this.hServ.getPiped<Codes[]>(this.hServ.url('code_item'), `fetched code list`, 'getCodes', []);
+  getCodes(): Observable<Code_Item[]> {
+    return this.hServ.getPiped<Code_Item[]>(this.hServ.url('code_item'), `fetched code list`, 'getCodes', []);
   }
 
-  getCode(code_id: number): Observable<Codes> {
-    return this.hServ.getPiped<Codes>(this.hServ.url('code_item', code_id), `fetched code ${code_id}`, 'getCode', {} as Codes);
-  }
-
-  updateCode(code: Codes): Observable<any> {
-    const url = this.hServ.url('code_item', code.id);
-    return this.hServ.patchPiped(url, { text: code.text }, `updated code id=${code.id}`, 'updateCode');
+  getCode(code_id: number): Observable<Code_Item> {
+    return this.hServ.getPiped<Code_Item>(this.hServ.url('code_item', code_id), `fetched code ${code_id}`, 'getCode', {} as Code_Item);
   }
 
   getSection(id: number): Observable<Section> {

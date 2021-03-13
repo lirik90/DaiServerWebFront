@@ -1,47 +1,53 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import { Router } from "@angular/router";
+import {Router} from '@angular/router';
 
-import { SchemesService } from '../schemes.service';
+import {SchemesService} from '../schemes.service';
 import {FavService} from '../../fav.service';
 import {TranslateService} from '@ngx-translate/core';
 import {HttpClient} from '@angular/common/http';
 import {SchemesList} from '../schemes-list';
+import {Scheme} from '../../user';
+import {combineLatest, concat} from 'rxjs';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css', '../../sections.css', '../schemes-list.css']
+    selector: 'app-dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.css', '../../sections.css', '../schemes-list.css']
 })
 export class DashboardComponent extends SchemesList implements OnInit, OnDestroy {
-  favschemes: any[];
+    favschemes: Scheme[];
 
-  constructor(
-	  private router: Router,
-	  private schemesService: SchemesService,
-      private favService: FavService,
-      http: HttpClient,
-      translate: TranslateService,
-  ) {
-      super(http, translate);
-  }
+    constructor(
+        private router: Router,
+        private schemesService: SchemesService,
+        private favService: FavService,
+        http: HttpClient,
+        translate: TranslateService,
+    ) {
+        super(http, translate);
+    }
 
-  ngOnInit() {
-    this.getSchemes();
+    ngOnInit() {
+        this.getSchemes();
 
-    this.getFavSchemes();
-  }
+        this.getFavSchemes();
+    }
 
-  getSchemes(): void {
-    this.schemesService.getSchemes(5, 0, '-last_usage')
-      .subscribe(data => {
-          this.schemes = data.results.slice(0, 5);
-          this.getStatuses();
-      });
-  }
+    getSchemes(): void {
+        this.schemesService.getSchemes(5, 0, '-last_usage')
+            .subscribe(data => {
+                this.schemes = data.results.slice(0, 5);
+                this.getStatuses();
+            });
+    }
 
-  getFavSchemes(): void {
-    this.favschemes = this.favService.getFavs();
+    getFavSchemes(): void {
+        this.favschemes = this.favService.getFavs() as Scheme[]; // preloading list from cookies
 
-    console.log(this.favschemes);
-  }
+        const observables = this.favschemes.map(schemeInfo => this.schemesService.getScheme(schemeInfo.name));
+        combineLatest(observables).subscribe(schemes => {
+            this.favschemes = schemes;
+            this.getStatuses(this.favschemes);
+        });
+    }
 }

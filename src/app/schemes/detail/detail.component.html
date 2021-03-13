@@ -1,5 +1,4 @@
 <div *ngIf="scheme">
-    <!--pre>{{scheme | json }}</pre-->
     <h2><span i18n="@@DETAILS.HEAD">Подробнее о проекте</span>: «{{ scheme.title | uppercase }}»</h2>
     <div><span i18n="@@DETAILS.ID">Ид</span>: {{scheme.id}}</div>
     <div><span i18n="@@DETAILS.NAME">Имя</span>:
@@ -12,8 +11,7 @@
     <div><span i18n="@@DETAILS.VERSION">Версия</span>: {{scheme.version}}</div>
     <div>
         <label>
-            <ng-container i18n="@@DETAILS.TITLE">Заголовок</ng-container>
-            :
+            <ng-container i18n="@@DETAILS.TITLE">Заголовок</ng-container>:
             <input [(ngModel)]="scheme.title" placeholder="title">
         </label>
     </div>
@@ -43,7 +41,7 @@
         </label>
     </div>
 
-    <button mat-raised-button>Скопировать все уставки из...</button>
+    <button mat-raised-button i18n="@@DETAILS.COPY_ALL_PARAMS_FROM">Скопировать все уставки из...</button>
 
     <div>
         <app-item-scheme-groups-list

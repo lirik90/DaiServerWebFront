@@ -2,9 +2,8 @@ import { Input, Component, OnInit } from '@angular/core';
 
 import { SchemeService } from "../../scheme.service";
 import { Section, Device_Item_Group, DIG_Type, DIG_Param_Type, DIG_Param } from "../../scheme";
-import { ByteTools, WebSocketBytesService } from "../../../web-socket.service";
 import { SettingsService } from "../settings.service";
-import { StructType, ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
+import { ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
 
 @Component({
   selector: 'app-sections',
@@ -13,11 +12,10 @@ import { StructType, ChangeState, ChangeInfo, ChangeTemplate } from "../settings
 })
 export class SectionsComponent extends ChangeTemplate<Section> implements OnInit {
   constructor(
-    wsbService: WebSocketBytesService,
     schemeService: SchemeService,
     private settingsService: SettingsService,
   ) {
-    super(StructType.Sections, wsbService, schemeService, Section);
+    super(schemeService, Section, 'section');
   }
 
   getObjects(): Section[] {
@@ -34,16 +32,6 @@ export class SectionsComponent extends ChangeTemplate<Section> implements OnInit
       // this.controlService.deleteSection(sct);
     });*/
   }
-
-  saveObject(obj: Section): Uint8Array {
-    let name = ByteTools.saveQString(obj.name);
-    let view = new Uint8Array(12 + name.length);
-    ByteTools.saveInt32(obj.id, view);
-    view.set(name, 4);
-    ByteTools.saveInt32(obj.day_start, view, 4 + name.length);
-    ByteTools.saveInt32(obj.day_end, view, 8 + name.length);
-    return view;
-  }
 }
 
 @Component({
@@ -57,10 +45,9 @@ export class GroupsComponent extends ChangeTemplate<Device_Item_Group> implement
   groupTypes: DIG_Type[];
 
   constructor(
-    wsbService: WebSocketBytesService,
     schemeService: SchemeService,
   ) {
-    super(StructType.Groups, wsbService, schemeService, Device_Item_Group);
+    super(schemeService, Device_Item_Group, 'device_item_group');
   }
 
   getObjects(): Device_Item_Group[] {
@@ -72,7 +59,7 @@ export class GroupsComponent extends ChangeTemplate<Device_Item_Group> implement
     this.fillItems();
   }
 
-  title(item: Device_Item_Group = undefined): string 
+  title(item: Device_Item_Group = undefined): string
   {
     if (item === undefined)
     {
@@ -81,25 +68,9 @@ export class GroupsComponent extends ChangeTemplate<Device_Item_Group> implement
     return item.title ? item.title : (item.type ? item.type.title : '');
   }
 
-  initItem(obj: Device_Item_Group): void 
+  initItem(obj: Device_Item_Group): void
   {
     obj.section_id = this.sct.id;
-  }
-
-  saveObject(obj: Device_Item_Group): Uint8Array 
-  {
-    let title = ByteTools.saveQString(obj.title);
-    let view = new Uint8Array(12 + title.length);
-    let pos = 0;
-
-    obj.section_id = this.sct.id;
-    console.log(obj.section_id);
-    console.log(this.sct);
-    ByteTools.saveInt32(obj.id, view, pos); pos += 4;
-    view.set(title, pos); pos += title.length;
-    ByteTools.saveInt32(obj.section_id, view, pos); pos += 4;
-    ByteTools.saveInt32(obj.type_id, view, pos); pos += 4;
-    return view;
   }
 }
 
@@ -108,46 +79,33 @@ export class GroupsComponent extends ChangeTemplate<Device_Item_Group> implement
   templateUrl: './params-in-group.component.html',
   styleUrls: ['../settings.css', './sections.component.css']
 })
-export class ParamsInGroupComponent extends ChangeTemplate<DIG_Param> implements OnInit 
+export class ParamsInGroupComponent extends ChangeTemplate<DIG_Param> implements OnInit
 {
   @Input() group: Device_Item_Group;
-  
+
   params: DIG_Param_Type[];
 
   constructor(
-    wsbService: WebSocketBytesService,
     schemeService: SchemeService,
   ) {
-    super(StructType.Group_Param, wsbService, schemeService, DIG_Param);
+    super(schemeService, DIG_Param, 'dig_param');
   }
 
-  getObjects(): DIG_Param[] 
-  { 
+  getObjects(): DIG_Param[]
+  {
     return this.group.params;
   }
 
-  ngOnInit() 
+  ngOnInit()
   {
     this.fillItems();
     this.params = this.schemeService.scheme.dig_param_type.filter(obj => obj.group_type_id === this.group.type_id);
   }
 
-  initItem(obj: DIG_Param): void 
+  initItem(obj: DIG_Param): void
   {
     obj.param = new DIG_Param_Type();
     obj.group_id = this.group.id;
-  }
-
-  saveObject(obj: DIG_Param): Uint8Array 
-  {
-    console.log(obj);
-    let view = new Uint8Array(16);
-    let pos = 0;
-    ByteTools.saveInt32(obj.id, view); pos += 4;
-    ByteTools.saveInt32(obj.param.id, view, pos); pos += 4;
-    ByteTools.saveInt32(obj.group_id, view, pos); pos += 4;
-    ByteTools.saveInt32(0, view, pos); pos += 4;
-    return view;
   }
 }
 

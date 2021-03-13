@@ -31,6 +31,12 @@
   margin: 16px 9px;
 }
 
+.chart_conf .user-chart-select {
+    width: 90%;
+    margin: 0 auto;
+    display: block;
+}
+
 .chart_type {
   display: inline-block;
   margin: 0 auto;
@@ -80,4 +86,50 @@ fieldset.chart_type {
 
 ::ng-deep .time-filter .mat-form-field-wrapper {
    margin-bottom: -1.25em;
+}
+
+.legend__item-label {
+    font-size: 12px;
+}
+
+.legend__item-color {
+    display: inline-block;
+    width: 16px;
+    height: 8px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.legend__item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 8px;
+    justify-content: space-between;
+}
+
+.legend__item-axis-modal {
+    display: block;
+    position: absolute;
+    width: 93%;
+    background-color: white;
+    z-index: 9999;
+    left: 0;
+    padding: 3%;
+    border: 1px solid black;
+}
+
+.legend__item-axis-modal div {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 0.3em;
+}
+
+.legend__item-axis-modal input {
+    width: 60%;
+}
+
+.legend__item-label div > * {
+    flex: 1 1;
 }

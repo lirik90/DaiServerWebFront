@@ -1,6 +1,6 @@
-<h1 mat-dialog-title>{{data.chart.name}} {{data.dataset.label}}</h1>
+<h1 mat-dialog-title>{{data.chart_params.name}} {{data.dataset.label}}</h1>
 <div mat-dialog-content>
-  <div class="hue-line"><div [style.background-color]="curColor"></div><canvas id="hueLine" #hueLine height="38" width="800" 
+  <div class="hue-line"><div [style.background-color]="curColor"></div><canvas id="hueLine" #hueLine height="38" width="800"
           (click)="onClick($event)" (mousemove)="onMouseMove($event)" (mouseout)="onMouseOut()"></canvas></div>
 </div>
 <div mat-dialog-actions>

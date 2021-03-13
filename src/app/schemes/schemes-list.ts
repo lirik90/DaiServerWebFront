@@ -50,8 +50,8 @@ export abstract class SchemesList implements OnDestroy {
             .pipe( takeUntil(this.httpReqs) );
     }
 
-    protected getStatuses() {
-        this.schemes.map(h => {
+    protected getStatuses(schemes: Scheme[] = this.schemes) {
+        schemes.map(h => {
             const id = h.parent || h.id;
 
             h.mod_state = false;

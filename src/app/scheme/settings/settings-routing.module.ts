@@ -10,7 +10,7 @@ import { SectionsComponent } from "./sections/sections.component";
 import { GroupTypesComponent } from "./group-types/group-types.component";
 import { DIG_Status_Category_Component } from "./dig-status-category/dig-status-category.component";
 import { SignTypesComponent } from "./sign-types/sign-types.component";
-import { CodesComponent } from "./codes/codes.component";
+import { Code_Item_Component } from "./codes/codes.component";
 import { PluginTypesComponent } from "./plugin-types/plugin-types.component";
 import { SaveTimersComponent } from "./save-timers/save-timers.component";
 
@@ -40,7 +40,7 @@ const settingsRoutes: Routes = [
       { path: 'signtypes', component: SignTypesComponent },
       { path: 'plugin_type', component: PluginTypesComponent },
       { path: 'savetimers', component: SaveTimersComponent },
-      { path: 'codes', component: CodesComponent },
+      { path: 'codes', component: Code_Item_Component },
     ]
   }
 ];

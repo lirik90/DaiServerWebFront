@@ -199,7 +199,7 @@
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="HOME.PANEL" size-unit="pixel" translate="yes" space="default">
 				<source>Избранное</source>
 				<target xml:lang="mn">Дуртай</target>
-				
+
 			<context-group purpose="location"><context context-type="sourcefile">app/app.component.html</context><context context-type="linenumber">21</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/schemes/dashboard/dashboard.component.html</context><context context-type="linenumber">14</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="HOME.SCHEMES" size-unit="pixel" translate="yes" space="default">
 				<source>Список</source>
@@ -228,8 +228,8 @@
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="DASHBOARD.TITLE" size-unit="pixel" translate="yes" space="default">
 				<source>Часто посещаемые проекты</source>
 				<target xml:lang="mn">Хамгийн олон зочилсон төслүүд</target>
-				
-				
+
+
 			<context-group purpose="location"><context context-type="sourcefile">app/schemes/dashboard/dashboard.component.html</context><context context-type="linenumber">3</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="CONTROL.SEARCH" size-unit="pixel" translate="yes" space="default">
 				<source>Поиск</source>
@@ -468,44 +468,44 @@
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="PROFILE.SUCCESS2" size-unit="pixel" translate="yes" space="default">
 				<source>Данные успешно изменены!</source>
 				<target xml:lang="mn">Мэдээлэл амжилттай өөрчлөгдсөн байна!</target>
-				
+
 			<context-group purpose="location"><context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context><context context-type="linenumber">28</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="PROFILE.CHANGE_PASSWORD" size-unit="pixel" translate="yes" space="default">
 				<source>Изменение пароля</source>
 				<target xml:lang="mn">Нууц үгээ солих</target>
-				
+
 			<context-group purpose="location"><context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context><context context-type="linenumber">36</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="PROFILE.OLD_PASSWORD" size-unit="pixel" translate="yes" space="default">
 				<source>Введите текущий пароль:</source>
 				<target xml:lang="mn">Одоогийн нууц үгээ оруулна уу:</target>
-				
+
 			<context-group purpose="location"><context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context><context context-type="linenumber">40</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="PROFILE.NEW_PASSWORD" size-unit="pixel" translate="yes" space="default">
 				<source>Введите новый пароль:</source>
 				<target xml:lang="mn">Шинэ нууц үг оруулна уу:</target>
-				
+
 			<context-group purpose="location"><context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context><context context-type="linenumber">48</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="PROFILE.CONFIRM_PASSWORD" size-unit="pixel" translate="yes" space="default">
 				<source>Введите новый пароль ещё раз:</source>
 				<target xml:lang="mn">Нууц үгийг дахин оруулна уу:</target>
-				
+
 			<context-group purpose="location"><context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context><context context-type="linenumber">56</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="PROFILE.MISMATCH" size-unit="pixel" translate="yes" space="default">
 				<source>
           Данные не соответствуют
         </source>
 				<target xml:lang="mn">          Мэдээлэл таарахгүй байна        </target>
-				
+
 			<context-group purpose="location"><context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context><context context-type="linenumber">58</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="PROFILE.SEUUCESS" size-unit="pixel" translate="yes" space="default">
 				<source>Пароль успешно изменён!</source>
 				<target xml:lang="mn">Нууц үг амжилттай солигдлоо</target>
-				
+
 			<context-group purpose="location"><context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context><context context-type="linenumber">63</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="PROFILE.PASSWORD_CHANGE_BTN" size-unit="pixel" translate="yes" space="default">
 				<source>Изменить пароль</source>
 				<target xml:lang="mn">Нууц үгээ солих</target>
-				
+
 			<context-group purpose="location"><context context-type="sourcefile">app/user-settings/user-details/user-details.component.html</context><context context-type="linenumber">64</context></context-group></trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="CONTROL.NO" size-unit="pixel" translate="yes" space="default">
 				<source>Нет</source>
@@ -640,32 +640,24 @@
 				</context-group>
 			</trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="REPORTS.CHARTS.DECOMPOSE" size-unit="pixel" translate="yes" space="default">
-				<source>Разложить</source>
-				<target xml:lang="mn">Бууруулах</target>
+				<source>График</source>
+				<target xml:lang="mn">Хуваарь</target>
 				<context-group purpose="location">
 					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">23</context>
 				</context-group>
 			</trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="REPORTS.CHARTS.DECOMPOSE_BY_GROUPS" size-unit="pixel" translate="yes" space="default">
-				<source>По группам элементов</source>
-				<target xml:lang="mn">Зүйлийн бүлгээр</target>
+				<source>Группы элементов</source>
+				<target xml:lang="mn">Элементүүдийн бүлэг</target>
 				<context-group purpose="location">
 					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">25</context>
 				</context-group>
 			</trans-unit>
-			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="REPORTS.CHARTS.DECOMPOSE_BY_TYPES" size-unit="pixel" translate="yes" space="default">
-				<source>По типам элементов</source>
-				<target xml:lang="mn">Зүйлийн төрөл</target>
-				<context-group purpose="location">
-					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
-					<context match-mandatory="no" context-type="linenumber">26</context>
-				</context-group>
-			</trans-unit>
 			<trans-unit reformat="yes" datatype="html" merged-trans="yes" id="REPORTS.CHARTS.DECOMPOSE_BY_ITEMS" size-unit="pixel" translate="yes" space="default">
-				<source>По элементам</source>
-				<target xml:lang="mn">Зүйлээр</target>
+				<source>Элементы</source>
+				<target xml:lang="mn">Элементүүд</target>
 				<context-group purpose="location">
 					<context match-mandatory="no" context-type="sourcefile">app/scheme/reports/charts/charts.component.html</context>
 					<context match-mandatory="no" context-type="linenumber">27</context>
