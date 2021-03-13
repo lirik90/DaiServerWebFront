@@ -1,18 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
-import { SchemeService } from '../scheme.service';
-import { Section, Code_Item, Plugin_Type, Save_Timer } from '../scheme';
-import { PaginatorApi } from "../../user";
+import { SchemeService } from './scheme.service';
+import {Section, Code_Item, Plugin_Type, Save_Timer, Translation, Value_View_Detail} from './scheme';
+import { PaginatorApi } from "../user";
+import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class SettingsService {
   private readonly sct_s: string = 'section/';
 
   constructor(
-    private hServ: SchemeService
+    private hServ: SchemeService,
+    private http: HttpClient,
   ) {}
+
+  getTranslations(): Observable<Translation[]> {
+      return this.http.get<Translation[]>(`/api/v2/scheme/${this.hServ.scheme.id}/structure/translation/`);
+  }
+
+  getValueViewsDetail(): Observable<Value_View_Detail[]> {
+      return this.http.get<Value_View_Detail[]>(`/api/v2/scheme/${this.hServ.scheme.id}/structure/value_view/`);
+  }
 
   getPluginTypes(): Observable<PaginatorApi<Plugin_Type>> {
     const url = this.hServ.url('plugin');

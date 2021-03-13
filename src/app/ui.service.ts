@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {BreakpointObserver, BreakpointState} from '@angular/cdk/layout';
 import {Observable} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {ConfirmationDialogComponent} from './confirmation-dialog/confirmation-dialog.component';
 
 @Injectable()
 export class UIService {
@@ -10,7 +12,8 @@ export class UIService {
   lang = 'ru';
 
   constructor(
-    public breakpointObserver: BreakpointObserver
+    public breakpointObserver: BreakpointObserver,
+    private dialog: MatDialog,
   ) { }
 
   get scrollTop(): number {
@@ -44,5 +47,10 @@ export class UIService {
 
   setCurLang(l: string) {
     this.lang = l;
+  }
+
+  confirmationDialog(text?: string): Observable<boolean> {
+      return this.dialog.open(ConfirmationDialogComponent, { data: { text } })
+          .afterClosed();
   }
 }

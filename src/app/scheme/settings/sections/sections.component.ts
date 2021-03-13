@@ -1,9 +1,9 @@
-import { Input, Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
-import { SchemeService } from "../../scheme.service";
-import { Section, Device_Item_Group, DIG_Type, DIG_Param_Type, DIG_Param } from "../../scheme";
-import { SettingsService } from "../settings.service";
-import { ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
+import {SchemeService} from '../../scheme.service';
+import {Device_Item_Group, DIG_Param, DIG_Param_Type, DIG_Type, Section} from '../../scheme';
+import {SettingsService} from '../../settings.service';
+import {ChangeTemplate, Structure_Type} from '../settings';
 
 @Component({
   selector: 'app-sections',
@@ -15,7 +15,7 @@ export class SectionsComponent extends ChangeTemplate<Section> implements OnInit
     schemeService: SchemeService,
     private settingsService: SettingsService,
   ) {
-    super(schemeService, Section, 'section');
+    super(schemeService, Section, Structure_Type.ST_SECTION);
   }
 
   getObjects(): Section[] {
@@ -47,7 +47,7 @@ export class GroupsComponent extends ChangeTemplate<Device_Item_Group> implement
   constructor(
     schemeService: SchemeService,
   ) {
-    super(schemeService, Device_Item_Group, 'device_item_group');
+    super(schemeService, Device_Item_Group, Structure_Type.ST_DEVICE_ITEM_GROUP);
   }
 
   getObjects(): Device_Item_Group[] {
@@ -88,7 +88,7 @@ export class ParamsInGroupComponent extends ChangeTemplate<DIG_Param> implements
   constructor(
     schemeService: SchemeService,
   ) {
-    super(schemeService, DIG_Param, 'dig_param');
+    super(schemeService, DIG_Param, Structure_Type.ST_DIG_PARAM);
   }
 
   getObjects(): DIG_Param[]

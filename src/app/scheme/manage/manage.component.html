@@ -1,10 +1,14 @@
-<h2 i18n="@@MANAGEMENT.TITLE">Управление схемой</h2>
-
+<h2>
+    <span i18n="@@MANAGEMENT.TITLE">Управление схемой</span>
+    <button *ngIf="isAdmin" mat-icon-button (click)="isEditorModeEnabled = !isEditorModeEnabled"><mat-icon>edit</mat-icon></button>
+</h2>
 <div class="grid grid-pad"
-    [class.disabled-box]="isDisabled()">
+     [class.editor-mode]="isEditorModeEnabled"
+     [class.disabled-box]="isDisabled()">
   <ng-container *ngFor="let sct of sections">
-    <div *ngIf="sct.groups.length" class="col-1-3">
-      <app-scheme-section [title]="sct.name" [forceExpand]="currentSection === sct.id">
+    <div class="col-1-3">
+      <app-scheme-section [enableEditor]="isEditorModeEnabled" [title]="sct.name" [forceExpand]="currentSection === sct.id"
+                          (edit)="editSection(sct)" (remove)="removeSection(sct)">
         <div
           class="module scheme eqTable"
           [class.sct-1]="sctCount === 1"
@@ -12,10 +16,10 @@
           >
           <div *ngFor="let group of sct.groups">
             <div class="dig"
-                 [ngStyle]="{'border-color': group.status_info.color}">
+                 [ngStyle]="{'border-color': group.status_info?.color}">
               <div class="dig-header">
                 <div class="invisible-anchor" id="scheme-group-{{group.id}}" ></div>
-                <a (click)="openParamsDialog(group.id)" *ngIf="group.params.length !== 0">
+                <a (click)="openParamsDialog(group.id)"><!--  *ngIf="group.params.length !== 0" -->
                   <h4>{{group.title ? group.title : group.type.title}}</h4>
                 </a>
                 <h4 *ngIf="group.params.length === 0">{{group.title ? group.title : group.type.title}}</h4>
@@ -30,23 +34,33 @@
                   </mat-select>
                 </mat-form-field>
               </div>
+              <div class="dig-header-buttons hidden-buttons">
+                <button mat-icon-button (click)="editGroup(group)"><mat-icon>edit</mat-icon></button>
+                <button mat-icon-button (click)="removeGroup(group)"><mat-icon>delete</mat-icon></button>
+              </div>
 
-              <div *ngFor="let item of group.items">
-                <span [ngStyle]="{'border-color': group.status_info.color}">
+              <div *ngFor="let item of group.items" class="device-item">
+                <span class="hidden-buttons">
+                  <button mat-icon-button (click)="editItem(item)"><mat-icon>edit</mat-icon></button>
+                  <button mat-icon-button (click)="removeItem(item)"><mat-icon>delete</mat-icon></button>
+                </span>
+                <span [ngStyle]="{'border-color': group.status_info?.color}" class="title">
                   {{item.name || item.type.title}}
                 </span>
-                <span (click)="itemValue.openDialog()">
+                <span (click)="itemValue.openDialog()" class="value">
                   <div [style.display]="'none'">{{item.type.name}}</div>
                   <app-dev-item-value #itemValue [item]="item"></app-dev-item-value>
                 </span>
               </div>
+              <button class="hidden-buttons" mat-raised-button (click)="newItem(group)" i18n="@@MANAGEMENT.ADD_ITEM">Добавить элемент</button>
             </div>
           </div>
+          <button class="hidden-buttons" mat-raised-button (click)="newGroup(sct)" i18n="@@MANAGEMENT.ADD_GROUP">Добавить группу</button>
         </div>
       </app-scheme-section>
     </div>
   </ng-container>
 </div>
-
+<button *ngIf="isEditorModeEnabled" mat-flat-button (click)="newSection()" i18n="@@MANAGEMENT.ADD_SECTION">Добавить секцию</button>
 <button *ngIf="isAdmin" mat-flat-button (click)="restart()" class="reboot-btn"><mat-icon>replay</mat-icon><span class="reboot-btn__label" i18n="@@RESTART">Перезагрузить ПО</span></button>
 

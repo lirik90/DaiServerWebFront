@@ -1,0 +1,24 @@
+<h2 i18n="@@SCHEME_DIALOGS.DEVICE.HEADER">Устройство</h2>
+<form [formGroup]="fg" (ngSubmit)="submit()">
+    <mat-form-field>
+        <mat-label i18n="@@SETTINGS.NAME">Имя</mat-label>
+        <input type="text" matInput formControlName="name">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label i18n="@@SETTINGS.PLUGIN">Плагин</mat-label>
+        <mat-select formControlName="plugin_id">
+            <mat-option *ngFor="let plugin of plugins" [value]="plugin.id">{{ plugin.name }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label i18n="@@SETTINGS.INTERVAL">Интервал проверки (мс)</mat-label>
+        <input type="number" formControlName="check_interval" matInput>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label i18n="@@SETTINGS.EXTRA">Экстра</mat-label>
+        <input type="text" formControlName="extra" matInput>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" i18n="@@CONTROL.SAVE">Cохранить</button>
+    <button mat-raised-button type="button" i18n="@@CONTROL.CANCEL" (click)="cancel()">Отмена</button>
+</form>

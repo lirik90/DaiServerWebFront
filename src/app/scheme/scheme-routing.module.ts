@@ -17,6 +17,8 @@ import { DocCommand } from '@angular/cli/commands/doc-impl';
 import { DocComponent } from './doc/doc.component';
 import { Log2Component } from './log2/log2.component';
 import { Manage2Component } from './manage2/manage2.component';
+import {ElementsComponent} from './elements/elements.component';
+import {ManageDevicesComponent} from './manage-devices/manage-devices.component';
 
 const schemeRoutes: Routes = [
   {
@@ -31,7 +33,17 @@ const schemeRoutes: Routes = [
         children: [
           { path: '', redirectTo: 'detail', pathMatch: 'full' },
           { path: 'detail', component: SchemeDetailComponent, data: { req_perms: true }},
-          { path: 'elements', component: ManageComponent, data: { req_perms: true }},
+          { path: 'elements', component: ElementsComponent, data: { req_perms: true }, children: [
+                  {
+                      path: 'sections', component: ManageComponent,
+                  },
+                  {
+                      path: 'devices', component: ManageDevicesComponent,
+                  },
+                  {
+                      path: '', pathMatch: 'full', redirectTo: 'sections',
+                  },
+          ]},
           { path: 'log_event', component: LogComponent, data: { req_perms: true }},
           { path: 'log_value', component: Log2Component, data: { req_perms: true }},
           { path: 'help', component: DocComponent, data: { req_perms: true }},

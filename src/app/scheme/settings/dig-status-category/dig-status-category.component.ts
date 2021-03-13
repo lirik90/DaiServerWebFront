@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { SchemeService } from "../../scheme.service";
-import { DIG_Status_Category } from "../../scheme";
+import {SchemeService} from '../../scheme.service';
+import {DIG_Status_Category} from '../../scheme';
 
-import { ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
+import {ChangeTemplate, Structure_Type} from '../settings';
 
 @Component({
   selector: 'app-dig-status-category',
@@ -14,7 +14,7 @@ export class DIG_Status_Category_Component extends ChangeTemplate<DIG_Status_Cat
   constructor(
     schemeService: SchemeService,
   ) {
-    super(schemeService, DIG_Status_Category, 'dig_status_category');
+    super(schemeService, DIG_Status_Category, Structure_Type.ST_DIG_STATUS_CATEGORY);
   }
 
   getObjects(): DIG_Status_Category[] {

@@ -1,9 +1,9 @@
 <ng-container *ngIf="group">
-  <h2><span i18n="@@PARAMS.TITLE">Параметры</span>: {{sct.name}} - {{group.type.title}}</h2>
+  <h2><span i18n="@@PARAMS.TITLE">Параметры</span> {{sct.name}} - {{group.type.title}}</h2>
   <p *ngIf="description">{{group.type.description}}</p>
 
   <form class="example-form" (ngSubmit)="onSubmit()" (keydown.enter)="onEnter($event)" #paramForm="ngForm">
-    <app-param-item [values]="group.params" [changed]="changed_values"></app-param-item>
+    <app-param-item [groupTypeId]="group.type_id" [groupId]="group.id" [editorModeEnabled]="isEditorModeEnabled" [values]="group.params" [changed]="changed_values"></app-param-item>
 
     <button type="submit"
             mat-raised-button
@@ -21,6 +21,5 @@
         </ng-template>
     </button>
     <button type="button" mat-raised-button class="custom_button" (click)="close()" i18n="@@CONTROL.BACK">Назад</button>
-
   </form>
 </ng-container>
