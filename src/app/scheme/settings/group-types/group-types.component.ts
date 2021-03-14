@@ -6,6 +6,7 @@ import {Device_Item_Type, DIG_Param_Type, DIG_Status_Type, DIG_Type, Save_Timer,
 import {ChangeTemplate, Structure_Type} from '../settings';
 
 import {SettingsService} from '../../settings.service';
+import {UIService} from '../../../ui.service';
 
 @Component({
   selector: 'app-group-types',
@@ -17,8 +18,9 @@ export class GroupTypesComponent extends ChangeTemplate<DIG_Type> implements OnI
   constructor(
     schemeService: SchemeService,
     private settingsService: SettingsService,
+    ui: UIService,
   ) {
-    super(schemeService, DIG_Type, Structure_Type.ST_DIG_TYPE);
+    super(schemeService, DIG_Type, Structure_Type.ST_DIG_TYPE, ui);
   }
 
   getObjects(): DIG_Type[] {
@@ -43,9 +45,10 @@ export class ItemTypesComponent extends ChangeTemplate<Device_Item_Type> impleme
 
   constructor(
     schemeService: SchemeService,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+    ui: UIService,
   ) {
-    super(schemeService, Device_Item_Type, Structure_Type.ST_DEVICE_ITEM_TYPE);
+    super(schemeService, Device_Item_Type, Structure_Type.ST_DEVICE_ITEM_TYPE, ui);
   }
 
   ngOnChanges() {
@@ -81,8 +84,9 @@ export class ParamTypesComponent extends ChangeTemplate<DIG_Param_Type> implemen
 
   constructor(
     schemeService: SchemeService,
+    ui: UIService,
   ) {
-    super(schemeService, DIG_Param_Type, Structure_Type.ST_DIG_PARAM_TYPE);
+    super(schemeService, DIG_Param_Type, Structure_Type.ST_DIG_PARAM_TYPE, ui);
   }
 
   getObjects(): DIG_Param_Type[] {
@@ -110,8 +114,9 @@ export class StatusesComponent extends ChangeTemplate<DIG_Status_Type> implement
 
   constructor(
     schemeService: SchemeService,
+    ui: UIService,
   ) {
-    super(schemeService, DIG_Status_Type, Structure_Type.ST_DIG_STATUS_TYPE);
+    super(schemeService, DIG_Status_Type, Structure_Type.ST_DIG_STATUS_TYPE, ui);
   }
 
   getObjects(): DIG_Status_Type[] {

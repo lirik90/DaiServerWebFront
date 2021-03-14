@@ -7,6 +7,7 @@ import {ChangeInfo, ChangeTemplate, Structure_Type} from '../settings';
 import {SettingsService} from '../../settings.service';
 
 import {MetadataService} from './services/metadata.service';
+import {UIService} from '../../../ui.service';
 
 @Component({
   selector: 'app-codes',
@@ -24,9 +25,10 @@ export class Code_Item_Component extends ChangeTemplate<Code_Item> implements On
   constructor(
     schemeService: SchemeService,
     private settingsService: SettingsService,
-      private metadataService: MetadataService
+    private metadataService: MetadataService,
+    ui: UIService,
   ) {
-    super(schemeService, Code_Item, Structure_Type.ST_CODE_ITEM);
+    super(schemeService, Code_Item, Structure_Type.ST_CODE_ITEM, ui);
   }
 
   getObjects(): Code_Item[] {
