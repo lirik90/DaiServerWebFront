@@ -21,7 +21,8 @@
         <div class="help-block" i18n="@@LOGIN.PASSWORD_CONFIRM_HINT" *ngIf="fg.controls.passwordConfirm.touched && fg.controls.passwordConfirm.errors?.required">Пароль нужно ввести обязательно</div>
     </div>
     <div class="form-group">
-        <re-captcha formControlName="reCaptcha" [siteKey]="recaptchaSiteKey"></re-captcha>
+        <img [src]="captcha" alt="Loading...">
+        <input formControlName="captcha" placeholder="Введите текст с картинки">
     </div>
     <div class="help-block" i18n="@@LOGIN.PASSWORDS_EQUAL_HINT" *ngIf="fg.errors?.passwordsEqual">Пароли должны быть одинаковы</div>
     <div class="submit-wrapper">

@@ -7,22 +7,16 @@
 
       <div>
         <mat-form-field>
-          <label for="full-name" i18n="@@PROFILE.FIRST_NAME">Полное имя:</label> <input matInput id="full-name" type="text" formControlName="full_name">
+          <label for="first-name" i18n="@@PROFILE.FIRST_NAME">Имя:</label> <input matInput id="first-name" type="text" formControlName="first_name">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <label for="last-name" i18n="@@PROFILE.LAST_NAME">Фамилия:</label> <input matInput id="last-name" type="text" formControlName="last_name">
         </mat-form-field>
         <mat-form-field>
           <label for="phone_number" i18n="@@PROFILE.PHONE">Телефон:</label>
           <input matInput id="phone_number" type="text" formControlName="phone_number" [textMask]="{mask: phonemask, guide: true, showMask: true}">
-        </mat-form-field>
-        <div>
-            <label i18n="@@PROFILE.GENDER">Пол:</label>
-            <mat-radio-group formControlName="gender">
-                <mat-radio-button class="gender-radio-item" [value]="Genders.MALE" i18n="@@PROFILE.GENDERS.MALE">Мужской</mat-radio-button>
-                <mat-radio-button class="gender-radio-item" [value]="Genders.FEMALE" i18n="@@PROFILE.GENDERS.FEMALE">Женский</mat-radio-button>
-            </mat-radio-group>
-        </div>
-        <mat-form-field>
-            <label for="ageInput" i18n="@@PROFILE.AGE">Возраст:</label>
-            <input matInput type="number" formControlName="age" id="ageInput">
         </mat-form-field>
       </div>
       <!--div>

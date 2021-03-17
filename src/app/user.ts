@@ -14,21 +14,15 @@ export class Auth_Group extends Named_Object {}
 export class Scheme_Group extends Named_Object {}
 export class Scheme_Group_Member extends Named_Object {}
 
-export enum Genders {
-    MALE = 'male',
-    FEMALE = 'female',
-}
-
 export class User {
     id: number;
     username: string;
     password: string;
-    full_name: string;
-    gender: Genders;
-    age: number;
+    first_name: string;
+    last_name: string;
     email: string;
-    token: string;         // Ключ сессии
-    permissions: string[]; // Разрешения доступные пользователю
+    token: string;        // Ключ сессии
+    permissions: string[];// Разрешения доступные пользователю
     phone_number: string;
 }
 

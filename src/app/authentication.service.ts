@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 import {BehaviorSubject, of} from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
 
 import { User } from './user';
@@ -139,8 +139,16 @@ export class AuthenticationService {
   }
 
   needCaptchaOnLogin(): Observable<boolean> {
-      return of(true); // TODO: replace with real request to backend
+      return this.http.head<any>('/api/v2/auth/captcha/').pipe(
+          switchMap(() => of(true)),
+          catchError(() => of(false))
+      );
   }
+
+    getCaptcha(force: boolean = false): Observable<any> {
+        const url = `/api/v2/auth/captcha/?force=${force}`;
+        return this.http.get(url, { responseType: 'blob' });
+    }
 
   logout() {
     // remove user from local storage to log user out

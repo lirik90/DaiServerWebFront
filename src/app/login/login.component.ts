@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { MessageService } from '../message.service';
 import { AuthenticationService } from '../authentication.service';
-import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -11,14 +10,13 @@ import {environment} from '../../environments/environment';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  readonly recaptchaSiteKey = environment.googleRecaptchaSiteKey;
-
   model: any = {};
-  loading = false;
+  loading = true;
   returnUrl: string;
 
   badPassword = false;
   enableCaptcha = false;
+    captcha: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,7 +33,23 @@ export class LoginComponent implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
     this.authenticationService.needCaptchaOnLogin()
-        .subscribe(needCaptcha => this.enableCaptcha = needCaptcha);
+        .subscribe(needCaptcha => {
+            this.enableCaptcha = needCaptcha;
+
+            if (needCaptcha) {
+                this.authenticationService.getCaptcha()
+                    .subscribe(img => {
+                        this.captcha = img;
+                        this.loading = false;
+                    }, () => {
+                        this.enableCaptcha = false;
+                        this.loading = false;
+                    });
+            }
+            else {
+                this.loading = false;
+            }
+        });
   }
 
   login(): void {

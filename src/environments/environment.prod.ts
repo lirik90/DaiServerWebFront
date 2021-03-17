@@ -1,4 +1,3 @@
 export const environment = {
-    googleRecaptchaSiteKey: '',
-    production: true,
+  production: true
 };

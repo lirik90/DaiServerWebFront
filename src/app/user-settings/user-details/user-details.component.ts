@@ -9,7 +9,6 @@ import {of} from 'rxjs';
 import {ISchemeService} from '../../ischeme.service';
 import {AuthenticationService} from '../../authentication.service';
 import {ActivatedRoute} from '@angular/router';
-import {Genders} from '../../user';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -21,8 +20,6 @@ const httpOptions = {
   styleUrls: ['./user-details.component.css']
 })
 export class UserDetailsComponent implements OnInit {
-  readonly Genders = Genders;
-
   currentUser: any;
 
   changePasswordGroup: FormGroup;
@@ -54,11 +51,10 @@ export class UserDetailsComponent implements OnInit {
     }, {validator: this.confirmValidator});
 
     this.changeUserDetailsGroup = this.formBuilder.group({
-      full_name: [this.authService.currentUser.full_name],
+      first_name: [this.authService.currentUser.first_name],
+      last_name: [this.authService.currentUser.last_name],
       phone_number: [this.authService.currentUser.phone_number || '',
-        [Validators.required, Validators.pattern('\\+7\\(\\d{3}\\)\\d{3}-\\d{2}-\\d{2}')]],
-      gender: [this.authService.currentUser.gender, [Validators.required]],
-      age: [this.authService.currentUser.age, [Validators.required, Validators.min(1)]],
+        [Validators.required, Validators.pattern('\\+7\\(\\d{3}\\)\\d{3}-\\d{2}-\\d{2}')]]
       // email: [{value: this.authService.currentUser.email, disabled: true}],
     });
   }

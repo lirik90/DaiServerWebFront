@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 
-import {environment} from '../../environments/environment';
 import {MessageService} from '../message.service';
 import {AuthenticationService} from '../authentication.service';
 
@@ -12,20 +11,20 @@ import {AuthenticationService} from '../authentication.service';
     styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-    readonly recaptchaSiteKey = environment.googleRecaptchaSiteKey;
-
     fg: FormGroup = this.fb.group({
         'username': ['', [ Validators.required ]],
         'email': ['', [ Validators.email ]],
         'password': ['', [ Validators.required, Validators.minLength(8) ]],
         'passwordConfirm': ['', [ Validators.required ]],
-        'reCaptcha': ['', [ Validators.required ]],
+        'captcha': ['', [ Validators.required ]],
     }, {
         validators: [ this.passwordsEqual() ]
     });
 
     model: any = {};
     loading = false;
+
+    captcha: string;
 
     constructor(
         private router: Router,
@@ -37,6 +36,8 @@ export class RegisterComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.authService.getCaptcha(true)
+            .subscribe(img => this.captcha = img, () => this.captcha = 'Error');
     }
 
     register(): void {
