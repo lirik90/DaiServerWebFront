@@ -1,11 +1,12 @@
 import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Device, Plugin_Type} from '../../scheme';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {SettingsService} from '../../settings.service';
 import {SchemeService} from '../../scheme.service';
 import {Structure_Type} from '../../settings/settings';
 import {DetailDialog} from '../detail-dialog';
+import {PluginDetailDialogComponent} from '../plugin-detail-dialog/plugin-detail-dialog.component';
 
 @Component({
     selector: 'app-device-detail-dialog',
@@ -19,6 +20,7 @@ export class DeviceDetailDialogComponent extends DetailDialog<Device, DeviceDeta
         fb: FormBuilder,
         @Inject(MAT_DIALOG_DATA) dev: Device,
         dialogRef: MatDialogRef<DeviceDetailDialogComponent>,
+        private dialog: MatDialog,
         settingsService: SettingsService,
         schemeService: SchemeService,
     ) {
@@ -44,5 +46,13 @@ export class DeviceDetailDialogComponent extends DetailDialog<Device, DeviceDeta
             ...formValue,
             items: [],
         };
+    }
+
+    newPlugin() {
+        this.dialog.open(PluginDetailDialogComponent, { width: '80%' })
+            .afterClosed()
+            .subscribe((pluginType: Plugin_Type) => {
+                this.plugins.push(pluginType);
+            });
     }
 }

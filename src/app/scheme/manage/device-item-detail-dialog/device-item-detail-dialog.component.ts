@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Device, Device_Item, Device_Item_Group, Device_Item_Type} from '../../scheme';
+import {Device, Device_Item, Device_Item_Group, Device_Item_Type, Plugin_Type} from '../../scheme';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {SchemeService} from '../../scheme.service';
 import {Structure_Type} from '../../settings/settings';
@@ -8,6 +8,7 @@ import {DetailDialog} from '../detail-dialog';
 import {DeviceDetailDialogComponent} from '../device-detail-dialog/device-detail-dialog.component';
 import {DeviceItemTypeDetailDialogComponent} from '../device-item-type-detail-dialog/device-item-type-detail-dialog.component';
 import {DeviceItemGroupDetailDialogComponent} from '../device-item-group-detail-dialog/device-item-group-detail-dialog.component';
+import {PluginDetailDialogComponent} from '../plugin-detail-dialog/plugin-detail-dialog.component';
 
 export type Device_Item_Details = Pick<Device_Item, "name" | "device_id" | "type_id" | "extra" | "parent_id">;
 
