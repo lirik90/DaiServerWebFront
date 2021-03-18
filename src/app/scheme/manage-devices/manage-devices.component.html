@@ -1,8 +1,10 @@
 <h2>
     <span i18n="@@DEVICE_MANAGEMENT.TITLE">Управление устройствами</span>
-    <button *ngIf="isAdmin" mat-icon-button (click)="isEditorModeEnabled = !isEditorModeEnabled"><mat-icon>edit</mat-icon></button>
+    <mat-slide-toggle [(ngModel)]="isEditorModeEnabled" *ngIf="isAdmin">
+        <mat-icon [class.enabled]="isEditorModeEnabled">edit</mat-icon>
+    </mat-slide-toggle>
 </h2>
-<div class="grid grid-pad" [class.editor-mode]="isEditorModeEnabled">
+<div class="grid grid-pad" [class.editor-mode]="isEditorModeEnabled" [class.disabled-box]="isDisabled()">
     <div class="col-1-3">
         <app-scheme-section [title]="'&nbsp;'">
             <div class="module scheme eqTable sct-1">

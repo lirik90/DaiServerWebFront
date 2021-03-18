@@ -32,6 +32,10 @@ export class ManageDevicesComponent implements OnInit, NeedSidebar {
         this.devices = this.schemeService.scheme.device;
     }
 
+    isDisabled(): boolean {
+        return !this.schemeService.isSchemeConnected;
+    }
+
     ngOnInit(): void {
     }
 

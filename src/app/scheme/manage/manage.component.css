@@ -1,4 +1,8 @@
 /* ManageComponent's private CSS styles */
+:host {
+    font-size: 0.8rem;
+}
+
 h2 {
     margin-left: 8px;
     display: flex;
@@ -95,9 +99,19 @@ h4 {
     top: 0;
 }
 
+.dig-header-buttons button {
+    width: 30px;
+}
+
 .hidden-buttons {
     opacity: 0;
     visibility: hidden;
+}
+
+.device-item .hidden-buttons {
+    position: absolute;
+    right: 0;
+    line-height: 0.8rem;
 }
 
 .editor-mode div.scheme:hover > .hidden-buttons,
@@ -243,3 +257,6 @@ app-dev-item-value {
     color: white;
 }
 
+.enabled {
+    color: green;
+}
