@@ -145,7 +145,9 @@ export class ControlService {
         }
       } else if (msg.cmd == WebSockCmd.WS_CHANGE_GROUP_PARAM_VALUES) {
         const set_param_impl = (group: Device_Item_Group, prm_id: number, value: string) => {
-            const param = group?.params?.find(param => param.id === prm_id);
+            const param = group?.params?.find(param => param.id === prm_id)
+                || group?.params?.reduce((prev, curr) => prev.concat(curr.childs), [])
+                    .find(param => param.id == prm_id);
             if (!param) { return false; }
             param.value = value;
             return true;
@@ -167,7 +169,10 @@ export class ControlService {
             }
           }
         };
-        const get_param_from_last_group = (prm_id: number) => last_group.params.find(param => param.id === prm_id);
+        const get_param_from_last_group = (prm_id: number) =>
+            last_group.params.find(param => param.id === prm_id)
+            || last_group.params.reduce((p, c) => p.concat(c.childs), [])
+                .find(param => param.id === prm_id);
 
         const view = new Uint8Array(msg.data);
         let [idx, count] = ByteTools.parseUInt32(view);
