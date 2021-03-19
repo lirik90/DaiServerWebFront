@@ -4,14 +4,16 @@
         <mat-label i18n="@@SCHEME_DIALOGS.DEVICE_ITEM_GROUP.TITLE">Название</mat-label>
         <input type="text" matInput formControlName="title">
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field class="with-link">
         <mat-label i18n="@@SCHEME_DIALOGS.DEVICE_ITEM_GROUP.TYPE">Тип группы</mat-label>
         <mat-select formControlName="type_id">
             <mat-option><span i18n="@@CONTROL.NO">Нет</span></mat-option>
             <mat-option *ngFor="let groupType of groupTypes" [value]="groupType.id">{{ groupType.title }}</mat-option>
         </mat-select>
+        <mat-hint>
+            <a href="#" (click)="$event.preventDefault();newGroupType()"><small i18n="@@SCHEME_DIALOGS.ADD_NEW">Добавить новый(ую)</small></a>
+        </mat-hint>
     </mat-form-field>
-    <a href="#" (click)="$event.preventDefault();newGroupType()"><small i18n="@@SCHEME_DIALOGS.ADD_NEW">Добавить новый(ую)</small></a>
 
     <div class="buttons">
         <button mat-raised-button color="primary" type="submit" i18n="@@CONTROL.SAVE">Cохранить</button>

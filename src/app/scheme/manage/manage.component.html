@@ -1,6 +1,8 @@
 <h2>
     <span i18n="@@MANAGEMENT.TITLE">Управление схемой</span>
-    <button *ngIf="isAdmin" mat-icon-button (click)="isEditorModeEnabled = !isEditorModeEnabled"><mat-icon>edit</mat-icon></button>
+    <mat-slide-toggle [(ngModel)]="isEditorModeEnabled" *ngIf="isAdmin">
+        <mat-icon [class.enabled]="isEditorModeEnabled">edit</mat-icon>
+    </mat-slide-toggle>
 </h2>
 <div class="grid grid-pad"
      [class.editor-mode]="isEditorModeEnabled"
@@ -40,16 +42,16 @@
               </div>
 
               <div *ngFor="let item of group.items" class="device-item">
-                <span class="hidden-buttons">
-                  <button mat-icon-button (click)="editItem(item)"><mat-icon>edit</mat-icon></button>
-                  <button mat-icon-button (click)="removeItem(item)"><mat-icon>delete</mat-icon></button>
-                </span>
                 <span [ngStyle]="{'border-color': group.status_info?.color}" class="title">
                   {{item.name || item.type.title}}
                 </span>
                 <span (click)="itemValue.openDialog()" class="value">
                   <div [style.display]="'none'">{{item.type.name}}</div>
                   <app-dev-item-value #itemValue [item]="item"></app-dev-item-value>
+                </span>
+                <span class="hidden-buttons">
+                  <button mat-icon-button (click)="editItem(item)"><mat-icon>edit</mat-icon></button>
+                  <button mat-icon-button (click)="removeItem(item)"><mat-icon>delete</mat-icon></button>
                 </span>
               </div>
               <button class="hidden-buttons" mat-raised-button (click)="newItem(group)" i18n="@@MANAGEMENT.ADD_ITEM">Добавить элемент</button>

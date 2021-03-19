@@ -6,3 +6,8 @@
 .col-1-3 {
     width: 100%;
 }
+
+.disabled-box {
+    cursor: not-allowed;
+    opacity: 0.4;
+}

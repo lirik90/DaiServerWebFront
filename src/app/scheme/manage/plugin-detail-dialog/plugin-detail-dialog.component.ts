@@ -1,0 +1,35 @@
+import {Component, Inject} from '@angular/core';
+import {DetailDialog} from '../detail-dialog';
+import {Plugin_Type} from '../../scheme';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {SchemeService} from '../../scheme.service';
+import {Structure_Type} from '../../settings/settings';
+
+@Component({
+    selector: 'app-plugin-detail-dialog',
+    templateUrl: './plugin-detail-dialog.component.html',
+    styleUrls: ['./plugin-detail-dialog.component.css', '../detail-dialog.css']
+})
+export class PluginDetailDialogComponent extends DetailDialog<Plugin_Type, PluginDetailDialogComponent> {
+
+    constructor(
+        fb: FormBuilder,
+        dialogRef: MatDialogRef<PluginDetailDialogComponent>,
+        @Inject(MAT_DIALOG_DATA) data: Plugin_Type,
+        schemeService: SchemeService,
+    ) {
+        super(dialogRef, data, schemeService, Structure_Type.ST_PLUGIN_TYPE, fb);
+    }
+
+    ngOnInit(): void {
+    }
+
+    createFormGroup(): FormGroup {
+        return this.fb.group({
+            'id': [],
+            'name': ['', [Validators.required]],
+        });
+    }
+
+}

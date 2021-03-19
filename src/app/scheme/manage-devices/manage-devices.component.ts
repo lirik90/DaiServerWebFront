@@ -29,6 +29,10 @@ export class ManageDevicesComponent implements OnInit {
         this.devices = this.schemeService.scheme.device;
     }
 
+    isDisabled(): boolean {
+        return !this.schemeService.isSchemeConnected;
+    }
+
     ngOnInit(): void {
     }
 

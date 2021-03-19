@@ -12,7 +12,7 @@ import {DeviceItemGroupTypeDetailDialogComponent} from '../device-item-group-typ
 @Component({
     selector: 'app-device-item-type-detail-dialog',
     templateUrl: './device-item-type-detail-dialog.component.html',
-    styleUrls: ['./device-item-type-detail-dialog.component.css']
+    styleUrls: ['./device-item-type-detail-dialog.component.css', '../detail-dialog.css']
 })
 export class DeviceItemTypeDetailDialogComponent extends DetailDialog<Device_Item_Type, DeviceItemTypeDetailDialogComponent> {
     signTypes: Sign_Type[];

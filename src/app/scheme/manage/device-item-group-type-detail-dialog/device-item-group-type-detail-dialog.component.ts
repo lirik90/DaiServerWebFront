@@ -9,7 +9,7 @@ import {DIG_Type} from '../../scheme';
 @Component({
     selector: 'app-device-item-group-type-detail-dialog',
     templateUrl: './device-item-group-type-detail-dialog.component.html',
-    styleUrls: ['./device-item-group-type-detail-dialog.component.css']
+    styleUrls: ['./device-item-group-type-detail-dialog.component.css', '../detail-dialog.css']
 })
 export class DeviceItemGroupTypeDetailDialogComponent extends DetailDialog<DIG_Type, DeviceItemGroupTypeDetailDialogComponent> {
     fg: FormGroup;

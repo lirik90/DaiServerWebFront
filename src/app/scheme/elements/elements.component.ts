@@ -1,15 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, ComponentRef, ViewContainerRef } from '@angular/core';
+
+import {NeedSidebar} from '../sidebar.service';
+import {ElementsMenuComponent} from './elements-menu/elements-menu.component';
 
 @Component({
   selector: 'app-elements',
   templateUrl: './elements.component.html',
   styleUrls: ['./elements.component.css']
 })
-export class ElementsComponent implements OnInit {
+export class ElementsComponent implements OnInit, NeedSidebar {
 
-  constructor() { }
+    constructor(
+        private resolver: ComponentFactoryResolver,
+    ) { }
 
-  ngOnInit(): void {
-  }
+    ngOnInit(): void {
+    }
 
+    getSidebarWidget(viewContainerRef: ViewContainerRef): ComponentRef<any> {
+        const factory = this.resolver.resolveComponentFactory(ElementsMenuComponent);
+        return viewContainerRef.createComponent(factory);
+    }
 }

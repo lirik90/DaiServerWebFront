@@ -7,7 +7,7 @@ import {Structure_Type} from '../../settings/settings';
 @Component({
     selector: 'app-sign-type-detail-dialog',
     templateUrl: './sign-type-detail-dialog.component.html',
-    styleUrls: ['./sign-type-detail-dialog.component.css']
+    styleUrls: ['./sign-type-detail-dialog.component.css', '../detail-dialog.css']
 })
 export class SignTypeDetailDialogComponent {
     fg: FormGroup;

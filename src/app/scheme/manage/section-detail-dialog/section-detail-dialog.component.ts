@@ -11,7 +11,7 @@ export type Section_Details = Pick<Section, "name" | "day_start" | "day_end">
 @Component({
     selector: 'app-section-detail-dialog',
     templateUrl: './section-detail-dialog.component.html',
-    styleUrls: ['./section-detail-dialog.component.css'],
+    styleUrls: ['./section-detail-dialog.component.css', '../detail-dialog.css'],
 })
 export class SectionDetailDialogComponent extends DetailDialog<Section, SectionDetailDialogComponent> {
 

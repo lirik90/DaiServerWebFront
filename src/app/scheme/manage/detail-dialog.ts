@@ -1,6 +1,6 @@
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {Modify_Structure_Type, SchemeService} from '../scheme.service';
+import {Modify_Structure_Type, Patch_Structure_Response, SchemeService} from '../scheme.service';
 import {Structure_Type} from '../settings/settings';
 
 export abstract class DetailDialog<T extends Modify_Structure_Type,C> {
@@ -26,13 +26,18 @@ export abstract class DetailDialog<T extends Modify_Structure_Type,C> {
 
     submit() {
         if (this.fg.invalid) return;
+
+        let prev = this.dialogData?.id ? this.dialogData : null;
         this.schemeService.upsert_structure(
             this.settingName,
             this.createItem(this.fg.value),
-            this.dialogData?.id ? this.dialogData : null,
+            prev,
         )
-            .subscribe(() => {
-                this.dialogRef.close(this.fg.value);
+            .subscribe((r: Patch_Structure_Response<T>) => {
+                this.dialogRef.close({
+                    ...this.fg.value,
+                    id: prev?.id || r.inserted[0].id,
+                });
             });
     }
 

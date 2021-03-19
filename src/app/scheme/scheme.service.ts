@@ -13,7 +13,7 @@ import {
     DIG_Param,
     DIG_Param_Type, DIG_Type,
     Disabled_Status,
-    Help,
+    Help, Plugin_Type,
     Scheme_Detail,
     Section,
 } from './scheme';
@@ -81,7 +81,7 @@ class StatusItems {
     }[];
 }
 
-export type Modify_Structure_Type = DIG_Type|Device_Item_Type|Device_Item_Group|Section|Device_Item|DIG_Param_Type|DIG_Param|Device;
+export type Modify_Structure_Type = DIG_Type|Device_Item_Type|Device_Item_Group|Section|Device_Item|DIG_Param_Type|DIG_Param|Device|Plugin_Type;
 
 @Injectable()
 export class SchemeService extends ISchemeService {
