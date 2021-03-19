@@ -1,8 +1,4 @@
 /* ManageComponent's private CSS styles */
-:host {
-    font-size: 0.8rem;
-}
-
 h2 {
     margin-left: 8px;
     display: flex;
