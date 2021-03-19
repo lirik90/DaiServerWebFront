@@ -10,7 +10,9 @@
             <mat-option><span i18n="@@CONTROL.NO">Нет</span></mat-option>
             <mat-option *ngFor="let groupType of groupTypes" [value]="groupType.id">{{ groupType.title }}</mat-option>
         </mat-select>
-        <a href="#" (click)="$event.preventDefault();newGroupType()"><small i18n="@@SCHEME_DIALOGS.ADD_NEW">Добавить новый(ую)</small></a>
+        <mat-hint>
+            <a href="#" (click)="$event.preventDefault();newGroupType()"><small i18n="@@SCHEME_DIALOGS.ADD_NEW">Добавить новый(ую)</small></a>
+        </mat-hint>
     </mat-form-field>
 
     <div class="buttons">

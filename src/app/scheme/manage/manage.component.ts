@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ComponentFactoryResolver, ComponentRef, Inject, OnInit, ViewContainerRef} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
@@ -18,15 +18,13 @@ import {
 import {Device_Item_Details, DeviceItemDetailDialogComponent} from './device-item-detail-dialog/device-item-detail-dialog.component';
 import {UIService} from '../../ui.service';
 import {Structure_Type} from '../settings/settings';
-import {NeedSidebar} from '../sidebar.service';
-import {ElementsComponent} from '../elements/elements.component';
 
 @Component({
     selector: 'app-manage',
     templateUrl: './manage.component.html',
     styleUrls: ['../../sections.css', './manage.component.css'],
 })
-export class ManageComponent implements OnInit, AfterViewInit, NeedSidebar {
+export class ManageComponent implements OnInit, AfterViewInit {
     schemeName: string;
     sections: Section[] = [];
     groupModes: DIG_Mode_Type[];
@@ -55,7 +53,6 @@ export class ManageComponent implements OnInit, AfterViewInit, NeedSidebar {
         private router: Router,
         public dialog: MatDialog,
         private ui: UIService,
-        private resolver: ComponentFactoryResolver,
     ) {
         router.events.subscribe(s => {
             if (s instanceof NavigationEnd) {
@@ -227,11 +224,6 @@ export class ManageComponent implements OnInit, AfterViewInit, NeedSidebar {
                 this.schemeService.remove_structure(Structure_Type.ST_DEVICE_ITEM,  item)
                     .subscribe(() => {});
             });
-    }
-
-    getSidebarWidget(viewContainerRef: ViewContainerRef): ComponentRef<any> {
-        const factory = this.resolver.resolveComponentFactory(ElementsComponent);
-        return viewContainerRef.createComponent(factory);
     }
 }
 

@@ -1,4 +1,4 @@
-import {Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewContainerRef} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../authentication.service';
 import {SchemeService} from '../scheme.service';
 import {Device, Device_Item} from '../scheme';
@@ -7,15 +7,13 @@ import {DeviceDetailDialogComponent} from '../manage/device-detail-dialog/device
 import {DeviceItemDetailDialogComponent} from '../manage/device-item-detail-dialog/device-item-detail-dialog.component';
 import {UIService} from '../../ui.service';
 import {Structure_Type} from '../settings/settings';
-import {ElementsComponent} from '../elements/elements.component';
-import {NeedSidebar} from '../sidebar.service';
 
 @Component({
     selector: 'app-manage-devices',
     templateUrl: './manage-devices.component.html',
     styleUrls: ['./manage-devices.component.css', '../manage/manage.component.css']
 })
-export class ManageDevicesComponent implements OnInit, NeedSidebar {
+export class ManageDevicesComponent implements OnInit {
     isEditorModeEnabled = false;
     isAdmin: boolean;
 
@@ -26,7 +24,6 @@ export class ManageDevicesComponent implements OnInit, NeedSidebar {
         private schemeService: SchemeService,
         private dialog: MatDialog,
         private ui: UIService,
-        private resolver: ComponentFactoryResolver,
     ) {
         this.isAdmin = this.authService.isAdmin();
         this.devices = this.schemeService.scheme.device;
@@ -86,10 +83,5 @@ export class ManageDevicesComponent implements OnInit, NeedSidebar {
         this.dialog.open(DeviceDetailDialogComponent, { width: '80%' })
             .afterClosed()
             .subscribe((device: Device) => {});
-    }
-
-    getSidebarWidget(viewContainerRef: ViewContainerRef): ComponentRef<any> {
-        const factory = this.resolver.resolveComponentFactory(ElementsComponent);
-        return viewContainerRef.createComponent(factory);
     }
 }
