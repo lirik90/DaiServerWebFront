@@ -145,29 +145,32 @@ export class ControlService {
         }
       } else if (msg.cmd == WebSockCmd.WS_CHANGE_GROUP_PARAM_VALUES) {
         const set_param_impl = (group: Device_Item_Group, prm_id: number, value: string) => {
-            const param = group?.params?.find(param => param.id === prm_id);
-            if (!param) { return false; }
+            const param = group?.params?.find(param => param.id === prm_id)
+                || group?.params?.reduce((prev, curr) => prev.concat(curr.childs), [])
+                    .find(param => param.id == prm_id);
+            if (!param) { return null; }
             param.value = value;
-            return true;
+            return param;
         };
 
         let last_group: Device_Item_Group;
         const set_param = (prm_id: number, value: string) => {
-          if (set_param_impl(last_group, prm_id, value)) {
-            return;
+            let param = set_param_impl(last_group, prm_id, value);
+          if (param) {
+            return param;
           }
           for (const sct of this.schemeService.scheme.section) {
             for (const group of sct.groups) {
-              if (set_param_impl(group, prm_id, value)) {
+                param = set_param_impl(group, prm_id, value);
+              if (param) {
                 if (last_group !== group) {
                   last_group = group;
                 }
-                return;
+                return param;
               }
             }
           }
         };
-        const get_param_from_last_group = (prm_id: number) => last_group.params.find(param => param.id === prm_id);
 
         const view = new Uint8Array(msg.data);
         let [idx, count] = ByteTools.parseUInt32(view);
@@ -188,8 +191,8 @@ export class ControlService {
           const [last_pos, value] = ByteTools.parseQString(view, idx);
           idx = last_pos;
 
-          set_param(param_id, value);
-          changed_params.push(get_param_from_last_group(param_id));
+          const changed_param = set_param(param_id, value);
+          changed_params.push(changed_param);
         }
 
         if (changed_params.length > 0) {
