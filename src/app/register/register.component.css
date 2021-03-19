@@ -1,0 +1,63 @@
+:host {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 8px;
+    min-width: 340px;
+    text-wrap: normal;
+}
+
+.form-group label, .form-group .form-control {
+    display: block;
+    width: 100%;
+}
+
+.form-group .help-block {
+    display: block;
+    width: 100%;
+}
+
+.form-control {
+    padding: 8px;
+    border: 1px solid #d6d6d6;
+    border-radius: 7px;
+    height: 1.5em;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #0070c9;
+}
+
+.help-block {
+    /*margin: 16px 0;*/
+    /* display: none; */
+    font-size: 14px;
+    color: #ff3b30;
+}
+
+.has-error .form-control {
+    border-color: #ff3b30;
+}
+
+.btn-primary {
+    margin-top: 8px;
+    font-size: 17px;
+}
+
+.submit-wrapper {
+    text-align: center;
+}
+
+.submit-wrapper > * {
+    display: block;
+    margin: 0 auto;
+}
+
+.captcha > img {
+    display: block;
+}

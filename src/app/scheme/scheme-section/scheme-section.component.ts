@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {UIService} from '../../ui.service';
 import {BreakpointState} from '@angular/cdk/layout';
 
@@ -9,6 +9,7 @@ import {BreakpointState} from '@angular/cdk/layout';
 })
 export class SchemeSectionComponent implements OnInit {
   @Input() title: string;
+  @Input() enableEditor: boolean;
 
   @Input() set forceExpand(isForceExpand: boolean) {
     if(isForceExpand) {
@@ -16,6 +17,9 @@ export class SchemeSectionComponent implements OnInit {
     }
     this._isForceExpanded = isForceExpand;
   }
+
+  @Output() edit: EventEmitter<void> = new EventEmitter();
+  @Output() remove: EventEmitter<void> = new EventEmitter();
 
   _isForceExpanded: boolean;
 
@@ -39,5 +43,17 @@ export class SchemeSectionComponent implements OnInit {
   toggleExpand() {
     this.isExpanded = !this.isExpanded;
     this._isForceExpanded = false;
+  }
+
+  onEdit($event) {
+      $event.stopPropagation();
+      $event.preventDefault();
+      this.edit.emit();
+  }
+
+  onRemove($event) {
+      $event.stopPropagation();
+      $event.preventDefault();
+      this.remove.emit();
   }
 }

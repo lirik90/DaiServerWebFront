@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { SchemeService } from "../../scheme.service";
-import { Sign_Type } from "../../scheme";
+import {SchemeService} from '../../scheme.service';
+import {Sign_Type} from '../../scheme';
 
-import { ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
+import {ChangeTemplate, Structure_Type} from '../settings';
+import {UIService} from '../../../ui.service';
 
 @Component({
   selector: 'app-sign-types',
@@ -13,8 +14,9 @@ import { ChangeState, ChangeInfo, ChangeTemplate } from "../settings";
 export class SignTypesComponent extends ChangeTemplate<Sign_Type> implements OnInit {
   constructor(
     schemeService: SchemeService,
+    ui: UIService,
   ) {
-    super(schemeService, Sign_Type, 'sign_type');
+    super(schemeService, Sign_Type, Structure_Type.ST_SIGN_TYPE, ui);
   }
 
   getObjects(): Sign_Type[] {

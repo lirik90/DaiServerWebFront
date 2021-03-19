@@ -35,6 +35,7 @@ import { TgAuthComponent } from './tg-auth/tg-auth.component';
 import { RememberPageLimitDirective } from './remember-page-limit.directive';
 import {PaginatorIntlService} from './paginator-intl.service';
 import {MatPaginatorIntl} from '@angular/material/paginator';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -52,9 +53,11 @@ export function createTranslateLoader(http: HttpClient) {
     RegisterComponent,
     TgAuthComponent,
     RememberPageLimitDirective,
+    ConfirmationDialogComponent,
   ],
     entryComponents: [
-        Create_Scheme_Dialog
+        Create_Scheme_Dialog,
+        ConfirmationDialogComponent,
     ],
   imports: [
     BrowserAnimationsModule,

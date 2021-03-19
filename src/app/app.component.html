@@ -13,7 +13,7 @@
     <h1 class="branding__text" *ngIf="!mobileQuery.matches">DEVICE ACCESS</h1>
   </div>
 
-  <ng-container *ngIf="authService.currentUser">
+  <ng-container *ngIf="authorized">
     <nav class="app-toolbar__menu" role="navigation">
       <ul class="app-toolbar__menu-list">
         <li class="app-toolbar__menu-list-item">
@@ -24,6 +24,11 @@
         <li class="app-toolbar__menu-list-item">
           <a class="app-toolbar__menu-link" routerLink="/list" routerLinkActive="active">
             <mat-icon>list</mat-icon> <span *ngIf="!mobileQuery.matches" i18n="@@HOME.SCHEMES">Список</span>
+          </a>
+        </li>
+        <li class="app-toolbar__menu-list-item" *ngIf="isAdmin">
+          <a class="app-toolbar__menu-link" routerLink="/scheme-groups" routerLinkActive="active">
+            <mat-icon>groups</mat-icon> <span *ngIf="!mobileQuery.matches" i18n="@@HOME.SCHEME_GROUPS">Группы</span>
           </a>
         </li>
       </ul>
@@ -50,6 +55,7 @@
       </span>
       <div class="dropdown-user-menu" [class.force-visible]="showDropDown">
         <a routerLink="/user" i18n="@@PROFILE">Профиль</a>
+        <a routerLink="/user/scheme-groups" i18n="@@SCHEME_GROUPS.GROUPS">Группы</a>
       </div>
     </div>
     <button mat-icon-button i18n-matTooltip="@@CONTROL.EXIT" matTooltip="Выйти" [routerLink]="['/login']"><mat-icon>exit_to_app</mat-icon></button>

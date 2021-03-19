@@ -50,8 +50,8 @@ export class Device_Item_Type { // Тип элемента
   group_type_id: number;     // ID типа группы к которой может принадлежать элемент (Плохой?)
   sign_id: number;          // ID еденицы измерения
   sign: Sign_Type;           // Еденица измерения
-  register_type: number;     // Тип данных элемента
-  save_algorithm: number;    // Алгоритм сохранения изменений значения
+  register_type: Register_Type;     // Тип данных элемента
+  save_algorithm: Save_Algorithm;    // Алгоритм сохранения изменений значения
   save_timer_id: number;    // ID таймера если выбран такой алгоритм сохранения
 
     views: Value_View[];
@@ -151,10 +151,10 @@ export class DIG_Param_Type {  // Тип уставки
   parent_id: number;        // ID родителя
   childs: DIG_Param_Type[] = []; // Дочерние типы
 
-  title: string;            // Отображаемое имя
-  name: string;             // Имя латиницей используется в скриптах
-  description: string;      // Описание
-  value_type: number;       // Тип значения уставки
+  title: string;                      // Отображаемое имя
+  name: string;                       // Имя латиницей используется в скриптах
+  description: string;                // Описание
+  value_type: DIG_Param_Value_Type;   // Тип значения уставки
 }
 
 export class DIG_Param { // Уставка
@@ -263,7 +263,22 @@ export class Help {
     scheme_id: number;
 }
 
+export class Translation {
+    id: number;
+    data: string;
+    lang: string;
+    scheme_id: number;
+}
+
 export interface Value_View {
+    type_id: number;
+    value: any;
+    view: any;
+}
+
+export class Value_View_Detail {
+    id: number;
+    scheme_id: number;
     type_id: number;
     value: any;
     view: any;

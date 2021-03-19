@@ -37,6 +37,11 @@ export class AppComponent implements OnInit, OnDestroy {
   current_lang_: any;
   cookieGot: boolean;
   showDropDown = false;
+  authorized: boolean;
+
+  get isAdmin(): boolean {
+      return this.authService.isAdmin();
+  }
 
   constructor(
     public translate: TranslateService,
@@ -45,7 +50,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private router: Router,
     public uiService: UIService,
     public cookie: CookieService,
-    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher
+    private changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher,
   ) {
     this.cookieGot = this.cookie.get('cookie-agree') === 'true';
 
@@ -118,6 +124,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.firstInitialization();
+
+    this.authService.authorized().subscribe(authorized => {
+        this.authorized = authorized;
+        this.changeDetectorRef.detectChanges();
+    });
   }
 
   ngOnDestroy(): void {

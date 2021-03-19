@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from "../../material.module";
 
 import { SettingsRoutingModule } from './settings-routing.module';
-import { SettingsService } from './settings.service';
 
 import { SettingsComponent, Scheme_Copy_Dialog } from './settings.component';
 import { DevicesComponent, DeviceItemsComponent } from './devices/devices.component';
@@ -22,6 +21,9 @@ import { MetadataService } from './codes/services/metadata.service';
 import { PluginTypesComponent } from './plugin-types/plugin-types.component';
 import { SaveTimersComponent } from './save-timers/save-timers.component';
 import { AceEditorModule } from 'ng2-ace-editor';
+import { DigModeTypeComponent } from './dig-mode-type/dig-mode-type.component';
+import { TranslationComponent } from './translation/translation.component';
+import { ValueViewComponent } from './value-view/value-view.component';
 
 @NgModule({
   imports: [
@@ -46,7 +48,10 @@ import { AceEditorModule } from 'ng2-ace-editor';
     EditorComponent,
     PluginTypesComponent,
     SaveTimersComponent,
-      Scheme_Copy_Dialog
+      Scheme_Copy_Dialog,
+      DigModeTypeComponent,
+      TranslationComponent,
+      ValueViewComponent
   ],
   entryComponents: [
       Scheme_Copy_Dialog
@@ -54,7 +59,6 @@ import { AceEditorModule } from 'ng2-ace-editor';
   providers: [
 //    SchemeLoadGuard,
 //    ControlService,
-    SettingsService,
       MetadataService, CompleterService
   ]
 })

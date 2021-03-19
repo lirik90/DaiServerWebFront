@@ -1,9 +1,10 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnInit, OnChanges, SimpleChanges} from '@angular/core';
 
 import {SchemeService} from '../../scheme.service';
 import {Device_Item_Group, DIG_Param, DIG_Param_Type, DIG_Type, Section} from '../../scheme';
-import {SettingsService} from '../settings.service';
-import {ChangeInfo, ChangeState, ChangeTemplate} from '../settings';
+import {SettingsService} from '../../settings.service';
+import {ChangeInfo, ChangeState, ChangeTemplate, Structure_Type} from '../settings';
+import {UIService} from '../../../ui.service';
 
 @Component({
     selector: 'app-sections',
@@ -14,8 +15,9 @@ export class SectionsComponent extends ChangeTemplate<Section> implements OnInit
     constructor(
         schemeService: SchemeService,
         private settingsService: SettingsService,
+        ui: UIService,
     ) {
-        super(schemeService, Section, 'section');
+        super(schemeService, Section, Structure_Type.ST_SECTION, ui);
     }
 
     getObjects(): Section[] {
@@ -46,8 +48,9 @@ export class GroupsComponent extends ChangeTemplate<Device_Item_Group> implement
 
     constructor(
         schemeService: SchemeService,
+        ui: UIService,
     ) {
-        super(schemeService, Device_Item_Group, 'device_item_group');
+        super(schemeService, Device_Item_Group, Structure_Type.ST_DEVICE_ITEM_GROUP, ui);
     }
 
     getObjects(): Device_Item_Group[] {
@@ -83,8 +86,9 @@ export class ParamsInGroupComponent extends ChangeTemplate<Omit<DIG_Param, 'valu
 
     constructor(
         schemeService: SchemeService,
+        ui: UIService,
     ) {
-        super(schemeService, DIG_Param, 'dig_param');
+        super(schemeService, DIG_Param, Structure_Type.ST_DIG_PARAM, ui);
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -124,4 +128,3 @@ export class ParamsInGroupComponent extends ChangeTemplate<Omit<DIG_Param, 'valu
         obj.group_id = this.group.id;
     }
 }
-

@@ -31,7 +31,7 @@
     </form>
   </mat-card>
 
-  <mat-card class="password-pane">
+  <mat-card class="password-pane" *ngIf="!hideChangePasswordForm">
     <form [formGroup]="changePasswordGroup" (ngSubmit)="changePassword()">
       <h3  i18n="@@PROFILE.CHANGE_PASSWORD">Изменение пароля</h3>
 

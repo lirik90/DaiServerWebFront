@@ -1,117 +1,165 @@
 /* ManageComponent's private CSS styles */
 h2 {
-  margin-left: 8px;
+    margin-left: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
+
 h3, h4 {
-  text-align: center;
-  margin-top: 0px;
-  margin-bottom: 0px;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
 }
+
 h4 {
-  display: inline-table;
-  width: 100px;
-  word-wrap: break-word;
+    display: inline-table;
+    width: 100px;
+    word-wrap: break-word;
 }
+
 .grid {
-  margin: 0;
-  display: flex;
+    margin: 0;
+    display: flex;
 }
+
 .grid-pad {
-  padding: 10px 0;
+    padding: 10px 0;
 }
+
 .module {
-  /*padding: 4px 8px 12px 8px;*/
-  text-align: center;
-  color: #eee;
-/*  max-height: 120px; */
-  min-width: 120px;
-  /*background-color: #6A9D80;*/
-  /*border-radius: 16px;*/
+    /*padding: 4px 8px 12px 8px;*/
+    text-align: center;
+    color: #eee;
+    /*  max-height: 120px; */
+    min-width: 120px;
+    /*background-color: #6A9D80;*/
+    /*border-radius: 16px;*/
 }
 
 .eqTable {
-	text-align: center;
-	width: 100%;
-  empty-cells: hide;
-  column-count: 1;
-  column-gap: 0;
+    text-align: center;
+    width: 100%;
+    empty-cells: hide;
+    column-count: 1;
+    column-gap: 0;
 }
 
 .between-group {
-  padding: 0px;
-  height: 8px;
+    padding: 0px;
+    height: 8px;
 }
 
-.dig-header a  {
-  color: #fff;
+.dig-header a {
+    color: #fff;
 }
 
 .dig-header a h4 {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 .dig-header a h4:hover {
-	background-color: #eee;
-  border-radius: 16px;
-	color: #6A9D80;
-	cursor: pointer;
+    background-color: #eee;
+    border-radius: 16px;
+    color: #6A9D80;
+    cursor: pointer;
 }
 
 .module > div {
     margin: 0;
     -webkit-column-break-inside: avoid; /* Chrome, Safari */
-    page-break-inside: avoid;           /* Theoretically FF 20+ */
-    break-inside: avoid-column;         /* IE 11 */
+    page-break-inside: avoid; /* Theoretically FF 20+ */
+    break-inside: avoid-column; /* IE 11 */
     display: table;
     width: 100%;
 }
 
 .dig {
-  border: 2px solid;
-  border-radius: 16px;
-  break-inside: avoid;
-  padding: 5px;
-  margin: 5px;
-  background-color: #639679;
+    position: relative;
+    border: 2px solid;
+    border-radius: 16px;
+    break-inside: avoid;
+    padding: 5px;
+    margin: 5px;
+    background-color: #639679;
+}
+
+.dig.editor-mode {
+    padding: 20px 5px 5px;
+    transition: 500ms;
+}
+
+.dig-header-buttons {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.hidden-buttons {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.editor-mode div.scheme:hover > .hidden-buttons,
+.editor-mode .dig:hover > .hidden-buttons,
+.editor-mode .device-item:hover .hidden-buttons {
+    opacity: 1;
+    transition: 500ms;
+    visibility: visible;
+}
+
+.device-item button, .device-item mat-icon {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
 }
 
 .dig > div:not(:first-child) {
-  text-align: right;
-  white-space: nowrap;
-  margin-bottom: 8px;
+    text-align: right;
+    white-space: nowrap;
+    margin-bottom: 8px;
 }
 
 mat-select {
-  width: 100%;
+    width: 100%;
 }
+
 .dig-header mat-form-field {
-  width: 80px;
+    width: 80px;
 }
 
 .dig-header .mat-icon {
-  font-size: 16px;
-  height: 16px;
-  width: 16px;
-  line-height: 16px;
+    font-size: 16px;
+    height: 16px;
+    width: 16px;
+    line-height: 16px;
 }
+
 h2 .mat-icon {
-  font-size: 32px;
-  height: 32px;
-  width: 32px;
-  line-height: 32px;
+    font-size: 32px;
+    height: 32px;
+    width: 32px;
+    line-height: 32px;
+}
+
+h2 button {
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    vertical-align: top;
 }
 
 app-group-status {
-  margin-left: 4px;
-  margin-right: 4px;
+    margin-left: 4px;
+    margin-right: 4px;
 }
 
 app-dev-item-value {
-  display: inline-block;
-  width: 45%;
-  margin-left: 8px;
-  text-align: left;
-  white-space: normal;
+    display: inline-block;
+    width: 45%;
+    margin-left: 8px;
+    text-align: left;
+    white-space: normal;
 }
 
 .disabled-box {
@@ -121,57 +169,74 @@ app-dev-item-value {
 }
 
 @media (max-width: 1024px) {
-  .grid {
-    margin: 0;
-  }
-  .module {
-    min-width: 60px;
-  }
+    .grid {
+        margin: 0;
+    }
+
+    .module {
+        min-width: 60px;
+    }
 }
+
 @media (max-width: 600px) {
-  .module {
-    font-size: 16px;
-    padding: 0 2px;
-  }
-  .grid {
-    display: unset;
-  }
+    .module {
+        font-size: 16px;
+        padding: 0 2px;
+    }
+
+    .grid {
+        display: unset;
+    }
 }
+
 @media (max-width: 400px) {
-  .module {
-    padding: 0;
-  }
-  .dig {
-    padding: 0;
-    margin: 0px 0px 5px 0px;
-  }
+    .module {
+        padding: 0;
+    }
+
+    .dig {
+        padding: 0;
+        margin: 0px 0px 5px 0px;
+    }
 }
+
 @media (min-width: 920px) {
-  .eqTable.sct-1 { column-count: 2; }
+    .eqTable.sct-1 {
+        column-count: 2;
+    }
 }
+
 @media (min-width: 1300px) {
-  .eqTable.sct-1 { column-count: 3; }
+    .eqTable.sct-1 {
+        column-count: 3;
+    }
 }
+
 @media (min-width: 1700px) {
-  .eqTable.sct-1 { column-count: 4; }
-  .eqTable.sct-2 { column-count: 2; }
+    .eqTable.sct-1 {
+        column-count: 4;
+    }
+
+    .eqTable.sct-2 {
+        column-count: 2;
+    }
 }
 
 .invisible-anchor {
-  position: relative;
-  top: -3em;
+    position: relative;
+    top: -3em;
 }
 
 .reboot-btn__label {
-  font-size: 13px;
-  display: inline-block;
-  line-height: 1.1em;
-  text-align: left;
-  margin-left: 6px;
+    font-size: 13px;
+    display: inline-block;
+    line-height: 1.1em;
+    text-align: left;
+    margin-left: 6px;
 }
 
 .reboot-btn {
-  border: 1px solid #eee;
+    border: 1px solid #eee;
 }
 
 ::ng-deep .dig-mode .mat-form-field-label {

@@ -8,6 +8,7 @@ import {of} from 'rxjs';
 
 import {ISchemeService} from '../../ischeme.service';
 import {AuthenticationService} from '../../authentication.service';
+import {ActivatedRoute} from '@angular/router';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -28,13 +29,19 @@ export class UserDetailsComponent implements OnInit {
   success = false;
   success2 = false;
   phonemask = ['+', '7', '(', /\d/, /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
+  hideChangePasswordForm: boolean;
 
   constructor(
     public authService: AuthenticationService,
     private formBuilder: FormBuilder,
     protected http: HttpClient,
     public translate: TranslateService,
-  ) { }
+    private activatedRoute: ActivatedRoute,
+  ) {
+      this.activatedRoute.queryParamMap.subscribe((queryParams) => {
+          this.hideChangePasswordForm = queryParams.has('hide-change-password') && queryParams.get('hide-change-password') === 'true';
+      });
+  }
 
   ngOnInit() {
     this.changePasswordGroup = this.formBuilder.group({

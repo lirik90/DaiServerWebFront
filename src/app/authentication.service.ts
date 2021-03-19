@@ -3,27 +3,36 @@ import { DOCUMENT } from "@angular/common";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-import { of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import {BehaviorSubject, of} from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
 
 import { User } from './user';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class AuthenticationService {
 
+  private isAuthorized_: BehaviorSubject<boolean>;
   private currentUser_: User;
   timeout_handle: any;
 
-  private tokenUrl = '/api/token/';
+  private authUrl = '/api/v2/auth/';
+  private tokenUrl = this.authUrl + 'token/';
 
   get currentUser() {
     return this.currentUser_;
   }
 
   set currentUser(usr) {
-    //console.log('!!!!!!!!!!!!');
     this.currentUser_ = usr;
+    const haveUser = !!usr;
+
+    if (!this.isAuthorized_) {
+        this.isAuthorized_ = new BehaviorSubject(haveUser);
+    } else {
+        this.isAuthorized_.next(haveUser);
+    }
   }
 
   constructor(
@@ -36,6 +45,10 @@ export class AuthenticationService {
 
   isAdmin(): boolean {
     return this.checkPermission('change_logentry');
+  }
+
+  authorized(): Observable<boolean> {
+      return this.isAuthorized_.asObservable();
   }
 
   isFullAccess(): boolean {
@@ -120,10 +133,23 @@ export class AuthenticationService {
     this.router.navigate(['/login'], { queryParams: { returnUrl: url }});
   }
 
-  login(username: string, password: string) {
-    return this.http.post<any>(this.tokenUrl + 'auth/', { username: username, password: password })
+  login(username: string, password: string, captcha: string) {
+    return this.http.post<any>(this.tokenUrl, { username, password, captcha })
         .map(user => this.setCurrentUser(user));
   }
+
+  needCaptchaOnLogin(): Observable<boolean> {
+      const url = this.authUrl + 'captcha/';
+      return this.http.head<any>(url, { observe: 'response' }).pipe(
+          switchMap(resp => of(resp.status === 200)),
+          catchError(() => of(false))
+      );
+  }
+
+    getCaptcha(force: boolean = false): Observable<any> {
+        const url = this.authUrl + `captcha/?force=${force}`;
+        return this.http.get(url, { responseType: 'blob' });
+    }
 
   logout() {
     // remove user from local storage to log user out
@@ -135,6 +161,7 @@ export class AuthenticationService {
   }
 
   createUser(user: any) {
-    return this.http.post('/api/v1/users/', user);
+      const url = this.authUrl + 'register/';
+      return this.http.post(url, user);
   }
 }

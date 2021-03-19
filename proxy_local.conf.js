@@ -41,7 +41,8 @@ if (proxy_remote_server_address.indexOf('localhost') != -1)
         },
         target: 'http://localhost:8123',
         secure: false,
-        changeOrigin: true
+        changeOrigin: true,
+        headers: { "X-Real-IP":"127.0.0.1" }
     })    
 
     PROXY_CONFIG.push(

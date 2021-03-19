@@ -4,6 +4,7 @@ import {AuthGuard} from '../auth.guard';
 import {NotificationsComponent} from './notifications/notifications.component';
 import {UserSettingsComponent} from './user-settings.component';
 import {UserDetailsComponent} from './user-details/user-details.component';
+import {SchemeGroupsComponent} from './scheme-groups/scheme-groups.component';
 
 const routes: Routes = [
   {
@@ -13,14 +14,18 @@ const routes: Routes = [
     component: UserSettingsComponent,
     children: [
       {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'details'
+          path: 'details',
+          component: UserDetailsComponent,
       },
       {
-        path: 'details',
-        component: UserDetailsComponent,
-      }
+          path: 'scheme-groups',
+          component: SchemeGroupsComponent,
+      },
+      {
+          path: '',
+          pathMatch: 'full',
+          redirectTo: 'details',
+      },
     ]
   }
 ];

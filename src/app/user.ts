@@ -14,6 +14,11 @@ export class Auth_Group extends Named_Object {}
 export class Scheme_Group extends Named_Object {}
 export class Scheme_Group_Member extends Named_Object {}
 
+export enum Group_User_Roles {
+    ADMIN = 'admin',
+    USER = 'user',
+}
+
 export class User {
     id: number;
     username: string;
@@ -25,6 +30,9 @@ export class User {
     permissions: string[];// Разрешения доступные пользователю
     phone_number: string;
 }
+
+export type UserHeader = Pick<User, 'id' | 'first_name' | 'last_name' | 'username'>;
+export type UserHeaderWithRole = UserHeader & { role: Group_User_Roles };
 
 export enum Connection_State {
   CS_SERVER_DOWN,
@@ -56,4 +64,3 @@ export class Scheme {
   status_checked: boolean;
   connect_state: Connection_State;
 }
-
