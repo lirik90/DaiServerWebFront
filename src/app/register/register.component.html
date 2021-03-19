@@ -1,5 +1,5 @@
 <h2 i18n="@@REGISTER.TITLE">Регистрация</h2>
-<form name="form" novalidate [formGroup]="fg">
+<form name="form" novalidate [formGroup]="fg" (ngSubmit)="f.form.valid && register()" #f="ngForm">
     <div class="form-group" [class.has-error]="fg.controls.email.touched && fg.controls.email.invalid">
         <label for="email-input" i18n="@@REGISTER.EMAIL">E-mail</label>
         <input type="text" class="form-control" formControlName="email" id="email-input" placeholder="user@example.org" />
@@ -20,7 +20,7 @@
         <input type="password" class="form-control" formControlName="passwordConfirm" id="password-confirm-input" />
         <div class="help-block" i18n="@@LOGIN.PASSWORD_CONFIRM_HINT" *ngIf="fg.controls.passwordConfirm.touched && fg.controls.passwordConfirm.errors?.required">Пароль нужно ввести обязательно</div>
     </div>
-    <div class="form-group">
+    <div class="form-group captcha">
         <img [src]="captcha" alt="Loading...">
         <input formControlName="captcha" placeholder="Введите текст с картинки">
     </div>

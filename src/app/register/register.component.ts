@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
+import {DomSanitizer} from '@angular/platform-browser';
 
 import {MessageService} from '../message.service';
 import {AuthenticationService} from '../authentication.service';
@@ -21,7 +22,6 @@ export class RegisterComponent implements OnInit {
         validators: [ this.passwordsEqual() ]
     });
 
-    model: any = {};
     loading = false;
 
     captcha: string;
@@ -31,18 +31,22 @@ export class RegisterComponent implements OnInit {
         private authService: AuthenticationService,
         private messageService: MessageService,
         private fb: FormBuilder,
+        private sanitizer: DomSanitizer,
     ) {
         this.fg.controls['email'].valueChanges.subscribe(this.copyFromEmailToLogin());
     }
 
     ngOnInit() {
         this.authService.getCaptcha(true)
-            .subscribe(img => this.captcha = img, () => this.captcha = 'Error');
+            .subscribe(img => {
+                let objectURL = URL.createObjectURL(img);
+                this.captcha = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+            }, () => this.captcha = 'Error');
     }
 
     register(): void {
         this.loading = true;
-        this.authService.createUser(this.model) // TODO: change to register request
+        this.authService.createUser(this.fg.value) // TODO: change to register request
             .subscribe(
                 data => {
                     // set success message and pass true paramater to persist the message after redirecting to the login page

@@ -17,14 +17,14 @@ export class AuthenticationService {
   private currentUser_: User;
   timeout_handle: any;
 
-  private tokenUrl = '/api/token/';
+  private authUrl = '/api/v2/auth/';
+  private tokenUrl = this.authUrl + 'token/';
 
   get currentUser() {
     return this.currentUser_;
   }
 
   set currentUser(usr) {
-    //console.log('!!!!!!!!!!!!');
     this.currentUser_ = usr;
     const haveUser = !!usr;
 
@@ -133,20 +133,21 @@ export class AuthenticationService {
     this.router.navigate(['/login'], { queryParams: { returnUrl: url }});
   }
 
-  login(username: string, password: string) {
-    return this.http.post<any>(this.tokenUrl + 'auth/', { username: username, password: password })
+  login(username: string, password: string, captcha: string) {
+    return this.http.post<any>(this.tokenUrl, { username, password, captcha })
         .map(user => this.setCurrentUser(user));
   }
 
   needCaptchaOnLogin(): Observable<boolean> {
-      return this.http.head<any>('/api/v2/auth/captcha/').pipe(
-          switchMap(() => of(true)),
+      const url = this.authUrl + 'captcha/';
+      return this.http.head<any>(url, { observe: 'response' }).pipe(
+          switchMap(resp => of(resp.status === 200)),
           catchError(() => of(false))
       );
   }
 
     getCaptcha(force: boolean = false): Observable<any> {
-        const url = `/api/v2/auth/captcha/?force=${force}`;
+        const url = this.authUrl + `captcha/?force=${force}`;
         return this.http.get(url, { responseType: 'blob' });
     }
 
@@ -160,6 +161,7 @@ export class AuthenticationService {
   }
 
   createUser(user: any) {
-    return this.http.post('/api/v1/users/', user);
+      const url = this.authUrl + 'register/';
+      return this.http.post(url, user);
   }
 }

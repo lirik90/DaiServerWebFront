@@ -66,3 +66,7 @@ h2 {
   margin-top: 8px;
   font-size: 17px;
 }
+
+.captcha > img {
+    display: block;
+}
