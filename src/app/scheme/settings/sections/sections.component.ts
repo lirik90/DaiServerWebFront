@@ -79,7 +79,7 @@ export class GroupsComponent extends ChangeTemplate<Device_Item_Group> implement
     templateUrl: './params-in-group.component.html',
     styleUrls: ['../settings.css', './sections.component.css']
 })
-export class ParamsInGroupComponent extends ChangeTemplate<Omit<DIG_Param, 'value'>> implements OnChanges {
+export class ParamsInGroupComponent extends ChangeTemplate<DIG_Param> implements OnChanges {
     @Input() group: Device_Item_Group;
 
     params: DIG_Param_Type[];
@@ -98,29 +98,19 @@ export class ParamsInGroupComponent extends ChangeTemplate<Omit<DIG_Param, 'valu
         }
     }
 
-    addItem(obj: Omit<DIG_Param, 'value'>, select: boolean = true) {
-        const item: ChangeInfo<Omit<DIG_Param, 'value'>> = {
-            state: ChangeState.NoChange,
-            obj: {
-                id: obj.id,
-                group_id: obj.group_id,
-                param_id: obj.param_id,
-                param: obj.param,
-                childs: obj.childs,
-            },
+    getObjects(): DIG_Param[] {
+        const arr: DIG_Param[] = [];
+        const add = (items: DIG_Param[]) => {
+            for (const item of items) {
+                arr.push(item);
+                if (item.childs) {
+                    add(item.childs);
+                }
+            }
         };
-
-        this.items.push(item);
-
-        if (select) {
-            this.sel_item = item;
-        }
-
-        obj.childs?.forEach(child => this.addItem(child, false));
-    }
-
-    getObjects(): Omit<DIG_Param, 'value'>[] {
-        return this.group.params;
+        
+        add(this.group.params);
+        return arr;
     }
 
     initItem(obj: DIG_Param): void {
