@@ -24,7 +24,7 @@ export class RegisterComponent implements OnInit {
 
     loading = false;
 
-    captcha: string;
+    captcha: any;
 
     constructor(
         private router: Router,
