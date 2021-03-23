@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 
 import {SchemeService} from '../../scheme.service';
 import {Device_Item_Group, DIG_Param, DIG_Param_Type, DIG_Type, Section} from '../../scheme';
@@ -79,7 +79,7 @@ export class GroupsComponent extends ChangeTemplate<Device_Item_Group> implement
     templateUrl: './params-in-group.component.html',
     styleUrls: ['../settings.css', './sections.component.css']
 })
-export class ParamsInGroupComponent extends ChangeTemplate<DIG_Param> implements OnChanges {
+export class ParamsInGroupComponent extends ChangeTemplate<DIG_Param> implements OnInit, OnChanges {
     @Input() group: Device_Item_Group;
 
     params: DIG_Param_Type[];
@@ -91,11 +91,24 @@ export class ParamsInGroupComponent extends ChangeTemplate<DIG_Param> implements
         super(schemeService, DIG_Param, Structure_Type.ST_DIG_PARAM, ui);
     }
 
+    ngOnInit() {
+        this.init();
+    }
+
     ngOnChanges(changes: SimpleChanges) {
         if (changes.group) {
-            this.fillItems();
-            this.params = this.schemeService.scheme.dig_param_type.filter(obj => obj.group_type_id === this.group.type_id);
+            this.init();
         }
+    }
+
+    initItem(obj: DIG_Param): void {
+        obj.param = new DIG_Param_Type();
+        obj.group_id = this.group.id;
+    }
+
+    init() {
+        this.fillItems();
+        this.params = this.schemeService.scheme.dig_param_type.filter(obj => obj.group_type_id === this.group.type_id);
     }
 
     getObjects(): DIG_Param[] {
@@ -108,13 +121,8 @@ export class ParamsInGroupComponent extends ChangeTemplate<DIG_Param> implements
                 }
             }
         };
-        
+
         add(this.group.params);
         return arr;
-    }
-
-    initItem(obj: DIG_Param): void {
-        obj.param = new DIG_Param_Type();
-        obj.group_id = this.group.id;
     }
 }
