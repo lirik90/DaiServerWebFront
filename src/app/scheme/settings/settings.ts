@@ -1,10 +1,11 @@
 import {SchemeService} from '../scheme.service';
 import {UIService} from '../../ui.service';
 import {Observable} from 'rxjs/Observable';
+import {ComponentCanDeactivate} from './pending-changes.guard';
 
 export enum Structure_Type {
     ST_UNKNOWN,
-    ST_DEVICE= 'device',
+    ST_DEVICE = 'device',
     ST_PLUGIN_TYPE = 'plugin_type',
     ST_DEVICE_ITEM = 'device_item',
     ST_DEVICE_ITEM_TYPE = 'device_item_type',
@@ -31,118 +32,128 @@ export enum Structure_Type {
     ST_USER = '',
     ST_USER_GROUP = '',
 
-  // Часто изменяемые
+    // Часто изменяемые
     ST_DEVICE_ITEM_VALUE = '',
     ST_DIG_MODE = '',
     ST_DIG_PARAM_VALUE = '',
 }
 
 export enum ChangeState {
-  NoChange,
-  Upsert,
-  Delete,
+    NoChange,
+    Upsert,
+    Delete,
 }
 
 export interface ChangeInfo<T> {
-  state: ChangeState;
-  obj: T;
-  prev?: T;
+    state: ChangeState;
+    obj: T;
+    prev?: T;
 }
 
-export abstract class ChangeTemplate<T extends { id: number }> {
-  changeState = ChangeState;
-  changed: boolean;
+export abstract class ChangeTemplate<T extends { id: number }> implements ComponentCanDeactivate {
+    changeState = ChangeState;
+    changed: boolean;
 
-  items: ChangeInfo<T>[] = [];
-  sel_item: ChangeInfo<T>;
+    items: ChangeInfo<T>[] = [];
+    sel_item: ChangeInfo<T>;
 
-  constructor(
-    public schemeService: SchemeService,
-    private itemType: new () => T,
-    private settingName: Structure_Type,
-    private ui: UIService,
-  ) {
-  }
-
-  abstract getObjects(): T[];
-
-  fillItems(): void {
-    this.changed = false;
-    this.items = [];
-    let objects: T[] = this.getObjects();
-    for (let obj of objects) {
-      this.addItem(Object.assign({}, obj), false);
+    protected constructor(
+        public schemeService: SchemeService,
+        private itemType: new () => T,
+        private settingName: Structure_Type,
+        private ui: UIService,
+    ) {
     }
-  }
 
-  select(item: ChangeInfo<T>): void {
-    this.sel_item = (this.sel_item === item) ? undefined : item;
-  }
+    abstract getObjects(): T[];
 
-  itemChanged(item: ChangeInfo<T> = undefined, state: ChangeState = ChangeState.Upsert): void {
-    if (item === undefined) {
-      item = this.sel_item;
+    fillItems(): void {
+        this.changed = false;
+        this.items = [];
+        let objects: T[] = this.getObjects();
+        for (let obj of objects) {
+            this.addItem(Object.assign({}, obj), false);
+        }
     }
-    if (item.state !== state) {
-      item.state = state;
-      if (!this.changed) {
+
+    select(item: ChangeInfo<T>): void {
+        this.sel_item = (this.sel_item === item) ? undefined : item;
+    }
+
+    itemChanged(item: ChangeInfo<T> = undefined, state: ChangeState = ChangeState.Upsert): void {
+        if (item === undefined) {
+            item = this.sel_item;
+        }
+        if (item.state !== state) {
+            item.state = state;
+            if (!this.changed) {
+                this.changed = true;
+            }
+        }
+    }
+
+    save(evnt: any = undefined): void {
+        if (evnt !== undefined) {
+            evnt.stopPropagation();
+        }
+
+        this.ui.confirmationDialog()
+            .subscribe((confirmed) => {
+                if (!confirmed) {
+                    return;
+                }
+
+                this.saveSettings()
+                    .subscribe(() => {
+                        this.sel_item = null;
+                        this.fillItems();
+                    });
+            });
+    }
+
+    cancel(evnt: any = undefined): void {
+        if (evnt !== undefined) {
+            evnt.stopPropagation();
+        }
+        if (this.sel_item !== undefined) {
+            this.select(this.sel_item);
+        }
+        this.fillItems();
+    }
+
+    initItem(obj: T): void {
+    }
+
+    create(): void {
         this.changed = true;
-      }
-    }
-  }
-
-  save(evnt: any = undefined): void {
-    if (evnt !== undefined) {
-      evnt.stopPropagation();
+        let obj: T = new this.itemType();
+        (<any>obj).id = 0;
+        this.initItem(obj);
+        this.addItem(obj);
     }
 
-    this.ui.confirmationDialog()
-        .subscribe((confirmed) => {
-            if (!confirmed) return;
-
-            this.saveSettings()
-                .subscribe(() => {
-                    this.sel_item = null;
-                    this.fillItems();
-                });
-        });
-  }
-
-  cancel(evnt: any = undefined): void {
-    if (evnt !== undefined) {
-      evnt.stopPropagation();
+    addItem(obj: T, select: boolean = true): void {
+        let item = {state: ChangeState.NoChange, obj: obj} as ChangeInfo<T>;
+        this.items.push(item);
+        if (select) {
+            this.sel_item = item;
+        }
     }
-    if (this.sel_item !== undefined) {
-      this.select(this.sel_item);
+
+    remove(item: ChangeInfo<T>): void {
+        this.itemChanged(item, ChangeState.Delete);
+        // Dialog
     }
-    this.fillItems();
-  }
 
-  initItem(obj: T): void {
-  }
-
-  create(): void {
-    this.changed = true;
-    let obj: T = new this.itemType();
-    (<any>obj).id = 0;
-    this.initItem(obj);
-    this.addItem(obj);
-  }
-
-  addItem(obj: T, select: boolean = true): void {
-    let item = {state: ChangeState.NoChange, obj: obj} as ChangeInfo<T>;
-    this.items.push(item);
-    if (select) {
-      this.sel_item = item;
+    saveSettings(): Observable<any> {
+        return this.schemeService.modify_structure(this.settingName, this.items);
     }
-  }
 
-  remove(item: ChangeInfo<T>): void {
-    this.itemChanged(item, ChangeState.Delete);
-    // Dialog
-  }
+    resetChanges(): void {
+        this.fillItems();
+    }
 
-  saveSettings(): Observable<any> {
-    return this.schemeService.modify_structure(this.settingName, this.items);
-  }
+    canDeactivate(): boolean {
+        return !this.changed;
+    }
 }

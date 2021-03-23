@@ -24,6 +24,8 @@ import { AceEditorModule } from 'ng2-ace-editor';
 import { DigModeTypeComponent } from './dig-mode-type/dig-mode-type.component';
 import { TranslationComponent } from './translation/translation.component';
 import { ValueViewComponent } from './value-view/value-view.component';
+import {ConfirmUnsavedChangesDialogComponent} from './confirm-unsaved-changes-dialog/confirm-unsaved-changes-dialog.component';
+import {PendingChangesGuard} from './pending-changes.guard';
 
 @NgModule({
   imports: [
@@ -51,15 +53,19 @@ import { ValueViewComponent } from './value-view/value-view.component';
       Scheme_Copy_Dialog,
       DigModeTypeComponent,
       TranslationComponent,
-      ValueViewComponent
+      ValueViewComponent,
+      ConfirmUnsavedChangesDialogComponent,
   ],
   entryComponents: [
-      Scheme_Copy_Dialog
+      Scheme_Copy_Dialog,
+      ConfirmUnsavedChangesDialogComponent,
   ],
   providers: [
 //    SchemeLoadGuard,
 //    ControlService,
-      MetadataService, CompleterService
+      PendingChangesGuard,
+      MetadataService,
+      CompleterService,
   ]
 })
 export class SettingsModule { }
