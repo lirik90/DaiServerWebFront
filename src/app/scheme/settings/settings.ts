@@ -142,7 +142,7 @@ export abstract class ChangeTemplate<T extends { id: number }> {
     // Dialog
   }
 
-  saveSettings(): Observable<any> {
-    return this.schemeService.modify_structure(this.settingName, this.items);
+  saveSettings(items: ChangeInfo<T>[] = this.items): Observable<any> {
+    return this.schemeService.modify_structure(this.settingName, items);
   }
 }
