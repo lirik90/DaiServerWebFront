@@ -22,6 +22,8 @@ export class Sign_Type { // Еденица измерения
 export class Plugin_Type { // Плагин работы с устройством
   id: number;   // ID
   name: string; // Имя плагина
+  param_names_device: string; // "is_number|is_little_endian"
+  param_names_device_item: string; // "data"
 }
 
 export enum Register_Type { // Тип данных элемента
