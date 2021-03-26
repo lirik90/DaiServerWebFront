@@ -15,6 +15,7 @@ import {SaveTimersComponent} from './save-timers/save-timers.component';
 import {DigModeTypeComponent} from './dig-mode-type/dig-mode-type.component';
 import {TranslationComponent} from './translation/translation.component';
 import {ValueViewComponent} from './value-view/value-view.component';
+import {PendingChangesGuard} from './pending-changes.guard';
 
 const settingsRoutes: Routes = [
     {
@@ -27,7 +28,7 @@ const settingsRoutes: Routes = [
             {
                 path: 'sections',
                 children: [
-                    {path: '', component: SectionsComponent, pathMatch: 'full'},
+                    {path: '', component: SectionsComponent, pathMatch: 'full', canDeactivate: [PendingChangesGuard]},
                     {
                         path: ':sctId',
                         children: [
@@ -37,15 +38,15 @@ const settingsRoutes: Routes = [
                     }
                 ]
             },
-            {path: 'grouptypes', component: GroupTypesComponent},
-            {path: 'dig_status_category', component: DIG_Status_Category_Component},
-            {path: 'signtypes', component: SignTypesComponent},
-            {path: 'plugin_type', component: PluginTypesComponent},
-            {path: 'savetimers', component: SaveTimersComponent},
-            {path: 'codes', component: Code_Item_Component},
-            {path: 'dig_mode_type', component: DigModeTypeComponent},
-            {path: 'translation', component: TranslationComponent},
-            {path: 'value_view', component: ValueViewComponent},
+            {path: 'grouptypes', component: GroupTypesComponent, canDeactivate: [PendingChangesGuard]},
+            {path: 'dig_status_category', component: DIG_Status_Category_Component, canDeactivate: [PendingChangesGuard]},
+            {path: 'signtypes', component: SignTypesComponent, canDeactivate: [PendingChangesGuard]},
+            {path: 'plugin_type', component: PluginTypesComponent, canDeactivate: [PendingChangesGuard]},
+            {path: 'savetimers', component: SaveTimersComponent, canDeactivate: [PendingChangesGuard]},
+            {path: 'codes', component: Code_Item_Component, canDeactivate: [PendingChangesGuard]},
+            {path: 'dig_mode_type', component: DigModeTypeComponent, canDeactivate: [PendingChangesGuard]},
+            {path: 'translation', component: TranslationComponent, canDeactivate: [PendingChangesGuard]},
+            {path: 'value_view', component: ValueViewComponent, canDeactivate: [PendingChangesGuard]},
         ]
     }
 ];
