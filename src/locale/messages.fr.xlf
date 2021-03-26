@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:trolltech="urn:trolltech:names:ts:document:1.0">
-  <file original="app/schemes/detail/detail.component.html" datatype="plaintext" source-language="ru" target-language="en"><body>
+  <file original="app/schemes/detail/detail.component.html" datatype="plaintext" source-language="ru" target-language="fr"><body>
     <trans-unit id="DETAILS.HEAD" approved="yes">
       <source xml:space="preserve">Подробнее о проекте</source>
       <target xml:space="preserve">Détails de l'appareil</target>
