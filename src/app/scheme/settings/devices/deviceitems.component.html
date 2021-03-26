@@ -25,7 +25,7 @@
 <mat-expansion-panel expanded hideToggle *ngIf="sel_item">
   <mat-expansion-panel-header>
     <mat-panel-title i18n="@@SETTINGS.DETAILS">Детали</mat-panel-title>
-    <mat-panel-description>{{title()}}</mat-panel-description>
+    <mat-panel-description>{{title(sel_item.obj)}}</mat-panel-description>
   </mat-expansion-panel-header>
   <mat-form-field>
     <input matInput [(ngModel)]="sel_item.obj.device_id" placeholder="Device ID" (ngModelChange)="itemChanged()" />
@@ -33,9 +33,9 @@
   <mat-form-field>
     <input matInput [(ngModel)]="sel_item.obj.name" i18n-placeholder="@@SETTINGS.NAME" placeholder="Имя" (ngModelChange)="itemChanged()" />
   </mat-form-field>
-  <mat-form-field>
-    <input matInput [(ngModel)]="sel_item.obj.extra"  i18n-placeholder="@@SETTINGS.EXTRA" placeholder="Экстра" (ngModelChange)="itemChanged()" />
-  </mat-form-field>
+    <mat-form-field *ngFor="let extraField of editingExtraFields; let $idx=index">
+        <input matInput (ngModelChange)="extraChanged($idx, $event)" [(ngModel)]="extraField.value" [placeholder]="extraField.title" />
+    </mat-form-field>
   <mat-form-field>
     <input matInput [(ngModel)]="sel_item.obj.parent_id" i18n-placeholder="@@SETTINGS.PARENT" placeholder="Предок" (ngModelChange)="itemChanged()" />
   </mat-form-field>
@@ -46,12 +46,11 @@
     </mat-select>
   </mat-form-field>
   <mat-form-field>
-    <mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.group_id" i18n-placeholder="@@SETTINGS.GROUP" placeholder="Группа">
+    <mat-select (ngModelChange)="groupChanged()" [(ngModel)]="sel_item.obj.group_id" i18n-placeholder="@@SETTINGS.GROUP" placeholder="Группа">
       <mat-option>-- <span i18n-placeholder="@@CONTROL.NO">Нет</span> --</mat-option>
       <mat-optgroup *ngFor="let sct of sections" [label]="sct.name">
         <ng-container *ngFor="let grp of sct.groups">
-
-          <mat-option *ngIf="!sel_item.obj.type_id || sel_item.obj.type.group_type_id == grp.type_id" [value]="grp.id">{{grp.title ? grp.title : grp.type.title}}</mat-option>
+          <mat-option [value]="grp.id">{{grp.title ? grp.title : grp.type.title}}</mat-option>
         </ng-container>
       </mat-optgroup>
     </mat-select>

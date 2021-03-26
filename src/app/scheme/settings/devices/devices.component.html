@@ -35,13 +35,17 @@
       <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.name" i18n-placeholder="@@SETTINGS.NAME" placeholder="Имя"/>
     </mat-form-field>
     <mat-form-field>
-      <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.plugin_id" i18n-placeholder="@@SETTINGS.PLUGIN" placeholder="Плагин" type="number" min="0"/>
+        <mat-label i18n="@@SETTINGS.PLUGIN">Плагин</mat-label>
+        <mat-select [(ngModel)]="sel_item.obj.plugin_id" (ngModelChange)="itemChanged();pluginChanged(sel_item.obj.plugin_id,sel_item.obj.extra)">
+            <mat-option i18n="@@NOT_SELECTED">Не выбрано</mat-option>
+            <mat-option *ngFor="let plugin of plugins" [value]="plugin.id">{{ plugin.name }}</mat-option>
+        </mat-select>
     </mat-form-field>
     <mat-form-field>
       <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.check_interval" i18n-placeholder="@@SETTINGS.INTERVAL" placeholder="Интервал проверки (мс)" type="number" min="50"/>
     </mat-form-field>
-    <mat-form-field>
-      <input matInput (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.extra" i18n-placeholder="@@SETTINGS.EXTRA" placeholder="Экстра" />
+    <mat-form-field *ngFor="let extraField of editingExtraFields; let $idx=index">
+      <input matInput (ngModelChange)="extraChanged($idx, $event)" [(ngModel)]="extraField.value" [placeholder]="extraField.title" />
     </mat-form-field>
   </mat-expansion-panel>
 
