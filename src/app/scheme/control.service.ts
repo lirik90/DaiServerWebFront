@@ -144,12 +144,27 @@ export class ControlService {
           console.warn(`BAD PARSE POSITION ${idx} NEED ${msg.data.byteLength} ${JSON.stringify(view)}`);
         }
       } else if (msg.cmd == WebSockCmd.WS_CHANGE_GROUP_PARAM_VALUES) {
+          const find_param = (params: DIG_Param[], prm_id: number): DIG_Param => {
+              if (!params) return null;
+
+              let param = params.find(param => param.id === prm_id);
+              if (!param) {
+                  for (let p of params) {
+                      param = find_param(p.childs, prm_id);
+                      if (param) {
+                          break;
+                      }
+                  }
+              }
+
+              return param;
+          };
+
         const set_param_impl = (group: Device_Item_Group, prm_id: number, value: string) => {
-            const param = group?.params?.find(param => param.id === prm_id)
-                || group?.params?.reduce((prev, curr) => prev.concat(curr.childs), [])
-                    .find(param => param.id == prm_id);
-            if (!param) { return null; }
-            param.value = value;
+            const param = find_param(group?.params, prm_id);
+            if (param) {
+                param.value = value;
+            }
             return param;
         };
 
