@@ -46,6 +46,7 @@ import {DeviceItemGroupTypeDetailDialogComponent} from './manage/device-item-gro
 import {SignTypeDetailDialogComponent} from './manage/sign-type-detail-dialog/sign-type-detail-dialog.component';
 import { PluginDetailDialogComponent } from './manage/plugin-detail-dialog/plugin-detail-dialog.component';
 import { ElementsMenuComponent } from './elements/elements-menu/elements-menu.component';
+import { MnemoschemeComponent } from './mnemoscheme/mnemoscheme.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
     return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -102,6 +103,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         SignTypeDetailDialogComponent,
         PluginDetailDialogComponent,
         ElementsMenuComponent,
+        MnemoschemeComponent,
     ],
     entryComponents: [
         PageReloadDialogComponent,

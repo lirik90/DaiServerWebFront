@@ -26,6 +26,11 @@ export class Plugin_Type { // Плагин работы с устройство�
   param_names_device_item: string; // "data"
 }
 
+export class Mnemoscheme {
+    id: number;
+    title: string;
+}
+
 export enum Register_Type { // Тип данных элемента
     RT_INVALID,
     RT_DISCRETE_INPUTS,   // Булевы значения только для чтения

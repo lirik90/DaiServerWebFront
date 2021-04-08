@@ -1,0 +1,16 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    height: calc(99% - 10px);
+    margin-top: 10px;
+}
+
+.img-container {
+    flex: 1 1;
+    text-align: center;
+}
+
+.img-container img {
+    height: 100%;
+    display: inline-block;
+}

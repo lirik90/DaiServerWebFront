@@ -15,6 +15,7 @@ import {DocComponent} from './doc/doc.component';
 import {Log2Component} from './log2/log2.component';
 import {ElementsComponent} from './elements/elements.component';
 import {ManageDevicesComponent} from './manage-devices/manage-devices.component';
+import { MnemoschemeComponent } from './mnemoscheme/mnemoscheme.component';
 
 const schemeRoutes: Routes = [{
     path: '',
@@ -37,6 +38,7 @@ const schemeRoutes: Routes = [{
             {path: 'elements/sections', component: ManageComponent, data: {req_perms: true}},
             {path: 'elements/devices', component: ManageDevicesComponent, data: {req_perms: true}},
             {path: 'elements', pathMatch: 'full', redirectTo: 'elements/sections'},
+            {path: 'mnemo_scheme', component: MnemoschemeComponent},
             {path: 'log_event', component: LogComponent, data: {req_perms: true}},
             {path: 'log_value', component: Log2Component, data: {req_perms: true}},
             {path: 'help', component: DocComponent, data: {req_perms: true}},
