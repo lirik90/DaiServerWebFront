@@ -101,6 +101,11 @@ export class ParamsInGroupComponent extends ChangeTemplate<DIG_Param> implements
         }
     }
 
+    paramTypeChanged(obj: DIG_Param) {
+        obj.param_id = obj.param.id;
+        this.itemChanged();
+    }
+
     initItem(obj: DIG_Param): void {
         obj.param = new DIG_Param_Type();
         obj.group_id = this.group.id;

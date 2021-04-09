@@ -28,7 +28,7 @@
     <mat-panel-description>{{sel_item.obj.param.title}}</mat-panel-description>
   </mat-expansion-panel-header>
   <mat-form-field>
-    <mat-select (ngModelChange)="itemChanged()" [(ngModel)]="sel_item.obj.param" i18n-placeholder="@@SETTINGS.DATA_TYPE" placeholder="Тип данных">
+    <mat-select (selectionChange)="paramTypeChanged(sel_item.obj)" [(ngModel)]="sel_item.obj.param" i18n-placeholder="@@SETTINGS.DATA_TYPE" placeholder="Тип данных">
       <mat-option *ngFor="let item of this.params" [value]="item">
         {{item.title}}
       </mat-option>
