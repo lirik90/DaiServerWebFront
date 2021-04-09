@@ -145,19 +145,18 @@ export class ControlService {
         }
       } else if (msg.cmd == WebSockCmd.WS_CHANGE_GROUP_PARAM_VALUES) {
           const find_param = (params: DIG_Param[], prm_id: number): DIG_Param => {
-              if (!params) return null;
-
-              let param = params.find(param => param.id === prm_id);
-              if (!param) {
+              if (params) {
                   for (let p of params) {
-                      param = find_param(p.childs, prm_id);
-                      if (param) {
-                          break;
-                      }
+                      if (p.id === prm_id)
+                          return p;
+
+                      const param = find_param(p.childs, prm_id);
+                      if (param)
+                          return param;
                   }
               }
 
-              return param;
+              return null;
           };
 
         const set_param_impl = (group: Device_Item_Group, prm_id: number, value: string) => {
