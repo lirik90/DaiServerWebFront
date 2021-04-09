@@ -161,7 +161,7 @@ export class SchemeComponent implements OnInit, OnDestroy, AfterViewInit {
     const isFullAccess = this.authService.isFullAccess();
 
     this.addMenu('detail', 'perm_device_information');
-    this.addMenu('mnemo_scheme', 'image');
+    this.addMenu('mnemoscheme', 'image');
     this.addMenu('elements', 'build');
     this.addMenu('log_event', 'event_note');
     this.addMenu('log_value', 'event_note');

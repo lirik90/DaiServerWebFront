@@ -38,7 +38,7 @@ const schemeRoutes: Routes = [{
             {path: 'elements/sections', component: ManageComponent, data: {req_perms: true}},
             {path: 'elements/devices', component: ManageDevicesComponent, data: {req_perms: true}},
             {path: 'elements', pathMatch: 'full', redirectTo: 'elements/sections'},
-            {path: 'mnemo_scheme', component: MnemoschemeComponent},
+            {path: 'mnemoscheme', component: MnemoschemeComponent},
             {path: 'log_event', component: LogComponent, data: {req_perms: true}},
             {path: 'log_value', component: Log2Component, data: {req_perms: true}},
             {path: 'help', component: DocComponent, data: {req_perms: true}},
