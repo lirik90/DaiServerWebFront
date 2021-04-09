@@ -47,6 +47,7 @@ export class MnemoschemeComponent implements OnInit {
     }
 
     private updateValues() {
+        // console.group('#updateValues');
         const imgItems = document.querySelectorAll('[data-device-item-id]');
         imgItems.forEach((elem) => {
             const devItemId = +elem.getAttribute('data-device-item-id');
@@ -58,11 +59,15 @@ export class MnemoschemeComponent implements OnInit {
             const devItem = this.schemeService.devItemById(devItemId);
             const { value } = devItem.val;
 
+            // console.log(devItem.name || devItem.type.title || devItem.type.name, value);
+
             if (isCssAnim) {
                 const cssAnimEnableValue = elem.getAttribute('data-css-anim-if-value');
                 if (cssAnimEnableValue == value) {
+                    // console.log('Start CssAnim');
                     MnemoschemeComponent.startCssAnimation(elem);
                 } else {
+                    // console.log('Stop CssAnim');
                     MnemoschemeComponent.stopCssAnimation(elem);
                 }
             }
@@ -70,8 +75,10 @@ export class MnemoschemeComponent implements OnInit {
             if (isSmilAnim) {
                 const smilAnimEnableValue = elem.getAttribute('data-smil-anim-if-value');
                 if (smilAnimEnableValue == value) {
+                    // console.log('Start SMIL');
                     MnemoschemeComponent.startSmilAnimation(elem);
                 } else {
+                    // console.log('Stop SMIL');
                     MnemoschemeComponent.stopSmilAnimation(elem);
                 }
             }
@@ -79,8 +86,10 @@ export class MnemoschemeComponent implements OnInit {
             if (isShow) {
                 const showIfValue = elem.getAttribute('data-show-if-value');
                 if (showIfValue == value) {
+                    // console.log('Show');
                     MnemoschemeComponent.showElement(elem);
                 } else {
+                    // console.log('Hide');
                     MnemoschemeComponent.hideElement(elem);
                 }
             }
@@ -97,6 +106,8 @@ export class MnemoschemeComponent implements OnInit {
                 elem.innerHTML = binding;
             }
         });
+
+        // console.groupEnd();
     }
 
     private static startCssAnimation(elem: Element) {
@@ -116,9 +127,10 @@ export class MnemoschemeComponent implements OnInit {
     private static startSmilAnimation(elem: Element) {
         elem.childNodes.forEach((child) => {
             if (child.nodeName.indexOf('animate') >= 0) {
-                const animElem = child as SVGAnimationElement;
-                if (animElem.getCurrentTime() === 0) {
-                    (animElem as any).beginElement();
+                const anim = child as SVGAnimationElement;
+                if (!anim.hasAttribute('data-anim-started')) {
+                    anim.setAttribute('data-anim-started', '1');
+                    (<any>anim).beginElement();
                 }
             }
         });
@@ -127,7 +139,11 @@ export class MnemoschemeComponent implements OnInit {
     private static stopSmilAnimation(elem: Element) {
         elem.childNodes.forEach((child) => {
             if (child.nodeName.indexOf('animate') >= 0) {
-                (child as any).endElement();
+                const anim = child as SVGAnimationElement;
+                if (anim.hasAttribute('data-anim-started')) {
+                    anim.removeAttribute('data-anim-started');
+                    (<any>anim).endElement();
+                }
             }
         });
     }
