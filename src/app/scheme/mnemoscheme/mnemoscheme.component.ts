@@ -1,6 +1,6 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {SchemeService} from '../scheme.service';
-import {Device_Item, Mnemoscheme} from '../scheme';
+import {Device_Item_Group, Mnemoscheme} from '../scheme';
 import {ControlService} from '../control.service';
 import {Subscription} from 'rxjs';
 
@@ -10,13 +10,22 @@ import {Subscription} from 'rxjs';
     styleUrls: ['./mnemoscheme.component.css']
 })
 export class MnemoschemeComponent implements OnInit {
+    private updateValues$: Subscription;
+
+    @ViewChild('overlay', { read: ElementRef }) overlay: ElementRef<HTMLDivElement>;
     @ViewChild('svgElement', { read: ElementRef }) svg: ElementRef<SVGElement>;
+    @ViewChild('imgContainer', { read: ElementRef }) imgContainer: ElementRef<HTMLDivElement>;
 
     selected: number;
     mnemoscheme: Mnemoscheme[];
-    private updateValues$: Subscription;
+    deviceItemGroup: Device_Item_Group;
+    digOverlayPosition: { x: number; y: number };
 
-    constructor(private controlService: ControlService, private schemeService: SchemeService) {
+    constructor(
+        private controlService: ControlService,
+        private schemeService: SchemeService,
+        private changeDetectorRef: ChangeDetectorRef,
+    ) {
     }
 
     ngOnInit(): void {
@@ -40,10 +49,26 @@ export class MnemoschemeComponent implements OnInit {
             .subscribe((text) => {
                 this.svg.nativeElement.innerHTML = text;
                 setTimeout(() => {
+                    this.bindClickEvents();
                     this.updateValues();
                     this.updateValues$ = this.controlService.dev_item_changed.subscribe(() => this.updateValues());
-                }, 100);
+                }, 4);
             });
+    }
+
+    private bindClickEvents() {
+        const imgItems = document.querySelectorAll('[data-dig-id]');
+        imgItems.forEach((elem) => {
+            elem.addEventListener('click', (ev: MouseEvent) => {
+                ev.preventDefault();
+                const digId = +elem.getAttribute('data-dig-id');
+
+                this.showDig(digId, {
+                    x: ev.x,
+                    y: ev.y,
+                });
+            });
+        });
     }
 
     private updateValues() {
@@ -154,5 +179,32 @@ export class MnemoschemeComponent implements OnInit {
 
     private static hideElement(elem: Element) {
         elem.classList.add('hidden');
+    }
+
+    private showDig(digId: number, showParams: { x: number, y: number }) {
+        this.digOverlayPosition = showParams;
+        this.deviceItemGroup = this.schemeService
+            .scheme.section[0].groups.find(group => group.id === digId);
+
+        const containerHeight = this.imgContainer.nativeElement.clientHeight;
+        const overflowX = this.digOverlayPosition.x + 350 - this.imgContainer.nativeElement.clientWidth;
+        if (overflowX > 0) {
+            this.digOverlayPosition.x -= overflowX;
+        }
+
+        this.changeDetectorRef.detectChanges();
+
+        const overflowY = this.overlay.nativeElement.clientHeight
+            + this.digOverlayPosition.y
+            - containerHeight;
+
+        if (overflowY > 0) {
+            this.digOverlayPosition.y -= overflowY;
+            if (this.digOverlayPosition.y < this.imgContainer.nativeElement.offsetTop) {
+                this.digOverlayPosition.y = this.imgContainer.nativeElement.offsetTop;
+            }
+
+            this.changeDetectorRef.detectChanges();
+        }
     }
 }
