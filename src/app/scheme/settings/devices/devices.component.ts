@@ -33,10 +33,17 @@ abstract class WithPlugin<T extends { id: number, extra: string }> extends Chang
 
                 this.editingExtraFields = fields
                     .split('|')
-                    .map((title, idx) => ({
-                        title,
-                        value: parsedExtra[idx],
-                    }));
+                    .map((title, idx) => {
+                        let value = '';
+                        if (parsedExtra && parsedExtra[idx]) {
+                            value = parsedExtra[idx];
+                        }
+
+                        return {
+                            title,
+                            value,
+                        };
+                    });
             }
         }
     }
@@ -82,6 +89,7 @@ export class DevicesComponent extends WithPlugin<Device> implements OnInit {
     initItem(obj: Device): void {
         obj.extra = null;
         obj.check_interval = 0;
+        this.pluginChanged(obj.plugin_id, obj.extra);
     }
 }
 
@@ -104,7 +112,6 @@ export class DeviceItemsComponent extends WithPlugin<Device_Item> implements OnI
         settingsService: SettingsService,
     ) {
         super(schemeService, Device_Item, Structure_Type.ST_DEVICE_ITEM, ui, settingsService);
-        // TODO: исправить баг со списком групп из одной надписи. Раньше проблема была только при отмене редактирования.
     }
 
     getObjects(): Device_Item[] {
@@ -177,6 +184,7 @@ export class DeviceItemsComponent extends WithPlugin<Device_Item> implements OnI
         obj.device_id = this.dev.id;
         obj.type_id = 0;
         obj.extra = null;
+        this.pluginChanged(this.dev.plugin_id, obj.extra, true);
     }
 
     select(item: ChangeInfo<Device_Item>) {
