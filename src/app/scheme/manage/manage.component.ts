@@ -157,7 +157,7 @@ export class ManageComponent implements OnInit, AfterViewInit {
 
     newItem(parentGroup: Device_Item_Group) {
         this.dialog
-            .open(DeviceItemDetailDialogComponent, {width: '80%', data: { group_id: parentGroup.id }})
+            .open(DeviceItemDetailDialogComponent, {width: '80%', data: { group_id: parentGroup.id, disableChangeGroupId: true }})
             .afterClosed()
             .subscribe((itemDetails?: Device_Item_Details) => {});
     }
@@ -178,7 +178,7 @@ export class ManageComponent implements OnInit, AfterViewInit {
 
     editItem(item: Device_Item) {
         this.dialog
-            .open(DeviceItemDetailDialogComponent, {width: '80%', data: item})
+            .open(DeviceItemDetailDialogComponent, {width: '80%', data: { ...item, disableChangeGroupId: true }})
             .afterClosed()
             .subscribe((itemDetails?: Device_Item_Details) => {});
     }

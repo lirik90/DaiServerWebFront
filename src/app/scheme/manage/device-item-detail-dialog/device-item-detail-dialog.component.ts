@@ -23,6 +23,10 @@ export type Device_Item_Details = Pick<Device_Item, "name" | "device_id" | "type
 })
 export class DeviceItemDetailDialogComponent extends DetailDialog<Device_Item, DeviceItemDetailDialogComponent> implements WithPlugin<Device_Item> {
     readonly keys = Object.keys;
+
+    disableChangeGroupId: boolean;
+    disableDeviceIdChanging: boolean;
+
     pluginId: number;
     plugins: Plugin_Type[];
     editingExtraFields: { title: string, value: string }[];
@@ -34,13 +38,15 @@ export class DeviceItemDetailDialogComponent extends DetailDialog<Device_Item, D
 
     constructor(
         fb: FormBuilder,
-        @Inject(MAT_DIALOG_DATA) devItem: Device_Item,
+        @Inject(MAT_DIALOG_DATA) devItem: Device_Item & { disableChangeGroupId: boolean; disableDeviceIdChanging: boolean; },
         dialogRef: MatDialogRef<DeviceItemDetailDialogComponent>,
         schemeService: SchemeService,
         private dialog: MatDialog,
         settingsService: SettingsService,
     ) {
         super(dialogRef, devItem, schemeService, Structure_Type.ST_DEVICE_ITEM, fb, false);
+        this.disableChangeGroupId = devItem.disableChangeGroupId;
+        this.disableDeviceIdChanging = devItem.disableDeviceIdChanging;
 
         this.devItemTypes = this.schemeService.scheme.device_item_type;
         this.devices = this.schemeService.scheme.device;
@@ -118,7 +124,15 @@ export class DeviceItemDetailDialogComponent extends DetailDialog<Device_Item, D
     }
 
     newItemType() {
-        this.dialog.open(DeviceItemTypeDetailDialogComponent, { width: '80%' })
+        let data = {};
+        if (this.disableChangeGroupId) {
+            const group_type_id = this.groups.find(group => group.id === this.fg.controls['group_id'].value)?.type_id;
+            if (group_type_id) {
+                data = {group_type_id, disableGroupTypeChanging: true};
+            }
+        }
+
+        this.dialog.open(DeviceItemTypeDetailDialogComponent, { width: '80%', data })
             .afterClosed()
             .subscribe((deviceItemType?: Device_Item_Type) => {});
     }

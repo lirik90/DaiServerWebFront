@@ -10,10 +10,10 @@
     </mat-form-field>
     <mat-form-field class="with-link">
         <mat-label i18n="@@SCHEME_DIALOGS.DEVICE_ITEM_TYPE.GROUP_TYPE">Тип группы</mat-label>
-        <mat-select formControlName="group_type_id">
+        <mat-select formControlName="group_type_id" [disabled]="disableGroupTypeChanging">
             <mat-option *ngFor="let groupType of groupTypes" [value]="groupType.id">{{ groupType.title || groupType.name }}</mat-option>
         </mat-select>
-        <mat-hint>
+        <mat-hint *ngIf="!disableGroupTypeChanging">
             <a href="#" (click)="$event.preventDefault();newGroupType()"><small i18n="@@SCHEME_DIALOGS.ADD_NEW">Добавить новый(ую)</small></a>
         </mat-hint>
     </mat-form-field>

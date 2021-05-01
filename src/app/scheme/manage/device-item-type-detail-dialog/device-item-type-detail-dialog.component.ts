@@ -15,6 +15,8 @@ import {DeviceItemGroupTypeDetailDialogComponent} from '../device-item-group-typ
     styleUrls: ['./device-item-type-detail-dialog.component.css', '../detail-dialog.css']
 })
 export class DeviceItemTypeDetailDialogComponent extends DetailDialog<Device_Item_Type, DeviceItemTypeDetailDialogComponent> {
+    disableGroupTypeChanging: boolean;
+
     signTypes: Sign_Type[];
     registerTypes;
     saveAlgos;
@@ -25,18 +27,20 @@ export class DeviceItemTypeDetailDialogComponent extends DetailDialog<Device_Ite
     constructor(
         fb: FormBuilder,
         dialogRef: MatDialogRef<DeviceItemTypeDetailDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) data: Device_Item_Type,
+        @Inject(MAT_DIALOG_DATA) data: Device_Item_Type & { disableGroupTypeChanging: boolean },
         schemeService: SchemeService,
         settings: SettingsService,
         private dialog: MatDialog,
     ) {
         super(dialogRef, data, schemeService, Structure_Type.ST_DEVICE_ITEM_TYPE, fb);
+        this.disableGroupTypeChanging = data.disableGroupTypeChanging;
 
         this.registerTypes = this.enumToArray(Register_Type);
         this.saveAlgos = this.enumToArray(Save_Algorithm);
 
         this.signTypes = this.schemeService.scheme.sign_type;
         this.groupTypes = this.schemeService.scheme.dig_type;
+
         settings.getSaveTimers().subscribe(timers => this.saveTimers = timers.results);
     }
 
