@@ -35,10 +35,19 @@ export class DeviceDetailDialogComponent extends DetailDialog<Device, DeviceDeta
         return this.fb.group({
             id: [null, []],
             name: ['', [Validators.required]],
-            plugin_id: [null, []],
+            plugin_id: [0, []],
             check_interval: [50, [Validators.min(50)]],
             extra: ['', []],
         });
+    }
+
+    patchValue(dialogData) {
+        if (dialogData) {
+            this.fg.patchValue({
+                ...dialogData,
+                plugin_id: dialogData.plugin_id || 0, // if plugin_id === null, set it to 0
+            });
+        }
     }
 
     createItem(formValue: any): Device {

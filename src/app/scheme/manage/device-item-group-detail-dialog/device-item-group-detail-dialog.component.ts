@@ -30,7 +30,7 @@ export class DeviceItemGroupDetailDialogComponent extends DetailDialog<Device_It
 
     createFormGroup(): FormGroup {
         return this.fb.group({
-            title: ['', [Validators.required]],
+            title: ['', []],
             type_id: [null, [Validators.required]],
             section_id: [null, []],
         });

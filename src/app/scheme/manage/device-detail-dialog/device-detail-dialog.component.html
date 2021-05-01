@@ -7,6 +7,7 @@
     <mat-form-field class="with-link">
         <mat-label i18n="@@SETTINGS.PLUGIN">Плагин</mat-label>
         <mat-select formControlName="plugin_id">
+            <mat-option [value]="0" i18n="@@CONTROL.NO">Нет</mat-option>
             <mat-option *ngFor="let plugin of plugins" [value]="plugin.id">{{ plugin.name }}</mat-option>
         </mat-select>
         <mat-hint>
