@@ -105,7 +105,9 @@ export class DeviceItemDetailDialogComponent extends DetailDialog<Device_Item, D
     createItem(formValue: any): Device_Item {
         const devItem = new Device_Item();
 
-        Object.assign(devItem, formValue);
+        Object.assign(devItem, formValue, {
+            extra: JSON.stringify(devItem.extra || []),
+        });
         devItem.type = this.devItemTypes.find(t => t.id === devItem.type_id);
 
         return devItem;
