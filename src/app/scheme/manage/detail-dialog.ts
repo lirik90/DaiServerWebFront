@@ -2,6 +2,8 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {Modify_Structure_Type, Patch_Structure_Response, SchemeService} from '../scheme.service';
 import {Structure_Type} from '../settings/settings';
+import {SettingsService} from '../settings.service';
+import {Plugin_Type} from '../scheme';
 
 export abstract class DetailDialog<T extends Modify_Structure_Type,C> {
     public fg: FormGroup;
@@ -12,10 +14,11 @@ export abstract class DetailDialog<T extends Modify_Structure_Type,C> {
         protected schemeService: SchemeService,
         protected settingName: Structure_Type,
         protected fb: FormBuilder,
+        initFg = true,
     ) {
-        this.fg = this.createFormGroup();
-
-        this.patchValue(dialogData);
+        if (initFg) {
+            this.initFg(dialogData);
+        }
     }
 
     patchValue(dialogData) {
@@ -49,5 +52,10 @@ export abstract class DetailDialog<T extends Modify_Structure_Type,C> {
 
     createItem(formValue: any): T {
         return {...formValue};
+    }
+
+    protected initFg(dialogData: T) {
+        this.fg = this.createFormGroup();
+        this.patchValue(dialogData);
     }
 }

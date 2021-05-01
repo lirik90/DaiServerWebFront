@@ -6,68 +6,31 @@ import {SchemeService} from '../../scheme.service';
 import {ChangeInfo, ChangeState, ChangeTemplate, Structure_Type} from '../settings';
 import {UIService} from '../../../ui.service';
 import {SettingsService} from '../../settings.service';
-
-abstract class WithPlugin<T extends { id: number, extra: string }> extends ChangeTemplate<T> {
-    plugins: Plugin_Type[];
-    editingExtraFields: { title: string, value: string }[];
-
-    protected constructor(
-        schemeService: SchemeService,
-        itemType: new () => T,
-        settingName: Structure_Type,
-        ui: UIService,
-        settingsService: SettingsService,
-    ) {
-        super(schemeService, itemType, settingName, ui);
-        settingsService.getPluginTypes().subscribe(plugins => this.plugins = plugins.results);
-    }
-
-    public pluginChanged(pluginId: number, extra: string, isItem: boolean = false) {
-        this.editingExtraFields = [];
-        const selectedPlugin = this.plugins.find(p => p.id === pluginId);
-        if (selectedPlugin) {
-            const fields = selectedPlugin[isItem ? 'param_names_device_item' : 'param_names_device'];
-
-            if (fields) {
-                const parsedExtra = JSON.parse(extra) as Array<string>;
-
-                this.editingExtraFields = fields
-                    .split('|')
-                    .map((title, idx) => {
-                        let value = '';
-                        if (parsedExtra && parsedExtra[idx]) {
-                            value = parsedExtra[idx];
-                        }
-
-                        return {
-                            title,
-                            value,
-                        };
-                    });
-            }
-        }
-    }
-
-    public extraChanged(idx: number, val: string) {
-        this.editingExtraFields[idx].value = val;
-        this.sel_item.obj.extra = JSON.stringify(this.editingExtraFields.map(f => f.value));
-        this.itemChanged();
-    }
-}
+import {applyMixins} from 'rxjs/internal-compatibility';
+import {WithPlugin} from '../../with-plugin.class';
+import {Observable} from 'rxjs/Observable';
+import {PaginatorApi} from '../../../user';
 
 @Component({
     selector: 'app-devices',
     templateUrl: './devices.component.html',
     styleUrls: ['../settings.css', './devices.component.css']
 })
-export class DevicesComponent extends WithPlugin<Device> implements OnInit {
+export class DevicesComponent extends ChangeTemplate<Device> implements WithPlugin<Device>, OnInit {
     constructor(
         schemeService: SchemeService,
         ui: UIService,
         settingsService: SettingsService,
     ) {
-        super(schemeService, Device, Structure_Type.ST_DEVICE, ui, settingsService);
+        super(schemeService, Device, Structure_Type.ST_DEVICE, ui);
+        this.init(settingsService)
+            .subscribe(() => {});
     }
+
+    pluginChanged: (pluginId: number, extra: string, isItem: boolean) => void;
+    init: (settingsService: SettingsService) => Observable<PaginatorApi<Plugin_Type>>;
+    plugins: Plugin_Type[];
+    editingExtraFields: { title: string, value: string }[];
 
     getObjects(): Device[] {
         return this.schemeService.scheme.device;
@@ -83,22 +46,30 @@ export class DevicesComponent extends WithPlugin<Device> implements OnInit {
             return;
         }
 
-        this.pluginChanged(item.obj.plugin_id, item.obj.extra);
+        this.pluginChanged(item.obj.plugin_id, item.obj.extra, false);
     }
 
     initItem(obj: Device): void {
         obj.extra = null;
         obj.check_interval = 0;
-        this.pluginChanged(obj.plugin_id, obj.extra);
+        this.pluginChanged(obj.plugin_id, obj.extra, false);
+    }
+
+    public extraChanged(idx: number, val: string) {
+        this.editingExtraFields[idx].value = val;
+        this.sel_item.obj.extra = JSON.stringify(this.editingExtraFields.map(f => f.value));
+        this.itemChanged();
     }
 }
+
+applyMixins(DevicesComponent, [WithPlugin]);
 
 @Component({
     selector: 'app-deviceitems',
     templateUrl: './deviceitems.component.html',
     styleUrls: ['../settings.css', './devices.component.css']
 })
-export class DeviceItemsComponent extends WithPlugin<Device_Item> implements OnInit, OnChanges {
+export class DeviceItemsComponent extends ChangeTemplate<Device_Item> implements OnInit, OnChanges, WithPlugin<Device_Item> {
     @Input() dev: Device;
 
     itemtypes: Device_Item_Type[];
@@ -106,12 +77,19 @@ export class DeviceItemsComponent extends WithPlugin<Device_Item> implements OnI
     private groupSelected = false;
     private typeSelected = false;
 
+    init: (settingsService: SettingsService) => Observable<PaginatorApi<Plugin_Type>>;
+    pluginChanged: (pluginId: number, extra: string, isItem: boolean) => void;
+    plugins: Plugin_Type[];
+    editingExtraFields: { title: string, value: string }[];
+
     constructor(
         schemeService: SchemeService,
         ui: UIService,
         settingsService: SettingsService,
     ) {
-        super(schemeService, Device_Item, Structure_Type.ST_DEVICE_ITEM, ui, settingsService);
+        super(schemeService, Device_Item, Structure_Type.ST_DEVICE_ITEM, ui);
+        this.init(settingsService)
+            .subscribe(() => {});
     }
 
     getObjects(): Device_Item[] {
@@ -119,11 +97,11 @@ export class DeviceItemsComponent extends WithPlugin<Device_Item> implements OnI
     }
 
     ngOnInit() {
-        this.init();
+        this.initComponent();
     }
 
     ngOnChanges() {
-        this.init()
+        this.initComponent()
     }
 
     title(item: Device_Item): string {
@@ -247,7 +225,13 @@ export class DeviceItemsComponent extends WithPlugin<Device_Item> implements OnI
         }
     }
 
-    private init() {
+    public extraChanged(idx: number, val: string) {
+        this.editingExtraFields[idx].value = val;
+        this.sel_item.obj.extra = JSON.stringify(this.editingExtraFields.map(f => f.value));
+        this.itemChanged();
+    }
+
+    private initComponent() {
         this.reset();
         this.fillItems();
     }
@@ -259,3 +243,5 @@ export class DeviceItemsComponent extends WithPlugin<Device_Item> implements OnI
         this.sections = this.schemeService.scheme.section;
     }
 }
+
+applyMixins(DeviceItemsComponent, [WithPlugin]);
