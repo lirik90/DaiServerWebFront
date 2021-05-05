@@ -45,7 +45,7 @@ export class MnemoschemeComponent implements OnInit {
 
         this.selected = id;
 
-        this.schemeService.getMnemoschemeImage()
+        this.schemeService.getMnemoschemeImage(id)
             .subscribe((text) => {
                 this.svg.nativeElement.innerHTML = text;
                 setTimeout(() => {

@@ -677,18 +677,11 @@ export class SchemeService extends ISchemeService {
     }
 
     getMnemoscheme(): Observable<Mnemoscheme[]> {
-        // return this.http.get<Mnemoscheme>(`/api/v2/scheme/${this.scheme.id}/mnemoscheme/`);
-        return of([{
-            id: 1,
-            title: 'Главная',
-        }, {
-            id: 2,
-            title: 'Побочная',
-        }]);
+        return this.http.get<Mnemoscheme>(`/api/v2/scheme/${this.scheme.id}/mnemoscheme/`);
     }
 
-    getMnemoschemeImage(): Observable<string> {
-        return this.http.get('/assets/img/salat.svg', {
+    getMnemoschemeImage(id: number): Observable<string> {
+        return this.http.get(`/api/v2/scheme/${this.scheme.id}/mnemoscheme/${id}/`, {
             responseType: 'text',
         });
     }
