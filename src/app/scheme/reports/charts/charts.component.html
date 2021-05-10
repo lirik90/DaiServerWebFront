@@ -1,6 +1,7 @@
 <ng-container *ngIf="initialized">
     <app-chart-item *ngFor="let chart of charts"
                     [chartInfo]="chart"
+                    [members]="members"
                     [viewportMin]="time_from_"
                     [viewportMax]="time_to_"
                     [yAxes]="chart.axes"

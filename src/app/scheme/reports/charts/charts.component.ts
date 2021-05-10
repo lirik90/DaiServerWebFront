@@ -9,7 +9,7 @@ import 'chartjs-plugin-zoom-plus2';
 import * as _moment from 'moment';
 import {default as _rollupMoment} from 'moment';
 import {Chart_Value_Item, Paginator_Chart_Value, SchemeService} from '../../scheme.service';
-import {Axis_Params, Device_Item, DIG_Param, Register_Type} from '../../scheme';
+import {Axis_Params, Device_Item, DIG_Param, DIG_Param_Value_Type, Register_Type} from '../../scheme';
 import {Scheme_Group_Member} from '../../../user';
 import {BuiltChartParams, Chart_Info_Interface, Chart_Type, ChartFilter, ItemWithLegend, ZoomInfo} from './chart-types';
 import {ChartItemComponent} from './chart-item/chart-item.component';
@@ -83,6 +83,9 @@ export class ChartsComponent implements OnDestroy {
         private zone: NgZone,
         private sidebarService: SidebarService,
     ) {
+        // вынесено сюда, чтобы chat-item не плодили запросы
+        this.schemeService.getMembers().subscribe(members => this.members = members.results);
+
         moment.locale('ru');
 
         const today = new Date();
@@ -362,7 +365,8 @@ export class ChartsComponent implements OnDestroy {
     }
 
     genParamDataset(param: DIG_Param, colorIndex: number, hsl: Hsl = null): ChartDataSets {
-        let dataset = this.genDataset('⚙️ ' + param.param.title, colorIndex, true, hsl);
+        const steppedLine = param.param.value_type === DIG_Param_Value_Type.VT_BOOL;
+        let dataset = this.genDataset('⚙️ ' + param.param.title, colorIndex, steppedLine, hsl);
         dataset['param'] = param;
         return dataset;
     }
@@ -443,7 +447,7 @@ export class ChartsComponent implements OnDestroy {
                         this.schemeService.getChartParamData(this.time_from_ext_, this.time_to_ext_, paramIds.join(','), this.chartFilter.data_part_size, 0) :
                         of(null);
 
-                    return combineLatest(logs, params);
+                    return combineLatest([logs, params]);
                 }),
             )
             .subscribe(([logs, params]) => {
@@ -501,23 +505,26 @@ export class ChartsComponent implements OnDestroy {
 
             const log = logs.results.find(log => log.item_id === item_id);
 
-            if (log?.data && dataset.data?.length > 0) {
+            if (log?.data) {
                 let haveDataBefore = false;
                 let haveDataAfter = false;
 
-                log.data.forEach((item) => {
-                    haveDataBefore = haveDataBefore || item.time < dataset.data[0].x.getTime();
-                    haveDataAfter = haveDataAfter || item.time > dataset.data[dataset.data.length - 1].x.getTime();
-                });
+                if (dataset.data.length > 0) { // если с сервера не пришли нужные точки, то "копируем" их из существующих
+                    log.data.forEach((item) => {
+                        haveDataBefore = haveDataBefore || item.time < dataset.data[0].x.getTime();
+                        haveDataAfter = haveDataAfter || item.time > dataset.data[dataset.data.length - 1].x.getTime();
+                    });
 
-                if (!haveDataBefore) {
-                    const value = dataset.data[0].y;
-                    if (value !== null)
-                        log.data.splice(0, 0, {value, time: this.time_from_ext_});
+                    if (!haveDataBefore) {
+                        const value = dataset.data[0].y;
+                        if (value !== null)
+                            log.data.splice(0, 0, {value, time: this.time_from_ext_});
+                    }
                 }
 
-                if (!haveDataAfter) {
-                    let value = dataset.dev_item ? dataset.dev_item.val?.value : dataset.param.value;
+                // если с сервера нет нужной точки, то берём данные с датчиков
+                if (!haveDataAfter && this.time_to_ext_ >= Date.now()) {
+                    const value = data_param_name === 'dev_item' ? dataset.dev_item.val?.value : dataset.param.value;
                     if (value !== null)
                         log.data.push({value, time: this.time_to_ext_ > Date.now() ? Date.now() : this.time_to_ext_});
                 }
