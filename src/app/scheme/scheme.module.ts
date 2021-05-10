@@ -18,7 +18,7 @@ import {SidebarService} from './sidebar.service';
 import {SettingsService} from './settings.service';
 
 import {SchemeComponent, PageReloadDialogComponent} from './scheme.component';
-import {ManageComponent, ParamsDialogComponent} from './manage/manage.component';
+import {ManageComponent} from './manage/manage.component';
 import {LogComponent} from './log/log.component';
 import {ParamComponent} from './param/param.component';
 import {GroupStatusComponent} from './group-status/group-status.component';
@@ -46,6 +46,9 @@ import {DeviceItemGroupTypeDetailDialogComponent} from './manage/device-item-gro
 import {SignTypeDetailDialogComponent} from './manage/sign-type-detail-dialog/sign-type-detail-dialog.component';
 import { PluginDetailDialogComponent } from './manage/plugin-detail-dialog/plugin-detail-dialog.component';
 import { ElementsMenuComponent } from './elements/elements-menu/elements-menu.component';
+import { MnemoschemeComponent } from './mnemoscheme/mnemoscheme.component';
+import { DeviceItemGroupComponent } from './device-item-group/device-item-group.component';
+import {ParamsDialogComponent} from './device-item-group/params-dialog/params-dialog.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
     return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -102,6 +105,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         SignTypeDetailDialogComponent,
         PluginDetailDialogComponent,
         ElementsMenuComponent,
+        MnemoschemeComponent,
+        DeviceItemGroupComponent,
     ],
     entryComponents: [
         PageReloadDialogComponent,

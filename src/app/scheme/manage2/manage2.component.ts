@@ -1,16 +1,12 @@
-import {AfterViewInit, Component, Inject, Input, OnInit} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 import { SchemeService } from '../scheme.service';
-import {Section, Device_Item, Device_Item_Group, DIG_Mode_Type, DIG_Param} from '../scheme';
+import {Section, Device_Item, Device_Item_Group, DIG_Mode_Type} from '../scheme';
 import { ControlService } from '../control.service';
 import {filter} from 'rxjs/operators';
-import {AuthenticationService} from '../../authentication.service';
-import {Location} from '@angular/common';
-import {ParamsDialogComponent} from '../manage/manage.component';
+import {ParamsDialogComponent} from '../device-item-group/params-dialog/params-dialog.component';
 
 @Component({
   selector: 'app-manage',

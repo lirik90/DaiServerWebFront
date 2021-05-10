@@ -16,6 +16,7 @@
   "WITH_LOSS": "With packets loss.",
 	"NAVIGATION_TAB": {
     "DETAIL": "Details",
+    "MNEMOSCHEME": "View",
     "ELEMENTS": "Elements",
     "LOG_EVENT": "Journal",
     "LOG_VALUE": "Value log",

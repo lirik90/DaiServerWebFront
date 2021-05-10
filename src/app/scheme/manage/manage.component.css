@@ -50,21 +50,6 @@ h4 {
     height: 8px;
 }
 
-.dig-header a {
-    color: #fff;
-}
-
-.dig-header a h4 {
-    text-decoration: underline;
-}
-
-.dig-header a h4:hover {
-    background-color: #eee;
-    border-radius: 16px;
-    color: #6A9D80;
-    cursor: pointer;
-}
-
 .module > div {
     margin: 0;
     -webkit-column-break-inside: avoid; /* Chrome, Safari */
@@ -72,31 +57,6 @@ h4 {
     break-inside: avoid-column; /* IE 11 */
     display: table;
     width: 100%;
-}
-
-.dig {
-    position: relative;
-    border: 2px solid;
-    border-radius: 16px;
-    break-inside: avoid;
-    padding: 5px;
-    margin: 5px;
-    background-color: #639679;
-}
-
-.dig.editor-mode {
-    padding: 20px 5px 5px;
-    transition: 500ms;
-}
-
-.dig-header-buttons {
-    position: absolute;
-    right: 0;
-    top: 0;
-}
-
-.dig-header-buttons button {
-    width: 30px;
 }
 
 .hidden-buttons {
@@ -111,7 +71,7 @@ h4 {
 }
 
 .editor-mode div.scheme:hover > .hidden-buttons,
-.editor-mode .dig:hover > .hidden-buttons,
+.editor-mode.dig:hover > .hidden-buttons,
 .editor-mode .device-item:hover .hidden-buttons {
     opacity: 1;
     transition: 500ms;
@@ -124,25 +84,8 @@ h4 {
     line-height: 20px;
 }
 
-.dig > div:not(:first-child) {
-    text-align: right;
-    white-space: nowrap;
-    margin-bottom: 8px;
-}
-
 mat-select {
     width: 100%;
-}
-
-.dig-header mat-form-field {
-    width: 80px;
-}
-
-.dig-header .mat-icon {
-    font-size: 16px;
-    height: 16px;
-    width: 16px;
-    line-height: 16px;
 }
 
 h2 .mat-icon {
@@ -157,19 +100,6 @@ h2 button {
     height: 32px;
     line-height: 32px;
     vertical-align: top;
-}
-
-app-group-status {
-    margin-left: 4px;
-    margin-right: 4px;
-}
-
-app-dev-item-value {
-    display: inline-block;
-    width: 45%;
-    margin-left: 8px;
-    text-align: left;
-    white-space: normal;
 }
 
 .disabled-box {

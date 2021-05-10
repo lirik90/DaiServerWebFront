@@ -13,7 +13,7 @@ import {
     DIG_Param,
     DIG_Param_Type, DIG_Type,
     Disabled_Status,
-    Help, Plugin_Type,
+    Help, Mnemoscheme, Plugin_Type,
     Scheme_Detail,
     Section,
 } from './scheme';
@@ -674,5 +674,15 @@ export class SchemeService extends ISchemeService {
         return Object.keys(a)
             .filter(key => typeof a[key] !== 'object' && typeof b[key] !== 'object')
             .filter(key => a[key] !== b[key]) as (keyof T)[];
+    }
+
+    getMnemoscheme(): Observable<Mnemoscheme[]> {
+        return this.http.get<Mnemoscheme[]>(`/api/v2/scheme/${this.scheme.id}/mnemoscheme/`);
+    }
+
+    getMnemoschemeImage(id: number): Observable<string> {
+        return this.http.get(`/api/v2/scheme/${this.scheme.id}/mnemoscheme/${id}/`, {
+            responseType: 'text',
+        });
     }
 }
