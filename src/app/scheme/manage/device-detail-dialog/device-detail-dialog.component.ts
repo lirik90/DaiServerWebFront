@@ -69,17 +69,9 @@ export class DeviceDetailDialogComponent extends DetailDialog<Device, DeviceDeta
 
         super.patchValue({
             ...dialogData,
+            plugin_id: dialogData?.plugin_id || 0, // if plugin_id === null, set it to 0
             extra,
         });
-    }
-
-    patchValue(dialogData) {
-        if (dialogData) {
-            this.fg.patchValue({
-                ...dialogData,
-                plugin_id: dialogData.plugin_id || 0, // if plugin_id === null, set it to 0
-            });
-        }
     }
 
     createItem(formValue: any): Device {
