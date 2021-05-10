@@ -185,3 +185,7 @@ nav > div {
 .imgDialog .mat-dialog-container {
     overflow: visible;
 }
+
+.hidden { /* For Mnemoscheme */
+    visibility: hidden;
+}

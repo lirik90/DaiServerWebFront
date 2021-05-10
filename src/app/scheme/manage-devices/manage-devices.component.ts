@@ -11,7 +11,7 @@ import {Structure_Type} from '../settings/settings';
 @Component({
     selector: 'app-manage-devices',
     templateUrl: './manage-devices.component.html',
-    styleUrls: ['./manage-devices.component.css', '../manage/manage.component.css']
+    styleUrls: ['./manage-devices.component.css', '../manage/manage.component.css', '../device-item-group/device-item-group.component.css']
 })
 export class ManageDevicesComponent implements OnInit {
     isEditorModeEnabled = false;

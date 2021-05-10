@@ -16,6 +16,7 @@
   "WITH_LOSS": "С потерями пакетов.",
 	"NAVIGATION_TAB": {
 		"DETAIL": "Сведения",
+		"MNEMOSCHEME": "Обзор",
 		"ELEMENTS": "Элементы",
 		"LOG_EVENT": "Журнал",
     "LOG_VALUE": "Журнал значений",
