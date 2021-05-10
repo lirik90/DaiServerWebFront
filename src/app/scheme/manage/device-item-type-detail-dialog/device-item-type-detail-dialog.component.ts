@@ -47,10 +47,10 @@ export class DeviceItemTypeDetailDialogComponent extends DetailDialog<Device_Ite
     createFormGroup(): FormGroup {
         const group = this.fb.group({
             id: [null, []],
-            name: ['', []],
-            title: ['', []],
+            name: ['', [Validators.required]],
+            title: ['', [Validators.required]],
             group_type_id: [null, [Validators.required]],
-            sign_id: [null, [Validators.required]],
+            sign_id: [0, []],
             register_type: [null, [Validators.required]],
             save_algorithm: [null, [Validators.required]],
             save_timer_id: [null, []],
@@ -69,6 +69,15 @@ export class DeviceItemTypeDetailDialogComponent extends DetailDialog<Device_Ite
         });
 
         return group;
+    }
+
+    patchValue(dialogData) {
+        if (dialogData) {
+            this.fg.patchValue({
+                ...dialogData,
+                sign_id: dialogData.sign_id || 0,
+            });
+        }
     }
 
     enumToArray(en: any) {
