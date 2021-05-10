@@ -1,11 +1,11 @@
-import { Inject, Injectable} from '@angular/core';
-import { DOCUMENT } from "@angular/common";
-import { SubscriptionLike, Subject } from 'rxjs';
+import {Inject, Injectable} from '@angular/core';
+import {DOCUMENT} from '@angular/common';
+import {Subject, SubscriptionLike} from 'rxjs';
 
-import { SchemeService } from './scheme.service';
-import { ByteMessage, ByteTools, WebSocketBytesService } from '../web-socket.service';
-import { Connection_State } from '../user';
-import { Device_Item, Log_Event, Device_Item_Group, DIG_Param, DIG_Status_Type } from './scheme';
+import {SchemeService} from './scheme.service';
+import {ByteMessage, ByteTools, WebSocketBytesService} from '../web-socket.service';
+import {Connection_State} from '../user';
+import {Device_Item, Device_Item_Group, DIG_Param, DIG_Param_Value_Type, DIG_Status_Type, Log_Event} from './scheme';
 
 // import { QByteArray } from 'qtdatastream/src/types';
 
@@ -162,7 +162,13 @@ export class ControlService {
         const set_param_impl = (group: Device_Item_Group, prm_id: number, value: string) => {
             const param = find_param(group?.params, prm_id);
             if (param) {
-                param.value = value;
+                let parsedValue: any = value;
+
+                if (param.param.value_type === DIG_Param_Value_Type.VT_BOOL) {
+                    parsedValue = value !== 'false' && value !== '0';
+                }
+
+                param.value = parsedValue;
             }
             return param;
         };
