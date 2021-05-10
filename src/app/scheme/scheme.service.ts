@@ -677,7 +677,7 @@ export class SchemeService extends ISchemeService {
     }
 
     getMnemoscheme(): Observable<Mnemoscheme[]> {
-        return this.http.get<Mnemoscheme>(`/api/v2/scheme/${this.scheme.id}/mnemoscheme/`);
+        return this.http.get<Mnemoscheme[]>(`/api/v2/scheme/${this.scheme.id}/mnemoscheme/`);
     }
 
     getMnemoschemeImage(id: number): Observable<string> {
