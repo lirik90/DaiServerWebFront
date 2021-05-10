@@ -167,8 +167,8 @@ export class MnemoschemeComponent implements OnInit {
                 const anim = child as SVGAnimationElement;
                 if (anim.hasAttribute('data-anim-started')) {
                     anim.removeAttribute('data-anim-started');
-                    (<any>anim).endElement();
                 }
+                (<any>anim).endElement();
             }
         });
     }
