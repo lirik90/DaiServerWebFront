@@ -53,7 +53,13 @@ export class ManageDevicesComponent implements OnInit {
     }
 
     editItem(item: Device_Item) {
-        this.dialog.open(DeviceItemDetailDialogComponent, { data: item, width: '450px' })
+        this.dialog.open(DeviceItemDetailDialogComponent, {
+            data: {
+                ...item,
+                disableDeviceIdChanging: true,
+            },
+            width: '450px',
+        })
             .afterClosed()
             .subscribe((updatedItem: Device_Item) => {});
     }
@@ -73,6 +79,7 @@ export class ManageDevicesComponent implements OnInit {
             width: '80%',
             data: {
                 device_id: device.id,
+                disableDeviceIdChanging: true,
             },
         })
             .afterClosed()

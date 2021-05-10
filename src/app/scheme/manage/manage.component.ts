@@ -128,6 +128,13 @@ export class ManageComponent implements OnInit, AfterViewInit {
             .subscribe((group?: Device_Item_Group_Details) => {});
     }
 
+    newItem(parentGroup: Device_Item_Group) {
+        this.dialog
+            .open(DeviceItemDetailDialogComponent, {width: '80%', data: { group_id: parentGroup.id, disableChangeGroupId: true }})
+            .afterClosed()
+            .subscribe((itemDetails?: Device_Item_Details) => {});
+    }
+
     newSection() {
         this.dialog
             .open(SectionDetailDialogComponent, {width: '80%', data: null})
@@ -140,6 +147,20 @@ export class ManageComponent implements OnInit, AfterViewInit {
             .open(SectionDetailDialogComponent, {width: '80%', data: section})
             .afterClosed()
             .subscribe((sectionDetails?: Section_Details) => {});
+    }
+
+    editItem(item: Device_Item) {
+        this.dialog
+            .open(DeviceItemDetailDialogComponent, {width: '80%', data: { ...item, disableChangeGroupId: true }})
+            .afterClosed()
+            .subscribe((itemDetails?: Device_Item_Details) => {});
+    }
+
+    editGroup(group: Device_Item_Group) {
+        this.dialog
+            .open(DeviceItemGroupDetailDialogComponent, {width: '80%', data: group})
+            .afterClosed()
+            .subscribe((groupDetails?: Device_Item_Group_Details) => {});
     }
 
     removeSection(sct: Section) { // TODO: refactor remove methods below to use confirmationDialog().pipe() instead of nested subscribe
