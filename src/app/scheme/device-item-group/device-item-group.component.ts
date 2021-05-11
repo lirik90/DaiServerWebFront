@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Device_Item, Device_Item_Group, DIG_Mode_Type, Section} from '../scheme';
+import {Device_Item, Device_Item_Group, DIG_Mode_Type} from '../scheme';
 import {Structure_Type} from '../settings/settings';
 import {
     Device_Item_Details,
@@ -70,9 +70,16 @@ export class DeviceItemGroupComponent implements OnInit {
             });
     }
 
+    newItem(parentGroup: Device_Item_Group) {
+        this.dialog
+            .open(DeviceItemDetailDialogComponent, {width: '80%', data: { group_id: parentGroup.id, disableChangeGroupId: true }})
+            .afterClosed()
+            .subscribe((itemDetails?: Device_Item_Details) => {});
+    }
+
     editItem(item: Device_Item) {
         this.dialog
-            .open(DeviceItemDetailDialogComponent, {width: '80%', data: item})
+            .open(DeviceItemDetailDialogComponent, {width: '80%', data: { ...item, disableChangeGroupId: true }})
             .afterClosed()
             .subscribe((itemDetails?: Device_Item_Details) => {});
     }
@@ -94,13 +101,6 @@ export class DeviceItemGroupComponent implements OnInit {
             .pipe(filter(name => name))
             .subscribe(res => {
             });
-    }
-
-    newItem(parentGroup: Device_Item_Group) {
-        this.dialog
-            .open(DeviceItemDetailDialogComponent, {width: '80%', data: { group_id: parentGroup.id }})
-            .afterClosed()
-            .subscribe((itemDetails?: Device_Item_Details) => {});
     }
 
     changeDIGMode(mode_id: any, group_id: number): void {

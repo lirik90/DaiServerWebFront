@@ -106,7 +106,7 @@ export class ParamsDialogComponent implements OnInit {
         }
 
         console.log('param form submit', this.changed_values);
-        if (this.changed_values) {
+        if (this.changed_values?.length > 0) {
             this.pending = true;
             this.group_param_values_changed$ = this.controlService.group_param_values_changed.subscribe((changed_params: DIG_Param[]) => {
                 if (!this.unsaved_params_ids) {

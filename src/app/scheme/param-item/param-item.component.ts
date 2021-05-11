@@ -106,21 +106,27 @@ export class ParamItemComponent implements OnChanges {
     }
 
     change(item: DIG_Param, new_value: any): void {
-        for (let param_value of this.changed) {
+        for (let idx in this.changed) {
+            const param_value = this.changed[idx];
             if (param_value.id === item.id) {
                 if (param_value.param.value_type === DIG_Param_Value_Type.VT_TIME) {
                     this.setTimeParam(param_value, new_value);
-                } else if (param_value.value !== new_value) {
+                } else if (param_value.value != new_value) {
                     param_value.value = new_value;
+                }
+
+                if (new_value == item.value) {
+                    this.changed.splice(+idx, 1);
                 }
                 return;
             }
         }
+        // осталось добить тайм-аут, который возникает при попытке сохранить "пустой" this.changed
 
         const copy = {...item};
         if (item.param.value_type === DIG_Param_Value_Type.VT_TIME) {
             this.setTimeParam(copy, new_value);
-        } else if (copy.value !== new_value) {
+        } else if (copy.value != new_value) {
             copy.value = new_value;
         }
 

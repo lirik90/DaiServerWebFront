@@ -3,7 +3,7 @@ import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 
 import {SchemeService} from '../scheme.service';
-import {Device_Item, Device_Item_Group, Section} from '../scheme';
+import {Section} from '../scheme';
 import {ControlService} from '../control.service';
 import {AuthenticationService} from '../../authentication.service';
 import {Section_Details, SectionDetailDialogComponent} from './section-detail-dialog/section-detail-dialog.component';
@@ -85,38 +85,6 @@ export class ManageComponent implements OnInit, AfterViewInit {
         }
     }
 
-    add_device_item(sct: Section, grp: Device_Item_Group, dev_item: Device_Item): void {
-        let section: Section;
-        for (const sct_item of this.sections) {
-            if (sct_item.id === sct.id) {
-                section = sct_item;
-                break;
-            }
-        }
-
-        if (!section) {
-            section = Object.assign({}, sct);
-            section.groups = [];
-            this.sections.push(section);
-        }
-
-        let group: Device_Item_Group;
-        for (const grp_item of section.groups) {
-            if (grp_item.id === grp.id) {
-                group = grp_item;
-                break;
-            }
-        }
-
-        if (!group) {
-            group = Object.assign({}, grp);
-            group.items = [];
-            section.groups.push(group);
-        }
-
-        group.items.push(dev_item);
-    }
-
     restart(): void {
         this.controlService.restart();
     }
@@ -126,13 +94,6 @@ export class ManageComponent implements OnInit, AfterViewInit {
             .open(DeviceItemGroupDetailDialogComponent, {width: '80%', data: { section_id: parentSection.id }})
             .afterClosed()
             .subscribe((group?: Device_Item_Group_Details) => {});
-    }
-
-    newItem(parentGroup: Device_Item_Group) {
-        this.dialog
-            .open(DeviceItemDetailDialogComponent, {width: '80%', data: { group_id: parentGroup.id, disableChangeGroupId: true }})
-            .afterClosed()
-            .subscribe((itemDetails?: Device_Item_Details) => {});
     }
 
     newSection() {
@@ -147,20 +108,6 @@ export class ManageComponent implements OnInit, AfterViewInit {
             .open(SectionDetailDialogComponent, {width: '80%', data: section})
             .afterClosed()
             .subscribe((sectionDetails?: Section_Details) => {});
-    }
-
-    editItem(item: Device_Item) {
-        this.dialog
-            .open(DeviceItemDetailDialogComponent, {width: '80%', data: { ...item, disableChangeGroupId: true }})
-            .afterClosed()
-            .subscribe((itemDetails?: Device_Item_Details) => {});
-    }
-
-    editGroup(group: Device_Item_Group) {
-        this.dialog
-            .open(DeviceItemGroupDetailDialogComponent, {width: '80%', data: group})
-            .afterClosed()
-            .subscribe((groupDetails?: Device_Item_Group_Details) => {});
     }
 
     removeSection(sct: Section) { // TODO: refactor remove methods below to use confirmationDialog().pipe() instead of nested subscribe
