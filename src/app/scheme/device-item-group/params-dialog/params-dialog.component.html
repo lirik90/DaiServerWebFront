@@ -9,7 +9,9 @@
             mat-raised-button
             class="custom_button"
             [color]="!pending ? 'primary' : null"
-            [disabled]="cantChange || !paramForm.form.valid || !schemeService.isSchemeConnected">
+            [disabled]="cantChange || !paramForm.form.valid
+             || !schemeService.isSchemeConnected
+             || !changed_values || changed_values.length === 0">
         <mat-icon *ngIf="pending; else text">
             <mat-progress-spinner color="primary" mode="indeterminate" diameter="20"></mat-progress-spinner>
         </mat-icon>
