@@ -165,7 +165,7 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         },
     };
 
-    private members: Scheme_Group_Member[];
+    @Input() members: Scheme_Group_Member[];
 
     constructor(
         private schemeService: SchemeService,
@@ -186,8 +186,6 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
                 this.options.scales.yAxes = this.defaultYAxes_;
             }
         }
-
-        this.schemeService.getMembers().subscribe(members => this.members = members.results);
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -357,6 +355,7 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
             const x = dataset.data[item.index].x.getTime();
             const user_id = dataset.usered_data[x];
             if (dataset.usered_data[x]) {
+                console.dir(this.members);
                 for (const user of this.members) {
                     if (user.id === user_id) {
                         text += ' User: ' + user.name;
