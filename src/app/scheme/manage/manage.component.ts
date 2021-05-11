@@ -11,6 +11,7 @@ import {
     Device_Item_Group_Details,
     DeviceItemGroupDetailDialogComponent
 } from './device-item-group-detail-dialog/device-item-group-detail-dialog.component';
+import {Device_Item_Details, DeviceItemDetailDialogComponent} from './device-item-detail-dialog/device-item-detail-dialog.component';
 import {UIService} from '../../ui.service';
 import {Structure_Type} from '../settings/settings';
 
