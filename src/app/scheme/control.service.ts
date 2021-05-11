@@ -164,7 +164,7 @@ export class ControlService {
             if (param) {
                 let parsedValue: any = value;
 
-                if (param.param.value_type === DIG_Param_Value_Type.VT_BOOL) {
+                if (param.param.value_type === DIG_Param_Value_Type.VT_BOOL && typeof value === 'string') {
                     parsedValue = value !== 'false' && value !== '0';
                 }
 
