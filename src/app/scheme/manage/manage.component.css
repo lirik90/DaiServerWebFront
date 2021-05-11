@@ -46,7 +46,7 @@ h4 {
 }
 
 .between-group {
-    padding: 0px;
+    padding: 0;
     height: 8px;
 }
 
@@ -61,7 +61,13 @@ h4 {
 
 .hidden-buttons {
     opacity: 0;
+    display: none;
     visibility: hidden;
+}
+
+.editor-mode .hidden-buttons {
+    visibility: hidden;
+    display: inline;
 }
 
 .device-item .hidden-buttons {
@@ -136,7 +142,7 @@ h2 button {
 
     .dig {
         padding: 0;
-        margin: 0px 0px 5px 0px;
+        margin: 0 0 5px 0;
     }
 }
 
