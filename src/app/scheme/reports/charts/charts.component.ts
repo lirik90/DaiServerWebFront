@@ -137,14 +137,14 @@ export class ChartsComponent implements OnDestroy {
             const axes: Axis_Params[] = [];
 
             const datasets = chart.dataset_params.map((ds_param) => {
-                const {item, legend: {color, idx, scale}} = ds_param;
+                const {item, legend: {color, idx, scale, hidden}} = ds_param;
 
                 let dataset: ChartDataSets;
                 if (ds_param.isParam) {
-                    dataset = this.genParamDataset(item, idx, color);
+                    dataset = this.genParamDataset(item, idx, color, hidden);
                     data_ptr.params.push(item.id);
                 } else {
-                    dataset = this.genDevItemDataset(item, idx, color);
+                    dataset = this.genDevItemDataset(item, idx, color, hidden);
                     data_ptr.dev_items.push(item.id);
                 }
 
@@ -217,8 +217,6 @@ export class ChartsComponent implements OnDestroy {
     }
 
     private addChart(name: string, datasets: ChartDataSets[], chartAxes?: any[]): void {
-        if (datasets.length)
-            datasets[0].hidden = false;
         this.charts.push({name, data: {datasets}, charts_type: this.chartFilter.charts_type, axes: chartAxes});
     }
 
@@ -352,26 +350,26 @@ export class ChartsComponent implements OnDestroy {
         return date_str + time;
     }
 
-    genDevItemDataset(item: Device_Item, colorIndex: number, hsl: Hsl = null): ChartDataSets {
+    genDevItemDataset(item: Device_Item, colorIndex: number, hsl: Hsl = null, hidden: boolean): ChartDataSets {
         const label = item.name.length ? item.name : item.type.title;
 
         const RT = Register_Type;
         const rt = item.type.register_type;
         const stepped = rt === RT.RT_COILS || rt === RT.RT_DISCRETE_INPUTS;
 
-        let dataset = this.genDataset(label, colorIndex, stepped, hsl);
+        let dataset = this.genDataset(label, colorIndex, stepped, hsl, hidden);
         dataset['dev_item'] = item;
         return dataset;
     }
 
-    genParamDataset(param: DIG_Param, colorIndex: number, hsl: Hsl = null): ChartDataSets {
+    genParamDataset(param: DIG_Param, colorIndex: number, hsl: Hsl = null, hidden: boolean): ChartDataSets {
         const steppedLine = param.param.value_type === DIG_Param_Value_Type.VT_BOOL;
-        let dataset = this.genDataset('⚙️ ' + param.param.title, colorIndex, steppedLine, hsl);
+        let dataset = this.genDataset('⚙️ ' + param.param.title, colorIndex, steppedLine, hsl, hidden);
         dataset['param'] = param;
         return dataset;
     }
 
-    genDataset(label: string, colorIndex: number, steppedLine: boolean = true, hsl: Hsl = null): ChartDataSets {
+    genDataset(label: string, colorIndex: number, steppedLine: boolean = true, hsl: Hsl = null, hidden: boolean): ChartDataSets {
         if (hsl.h > 360)
             hsl.h %= 360;
 
@@ -379,11 +377,11 @@ export class ChartsComponent implements OnDestroy {
             label,
             data: [],
             yAxisID: steppedLine ? 'B' : 'A',
-
             fill: false, //steppedLine,
-            steppedLine,
             cubicInterpolationMode: 'monotone',
-            ...ChartsComponent.get_dataset_legend_params_(hsl),
+
+            steppedLine,
+            ...ChartsComponent.get_dataset_legend_params_(hsl, hidden),
         };
     }
 
