@@ -217,8 +217,6 @@ export class ChartsComponent implements OnDestroy {
     }
 
     private addChart(name: string, datasets: ChartDataSets[], chartAxes?: any[]): void {
-        if (datasets.length)
-            datasets[0].hidden = false;
         this.charts.push({name, data: {datasets}, charts_type: this.chartFilter.charts_type, axes: chartAxes});
     }
 
