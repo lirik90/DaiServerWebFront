@@ -85,43 +85,51 @@ export class ParamItemComponent implements OnChanges {
         return h + ':' + m + ':' + pad(secs % 60);
     }
 
-    setTimeParam(p: DIG_Param, val: string): void {
-        let arr = val.split(':');
-        if (arr.length) {
-            let v = parseInt(arr[0]) * 3600;
-            let new_value = !Number.isNaN(v) ? v : 0;
+    prepareValue(p: DIG_Param_Value_Type, val: string): string {
+        if (p === DIG_Param_Value_Type.VT_TIME) {
+            let arr = val.split(':');
+            if (arr.length) {
+                let v = parseInt(arr[0]) * 3600;
+                let new_value = !Number.isNaN(v) ? v : 0;
 
-            if (arr.length > 1) {
-                v = parseInt(arr[1]) * 60;
+                if (arr.length > 1) {
+                    v = parseInt(arr[1]) * 60;
+                }
+                new_value += !Number.isNaN(v) ? v : 0;
+
+                if (arr.length > 2) {
+                    v = parseInt(arr[2]);
+                }
+                new_value += !Number.isNaN(v) ? v : 0;
+
+                return new_value.toString();
             }
-            new_value += !Number.isNaN(v) ? v : 0;
-
-            if (arr.length > 2) {
-                v = parseInt(arr[2]);
-            }
-            new_value += !Number.isNaN(v) ? v : 0;
-
-            p.value = new_value.toString();
         }
+
+        return val;
     }
 
     change(item: DIG_Param, new_value: any): void {
-        for (let param_value of this.changed) {
+        for (let idx in this.changed) {
+            const param_value = this.changed[idx];
             if (param_value.id === item.id) {
-                if (param_value.param.value_type === DIG_Param_Value_Type.VT_TIME) {
-                    this.setTimeParam(param_value, new_value);
-                } else if (param_value.value !== new_value) {
-                    param_value.value = new_value;
+                const new_prepared_value = this.prepareValue(param_value.param.value_type, new_value);
+
+                if (param_value.value != new_prepared_value) {
+                    param_value.value = new_prepared_value;
+                }
+
+                if (new_prepared_value == item.value) {
+                    this.changed.splice(+idx, 1);
                 }
                 return;
             }
         }
 
         const copy = {...item};
-        if (item.param.value_type === DIG_Param_Value_Type.VT_TIME) {
-            this.setTimeParam(copy, new_value);
-        } else if (copy.value !== new_value) {
-            copy.value = new_value;
+        const new_prepared_value = this.prepareValue(item.param.value_type, new_value);
+        if (copy.value != new_prepared_value) {
+            copy.value = new_prepared_value;
         }
 
         this.changed.push(copy);

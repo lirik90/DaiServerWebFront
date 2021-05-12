@@ -71,6 +71,7 @@ export class DeviceDetailDialogComponent extends DetailDialog<Device, DeviceDeta
             ...dialogData,
             plugin_id: dialogData?.plugin_id || 0, // if plugin_id === null, set it to 0
             extra,
+            plugin_id: dialogData.plugin_id || 0, // if plugin_id === null, set it to 0
         });
     }
 
