@@ -521,7 +521,7 @@ export class ChartsComponent implements OnDestroy {
                 }
 
                 // если с сервера нет нужной точки, то берём данные с датчиков
-                if (!haveDataAfter && this.time_to_ext_ >= Date.now()) {
+                if (!haveDataAfter) {
                     const value = data_param_name === 'dev_item' ? dataset.dev_item.val?.value : dataset.param.value;
                     if (value !== null)
                         log.data.push({value, time: this.time_to_ext_ > Date.now() ? Date.now() : this.time_to_ext_});
