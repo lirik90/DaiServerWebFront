@@ -13,13 +13,9 @@
       <input #cmdInput matInput (keyup.enter)="execScript($event.target.value)" i18n-placeholder="@@LOG.CMD" placeholder="Консольная команда" [value]="cmd">
       <button class="sendBtn" (click)="execScript(cmdInput.value)"><mat-icon>play_arrow</mat-icon></button>
     </mat-form-field>
-    <mat-form-field>
-      <input matInput (keyup)="applyFilter($event.target.value)" i18n-placeholder="@@LOG.FILTER" placeholder="Фильтр">
-    </mat-form-field>
   </div>
 
-  <mat-table #table [dataSource]="dataSource" class="example-table"
-             matSort matSortActive="timestamp_msecs" matSortDisableClear matSortDirection="desc">
+  <mat-table #table [dataSource]="dataSource" class="example-table">
 
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
@@ -30,16 +26,9 @@
       <mat-cell *matCellDef="let row" [style.color]="row.color">{{ row.text }}</mat-cell>
     </ng-container>
 
-    <!-- Category Column -->
-    <ng-container matColumnDef="category">
-      <mat-header-cell *matHeaderCellDef i18n="@@LOG.TABLE.CATEGORY">Категория</mat-header-cell>
-      <mat-cell *matCellDef="let row" [style.color]="row.color">{{ row.category }}</mat-cell>
-    </ng-container>
-
     <!-- Date Column -->
     <ng-container matColumnDef="timestamp_msecs">
       <mat-header-cell *matHeaderCellDef
-                       mat-sort-header
                        disableClear="true" i18n="@@LOG.TABLE.DATE">
         Дата
       </mat-header-cell>
@@ -57,12 +46,4 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
-
-  <mat-paginator
-      [length]="resultsLength"
-      [pageSize]="this.itemsPerPage"
-      [pageSizeOptions]="[15, 35, 50, 85, 100]"
-      (page)="pageEvent = handlePage($event)"
-      appRememberPageLimit="log_items_per_page">
-  </mat-paginator>
 </div>

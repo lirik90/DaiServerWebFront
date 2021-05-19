@@ -49,6 +49,8 @@ import { ElementsMenuComponent } from './elements/elements-menu/elements-menu.co
 import { MnemoschemeComponent } from './mnemoscheme/mnemoscheme.component';
 import { DeviceItemGroupComponent } from './device-item-group/device-item-group.component';
 import {ParamsDialogComponent} from './device-item-group/params-dialog/params-dialog.component';
+import { LogSidebarComponent } from './log/log-sidebar/log-sidebar.component';
+import {AngularMultiSelectModule} from 'angular2-multiselect-dropdown';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
     return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -69,6 +71,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
                 deps: [HttpClient]
             }
         }),
+        AngularMultiSelectModule,
     ],
     declarations: [
         SchemeComponent,
@@ -107,6 +110,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         ElementsMenuComponent,
         MnemoschemeComponent,
         DeviceItemGroupComponent,
+        LogSidebarComponent,
     ],
     entryComponents: [
         PageReloadDialogComponent,

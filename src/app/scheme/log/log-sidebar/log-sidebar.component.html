@@ -1,0 +1,58 @@
+<div class="time-filter borded">
+    <mat-form-field class="chart-time">
+        <input type="time" matInput i18n-placeholder="@@REPORTS.TIME_FROM" placeholder="Время от"
+               [(ngModel)]="time_from" required>
+    </mat-form-field>
+    <mat-form-field class="chart-date">
+        <input matInput [matDatepicker]="picker_from" [(ngModel)]="date_from"
+               i18n-placeholder="@@REPORTS.DATE_FROM" placeholder="Дата от" required>
+        <mat-datepicker-toggle matSuffix [for]="picker_from"></mat-datepicker-toggle>
+        <mat-datepicker #picker_from></mat-datepicker>
+    </mat-form-field>
+</div>
+
+<div class="time-filter borded">
+    <mat-form-field class="chart-time">
+        <input type="time" matInput i18n-placeholder="@@REPORTS.TIME_TO" placeholder="Время до"
+               [(ngModel)]="time_to" required>
+    </mat-form-field>
+    <mat-form-field class="chart-date">
+        <input matInput [matDatepicker]="picker_to" i18n-placeholder="@@REPORTS.DATE_TO"
+               [(ngModel)]="date_to" placeholder="Дата до" required>
+        <mat-datepicker-toggle matSuffix [for]="picker_to"></mat-datepicker-toggle>
+        <mat-datepicker #picker_to></mat-datepicker>
+    </mat-form-field>
+</div>
+
+<div class="checkboxes borded">
+    <mat-checkbox [(ngModel)]="selectedLogs.event">Текстовый</mat-checkbox>
+    <mat-checkbox [(ngModel)]="selectedLogs.mode">Режимы</mat-checkbox>
+    <mat-checkbox [(ngModel)]="selectedLogs.param">Уставки</mat-checkbox>
+    <mat-checkbox [(ngModel)]="selectedLogs.status">Состояния</mat-checkbox>
+    <mat-checkbox [(ngModel)]="selectedLogs.value">Значения</mat-checkbox>
+</div>
+
+<mat-form-field title="Влияет на Текстовый, Уставки и Значения" class="text-filter">
+    <input matInput i18n-placeholder="@@LOG.FILTER" placeholder="Фильтр" [(ngModel)]="filter">
+    <mat-hint>
+        <mat-checkbox [(ngModel)]="case_sensitive">Учитывать регистр</mat-checkbox>
+    </mat-hint>
+</mat-form-field>
+
+<angular2-multiselect
+    [(ngModel)]="selectedGroupsId"
+    [data]="devItemGroups"
+    [settings]="digSelectSettings"
+    title="Влияет на Режимы, Уставки, Состояния и Значения"></angular2-multiselect>
+<angular2-multiselect
+    [(ngModel)]="selectedItemsId"
+    [data]="devItems"
+    [settings]="digSelectSettings"
+    title="Влияет только на Значения"></angular2-multiselect>
+<angular2-multiselect
+    [(ngModel)]="selectedParamsId"
+    [data]="devItemParams"
+    [settings]="digSelectSettings"
+    title="Влияет на Уставки"></angular2-multiselect>
+
+<button mat-raised-button (click)="submit()">Показать</button>

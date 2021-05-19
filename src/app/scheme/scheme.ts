@@ -188,6 +188,11 @@ class Log_Base {
   user_id: number;  // Пользователь
 }
 
+export class Log_Mode extends Log_Base {
+    group_id: number;
+    mode_id: number;
+}
+
 export class Log_Value extends Log_Base { // Запись журнала изменений значения
   item_id: number;  // ID элемент
   raw_value: string;// Значение
@@ -209,6 +214,18 @@ export class Log_Event extends Log_Base { // Запись в журнале со
   text: string;        // Сообщение
   type_id: number;       // Тип события
   color: string = ''; // Цвет?
+}
+
+export enum Log_Status_Direction {
+    SD_ADD = 1,
+    SD_DEL = 2,
+}
+
+export class Log_Status extends Log_Base {
+    group_id: number;
+    status_id: number;
+    args: string;
+    direction: Log_Status_Direction;
 }
 
 export class Log_Param extends Log_Base {
