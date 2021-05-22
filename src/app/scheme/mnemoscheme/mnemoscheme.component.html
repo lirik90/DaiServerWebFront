@@ -1,8 +1,8 @@
-<div>
+<div class="buttons">
     <button *ngFor="let m of mnemoscheme" mat-raised-button [color]="selected === m.id ? 'primary' : null" (click)="select(m.id)">{{ m.title }}</button>
 </div>
-<div *ngIf="selected" class="img-container" #imgContainer>
-    <div #svgElement></div>
+<div *ngIf="selected" class="img-container" #imgContainer (window:resize)="adjustSvgHeight()">
+    <div class="svg-elem-wrapper" #svgElement></div>
     <div *ngIf="deviceItemGroup"
          [style.left]="digOverlayPosition.x + 'px'"
          [style.top]="digOverlayPosition.y + 'px'"
