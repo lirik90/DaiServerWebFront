@@ -20,8 +20,6 @@ export class MnemoschemeComponent implements OnInit {
     mnemoscheme: Mnemoscheme[];
     deviceItemGroup: Device_Item_Group;
     digOverlayPosition: { x: number; y: number };
-    private containerHeight: number;
-    private containerWidth: number;
 
     constructor(
         private controlService: ControlService,
@@ -49,8 +47,6 @@ export class MnemoschemeComponent implements OnInit {
 
         this.schemeService.getMnemoschemeImage(id)
             .subscribe((text) => {
-                this.containerHeight = this.svg.nativeElement.clientHeight;
-                this.containerWidth = this.svg.nativeElement.clientWidth;
                 this.svg.nativeElement.innerHTML = text;
                 setTimeout(() => {
                     this.bindClickEvents();
@@ -214,8 +210,11 @@ export class MnemoschemeComponent implements OnInit {
     }
 
     private adjustSvgHeight() {
+        const rect = this.imgContainer.nativeElement.getBoundingClientRect();
+        const h = (<any>window).innerHeight - rect.y - 7;
+        const w = (<any>window).innerWidth - rect.x - 12;
         const svg = this.svg.nativeElement.firstElementChild as SVGElement;
-        svg.style.height = `${this.containerHeight - 10}px`;
-        svg.style.width = `${this.containerWidth - 25}px`;
+        svg.style.height = `${h}px`;
+        svg.style.width = `${w}px`;
     }
 }
