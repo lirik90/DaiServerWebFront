@@ -5,7 +5,7 @@ import {Subject, SubscriptionLike} from 'rxjs';
 import {SchemeService} from './scheme.service';
 import {ByteMessage, ByteTools, WebSocketBytesService} from '../web-socket.service';
 import {Connection_State} from '../user';
-import {Device_Item, Device_Item_Group, DIG_Param, DIG_Param_Value_Type, DIG_Status_Type, Log_Event} from './scheme';
+import {Device_Item, Device_Item_Group, DIG_Param, DIG_Param_Value_Type, DIG_Status_Type, Log_Event, Log_Mode} from './scheme';
 
 // import { QByteArray } from 'qtdatastream/src/types';
 
@@ -65,6 +65,7 @@ export class ControlService {
   public stream_msg: Subject<ByteMessage> = new Subject<ByteMessage>();
   public dev_item_changed: Subject<Device_Item[]> = new Subject<Device_Item[]>();
   public group_param_values_changed: Subject<DIG_Param[]> = new Subject<DIG_Param[]>();
+  public log_mode: Subject<Log_Mode[]> = new Subject<Log_Mode[]>();
   public opened: Subject<boolean>;
 
   private bmsg_sub: SubscriptionLike;
@@ -105,6 +106,28 @@ export class ControlService {
             }
           }
         }
+      } else if (msg.cmd == WebSockCmd.WS_LOG_MODE) {
+        const view = new Uint8Array(msg.data);
+        let [idx, count] = ByteTools.parseUInt32(view);
+        let timestamp_msecs: number, user_id: number, group_id: number, mode_id: number;
+
+        const log_mode: Log_Mode[] = [];
+        while (count--) {
+          timestamp_msecs = ByteTools.parseInt64(view, idx)[1];
+          timestamp_msecs &= ~0x80000000000000;
+          idx += 8;
+          user_id = ByteTools.parseUInt32(view, idx)[1];
+          idx += 4;
+          group_id = ByteTools.parseUInt32(view, idx)[1];
+          idx += 4;
+          mode_id = ByteTools.parseUInt32(view, idx)[1];
+          idx += 4;
+
+          log_mode.push({timestamp_msecs, user_id, group_id, mode_id});
+        }
+
+        if (log_mode.length)
+            this.log_mode.next(log_mode);
       } else if (msg.cmd == WebSockCmd.WS_DEV_ITEM_VALUES) {
 
         if (msg.data === undefined) {
