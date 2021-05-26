@@ -1,9 +1,8 @@
 <h2 i18n="@@LOG.TITLE">Журнал</h2>
 <div class="example-container mat-elevation-z8">
   <div class="example-loading-shade"
-       *ngIf="isLoadingResults || isRateLimitReached">
-    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-    <div class="example-rate-limit-reached" *ngIf="isRateLimitReached" i18n="@@LOG.WARNING">
+       *ngIf="isRateLimitReached">
+    <div class="example-rate-limit-reached" i18n="@@LOG.WARNING">
       EventLog's API rate limit has been reached. It will be reset in one minute.
     </div>
   </div>
@@ -13,6 +12,10 @@
       <input #cmdInput matInput (keyup.enter)="execScript($event.target.value)" i18n-placeholder="@@LOG.CMD" placeholder="Консольная команда" [value]="cmd">
       <button class="sendBtn" (click)="execScript(cmdInput.value)"><mat-icon>play_arrow</mat-icon></button>
     </mat-form-field>
+  </div>
+
+  <div class="progress-bar-container" [class.show]="showProgressBar">
+    <mat-progress-bar [mode]="progressBarMode" [color]="progressBarColor" [value]="progressBarValue"></mat-progress-bar>
   </div>
 
   <mat-table #table [dataSource]="dataSource" class="example-table">
@@ -44,6 +47,6 @@
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" [style.background-color]="row.bgColor"></mat-row>
   </mat-table>
 </div>

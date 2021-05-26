@@ -1,4 +1,14 @@
-import {Component, ComponentFactoryResolver, ComponentRef, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectorRef,
+    Component,
+    ComponentFactoryResolver,
+    ComponentRef, ElementRef, HostListener,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+    ViewContainerRef
+} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {PageEvent} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
@@ -6,8 +16,8 @@ import {MatTableDataSource} from '@angular/material/table';
 import {TranslateService} from '@ngx-translate/core';
 import {ActivatedRoute} from '@angular/router';
 import {CookieService} from 'ngx-cookie-service';
-import {combineLatest, forkJoin, Observable, Subscription, SubscriptionLike} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import {combineLatest, Observable, Subject, Subscription, SubscriptionLike} from 'rxjs';
+import {debounceTime, map, tap} from 'rxjs/operators';
 
 import {
     Device_Item,
@@ -34,6 +44,8 @@ import {
     ParamsLogFilter,
     ValuesLogFilter
 } from './log-sidebar/log-sidebar.component';
+import {LoadingProgressbar} from '../loading-progressbar/loading.progressbar';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 interface LogItem {
     type_id: string;
@@ -42,10 +54,12 @@ interface LogItem {
     time: number;
 
     color?: string;
+    bgColor?: string;
     advanced_value?: string;
 }
 
 interface LogTableItem extends LogItem {
+    date: Date;
     color: string;
     bgColor: string;
 }
@@ -55,13 +69,12 @@ interface LogTableItem extends LogItem {
     templateUrl: './log.component.html',
     styleUrls: ['./log.component.css']
 })
-export class LogComponent implements OnInit, OnDestroy, NeedSidebar {
+export class LogComponent extends LoadingProgressbar implements OnInit, AfterViewInit, OnDestroy, NeedSidebar {
     displayedColumns = ['user', 'timestamp_msecs', 'message'];
     logDatabase: LogHttpDao | null;
     dataSource = new MatTableDataSource();
+    private dataTimeBounds: Record<LogItem['type_id'], { min: number, max: number }> = {};
 
-    resultsLength = 0;
-    isLoadingResults = true;
     isRateLimitReached = false;
 
     canExecScript: boolean;
@@ -72,12 +85,23 @@ export class LogComponent implements OnInit, OnDestroy, NeedSidebar {
 
     members: Scheme_Group_Member[] = [];
 
+    @ViewChild('table', { read: ElementRef }) tableElem: ElementRef;
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
+    private scrollSubject: Subject<number> = new Subject();
+    scrollHandler = (ev) => {
+        const { scrollTop } = document.documentElement;
+        if (document.body.scrollHeight - scrollTop <= 1000) {
+            this.scrollSubject.next(scrollTop);
+        }
+    };
+
     cmd = '';
-    pageEvent: any;
     private sidebarRef: ComponentRef<LogSidebarComponent>;
     private sidebarActionBroadcast$: Subscription;
+    private isFirstRequest = true;
+    private currentFilter: LogsFilter;
+    private scrollEvent$: Subscription;
 
     constructor(
         public translate: TranslateService,
@@ -89,17 +113,26 @@ export class LogComponent implements OnInit, OnDestroy, NeedSidebar {
         public cookie: CookieService,
         private resolver: ComponentFactoryResolver,
         private sidebarService: SidebarService,
+        snackBar: MatSnackBar,
+        changeDetectorRef: ChangeDetectorRef,
     ) {
+        super(snackBar, changeDetectorRef);
+
         this.activatedRoute.queryParams.subscribe(params => {
             if (params['cmd']) {
                 this.cmd = params['cmd'];
             }
         });
 
+        this.canExecScript = this.authService.checkPermission('exec_script');
+        this.schemeService.getMembers().subscribe(members => this.members = members.results);
+
+        this.logDatabase = new LogHttpDao(this.http, this.schemeService);
+
         this.sidebarService.resetContent();
         this.sidebarActionBroadcast$ = this.sidebarService.getContentActionBroadcast()
             .subscribe((contentAction) => {
-                this.updateFilter(contentAction.data);
+                this.updateFilter(contentAction.data, false);
             });
     }
 
@@ -110,66 +143,126 @@ export class LogComponent implements OnInit, OnDestroy, NeedSidebar {
     }
 
     ngOnInit() {
-        this.canExecScript = this.authService.checkPermission('exec_script');
-        const schemeId = this.schemeService.scheme.id;
-
-        this.schemeService.getMembers().subscribe(members => this.members = members.results);
-
-        this.logDatabase = new LogHttpDao(this.http, this.schemeService);
-
-        // merge(this.sort.sortChange, this.paginator.page)
-        //     .pipe(
-        //         startWith({}),
-        //         switchMap(() => {
-        //             this.isLoadingResults = true;
-        //             return this.logDatabase!.getRepoIssues(schemeId,
-        //                 this.sort.active, this.sort.direction == 'asc', this.paginator.pageIndex, this.paginator.pageSize);
-        //         }),
-        //         map(data => {
-        //             // Flip flag to show that loading has finished.
-        //             this.isLoadingResults = false;
-        //             this.isRateLimitReached = false;
-        //             this.resultsLength = data.count;
-        //
-        //             // console.log(JSON.stringify(data.results[0]));
-        //             for (const item of data.results) {
-        //                 //console.log(item);
-        //                 item.date = new Date(item.timestamp_msecs);
-        //
-        //                 item.color = this.getColor(item.type_id);
-        //             }
-        //             return data.results;
-        //         }),
-        //         catchError(() => {
-        //             this.isLoadingResults = false;
-        //             // Catch if the GitHub API has reached its rate limit. Return empty data.
-        //             this.isRateLimitReached = true;
-        //             return of([]);
-        //         })
-        //     ).subscribe(data => this.dataSource.data = data); TODO:
-
         this.sub = this.controlService.byte_msg.subscribe(msg => {
-
-            if (msg.cmd !== WebSockCmd.WS_EVENT_LOG) {
-                return;
-            }
-
             if (msg.data === undefined) {
                 console.warn('Log_Event without data');
                 return;
             }
 
-            // if (!(this.paginator.pageIndex == 0 && this.sort.active == 'timestamp_msecs' && this.sort.direction == 'desc')) {
-            //     return;
-            // }
-
             const rows = this.controlService.parseEventMessage(msg.data);
-            for (const row of rows) {
-                row.color = this.getColor(row.type_id);
-                this.dataSource.data.pop(); // For table row count is stay setted
+            let logItems;
+            switch (msg.cmd) {
+                case WebSockCmd.WS_EVENT_LOG:
+                    logItems = rows.map(row => this.logDatabase.mapLogEvent(row));
+                    break;
+                case WebSockCmd.WS_GROUP_MODE:
+                    console.dir(rows); // TODO: проверить как обрабатывать эти события с вебсокета
+                default:
+                    return;
             }
-            this.dataSource.data = [...rows, ...this.dataSource.data];
+            this.dataSource.data = [...logItems, ...this.dataSource.data];
         });
+
+        this.scrollEvent$ = this.scrollSubject.asObservable()
+            .pipe(debounceTime(300))
+            .subscribe(() => {
+                // смотреть на min(date), max(date) разных журналов и "догружать" их до минимальных/максимальных.
+                // Если таких нет, то догружать новые.
+                // TODO: добавить таймаут срабатывания
+                // TODO: добавить scrollTo к последней строке, а то теряется
+                this.startLoading();
+
+                const observables: Array<Observable<LogItem[]>> = [];
+                const schemeId = this.schemeService.scheme.id;
+                const logFilter: LogFilter = LogComponent.getLogFilter(this.currentFilter, 50);
+
+                let minBound, minBoundKey;
+                let maxBound, maxBoundKey;
+                Object.keys(this.dataTimeBounds) // собираем границы диапазона ts_from, ts_to
+                    .forEach((key: string) => {
+                        const { min, max } = this.dataTimeBounds[key];
+
+                        if (minBound === undefined || minBound > min) {
+                            minBound = min;
+                            minBoundKey = key;
+                        }
+
+                        if (maxBound === undefined || maxBound < max) {
+                            maxBound = max;
+                            maxBoundKey = key;
+                        }
+                    });
+
+                let loadAll = true;
+                const ts: Record<LogItem['type_id'], { ts_from: LogFilter['ts_from'], ts_to: LogFilter['ts_to'] }> = {};
+
+                // найти типы, для которых недостаточно данных
+                Object.keys(this.dataTimeBounds)
+                    .forEach((key: string) => {
+                        const { min, max } = this.dataTimeBounds[key];
+
+                        let ts_from, ts_to;
+
+                        if (min - minBound > 10000) { // если разница больше 10 секунд, значит, надо догрузить данных
+                            ts_from = minBound;
+                            ts_to = min;
+                        }
+
+                        // TODO: do I need max?
+
+                        if (ts_from && ts_to) {
+                            ts[key] = { ts_from, ts_to };
+                            loadAll = false;
+                        }
+                    });
+
+                console.log('loadAll', loadAll);
+                console.log(this.dataTimeBounds);
+                if (!loadAll) {
+                    if (this.currentFilter.selectedLogs.event && ts.event) {
+                        observables.push(this.logDatabase.getEvents(schemeId, { ...logFilter, ...ts.event }));
+                    }
+                    if (this.currentFilter.selectedLogs.mode && ts.mode) {
+                        observables.push(this.logDatabase.getModes(schemeId, {
+                            ...logFilter,
+                            ...ts.mode,
+                            dig_id: this.currentFilter.selectedGroupsId,
+                        }));
+                    }
+                    if (this.currentFilter.selectedLogs.param && ts.param) {
+                        observables.push(this.logDatabase.getParams(schemeId, {
+                            ...logFilter,
+                            ...ts.param,
+                            dig_param_id: this.currentFilter.selectedParamsId,
+                        }));
+                    }
+                    if (this.currentFilter.selectedLogs.status && ts.status) {
+                        observables.push(this.logDatabase.getStatuses(schemeId, {
+                            ...logFilter,
+                            ...ts.status,
+                            dig_id: this.currentFilter.selectedGroupsId,
+                        }));
+                    }
+                    if (this.currentFilter.selectedLogs.value && ts.value) {
+                        observables.push(this.logDatabase.getValues(schemeId, {
+                            ...logFilter,
+                            ...ts.value,
+                            item_id: this.currentFilter.selectedItemsId,
+                        }));
+                    }
+                    this.processResponseObservables(observables, true);
+                } else {
+                    this.updateFilter({
+                        ...this.currentFilter,
+                        ts_to: minBound,
+                        ts_from: 0,
+                    }, true, 50);
+                }
+            });
+    }
+
+    ngAfterViewInit() {
+        window.document.addEventListener('scroll', this.scrollHandler);
     }
 
     getUserName(id: number): string {
@@ -189,6 +282,8 @@ export class LogComponent implements OnInit, OnDestroy, NeedSidebar {
         this.sidebarActionBroadcast$.unsubscribe();
         this.sidebarService.resetSidebar();
         this.sidebarService.resetContent();
+
+        window.document.removeEventListener('scroll', this.scrollHandler);
     }
 
     dateFormat(cell: any): string {
@@ -196,14 +291,6 @@ export class LogComponent implements OnInit, OnDestroy, NeedSidebar {
             return 'dd H:m';
         }
         return 'dd.MM.yy HH:mm:ss';
-        // console.log('hello ' + cell.clientWidth);
-        // console.log(cell);
-    }
-
-    applyFilter(filterValue: string) {
-        filterValue = filterValue.trim(); // Remove whitespace
-        filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-        this.dataSource.filter = filterValue;
     }
 
     getColor(eventType: number): string {
@@ -243,18 +330,13 @@ export class LogComponent implements OnInit, OnDestroy, NeedSidebar {
         }
     }
 
-    private updateFilter(data: LogsFilter) {
+    private updateFilter(data: LogsFilter, append: boolean, limit?: number) {
+        this.startLoading();
+        this.currentFilter = data;
+
         const observables: Array<Observable<LogItem[]>> = [];
         const schemeId = this.schemeService.scheme.id;
-        const logFilter: LogFilter = {
-            ts_from: data.ts_from,
-            ts_to: data.ts_to,
-        };
-
-        if (data.filter) {
-            logFilter.filter = data.filter;
-            logFilter.case_sensitive = data.case_sensitive;
-        }
+        const logFilter: LogFilter = LogComponent.getLogFilter(data, limit);
 
         if (data.selectedLogs.event) {
             observables.push(this.logDatabase.getEvents(schemeId, { ...logFilter }));
@@ -284,16 +366,67 @@ export class LogComponent implements OnInit, OnDestroy, NeedSidebar {
             }));
         }
 
-        console.log(observables);
-        combineLatest(observables.map((ob) => ob.pipe(tap(() => console.log('bs')))))
+        this.processResponseObservables(observables, append);
+    }
+
+    private static getLogFilter(data: LogsFilter, limit: number) {
+        const logFilter: LogFilter = {
+            ts_from: data.ts_from,
+            ts_to: data.ts_to,
+        };
+
+        if (data.filter) {
+            logFilter.filter = data.filter;
+            logFilter.case_sensitive = data.case_sensitive;
+        }
+
+        if (limit) {
+            logFilter.limit = limit;
+        }
+
+        return logFilter;
+    }
+
+    private processResponseObservables(observables: Array<Observable<LogItem[]>>, append: boolean) {
+        return combineLatest(observables)
             .pipe(
                 map(logEvents => logEvents.reduce((prev, curr) => prev.concat(curr))),
+                tap(logEvents => logEvents.forEach((logItem: LogTableItem) => {
+                    // set data bounds
+                    const bounds = this.dataTimeBounds[logItem.type_id];
+                    if (!bounds) {
+                        this.dataTimeBounds[logItem.type_id] = { min: logItem.time, max: logItem.time };
+                    } else {
+                        if (bounds.min > logItem.time) {
+                            bounds.min = logItem.time;
+                        }
+
+                        if (bounds.max < logItem.time) {
+                            bounds.max = logItem.time;
+                        }
+                    }
+
+                    // set up date
+                    logItem.date = new Date();
+                    logItem.date.setTime(logItem.time);
+                })),
             )
             .subscribe((logEvents) => {
-                console.log('1');
-                this.dataSource.data = logEvents;
-                this.isLoadingResults = false;
-            });
+                const logData = append ? [...this.dataSource.data, ...logEvents] : logEvents;
+                logData.sort((a: LogItem, b: LogItem) => b.time - a.time)
+                this.dataSource.data = logData;
+                this.finishedLoading();
+
+                if (this.isFirstRequest) {
+                    this.isFirstRequest = false;
+                    if (this.dataSource.data.length < 50) {
+                        this.updateFilter({
+                            ...this.currentFilter,
+                            ts_from: 0,
+                        }, true, 50);
+                    }
+                }
+            }, (error) => this.errorLoading(error));
     }
 }
 
@@ -304,87 +437,104 @@ export class LogHttpDao {
 
     getEvents(schemeId: number, filter: LogFilter): Observable<LogItem[]> {
         return this.request<Log_Event>('event', schemeId, filter)
-            .pipe(map((logEvents) => {
-                return logEvents.map((logEvent) => ({
-                    type_id: 'event',
-                    text: `[${logEvent.category}] ${logEvent.text}`,
-                    time: +logEvent.timestamp_msecs,
-                    user_id: logEvent.user_id,
-                }));
-            }));
+            .pipe(map((logEvents) => logEvents.map((logEvent) => this.mapLogEvent(logEvent))));
+    }
+
+    public mapLogEvent(logEvent: Log_Event): LogItem {
+        return {
+            type_id: 'event',
+            text: `[${logEvent.category}] ${logEvent.text}`,
+            time: +logEvent.timestamp_msecs,
+            user_id: logEvent.user_id,
+        };
     }
 
     getModes(schemeId: number, filter: DigLogFilter): Observable<LogItem[]> {
         return this.request<Log_Mode>('mode', schemeId, filter)
             .pipe(
-                map((logMode) => logMode.map(mode => ({
-                    type_id: 'mode',
-                    text: `[mode] ${this.get_dig_title(mode.group_id)} = ${this.get_mode_title(mode.mode_id)}`,
-                    time: +mode.timestamp_msecs,
-                    user_id: mode.user_id,
-                }))),
+                map((logMode) => logMode.map(mode => this.mapLogMode(mode))),
             );
+    }
+
+    public mapLogMode(logMode: Log_Mode): LogItem {
+        return {
+            type_id: 'mode',
+            text: `${this.get_dig_title(logMode.group_id)} = ${this.get_mode_title(logMode.mode_id)}`,
+            time: +logMode.timestamp_msecs,
+            user_id: logMode.user_id,
+            bgColor: '#A1FFBA',
+        };
     }
 
     getStatuses(schemeId: number, filter: DigLogFilter): Observable<LogItem[]> {
         return this.request<Log_Status>('status', schemeId, filter)
             .pipe(
-                map((logStatuses) => logStatuses.map((logStatus) => {
-                    const { text, color } = this.getStatusText(logStatus);
-                    return {
-                        type_id: 'status',
-                        user_id: logStatus.user_id,
-                        time: +logStatus.timestamp_msecs,
-                        text,
-                        color,
-                    };
-                })),
+                map((logStatuses) => logStatuses.map((logStatus) => this.mapLogStatus(logStatus))),
             );
+    }
+
+    public mapLogStatus(logStatus: Log_Status): LogItem {
+        const { text, color } = this.getStatusText(logStatus);
+        return {
+            type_id: 'status',
+            user_id: logStatus.user_id,
+            time: +logStatus.timestamp_msecs,
+            text,
+            color,
+            bgColor: '#A4EEFF',
+        };
     }
 
     getParams(schemeId: number, filter: ParamsLogFilter): Observable<LogItem[]> {
         return this.request<Log_Param>('param', schemeId, filter)
             .pipe(
-                map((logParams) => logParams.map(logParam => ({
-                    type_id: 'param',
-                    time: +logParam.timestamp_msecs,
-                    text: `[param] ${this.get_dig_param_name(logParam.group_param_id)} = ${logParam.value}`,
-                    user_id: logParam.user_id,
-                }))),
+                map((logParams) => logParams.map(logParam => this.mapLogParam(logParam))),
             );
+    }
+
+    public mapLogParam(logParam: Log_Param): LogItem {
+        return {
+            type_id: 'param',
+            time: +logParam.timestamp_msecs,
+            text: `[param] ${this.get_dig_param_name(logParam.group_param_id)} = ${logParam.value}`,
+            user_id: logParam.user_id,
+        };
     }
 
     getValues(schemeId: number, filter: ValuesLogFilter): Observable<LogItem[]> {
         return this.request<Log_Value>('value', schemeId, filter)
             .pipe(
-                map((logValues) => logValues.map((logValue) => {
-                    const isBlob = LogHttpDao.is_blob(logValue.raw_value);
-                    const devItemName = this.getDevItemName(logValue.item_id);
-
-                    let text: string;
-                    let advanced_value: string;
-
-                    if (!isBlob) {
-                        text = `${devItemName} ${logValue.value}`;
-                        if (logValue.raw_value !== null) {
-                            text += `(${logValue.raw_value})`;
-                        }
-
-                        advanced_value = null;
-                    } else {
-                        text = '';
-                        advanced_value = logValue.raw_value;
-                    }
-
-                    return {
-                        type_id: 'value',
-                        user_id: logValue.user_id,
-                        time: +logValue.timestamp_msecs,
-                        text,
-                        advanced_value,
-                    };
-                })),
+                map((logValues) => logValues.map((logValue) => this.mapLogValue(logValue))),
             );
+    }
+
+    public mapLogValue(logValue: Log_Value): LogItem {
+        const isBlob = LogHttpDao.is_blob(logValue.raw_value);
+        const devItemName = this.getDevItemName(logValue.item_id);
+
+        let text: string;
+        let advanced_value: string;
+
+        if (!isBlob) {
+            text = `${devItemName} ${logValue.value}`;
+            if (logValue.raw_value !== null) {
+                text += ` (${logValue.raw_value})`;
+            }
+
+            advanced_value = null;
+        } else {
+            text = '';
+            advanced_value = logValue.raw_value;
+        }
+
+        return {
+            type_id: 'value',
+            user_id: logValue.user_id,
+            time: +logValue.timestamp_msecs,
+            text,
+            advanced_value,
+            bgColor: '#DAFFA1',
+        };
     }
 
     private request<T>(type: string, schemeId: number, filter: LogFilter): Observable<T[]> {
@@ -441,6 +591,7 @@ export class LogHttpDao {
         if (!group || !paramPath) {
             throw new Error(`Param ${param_id} not found`);
         }
+
         let paramPathString = paramPath.map((param) => param.param.title).join('->');
         paramPathString = `${this.groupTitle(section, group)}->${paramPathString}`;
 
@@ -452,6 +603,10 @@ export class LogHttpDao {
         if (!param) {
             let paramPath: DIG_Param[];
             const parentParam = params.find((para) => {
+                if (!para.childs) {
+                    return false;
+                }
+
                 paramPath = this.recursiveSearchParamNames(para.childs, param_id);
                 return !!paramPath;
             });
@@ -460,7 +615,11 @@ export class LogHttpDao {
             }
         }
 
-        return [param] || [];
+        if (!param) {
+            return [];
+        }
+
+        return [param];
     }
 
     private get_dig_title(group_id: number) {
@@ -472,7 +631,7 @@ export class LogHttpDao {
             });
 
         if (!group || !section) {
-            throw new Error(`Group ${group_id} not foound`);
+            throw new Error(`Group ${group_id} not found`);
         }
 
         return this.groupTitle(section, group);
@@ -497,10 +656,11 @@ export class LogHttpDao {
             const category = this.schemeService.scheme.dig_status_category.find(cat => cat.id === status.category_id);
             emoji = LogHttpDao.getEmoji(category.name);
             color = LogHttpDao.getStatusTextColor(category.name);
+            direction = '+';
         }
 
         const formattedStatusText = LogHttpDao.formatStatusText(status.text, logStatus.args);
-        const text = `${digTitle} ${direction} ${emoji} ${emoji} ${formattedStatusText}`;
+        const text = `${digTitle} ${emoji} ${formattedStatusText} ${direction}`;
 
         return { text, color };
     }

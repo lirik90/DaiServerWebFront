@@ -51,6 +51,7 @@ import { DeviceItemGroupComponent } from './device-item-group/device-item-group.
 import {ParamsDialogComponent} from './device-item-group/params-dialog/params-dialog.component';
 import { LogSidebarComponent } from './log/log-sidebar/log-sidebar.component';
 import {AngularMultiSelectModule} from 'angular2-multiselect-dropdown';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
     return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -72,6 +73,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
             }
         }),
         AngularMultiSelectModule,
+        MatProgressBarModule,
     ],
     declarations: [
         SchemeComponent,

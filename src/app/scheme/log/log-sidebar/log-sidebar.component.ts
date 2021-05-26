@@ -52,6 +52,7 @@ export interface LogsFilter {
 export interface LogFilter {
     ts_from: LogsFilter['ts_from'];
     ts_to: LogsFilter['ts_to'];
+    limit?: number;
     filter?: LogsFilter['filter'];
     case_sensitive?: LogsFilter['case_sensitive'];
 }
@@ -147,12 +148,15 @@ export class LogSidebarComponent implements OnInit {
 
                 return prev.concat(groups);
             }, []);
+        this.selectedGroupsId = this.devItemGroups.concat([]);
 
         this.getDropdownDevItemsFromSections();
         this.getDropdownDevItemParamsFromSections();
 
         this.fetchSelectedLogsFromLS();
         this.setupDatetimeRange();
+
+        this.submit();
     }
 
     ngOnInit(): void {

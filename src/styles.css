@@ -189,3 +189,13 @@ nav > div {
 .hidden { /* For Mnemoscheme */
     visibility: hidden;
 }
+
+/* For Progressbar cl. loading.progressbar.ts */
+.progress-bar-container {
+    opacity: 0;
+    transition: 400ms;
+}
+
+.progress-bar-container.show {
+    opacity: 1;
+}
