@@ -184,7 +184,7 @@ export class Device { // Устройство
 
 class Log_Base {
 //  id: number;     // ID
-  timestamp_msecs: string;     // Время изменения
+  timestamp_msecs: string | number;     // Время изменения // TODO: проверить где используется как string и устранить
   user_id: number;  // Пользователь
 }
 
