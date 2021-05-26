@@ -46,6 +46,8 @@ import {
 } from './log-sidebar/log-sidebar.component';
 import {LoadingProgressbar} from '../loading-progressbar/loading.progressbar';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {VideoStreamDialogComponent} from '../dev-item-value/video-stream-dialog/video-stream-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
 
 interface LogItem {
     type_id: string;
@@ -55,7 +57,8 @@ interface LogItem {
 
     color?: string;
     bgColor?: string;
-    advanced_value?: string;
+    item?: Device_Item;
+    raw_value?: string;
 }
 
 interface LogTableItem extends LogItem {
@@ -113,6 +116,7 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
         public cookie: CookieService,
         private resolver: ComponentFactoryResolver,
         private sidebarService: SidebarService,
+        private dialog: MatDialog,
         snackBar: MatSnackBar,
         changeDetectorRef: ChangeDetectorRef,
     ) {
@@ -143,23 +147,18 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
     }
 
     ngOnInit() {
-        this.sub = this.controlService.byte_msg.subscribe(msg => {
+        this.sub = this.controlService.byte_msg.subscribe((msg) => {
+            if (msg.cmd !== WebSockCmd.WS_EVENT_LOG) {
+                return;
+            }
+
             if (msg.data === undefined) {
                 console.warn('Log_Event without data');
                 return;
             }
 
             const rows = this.controlService.parseEventMessage(msg.data);
-            let logItems;
-            switch (msg.cmd) {
-                case WebSockCmd.WS_EVENT_LOG:
-                    logItems = rows.map(row => this.logDatabase.mapLogEvent(row));
-                    break;
-                case WebSockCmd.WS_GROUP_MODE:
-                    console.dir(rows); // TODO: проверить как обрабатывать эти события с вебсокета
-                default:
-                    return;
-            }
+            const logItems = rows.map(row => this.logDatabase.mapLogEvent(row));
             this.dataSource.data = [...logItems, ...this.dataSource.data];
         });
 
@@ -328,6 +327,14 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
             this.itemsPerPage = $event.pageSize;
             this.cookie.set('logItemsPerPage', String($event.pageSize), 365, '/');
         }
+    }
+
+    openImg(row: any): void {
+        let settings = VideoStreamDialogComponent.get_default_settings();
+        settings['data'] = { isImg: true, devItem: null, img: row };
+        let dialogRef = this.dialog.open(VideoStreamDialogComponent, settings);
+
+        dialogRef.afterClosed().subscribe(result => console.log(result));
     }
 
     private updateFilter(data: LogsFilter, append: boolean, limit?: number) {
@@ -513,7 +520,8 @@ export class LogHttpDao {
         const devItemName = this.getDevItemName(logValue.item_id);
 
         let text: string;
-        let advanced_value: string;
+        let raw_value: string;
+        let item: Device_Item;
 
         if (!isBlob) {
             text = `${devItemName} ${logValue.value}`;
@@ -521,10 +529,11 @@ export class LogHttpDao {
                 text += ` (${logValue.raw_value})`;
             }
 
-            advanced_value = null;
+            raw_value = null;
         } else {
             text = '';
-            advanced_value = logValue.raw_value;
+            raw_value = logValue.raw_value;
+            item = this.getDevItem(logValue.item_id);
         }
 
         return {
@@ -532,7 +541,8 @@ export class LogHttpDao {
             user_id: logValue.user_id,
             time: +logValue.timestamp_msecs,
             text,
-            advanced_value,
+            raw_value,
+            item,
             bgColor: '#DAFFA1',
         };
     }
@@ -557,6 +567,16 @@ export class LogHttpDao {
         });
 
         return href;
+    }
+
+    private getDevItem(item_id: number): Device_Item {
+        let devItem: Device_Item;
+        this.schemeService.scheme.device.find((dev) => {
+            devItem = dev.items.find(item => item.id === item_id);
+            return !!devItem;
+        });
+
+        return devItem;
     }
 
     private getDevItemName(item_id: number): string {

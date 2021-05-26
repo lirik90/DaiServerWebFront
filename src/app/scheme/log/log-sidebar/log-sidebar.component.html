@@ -4,7 +4,7 @@
                [(ngModel)]="time_from" required>
     </mat-form-field>
     <mat-form-field class="chart-date">
-        <input matInput [matDatepicker]="picker_from" [(ngModel)]="date_from"
+        <input matInput [matDatepicker]="picker_from" [formControl]="date_from"
                i18n-placeholder="@@REPORTS.DATE_FROM" placeholder="Дата от" required>
         <mat-datepicker-toggle matSuffix [for]="picker_from"></mat-datepicker-toggle>
         <mat-datepicker #picker_from></mat-datepicker>
@@ -18,7 +18,7 @@
     </mat-form-field>
     <mat-form-field class="chart-date">
         <input matInput [matDatepicker]="picker_to" i18n-placeholder="@@REPORTS.DATE_TO"
-               [(ngModel)]="date_to" placeholder="Дата до" required>
+               [formControl]="date_to" placeholder="Дата до" required>
         <mat-datepicker-toggle matSuffix [for]="picker_to"></mat-datepicker-toggle>
         <mat-datepicker #picker_to></mat-datepicker>
     </mat-form-field>

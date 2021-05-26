@@ -55,10 +55,11 @@ class TimeInfo {
 
 @Injectable()
 export class ControlService {
-  public byte_msg: Subject<ByteMessage> = new Subject<ByteMessage>();
-  public stream_msg: Subject<ByteMessage> = new Subject<ByteMessage>();
-  public dev_item_changed: Subject<Device_Item[]> = new Subject<Device_Item[]>();
-  public group_param_values_changed: Subject<DIG_Param[]> = new Subject<DIG_Param[]>();
+  public byte_msg: Subject<ByteMessage> = new Subject();
+  public stream_msg: Subject<ByteMessage> = new Subject();
+  public dev_item_changed: Subject<Device_Item[]> = new Subject();
+  public group_param_values_changed: Subject<DIG_Param[]> = new Subject();
+
   public opened: Subject<boolean>;
 
   private bmsg_sub: SubscriptionLike;
@@ -89,7 +90,7 @@ export class ControlService {
 
         const view = new Uint8Array(msg.data);
         const [start, mode_id] = ByteTools.parseUInt32(view);
-        const [start1, group_id] = ByteTools.parseUInt32(view, start);
+        const [, group_id] = ByteTools.parseUInt32(view, start);
 
         for (const sct of this.schemeService.scheme.section) {
           for (const group of sct.groups) {
