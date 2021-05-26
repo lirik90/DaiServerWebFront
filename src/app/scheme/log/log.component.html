@@ -26,7 +26,10 @@
     <!-- Message Column -->
     <ng-container matColumnDef="message">
       <mat-header-cell *matHeaderCellDef i18n="@@LOG.TABLE.MESSAGE">Сообщение</mat-header-cell>
-      <mat-cell *matCellDef="let row" [style.color]="row.color">{{ row.text }}</mat-cell>
+      <mat-cell *matCellDef="let row" [style.color]="row.color">
+          <button *ngIf="row.raw_value; else simpleValue" mat-raised-button (click)="openImg(row)" i18n="@@LOG2.VIEW">Посмотреть</button>
+          <ng-template #simpleValue>{{ row.text }}</ng-template>
+      </mat-cell>
     </ng-container>
 
     <!-- Date Column -->
