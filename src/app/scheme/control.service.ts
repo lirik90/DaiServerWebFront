@@ -5,7 +5,7 @@ import {Subject, SubscriptionLike} from 'rxjs';
 import {SchemeService} from './scheme.service';
 import {ByteMessage, ByteTools, WebSocketBytesService} from '../web-socket.service';
 import {Connection_State} from '../user';
-import {Device_Item, Device_Item_Group, DIG_Param, DIG_Param_Value_Type, DIG_Status_Type, Log_Event, Log_Mode} from './scheme';
+import {Device_Item, Device_Item_Group, DIG_Param, DIG_Param_Value_Type, DIG_Status_Type, Log_Event, Log_Mode, Log_Status, Log_Status_Direction} from './scheme';
 
 // import { QByteArray } from 'qtdatastream/src/types';
 
@@ -66,6 +66,7 @@ export class ControlService {
   public dev_item_changed: Subject<Device_Item[]> = new Subject();
   public group_param_values_changed: Subject<DIG_Param[]> = new Subject();
   public log_mode: Subject<Log_Mode[]> = new Subject();
+  public log_status: Subject<Log_Status[]> = new Subject();
 
   public opened: Subject<boolean>;
 
@@ -108,27 +109,9 @@ export class ControlService {
           }
         }
       } else if (msg.cmd == WebSockCmd.WS_LOG_MODE) {
-        const view = new Uint8Array(msg.data);
-        let [idx, count] = ByteTools.parseUInt32(view);
-        let timestamp_msecs: number, user_id: number, group_id: number, mode_id: number;
-
-        const log_mode: Log_Mode[] = [];
-        while (count--) {
-          timestamp_msecs = ByteTools.parseInt64(view, idx)[1];
-          timestamp_msecs &= ~0x80000000000000;
-          idx += 8;
-          user_id = ByteTools.parseUInt32(view, idx)[1];
-          idx += 4;
-          group_id = ByteTools.parseUInt32(view, idx)[1];
-          idx += 4;
-          mode_id = ByteTools.parseUInt32(view, idx)[1];
-          idx += 4;
-
-          log_mode.push({timestamp_msecs, user_id, group_id, mode_id});
-        }
-
-        if (log_mode.length)
-            this.log_mode.next(log_mode);
+        this.parseLogs(msg.data, this.log_mode, ControlService.logModeParser);
+      } else if (msg.cmd == WebSockCmd.WS_LOG_STATUS) {
+        this.parseLogs(msg.data, this.log_status, ControlService.logStatusParser);
       } else if (msg.cmd == WebSockCmd.WS_DEV_ITEM_VALUES) {
 
         if (msg.data === undefined) {
@@ -349,6 +332,55 @@ export class ControlService {
     }
 
     return item;
+  }
+    
+  private parseLogs<T>(data: ArrayBuffer, subj: Subject<T[]>, parser: (view: Uint8Array, meta: { idx: number; }, item: T) => T) {
+    const view = new Uint8Array(data);
+    const meta = { idx: undefined } as LogParserMeta;
+    const item = new T();
+    let count;
+    [meta.idx, count] = ByteTools.parseUInt32(view);
+
+    const log_pack: T[] = [];
+    while (count--) {
+      item.timestamp_msecs = ByteTools.parseInt64(view, meta.idx)[1];
+      item.timestamp_msecs &= ~0x80000000000000;
+      meta.idx += 8;
+      item.user_id = ByteTools.parseUInt32(view, meta.idx)[1];
+      meta.idx += 4;
+
+      log_pack.push(parser(view, meta, item));
+    }
+
+    if (log_pack.length)
+        subj.next(log_pack);
+  }
+  
+  private static logModeParser(view: Uint8Array, meta: { idx: number; }, item: Log_Mode): Log_Mode {
+    item.group_id = ByteTools.parseUInt32(view, meta.idx)[1];
+    meta.idx += 4;
+    item.mode_id = ByteTools.parseUInt32(view, meta.idx)[1];
+    meta.idx += 4;
+    
+    return {...item} as Log_Mode;
+  }
+  
+  private static logStatusParser(view: Uint8Array, meta: { idx: number; }, item: Log_Status): Log_Status {
+    item.direction = view[meta.idx - 4 - 8] & 0x80 ? Log_Status_Direction::SD_DEL : Log_Status_Direction::SD_ADD;
+    item.group_id = ByteTools.parseUInt32(view, meta.idx)[1];
+    meta.idx += 4;
+    item.status_id = ByteTools.parseUInt32(view, meta.idx)[1];
+    meta.idx += 4;
+    
+    item.args = [];
+    let args_count = ByteTools.parseUInt32(view, meta.idx)[1];
+    let value: string;
+    while (args_count--) {
+      [meta.idx, value] = ByteTools.parseQString(view, meta.idx);
+      item.args.push(value);
+    }
+    
+    return {...item} as Log_Status;
   }
 
   parseConnectNumber(n: number) {
