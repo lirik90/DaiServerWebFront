@@ -182,8 +182,6 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
             .subscribe(() => {
                 // смотреть на min(date), max(date) разных журналов и "догружать" их до минимальных/максимальных.
                 // Если таких нет, то догружать новые.
-                // TODO: добавить таймаут срабатывания
-                // TODO: добавить scrollTo к последней строке, а то теряется
                 this.startLoading();
 
                 const observables: Array<Observable<LogItem[]>> = [];
@@ -191,7 +189,6 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
                 const logFilter: LogFilter = LogComponent.getLogFilter(this.currentFilter, 50);
 
                 let minBound, minBoundKey;
-                let maxBound, maxBoundKey;
                 Object.keys(this.dataTimeBounds) // собираем границы диапазона ts_from, ts_to
                     .forEach((key: string) => {
                         const { min, max } = this.dataTimeBounds[key];
@@ -199,11 +196,6 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
                         if (minBound === undefined || minBound > min) {
                             minBound = min;
                             minBoundKey = key;
-                        }
-
-                        if (maxBound === undefined || maxBound < max) {
-                            maxBound = max;
-                            maxBoundKey = key;
                         }
                     });
 
@@ -222,16 +214,12 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
                             ts_to = min;
                         }
 
-                        // TODO: do I need max?
-
                         if (ts_from && ts_to) {
                             ts[key] = { ts_from, ts_to };
                             loadAll = false;
                         }
                     });
 
-                console.log('loadAll', loadAll);
-                console.log(this.dataTimeBounds);
                 if (!loadAll) {
                     if (this.currentFilter.selectedLogs.event && ts.event) {
                         observables.push(this.logDatabase.getEvents(schemeId, { ...logFilter, ...ts.event }));
@@ -410,6 +398,10 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
     }
 
     private processResponseObservables(observables: Array<Observable<LogItem[]>>, append: boolean) {
+        if (!append) {
+            this.dataTimeBounds = {};
+        }
+
         return combineLatest(observables)
             .pipe(
                 map(logEvents => logEvents.reduce((prev, curr) => prev.concat(curr))),
