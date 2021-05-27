@@ -22,7 +22,7 @@ import {debounceTime, map, tap} from 'rxjs/operators';
 import {
     Device_Item,
     Device_Item_Group,
-    DIG_Param,
+    DIG_Param, Log_Base,
     Log_Event,
     Log_Event_Type,
     Log_Mode,
@@ -41,7 +41,7 @@ import {
     LogFilter,
     LogsFilter,
     LogSidebarComponent,
-    ParamsLogFilter,
+    ParamsLogFilter, SelectedLogs,
     ValuesLogFilter
 } from './log-sidebar/log-sidebar.component';
 import {LoadingProgressbar} from '../loading-progressbar/loading.progressbar';
@@ -105,6 +105,9 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
     private isFirstRequest = true;
     private currentFilter: LogsFilter;
     private scrollEvent$: Subscription;
+    private log_mode$: Subscription;
+    private log_status$: Subscription;
+    private log_param$: Subscription;
 
     constructor(
         public translate: TranslateService,
@@ -161,6 +164,18 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
             const logItems = rows.map(row => this.logDatabase.mapLogEvent(row));
             this.dataSource.data = [...logItems, ...this.dataSource.data];
         });
+
+        this.log_mode$ = this.controlService.log_mode.subscribe(
+            this.logsProcessor(this.logDatabase.mapLogMode, 'mode'),
+        );
+
+        this.log_status$ = this.controlService.log_status.subscribe(
+            this.logsProcessor(this.logDatabase.mapLogStatus, 'status'),
+        );
+
+        this.log_param$ = this.controlService.log_param.subscribe(
+            this.logsProcessor(this.logDatabase.mapLogParam, 'param'),
+        );
 
         this.scrollEvent$ = this.scrollSubject.asObservable()
             .pipe(debounceTime(300))
@@ -434,6 +449,16 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
                     }
                 }
             }, (error) => this.errorLoading(error));
+    }
+
+    private logsProcessor<T extends Log_Base>(mapper: (logs: T) => LogItem, flagName: keyof SelectedLogs) {
+        const bindedMapper = mapper.bind(this.logDatabase);
+        return (logs: T[]) => {
+            if (!this.currentFilter.selectedLogs[flagName]) return;
+
+            const logItems = logs.map(bindedMapper);
+            this.dataSource.data = [...logItems, ...this.dataSource.data];
+        }
     }
 }
 

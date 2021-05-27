@@ -182,7 +182,7 @@ export class Device { // Устройство
   items: Device_Item[];// Массив элементов
 }
 
-class Log_Base {
+export class Log_Base {
 //  id: number;     // ID
   timestamp_msecs: string | number;     // Время изменения // TODO: проверить где используется как string и устранить
   user_id: number;  // Пользователь
@@ -224,7 +224,7 @@ export enum Log_Status_Direction {
 export class Log_Status extends Log_Base {
     group_id: number;
     status_id: number;
-    args: string;
+    args: string[];
     direction: Log_Status_Direction;
 }
 
