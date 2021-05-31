@@ -252,12 +252,6 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         return null;
     }
 
-    toggleAxisVisibility(axisId: string, v: boolean) {
-        const axe = this.options.scales.yAxes.find(axe => axe.id === axisId);
-        console.log(axisId, v, axe);
-        axe.display = v;
-    }
-
     addData(dataPack: Paginator_Chart_Value, data_param_name: string, additional = false): void
     {
         if (!additional) {
