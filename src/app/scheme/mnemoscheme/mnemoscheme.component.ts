@@ -16,6 +16,7 @@ export class MnemoschemeComponent implements OnInit {
     @ViewChild('svgElement', { read: ElementRef }) svg: ElementRef<SVGElement>;
     @ViewChild('imgContainer', { read: ElementRef }) imgContainer: ElementRef<HTMLDivElement>;
 
+    isLoading = true;
     selected: number;
     mnemoscheme: Mnemoscheme[];
     deviceItemGroup: Device_Item_Group;
@@ -32,6 +33,7 @@ export class MnemoschemeComponent implements OnInit {
         this.schemeService.getMnemoscheme()
             .subscribe(r => {
                 this.mnemoscheme = r;
+                this.isLoading = false;
                 if (this.mnemoscheme.length > 0) {
                     this.select(this.mnemoscheme[0].id);
                 }
@@ -209,7 +211,7 @@ export class MnemoschemeComponent implements OnInit {
         }
     }
 
-    private adjustSvgHeight() {
+    adjustSvgHeight() {
         const rect = this.imgContainer.nativeElement.getBoundingClientRect();
         const h = (<any>window).innerHeight - rect.y - 7;
         const w = (<any>window).innerWidth - rect.x - 12;
