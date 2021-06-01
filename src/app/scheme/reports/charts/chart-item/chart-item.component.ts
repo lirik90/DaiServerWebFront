@@ -35,10 +35,12 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         id: 'A',
         type: 'linear',
         position: 'left',
+        display: 'auto',
     }, {
         id: 'B',
         type: 'linear',
         position: 'right',
+        display: 'auto',
         ticks: {
             max: 2,
             min: -1,
@@ -82,8 +84,7 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
     @Output() axeChange: EventEmitter<BuiltChartParams> = new EventEmitter();
     @Output() built: EventEmitter<BuiltChartParams> = new EventEmitter();
 
-    update(): void
-    {
+    update(): void {
         if (!this.chart || !this.chart.chart) return;
 
         this.zone.run(() => this.chart.chart.update());

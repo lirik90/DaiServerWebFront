@@ -390,6 +390,7 @@ export class ChartsComponent implements OnDestroy {
             id,
             type,
             position,
+            display: 'auto',
         };
 
         if (min !== null || max !== null) {
