@@ -12,7 +12,6 @@ import {LogComponent} from './log/log.component';
 import {ReportsModule} from './reports/reports.module';
 import {PermissionGuard} from './permission.guard';
 import {DocComponent} from './doc/doc.component';
-import {Log2Component} from './log2/log2.component';
 import {ElementsComponent} from './elements/elements.component';
 import {ManageDevicesComponent} from './manage-devices/manage-devices.component';
 import { MnemoschemeComponent } from './mnemoscheme/mnemoscheme.component';
@@ -40,7 +39,6 @@ const schemeRoutes: Routes = [{
             {path: 'elements', pathMatch: 'full', redirectTo: 'elements/sections'},
             {path: 'mnemoscheme', component: MnemoschemeComponent},
             {path: 'log_event', component: LogComponent, data: {req_perms: true}},
-            {path: 'log_value', component: Log2Component, data: {req_perms: true}},
             {path: 'help', component: DocComponent, data: {req_perms: true}},
             // { path: 'group/:groupId/param', component: ParamComponent },
             {

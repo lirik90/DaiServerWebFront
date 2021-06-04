@@ -3,7 +3,8 @@ import {
     ChangeDetectorRef,
     Component,
     ComponentFactoryResolver,
-    ComponentRef, ElementRef, HostListener,
+    ComponentRef,
+    ElementRef,
     OnDestroy,
     OnInit,
     ViewChild,
@@ -22,14 +23,16 @@ import {debounceTime, map, tap} from 'rxjs/operators';
 import {
     Device_Item,
     Device_Item_Group,
-    DIG_Param, Log_Base,
+    DIG_Param,
+    Log_Base,
     Log_Event,
     Log_Event_Type,
     Log_Mode,
     Log_Param,
     Log_Status,
     Log_Status_Direction,
-    Log_Value, Section
+    Log_Value,
+    Section
 } from '../scheme';
 import {Scheme_Group_Member} from '../../user';
 import {AuthenticationService} from '../../authentication.service';
@@ -41,7 +44,8 @@ import {
     LogFilter,
     LogsFilter,
     LogSidebarComponent,
-    ParamsLogFilter, SelectedLogs,
+    ParamsLogFilter,
+    SelectedLogs,
     ValuesLogFilter
 } from './log-sidebar/log-sidebar.component';
 import {LoadingProgressbar} from '../loading-progressbar/loading.progressbar';
@@ -180,6 +184,7 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
         this.scrollEvent$ = this.scrollSubject.asObservable()
             .pipe(debounceTime(300))
             .subscribe(() => {
+                if (this.loading) return;
                 // смотреть на min(date), max(date) разных журналов и "догружать" их до минимальных/максимальных.
                 // Если таких нет, то догружать новые.
                 this.startLoading();
@@ -426,18 +431,21 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
                 })),
             )
             .subscribe((logEvents) => {
-                const logData = append ? [...this.dataSource.data, ...logEvents] : logEvents;
-                logData.sort((a: LogItem, b: LogItem) => b.time - a.time)
-                this.dataSource.data = logData;
+                logEvents.sort((a: LogItem, b: LogItem) => b.time - a.time);
+                this.dataSource.data = append ? [...this.dataSource.data, ...logEvents] : logEvents;
                 this.finishedLoading();
 
                 if (this.isFirstRequest) {
                     this.isFirstRequest = false;
+                    const dataTypesCount = Object.keys(this.currentFilter.selectedLogs)
+                        .filter(key => this.currentFilter.selectedLogs[key])
+                        .length;
+
                     if (this.dataSource.data.length < 50) {
                         this.updateFilter({
                             ...this.currentFilter,
                             ts_from: 0,
-                        }, true, 50);
+                        }, true, Math.round(50 / dataTypesCount));
                     }
                 }
             }, (error) => this.errorLoading(error));
@@ -449,6 +457,10 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
             if (!this.currentFilter.selectedLogs[flagName]) return;
 
             const logItems = logs.map(bindedMapper);
+            logItems.forEach((logItem: any) => {
+                logItem.date = new Date();
+                logItem.date.setTime(logItem.time);
+            });
             this.dataSource.data = [...logItems, ...this.dataSource.data];
         }
     }
@@ -465,11 +477,21 @@ export class LogHttpDao {
     }
 
     public mapLogEvent(logEvent: Log_Event): LogItem {
+        let color;
+        switch (logEvent.type_id) {
+            case Log_Event_Type.ET_DEBUG: color = '#5A9740'; break;
+            case Log_Event_Type.ET_WARNING: color = '#A39242'; break;
+            case Log_Event_Type.ET_CRITICAL: color = '#994242'; break;
+            case Log_Event_Type.ET_INFO: color = '#407D9E'; break;
+            default: color = 'black';
+        }
+
         return {
             type_id: 'event',
             text: `[${logEvent.category}] ${logEvent.text}`,
             time: +logEvent.timestamp_msecs,
             user_id: logEvent.user_id,
+            color,
         };
     }
 
