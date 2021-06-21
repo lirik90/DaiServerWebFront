@@ -575,35 +575,21 @@ export class SchemeService extends ISchemeService {
                 };
 
                 const recursiveSearchParam = (array: Array<DIG_Param>, item: DIG_Param): DIG_Param => {
-                    let found: DIG_Param;
-                    array.find((param) => {
-                        if (param.id === item.id) {
-                            found = param;
-                            return true;
-                        }
-
-                        found = recursiveSearchParam(param.childs, item);
-                        return !!found;
-                    });
-
-                    return found;
+                    for (let param of array) {
+                        if (param.id === item.id
+                         || param = recursiveSearchParam(param.childs || [], item))
+                            return param;
+                    }
+                    return null;
                 };
 
                 const recursiveSearchParamByTypeId = (array: Array<DIG_Param>, typeId: number): DIG_Param => {
-                    let found: DIG_Param;
-                    array.find((param) => {
-                        if (param.param_id === typeId) {
-                            found = param;
-                            return true;
-                        }
-
-                        if (param.childs) {
-                            found = recursiveSearchParamByTypeId(param.childs, typeId);
-                        }
-                        return !!found;
-                    });
-
-                    return found;
+                    for (let param of array) {
+                        if (param.param_id === typeId
+                         || param = recursiveSearchParamByTypeId(param.childs || [], typeId))
+                             return param;
+                    }
+                    return null;
                 };
 
                 const findAndUpdate = (array: Array<T>, item: T): boolean => {
