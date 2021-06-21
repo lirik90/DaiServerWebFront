@@ -16,6 +16,7 @@ import {
     Help, Mnemoscheme, Plugin_Type,
     Scheme_Detail,
     Section,
+    Time_Info,
 } from './scheme';
 import {Connection_State, PaginatorApi, Scheme_Group_Member} from '../user';
 import {MessageService} from '../message.service';
@@ -684,5 +685,9 @@ export class SchemeService extends ISchemeService {
         return this.http.get(`/api/v2/scheme/${this.scheme.id}/mnemoscheme/${id}/`, {
             responseType: 'text',
         });
+    }
+
+    getTimeInfo(): Observable<Time_Info> {
+        return this.http.get<Time_Info>(`/api/v2/scheme/${this.scheme.id}/time_info/`);
     }
 }

@@ -9,8 +9,10 @@
 
         <app-scheme-state></app-scheme-state>
 
-        <app-drag-scroll *ngIf="schemeService.scheme">{{schemeService.scheme.title}}</app-drag-scroll>
-        <span class="timestring" *ngIf="!mobileQuery.matches && connected" i18n-matTooltip="@@DEVICE_TIME" matTooltip="Время на устройстве">{{dt_text}} {{dt_tz_name}}</span>
+        <app-drag-scroll *ngIf="schemeService.scheme">
+            {{schemeService.scheme.title}}
+            <span class="timestring" *ngIf="connected" i18n-matTooltip="@@DEVICE_TIME" matTooltip="Время на устройстве">{{dt_text}} {{dt_tz_name}}</span>
+        </app-drag-scroll>
 
         <span class="cdk-visually-hidden" i18n="@@ADD_TO_FAV" #addToFavTt>Добавить в избранное</span>
         <button *ngIf="!isFav" mat-flat-button class="fav-btn" (click)="fav()" [matTooltip]="addToFavTt.innerHTML"><mat-icon>star_border</mat-icon></button>

@@ -1295,9 +1295,11 @@ h2:lang(ko).localnav-title {
 }
 
 .timestring {
+  color: #000;
+  font-weight: 500;
+  letter-spacing: 0.015em;
+  font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   font-size: 18px;
-  position: relative;
-  top: 1px;
 }
 
 .fav-btn__label {
