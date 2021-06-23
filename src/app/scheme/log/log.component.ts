@@ -112,6 +112,7 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
     private log_mode$: Subscription;
     private log_status$: Subscription;
     private log_param$: Subscription;
+    private data: LogItem[];
 
     constructor(
         public translate: TranslateService,
@@ -431,8 +432,20 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
                 })),
             )
             .subscribe((logEvents) => {
-                logEvents.sort((a: LogItem, b: LogItem) => b.time - a.time);
-                this.dataSource.data = append ? [...this.dataSource.data, ...logEvents] : logEvents;
+                this.data = append ? [...this.data, ...logEvents] : logEvents;
+                this.data.sort((a: LogItem, b: LogItem) => b.time - a.time);
+                const { min } = Object
+                    .keys(this.dataTimeBounds)
+                    .map(key => this.dataTimeBounds[key])
+                    .reduce((prev, curr) => {
+                        if (prev.min > curr.min) {
+                            return prev;
+                        }
+
+                        return curr;
+                    });
+
+                this.dataSource.data = this.data.filter((item: LogItem) => item.time > min);
                 this.finishedLoading();
 
                 if (this.isFirstRequest) {
