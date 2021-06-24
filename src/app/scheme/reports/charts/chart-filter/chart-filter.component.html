@@ -36,6 +36,13 @@
                                 <label i18n="@@REPORTS.STEPPED">Прямоугольный</label>
                                 <mat-slide-toggle [(ngModel)]="ds.legend.stepped"></mat-slide-toggle>
                             </div>
+                            <div>
+                                <label i18n="@@REPORTS.SHOW_AXIS">Отображать шкалу</label>
+                                <mat-slide-toggle
+                                    [ngModel]="ds.legend.scale.display === 'auto'"
+                                    (ngModelChange)="ds.legend.scale.display = $event ? 'auto' : false"
+                                ></mat-slide-toggle>
+                            </div>
                         </div>
                     </div>
                 </div>
