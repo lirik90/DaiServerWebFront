@@ -303,6 +303,7 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
                 displayColor,
                 color,
                 idx,
+                stepped: false,
             }
         });
     }

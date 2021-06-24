@@ -137,14 +137,14 @@ export class ChartsComponent implements OnDestroy {
             const axes: Axis_Params[] = [];
 
             const datasets = chart.dataset_params.map((ds_param) => {
-                const {item, legend: {color, idx, scale, hidden}} = ds_param;
+                const {item, legend: {color, idx, scale, hidden, stepped}} = ds_param;
 
                 let dataset: ChartDataSets;
                 if (ds_param.isParam) {
-                    dataset = this.genParamDataset(item, idx, color, hidden);
+                    dataset = this.genParamDataset(item, idx, color, hidden, stepped);
                     data_ptr.params.push(item.id);
                 } else {
-                    dataset = this.genDevItemDataset(item, idx, color, hidden);
+                    dataset = this.genDevItemDataset(item, idx, color, hidden, stepped);
                     data_ptr.dev_items.push(item.id);
                 }
 
@@ -350,21 +350,21 @@ export class ChartsComponent implements OnDestroy {
         return date_str + time;
     }
 
-    genDevItemDataset(item: Device_Item, colorIndex: number, hsl: Hsl = null, hidden: boolean): ChartDataSets {
+    genDevItemDataset(item: Device_Item, colorIndex: number, hsl: Hsl = null, hidden: boolean, stepped: boolean): ChartDataSets {
         const label = item.name.length ? item.name : item.type.title;
 
-        const RT = Register_Type;
-        const rt = item.type.register_type;
-        const stepped = rt === RT.RT_COILS || rt === RT.RT_DISCRETE_INPUTS;
+        // const RT = Register_Type;
+        // const rt = item.type.register_type;
+        // const stepped = rt === RT.RT_COILS || rt === RT.RT_DISCRETE_INPUTS;
 
         let dataset = this.genDataset(label, colorIndex, stepped, hsl, hidden);
         dataset['dev_item'] = item;
         return dataset;
     }
 
-    genParamDataset(param: DIG_Param, colorIndex: number, hsl: Hsl = null, hidden: boolean): ChartDataSets {
-        const steppedLine = param.param.value_type === DIG_Param_Value_Type.VT_BOOL;
-        let dataset = this.genDataset('⚙️ ' + param.param.title, colorIndex, steppedLine, hsl, hidden);
+    genParamDataset(param: DIG_Param, colorIndex: number, hsl: Hsl = null, hidden: boolean, stepped: boolean): ChartDataSets {
+        // const steppedLine = param.param.value_type === DIG_Param_Value_Type.VT_BOOL;
+        let dataset = this.genDataset('⚙️ ' + param.param.title, colorIndex, stepped, hsl, hidden);
         dataset['param'] = param;
         return dataset;
     }
