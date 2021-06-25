@@ -167,6 +167,11 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
 
             const rows = this.controlService.parseEventMessage(msg.data);
             const logItems = rows.map(row => this.logDatabase.mapLogEvent(row));
+            logItems.forEach((logItem: LogTableItem) => {
+                logItem.date = new Date();
+                logItem.date.setTime(logItem.time);
+            });
+            logItems.sort((a, b) => b.time - a.time);
             this.dataSource.data = [...logItems, ...this.dataSource.data];
         });
 
@@ -468,11 +473,11 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
     }
 
     private logsProcessor<T extends Log_Base>(mapper: (logs: T) => LogItem, flagName: keyof SelectedLogs) {
-        const bindedMapper = mapper.bind(this.logDatabase);
+        const bindedMapper = mapper.bind(this.logDatabase) as (log: T) => LogItem;
         return (logs: T[]) => {
             if (!this.currentFilter.selectedLogs[flagName]) return;
 
-            const logItems = logs.map(bindedMapper);
+            const logItems = logs.map(bindedMapper).sort((a, b) => b.time - a.time);
             logItems.forEach((logItem: any) => {
                 logItem.date = new Date();
                 logItem.date.setTime(logItem.time);
