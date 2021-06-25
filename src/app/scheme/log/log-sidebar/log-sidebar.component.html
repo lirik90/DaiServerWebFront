@@ -32,6 +32,14 @@
     <mat-checkbox [(ngModel)]="selectedLogs.value">Значения</mat-checkbox>
 </div>
 
+<div class="checkboxes borded" title="Влияет только на текстовые события">
+    <label>Скрывать текстовые события</label>
+    <mat-checkbox [(ngModel)]="hiddenEvents[0]">Отладка</mat-checkbox>
+    <mat-checkbox [(ngModel)]="hiddenEvents[1]">Предупреждение</mat-checkbox>
+    <mat-checkbox [(ngModel)]="hiddenEvents[2]">Ошибка</mat-checkbox>
+    <mat-checkbox [(ngModel)]="hiddenEvents[4]">Инфо</mat-checkbox>
+</div>
+
 <mat-form-field title="Влияет на Текстовый, Уставки и Значения" class="text-filter">
     <input matInput i18n-placeholder="@@LOG.FILTER" placeholder="Фильтр" [(ngModel)]="filter">
     <mat-hint>

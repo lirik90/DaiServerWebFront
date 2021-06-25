@@ -42,6 +42,7 @@ export interface LogsFilter {
     ts_from: number;
     ts_to: number;
     selectedLogs: SelectedLogs;
+    hiddenEvents: Array<boolean>;
     filter: string;
     case_sensitive: boolean;
     selectedGroupsId: Array<number>;
@@ -55,6 +56,7 @@ export interface LogFilter {
     limit?: number;
     filter?: LogsFilter['filter'];
     case_sensitive?: LogsFilter['case_sensitive'];
+    hidden_events?: string;
 }
 
 export interface DigLogFilter extends LogFilter {
@@ -125,6 +127,8 @@ export class LogSidebarComponent implements OnInit {
         status: true,
         value: false,
     };
+
+    hiddenEvents = new Array<boolean>(5);
 
     filter = '';
     case_sensitive = false;
@@ -211,6 +215,7 @@ export class LogSidebarComponent implements OnInit {
             ts_from,
             ts_to,
             selectedLogs: {...this.selectedLogs},
+            hiddenEvents: {...this.hiddenEvents},
             filter: this.filter,
             case_sensitive: this.case_sensitive,
             selectedGroupsId: this.selectedGroupsId.map(g => g.value),
