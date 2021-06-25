@@ -8,6 +8,7 @@ import {SettingsService} from '../../settings.service';
 
 import {MetadataService} from './services/metadata.service';
 import {UIService} from '../../../ui.service';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-codes',
@@ -15,9 +16,7 @@ import {UIService} from '../../../ui.service';
   styleUrls: ['../settings.css'/*, '../../../../assets/anonymous/stylesheet.css'*/, './codes.component.css']
 })
 export class Code_Item_Component extends ChangeTemplate<Code_Item> implements OnInit {
-  codes: Code_Item[];
-
-    metadata$ = this.metadataService.getMetadata();
+  metadata$ = this.metadataService.getMetadata();
 
   @ViewChild('codeEditor', {static: true}) editor;
   private newOpened = false;
@@ -31,15 +30,12 @@ export class Code_Item_Component extends ChangeTemplate<Code_Item> implements On
     super(schemeService, Code_Item, Structure_Type.ST_CODE_ITEM, ui);
   }
 
-  getObjects(): Code_Item[] {
-    return this.codes;
+  getObjects(): Observable<Code_Item[]> {
+      return this.settingsService.getCodes();
   }
 
   ngOnInit() {
-    this.settingsService.getCodes().subscribe(codes => {
-      this.codes = codes;
       this.fillItems();
-    });
   }
 
   initItem(obj: Code_Item): void {
@@ -64,7 +60,7 @@ export class Code_Item_Component extends ChangeTemplate<Code_Item> implements On
   select(item: ChangeInfo<Code_Item>): void {
     super.select(item);
 
-    if (item.obj.text) {
+    if (this.sel_item?.obj.text) {
       this.editor.setText(this.sel_item.obj.text);
       this.newOpened = true;
     }

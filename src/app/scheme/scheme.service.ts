@@ -615,7 +615,9 @@ export class SchemeService extends ISchemeService {
                     } else if (settingName === Structure_Type.ST_DIG_PARAM) {
                         array = findGroup((<Omit<DIG_Param, 'value'>>obj).group_id).params as any;
                     } else if (settingName === Structure_Type.ST_TRANSLATION) {
-                        return; // TODO: fix
+                        return;
+                    } else if (settingName === Structure_Type.ST_CODE_ITEM) {
+                        return;
                     } else {
                         const key = SchemeService.getSchemeFieldKey(settingName);
 
