@@ -78,6 +78,7 @@ h4 {
 
 .editor-mode div.scheme:hover > .hidden-buttons,
 .editor-mode.dig:hover > .hidden-buttons,
+.editor-mode .dig:hover > .hidden-buttons,
 .editor-mode .device-item:hover .hidden-buttons {
     opacity: 1;
     transition: 500ms;

@@ -13,6 +13,7 @@ import { ControlService, WebSockCmd } from './control.service';
 import { AuthenticationService } from '../authentication.service';
 import { FavService } from '../fav.service';
 import {needSidebarHelper, NeedSidebar} from './sidebar.service';
+import { Time_Info } from './scheme';
 
 interface NavLink {
   link: string;
@@ -258,31 +259,8 @@ export class SchemeComponent implements OnInit, OnDestroy, AfterViewInit {
           });
         }
       } else if (msg.cmd === WebSockCmd.WS_TIME_INFO) {
-        console.log(msg);
-
-        const info = this.controlService.parseTimeInfo(msg.data);
-
-        if (info.time && info.time_zone) {
-          this.dt_offset = new Date().getTime() - info.time;
-          this.dt_tz_name = info.time_zone.replace(', стандартное время', '');
-          if (!this.dt_interval) {
-            const gen_time_string = () => {
-              const dt = new Date();
-              dt.setTime(dt.getTime() - this.dt_offset);
-
-              const months = this.translate.instant('MONTHS');
-              const t_num = (num: number): string => {
-                return (num < 10 ? '0' : '') + num.toString();
-              };
-
-              this.dt_text = t_num(dt.getHours()) + ':' + t_num(dt.getMinutes()) + ':' + t_num(dt.getSeconds()) + ', ' +
-                t_num(dt.getDate()) + ' ' + (months.length === 12 ? months[dt.getMonth()] : dt.getMonth()) + ' ' + dt.getFullYear();
-
-            };
-            gen_time_string();
-            this.dt_interval = setInterval(gen_time_string, 1000);
-          }
-        }
+          const info = this.controlService.parseTimeInfo(msg.data);
+          this.startTimeTimer(info);
       }
     });
 
@@ -298,6 +276,33 @@ export class SchemeComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.controlService.open();
+    this.schemeService.getTimeInfo().subscribe(info => this.startTimeTimer(info));
+  }
+
+  startTimeTimer(info: Time_Info) {
+    if (info.utc_time) {
+      const now = new Date();
+      info.tz_offset += now.getTimezoneOffset() * 60;
+      this.dt_offset = (now.getTime() - info.utc_time) + info.tz_offset * 1000;
+      this.dt_tz_name = info.tz_name;
+      if (!this.dt_interval) {
+        this.gen_time_string();
+        this.dt_interval = setInterval(() => this.gen_time_string(), 1000);
+      }
+    }
+  }
+
+  gen_time_string() {
+    const dt = new Date();
+    dt.setTime(dt.getTime() + this.dt_offset);
+
+    const months = this.translate.instant('MONTHS');
+    const t_num = (num: number): string => {
+      return (num < 10 ? '0' : '') + num.toString();
+    };
+
+    this.dt_text = t_num(dt.getHours()) + ':' + t_num(dt.getMinutes()) + ':' + t_num(dt.getSeconds()) + ', ' +
+      t_num(dt.getDate()) + ' ' + (months.length === 12 ? months[dt.getMonth()] : dt.getMonth()) + ' ' + dt.getFullYear();
   }
 
   closeMenu() {

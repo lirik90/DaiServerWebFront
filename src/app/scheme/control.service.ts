@@ -15,7 +15,8 @@ import {
     Log_Event,
     Log_Mode, Log_Param,
     Log_Status,
-    Log_Status_Direction
+    Log_Status_Direction,
+    Time_Info,
 } from './scheme';
 
 // import { QByteArray } from 'qtdatastream/src/types';
@@ -59,12 +60,6 @@ export enum WebSockCmd {
 export interface ConnectInfo {
   connected: boolean;
   ip: string;
-  time: number;
-  time_zone: string;
-  modified: boolean;
-}
-
-class TimeInfo {
   time: number;
   time_zone: string;
   modified: boolean;
@@ -427,17 +422,17 @@ export class ControlService {
     return this.parseConnectNumber(view[0]);
   }
 
-  parseTimeInfo(data: ArrayBuffer): TimeInfo {
+  parseTimeInfo(data: ArrayBuffer): Time_Info {
     if (data === undefined) {
-      return;
+      return {utc_time: 0, tz_name: "", tz_offset: 0};
     }
 
     const view = new Uint8Array(data);
 
-    const [start1, time] = ByteTools.parseInt64(view, 0);
-    const [start2, time_zone] = ByteTools.parseQString(view, start1);
-    const modified: boolean = view[start2] == 1;
-    return {time, time_zone, modified};
+    const [start1, utc_time] = ByteTools.parseInt64(view, 0);
+    const [start2, tz_name] = ByteTools.parseQString(view, start1);
+    const [start3, tz_offset] = ByteTools.parseInt32(view, start2);
+    return {utc_time, tz_name, tz_offset};
   }
 
   /* DEPRECATED */

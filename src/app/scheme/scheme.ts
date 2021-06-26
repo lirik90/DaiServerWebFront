@@ -308,6 +308,12 @@ export class Value_View_Detail {
     view: any;
 }
 
+export class Time_Info {
+    utc_time: number; // Millisoconds
+    tz_offset: number; // Seconds
+    tz_name: string;
+}
+
 export class Scheme_Detail {
     id: number;             // ID проекта
     parent_id: number;

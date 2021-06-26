@@ -16,7 +16,7 @@ import {MatDialogRef} from '@angular/material/dialog';
 export class ParamItemComponent implements OnChanges {
     @Input() groupTypeId: number;
     @Input() groupId: number;
-    @Input() values: DIG_Param[];
+    @Input() values: DIG_Param[] = [];
     @Input() changed: DIG_Param[];
     @Input() parent_param: DIG_Param_Type = null;
     @Input() editorModeEnabled = false;
@@ -164,7 +164,7 @@ export class ParamItemComponent implements OnChanges {
             this.createParamType().subscribe((response) => {
                 this.createParam(response.inserted[0].id)
                     .subscribe((response) => {
-                        this.dialogRef.close(response.inserted[0]);
+                        this.resetForm();
                     });
             });
         } else {
@@ -172,7 +172,7 @@ export class ParamItemComponent implements OnChanges {
                 const paramId = this.paramTypeIdFormControl.value;
                 this.createParam(paramId)
                     .subscribe((response) => {
-                        this.dialogRef.close(response.inserted[0]);
+                        this.resetForm();
                     });
             }
         }

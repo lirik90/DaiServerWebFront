@@ -16,6 +16,7 @@ import {
     Help, Mnemoscheme, Plugin_Type,
     Scheme_Detail,
     Section,
+    Time_Info,
 } from './scheme';
 import {Connection_State, PaginatorApi, Scheme_Group_Member} from '../user';
 import {MessageService} from '../message.service';
@@ -574,8 +575,32 @@ export class SchemeService extends ISchemeService {
                         .find(group => id === group.id);
                 };
 
+                const recursiveSearchParam = (array: Array<DIG_Param>, item: DIG_Param): DIG_Param => {
+                    for (let param of array) {
+                        if (param.id === item.id
+                         || (param = recursiveSearchParam(param.childs || [], item)))
+                            return param;
+                    }
+                    return null;
+                };
+
+                const recursiveSearchParamByTypeId = (array: Array<DIG_Param>, typeId: number): DIG_Param => {
+                    for (let param of array) {
+                        if (param.param_id === typeId
+                         || (param = recursiveSearchParamByTypeId(param.childs || [], typeId)))
+                             return param;
+                    }
+                    return null;
+                };
+
                 const findAndUpdate = (array: Array<T>, item: T): boolean => {
-                    const itemToUpdate = array.find(({ id }) => item.id === id);
+                    let itemToUpdate;
+                    if (item instanceof DIG_Param) {
+                        itemToUpdate = recursiveSearchParam(array as Array<DIG_Param>, item);
+                    } else {
+                        itemToUpdate = array.find(({ id }) => item.id === id);
+                    }
+
                     if (!itemToUpdate) {
                         return false;
                     }
@@ -613,6 +638,16 @@ export class SchemeService extends ISchemeService {
                         array2 = findDevice(devItem.device_id).items as any;
                     } else if (settingName === Structure_Type.ST_DIG_PARAM) {
                         array = findGroup((<Omit<DIG_Param, 'value'>>obj).group_id).params as any;
+                        const param = <Omit<DIG_Param, 'value'>>obj;
+
+                        if (!param.param) {
+                            param.param = this.scheme.dig_param_type.find((t) => t.id === param.param_id);
+                        }
+
+                        if (param.param.parent_id) {
+                            const parentParam = recursiveSearchParamByTypeId(array as Array<DIG_Param>, param.param.parent_id);
+                            array = parentParam.childs as T[];
+                        }
                     } else if (settingName === Structure_Type.ST_TRANSLATION) {
                         return; // TODO: fix
                     } else {
@@ -630,9 +665,18 @@ export class SchemeService extends ISchemeService {
                             if (!findAndUpdate(array, obj as T)) {
                                 let arrayFromRemove: Array<T>;
                                 switch (settingName) {
-                                    case Structure_Type.ST_DIG_PARAM:
-                                        arrayFromRemove = findGroup((<Omit<DIG_Param, 'value'>>prev).group_id)?.params as any;
+                                    case Structure_Type.ST_DIG_PARAM: {
+                                        const param = <Omit<DIG_Param, 'value'>>prev;
+                                        arrayFromRemove = findGroup(param.group_id)?.params as any;
+
+                                        if (param.param.parent_id) {
+                                            const parentParam = recursiveSearchParamByTypeId(arrayFromRemove as Array<DIG_Param>,
+                                                param.param.parent_id);
+
+                                            arrayFromRemove = parentParam.childs as T[];
+                                        }
                                         break;
+                                    }
                                     case Structure_Type.ST_DEVICE_ITEM_GROUP:
                                         arrayFromRemove = findSection((<Device_Item_Group>prev).section_id)?.groups as any;
                                         break;
@@ -684,5 +728,9 @@ export class SchemeService extends ISchemeService {
         return this.http.get(`/api/v2/scheme/${this.scheme.id}/mnemoscheme/${id}/`, {
             responseType: 'text',
         });
+    }
+
+    getTimeInfo(): Observable<Time_Info> {
+        return this.http.get<Time_Info>(`/api/v2/scheme/${this.scheme.id}/time_info/`);
     }
 }
