@@ -577,7 +577,7 @@ export class SchemeService extends ISchemeService {
                 const recursiveSearchParam = (array: Array<DIG_Param>, item: DIG_Param): DIG_Param => {
                     for (let param of array) {
                         if (param.id === item.id
-                         || param = recursiveSearchParam(param.childs || [], item))
+                         || (param = recursiveSearchParam(param.childs || [], item)))
                             return param;
                     }
                     return null;
@@ -586,7 +586,7 @@ export class SchemeService extends ISchemeService {
                 const recursiveSearchParamByTypeId = (array: Array<DIG_Param>, typeId: number): DIG_Param => {
                     for (let param of array) {
                         if (param.param_id === typeId
-                         || param = recursiveSearchParamByTypeId(param.childs || [], typeId))
+                         || (param = recursiveSearchParamByTypeId(param.childs || [], typeId)))
                              return param;
                     }
                     return null;
