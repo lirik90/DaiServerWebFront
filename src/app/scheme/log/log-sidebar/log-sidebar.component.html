@@ -32,12 +32,12 @@
     <mat-checkbox [(ngModel)]="selectedLogs.value">Значения</mat-checkbox>
 </div>
 
-<div class="checkboxes borded" title="Влияет только на текстовые события">
+<div class="mt-1" title="Влияет только на текстовые события">
     <label>Скрывать текстовые события</label>
-    <mat-checkbox [(ngModel)]="hiddenEvents[0]">Отладка</mat-checkbox>
-    <mat-checkbox [(ngModel)]="hiddenEvents[1]">Предупреждение</mat-checkbox>
-    <mat-checkbox [(ngModel)]="hiddenEvents[2]">Ошибка</mat-checkbox>
-    <mat-checkbox [(ngModel)]="hiddenEvents[4]">Инфо</mat-checkbox>
+    <angular2-multiselect
+        [data]="textEvents"
+        [settings]="hideTextEventsSettings"
+        [(ngModel)]="hiddenEvents"></angular2-multiselect>
 </div>
 
 <mat-form-field title="Влияет на Текстовый, Уставки и Значения" class="text-filter">
@@ -47,20 +47,30 @@
     </mat-hint>
 </mat-form-field>
 
-<angular2-multiselect
-    [(ngModel)]="selectedGroupsId"
-    [data]="devItemGroups"
-    [settings]="digSelectSettings"
-    title="Влияет на Режимы, Уставки, Состояния и Значения"></angular2-multiselect>
-<angular2-multiselect
-    [(ngModel)]="selectedItemsId"
-    [data]="devItems"
-    [settings]="digSelectSettings"
-    title="Влияет только на Значения"></angular2-multiselect>
-<angular2-multiselect
-    [(ngModel)]="selectedParamsId"
-    [data]="devItemParams"
-    [settings]="digSelectSettings"
-    title="Влияет на Уставки"></angular2-multiselect>
+<div class="mt-1">
+    <label>Группы элементов</label>
+    <angular2-multiselect
+        [(ngModel)]="selectedGroupsId"
+        [data]="devItemGroups"
+        [settings]="digSelectSettings"
+        title="Влияет на Режимы, Уставки, Состояния и Значения"></angular2-multiselect>
+</div>
+<div class="mt-1">
+    <label>Элементы устройств</label>
+    <angular2-multiselect
+        [(ngModel)]="selectedItemsId"
+        [data]="devItems"
+        [settings]="digSelectSettings"
+        title="Влияет только на Значения"></angular2-multiselect>
+</div>
+<div class="mt-1">
+    <label>Уставки</label>
+    <angular2-multiselect
+        [(ngModel)]="selectedParamsId"
+        [data]="devItemParams"
+        [settings]="digSelectSettings"
+        title="Влияет на Уставки"></angular2-multiselect>
+
+</div>
 
 <button mat-raised-button (click)="submit()">Показать</button>

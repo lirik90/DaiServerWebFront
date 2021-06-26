@@ -42,7 +42,7 @@ export interface LogsFilter {
     ts_from: number;
     ts_to: number;
     selectedLogs: SelectedLogs;
-    hiddenEvents: Array<boolean>;
+    hiddenEvents: Array<number>;
     filter: string;
     case_sensitive: boolean;
     selectedGroupsId: Array<number>;
@@ -97,13 +97,31 @@ export class LogSidebarComponent implements OnInit {
     devItems: DIG_DropdownData[] = [];
     devItemParams: DIG_DropdownData[] = [];
 
+    readonly textEvents: {label: string, value: number}[] = [
+        { label: 'Отладка', value: 0 }, // TODO: localization
+        { label: 'Предупреждение', value: 1 },
+        { label: 'Ошибка', value: 2 },
+        { label: 'Инфо', value: 4 },
+    ];
+
     digSelectSettings = {
+        badgeShowLimit: 3,
         enableCheckAll: true,
         enableFilterSelectAll: false,
         enableSearchFilter: true,
         searchBy: ['label', 'folderName'],
         searchPlaceholderText: '',
         groupBy: 'folderName',
+        labelKey: 'label',
+        primaryKey: 'value',
+        singleSelection: false,
+    } as DropdownSettings;
+
+    hideTextEventsSettings = {
+        badgeShowLimit: 4,
+        enableCheckAll: true,
+        enableFilterSelectAll: false,
+        enableSearchFilter: false,
         labelKey: 'label',
         primaryKey: 'value',
         singleSelection: false,
@@ -117,9 +135,6 @@ export class LogSidebarComponent implements OnInit {
 
     /* Переменные для выбранных/введенных значений */
 
-    ts_from: number;
-    ts_to: number;
-
     selectedLogs: SelectedLogs = {
         event: true,
         mode: true,
@@ -128,7 +143,7 @@ export class LogSidebarComponent implements OnInit {
         value: false,
     };
 
-    hiddenEvents = new Array<boolean>(5);
+    hiddenEvents: { label: string, value: number }[] = [];
 
     filter = '';
     case_sensitive = false;
@@ -185,6 +200,7 @@ export class LogSidebarComponent implements OnInit {
                 folderName,
             }));
         };
+        this.digSelectSettings.groupBy = this.schemeService.scheme.section.length > 1 ? 'folderName' : null;
 
         this.devItemParams = this.itemsForDropdownFromSections(cb);
     }
@@ -194,7 +210,7 @@ export class LogSidebarComponent implements OnInit {
     ): DIG_DropdownData[] {
         return this.schemeService.scheme.section
             .reduce((prev: DIG_DropdownData[], curr) => {
-                const sectionName = this.schemeService.scheme.section.length > 1 ? `${curr.name}: ` : '';
+                const sectionName = this.schemeService.scheme.section.length > 1 ? `${curr.name}: ` : null;
                 const devItems = curr.groups.reduce((items: DIG_DropdownData[], group) => {
                     const groupItems = callback(group, sectionName);
 
@@ -215,7 +231,7 @@ export class LogSidebarComponent implements OnInit {
             ts_from,
             ts_to,
             selectedLogs: {...this.selectedLogs},
-            hiddenEvents: {...this.hiddenEvents},
+            hiddenEvents: this.hiddenEvents.map(i => i.value),
             filter: this.filter,
             case_sensitive: this.case_sensitive,
             selectedGroupsId: this.selectedGroupsId.map(g => g.value),

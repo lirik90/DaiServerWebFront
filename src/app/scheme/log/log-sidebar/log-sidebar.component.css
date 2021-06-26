@@ -41,3 +41,7 @@ button {
     display: block;
     margin: 0.7rem auto;
 }
+
+.mt-1 {
+    margin-top: 1rem;
+}

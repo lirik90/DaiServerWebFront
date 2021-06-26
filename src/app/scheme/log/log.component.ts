@@ -465,6 +465,7 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
                     if (this.dataSource.data.length < 50) {
                         this.updateFilter({
                             ...this.currentFilter,
+                            ts_to: this.currentFilter.ts_from,
                             ts_from: 0,
                         }, true, Math.round(50 / dataTypesCount));
                     }
@@ -492,12 +493,10 @@ export class LogHttpDao {
     constructor(private http: HttpClient, private schemeService: SchemeService) {
     }
 
-    getEvents(schemeId: number, filter: LogFilter & { hiddenEvents?: Array<boolean> }): Observable<LogItem[]> {
+    getEvents(schemeId: number, filter: LogFilter & { hiddenEvents?: Array<number> }): Observable<LogItem[]> {
         const copy = { ...filter };
         if (filter.hiddenEvents) {
-            copy.hidden_events = [0, 1, 2, 4]
-                .filter((key) => filter.hiddenEvents[key])
-                .join(',');
+            copy.hidden_events = filter.hiddenEvents.join(',');
         }
         delete copy.hiddenEvents;
 
