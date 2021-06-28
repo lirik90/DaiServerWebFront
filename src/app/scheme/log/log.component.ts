@@ -98,7 +98,8 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
     private scrollSubject: Subject<number> = new Subject();
     scrollHandler = (ev) => {
         const { scrollTop } = document.documentElement;
-        if (document.body.scrollHeight - scrollTop <= 1000) {
+        console.log(document.body.scrollHeight, scrollTop);
+        if (document.body.scrollHeight - scrollTop <= 700) {
             this.scrollSubject.next(scrollTop);
         }
     };
