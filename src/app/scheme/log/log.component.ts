@@ -98,7 +98,6 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
     private scrollSubject: Subject<number> = new Subject();
     scrollHandler = (ev) => {
         const { scrollTop } = document.documentElement;
-        console.log(document.body.scrollHeight, scrollTop);
         if (document.body.scrollHeight - scrollTop <= 700) {
             this.scrollSubject.next(scrollTop);
         }
@@ -578,6 +577,7 @@ export class LogHttpDao {
             time: +logParam.timestamp_msecs,
             text: `[param] ${this.get_dig_param_name(logParam.group_param_id)} = ${logParam.value}`,
             user_id: logParam.user_id,
+            bgColor: '#FFD0A1',
         };
     }
 
