@@ -144,6 +144,7 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
         this.sidebarService.resetContent();
         this.sidebarActionBroadcast$ = this.sidebarService.getContentActionBroadcast()
             .subscribe((contentAction) => {
+                this.isFirstRequest = true;
                 this.updateFilter(contentAction.data, false);
             });
     }
@@ -441,19 +442,23 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
             )
             .subscribe((logEvents) => {
                 this.data = append ? [...this.data, ...logEvents] : logEvents;
-                this.data.sort((a: LogItem, b: LogItem) => b.time - a.time);
-                const { min } = Object
-                    .keys(this.dataTimeBounds)
-                    .map(key => this.dataTimeBounds[key])
-                    .reduce((prev, curr) => {
-                        if (prev.min > curr.min) {
-                            return prev;
-                        }
+                if (this.data.length > 0) {
+                    this.data.sort((a: LogItem, b: LogItem) => b.time - a.time);
+                    const {min} = Object
+                        .keys(this.dataTimeBounds)
+                        .map(key => this.dataTimeBounds[key])
+                        .reduce((prev, curr) => {
+                            if (prev.min > curr.min) {
+                                return prev;
+                            }
 
-                        return curr;
-                    });
+                            return curr;
+                        });
 
-                this.dataSource.data = this.data.filter((item: LogItem) => item.time > min);
+                    this.dataSource.data = this.data.filter((item: LogItem) => item.time > min);
+                } else {
+                    this.dataSource.data = this.data;
+                }
                 this.finishedLoading();
 
                 if (this.isFirstRequest) {
