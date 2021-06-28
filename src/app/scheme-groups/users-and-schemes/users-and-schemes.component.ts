@@ -29,7 +29,7 @@ export class UsersAndSchemesComponent implements OnInit, OnChanges {
     usersLoading: boolean = false;
     schemesLoading: boolean = false;
 
-    private readonly defaultMultiselectSettings: Partial<DropdownSettings> = {
+    private readonly defaultMultiselectSettings = {
         singleSelection: true,
         enableCheckAll: false,
         enableSearchFilter: true,
@@ -37,15 +37,17 @@ export class UsersAndSchemesComponent implements OnInit, OnChanges {
         classes: 'select',
         labelKey: 'label',
         primaryKey: 'id',
-    };
-    readonly usersMultiselectSettings: any = {
+    } as DropdownSettings;
+    readonly usersMultiselectSettings = {
         ...this.defaultMultiselectSettings,
+        searchBy: ['first_name', 'last_name', 'username'],
         text: 'User', // TODO: this.translate.instant('@@SCHEME_GROUPS.USER')
-    };
-    readonly schemesMultiselectSettings: any = {
+    } as DropdownSettings;
+    readonly schemesMultiselectSettings = {
         ...this.defaultMultiselectSettings,
+        searchBy: ['name', 'title'],
         text: 'Scheme', // TODO: this.translate.instant('@@SCHEME_GROUPS.SCHEME'),
-    };
+    } as DropdownSettings;
 
     constructor(
         private schemesService: SchemesService,
