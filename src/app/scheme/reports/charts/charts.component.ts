@@ -371,7 +371,9 @@ export class ChartsComponent implements OnDestroy {
     }
 
     genParamDataset(param: DIG_Param, colorIndex: number, hsl: Hsl = null, hidden: boolean, stepped: boolean): ChartDataSets {
-        // const steppedLine = param.param.value_type === DIG_Param_Value_Type.VT_BOOL;
+        if (stepped === null) {
+            stepped = param.param.value_type === DIG_Param_Value_Type.VT_BOOL;
+        }
         let dataset = this.genDataset('⚙️ ' + param.param.title, colorIndex, stepped, hsl, hidden);
         dataset['param'] = param;
         return dataset;
