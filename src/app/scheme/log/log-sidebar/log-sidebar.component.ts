@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SchemeService} from '../../scheme.service';
 import {DropdownSettings} from 'angular2-multiselect-dropdown/lib/multiselect.interface';
-import {Device_Item_Group} from '../../scheme';
+import {Device_Item_Group, DIG_Param} from '../../scheme';
 import {FormControl} from '@angular/forms';
 import * as moment from 'moment';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
@@ -198,17 +198,29 @@ export class LogSidebarComponent implements OnInit {
     }
 
     getDropdownDevItemParamsFromSections() {
-        const cb = (group: Device_Item_Group, section: string) => {
+        const cb2 = (params: DIG_Param[], folderName: string): DIG_DropdownData[] => {
+            return params.reduce((result: DIG_DropdownData[], param) => {
+                result.push({
+                    label: param.param.title,
+                    value: param.id,
+                    folderName,
+                });
+
+                if (param.childs) {
+                    result = result.concat(cb2(param.childs, folderName));
+                }
+
+                return result;
+            }, []);
+        };
+
+        const cb = (group: Device_Item_Group, section: string): DIG_DropdownData[] => {
             let folderName = group.title || group.type.title;
             if (this.schemeService.scheme.section.length > 1) {
                 folderName = `${section}->${folderName}`;
             }
 
-            return group.params.map(param => ({
-                label: param.param.title,
-                value: param.id,
-                folderName,
-            }));
+            return cb2(group.params, folderName);
         };
 
         this.devItemParams = this.itemsForDropdownFromSections(cb);
