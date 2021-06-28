@@ -708,7 +708,7 @@ export class LogHttpDao {
         }
 
         if (!param) {
-            return [];
+            return null;
         }
 
         return [param];

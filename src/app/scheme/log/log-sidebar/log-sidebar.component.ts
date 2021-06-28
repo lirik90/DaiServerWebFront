@@ -182,35 +182,44 @@ export class LogSidebarComponent implements OnInit {
     }
 
     getDropdownDevItemsFromSections() {
-        const cb = (group, folderName) =>
-            group.items.map(item => ({
+        const cb = (group: Device_Item_Group, section: string) => {
+            let folderName = group.title || group.type.title;
+            if (this.schemeService.scheme.section.length > 1) {
+                folderName = `${section}->${folderName}`;
+            }
+            return group.items.map(item => ({
                 label: item.name || item.type.title,
                 value: item.id,
                 folderName,
             }));
+        }
 
         this.devItems = this.itemsForDropdownFromSections(cb);
     }
 
     getDropdownDevItemParamsFromSections() {
-        const cb = (group: Device_Item_Group, folderName: string) => {
+        const cb = (group: Device_Item_Group, section: string) => {
+            let folderName = group.title || group.type.title;
+            if (this.schemeService.scheme.section.length > 1) {
+                folderName = `${section}->${folderName}`;
+            }
+
             return group.params.map(param => ({
                 label: param.param.title,
                 value: param.id,
                 folderName,
             }));
         };
-        this.digSelectSettings.groupBy = this.schemeService.scheme.section.length > 1 ? 'folderName' : null;
 
         this.devItemParams = this.itemsForDropdownFromSections(cb);
     }
 
     itemsForDropdownFromSections(
-        callback: (group: Device_Item_Group, folderName: string) => DIG_DropdownData[]
+        callback: (group: Device_Item_Group, section: string) => DIG_DropdownData[]
     ): DIG_DropdownData[] {
         return this.schemeService.scheme.section
             .reduce((prev: DIG_DropdownData[], curr) => {
-                const sectionName = this.schemeService.scheme.section.length > 1 ? `${curr.name}: ` : null;
+                const sectionName = this.schemeService.scheme.section.length > 1 ? `${curr.name}: ` : '';
                 const devItems = curr.groups.reduce((items: DIG_DropdownData[], group) => {
                     const groupItems = callback(group, sectionName);
 
