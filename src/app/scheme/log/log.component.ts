@@ -363,7 +363,7 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
         if (data.selectedLogs.event) {
             observables.push(this.logDatabase.getEvents(schemeId, {
                 ...logFilter,
-                hiddenEvents: this.currentFilter.hiddenEvents,
+                selectedTextEvents: this.currentFilter.selectedTextEvents,
             }));
         }
         if (data.selectedLogs.mode) {
@@ -498,12 +498,12 @@ export class LogHttpDao {
     constructor(private http: HttpClient, private schemeService: SchemeService) {
     }
 
-    getEvents(schemeId: number, filter: LogFilter & { hiddenEvents?: Array<number> }): Observable<LogItem[]> {
+    getEvents(schemeId: number, filter: LogFilter & { selectedTextEvents?: Array<number> }): Observable<LogItem[]> {
         const copy = { ...filter };
-        if (filter.hiddenEvents) {
-            copy.hidden_events = filter.hiddenEvents.join(',');
+        if (filter.selectedTextEvents) {
+            copy.type_id = filter.selectedTextEvents.join(',');
         }
-        delete copy.hiddenEvents;
+        delete copy.selectedTextEvents;
 
         return this.request<Log_Event>('event', schemeId, copy)
             .pipe(map((logEvents) => logEvents.map((logEvent) => this.mapLogEvent(logEvent))));

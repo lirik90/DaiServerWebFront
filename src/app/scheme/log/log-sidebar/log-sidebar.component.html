@@ -32,20 +32,20 @@
     <mat-checkbox [(ngModel)]="selectedLogs.value">Значения</mat-checkbox>
 </div>
 
-<div class="mt-1" title="Влияет только на текстовые события">
-    <label>Скрывать текстовые события</label>
-    <angular2-multiselect
-        [data]="textEvents"
-        [settings]="hideTextEventsSettings"
-        [(ngModel)]="hiddenEvents"></angular2-multiselect>
-</div>
-
 <mat-form-field title="Влияет на Текстовый, Уставки и Значения" class="text-filter">
     <input matInput i18n-placeholder="@@LOG.FILTER" placeholder="Фильтр" [(ngModel)]="filter">
     <mat-hint>
         <mat-checkbox [(ngModel)]="case_sensitive">Учитывать регистр</mat-checkbox>
     </mat-hint>
 </mat-form-field>
+
+<div class="mt-1" title="Влияет только на текстовые события">
+    <label>Текстовые события</label>
+    <angular2-multiselect
+        [data]="textEvents"
+        [settings]="textEventsSettings"
+        [(ngModel)]="selectedTextEvents"></angular2-multiselect>
+</div>
 
 <div class="mt-1">
     <label>Группы элементов</label>

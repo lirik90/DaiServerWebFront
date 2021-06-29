@@ -42,7 +42,7 @@ export interface LogsFilter {
     ts_from: number;
     ts_to: number;
     selectedLogs: SelectedLogs;
-    hiddenEvents: Array<number>;
+    selectedTextEvents: Array<number>;
     filter: string;
     case_sensitive: boolean;
     selectedGroupsId: Array<number>;
@@ -56,7 +56,7 @@ export interface LogFilter {
     limit?: number;
     filter?: LogsFilter['filter'];
     case_sensitive?: LogsFilter['case_sensitive'];
-    hidden_events?: string;
+    type_id?: string;
 }
 
 export interface DigLogFilter extends LogFilter {
@@ -117,7 +117,7 @@ export class LogSidebarComponent implements OnInit {
         singleSelection: false,
     } as DropdownSettings;
 
-    hideTextEventsSettings = {
+    textEventsSettings = {
         badgeShowLimit: 4,
         enableCheckAll: true,
         enableFilterSelectAll: false,
@@ -143,7 +143,7 @@ export class LogSidebarComponent implements OnInit {
         value: false,
     };
 
-    hiddenEvents: { label: string, value: number }[] = [];
+    selectedTextEvents: { label: string, value: number }[] = [];
 
     filter = '';
     case_sensitive = false;
@@ -252,7 +252,7 @@ export class LogSidebarComponent implements OnInit {
             ts_from,
             ts_to,
             selectedLogs: {...this.selectedLogs},
-            hiddenEvents: this.hiddenEvents.map(i => i.value),
+            selectedTextEvents: this.selectedTextEvents.map(i => i.value),
             filter: this.filter,
             case_sensitive: this.case_sensitive,
             selectedGroupsId: this.selectedGroupsId.map(g => g.value),
