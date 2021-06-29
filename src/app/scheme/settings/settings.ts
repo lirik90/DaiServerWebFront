@@ -1,6 +1,7 @@
 import {SchemeService} from '../scheme.service';
 import {UIService} from '../../ui.service';
-import {Observable} from 'rxjs/Observable';
+import {Observable, isObservable} from "rxjs";
+
 import {ComponentCanDeactivate} from './pending-changes.guard';
 
 export enum Structure_Type {
@@ -71,7 +72,7 @@ export abstract class ChangeTemplate<T extends { id: number }> implements Compon
         this.changed = false;
         this.items = [];
         const objects: Observable<T[]> | T[] = this.getObjects();
-        if (objects instanceof Observable) {
+        if (isObservable(objects)) {
             objects.subscribe(result => this._fillItems(result));
         } else {
             this._fillItems(objects);
