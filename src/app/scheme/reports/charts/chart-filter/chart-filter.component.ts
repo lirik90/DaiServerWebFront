@@ -553,6 +553,7 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
 
         this.rebuild();
         this.copyParamsFromUserChart(user_chart, true);
+        this.buildChart();
     }
 
     save_user_chart(): void {
