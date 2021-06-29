@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy_local.conf.js",
-    "build": "ng build --prod",
+    "build": "ng build --configuration production",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -53,11 +53,11 @@
     "rxjs-compat": "^6.6.3",
     "select2": "^4.0.12",
     "tslib": "^2.0.0",
-    "zone.js": "^0.11.4"
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.1102.14",
-    "@angular/cli": "^11.2.14",
+    "@angular-devkit/build-angular": "~12.1.0",
+    "@angular/cli": "^12.1.0",
     "@angular/compiler-cli": "^12.1.0",
     "@angular/language-service": "~12.1.0",
     "@biesbjerg/ngx-translate-extract": "^7.0.3",
@@ -69,7 +69,7 @@
     "grunt": "^1.1.0",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
-    "karma": "^5.2.3",
+    "karma": "^6.3.4",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage-istanbul-reporter": "~3.0.2",
     "karma-jasmine": "~4.0.0",
