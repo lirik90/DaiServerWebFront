@@ -65,14 +65,16 @@ export abstract class ChangeTemplate<T extends { id: number }> implements Compon
     ) {
     }
 
-    abstract getObjects(): T[];
+    abstract getObjects(): Observable<T[]> | T[];
 
     fillItems(): void {
         this.changed = false;
         this.items = [];
-        let objects: T[] = this.getObjects();
-        for (let obj of objects) {
-            this.addItem(Object.assign({}, obj), false);
+        const objects: Observable<T[]> | T[] = this.getObjects();
+        if (objects instanceof Observable) {
+            objects.subscribe(result => this._fillItems(result));
+        } else {
+            this._fillItems(objects);
         }
     }
 
@@ -155,5 +157,11 @@ export abstract class ChangeTemplate<T extends { id: number }> implements Compon
 
     canDeactivate(): boolean {
         return !this.changed;
+    }
+
+    private _fillItems(objects: T[]) {
+        for (let obj of objects) {
+            this.addItem(Object.assign({}, obj), false);
+        }
     }
 }

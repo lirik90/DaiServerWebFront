@@ -649,7 +649,9 @@ export class SchemeService extends ISchemeService {
                             array = parentParam.childs as T[];
                         }
                     } else if (settingName === Structure_Type.ST_TRANSLATION) {
-                        return; // TODO: fix
+                        return;
+                    } else if (settingName === Structure_Type.ST_CODE_ITEM) {
+                        return;
                     } else {
                         const key = SchemeService.getSchemeFieldKey(settingName);
 
