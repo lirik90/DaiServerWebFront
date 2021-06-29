@@ -167,7 +167,7 @@ export class LogSidebarComponent implements OnInit {
 
                 return prev.concat(groups);
             }, []);
-        this.selectedGroupsId = this.devItemGroups.concat([]);
+        // this.selectedGroupsId = this.devItemGroups.concat([]);
 
         this.getDropdownDevItemsFromSections();
         this.getDropdownDevItemParamsFromSections();
@@ -260,14 +260,16 @@ export class LogSidebarComponent implements OnInit {
             selectedParamsId: this.selectedParamsId.map(g => g.value),
         };
 
-        if (data.selectedGroupsId.length > 0) {
-            if (data.selectedParamsId.length === 0) {
-                data.selectedParamsId = this.devItemParams.map(para => para.value);
-            }
+        if (data.selectedGroupsId.length === 0) {
+            data.selectedGroupsId = this.devItemGroups.map(para => para.value);
+        }
 
-            if (data.selectedItemsId.length === 0) {
-                data.selectedItemsId = this.devItems.map(para => para.value);
-            }
+        if (data.selectedParamsId.length === 0) {
+            data.selectedParamsId = this.devItemParams.map(para => para.value);
+        }
+
+        if (data.selectedItemsId.length === 0) {
+            data.selectedItemsId = this.devItems.map(para => para.value);
         }
 
         this.sidebar.performActionToContent({
