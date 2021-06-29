@@ -164,7 +164,7 @@ export class SchemeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.addMenu('detail', 'perm_device_information');
     this.addMenu('mnemoscheme', 'image');
     this.addMenu('elements', 'build');
-    this.addMenu('log_event', 'event_note');
+    this.addMenu('log', 'event_note');
     this.addMenu('structure', 'settings');
     this.addMenu('reports', 'show_chart');
     this.addMenu('help', 'help');
