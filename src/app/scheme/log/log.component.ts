@@ -140,13 +140,6 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
         this.schemeService.getMembers().subscribe(members => this.members = members.results);
 
         this.logDatabase = new LogHttpDao(this.http, this.schemeService);
-
-        this.sidebarService.resetContent();
-        this.sidebarActionBroadcast$ = this.sidebarService.getContentActionBroadcast()
-            .subscribe((contentAction) => {
-                this.isFirstRequest = true;
-                this.updateFilter(contentAction.data, false);
-            });
     }
 
     getSidebarWidget(viewContainerRef: ViewContainerRef): ComponentRef<LogSidebarComponent> {
@@ -156,6 +149,13 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
     }
 
     ngOnInit() {
+        this.sidebarService.resetContent();
+        this.sidebarActionBroadcast$ = this.sidebarService.getContentActionBroadcast()
+            .subscribe((contentAction) => {
+                this.isFirstRequest = true;
+                this.updateFilter(contentAction.data, false);
+            });
+
         this.sub = this.controlService.byte_msg.subscribe((msg) => {
             if (msg.cmd !== WebSockCmd.WS_EVENT_LOG) {
                 return;

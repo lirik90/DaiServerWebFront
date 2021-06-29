@@ -174,11 +174,10 @@ export class LogSidebarComponent implements OnInit {
 
         this.fetchSelectedLogsFromLS();
         this.setupDatetimeRange();
-
-        this.submit();
     }
 
     ngOnInit(): void {
+        this.submit();
     }
 
     getDropdownDevItemsFromSections() {
