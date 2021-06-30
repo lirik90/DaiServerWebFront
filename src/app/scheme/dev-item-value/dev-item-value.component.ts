@@ -127,11 +127,7 @@ export class DevItemValueComponent implements OnInit, OnDestroy {
 
   click_button(): void
   {
-	  let value = this.item.val ? this.item.val.raw_value : null;
-    if (value !== null && value !== undefined)
-	  {
-      this.controlService.writeToDevItem(this.item.id, value);
-	  }
+      this.controlService.writeToDevItem(this.item.id, 0);
   }
 
     open_video(): void
