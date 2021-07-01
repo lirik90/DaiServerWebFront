@@ -45,7 +45,7 @@ import {
     LogsFilter,
     LogSidebarComponent,
     ParamsLogFilter,
-    SelectedLogs,
+    SelectedLogs, StatusLogFilter,
     ValuesLogFilter
 } from './log-sidebar/log-sidebar.component';
 import {LoadingProgressbar} from '../loading-progressbar/loading.progressbar';
@@ -255,6 +255,7 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
                             ...logFilter,
                             ...ts.status,
                             dig_id: this.currentFilter.selectedGroupsId,
+                            status_id: this.currentFilter.selectedStatusesId,
                         }));
                     }
                     if (this.currentFilter.selectedLogs.value && ts.value) {
@@ -382,6 +383,7 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
             observables.push(this.logDatabase.getStatuses(schemeId, {
                 ...logFilter,
                 dig_id: data.selectedGroupsId,
+                status_id: data.selectedStatusesId,
             }));
         }
         if (data.selectedLogs.value) {
@@ -545,7 +547,7 @@ export class LogHttpDao {
         };
     }
 
-    getStatuses(schemeId: number, filter: DigLogFilter): Observable<LogItem[]> {
+    getStatuses(schemeId: number, filter: StatusLogFilter): Observable<LogItem[]> {
         return this.request<Log_Status>('status', schemeId, filter)
             .pipe(
                 map((logStatuses) => logStatuses.map((logStatus) => this.mapLogStatus(logStatus))),

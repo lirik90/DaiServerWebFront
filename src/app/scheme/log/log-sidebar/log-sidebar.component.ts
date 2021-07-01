@@ -48,6 +48,7 @@ export interface LogsFilter {
     selectedGroupsId: Array<number>;
     selectedItemsId: Array<number>;
     selectedParamsId: Array<number>;
+    selectedStatusesId: Array<number>;
 }
 
 export interface LogFilter {
@@ -61,6 +62,10 @@ export interface LogFilter {
 
 export interface DigLogFilter extends LogFilter {
     dig_id: LogsFilter['selectedGroupsId'];
+}
+
+export interface StatusLogFilter extends DigLogFilter {
+    status_id: LogsFilter['selectedStatusesId'];
 }
 
 export interface ParamsLogFilter extends LogFilter {
@@ -96,6 +101,7 @@ export class LogSidebarComponent implements OnInit {
     devItemGroups: DIG_DropdownData[] = [];
     devItems: DIG_DropdownData[] = [];
     devItemParams: DIG_DropdownData[] = [];
+    statuses: DIG_DropdownData[] = [];
 
     readonly textEvents: {label: string, value: number}[] = [
         { label: 'Отладка', value: 0 }, // TODO: localization
@@ -127,6 +133,11 @@ export class LogSidebarComponent implements OnInit {
         singleSelection: false,
     } as DropdownSettings;
 
+    statusSettings = {
+        ...this.textEventsSettings,
+        groupBy: 'folderName',
+    } as DropdownSettings;
+
     /* Переменные для работы со временем */
     date_from = new FormControl(moment());
     time_from = '00:00:00';
@@ -151,10 +162,14 @@ export class LogSidebarComponent implements OnInit {
     selectedGroupsId: DIG_DropdownData[] = [];
     selectedItemsId: DIG_DropdownData[] = [];
     selectedParamsId: DIG_DropdownData[] = [];
+    selectedStatuses: DIG_DropdownData[] = [];
 
     /* Код класса */
 
     constructor(private schemeService: SchemeService, private sidebar: SidebarService) {
+    }
+
+    ngOnInit(): void {
         this.sidebar.resetSidebar();
 
         this.devItemGroups = this.schemeService.scheme.section
@@ -167,17 +182,24 @@ export class LogSidebarComponent implements OnInit {
 
                 return prev.concat(groups);
             }, []);
-        // this.selectedGroupsId = this.devItemGroups.concat([]);
 
         this.getDropdownDevItemsFromSections();
         this.getDropdownDevItemParamsFromSections();
+        this.getStatusesForDropdown();
 
         this.fetchSelectedLogsFromLS();
         this.setupDatetimeRange();
+
+        this.submit();
     }
 
-    ngOnInit(): void {
-        this.submit();
+    getStatusesForDropdown() {
+        this.statuses = this.schemeService.scheme.dig_status_type.map((status) => ({
+            label: status.text,
+            value: status.id,
+            folderName: this.schemeService.scheme.dig_status_category
+                .find((cat) => status.category_id === cat.id).title,
+        }));
     }
 
     getDropdownDevItemsFromSections() {
@@ -257,6 +279,7 @@ export class LogSidebarComponent implements OnInit {
             selectedGroupsId: this.selectedGroupsId.map(g => g.value),
             selectedItemsId: this.selectedItemsId.map(g => g.value),
             selectedParamsId: this.selectedParamsId.map(g => g.value),
+            selectedStatusesId: this.selectedStatuses.map(g => g.value),
         };
 
         this.sidebar.performActionToContent({
