@@ -13,8 +13,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
 }
 
-import { ChartsModule } from 'ng2-charts';
-
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 
 import { MaterialModule } from '../../material.module';
@@ -40,7 +38,6 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatMomentDateModule,
     MatProgressBarModule,
     MatSnackBarModule,
-    ChartsModule,
     AngularMultiSelectModule,
     TranslateModule.forChild({
       loader: {
