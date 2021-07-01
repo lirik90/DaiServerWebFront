@@ -189,3 +189,7 @@ nav > div {
 .hidden { /* For Mnemoscheme */
     visibility: hidden;
 }
+
+.mt-1 {
+    margin-top: 1em;
+}

@@ -11,42 +11,39 @@ import {
     Device_Item_Group_Details,
     DeviceItemGroupDetailDialogComponent
 } from './device-item-group-detail-dialog/device-item-group-detail-dialog.component';
-import {Device_Item_Details, DeviceItemDetailDialogComponent} from './device-item-detail-dialog/device-item-detail-dialog.component';
 import {UIService} from '../../ui.service';
 import {Structure_Type} from '../settings/settings';
+import {SidebarService} from '../sidebar.service';
+import {EditorModeFromSidebar} from '../editor-mode-from-sidebar';
 
 @Component({
     selector: 'app-manage',
     templateUrl: './manage.component.html',
     styleUrls: ['../../sections.css', './manage.component.css'],
 })
-export class ManageComponent implements OnInit, AfterViewInit {
+export class ManageComponent extends EditorModeFromSidebar implements OnInit, AfterViewInit {
     schemeName: string;
     sections: Section[] = [];
 
     currentSection: number;
     currentGroup: number;
 
-    get isAdmin(): boolean {
-        return this.authService.isAdmin();
-    }
-
     isDisabled(): boolean {
         return !this.schemeService.isSchemeConnected;
     }
 
     sctCount: number;
-    isEditorModeEnabled: boolean;
 
     constructor(
         private route: ActivatedRoute,
         private schemeService: SchemeService,
         private authService: AuthenticationService,
-        private controlService: ControlService,
         private router: Router,
         public dialog: MatDialog,
         private ui: UIService,
+        sidebar: SidebarService,
     ) {
+        super(sidebar);
         router.events.subscribe(s => {
             if (s instanceof NavigationEnd) {
                 const tree = router.parseUrl(router.url);
@@ -70,6 +67,8 @@ export class ManageComponent implements OnInit, AfterViewInit {
         if (this.sctCount) {
             this.currentSection = this.sections[0].id;
         }
+
+        super.init();
     }
 
     ngAfterViewInit(): void {
@@ -84,10 +83,6 @@ export class ManageComponent implements OnInit, AfterViewInit {
                 el.scrollIntoView({block: 'start', inline: 'center', behavior: 'smooth'});
             }, 200);
         }
-    }
-
-    restart(): void {
-        this.controlService.restart();
     }
 
     newGroup(parentSection: Section) {
