@@ -36,6 +36,7 @@ export interface Legend_Options {
 
     color: Hsl;
     displayColor: string;
+    stepped: boolean;
     hidden: boolean;
 
     scale: Omit<Axis_Params, 'id'>;

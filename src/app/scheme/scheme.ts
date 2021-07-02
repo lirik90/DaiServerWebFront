@@ -250,6 +250,7 @@ export interface Axis_Params {
     id: string;
 
     isRight: boolean;
+    display: false | 'auto';
     from: number | string;
     to: number | string;
     order: number | string;
