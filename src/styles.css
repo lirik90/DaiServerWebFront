@@ -192,10 +192,14 @@ nav > div {
 
 @media all and (max-width: 600px) {
     .dig-param-dialog .mat-dialog-container {
-        padding: 0.5em;
+        padding: 0.2em;
     }
 
     .dig-param-dialog {
         max-width: 100vw !important;
+    }
+
+    .mat-dialog-container .mat-card {
+        padding: 8px 6px;
     }
 }
