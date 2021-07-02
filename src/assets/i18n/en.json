@@ -18,8 +18,7 @@
     "DETAIL": "Details",
     "MNEMOSCHEME": "View",
     "ELEMENTS": "Elements",
-    "LOG_EVENT": "Journal",
-    "LOG_VALUE": "Value log",
+    "LOG": "Journal",
     "STRUCTURE": "Structure",
     "REPORTS": "Reports",
     "HELP": "Help"
