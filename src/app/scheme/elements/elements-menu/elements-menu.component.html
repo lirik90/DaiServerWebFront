@@ -4,7 +4,8 @@
 </nav>
 <div class="mt-1">
     <mat-slide-toggle [ngModel]="isEditorModeEnabled" (ngModelChange)="setEditorMode($event)" *ngIf="isAdmin">
-        <mat-icon [class.enabled]="isEditorModeEnabled">edit</mat-icon>
+        <!--<mat-icon [class.enabled]="isEditorModeEnabled">edit</mat-icon>-->
+        Редактировать схему
     </mat-slide-toggle>
 </div>
 <div class="mt-1" *ngIf="isAdmin">
