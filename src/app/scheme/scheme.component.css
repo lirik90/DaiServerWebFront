@@ -1231,7 +1231,7 @@ h2:lang(ko).localnav-title {
     list-style: none;
     padding: 0;
     margin-bottom: 0;
-    flex: 1 0;
+    /*flex: 1 0;*/
 }
 
 .sidenav-menu-items li {

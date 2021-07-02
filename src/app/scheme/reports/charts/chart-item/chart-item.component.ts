@@ -24,13 +24,14 @@ import {Paginator_Chart_Value, SchemeService} from '../../../scheme.service';
 import {Scheme_Group_Member} from '../../../../user';
 import {Hsl} from '../color-picker-dialog/color-picker-dialog';
 import {BuiltChartParams, Chart_Info_Interface, Chart_Type, ZoomInfo} from '../chart-types';
+import {LoadingProgressbar} from '../../../loading-progressbar/loading.progressbar';
 
 @Component({
     selector: 'app-chart-item',
     templateUrl: './chart-item.component.html',
     styleUrls: ['./chart-item.component.css']
 })
-export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
+export class ChartItemComponent extends LoadingProgressbar implements OnInit, OnChanges, DoCheck {
     private readonly defaultYAxes_: any = [{
         id: 'A',
         type: 'linear',
@@ -56,12 +57,6 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
 
     private readonly leftYAxisLsKey: string = 'scale-a-params';
     private readonly rightYAxisLsKey: string = 'scale-b-params';
-
-    loading: boolean;
-    showProgressBar: boolean;
-    progressBarMode: ProgressBarMode;
-    progressBarColor: ThemePalette;
-    progressBarValue: number;
 
     get chartInfo(): Chart_Info_Interface {
         return this._chartInfo;
@@ -172,9 +167,10 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
         private schemeService: SchemeService,
         private differs: KeyValueDiffers,
         private zone: NgZone,
-        private snackBar: MatSnackBar,
-        private changeDetectorRef: ChangeDetectorRef,
+        snackBar: MatSnackBar,
+        changeDetectorRef: ChangeDetectorRef,
     ) {
+        super(snackBar, changeDetectorRef);
     }
 
     ngOnInit(): void {
@@ -378,64 +374,6 @@ export class ChartItemComponent implements OnInit, OnChanges, DoCheck {
 
     private applyDatasetChanges(changes?: KeyValueChanges<string, any>) {
         this.update();
-    }
-
-    startLoading() {
-        this.loading = true;
-
-        this.showProgressBar = true;
-        this.progressBarMode = 'indeterminate';
-        this.progressBarColor = 'primary';
-
-        this.changeDetectorRef.detectChanges();
-    }
-
-    finishedLoading() {
-        if (!this.loading) return; // just for safety
-
-        this.loading = false;
-        this.progressBarColor = 'primary';
-        this.progressBarMode = 'determinate';
-        this.progressBarValue = 50;
-        this.setProgressBarValueTimeout(100);
-
-        this.changeDetectorRef.detectChanges();
-
-        setTimeout(() => this.hideProgressBar(), 600);
-    }
-
-    errorLoading(error: Error) {
-        this.loading = false;
-        this.progressBarColor = 'warn';
-        this.progressBarMode = 'determinate';
-        this.setProgressBarValueTimeout(100);
-
-        this.changeDetectorRef.detectChanges();
-
-        setTimeout(() => {
-            this.hideProgressBar();
-            this.showLoadingError(error);
-        }, 1000);
-    }
-
-    showLoadingError(error: Error) {
-        this.snackBar.open(error.message, 'Hide', {
-            duration: 10000,
-            horizontalPosition: 'end',
-            verticalPosition: 'bottom',
-        });
-    }
-
-    hideProgressBar() {
-        this.showProgressBar = false;
-        this.changeDetectorRef.detectChanges();
-    }
-
-    private setProgressBarValueTimeout(number: number) {
-        setTimeout(() => {
-            this.progressBarValue = number;
-            this.changeDetectorRef.detectChanges();
-        }, 50);
     }
 
     private setupYAxisScale(axisKey: string, idx: number) {

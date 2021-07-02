@@ -182,10 +182,15 @@ export class Device { // Устройство
   items: Device_Item[];// Массив элементов
 }
 
-class Log_Base {
+export class Log_Base {
 //  id: number;     // ID
-  timestamp_msecs: string;     // Время изменения
+  timestamp_msecs: string | number;     // Время изменения // TODO: проверить где используется как string и устранить
   user_id: number;  // Пользователь
+}
+
+export class Log_Mode extends Log_Base {
+    group_id: number;
+    mode_id: number;
 }
 
 export class Log_Value extends Log_Base { // Запись журнала изменений значения
@@ -211,6 +216,18 @@ export class Log_Event extends Log_Base { // Запись в журнале со
   color: string = ''; // Цвет?
 }
 
+export enum Log_Status_Direction {
+    SD_ADD = 1,
+    SD_DEL = 2,
+}
+
+export class Log_Status extends Log_Base {
+    group_id: number;
+    status_id: number;
+    args: string[];
+    direction: Log_Status_Direction;
+}
+
 export class Log_Param extends Log_Base {
   group_param_id: number;
   value: string;
@@ -233,6 +250,7 @@ export interface Axis_Params {
     id: string;
 
     isRight: boolean;
+    display: false | 'auto';
     from: number | string;
     to: number | string;
     order: number | string;

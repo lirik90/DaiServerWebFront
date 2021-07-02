@@ -18,8 +18,7 @@
 		"DETAIL": "Сведения",
 		"MNEMOSCHEME": "Обзор",
 		"ELEMENTS": "Элементы",
-		"LOG_EVENT": "Журнал",
-    "LOG_VALUE": "Журнал значений",
+		"LOG": "Журнал",
 		"STRUCTURE": "Структура",
 		"REPORTS": "Отчёты",
     "HELP": "Справка"
