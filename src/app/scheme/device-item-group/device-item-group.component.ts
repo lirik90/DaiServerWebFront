@@ -16,6 +16,7 @@ import {SchemeService} from '../scheme.service';
 import {UIService} from '../../ui.service';
 import {ControlService} from '../control.service';
 import {AuthenticationService} from '../../authentication.service';
+import {MediaMatcher} from '@angular/cdk/layout';
 
 @Component({
     selector: 'app-device-item-group',
@@ -36,6 +37,7 @@ export class DeviceItemGroupComponent implements OnInit {
         private dialog: MatDialog,
         private schemeService: SchemeService,
         private ui: UIService,
+        private media: MediaMatcher,
         private controlService: ControlService,
         private authService: AuthenticationService,
     ) {
@@ -70,23 +72,27 @@ export class DeviceItemGroupComponent implements OnInit {
             });
     }
 
+    getDialogWidth(): string {
+        return this.media.matchMedia('(max-width: 600px)').matches ? '100%' : '80%';
+    }
+
     newItem(parentGroup: Device_Item_Group) {
         this.dialog
-            .open(DeviceItemDetailDialogComponent, {width: '80%', data: { group_id: parentGroup.id, disableChangeGroupId: true }})
+            .open(DeviceItemDetailDialogComponent, {width: this.getDialogWidth(), data: { group_id: parentGroup.id, disableChangeGroupId: true }})
             .afterClosed()
             .subscribe((itemDetails?: Device_Item_Details) => {});
     }
 
     editItem(item: Device_Item) {
         this.dialog
-            .open(DeviceItemDetailDialogComponent, {width: '80%', data: { ...item, disableChangeGroupId: true }})
+            .open(DeviceItemDetailDialogComponent, {width: this.getDialogWidth(), data: { ...item, disableChangeGroupId: true }})
             .afterClosed()
             .subscribe((itemDetails?: Device_Item_Details) => {});
     }
 
     editGroup(group: Device_Item_Group) {
         this.dialog
-            .open(DeviceItemGroupDetailDialogComponent, {width: '80%', data: group})
+            .open(DeviceItemGroupDetailDialogComponent, {width: this.getDialogWidth(), data: group})
             .afterClosed()
             .subscribe((groupDetails?: Device_Item_Group_Details) => {});
     }
@@ -94,7 +100,7 @@ export class DeviceItemGroupComponent implements OnInit {
     openParamsDialog(groupId) {
         this.dialog.open(ParamsDialogComponent, {
             panelClass: 'dig-param-dialog',
-            width: '80%',
+            width: this.getDialogWidth(),
             data: {groupId: groupId, isEditorModeEnabled: this.isEditorModeEnabled},
         })
             .afterClosed()
