@@ -7,14 +7,15 @@ import {DeviceDetailDialogComponent} from '../manage/device-detail-dialog/device
 import {DeviceItemDetailDialogComponent} from '../manage/device-item-detail-dialog/device-item-detail-dialog.component';
 import {UIService} from '../../ui.service';
 import {Structure_Type} from '../settings/settings';
+import {SidebarService} from '../sidebar.service';
+import {EditorModeFromSidebar} from '../editor-mode-from-sidebar';
 
 @Component({
     selector: 'app-manage-devices',
     templateUrl: './manage-devices.component.html',
     styleUrls: ['./manage-devices.component.css', '../manage/manage.component.css', '../device-item-group/device-item-group.component.css']
 })
-export class ManageDevicesComponent implements OnInit {
-    isEditorModeEnabled = false;
+export class ManageDevicesComponent extends EditorModeFromSidebar implements OnInit {
     isAdmin: boolean;
 
     devices: Device[];
@@ -24,7 +25,9 @@ export class ManageDevicesComponent implements OnInit {
         private schemeService: SchemeService,
         private dialog: MatDialog,
         private ui: UIService,
+        sidebar: SidebarService,
     ) {
+        super(sidebar);
         this.isAdmin = this.authService.isAdmin();
         this.devices = this.schemeService.scheme.device;
     }
@@ -34,6 +37,7 @@ export class ManageDevicesComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        super.init();
     }
 
     editDevice(device: Device) {

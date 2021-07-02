@@ -1,9 +1,3 @@
-<h2>
-    <span i18n="@@DEVICE_MANAGEMENT.TITLE">Управление устройствами</span>
-    <mat-slide-toggle [(ngModel)]="isEditorModeEnabled" *ngIf="isAdmin">
-        <mat-icon [class.enabled]="isEditorModeEnabled">edit</mat-icon>
-    </mat-slide-toggle>
-</h2>
 <div class="grid grid-pad" [class.editor-mode]="isEditorModeEnabled" [class.disabled-box]="isDisabled()">
     <div class="col-1-3">
         <app-scheme-section [title]="'&nbsp;'">

@@ -190,6 +190,10 @@ nav > div {
     visibility: hidden;
 }
 
+.mt-1 {
+    margin-top: 1em;
+}
+
 /* For Progressbar cl. loading.progressbar.ts */
 .progress-bar-container {
     opacity: 0;
