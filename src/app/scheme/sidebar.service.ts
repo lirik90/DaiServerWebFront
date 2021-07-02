@@ -1,6 +1,6 @@
 import {Component, ComponentRef, Injectable, ViewContainerRef} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {BehaviorSubject} from 'rxjs';
+import {Subject} from 'rxjs';
 
 export interface NeedSidebar {
     getSidebarWidget(viewContainerRef: ViewContainerRef): ComponentRef<any>;
@@ -17,13 +17,8 @@ export interface SidebarAction<T> {
 
 @Injectable()
 export class SidebarService {
-    private static readonly defaultInitAction = {
-        type: 'init',
-        data: null,
-    };
-
-    private _sidebarEvents: BehaviorSubject<SidebarAction<any>>;
-    private _contentActions: BehaviorSubject<SidebarAction<any>>;
+    private _sidebarEvents: Subject<SidebarAction<any>>;
+    private _contentActions: Subject<SidebarAction<any>>;
 
     constructor() {
         this.resetContent();
@@ -48,10 +43,10 @@ export class SidebarService {
     }
 
     resetSidebar(): void {
-        this._sidebarEvents = new BehaviorSubject(SidebarService.defaultInitAction);
+        this._sidebarEvents = new Subject();
     }
 
     resetContent(): void {
-        this._contentActions = new BehaviorSubject(SidebarService.defaultInitAction);
+        this._contentActions = new Subject();
     }
 }

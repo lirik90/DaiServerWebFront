@@ -1,6 +1,5 @@
 import {Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewContainerRef} from '@angular/core';
 import {NeedSidebar} from '../sidebar.service';
-import {ChartFilterComponent} from './charts/chart-filter/chart-filter.component';
 import {ReportsMenuComponent} from './reports-menu/reports-menu.component';
 
 @Component({

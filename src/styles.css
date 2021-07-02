@@ -190,6 +190,16 @@ nav > div {
     visibility: hidden;
 }
 
+/* For Progressbar cl. loading.progressbar.ts */
+.progress-bar-container {
+    opacity: 0;
+    transition: 400ms;
+}
+
+.progress-bar-container.show {
+    opacity: 1;
+}
+
 @media all and (max-width: 600px) {
     .dig-param-dialog .mat-dialog-container {
         padding: 0.2em;

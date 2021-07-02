@@ -21,16 +21,27 @@
                             <mat-icon>{{ ds.showModal ? 'close' : 'settings' }}</mat-icon>
                         </button>
                         <div class="legend__item-axis-modal" *ngIf="ds.showModal">
-                            <div><label for="axisFromInput">От: </label><input id="axisFromInput" type="text" [(ngModel)]="ds.legend.scale.from"></div>
-                            <div><label for="axisToInput">До: </label><input id="axisToInput" type="text" [(ngModel)]="ds.legend.scale.to"></div>
+                            <div><label for="axisFromInput" i18n="@@REPORTS.AXIS_FROM">От</label><input id="axisFromInput" type="text" [(ngModel)]="ds.legend.scale.from"></div>
+                            <div><label for="axisToInput" i18n="@@REPORTS.AXIS_TO">До</label><input id="axisToInput" type="text" [(ngModel)]="ds.legend.scale.to"></div>
                             <div style="justify-content: space-around;">
-                                <label>Слева</label>
+                                <label i18n="@@REPORTS.AXIS_LEFT">Слева</label>
                                 <mat-slide-toggle [(ngModel)]="ds.legend.scale.isRight"></mat-slide-toggle>
-                                <label>Справа</label>
+                                <label i18n="@@REPORTS.AXIS_RIGHT">Справа</label>
                             </div>
                             <div>
-                                <label for="axisOrderInput">Порядок: </label>
+                                <label for="axisOrderInput" i18n="@@REPORTS.AXIS_ORDER">Порядок</label>
                                 <input id="axisOrderInput" type="text" [(ngModel)]="ds.legend.scale.order">
+                            </div>
+                            <div>
+                                <label i18n="@@REPORTS.STEPPED">Прямоугольный</label>
+                                <mat-slide-toggle [(ngModel)]="ds.legend.stepped"></mat-slide-toggle>
+                            </div>
+                            <div>
+                                <label i18n="@@REPORTS.SHOW_AXIS">Отображать шкалу</label>
+                                <mat-slide-toggle
+                                    [ngModel]="ds.legend.scale.display === 'auto'"
+                                    (ngModelChange)="ds.legend.scale.display = $event ? 'auto' : false"
+                                ></mat-slide-toggle>
                             </div>
                         </div>
                     </div>

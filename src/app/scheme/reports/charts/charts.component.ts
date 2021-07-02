@@ -137,20 +137,25 @@ export class ChartsComponent implements OnDestroy {
             const axes: Axis_Params[] = [];
 
             const datasets = chart.dataset_params.map((ds_param) => {
-                const {item, legend: {color, idx, scale, hidden}} = ds_param;
+                const {item, legend: {color, idx, scale, hidden, stepped}} = ds_param;
 
                 let dataset: ChartDataSets;
                 if (ds_param.isParam) {
-                    dataset = this.genParamDataset(item, idx, color, hidden);
+                    dataset = this.genParamDataset(item, idx, color, hidden, stepped);
                     data_ptr.params.push(item.id);
                 } else {
-                    dataset = this.genDevItemDataset(item, idx, color, hidden);
+                    dataset = this.genDevItemDataset(item, idx, color, hidden, stepped);
                     data_ptr.dev_items.push(item.id);
                 }
 
                 if (enableUserAxes) {
                     let yAxisID;
-                    const existingAxis = axes.find(axis => axis.from === scale.from && axis.to === scale.to && axis.isRight === scale.isRight);
+                    const existingAxis = axes.find(axis => axis.from === scale.from
+                        && axis.to === scale.to
+                        && axis.isRight === scale.isRight
+                        && axis.display === scale.display
+                    );
+
                     if (!existingAxis) {
                         if (scale.from || scale.to) {
                             // create and assign new axis if valid params
@@ -182,6 +187,7 @@ export class ChartsComponent implements OnDestroy {
                     axe.isRight ? 'right' : 'left',
                     +axe.from,
                     +axe.to,
+                    axe.display,
                 ));
                 this.addChart(chart.name, datasets, chartAxes);
             } else {
@@ -350,21 +356,25 @@ export class ChartsComponent implements OnDestroy {
         return date_str + time;
     }
 
-    genDevItemDataset(item: Device_Item, colorIndex: number, hsl: Hsl = null, hidden: boolean): ChartDataSets {
+    genDevItemDataset(item: Device_Item, colorIndex: number, hsl: Hsl = null, hidden: boolean, stepped: boolean): ChartDataSets {
         const label = item.name.length ? item.name : item.type.title;
 
-        const RT = Register_Type;
-        const rt = item.type.register_type;
-        const stepped = rt === RT.RT_COILS || rt === RT.RT_DISCRETE_INPUTS;
+        if (stepped === null) {
+            const RT = Register_Type;
+            const rt = item.type.register_type;
+            stepped = rt === RT.RT_COILS || rt === RT.RT_DISCRETE_INPUTS;
+        }
 
         let dataset = this.genDataset(label, colorIndex, stepped, hsl, hidden);
         dataset['dev_item'] = item;
         return dataset;
     }
 
-    genParamDataset(param: DIG_Param, colorIndex: number, hsl: Hsl = null, hidden: boolean): ChartDataSets {
-        const steppedLine = param.param.value_type === DIG_Param_Value_Type.VT_BOOL;
-        let dataset = this.genDataset('⚙️ ' + param.param.title, colorIndex, steppedLine, hsl, hidden);
+    genParamDataset(param: DIG_Param, colorIndex: number, hsl: Hsl = null, hidden: boolean, stepped: boolean): ChartDataSets {
+        if (stepped === null) {
+            stepped = param.param.value_type === DIG_Param_Value_Type.VT_BOOL;
+        }
+        let dataset = this.genDataset('⚙️ ' + param.param.title, colorIndex, stepped, hsl, hidden);
         dataset['param'] = param;
         return dataset;
     }
@@ -385,12 +395,20 @@ export class ChartsComponent implements OnDestroy {
         };
     }
 
-    private static genAxis(id: string, position: string, min: number, max: number, step = 1, type = 'linear'): CommonAxe {
+    private static genAxis(
+        id: string,
+        position: string,
+        min: number,
+        max: number,
+        display: false | 'auto',
+        step = 1,
+        type = 'linear',
+    ): CommonAxe {
         const axis: any = {
             id,
             type,
             position,
-            display: 'auto',
+            display,
         };
 
         if (min !== null || max !== null) {
@@ -593,9 +611,9 @@ export class ChartsComponent implements OnDestroy {
     }
 
     private reportChartAxes(chart: Chart_Info_Interface, params: BuiltChartParams) {
-        const axes = chart.data.datasets.map((dataset) => {
+        const axes = chart.data.datasets.map((dataset): Axis_Params & { isParam: boolean } => {
             const axe = params.axes.find(a => a.id === dataset.yAxisID);
-            const { min: from, max: to, options: { position }} = axe as any;
+            const { min: from, max: to, options: { position, hidden } } = axe as any;
 
             return {
                 id: dataset.dev_item?.id || dataset.param?.id,
@@ -604,6 +622,8 @@ export class ChartsComponent implements OnDestroy {
 
                 from: from.toFixed(2),
                 to: to.toFixed(2),
+                order: axe.order,
+                display: hidden ? false : 'auto',
             };
         });
 

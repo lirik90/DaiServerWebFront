@@ -1,9 +1,8 @@
 <h2 i18n="@@LOG.TITLE">Журнал</h2>
 <div class="example-container mat-elevation-z8">
   <div class="example-loading-shade"
-       *ngIf="isLoadingResults || isRateLimitReached">
-    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-    <div class="example-rate-limit-reached" *ngIf="isRateLimitReached" i18n="@@LOG.WARNING">
+       *ngIf="isRateLimitReached">
+    <div class="example-rate-limit-reached" i18n="@@LOG.WARNING">
       EventLog's API rate limit has been reached. It will be reset in one minute.
     </div>
   </div>
@@ -13,13 +12,13 @@
       <input #cmdInput matInput (keyup.enter)="execScript($event.target.value)" i18n-placeholder="@@LOG.CMD" placeholder="Консольная команда" [value]="cmd">
       <button class="sendBtn" (click)="execScript(cmdInput.value)"><mat-icon>play_arrow</mat-icon></button>
     </mat-form-field>
-    <mat-form-field>
-      <input matInput (keyup)="applyFilter($event.target.value)" i18n-placeholder="@@LOG.FILTER" placeholder="Фильтр">
-    </mat-form-field>
   </div>
 
-  <mat-table #table [dataSource]="dataSource" class="example-table"
-             matSort matSortActive="timestamp_msecs" matSortDisableClear matSortDirection="desc">
+  <div class="progress-bar-container" [class.show]="showProgressBar">
+    <mat-progress-bar [mode]="progressBarMode" [color]="progressBarColor" [value]="progressBarValue"></mat-progress-bar>
+  </div>
+
+  <mat-table #table [dataSource]="dataSource" class="example-table">
 
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
@@ -27,19 +26,15 @@
     <!-- Message Column -->
     <ng-container matColumnDef="message">
       <mat-header-cell *matHeaderCellDef i18n="@@LOG.TABLE.MESSAGE">Сообщение</mat-header-cell>
-      <mat-cell *matCellDef="let row" [style.color]="row.color">{{ row.text }}</mat-cell>
-    </ng-container>
-
-    <!-- Category Column -->
-    <ng-container matColumnDef="category">
-      <mat-header-cell *matHeaderCellDef i18n="@@LOG.TABLE.CATEGORY">Категория</mat-header-cell>
-      <mat-cell *matCellDef="let row" [style.color]="row.color">{{ row.category }}</mat-cell>
+      <mat-cell *matCellDef="let row" [style.color]="row.color">
+          <button *ngIf="row.raw_value; else simpleValue" mat-raised-button (click)="openImg(row)" i18n="@@LOG2.VIEW">Посмотреть</button>
+          <ng-template #simpleValue>{{ row.text }}</ng-template>
+      </mat-cell>
     </ng-container>
 
     <!-- Date Column -->
     <ng-container matColumnDef="timestamp_msecs">
       <mat-header-cell *matHeaderCellDef
-                       mat-sort-header
                        disableClear="true" i18n="@@LOG.TABLE.DATE">
         Дата
       </mat-header-cell>
@@ -55,14 +50,6 @@
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" [style.background-color]="row.bgColor"></mat-row>
   </mat-table>
-
-  <mat-paginator
-      [length]="resultsLength"
-      [pageSize]="this.itemsPerPage"
-      [pageSizeOptions]="[15, 35, 50, 85, 100]"
-      (page)="pageEvent = handlePage($event)"
-      appRememberPageLimit="log_items_per_page">
-  </mat-paginator>
 </div>
