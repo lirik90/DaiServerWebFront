@@ -1,6 +1,3 @@
-<h2>
-    <span i18n="@@MANAGEMENT.TITLE">Управление схемой</span>
-</h2>
 <div class="grid grid-pad"
      [class.editor-mode]="isEditorModeEnabled"
      [class.disabled-box]="isDisabled()">
@@ -24,5 +21,4 @@
   </ng-container>
 </div>
 <button *ngIf="isEditorModeEnabled" mat-flat-button (click)="newSection()" i18n="@@MANAGEMENT.ADD_SECTION">Добавить секцию</button>
-
 
