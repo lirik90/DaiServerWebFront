@@ -39,14 +39,6 @@
     </mat-hint>
 </mat-form-field>
 
-<div class="mt-1" title="Влияет только на Состояния">
-    <label>Состояния в журнале</label>
-    <angular2-multiselect
-        [(ngModel)]="selectedStatuses"
-        [data]="statuses"
-        [settings]="statusSettings"></angular2-multiselect>
-</div>
-
 <div class="mt-1" title="Влияет только на текстовые события">
     <label>Текстовые события</label>
     <angular2-multiselect
@@ -54,31 +46,33 @@
         [data]="textEvents"
         [settings]="textEventsSettings"></angular2-multiselect>
 </div>
-
-<div class="mt-1">
+<div class="mt-1" title="Влияет на Режимы, Уставки, Состояния и Значения">
     <label>Группы элементов</label>
     <angular2-multiselect
         [(ngModel)]="selectedGroupsId"
         [data]="devItemGroups"
-        [settings]="digSelectSettings"
-        title="Влияет на Режимы, Уставки, Состояния и Значения"></angular2-multiselect>
+        [settings]="digSelectSettings"></angular2-multiselect>
 </div>
-<div class="mt-1">
+<div class="mt-1" title="Влияет только на Значения">
     <label>Элементы устройств</label>
     <angular2-multiselect
         [(ngModel)]="selectedItemsId"
         [data]="devItems"
-        [settings]="digSelectSettings"
-        title="Влияет только на Значения"></angular2-multiselect>
+        [settings]="digSelectSettings"></angular2-multiselect>
 </div>
-<div class="mt-1">
+<div class="mt-1" title="Влияет на Уставки">
     <label>Уставки</label>
     <angular2-multiselect
         [(ngModel)]="selectedParamsId"
         [data]="devItemParams"
-        [settings]="digSelectSettings"
-        title="Влияет на Уставки"></angular2-multiselect>
-
+        [settings]="digSelectSettings"></angular2-multiselect>
+</div>
+<div class="mt-1" title="Влияет только на Состояния">
+    <label>Состояния в журнале</label>
+    <angular2-multiselect
+        [(ngModel)]="selectedStatuses"
+        [data]="statuses"
+        [settings]="statusSettings"></angular2-multiselect>
 </div>
 
 <button mat-raised-button (click)="submit()">Показать</button>
