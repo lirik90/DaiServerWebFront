@@ -5,7 +5,19 @@ import {Subject, SubscriptionLike} from 'rxjs';
 import {SchemeService} from './scheme.service';
 import {ByteMessage, ByteTools, WebSocketBytesService} from '../web-socket.service';
 import {Connection_State} from '../user';
-import {Device_Item, Device_Item_Group, DIG_Param, DIG_Param_Value_Type, DIG_Status_Type, Log_Event, Time_Info} from './scheme';
+import {
+    Device_Item,
+    Device_Item_Group,
+    DIG_Param,
+    DIG_Param_Value_Type,
+    DIG_Status_Type,
+    Log_Base,
+    Log_Event,
+    Log_Mode, Log_Param,
+    Log_Status,
+    Log_Status_Direction,
+    Time_Info,
+} from './scheme';
 
 // import { QByteArray } from 'qtdatastream/src/types';
 
@@ -36,6 +48,12 @@ export enum WebSockCmd {
   WS_STREAM_DATA,
   WS_STREAM_TEXT,
 
+  WS_LOG_EVENT,
+  WS_LOG_MODE,
+  WS_LOG_PARAM,
+  WS_LOG_STATUS,
+  WS_LOG_VALUE,
+
   WEB_SOCK_CMD_COUNT
 }
 
@@ -49,10 +67,15 @@ export interface ConnectInfo {
 
 @Injectable()
 export class ControlService {
-  public byte_msg: Subject<ByteMessage> = new Subject<ByteMessage>();
-  public stream_msg: Subject<ByteMessage> = new Subject<ByteMessage>();
-  public dev_item_changed: Subject<Device_Item[]> = new Subject<Device_Item[]>();
-  public group_param_values_changed: Subject<DIG_Param[]> = new Subject<DIG_Param[]>();
+  public byte_msg: Subject<ByteMessage> = new Subject();
+  public stream_msg: Subject<ByteMessage> = new Subject();
+  public dev_item_changed: Subject<Device_Item[]> = new Subject();
+  public group_param_values_changed: Subject<DIG_Param[]> = new Subject();
+
+  public log_mode: Subject<Log_Mode[]> = new Subject();
+  public log_status: Subject<Log_Status[]> = new Subject();
+  public log_param: Subject<Log_Param[]> = new Subject();
+
   public opened: Subject<boolean>;
 
   private bmsg_sub: SubscriptionLike;
@@ -83,7 +106,7 @@ export class ControlService {
 
         const view = new Uint8Array(msg.data);
         const [start, mode_id] = ByteTools.parseUInt32(view);
-        const [start1, group_id] = ByteTools.parseUInt32(view, start);
+        const [, group_id] = ByteTools.parseUInt32(view, start);
 
         for (const sct of this.schemeService.scheme.section) {
           for (const group of sct.groups) {
@@ -93,7 +116,11 @@ export class ControlService {
             }
           }
         }
-      } else if (msg.cmd == WebSockCmd.WS_DEV_ITEM_VALUES) {
+      } else if (msg.cmd === WebSockCmd.WS_LOG_MODE) {
+          ControlService.parseLogs(msg.data, this.log_mode, Log_Mode, ControlService.logModeParser);
+      } else if (msg.cmd === WebSockCmd.WS_LOG_STATUS) {
+          ControlService.parseLogs(msg.data, this.log_status, Log_Status, ControlService.logStatusParser);
+      } else if (msg.cmd === WebSockCmd.WS_DEV_ITEM_VALUES) {
 
         if (msg.data === undefined) {
           console.log('DevItemValues without data');
@@ -193,24 +220,35 @@ export class ControlService {
         let ts: number;
 
         const changed_params: DIG_Param[] = [];
+        const logs: Log_Param[] = [];
         while (count--) {
-          ts = ByteTools.parseInt64(view, idx)[1];
-          ts &= ~0x80000000000000;
-          idx += 8;
-          user_id = ByteTools.parseUInt32(view, idx)[1];
-          idx += 4;
-          param_id = ByteTools.parseUInt32(view, idx)[1];
-          idx += 4;
+            ts = ByteTools.parseInt64(view, idx)[1];
+            ts &= ~0x80000000000000;
+            idx += 8;
+            user_id = ByteTools.parseUInt32(view, idx)[1];
+            idx += 4;
+            param_id = ByteTools.parseUInt32(view, idx)[1];
+            idx += 4;
 
-          const [last_pos, value] = ByteTools.parseQString(view, idx);
-          idx = last_pos;
+            const [last_pos, value] = ByteTools.parseQString(view, idx);
+            idx = last_pos;
 
-          const changed_param = set_param(param_id, value);
-          changed_params.push(changed_param);
+            const changed_param = set_param(param_id, value);
+            const paramLog: Log_Param = {
+                value,
+                user_id,
+                group_param_id: param_id,
+                timestamp_msecs: ts,
+            };
+            logs.push(paramLog);
+            changed_params.push(changed_param);
         }
 
         if (changed_params.length > 0) {
             this.group_param_values_changed.next(changed_params);
+        }
+        if (logs.length > 0) {
+            this.log_param.next(logs);
         }
       } else if (msg.cmd == WebSockCmd.WS_GROUP_STATUS_ADDED) {
         const view = new Uint8Array(msg.data);
@@ -315,6 +353,55 @@ export class ControlService {
     return item;
   }
 
+  private static parseLogs<T extends Log_Base>(data: ArrayBuffer, subj: Subject<T[]>, construct: new () => T, parser: (view: Uint8Array, meta: { idx: number; }, item: T) => T) {
+    const view = new Uint8Array(data);
+    const meta = { idx: undefined };
+    const item = new construct();
+    let count;
+    [meta.idx, count] = ByteTools.parseUInt32(view);
+
+    const log_pack: T[] = [];
+    while (count--) {
+      item.timestamp_msecs = ByteTools.parseInt64(view, meta.idx)[1];
+      item.timestamp_msecs &= ~0x80000000000000;
+      meta.idx += 8;
+      item.user_id = ByteTools.parseUInt32(view, meta.idx)[1];
+      meta.idx += 4;
+
+      log_pack.push(parser(view, meta, item));
+    }
+
+    if (log_pack.length)
+        subj.next(log_pack);
+  }
+
+  private static logModeParser(view: Uint8Array, meta: { idx: number; }, item: Log_Mode): Log_Mode {
+    item.group_id = ByteTools.parseUInt32(view, meta.idx)[1];
+    meta.idx += 4;
+    item.mode_id = ByteTools.parseUInt32(view, meta.idx)[1];
+    meta.idx += 4;
+
+    return {...item} as Log_Mode;
+  }
+
+  private static logStatusParser(view: Uint8Array, meta: { idx: number; }, item: Log_Status): Log_Status {
+    item.direction = view[meta.idx - 4 - 8] & 0x80 ? Log_Status_Direction.SD_DEL : Log_Status_Direction.SD_ADD;
+    item.group_id = ByteTools.parseUInt32(view, meta.idx)[1];
+    meta.idx += 4;
+    item.status_id = ByteTools.parseUInt32(view, meta.idx)[1];
+    meta.idx += 4;
+
+    item.args = [];
+    let args_count = ByteTools.parseUInt32(view, meta.idx)[1];
+    let value: string;
+    while (args_count--) {
+      [meta.idx, value] = ByteTools.parseQString(view, meta.idx);
+      item.args.push(value);
+    }
+
+    return {...item} as Log_Status;
+  }
+
   parseConnectNumber(n: number) {
     // tslint:disable:no-bitwise
     const connState = n & ~Connection_State.CS_CONNECTED_MODIFIED & ~Connection_State.CS_CONNECTED_WITH_LOSSES;
@@ -379,7 +466,7 @@ export class ControlService {
       const [start5, who] = ByteTools.parseQString(view, start3 + 1);
       const [start6, msg] = ByteTools.parseQString(view, start5);
       start1 = start6;
-      items.push({date: new Date(time_ms), text: msg, category: who, type_id: type, user_id, color: ''} as Log_Event);
+      items.push({timestamp_msecs: time_ms, text: msg, category: who, type_id: type, user_id, color: ''} as Log_Event);
     }
     return items;
   }

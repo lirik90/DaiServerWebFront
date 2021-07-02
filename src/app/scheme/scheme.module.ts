@@ -29,7 +29,6 @@ import {ParamItemComponent} from './param-item/param-item.component';
 import {SchemeStateComponent} from './scheme-state/scheme-state.component';
 import {SchemeSectionComponent} from './scheme-section/scheme-section.component';
 import {DocComponent} from './doc/doc.component';
-import {Log2Component} from './log2/log2.component';
 import {Manage2Component} from './manage2/manage2.component';
 import {StatusManageDialogComponent} from './status-manage-dialog/status-manage-dialog.component';
 import {StatusManageItemComponent} from './status-manage-dialog/status-manage-item/status-manage-item.component';
@@ -49,6 +48,9 @@ import { ElementsMenuComponent } from './elements/elements-menu/elements-menu.co
 import { MnemoschemeComponent } from './mnemoscheme/mnemoscheme.component';
 import { DeviceItemGroupComponent } from './device-item-group/device-item-group.component';
 import {ParamsDialogComponent} from './device-item-group/params-dialog/params-dialog.component';
+import { LogSidebarComponent } from './log/log-sidebar/log-sidebar.component';
+import {AngularMultiSelectModule} from 'angular2-multiselect-dropdown';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
     return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
@@ -69,6 +71,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
                 deps: [HttpClient]
             }
         }),
+        AngularMultiSelectModule,
+        MatProgressBarModule,
     ],
     declarations: [
         SchemeComponent,
@@ -79,7 +83,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         HoldingRegisterDialogComponent,
         VideoStreamDialogComponent,
         LogComponent,
-        Log2Component,
         ParamComponent,
         GroupStatusComponent,
         DevItemValueComponent,
@@ -107,6 +110,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         ElementsMenuComponent,
         MnemoschemeComponent,
         DeviceItemGroupComponent,
+        LogSidebarComponent,
     ],
     entryComponents: [
         PageReloadDialogComponent,

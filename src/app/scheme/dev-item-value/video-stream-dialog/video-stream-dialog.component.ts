@@ -20,26 +20,26 @@ export interface VideoStreamParam {
 export class VideoStreamDialogComponent implements OnInit, OnDestroy {
     @ViewChild('image', { static: true })
     img: ElementRef;
-  
+
     name: string;
 
     width: number = 800;
     height: number = 600;
     image_data: ImageData;
-  
+
     timer_id: any;
 
     need_adjust: boolean = true;
 
     sub: SubscriptionLike;
-  
+
     constructor(
       private controlService: ControlService,
       public dialogRef: MatDialogRef<VideoStreamDialogComponent>,
       @Inject(MAT_DIALOG_DATA) public data: VideoStreamParam)
     {
     }
-  
+
     ngOnInit(): void {
         this.width  = window.innerWidth - 50;
         this.height = window.innerHeight - 170;
@@ -95,7 +95,7 @@ export class VideoStreamDialogComponent implements OnInit, OnDestroy {
         this.fill_image('black', 'Подождите...', 'white');
 
         this.name = this.data.devItem.name || this.data.devItem.type.name;
-    
+
         this.sub = this.controlService.stream_msg.subscribe((msg: ByteMessage) => {
             if (msg.cmd == WebSockCmd.WS_STREAM_DATA) {
                 this.draw_frame(msg.data);
@@ -112,7 +112,7 @@ export class VideoStreamDialogComponent implements OnInit, OnDestroy {
 
     fill_image(color: string, text: string, text_color: string): void
     {
-        let canvas = document.createElement('canvas'); 
+        let canvas = document.createElement('canvas');
         canvas.width = this.width;
         canvas.height = this.height;
         let ctx = canvas.getContext('2d');
@@ -146,7 +146,7 @@ export class VideoStreamDialogComponent implements OnInit, OnDestroy {
         this.fill_image('black', text, 'white');
     }
 
-    draw_frame(data: ArrayBuffer): void 
+    draw_frame(data: ArrayBuffer): void
     {
         let view = new Uint8Array(data);
         let pos = 0;
@@ -169,7 +169,7 @@ export class VideoStreamDialogComponent implements OnInit, OnDestroy {
         this.img.nativeElement.src = image_url;
     }
 
-    stream_toggled(data: ArrayBuffer): void 
+    stream_toggled(data: ArrayBuffer): void
     {
         let view = new Uint8Array(data);
         let pos = 0;

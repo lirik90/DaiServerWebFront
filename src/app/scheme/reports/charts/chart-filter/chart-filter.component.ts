@@ -299,10 +299,12 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
                     to: null,
                     isRight: null,
                     order: idx,
+                    display: 'auto',
                 },
                 displayColor,
                 color,
                 idx,
+                stepped: null,
             }
         });
     }
@@ -550,7 +552,8 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
         });
 
         this.rebuild();
-        this.copyParamsFromUserChart(user_chart);
+        this.copyParamsFromUserChart(user_chart, true);
+        this.buildChart();
     }
 
     save_user_chart(): void {
@@ -671,6 +674,7 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
                 dsp.legend.scale.from = axe.from;
                 dsp.legend.scale.to = axe.to;
                 dsp.legend.scale.isRight = axe.isRight;
+                // dsp.legend.scale.display = axe.display;
             });
         }
     }
@@ -757,7 +761,7 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
         }
     }
 
-    private copyParamsFromUserChart(user_chart: Chart) {
+    private copyParamsFromUserChart(user_chart: Chart, displayAuto: boolean = false) {
         user_chart.items.forEach((axeItem: Chart_Item) => {
             const datasetItem = this.selected_charts[0].dataset_params
                 .find(dsItem => dsItem.isParam ? axeItem.param_id === dsItem.item.id : axeItem.item_id === dsItem.item.id);
@@ -770,6 +774,9 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
                 displayColor: `hsl(${h}, ${s}%, ${l}%)`,
                 hidden: false,
             };
+            if (displayAuto) {
+                legendPatch.scale.display = 'auto';
+            }
 
             Object.assign(datasetItem.legend, legendPatch);
         });
