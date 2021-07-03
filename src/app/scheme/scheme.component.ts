@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ComponentRef, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
-import {ActivatedRoute, Router, RouterEvent} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router, RouterEvent} from '@angular/router';
 import { MediaMatcher} from '@angular/cdk/layout';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
@@ -14,6 +14,8 @@ import { AuthenticationService } from '../authentication.service';
 import { FavService } from '../fav.service';
 import {needSidebarHelper, NeedSidebar} from './sidebar.service';
 import { Time_Info } from './scheme';
+import {filter, map} from 'rxjs/operators';
+import {Title} from '@angular/platform-browser';
 
 interface NavLink {
   link: string;
@@ -145,11 +147,37 @@ export class SchemeComponent implements OnInit, OnDestroy, AfterViewInit {
     private changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
     private favService: FavService,
+    private title: Title,
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     // this.mobileQuery.addListener(this._mobileQueryListener);
-      this.mobileQuery.addEventListener('change', () => this.redrawSidebar_());
+    this.mobileQuery.addEventListener('change', () => this.redrawSidebar_());
+
+      this.router.events
+          .pipe(
+              filter((ev) => ev instanceof NavigationEnd),
+              map(() => {
+                  let child = this.route.firstChild;
+                  let title: string[] = [];
+                  while (child) {
+                      if (child.snapshot.data?.title) {
+                          // if (child.snapshot.data?.title === '%DEVICE%') {
+                          //     title.push(this.schemeService.scheme.title);
+                          // } else {
+                          // } // на будущее
+                          title.push(this.translate.instant(child.snapshot.data.title));
+                      }
+
+                      child = child.firstChild;
+                  }
+
+                  return ['DeviceAccess', this.schemeService.scheme.title, ...title];
+              }),
+          )
+          .subscribe((title) => {
+              this.title.setTitle(title.join(' - '));
+          });
   }
 
   addMenu(name: string, icon: string): void {

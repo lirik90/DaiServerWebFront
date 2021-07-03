@@ -44,6 +44,17 @@
       "TITLE": "Notifications"
     }
   },
+    "NAVIGATION": {
+        "SCHEME": {
+            "LOG": "Journal",
+            "MNEMOSCHEME": "View",
+            "SETTINGS": "Settings",
+            "REPORTS": "Reports",
+            "ELEMENTS": "Elements",
+            "DETAIL": "Detail",
+            "HELP": "Help"
+        }
+    },
     "PAGINATOR": {
         "NEXT_PAGE": "Next page",
         "PREV_PAGE": "Previous page",

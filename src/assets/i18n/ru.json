@@ -44,6 +44,17 @@
       "TITLE": "Уведомления"
     }
   },
+    "NAVIGATION": {
+        "SCHEME": {
+            "LOG": "Журнал",
+            "MNEMOSCHEME": "Обзор",
+            "SETTINGS": "Настройки",
+            "REPORTS": "Отчёты",
+            "ELEMENTS": "Элементы",
+            "DETAIL": "Подробности",
+            "HELP": "Помощь"
+        }
+    },
     "PAGINATOR": {
         "NEXT_PAGE": "Cлед. стр.",
         "PREV_PAGE": "Пред. стр.",

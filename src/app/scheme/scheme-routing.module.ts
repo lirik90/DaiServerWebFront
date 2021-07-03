@@ -21,36 +21,50 @@ const schemeRoutes: Routes = [{
     canActivate: [AuthGuard],
     children: [{
         path: ':name',
+        data: { title: '%DEVICE%' },
         component: SchemeComponent,
         canActivate: [SchemeLoadGuard],
         canActivateChild: [AuthGuard, SchemeLoadGuard, PermissionGuard],
         children: [
             {path: '', redirectTo: 'detail', pathMatch: 'full'},
-            {path: 'detail', component: SchemeDetailComponent, data: {req_perms: true}},
             {
-                path: 'elements', component: ElementsComponent, data: { req_perms: true }, children: [
+                path: 'detail',
+                component: SchemeDetailComponent,
+                data: {
+                    req_perms: true,
+                    title: 'NAVIGATION.SCHEME.DETAIL',
+                },
+            },
+            {
+                path: 'elements',
+                component: ElementsComponent,
+                data: {
+                    req_perms: true,
+                    title: 'NAVIGATION.SCHEME.ELEMENTS',
+                },
+                children: [
                     { path: 'sections', component: ManageComponent },
                     { path: 'devices', component: ManageDevicesComponent },
                     { path: '', pathMatch: 'full', redirectTo: 'sections' },
-                ]
+                ],
             },
-            {path: 'elements/sections', component: ManageComponent, data: {req_perms: true}},
-            {path: 'elements/devices', component: ManageDevicesComponent, data: {req_perms: true}},
+            // {path: 'elements/sections', component: ManageComponent, data: {req_perms: true}},
+            // {path: 'elements/devices', component: ManageDevicesComponent, data: {req_perms: true}},
             {path: 'elements', pathMatch: 'full', redirectTo: 'elements/sections'},
-            {path: 'mnemoscheme', component: MnemoschemeComponent},
-            {path: 'log', component: LogComponent, data: {req_perms: true}},
-            {path: 'help', component: DocComponent, data: {req_perms: true}},
+            {path: 'mnemoscheme', component: MnemoschemeComponent, data: {req_perms: true, title: 'NAVIGATION.SCHEME.MNEMOSCHEME'}},
+            {path: 'log', component: LogComponent, data: {req_perms: true, title: 'NAVIGATION.SCHEME.LOG'}},
+            {path: 'help', component: DocComponent, data: {req_perms: true, title: 'NAVIGATION.SCHEME.HELP'}},
             // { path: 'group/:groupId/param', component: ParamComponent },
             {
                 path: 'reports',
                 loadChildren: () => import('app/scheme/reports/reports.module').then(m => m.ReportsModule),
                 canLoad: [AuthGuard],
-                data: {req_perms: true}
+                data: {req_perms: true, title: 'NAVIGATION.SCHEME.REPORTS'}
             },
             {
                 path: 'structure',
                 loadChildren: () => import('app/scheme/settings/settings.module').then(m => m.SettingsModule),
-                data: {req_perms: true},
+                data: {req_perms: true, title: 'NAVIGATION.SCHEME.SETTINGS'},
                 canLoad: [AuthGuard]
             },
         ]

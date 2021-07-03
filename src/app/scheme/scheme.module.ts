@@ -48,6 +48,7 @@ import { ElementsMenuComponent } from './elements/elements-menu/elements-menu.co
 import { MnemoschemeComponent } from './mnemoscheme/mnemoscheme.component';
 import { DeviceItemGroupComponent } from './device-item-group/device-item-group.component';
 import {ParamsDialogComponent} from './device-item-group/params-dialog/params-dialog.component';
+import {Title} from '@angular/platform-browser';
 import { LogSidebarComponent } from './log/log-sidebar/log-sidebar.component';
 import {AngularMultiSelectModule} from 'angular2-multiselect-dropdown';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
@@ -129,6 +130,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         SchemeService,
         SettingsService,
         SidebarService,
+        Title,
     ]
 })
 export class SchemeModule {
