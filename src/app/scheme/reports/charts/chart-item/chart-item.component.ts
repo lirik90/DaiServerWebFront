@@ -1,7 +1,8 @@
 import {
+    AfterViewInit,
     ChangeDetectorRef,
     Component,
-    DoCheck,
+    DoCheck, ElementRef,
     EventEmitter,
     Input,
     KeyValueChanges,
@@ -18,38 +19,51 @@ import {
 import {ProgressBarMode} from '@angular/material/progress-bar/progress-bar';
 import {ThemePalette} from '@angular/material/core/common-behaviors/color';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {BaseChartDirective} from 'ng2-charts';
 
 import {Paginator_Chart_Value, SchemeService} from '../../../scheme.service';
 import {Scheme_Group_Member} from '../../../../user';
 import {Hsl} from '../color-picker-dialog/color-picker-dialog';
 import {BuiltChartParams, Chart_Info_Interface, Chart_Type, ZoomInfo} from '../chart-types';
 import {LoadingProgressbar} from '../../../loading-progressbar/loading.progressbar';
+import * as Chart from 'chart.js';
+
+import zoomPlugin from 'chartjs-plugin-zoom';
+import 'chartjs-adapter-moment';
+import {Axis_Params} from '../../../scheme';
+import {ChartOptions} from 'chart.js';
+
+Chart.Chart.register(
+    Chart.TimeScale, Chart.LinearScale, Chart.LineController,
+    Chart.PointElement, Chart.LineElement, zoomPlugin,
+);
 
 @Component({
     selector: 'app-chart-item',
     templateUrl: './chart-item.component.html',
     styleUrls: ['./chart-item.component.css']
 })
-export class ChartItemComponent extends LoadingProgressbar implements OnInit, OnChanges, DoCheck {
-    private readonly defaultYAxes_: any = [{
-        id: 'A',
-        type: 'linear',
-        position: 'left',
-        display: 'auto',
-    }, {
-        id: 'B',
-        type: 'linear',
-        position: 'right',
-        display: 'auto',
-        ticks: {
-            max: 2,
-            min: -1,
-            stepSize: 1,
-            suggestedMin: 0,
-            suggestedMax: 1
-        }
-    }];
+export class ChartItemComponent extends LoadingProgressbar implements OnInit, OnChanges, AfterViewInit, DoCheck {
+    private readonly defaultYAxes_: any = {
+        A: {
+            id: 'A',
+            type: 'linear',
+            position: 'left',
+            display: 'auto',
+        },
+        B: {
+            id: 'B',
+            type: 'linear',
+            position: 'right',
+            display: 'auto',
+            ticks: {
+                max: 2,
+                min: -1,
+                stepSize: 1,
+                suggestedMin: 0,
+                suggestedMax: 1,
+            },
+        },
+    };
 
     private _chartInfo: Chart_Info_Interface;
     private _differ: KeyValueDiffer<number, any>;
@@ -57,6 +71,8 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
 
     private readonly leftYAxisLsKey: string = 'scale-a-params';
     private readonly rightYAxisLsKey: string = 'scale-b-params';
+
+    @ViewChild('chart_container', { read: ElementRef }) chartContainer: ElementRef<HTMLCanvasElement>;
 
     get chartInfo(): Chart_Info_Interface {
         return this._chartInfo;
@@ -71,95 +87,102 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
 
     @Input() viewportMin: number;
     @Input() viewportMax: number;
+    @Input() yAxes: ChartOptions<'line'>['scales'];
 
-    @Input() yAxes: any[];
-
-    @ViewChild('chart_obj') chart: BaseChartDirective;
+    chart: Chart.Chart<'line'>;
     @Output() rangeChange: EventEmitter<ZoomInfo> = new EventEmitter();
     @Output() axeChange: EventEmitter<BuiltChartParams> = new EventEmitter();
     @Output() built: EventEmitter<BuiltChartParams> = new EventEmitter();
 
     update(): void {
-        if (!this.chart || !this.chart.chart) return;
+        if (!this.chart) return;
 
-        this.zone.run(() => this.chart.chart.update());
+        this.zone.run(() => this.chart.update());
 
+        const axes = this.getAxes();
         this.built.emit({
-            axes: (<any>this.chart.chart).boxes.filter(box => box.id && box.id.length === 1),
-            datasets: (<any>this.chart.data).datasets,
+            axes,
+            datasets: this.chart.data.datasets,
         });
     }
 
-    options = {
-        elements: {
-            point: { radius: 0 },
-            line: { tension: 0, borderWidth: 1 }
+    chartOptions = {
+        type: "line",
+        data: {
+            datasets: [],
         },
-        animation: { duration: 0 },
-        responsive: true,
-        maintainAspectRatio: false,
-        responsiveAnimationDuration: 0,
-        legend: { display: false },
-        tooltips: {
-            mode: 'nearest',
-            intersect: false,
-            callbacks: {label: (item, data) => this.onLabel(item, data)}
-        },
-        hover: {
-            mode: 'nearest',
-            intersect: false,
-            animationDuration: 0
-        },
-        scales: {
-            xAxes: [{
-                offset: true,
-                stacked: true,
-                type: 'time',
-                time: {
-                    tooltipFormat: 'DD MMMM YYYY HH:mm:ss',
-                    displayFormats: {
-                        millisecond: 'HH:mm:ss.SSS',
-                        second: 'HH:mm:ss',
-                        minute: 'HH:mm',
-                        hour: 'HH:mm',
-                        day: 'DD MMM',
+        options: {
+            elements: {
+                point: { radius: 0 },
+                line: { tension: 0, borderWidth: 1 }
+            },
+            animation: false,
+            resizeDelay: 100,
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: { display: false },
+            tooltips: {
+                mode: 'nearest',
+                intersect: false,
+                callbacks: {label: (item, data) => this.onLabel(item, data)}
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: false,
+            },
+            scales: {
+                x: {
+                    offset: true,
+                    stacked: true,
+                    type: 'time',
+                    time: {
+                        tooltipFormat: 'DD MMMM YYYY HH:mm:ss',
+                        displayFormats: {
+                            millisecond: 'HH:mm:ss.SSS',
+                            second: 'HH:mm:ss',
+                            minute: 'HH:mm',
+                            hour: 'HH:mm',
+                            day: 'DD MMM',
+                        },
                     },
-                },
-                ticks: {
-                    major: {
-                        enabled: true,
-                        fontStyle: 'bold',
-                        fontColor: 'rgb(54, 143, 3)'
+                    ticks: {
+                        major: {
+                            enabled: true,
+                            fontStyle: 'bold',
+                            fontColor: 'rgb(54, 143, 3)'
+                        },
+                        sampleSize: 10,
+                        maxRotation: 30,
+                        minRotation: 30,
+                        min: undefined, max: undefined
                     },
-                    sampleSize: 10,
-                    maxRotation: 30,
-                    minRotation: 30,
-                    min: undefined, max: undefined
+                    afterFit: (scale) => {
+                        scale.height = 40;
+                    }
                 },
-                afterFit: (scale) => {
-                    scale.height = 40;
-                }
-            }],
-            yAxes: this.defaultYAxes_,
-        },
-        plugins: {
-            zoom: {
-                pan: {
-                    enabled: true,
-                    mode: 'xy',
-                    overScaleMode: 'y',
-                    rangeMax: {x: new Date()}, // TODO: update this sometimes
-                    onPanComplete: chart => this.onZoom(chart, false)
-                },
+                ...this.defaultYAxes_,
+            },
+            plugins: {
                 zoom: {
-                    enabled: true,
-                    mode: 'xy',
-                    overScaleMode: 'y',
-                    onZoomComplete: chart => this.onZoom(chart, true)
+                    pan: {
+                        enabled: true,
+                        mode: 'xy',
+                        overScaleMode: 'y',
+                        rangeMax: {x: new Date()}, // TODO: update this sometimes
+                        onPanComplete: chart => this.onZoom(chart, false)
+                    },
+                    zoom: {
+                        wheel: {
+                            enabled: true,
+                        },
+                        mode: 'xy',
+                        overScaleMode: 'y',
+                        onZoomComplete: chart => this.onZoom(chart, true)
+                    }
                 }
-            }
+            },
         },
-    };
+    } as Chart.ChartConfiguration<'line'>;
 
     @Input() members: Scheme_Group_Member[];
 
@@ -175,23 +198,25 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
 
     ngOnInit(): void {
         if (this.chartInfo.charts_type === Chart_Type.CT_DIG_TYPE) {
-            this.setupYAxisScale(this.leftYAxisLsKey, 0);
-            this.setupYAxisScale(this.rightYAxisLsKey, 1);
+            this.setupYAxisScale(this.leftYAxisLsKey, 'A');
+            this.setupYAxisScale(this.rightYAxisLsKey, 'B');
         } else {
-            this.options.scales.yAxes = this.yAxes;
-            if (!this.options.scales.yAxes?.length) {
-                this.options.scales.yAxes = this.defaultYAxes_;
-            }
+            Object.assign(this.chartOptions.options.scales, this.yAxes || this.defaultYAxes_);
         }
+    }
+
+    ngAfterViewInit() {
+        this.chartOptions.data = this.chartInfo.data;
+        this.chart = new Chart.Chart<'line'>(this.chartContainer.nativeElement, this.chartOptions);
     }
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.viewportMin || changes.viewportMax) {
             if (changes.viewportMin.currentValue)
-                this.options.scales.xAxes[0].ticks.min = changes.viewportMin.currentValue;
+                this.chartOptions.options.scales.x.min = changes.viewportMin.currentValue;
 
             if (changes.viewportMax.currentValue)
-                this.options.scales.xAxes[0].ticks.max = changes.viewportMax.currentValue;
+                this.chartOptions.options.scales.x.max = changes.viewportMax.currentValue;
         }
     }
 
@@ -323,16 +348,18 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
     }
 
     onZoom(chart: any, isZoom: boolean): void {
-        const xAxis = chart.chart.scales['x-axis-0'];
+        const xAxis = chart.chart.scales['x'];
         this.rangeChange.emit({timeFrom: Math.floor(xAxis.min), timeTo: Math.floor(xAxis.max), isZoom});
 
         if (this.chartInfo.charts_type === Chart_Type.CT_DIG_TYPE) {
             this.storeScaleParamsToLocalStorage();
         }
 
+        const axes = this.getAxes();
+
         this.axeChange.emit({
-            axes: (<any>this.chart.chart).boxes.filter(box => box.id && box.id.length === 1),
-            datasets: (<any>this.chart.data).datasets,
+            axes,
+            datasets: this.chart.data.datasets,
         });
     }
 
@@ -364,10 +391,10 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
         return dataset.label + ': ' + text;
     }
 
-    setViewportBounds(start: Date | number, end: Date | number, forceUpdate = true) {
-        const ticks = this.options.scales.xAxes[0].ticks;
-        ticks.min = typeof start === 'number' ? new Date(start) : start;
-        ticks.max = typeof end === 'number' ? new Date(end) : end;
+    setViewportBounds(start: number, end: number, forceUpdate = true) {
+        const ticks = this.chartOptions.options.scales.x;
+        ticks.min = start;
+        ticks.max = end;
 
         forceUpdate && this.update();
     }
@@ -376,9 +403,9 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
         this.update();
     }
 
-    private setupYAxisScale(axisKey: string, idx: number) {
-        const axis = this.options.scales.yAxes[idx];
-        const key = this.getAxisLocalStorageKey(axisKey, axis.id);
+    private setupYAxisScale(axisKey: string, idx: string) {
+        const axis = this.chartOptions.options.scales[idx];
+        const key = this.getAxisLocalStorageKey(axisKey, idx);
         if (!key)
             return;
 
@@ -386,15 +413,12 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
         if (!params)
             return;
 
-        if (!axis.ticks)
-            axis.ticks = {} as any;
-
-        axis.ticks.min = params.min;
-        axis.ticks.max = params.max;
+        axis.min = params.min;
+        axis.max = params.max;
     }
 
     private storeScaleParamsToLocalStorage() {
-        const { A: leftYAxis, B: rightYAxis } = (this.chart.chart as any).scales;
+        const { A: leftYAxis, B: rightYAxis } = this.chart.scales;
         const leftKey = this.getAxisLocalStorageKey(this.leftYAxisLsKey, 'A');
         const rightKey = this.getAxisLocalStorageKey(this.rightYAxisLsKey, 'B');
 
@@ -423,5 +447,20 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
             min: axis.min,
             max: axis.max,
         }));
+    }
+
+    private getAxes(): Axis_Params[] {
+        return Object.keys(this.chart.scales)
+            .map((key) => {
+                const scaleItem = this.chart.scales[key];
+                return {
+                    id: key,
+                    isRight: scaleItem.position === 'right',
+                    from: scaleItem.min,
+                    to: scaleItem.max,
+                    order: 0,
+                    display: scaleItem.options.display as 'auto' | false,
+                };
+            });
     }
 }

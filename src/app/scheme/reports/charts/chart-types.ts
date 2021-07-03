@@ -1,6 +1,7 @@
 import {Chart, Axis_Params, Device_Item, DIG_Param} from '../../scheme';
 import {Hsl} from './color-picker-dialog/color-picker-dialog';
-import {ChartDataSets} from 'chart.js';
+import * as ChartJs from 'chart.js';
+import {ChartOptions} from 'chart.js';
 
 export enum Chart_Type {
     CT_UNKNOWN,
@@ -19,10 +20,10 @@ export interface Chart_Info_Interface {
     name: string;
     charts_type: Chart_Type;
     data: {
-        datasets: (ChartDataSets & { dev_item?: Device_Item, param?: DIG_Param } & any)[];
+        datasets: (ChartJs.ChartDataset<'line'> & { dev_item?: Device_Item, param?: DIG_Param } & any)[];
     };
 
-    axes?: any[];
+    axes?: ChartOptions<'line'>['scales'];
 }
 
 export interface TimeFilter

@@ -4,8 +4,6 @@ import {TranslateService} from '@ngx-translate/core';
 import {exhaustMap} from 'rxjs/operators';
 import {combineLatest, of, SubscriptionLike, timer} from 'rxjs';
 
-import 'chartjs-plugin-zoom-plus2';
-
 import * as _moment from 'moment';
 import {default as _rollupMoment} from 'moment';
 import {Chart_Value_Item, Paginator_Chart_Value, SchemeService} from '../../scheme.service';
@@ -15,7 +13,7 @@ import {BuiltChartParams, Chart_Info_Interface, Chart_Type, ChartFilter, ItemWit
 import {ChartItemComponent} from './chart-item/chart-item.component';
 import {Hsl} from './color-picker-dialog/color-picker-dialog';
 import {SidebarService} from '../../sidebar.service';
-import {ChartDataSets, CommonAxe} from 'chart.js';
+import Chart, {ChartOptions} from 'chart.js';
 
 const moment = _rollupMoment || _moment;
 
@@ -139,7 +137,7 @@ export class ChartsComponent implements OnDestroy {
             const datasets = chart.dataset_params.map((ds_param) => {
                 const {item, legend: {color, idx, scale, hidden, stepped}} = ds_param;
 
-                let dataset: ChartDataSets;
+                let dataset: Chart.ChartDataset<'line'>;
                 if (ds_param.isParam) {
                     dataset = this.genParamDataset(item, idx, color, hidden, stepped);
                     data_ptr.params.push(item.id);
@@ -182,13 +180,16 @@ export class ChartsComponent implements OnDestroy {
 
             if (enableUserAxes) {
                 axes.sort((a, b) => <number>a.order - <number>b.order);
-                const chartAxes = axes.map(axe => ChartsComponent.genAxis(
-                    axe.id,
-                    axe.isRight ? 'right' : 'left',
-                    +axe.from,
-                    +axe.to,
-                    axe.display,
-                ));
+                const chartAxes = axes.reduce((r, axe) => {
+                    r[axe.id] = ChartsComponent.genAxis(
+                        axe.id,
+                        axe.isRight ? 'right' : 'left',
+                        +axe.from,
+                        +axe.to,
+                        axe.display,
+                    );
+                    return r;
+                }, {});
                 this.addChart(chart.name, datasets, chartAxes);
             } else {
                 this.addChart(chart.name, datasets);
@@ -222,7 +223,7 @@ export class ChartsComponent implements OnDestroy {
         this.getLogs();
     }
 
-    private addChart(name: string, datasets: ChartDataSets[], chartAxes?: any[]): void {
+    private addChart(name: string, datasets: Chart.ChartDataset<'line'>[], chartAxes?: ChartOptions<'line'>['scales']): void {
         this.charts.push({name, data: {datasets}, charts_type: this.chartFilter.charts_type, axes: chartAxes});
     }
 
@@ -356,7 +357,7 @@ export class ChartsComponent implements OnDestroy {
         return date_str + time;
     }
 
-    genDevItemDataset(item: Device_Item, colorIndex: number, hsl: Hsl = null, hidden: boolean, stepped: boolean): ChartDataSets {
+    genDevItemDataset(item: Device_Item, colorIndex: number, hsl: Hsl = null, hidden: boolean, stepped: boolean): Chart.ChartDataset<'line'> {
         const label = item.name.length ? item.name : item.type.title;
 
         if (stepped === null) {
@@ -370,7 +371,7 @@ export class ChartsComponent implements OnDestroy {
         return dataset;
     }
 
-    genParamDataset(param: DIG_Param, colorIndex: number, hsl: Hsl = null, hidden: boolean, stepped: boolean): ChartDataSets {
+    genParamDataset(param: DIG_Param, colorIndex: number, hsl: Hsl = null, hidden: boolean, stepped: boolean): Chart.ChartDataset<'line'> {
         if (stepped === null) {
             stepped = param.param.value_type === DIG_Param_Value_Type.VT_BOOL;
         }
@@ -379,31 +380,31 @@ export class ChartsComponent implements OnDestroy {
         return dataset;
     }
 
-    genDataset(label: string, colorIndex: number, steppedLine: boolean = true, hsl: Hsl = null, hidden: boolean): ChartDataSets {
+    genDataset(label: string, colorIndex: number, stepped: boolean = true, hsl: Hsl = null, hidden: boolean): Chart.ChartDataset<'line'> {
         if (hsl.h > 360)
             hsl.h %= 360;
 
         return {
             label,
             data: [],
-            yAxisID: steppedLine ? 'B' : 'A',
+            yAxisID: stepped ? 'B' : 'A',
             fill: false, //steppedLine,
             cubicInterpolationMode: 'monotone',
 
-            steppedLine,
+            stepped,
             ...ChartsComponent.get_dataset_legend_params_(hsl, hidden),
         };
     }
 
     private static genAxis(
         id: string,
-        position: string,
+        position: Chart.CartesianScaleOptions['position'],
         min: number,
         max: number,
         display: false | 'auto',
         step = 1,
         type = 'linear',
-    ): CommonAxe {
+    ): Chart.CartesianScaleOptions & {id: string} {
         const axis: any = {
             id,
             type,
@@ -414,11 +415,11 @@ export class ChartsComponent implements OnDestroy {
         if (min !== null || max !== null) {
             axis.ticks = {step};
             if (min !== null) {
-                axis.ticks.min = min;
+                axis.min = min;
             }
 
             if (max !== null) {
-                axis.ticks.max = max;
+                axis.max = max;
             }
         }
 
@@ -613,7 +614,7 @@ export class ChartsComponent implements OnDestroy {
     private reportChartAxes(chart: Chart_Info_Interface, params: BuiltChartParams) {
         const axes = chart.data.datasets.map((dataset): Axis_Params & { isParam: boolean } => {
             const axe = params.axes.find(a => a.id === dataset.yAxisID);
-            const { min: from, max: to, options: { position, hidden } } = axe as any;
+            const { min: from, max: to, options: { position, hidden }} = axe as any;
 
             return {
                 id: dataset.dev_item?.id || dataset.param?.id,
