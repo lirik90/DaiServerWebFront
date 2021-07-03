@@ -99,18 +99,7 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
 
         this.zone.run(() => this.chart.update());
 
-        const axes: Axis_Params[] = Object.keys(this.chart.scales)
-            .map((key) => {
-                const scaleItem = this.chart.scales[key];
-                return {
-                    id: key,
-                    isRight: scaleItem.position === 'right',
-                    from: scaleItem.min,
-                    to: scaleItem.max,
-                    order: 0,
-                };
-            });
-
+        const axes = this.getAxes();
         this.built.emit({
             axes,
             datasets: this.chart.data.datasets,
@@ -366,17 +355,7 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
             this.storeScaleParamsToLocalStorage();
         }
 
-        const axes: Axis_Params[] = Object.keys(this.chart.scales)
-            .map((key) => {
-                const scaleItem = this.chart.scales[key];
-                return {
-                    id: key,
-                    isRight: scaleItem.position === 'right',
-                    from: scaleItem.min,
-                    to: scaleItem.max,
-                    order: 0,
-                };
-            });
+        const axes = this.getAxes();
 
         this.axeChange.emit({
             axes,
@@ -468,5 +447,20 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
             min: axis.min,
             max: axis.max,
         }));
+    }
+
+    private getAxes(): Axis_Params[] {
+        return Object.keys(this.chart.scales)
+            .map((key) => {
+                const scaleItem = this.chart.scales[key];
+                return {
+                    id: key,
+                    isRight: scaleItem.position === 'right',
+                    from: scaleItem.min,
+                    to: scaleItem.max,
+                    order: 0,
+                    display: scaleItem.options.display as 'auto' | false,
+                };
+            });
     }
 }

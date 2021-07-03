@@ -619,7 +619,7 @@ export class ChartsComponent implements OnDestroy {
             return {
                 id: dataset.dev_item?.id || dataset.param?.id,
                 isParam: !dataset.dev_item,
-                isRight,
+                isRight: position === 'right',
 
                 from: from.toFixed(2),
                 to: to.toFixed(2),
