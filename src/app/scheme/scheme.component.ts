@@ -5,7 +5,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
 import { TranslateService } from '@ngx-translate/core';
 
-import { SubscriptionLike } from 'rxjs';
+import {Subscription, SubscriptionLike} from 'rxjs';
 
 import { SchemeService } from './scheme.service';
 import { Connection_State } from '../user';
@@ -47,6 +47,7 @@ export class SchemeComponent implements OnInit, OnDestroy, AfterViewInit {
   private mod_state: boolean;
   private loses_state: boolean;
     private active_route_component_: Component;
+    private title$: Subscription;
 
   get connected(): boolean {
     return this.connect_state !== Connection_State.CS_DISCONNECTED;
@@ -154,19 +155,22 @@ export class SchemeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.mobileQuery.addListener(this._mobileQueryListener);
     this.mobileQuery.addEventListener('change', () => this.redrawSidebar_());
 
-      this.router.events
+      this.title$ = this.router.events
           .pipe(
               filter((ev) => ev instanceof NavigationEnd),
               map(() => {
                   let child = this.route.firstChild;
                   let title: string[] = [];
                   while (child) {
+                      console.log(child.snapshot.url, child.snapshot.data?.title);
                       if (child.snapshot.data?.title) {
                           // if (child.snapshot.data?.title === '%DEVICE%') {
                           //     title.push(this.schemeService.scheme.title);
                           // } else {
                           // } // на будущее
-                          title.push(this.translate.instant(child.snapshot.data.title));
+                          const translated = this.translate.instant(child.snapshot.data?.title);
+                          if (translated !== title[title.length - 1])
+                              title.push(translated);
                       }
 
                       child = child.firstChild;
@@ -211,6 +215,9 @@ export class SchemeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.opened_sub.unsubscribe();
     this.bytes_sub.unsubscribe();
+    this.title$.unsubscribe();
+    this.title.setTitle('DeviceAccess');
+
     this.controlService.close();
     this.schemeService.clear();
   }

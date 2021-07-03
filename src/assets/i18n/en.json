@@ -49,8 +49,10 @@
             "LOG": "Journal",
             "MNEMOSCHEME": "View",
             "SETTINGS": "Settings",
-            "REPORTS": "Reports",
-            "ELEMENTS": "Elements",
+            "CHARTS": "Charts",
+            "EXPORT": "Export",
+            "DEVICES": "Devices",
+            "SECTIONS": "Sections",
             "DETAIL": "Detail",
             "HELP": "Help"
         }

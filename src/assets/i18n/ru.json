@@ -50,9 +50,10 @@
             "MNEMOSCHEME": "Обзор",
             "SETTINGS": "Настройки",
             "REPORTS": "Отчёты",
-            "ELEMENTS": "Элементы",
+            "DEVICES": "Устройства",
+            "SECTIONS": "Секции",
             "DETAIL": "Подробности",
-            "HELP": "Помощь"
+            "HELP": "Справка"
         }
     },
     "PAGINATOR": {

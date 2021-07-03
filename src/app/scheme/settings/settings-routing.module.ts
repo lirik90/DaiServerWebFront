@@ -21,6 +21,7 @@ const settingsRoutes: Routes = [
     {
         path: '',
         canActivate: [AuthGuard],
+        data: { title: 'NAVIGATION.SCHEME.SETTINGS' },
         component: SettingsComponent,
         children: [
             {path: '', pathMatch: 'full'},
@@ -53,11 +54,11 @@ const settingsRoutes: Routes = [
 
 @NgModule({
     imports: [
-        RouterModule.forChild(settingsRoutes)
+        RouterModule.forChild(settingsRoutes),
     ],
     exports: [
-        RouterModule
-    ]
+        RouterModule,
+    ],
 })
 export class SettingsRoutingModule {
 }

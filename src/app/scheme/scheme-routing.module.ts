@@ -38,19 +38,13 @@ const schemeRoutes: Routes = [{
             {
                 path: 'elements',
                 component: ElementsComponent,
-                data: {
-                    req_perms: true,
-                    title: 'NAVIGATION.SCHEME.ELEMENTS',
-                },
+                data: { req_perms: true },
                 children: [
-                    { path: 'sections', component: ManageComponent },
-                    { path: 'devices', component: ManageDevicesComponent },
+                    { path: 'sections', component: ManageComponent, data: { title: 'NAVIGATION.SCHEME.SECTIONS' } },
+                    { path: 'devices', component: ManageDevicesComponent, data: { title: 'NAVIGATION.SCHEME.DEVICES' } },
                     { path: '', pathMatch: 'full', redirectTo: 'sections' },
                 ],
             },
-            // {path: 'elements/sections', component: ManageComponent, data: {req_perms: true}},
-            // {path: 'elements/devices', component: ManageDevicesComponent, data: {req_perms: true}},
-            {path: 'elements', pathMatch: 'full', redirectTo: 'elements/sections'},
             {path: 'mnemoscheme', component: MnemoschemeComponent, data: {req_perms: true, title: 'NAVIGATION.SCHEME.MNEMOSCHEME'}},
             {path: 'log', component: LogComponent, data: {req_perms: true, title: 'NAVIGATION.SCHEME.LOG'}},
             {path: 'help', component: DocComponent, data: {req_perms: true, title: 'NAVIGATION.SCHEME.HELP'}},
@@ -59,12 +53,12 @@ const schemeRoutes: Routes = [{
                 path: 'reports',
                 loadChildren: () => import('app/scheme/reports/reports.module').then(m => m.ReportsModule),
                 canLoad: [AuthGuard],
-                data: {req_perms: true, title: 'NAVIGATION.SCHEME.REPORTS'}
+                data: {req_perms: true}
             },
             {
                 path: 'structure',
                 loadChildren: () => import('app/scheme/settings/settings.module').then(m => m.SettingsModule),
-                data: {req_perms: true, title: 'NAVIGATION.SCHEME.SETTINGS'},
+                data: {req_perms: true},
                 canLoad: [AuthGuard]
             },
         ]
