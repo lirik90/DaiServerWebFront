@@ -47,6 +47,9 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
             type: 'linear',
             position: 'left',
             display: 'auto',
+            ticks: {
+                backdropPadding: 0,
+            },
         },
         B: {
             id: 'B',
@@ -117,7 +120,7 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
             animation: false,
             resizeDelay: 100,
             responsive: true,
-            maintainAspectRatio: false,
+            maintainAspectRatio: true,
             legend: { display: false },
             tooltips: {
                 mode: 'nearest',
@@ -152,7 +155,8 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
                         sampleSize: 10,
                         maxRotation: 30,
                         minRotation: 30,
-                        min: undefined, max: undefined
+                        min: undefined,
+                        max: undefined,
                     },
                     afterFit: (scale) => {
                         scale.height = 40;
