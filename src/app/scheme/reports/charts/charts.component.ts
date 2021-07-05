@@ -614,17 +614,19 @@ export class ChartsComponent implements OnDestroy {
     private reportChartAxes(chart: Chart_Info_Interface, params: BuiltChartParams) {
         const axes = chart.data.datasets.map((dataset): Axis_Params & { isParam: boolean } => {
             const axe = params.axes.find(a => a.id === dataset.yAxisID);
-            const { min: from, max: to, options: { position, hidden }} = axe as any;
-
+            const { from, to, isRight, display } = axe as any;
+            if (isRight === undefined || display === undefined || from === undefined || to === undefined) {
+                throw new Error('Bug #111');
+            }
             return {
                 id: dataset.dev_item?.id || dataset.param?.id,
                 isParam: !dataset.dev_item,
-                isRight: position === 'right',
+                isRight,
 
                 from: from.toFixed(2),
                 to: to.toFixed(2),
                 order: axe.order,
-                display: hidden ? false : 'auto',
+                display,
             };
         });
 
