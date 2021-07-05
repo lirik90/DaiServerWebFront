@@ -5,8 +5,8 @@
   font-weight: 400;
   src: local('Material Icons'),
        local('MaterialIcons-Regular'),
-       url(googleicons.woff2) format('woff2');
-       url(googleicons.woff) format('woff');
+       url(googleicons.woff2) format('woff2'),
+       url(googleicons.woff) format('woff'),
        url(googleicons.ttf) format('truetype');
 }
 
