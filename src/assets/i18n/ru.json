@@ -44,6 +44,24 @@
       "TITLE": "Уведомления"
     }
   },
+    "NAVIGATION": {
+        "LOGIN": "Авторизация",
+        "REGISTER": "Регистрация",
+        "DASHBOARD": "Избранное",
+        "LIST": "Список схем",
+        "DETAIL": "Детали",
+        "GROUP_MANAGEMENT": "Управление группами",
+        "SCHEME": {
+            "LOG": "Журнал",
+            "MNEMOSCHEME": "Обзор",
+            "SETTINGS": "Настройки",
+            "REPORTS": "Отчёты",
+            "DEVICES": "Устройства",
+            "SECTIONS": "Секции",
+            "DETAIL": "Подробности",
+            "HELP": "Справка"
+        }
+    },
     "PAGINATOR": {
         "NEXT_PAGE": "Cлед. стр.",
         "PREV_PAGE": "Пред. стр.",

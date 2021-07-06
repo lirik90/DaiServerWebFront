@@ -44,6 +44,25 @@
       "TITLE": "Notifications"
     }
   },
+    "NAVIGATION": {
+        "LOGIN": "Authorization",
+        "REGISTER": "Registration",
+        "DASHBOARD": "Dashboard",
+        "LIST": "Scheme list",
+        "DETAIL": "Details",
+        "GROUP_MANAGEMENT": "Groups management",
+        "SCHEME": {
+            "LOG": "Journal",
+            "MNEMOSCHEME": "View",
+            "SETTINGS": "Settings",
+            "CHARTS": "Charts",
+            "EXPORT": "Export",
+            "DEVICES": "Devices",
+            "SECTIONS": "Sections",
+            "DETAIL": "Detail",
+            "HELP": "Help"
+        }
+    },
     "PAGINATOR": {
         "NEXT_PAGE": "Next page",
         "PREV_PAGE": "Previous page",

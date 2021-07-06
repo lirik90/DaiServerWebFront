@@ -22,6 +22,7 @@ import {Connection_State, PaginatorApi, Scheme_Group_Member} from '../user';
 import {MessageService} from '../message.service';
 import {ISchemeService} from '../ischeme.service';
 import {ChangeInfo, ChangeState, Structure_Type} from './settings/settings';
+import {TitleService} from '../title.service';
 
 const httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -98,7 +99,9 @@ export class SchemeService extends ISchemeService {
         public translate: TranslateService,
         private router: Router,
         http: HttpClient,
-        messageService: MessageService) {
+        messageService: MessageService,
+        private titleService: TitleService,
+    ) {
         super(http, messageService);
         // this.scheme = JSON.parse(localStorage.getItem(this.scheme_s));
     }
@@ -201,6 +204,8 @@ export class SchemeService extends ISchemeService {
                 }
                 this.scheme = this.scheme2;
                 this.scheme.name = scheme_name;
+
+                this.titleService.setVariable('%SCHEME%', this.scheme.title || this.scheme.name);
 
                 localStorage.setItem(this.scheme_s, JSON.stringify(this.scheme2));
                 this.log('fetched scheme detail');

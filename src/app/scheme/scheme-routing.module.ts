@@ -21,25 +21,33 @@ const schemeRoutes: Routes = [{
     canActivate: [AuthGuard],
     children: [{
         path: ':name',
+        data: { title: '%SCHEME%' },
         component: SchemeComponent,
         canActivate: [SchemeLoadGuard],
         canActivateChild: [AuthGuard, SchemeLoadGuard, PermissionGuard],
         children: [
             {path: '', redirectTo: 'detail', pathMatch: 'full'},
-            {path: 'detail', component: SchemeDetailComponent, data: {req_perms: true}},
             {
-                path: 'elements', component: ElementsComponent, data: { req_perms: true }, children: [
-                    { path: 'sections', component: ManageComponent },
-                    { path: 'devices', component: ManageDevicesComponent },
-                    { path: '', pathMatch: 'full', redirectTo: 'sections' },
-                ]
+                path: 'detail',
+                component: SchemeDetailComponent,
+                data: {
+                    req_perms: true,
+                    title: 'NAVIGATION.SCHEME.DETAIL',
+                },
             },
-            {path: 'elements/sections', component: ManageComponent, data: {req_perms: true}},
-            {path: 'elements/devices', component: ManageDevicesComponent, data: {req_perms: true}},
-            {path: 'elements', pathMatch: 'full', redirectTo: 'elements/sections'},
-            {path: 'mnemoscheme', component: MnemoschemeComponent},
-            {path: 'log', component: LogComponent, data: {req_perms: true}},
-            {path: 'help', component: DocComponent, data: {req_perms: true}},
+            {
+                path: 'elements',
+                component: ElementsComponent,
+                data: { req_perms: true },
+                children: [
+                    { path: 'sections', component: ManageComponent, data: { title: 'NAVIGATION.SCHEME.SECTIONS' } },
+                    { path: 'devices', component: ManageDevicesComponent, data: { title: 'NAVIGATION.SCHEME.DEVICES' } },
+                    { path: '', pathMatch: 'full', redirectTo: 'sections' },
+                ],
+            },
+            {path: 'mnemoscheme', component: MnemoschemeComponent, data: {req_perms: true, title: 'NAVIGATION.SCHEME.MNEMOSCHEME'}},
+            {path: 'log', component: LogComponent, data: {req_perms: true, title: 'NAVIGATION.SCHEME.LOG'}},
+            {path: 'help', component: DocComponent, data: {req_perms: true, title: 'NAVIGATION.SCHEME.HELP'}},
             // { path: 'group/:groupId/param', component: ParamComponent },
             {
                 path: 'reports',
