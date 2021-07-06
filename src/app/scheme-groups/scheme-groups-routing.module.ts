@@ -8,7 +8,7 @@ const routes: Routes = [
         path: '',
         component: SchemeGroupsComponent,
         children: [
-            { path: 'group/:id', component: EditSchemeGroupComponent },
+            { path: 'group/:id', component: EditSchemeGroupComponent, data: { title: '%GROUP%' } },
         ],
     },
 ];

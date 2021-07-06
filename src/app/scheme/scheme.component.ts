@@ -1,229 +1,196 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ComponentRef, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Router, RouterEvent} from '@angular/router';
-import { MediaMatcher} from '@angular/cdk/layout';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSidenav } from '@angular/material/sidenav';
-import { TranslateService } from '@ngx-translate/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {MediaMatcher} from '@angular/cdk/layout';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {TranslateService} from '@ngx-translate/core';
 
 import {Subscription, SubscriptionLike} from 'rxjs';
 
-import { SchemeService } from './scheme.service';
-import { Connection_State } from '../user';
-import { ControlService, WebSockCmd } from './control.service';
-import { AuthenticationService } from '../authentication.service';
-import { FavService } from '../fav.service';
+import {SchemeService} from './scheme.service';
+import {Connection_State} from '../user';
+import {ControlService, WebSockCmd} from './control.service';
+import {AuthenticationService} from '../authentication.service';
+import {FavService} from '../fav.service';
 import {needSidebarHelper, NeedSidebar} from './sidebar.service';
-import { Time_Info } from './scheme';
-import {filter, map} from 'rxjs/operators';
-import {Title} from '@angular/platform-browser';
+import {Time_Info} from './scheme';
+import {filter} from 'rxjs/operators';
+import {TitleService} from '../title.service';
 
 interface NavLink {
-  link: string;
-  query?: any;
-  text: string;
-  icon: string;
+    link: string;
+    query?: any;
+    text: string;
+    icon: string;
 }
 
 @Component({
-  selector: 'app-scheme',
-  templateUrl: './scheme.component.html',
-  styleUrls: ['./scheme.component.css'],
+    selector: 'app-scheme',
+    templateUrl: './scheme.component.html',
+    styleUrls: ['./scheme.component.css'],
 })
 export class SchemeComponent implements OnInit, OnDestroy, AfterViewInit {
-    @ViewChild('sidebar', { read: ViewContainerRef }) sidebarContainerRef: ViewContainerRef;
-    @ViewChild('sidebarMobile', { read: ViewContainerRef }) sidebarMobileContainerRef: ViewContainerRef;
+    @ViewChild('sidebar', {read: ViewContainerRef}) sidebarContainerRef: ViewContainerRef;
+    @ViewChild('sidebarMobile', {read: ViewContainerRef}) sidebarMobileContainerRef: ViewContainerRef;
 
     haveSidebar = false;
 
-  mobileQuery: MediaQueryList;
-  private _mobileQueryListener: () => void;
+    mobileQuery: MediaQueryList;
+    private _mobileQueryListener: () => void;
 
-  fillerNav: NavLink[] = [];
+    fillerNav: NavLink[] = [];
 
-  status_checked = false;
-  connection_str = ' '; // SchemeComponent.getConnectionString(false);
+    status_checked = false;
+    connection_str = ' '; // SchemeComponent.getConnectionString(false);
 
-  connect_state: Connection_State = Connection_State.CS_DISCONNECTED;
-  private mod_state: boolean;
-  private loses_state: boolean;
+    connect_state: Connection_State = Connection_State.CS_DISCONNECTED;
+    private mod_state: boolean;
+    private loses_state: boolean;
     private active_route_component_: Component;
-    private title$: Subscription;
 
-  get connected(): boolean {
-    return this.connect_state !== Connection_State.CS_DISCONNECTED;
-  }
-
-  private page_reload_dialog_ref: MatDialogRef<PageReloadDialogComponent> = undefined;
-
-  dt_offset = 0;
-  dt_tz_name = '';
-  dt_interval: any;
-  dt_text = '';
-
-  private bytes_sub: SubscriptionLike;
-  private opened_sub: SubscriptionLike;
-
-  isFav = false;
-
-  private getConnectionString(connected: boolean): string {
-    return connected ? undefined : this.translate.instant('CONNECTION_PROBLEM');
-  }
-
-  get status_class(): string {
-    if (this.connection_str !== undefined && this.connection_str !== ' ') {
-      return 'status_fail';
+    get connected(): boolean {
+        return this.connect_state !== Connection_State.CS_DISCONNECTED;
     }
 
-    if (!this.status_checked) {
-      return 'status_check';
+    private page_reload_dialog_ref: MatDialogRef<PageReloadDialogComponent> = undefined;
+
+    dt_offset = 0;
+    dt_tz_name = '';
+    dt_interval: any;
+    dt_text = '';
+
+    private bytes_sub: SubscriptionLike;
+    private opened_sub: SubscriptionLike;
+
+    isFav = false;
+
+    private getConnectionString(connected: boolean): string {
+        return connected ? undefined : this.translate.instant('CONNECTION_PROBLEM');
     }
 
-    if (this.mod_state) {
-      return 'status_modified';
+    get status_class(): string {
+        if (this.connection_str !== undefined && this.connection_str !== ' ') {
+            return 'status_fail';
+        }
+
+        if (!this.status_checked) {
+            return 'status_check';
+        }
+
+        if (this.mod_state) {
+            return 'status_modified';
+        }
+
+        switch (this.connect_state) {
+            case Connection_State.CS_SERVER_DOWN:
+                return 'status_server_down';
+            case Connection_State.CS_DISCONNECTED:
+                return 'status_bad';
+            case Connection_State.CS_CONNECTED:
+                return 'status_ok';
+            case Connection_State.CS_CONNECTED_MODIFIED:
+                return 'status_modified';
+            case Connection_State.CS_DISCONNECTED_JUST_NOW:
+                return 'status_bad_just';
+            case Connection_State.CS_CONNECTED_JUST_NOW:
+                return 'status_sync';
+            case Connection_State.CS_CONNECTED_SYNC_TIMEOUT:
+                return 'status_ok';
+        }
     }
 
-    switch (this.connect_state) {
-      case Connection_State.CS_SERVER_DOWN:
-        return 'status_server_down';
-      case Connection_State.CS_DISCONNECTED:
-        return 'status_bad';
-      case Connection_State.CS_CONNECTED:
-        return 'status_ok';
-      case Connection_State.CS_CONNECTED_MODIFIED:
-        return 'status_modified';
-      case Connection_State.CS_DISCONNECTED_JUST_NOW:
-        return 'status_bad_just';
-      case Connection_State.CS_CONNECTED_JUST_NOW:
-        return 'status_sync';
-      case Connection_State.CS_CONNECTED_SYNC_TIMEOUT:
-        return 'status_ok';
+    get status_desc(): string {
+        if (this.connection_str !== undefined && this.connection_str !== ' ') {
+            return this.connection_str;
+        }
+
+        let result = '';
+
+        if (this.mod_state) {
+            result += this.translate.instant('MODIFIED') + '. ';
+        }
+
+
+        if (this.loses_state) {
+            result += this.translate.instant('WITH_LOSS');
+        }
+
+        if (this.status_checked) {
+            switch (this.connect_state) {
+                case Connection_State.CS_SERVER_DOWN:
+                    return this.translate.instant('SERVER_DOWN');
+                case Connection_State.CS_DISCONNECTED:
+                    return result + this.translate.instant('OFFLINE');
+                case Connection_State.CS_CONNECTED:
+                    return result + this.translate.instant('ONLINE');
+                case Connection_State.CS_CONNECTED_MODIFIED:
+                    return result + this.translate.instant('MODIFIED');
+                case Connection_State.CS_DISCONNECTED_JUST_NOW:
+                    return result + this.translate.instant('DISCONNECTED_JUST_NOW');
+                case Connection_State.CS_CONNECTED_JUST_NOW:
+                    return result + this.translate.instant('CONNECTED_JUST_NOW');
+                case Connection_State.CS_CONNECTED_SYNC_TIMEOUT:
+                    return result + this.translate.instant('CONNECTED_SYNC_TIMEOUT');
+            }
+        }
+        return this.translate.instant('WAIT') + '...';
     }
-  }
 
-  get status_desc(): string {
-    if (this.connection_str !== undefined && this.connection_str !== ' ') {
-      return this.connection_str;
+    constructor(
+        public translate: TranslateService,
+        public schemeService: SchemeService,
+        private route: ActivatedRoute,
+        private controlService: ControlService,
+        private authService: AuthenticationService,
+        private dialog: MatDialog,
+        private router: Router,
+        private changeDetectorRef: ChangeDetectorRef,
+        media: MediaMatcher,
+        private favService: FavService,
+    ) {
+        this.mobileQuery = media.matchMedia('(max-width: 600px)');
+        this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+        // this.mobileQuery.addListener(this._mobileQueryListener);
+        this.mobileQuery.addEventListener('change', () => this.redrawSidebar_());
     }
 
-    let result = '';
-
-    if (this.mod_state) {
-      result += this.translate.instant('MODIFIED') + '. ';
+    addMenu(name: string, icon: string): void {
+        if (this.authService.checkPermission('menu_' + name)) {
+            this.fillerNav.push({link: name, text: this.translate.instant('NAVIGATION_TAB.' + name.toUpperCase()), icon: icon});
+        }
     }
 
+    ngOnInit() {
+        const isAdmin = this.authService.isAdmin();
+        const isFullAccess = this.authService.isFullAccess();
 
-    if (this.loses_state) {
-      result += this.translate.instant('WITH_LOSS');
+        this.addMenu('detail', 'perm_device_information');
+        this.addMenu('mnemoscheme', 'image');
+        this.addMenu('elements', 'build');
+        this.addMenu('log', 'event_note');
+        this.addMenu('structure', 'settings');
+        this.addMenu('reports', 'show_chart');
+        this.addMenu('help', 'help');
+
+        this.getSchemeInfo();
+
+        this.isFav = this.favService.isFav(this.schemeService.scheme.name);
     }
 
-    if (this.status_checked) {
-      switch (this.connect_state) {
-        case Connection_State.CS_SERVER_DOWN:
-          return this.translate.instant('SERVER_DOWN');
-        case Connection_State.CS_DISCONNECTED:
-          return result + this.translate.instant('OFFLINE');
-        case Connection_State.CS_CONNECTED:
-          return result + this.translate.instant('ONLINE');
-        case Connection_State.CS_CONNECTED_MODIFIED:
-          return result + this.translate.instant('MODIFIED');
-        case Connection_State.CS_DISCONNECTED_JUST_NOW:
-          return result + this.translate.instant('DISCONNECTED_JUST_NOW');
-        case Connection_State.CS_CONNECTED_JUST_NOW:
-          return result + this.translate.instant('CONNECTED_JUST_NOW');
-        case Connection_State.CS_CONNECTED_SYNC_TIMEOUT:
-          return result + this.translate.instant('CONNECTED_SYNC_TIMEOUT');
-      }
+    ngAfterViewInit() {
+        this.changeDetectorRef.detectChanges();
     }
-    return this.translate.instant('WAIT') + '...';
-  }
-
-  constructor(
-    public translate: TranslateService,
-    public schemeService: SchemeService,
-    private route: ActivatedRoute,
-    private controlService: ControlService,
-    private authService: AuthenticationService,
-    private dialog: MatDialog,
-    private router: Router,
-    private changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher,
-    private favService: FavService,
-    private title: Title,
-  ) {
-    this.mobileQuery = media.matchMedia('(max-width: 600px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    // this.mobileQuery.addListener(this._mobileQueryListener);
-    this.mobileQuery.addEventListener('change', () => this.redrawSidebar_());
-
-      this.title$ = this.router.events
-          .pipe(
-              filter((ev) => ev instanceof NavigationEnd),
-              map(() => {
-                  let child = this.route.firstChild;
-                  let title: string[] = [];
-                  while (child) {
-                      console.log(child.snapshot.url, child.snapshot.data?.title);
-                      if (child.snapshot.data?.title) {
-                          // if (child.snapshot.data?.title === '%DEVICE%') {
-                          //     title.push(this.schemeService.scheme.title);
-                          // } else {
-                          // } // на будущее
-                          const translated = this.translate.instant(child.snapshot.data?.title);
-                          if (translated !== title[title.length - 1])
-                              title.push(translated);
-                      }
-
-                      child = child.firstChild;
-                  }
-
-                  return ['DeviceAccess', this.schemeService.scheme.title, ...title];
-              }),
-          )
-          .subscribe((title) => {
-              this.title.setTitle(title.join(' - '));
-          });
-  }
-
-  addMenu(name: string, icon: string): void {
-    if (this.authService.checkPermission('menu_' + name))
-      this.fillerNav.push({link: name, text: this.translate.instant('NAVIGATION_TAB.' + name.toUpperCase()), icon: icon});
-  }
-
-  ngOnInit() {
-    const isAdmin = this.authService.isAdmin();
-    const isFullAccess = this.authService.isFullAccess();
-
-    this.addMenu('detail', 'perm_device_information');
-    this.addMenu('mnemoscheme', 'image');
-    this.addMenu('elements', 'build');
-    this.addMenu('log', 'event_note');
-    this.addMenu('structure', 'settings');
-    this.addMenu('reports', 'show_chart');
-    this.addMenu('help', 'help');
-
-    this.getSchemeInfo();
-
-    this.isFav = this.favService.isFav(this.schemeService.scheme.name);
-  }
-
-  ngAfterViewInit() {
-      this.changeDetectorRef.detectChanges();
-  }
 
     ngOnDestroy() {
-    // this.mobileQuery.removeListener(this._mobileQueryListener);
+        // this.mobileQuery.removeListener(this._mobileQueryListener);
 
-    this.opened_sub.unsubscribe();
-    this.bytes_sub.unsubscribe();
-    this.title$.unsubscribe();
-    this.title.setTitle('DeviceAccess');
+        this.opened_sub.unsubscribe();
+        this.bytes_sub.unsubscribe();
 
-    this.controlService.close();
-    this.schemeService.clear();
-  }
+        this.controlService.close();
+        this.schemeService.clear();
+    }
 
-    setConnectionState(state: Connection_State): void
-    {
+    setConnectionState(state: Connection_State): void {
         this.connect_state = state;
         this.schemeService.isSchemeConnected =
             state !== Connection_State.CS_DISCONNECTED
@@ -231,132 +198,131 @@ export class SchemeComponent implements OnInit, OnDestroy, AfterViewInit {
             && state !== Connection_State.CS_SERVER_DOWN;
     }
 
-  clearTime(): void {
-    if (this.dt_interval) {
-      clearInterval(this.dt_interval);
-      this.dt_text = '';
+    clearTime(): void {
+        if (this.dt_interval) {
+            clearInterval(this.dt_interval);
+            this.dt_text = '';
+        }
     }
-  }
 
-  getSchemeInfo(): void {
-    this.schemeService.scheme.conn.subscribe(v => {
-      const [connState, modState, losesState] = this.controlService.parseConnectNumber(v);
-      this.setConnectionState(connState as Connection_State);
-      this.mod_state = modState as boolean;
-      this.loses_state = losesState as boolean;
-    }).unsubscribe();
+    getSchemeInfo(): void {
+        this.schemeService.scheme.conn.subscribe(v => {
+            const [connState, modState, losesState] = this.controlService.parseConnectNumber(v);
+            this.setConnectionState(connState as Connection_State);
+            this.mod_state = modState as boolean;
+            this.loses_state = losesState as boolean;
+        }).unsubscribe();
 
-    this.bytes_sub = this.controlService.byte_msg.subscribe(msg => {
+        this.bytes_sub = this.controlService.byte_msg.subscribe(msg => {
 
-      if (msg.cmd === WebSockCmd.WS_CONNECTION_STATE) {
-        if (msg.data === undefined) {
-          console.log('ConnectInfo without data');
-          return;
-        }
+            if (msg.cmd === WebSockCmd.WS_CONNECTION_STATE) {
+                if (msg.data === undefined) {
+                    console.log('ConnectInfo without data');
+                    return;
+                }
 
-        if (msg.scheme_id === 0) {
-          console.log('SCHEME_ID == 0');
-          this.setConnectionState(Connection_State.CS_SERVER_DOWN);
-          return;
-        }
+                if (msg.scheme_id === 0) {
+                    console.log('SCHEME_ID == 0');
+                    this.setConnectionState(Connection_State.CS_SERVER_DOWN);
+                    return;
+                }
 
-        const [connState, modState, losesState] = this.controlService.parseConnectState(msg.data);
+                const [connState, modState, losesState] = this.controlService.parseConnectState(msg.data);
 
 
-        /* get connecton state */
-        this.setConnectionState(connState);
-        this.mod_state = modState;
-        this.loses_state = losesState;
+                /* get connecton state */
+                this.setConnectionState(connState);
+                this.mod_state = modState;
+                this.loses_state = losesState;
 
-        if (!this.status_checked) {
-          this.status_checked = true;
-        }
-      } else if (msg.cmd === WebSockCmd.WS_STRUCT_MODIFY) {
-        const view = new Uint8Array(msg.data);
-        const structure_type = view[8];
-        switch (structure_type) {
-          case 23: // STRUCT_TYPE_DEVICE_ITEM_VALUES
-          case 24: // STRUCT_TYPE_GROUP_MODE
-          case 25: // STRUCT_TYPE_GROUP_STATUS
-          case 26: // STRUCT_TYPE_GROUP_PARAM_VALUE
-            return;
-        }
+                if (!this.status_checked) {
+                    this.status_checked = true;
+                }
+            } else if (msg.cmd === WebSockCmd.WS_STRUCT_MODIFY) {
+                const view = new Uint8Array(msg.data);
+                const structure_type = view[8];
+                switch (structure_type) {
+                    case 23: // STRUCT_TYPE_DEVICE_ITEM_VALUES
+                    case 24: // STRUCT_TYPE_GROUP_MODE
+                    case 25: // STRUCT_TYPE_GROUP_STATUS
+                    case 26: // STRUCT_TYPE_GROUP_PARAM_VALUE
+                        return;
+                }
 
-        this.connect_state = Connection_State.CS_CONNECTED_MODIFIED;
+                this.connect_state = Connection_State.CS_CONNECTED_MODIFIED;
 
-        if (!this.page_reload_dialog_ref) {
-          this.page_reload_dialog_ref = this.dialog.open(PageReloadDialogComponent, {width: '80%', });
-          this.page_reload_dialog_ref.afterClosed().subscribe(result => {
-            if (result) {
-              window.location.reload();
+                if (!this.page_reload_dialog_ref) {
+                    this.page_reload_dialog_ref = this.dialog.open(PageReloadDialogComponent, {width: '80%',});
+                    this.page_reload_dialog_ref.afterClosed().subscribe(result => {
+                        if (result) {
+                            window.location.reload();
+                        }
+                        this.page_reload_dialog_ref = undefined;
+                    });
+                }
+            } else if (msg.cmd === WebSockCmd.WS_TIME_INFO) {
+                const info = this.controlService.parseTimeInfo(msg.data);
+                this.startTimeTimer(info);
             }
-            this.page_reload_dialog_ref = undefined;
-          });
-        }
-      } else if (msg.cmd === WebSockCmd.WS_TIME_INFO) {
-          const info = this.controlService.parseTimeInfo(msg.data);
-          this.startTimeTimer(info);
-      }
-    });
+        });
 
-    this.opened_sub = this.controlService.opened.subscribe(opened => {
-      this.connection_str = this.getConnectionString(opened);
+        this.opened_sub = this.controlService.opened.subscribe(opened => {
+            this.connection_str = this.getConnectionString(opened);
 
-      if (opened) {
-        this.controlService.getConnectInfo();
-      } else {
-        this.clearTime();
-        this.setConnectionState(Connection_State.CS_DISCONNECTED);
-      }
-    });
+            if (opened) {
+                this.controlService.getConnectInfo();
+            } else {
+                this.clearTime();
+                this.setConnectionState(Connection_State.CS_DISCONNECTED);
+            }
+        });
 
-    this.controlService.open();
-    this.schemeService.getTimeInfo().subscribe(info => this.startTimeTimer(info));
-  }
-
-  startTimeTimer(info: Time_Info) {
-    if (info.utc_time) {
-      const now = new Date();
-      info.tz_offset += now.getTimezoneOffset() * 60;
-      this.dt_offset = (now.getTime() - info.utc_time) + info.tz_offset * 1000;
-      this.dt_tz_name = info.tz_name;
-      if (!this.dt_interval) {
-        this.gen_time_string();
-        this.dt_interval = setInterval(() => this.gen_time_string(), 1000);
-      }
+        this.controlService.open();
+        this.schemeService.getTimeInfo().subscribe(info => this.startTimeTimer(info));
     }
-  }
 
-  gen_time_string() {
-    const dt = new Date();
-    dt.setTime(dt.getTime() + this.dt_offset);
+    startTimeTimer(info: Time_Info) {
+        if (info.utc_time) {
+            const now = new Date();
+            info.tz_offset += now.getTimezoneOffset() * 60;
+            this.dt_offset = (now.getTime() - info.utc_time) + info.tz_offset * 1000;
+            this.dt_tz_name = info.tz_name;
+            if (!this.dt_interval) {
+                this.gen_time_string();
+                this.dt_interval = setInterval(() => this.gen_time_string(), 1000);
+            }
+        }
+    }
 
-    const months = this.translate.instant('MONTHS');
-    const t_num = (num: number): string => {
-      return (num < 10 ? '0' : '') + num.toString();
-    };
+    gen_time_string() {
+        const dt = new Date();
+        dt.setTime(dt.getTime() + this.dt_offset);
 
-    this.dt_text = t_num(dt.getHours()) + ':' + t_num(dt.getMinutes()) + ':' + t_num(dt.getSeconds()) + ', ' +
-      t_num(dt.getDate()) + ' ' + (months.length === 12 ? months[dt.getMonth()] : dt.getMonth()) + ' ' + dt.getFullYear();
-  }
+        const months = this.translate.instant('MONTHS');
+        const t_num = (num: number): string => {
+            return (num < 10 ? '0' : '') + num.toString();
+        };
 
-  closeMenu() {
-    const el: HTMLInputElement = <HTMLInputElement>document.getElementById('localnav-menustate');
-    el.checked = false;
-  }
+        this.dt_text = t_num(dt.getHours()) + ':' + t_num(dt.getMinutes()) + ':' + t_num(dt.getSeconds()) + ', ' +
+            t_num(dt.getDate()) + ' ' + (months.length === 12 ? months[dt.getMonth()] : dt.getMonth()) + ' ' + dt.getFullYear();
+    }
 
-  fav() {
-    this.favService.addToFav(this.schemeService.scheme.name, this.schemeService.scheme.title);
-    this.isFav = this.favService.isFav(this.schemeService.scheme.name);
-  }
+    closeMenu() {
+        const el: HTMLInputElement = <HTMLInputElement>document.getElementById('localnav-menustate');
+        el.checked = false;
+    }
 
-  unfav() {
-    this.favService.removeFromFav(this.schemeService.scheme.name);
-    this.isFav = this.favService.isFav(this.schemeService.scheme.name);
-  }
+    fav() {
+        this.favService.addToFav(this.schemeService.scheme.name, this.schemeService.scheme.title);
+        this.isFav = this.favService.isFav(this.schemeService.scheme.name);
+    }
 
-    onRouterOutletActivate(component: Component): void
-    {
+    unfav() {
+        this.favService.removeFromFav(this.schemeService.scheme.name);
+        this.isFav = this.favService.isFav(this.schemeService.scheme.name);
+    }
+
+    onRouterOutletActivate(component: Component): void {
         this.active_route_component_ = component;
         this.redrawSidebar_();
     }
@@ -377,11 +343,11 @@ export class SchemeComponent implements OnInit, OnDestroy, AfterViewInit {
 }
 
 @Component({
-  templateUrl: './page-reload-dialog.component.html',
+    templateUrl: './page-reload-dialog.component.html',
 })
 export class PageReloadDialogComponent {
-  constructor(
-    public dialogRef: MatDialogRef<PageReloadDialogComponent>
-  ) {
-  }
+    constructor(
+        public dialogRef: MatDialogRef<PageReloadDialogComponent>
+    ) {
+    }
 }

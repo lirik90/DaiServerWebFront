@@ -45,6 +45,12 @@
     }
   },
     "NAVIGATION": {
+        "LOGIN": "Авторизация",
+        "REGISTER": "Регистрация",
+        "DASHBOARD": "Избранное",
+        "LIST": "Список схем",
+        "DETAIL": "Детали",
+        "GROUP_MANAGEMENT": "Управление группами",
         "SCHEME": {
             "LOG": "Журнал",
             "MNEMOSCHEME": "Обзор",

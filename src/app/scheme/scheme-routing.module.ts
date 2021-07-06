@@ -21,7 +21,7 @@ const schemeRoutes: Routes = [{
     canActivate: [AuthGuard],
     children: [{
         path: ':name',
-        data: { title: '%DEVICE%' },
+        data: { title: '%SCHEME%' },
         component: SchemeComponent,
         canActivate: [SchemeLoadGuard],
         canActivateChild: [AuthGuard, SchemeLoadGuard, PermissionGuard],

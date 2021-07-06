@@ -11,13 +11,16 @@ import { TgAuthComponent } from './tg-auth/tg-auth.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full'},
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
-  { path: 'list', component: SchemeListComponent, canActivate: [AuthGuard]  },
-  { path: 'detail/:name', component: SchemeDetailComponent, canActivate: [AuthGuard]  },
+  { path: 'login', component: LoginComponent, data: { title: 'NAVIGATION.LOGIN' } },
+  { path: 'register', component: RegisterComponent, data: { title: 'NAVIGATION.REGISTER' } },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], data: { title: 'NAVIGATION.DASHBOARD' } },
+  { path: 'list', component: SchemeListComponent, canActivate: [AuthGuard], data: { title: 'NAVIGATION.LIST' } },
+  { path: 'detail/:name', component: SchemeDetailComponent, canActivate: [AuthGuard], data: { title: 'NAVIGATION.DETAIL' } },
   {
       path: 'scheme-groups',
+      data: {
+          title: 'NAVIGATION.GROUP_MANAGEMENT',
+      },
       loadChildren: () => import('app/scheme-groups/scheme-groups.module').then(m => m.SchemeGroupsModule),
       canLoad: [AuthGuard],
   },
