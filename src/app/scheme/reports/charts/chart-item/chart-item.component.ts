@@ -133,7 +133,7 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
             },
             scales: {
                 x: {
-                    offset: true,
+                    offset: false,
                     stacked: true,
                     type: 'time',
                     time: {
@@ -209,7 +209,7 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
 
     ngAfterViewInit() {
         this.chartOptions.data = this.chartInfo.data;
-        this.chart = new Chart.Chart<'line'>(this.chartContainer.nativeElement, this.chartOptions);
+        this.chart = new Chart.Chart<'line'>(this.chartContainer.nativeElement.getContext('2d'), this.chartOptions);
     }
 
     ngOnChanges(changes: SimpleChanges) {
