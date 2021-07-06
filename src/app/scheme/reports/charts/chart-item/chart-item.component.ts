@@ -16,8 +16,6 @@ import {
     ViewChild
 } from '@angular/core';
 
-import {ProgressBarMode} from '@angular/material/progress-bar/progress-bar';
-import {ThemePalette} from '@angular/material/core/common-behaviors/color';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
 import {Paginator_Chart_Value, SchemeService} from '../../../scheme.service';
@@ -49,6 +47,9 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
             type: 'linear',
             position: 'left',
             display: 'auto',
+            ticks: {
+                backdropPadding: 0,
+            },
         },
         B: {
             id: 'B',
@@ -119,7 +120,7 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
             animation: false,
             resizeDelay: 100,
             responsive: true,
-            maintainAspectRatio: false,
+            maintainAspectRatio: true,
             legend: { display: false },
             tooltips: {
                 mode: 'nearest',
@@ -132,7 +133,7 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
             },
             scales: {
                 x: {
-                    offset: true,
+                    offset: false,
                     stacked: true,
                     type: 'time',
                     time: {
@@ -154,7 +155,8 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
                         sampleSize: 10,
                         maxRotation: 30,
                         minRotation: 30,
-                        min: undefined, max: undefined
+                        min: undefined,
+                        max: undefined,
                     },
                     afterFit: (scale) => {
                         scale.height = 40;
@@ -207,7 +209,7 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
 
     ngAfterViewInit() {
         this.chartOptions.data = this.chartInfo.data;
-        this.chart = new Chart.Chart<'line'>(this.chartContainer.nativeElement, this.chartOptions);
+        this.chart = new Chart.Chart<'line'>(this.chartContainer.nativeElement.getContext('2d'), this.chartOptions);
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -459,6 +461,7 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
                     from: scaleItem.min,
                     to: scaleItem.max,
                     order: 0,
+                    stepped: null, // TODO: ??
                     display: scaleItem.options.display as 'auto' | false,
                 };
             });

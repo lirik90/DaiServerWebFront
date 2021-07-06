@@ -300,6 +300,7 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
                     isRight: null,
                     order: idx,
                     display: 'auto',
+                    stepped: null,
                 },
                 displayColor,
                 color,
@@ -674,6 +675,7 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
                 dsp.legend.scale.from = axe.from;
                 dsp.legend.scale.to = axe.to;
                 dsp.legend.scale.isRight = axe.isRight;
+                dsp.legend.stepped = axe.stepped;
                 // dsp.legend.scale.display = axe.display;
             });
         }
