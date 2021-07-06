@@ -461,6 +461,7 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
                     from: scaleItem.min,
                     to: scaleItem.max,
                     order: 0,
+                    stepped: null, // TODO: ??
                     display: scaleItem.options.display as 'auto' | false,
                 };
             });
