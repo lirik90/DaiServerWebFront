@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {SchemeService} from '../../scheme.service';
-import {Structure_Type} from '../../settings/settings';
+import {SchemeService} from '../../../scheme.service';
+import {Structure_Type} from '../../../settings/settings';
 
 @Component({
     selector: 'app-sign-type-detail-dialog',

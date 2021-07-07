@@ -4,11 +4,11 @@ import {Structure_Type} from '../settings/settings';
 import {
     Device_Item_Details,
     DeviceItemDetailDialogComponent
-} from '../manage/device-item-detail-dialog/device-item-detail-dialog.component';
+} from '../elements/manage/device-item-detail-dialog/device-item-detail-dialog.component';
 import {
     Device_Item_Group_Details,
     DeviceItemGroupDetailDialogComponent
-} from '../manage/device-item-group-detail-dialog/device-item-group-detail-dialog.component';
+} from '../elements/manage/device-item-group-detail-dialog/device-item-group-detail-dialog.component';
 import {ParamsDialogComponent} from './params-dialog/params-dialog.component';
 import {filter} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
@@ -21,7 +21,7 @@ import {MediaMatcher} from '@angular/cdk/layout';
 @Component({
     selector: 'app-device-item-group',
     templateUrl: './device-item-group.component.html',
-    styleUrls: ['./device-item-group.component.css', '../manage/manage.component.css']
+    styleUrls: ['./device-item-group.component.css', '../elements/manage/manage.component.css']
 })
 export class DeviceItemGroupComponent implements OnInit {
     @Input() group: Device_Item_Group;

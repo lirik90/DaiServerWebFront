@@ -1,10 +1,10 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {Device_Item_Group, DIG_Type} from '../../scheme';
+import {Device_Item_Group, DIG_Type} from '../../../scheme';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {SchemeService} from '../../scheme.service';
+import {SchemeService} from '../../../scheme.service';
 import {DeviceItemGroupTypeDetailDialogComponent} from '../device-item-group-type-detail-dialog/device-item-group-type-detail-dialog.component';
-import {Structure_Type} from '../../settings/settings';
+import {Structure_Type} from '../../../settings/settings';
 import {DetailDialog} from '../detail-dialog';
 
 export type Device_Item_Group_Details = Pick<Device_Item_Group, "title" | "type_id" | "mode">;

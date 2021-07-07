@@ -1,16 +1,16 @@
 import {Component, Inject} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Device, Plugin_Type} from '../../scheme';
+import {Device, Plugin_Type} from '../../../scheme';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {SettingsService} from '../../settings.service';
-import {SchemeService} from '../../scheme.service';
-import {Structure_Type} from '../../settings/settings';
+import {SettingsService} from '../../../settings.service';
+import {SchemeService} from '../../../scheme.service';
+import {Structure_Type} from '../../../settings/settings';
 import {DetailDialog} from '../detail-dialog';
 import {PluginDetailDialogComponent} from '../plugin-detail-dialog/plugin-detail-dialog.component';
-import {WithPlugin} from '../../with-plugin.class';
+import {WithPlugin} from '../../../with-plugin.class';
 import {applyMixins} from 'rxjs/internal-compatibility';
 import {Observable} from 'rxjs/Observable';
-import {PaginatorApi} from '../../../user';
+import {PaginatorApi} from '../../../../user';
 
 @Component({
     selector: 'app-device-detail-dialog',

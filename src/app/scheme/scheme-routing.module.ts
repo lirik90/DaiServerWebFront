@@ -7,13 +7,13 @@ import {SchemeLoadGuard} from './scheme-load.guard';
 import {SchemeDetailComponent} from '../schemes/detail/detail.component';
 
 import {SchemeComponent} from './scheme.component';
-import {ManageComponent} from './manage/manage.component';
+import {ManageComponent} from './elements/manage/manage.component';
 import {LogComponent} from './log/log.component';
 import {ReportsModule} from './reports/reports.module';
 import {PermissionGuard} from './permission.guard';
 import {DocComponent} from './doc/doc.component';
 import {ElementsComponent} from './elements/elements.component';
-import {ManageDevicesComponent} from './manage-devices/manage-devices.component';
+import {ManageDevicesComponent} from './elements/manage-devices/manage-devices.component';
 import { MnemoschemeComponent } from './mnemoscheme/mnemoscheme.component';
 
 const schemeRoutes: Routes = [{

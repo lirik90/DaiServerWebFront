@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {SchemeService} from '../../scheme.service';
-import {Structure_Type} from '../../settings/settings';
+import {SchemeService} from '../../../scheme.service';
+import {Structure_Type} from '../../../settings/settings';
 import {DetailDialog} from '../detail-dialog';
-import {DIG_Type} from '../../scheme';
+import {DIG_Type} from '../../../scheme';
 
 @Component({
     selector: 'app-device-item-group-type-detail-dialog',
