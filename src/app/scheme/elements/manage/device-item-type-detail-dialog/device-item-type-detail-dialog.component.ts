@@ -1,10 +1,10 @@
 import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {Device_Item_Type, DIG_Type, Register_Type, Save_Algorithm, Save_Timer, Sign_Type} from '../../scheme';
-import {SchemeService} from '../../scheme.service';
-import {SettingsService} from '../../settings.service';
-import {Structure_Type} from '../../settings/settings';
+import {Device_Item_Type, DIG_Type, Register_Type, Save_Algorithm, Save_Timer, Sign_Type} from '../../../scheme';
+import {SchemeService} from '../../../scheme.service';
+import {SettingsService} from '../../../settings.service';
+import {Structure_Type} from '../../../settings/settings';
 import {DetailDialog} from '../detail-dialog';
 import {SignTypeDetailDialogComponent} from '../sign-type-detail-dialog/sign-type-detail-dialog.component';
 import {DeviceItemGroupTypeDetailDialogComponent} from '../device-item-group-type-detail-dialog/device-item-group-type-detail-dialog.component';

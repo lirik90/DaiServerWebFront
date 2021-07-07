@@ -1,9 +1,9 @@
 import {Component, Inject} from '@angular/core';
-import {Section} from '../../scheme';
+import {Section} from '../../../scheme';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {SchemeService} from '../../scheme.service';
-import {Structure_Type} from '../../settings/settings';
+import {SchemeService} from '../../../scheme.service';
+import {Structure_Type} from '../../../settings/settings';
 import {DetailDialog} from '../detail-dialog';
 
 export type Section_Details = Pick<Section, "name" | "day_start" | "day_end">

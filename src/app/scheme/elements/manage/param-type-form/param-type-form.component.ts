@@ -1,7 +1,7 @@
 import {Component, forwardRef} from '@angular/core';
 import {ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators} from '@angular/forms';
-import {DIG_Param_Type, DIG_Param_Value_Type, DIG_Type} from '../../scheme';
-import {SchemeService} from '../../scheme.service';
+import {DIG_Param_Type, DIG_Param_Value_Type, DIG_Type} from '../../../scheme';
+import {SchemeService} from '../../../scheme.service';
 
 @Component({
     selector: 'app-param-type-form',

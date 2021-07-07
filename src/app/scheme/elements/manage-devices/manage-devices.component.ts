@@ -1,19 +1,19 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthenticationService} from '../../authentication.service';
-import {SchemeService} from '../scheme.service';
-import {Device, Device_Item} from '../scheme';
+import {AuthenticationService} from '../../../authentication.service';
+import {SchemeService} from '../../scheme.service';
+import {Device, Device_Item} from '../../scheme';
 import {MatDialog} from '@angular/material/dialog';
 import {DeviceDetailDialogComponent} from '../manage/device-detail-dialog/device-detail-dialog.component';
 import {DeviceItemDetailDialogComponent} from '../manage/device-item-detail-dialog/device-item-detail-dialog.component';
-import {UIService} from '../../ui.service';
-import {Structure_Type} from '../settings/settings';
-import {SidebarService} from '../sidebar.service';
-import {EditorModeFromSidebar} from '../editor-mode-from-sidebar';
+import {UIService} from '../../../ui.service';
+import {Structure_Type} from '../../settings/settings';
+import {SidebarService} from '../../sidebar.service';
+import {EditorModeFromSidebar} from '../../editor-mode-from-sidebar';
 
 @Component({
     selector: 'app-manage-devices',
     templateUrl: './manage-devices.component.html',
-    styleUrls: ['./manage-devices.component.css', '../manage/manage.component.css', '../device-item-group/device-item-group.component.css']
+    styleUrls: ['./manage-devices.component.css', '../manage/manage.component.css', '../../device-item-group/device-item-group.component.css']
 })
 export class ManageDevicesComponent extends EditorModeFromSidebar implements OnInit {
     isAdmin: boolean;

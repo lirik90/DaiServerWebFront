@@ -12,7 +12,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 @Component({
     selector: 'app-params-dialog',
     templateUrl: './params-dialog.component.html',
-    styleUrls: ['../../manage/manage.component.css'],
+    styleUrls: ['../../elements/manage/manage.component.css'],
 })
 export class ParamsDialogComponent implements OnInit {
     pending = false;

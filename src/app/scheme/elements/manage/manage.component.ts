@@ -2,24 +2,24 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 
-import {SchemeService} from '../scheme.service';
-import {Section} from '../scheme';
-import {ControlService} from '../control.service';
-import {AuthenticationService} from '../../authentication.service';
+import {SchemeService} from '../../scheme.service';
+import {Section} from '../../scheme';
+import {ControlService} from '../../control.service';
+import {AuthenticationService} from '../../../authentication.service';
 import {Section_Details, SectionDetailDialogComponent} from './section-detail-dialog/section-detail-dialog.component';
 import {
     Device_Item_Group_Details,
     DeviceItemGroupDetailDialogComponent
 } from './device-item-group-detail-dialog/device-item-group-detail-dialog.component';
-import {UIService} from '../../ui.service';
-import {Structure_Type} from '../settings/settings';
-import {SidebarService} from '../sidebar.service';
-import {EditorModeFromSidebar} from '../editor-mode-from-sidebar';
+import {UIService} from '../../../ui.service';
+import {Structure_Type} from '../../settings/settings';
+import {SidebarService} from '../../sidebar.service';
+import {EditorModeFromSidebar} from '../../editor-mode-from-sidebar';
 
 @Component({
     selector: 'app-manage',
     templateUrl: './manage.component.html',
-    styleUrls: ['../../sections.css', './manage.component.css'],
+    styleUrls: ['../../../sections.css', './manage.component.css'],
 })
 export class ManageComponent extends EditorModeFromSidebar implements OnInit, AfterViewInit {
     schemeName: string;

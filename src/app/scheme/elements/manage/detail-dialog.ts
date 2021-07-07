@@ -1,9 +1,9 @@
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {Modify_Structure_Type, Patch_Structure_Response, SchemeService} from '../scheme.service';
-import {Structure_Type} from '../settings/settings';
-import {SettingsService} from '../settings.service';
-import {Plugin_Type} from '../scheme';
+import {Modify_Structure_Type, Patch_Structure_Response, SchemeService} from '../../scheme.service';
+import {Structure_Type} from '../../settings/settings';
+import {SettingsService} from '../../settings.service';
+import {Plugin_Type} from '../../scheme';
 
 export abstract class DetailDialog<T extends Modify_Structure_Type,C> {
     public fg: FormGroup;

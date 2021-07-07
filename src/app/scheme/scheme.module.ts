@@ -18,7 +18,7 @@ import {SidebarService} from './sidebar.service';
 import {SettingsService} from './settings.service';
 
 import {SchemeComponent, PageReloadDialogComponent} from './scheme.component';
-import {ManageComponent} from './manage/manage.component';
+import {ManageComponent} from './elements/manage/manage.component';
 import {LogComponent} from './log/log.component';
 import {ParamComponent} from './param/param.component';
 import {GroupStatusComponent} from './group-status/group-status.component';
@@ -29,21 +29,20 @@ import {ParamItemComponent} from './param-item/param-item.component';
 import {SchemeStateComponent} from './scheme-state/scheme-state.component';
 import {SchemeSectionComponent} from './scheme-section/scheme-section.component';
 import {DocComponent} from './doc/doc.component';
-import {Manage2Component} from './manage2/manage2.component';
 import {StatusManageDialogComponent} from './status-manage-dialog/status-manage-dialog.component';
 import {StatusManageItemComponent} from './status-manage-dialog/status-manage-item/status-manage-item.component';
 import {HelpItemComponent} from './doc/help-item/help-item.component';
-import {SectionDetailDialogComponent} from './manage/section-detail-dialog/section-detail-dialog.component';
-import {DeviceItemGroupDetailDialogComponent} from './manage/device-item-group-detail-dialog/device-item-group-detail-dialog.component';
-import {DeviceItemDetailDialogComponent} from './manage/device-item-detail-dialog/device-item-detail-dialog.component';
+import {SectionDetailDialogComponent} from './elements/manage/section-detail-dialog/section-detail-dialog.component';
+import {DeviceItemGroupDetailDialogComponent} from './elements/manage/device-item-group-detail-dialog/device-item-group-detail-dialog.component';
+import {DeviceItemDetailDialogComponent} from './elements/manage/device-item-detail-dialog/device-item-detail-dialog.component';
 import {ElementsComponent} from './elements/elements.component';
-import {ManageDevicesComponent} from './manage-devices/manage-devices.component';
-import {ParamTypeFormComponent} from './manage/param-type-form/param-type-form.component';
-import {DeviceDetailDialogComponent} from './manage/device-detail-dialog/device-detail-dialog.component';
-import {DeviceItemTypeDetailDialogComponent} from './manage/device-item-type-detail-dialog/device-item-type-detail-dialog.component';
-import {DeviceItemGroupTypeDetailDialogComponent} from './manage/device-item-group-type-detail-dialog/device-item-group-type-detail-dialog.component';
-import {SignTypeDetailDialogComponent} from './manage/sign-type-detail-dialog/sign-type-detail-dialog.component';
-import { PluginDetailDialogComponent } from './manage/plugin-detail-dialog/plugin-detail-dialog.component';
+import {ManageDevicesComponent} from './elements/manage-devices/manage-devices.component';
+import {ParamTypeFormComponent} from './elements/manage/param-type-form/param-type-form.component';
+import {DeviceDetailDialogComponent} from './elements/manage/device-detail-dialog/device-detail-dialog.component';
+import {DeviceItemTypeDetailDialogComponent} from './elements/manage/device-item-type-detail-dialog/device-item-type-detail-dialog.component';
+import {DeviceItemGroupTypeDetailDialogComponent} from './elements/manage/device-item-group-type-detail-dialog/device-item-group-type-detail-dialog.component';
+import {SignTypeDetailDialogComponent} from './elements/manage/sign-type-detail-dialog/sign-type-detail-dialog.component';
+import { PluginDetailDialogComponent } from './elements/manage/plugin-detail-dialog/plugin-detail-dialog.component';
 import { ElementsMenuComponent } from './elements/elements-menu/elements-menu.component';
 import { MnemoschemeComponent } from './mnemoscheme/mnemoscheme.component';
 import { DeviceItemGroupComponent } from './device-item-group/device-item-group.component';
@@ -80,7 +79,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         PageReloadDialogComponent,
         ManageComponent,
         StatusManageDialogComponent,
-        Manage2Component,
         HoldingRegisterDialogComponent,
         VideoStreamDialogComponent,
         LogComponent,
