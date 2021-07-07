@@ -735,6 +735,7 @@ export class SchemeService extends ISchemeService {
         return this.http.get(`/api/v2/scheme/${this.scheme.id}/mnemoscheme/${id}/`, {
             responseType: 'text',
         });
+        // return this.http.get('/assets/img/salat.svg', { responseType: 'text' }); // for testing
     }
 
     getTimeInfo(): Observable<Time_Info> {

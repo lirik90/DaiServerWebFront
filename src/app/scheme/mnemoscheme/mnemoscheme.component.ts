@@ -91,7 +91,7 @@ export class MnemoschemeComponent implements OnInit {
 
             if (isCssAnim) {
                 const cssAnimEnableValue = elem.getAttribute('data-css-anim-if-value');
-                if (cssAnimEnableValue == value) {
+                if (MnemoschemeComponent.translateValue(cssAnimEnableValue) == value) {
                     // console.log('Start CssAnim');
                     MnemoschemeComponent.startCssAnimation(elem);
                 } else {
@@ -102,7 +102,7 @@ export class MnemoschemeComponent implements OnInit {
 
             if (isSmilAnim) {
                 const smilAnimEnableValue = elem.getAttribute('data-smil-anim-if-value');
-                if (smilAnimEnableValue == value) {
+                if (MnemoschemeComponent.translateValue(smilAnimEnableValue) == value) {
                     // console.log('Start SMIL');
                     MnemoschemeComponent.startSmilAnimation(elem);
                 } else {
@@ -113,7 +113,7 @@ export class MnemoschemeComponent implements OnInit {
 
             if (isShow) {
                 const showIfValue = elem.getAttribute('data-show-if-value');
-                if (showIfValue == value) {
+                if (MnemoschemeComponent.translateValue(showIfValue) == value) {
                     // console.log('Show');
                     MnemoschemeComponent.showElement(elem);
                 } else {
@@ -218,5 +218,13 @@ export class MnemoschemeComponent implements OnInit {
         const svg = this.svg.nativeElement.firstElementChild as SVGElement;
         svg.style.height = `${h}px`;
         svg.style.width = `${w}px`;
+    }
+
+    private static translateValue(value: string): any {
+        if (value === 'null') {
+            return null;
+        }
+
+        return value;
     }
 }
