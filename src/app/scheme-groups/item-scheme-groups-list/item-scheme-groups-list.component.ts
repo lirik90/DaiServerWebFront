@@ -47,7 +47,7 @@ export class ItemSchemeGroupsListComponent implements OnInit, OnChanges {
             }
         }
 
-        if (changes.items) {
+        if (changes.items?.currentValue) {
             const items = changes.items.currentValue;
             this.schemeGroups = this._schemeGroups
                     .filter(group => !items.find(i => i.id === group.id));
