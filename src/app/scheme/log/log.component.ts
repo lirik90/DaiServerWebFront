@@ -92,12 +92,12 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
 
     members: Scheme_Group_Member[] = [];
 
-    @ViewChild('table', { read: ElementRef }) tableElem: ElementRef;
+    @ViewChild('table', {read: ElementRef}) tableElem: ElementRef;
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     private scrollSubject: Subject<number> = new Subject();
     scrollHandler = (ev) => {
-        const { scrollTop } = document.documentElement;
+        const {scrollTop} = document.documentElement;
         if (document.body.scrollHeight - scrollTop <= 700) {
             this.scrollSubject.next(scrollTop);
         }
@@ -191,7 +191,9 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
         this.scrollEvent$ = this.scrollSubject.asObservable()
             .pipe(debounceTime(300))
             .subscribe(() => {
-                if (this.loading) return;
+                if (this.loading) {
+                    return;
+                }
                 // смотреть на min(date), max(date) разных журналов и "догружать" их до минимальных/максимальных.
                 // Если таких нет, то догружать новые.
                 this.startLoading();
@@ -203,7 +205,7 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
                 let minBound, minBoundKey;
                 Object.keys(this.dataTimeBounds) // собираем границы диапазона ts_from, ts_to
                     .forEach((key: string) => {
-                        const { min, max } = this.dataTimeBounds[key];
+                        const {min, max} = this.dataTimeBounds[key];
 
                         if (minBound === undefined || minBound > min) {
                             minBound = min;
@@ -217,7 +219,7 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
                 // найти типы, для которых недостаточно данных
                 Object.keys(this.dataTimeBounds)
                     .forEach((key: string) => {
-                        const { min, max } = this.dataTimeBounds[key];
+                        const {min, max} = this.dataTimeBounds[key];
 
                         let ts_from, ts_to;
 
@@ -227,14 +229,14 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
                         }
 
                         if (ts_from && ts_to) {
-                            ts[key] = { ts_from, ts_to };
+                            ts[key] = {ts_from, ts_to};
                             loadAll = false;
                         }
                     });
 
                 if (!loadAll) {
                     if (this.currentFilter.selectedLogs.event && ts.event) {
-                        observables.push(this.logDatabase.getEvents(schemeId, { ...logFilter, ...ts.event }));
+                        observables.push(this.logDatabase.getEvents(schemeId, {...logFilter, ...ts.event}));
                     }
                     if (this.currentFilter.selectedLogs.mode && ts.mode) {
                         observables.push(this.logDatabase.getModes(schemeId, {
@@ -265,7 +267,16 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
                             item_id: this.currentFilter.selectedItemsId,
                         }));
                     }
-                    this.processResponseObservables(observables, true);
+                    this.processResponseObservables(observables, true)
+                        .subscribe((count) => {
+                            if (count < 2) {
+                                this.updateFilter({
+                                    ...this.currentFilter,
+                                    ts_to: minBound,
+                                    ts_from: 0,
+                                }, true, 50);
+                            }
+                        });
                 } else {
                     this.updateFilter({
                         ...this.currentFilter,
@@ -347,7 +358,7 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
 
     openImg(row: any): void {
         let settings = VideoStreamDialogComponent.get_default_settings();
-        settings['data'] = { isImg: true, devItem: null, img: row };
+        settings['data'] = {isImg: true, devItem: null, img: row};
         let dialogRef = this.dialog.open(VideoStreamDialogComponent, settings);
 
         dialogRef.afterClosed().subscribe(result => console.log(result));
@@ -393,7 +404,23 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
             }));
         }
 
-        this.processResponseObservables(observables, append);
+        this.processResponseObservables(observables, append)
+            .subscribe(() => {
+                if (this.isFirstRequest) {
+                    this.isFirstRequest = false;
+                    const dataTypesCount = Object.keys(this.currentFilter.selectedLogs)
+                        .filter(key => this.currentFilter.selectedLogs[key])
+                        .length;
+
+                    if (this.dataSource.data.length < 50) {
+                        this.updateFilter({
+                            ...this.currentFilter,
+                            ts_to: this.currentFilter.ts_from,
+                            ts_from: 0,
+                        }, true, Math.round(50 / dataTypesCount));
+                    }
+                }
+            });
     }
 
     private static getLogFilter(data: LogsFilter, limit: number) {
@@ -414,7 +441,7 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
         return logFilter;
     }
 
-    private processResponseObservables(observables: Array<Observable<LogItem[]>>, append: boolean) {
+    private processResponseObservables(observables: Array<Observable<LogItem[]>>, append: boolean): Observable<number> {
         if (!append) {
             this.dataTimeBounds = {};
         }
@@ -426,7 +453,7 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
                     // set data bounds
                     const bounds = this.dataTimeBounds[logItem.type_id];
                     if (!bounds) {
-                        this.dataTimeBounds[logItem.type_id] = { min: logItem.time, max: logItem.time };
+                        this.dataTimeBounds[logItem.type_id] = {min: logItem.time, max: logItem.time};
                     } else {
                         if (bounds.min > logItem.time) {
                             bounds.min = logItem.time;
@@ -441,49 +468,37 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
                     logItem.date = new Date();
                     logItem.date.setTime(logItem.time);
                 })),
-            )
-            .subscribe((logEvents) => {
-                this.data = append ? [...this.data, ...logEvents] : logEvents;
-                if (this.data.length > 0) {
-                    this.data.sort((a: LogItem, b: LogItem) => b.time - a.time);
-                    const {min} = Object
-                        .keys(this.dataTimeBounds)
-                        .map(key => this.dataTimeBounds[key])
-                        .reduce((prev, curr) => {
-                            if (prev.min > curr.min) {
-                                return prev;
-                            }
+                map((logEvents) => {
+                    this.data = append ? [...this.data, ...logEvents] : logEvents;
+                    if (this.data.length > 0) {
+                        this.data.sort((a: LogItem, b: LogItem) => b.time - a.time);
+                        const {min} = Object
+                            .keys(this.dataTimeBounds)
+                            .map(key => this.dataTimeBounds[key])
+                            .reduce((prev, curr) => {
+                                if (prev.min > curr.min) {
+                                    return prev;
+                                }
 
-                            return curr;
-                        });
+                                return curr;
+                            });
 
-                    this.dataSource.data = this.data.filter((item: LogItem) => item.time > min);
-                } else {
-                    this.dataSource.data = this.data;
-                }
-                this.finishedLoading();
-
-                if (this.isFirstRequest) {
-                    this.isFirstRequest = false;
-                    const dataTypesCount = Object.keys(this.currentFilter.selectedLogs)
-                        .filter(key => this.currentFilter.selectedLogs[key])
-                        .length;
-
-                    if (this.dataSource.data.length < 50) {
-                        this.updateFilter({
-                            ...this.currentFilter,
-                            ts_to: this.currentFilter.ts_from,
-                            ts_from: 0,
-                        }, true, Math.round(50 / dataTypesCount));
+                        this.dataSource.data = this.data.filter((item: LogItem) => item.time > min);
+                    } else {
+                        this.dataSource.data = this.data;
                     }
-                }
-            }, (error) => this.errorLoading(error));
+                    this.finishedLoading();
+
+                    return logEvents.length;
+                }, (error) => this.errorLoading(error)));
     }
 
     private logsProcessor<T extends Log_Base>(mapper: (logs: T) => LogItem, flagName: keyof SelectedLogs) {
         const bindedMapper = mapper.bind(this.logDatabase) as (log: T) => LogItem;
         return (logs: T[]) => {
-            if (!this.currentFilter.selectedLogs[flagName]) return;
+            if (!this.currentFilter.selectedLogs[flagName]) {
+                return;
+            }
 
             const logItems = logs.map(bindedMapper).sort((a, b) => b.time - a.time);
             logItems.forEach((logItem: any) => {
@@ -491,7 +506,7 @@ export class LogComponent extends LoadingProgressbar implements OnInit, AfterVie
                 logItem.date.setTime(logItem.time);
             });
             this.dataSource.data = [...logItems, ...this.dataSource.data];
-        }
+        };
     }
 }
 
@@ -501,7 +516,7 @@ export class LogHttpDao {
     }
 
     getEvents(schemeId: number, filter: LogFilter & { selectedTextEvents?: Array<number> }): Observable<LogItem[]> {
-        const copy = { ...filter };
+        const copy = {...filter};
         if (filter.selectedTextEvents) {
             copy.type_id = filter.selectedTextEvents.join(',');
         }
@@ -514,11 +529,20 @@ export class LogHttpDao {
     public mapLogEvent(logEvent: Log_Event): LogItem {
         let color;
         switch (logEvent.type_id) {
-            case Log_Event_Type.ET_DEBUG: color = '#5A9740'; break;
-            case Log_Event_Type.ET_WARNING: color = '#A39242'; break;
-            case Log_Event_Type.ET_CRITICAL: color = '#994242'; break;
-            case Log_Event_Type.ET_INFO: color = '#407D9E'; break;
-            default: color = 'black';
+            case Log_Event_Type.ET_DEBUG:
+                color = '#5A9740';
+                break;
+            case Log_Event_Type.ET_WARNING:
+                color = '#A39242';
+                break;
+            case Log_Event_Type.ET_CRITICAL:
+                color = '#994242';
+                break;
+            case Log_Event_Type.ET_INFO:
+                color = '#407D9E';
+                break;
+            default:
+                color = 'black';
         }
 
         return {
@@ -555,7 +579,7 @@ export class LogHttpDao {
     }
 
     public mapLogStatus(logStatus: Log_Status): LogItem {
-        const { text, color } = this.getStatusText(logStatus);
+        const {text, color} = this.getStatusText(logStatus);
         return {
             type_id: 'status',
             user_id: logStatus.user_id,
@@ -757,15 +781,14 @@ export class LogHttpDao {
         const formattedStatusText = LogHttpDao.formatStatusText(status.text, logStatus.args);
         const text = `${digTitle} ${emoji} ${formattedStatusText} ${direction}`;
 
-        return { text, color };
+        return {text, color};
     }
 
     private static formatStatusText(text, args): string {
-        if (args !== null)
-        {
+        if (args !== null) {
             const args_list = args.split(',');
             args_list.forEach((arg, idx) => {
-                text = text.replaceAll("%" + (idx + 1), arg);
+                text = text.replaceAll('%' + (idx + 1), arg);
             });
         }
         return text;
