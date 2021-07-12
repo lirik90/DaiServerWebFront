@@ -105,6 +105,7 @@ fieldset.chart_type {
     flex-direction: row;
     align-items: center;
     margin: 8px;
+    cursor: pointer;
     justify-content: space-between;
 }
 
