@@ -1,13 +1,6 @@
-import {ChartArea, LinearScale, LinearScaleOptions, Scale} from 'chart.js';
+import {ChartArea, LinearScale, Scale} from 'chart.js';
 
-export interface ScaleWithLegendBoxOptions extends LinearScaleOptions {
-    /**
-     * Array of colors
-     */
-    legend: string[];
-}
-
-export class ScaleWithLegendBox extends LinearScale<ScaleWithLegendBoxOptions> implements Scale {
+export class ScaleWithLegendBox extends LinearScale implements Scale {
     public static id = 'LinearWithLegend';
 
     draw(chartArea: ChartArea) {
