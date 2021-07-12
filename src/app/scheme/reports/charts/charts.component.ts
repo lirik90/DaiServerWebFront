@@ -14,6 +14,7 @@ import {ChartItemComponent} from './chart-item/chart-item.component';
 import {Hsl} from './color-picker-dialog/color-picker-dialog';
 import {SidebarService} from '../../sidebar.service';
 import Chart, {ChartOptions} from 'chart.js';
+import {ScaleWithLegendBoxOptions} from './chart-item/scale-with-legend-box';
 
 const moment = _rollupMoment || _moment;
 
@@ -403,8 +404,8 @@ export class ChartsComponent implements OnDestroy {
         max: number,
         display: false | 'auto',
         step = 1,
-        type = 'linear',
-    ): Chart.CartesianScaleOptions & {id: string} {
+        type = 'LinearWithLegend',
+    ): ScaleWithLegendBoxOptions & {id: string} {
         const axis: any = {
             id,
             type,

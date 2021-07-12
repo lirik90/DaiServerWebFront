@@ -29,10 +29,11 @@ import zoomPlugin from 'chartjs-plugin-zoom';
 import 'chartjs-adapter-moment';
 import {Axis_Params} from '../../../scheme';
 import {ChartOptions} from 'chart.js';
+import {ScaleWithLegendBox} from './scale-with-legend-box';
 
 Chart.Chart.register(
     Chart.TimeScale, Chart.LinearScale, Chart.LineController,
-    Chart.PointElement, Chart.LineElement, zoomPlugin,
+    Chart.PointElement, Chart.LineElement, zoomPlugin, ScaleWithLegendBox,
 );
 
 @Component({
@@ -44,7 +45,7 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
     private readonly defaultYAxes_: any = {
         A: {
             id: 'A',
-            type: 'linear',
+            type: 'LinearWithLegend',
             position: 'left',
             display: 'auto',
             ticks: {
@@ -53,7 +54,7 @@ export class ChartItemComponent extends LoadingProgressbar implements OnInit, On
         },
         B: {
             id: 'B',
-            type: 'linear',
+            type: 'LinearWithLegend',
             position: 'right',
             display: 'auto',
             ticks: {
