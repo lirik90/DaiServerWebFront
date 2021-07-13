@@ -278,13 +278,7 @@ export class ChartFilterComponent implements OnInit, OnDestroy {
 
     private static pushToDatasetParams(dataset_params_ref: ItemWithLegend<Device_Item | DIG_Param>[], item: Device_Item | DIG_Param, isParam: boolean = false) {
         const idx = dataset_params_ref.length;
-        let title;
-        if (item instanceof Device_Item) {
-            title = item.type?.title;
-        } else {
-            title =  item.param?.title;
-        }
-
+        const title = (<Device_Item>item).type?.title || (<DIG_Param>item).param?.title;
         const color = ChartFilterComponent.getColorByIndex(idx, title);
         const displayColor = `hsl(${color.h}, ${color.s}%, ${color.l}%)`;
 

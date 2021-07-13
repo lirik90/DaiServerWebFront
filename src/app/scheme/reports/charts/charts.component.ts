@@ -7,13 +7,13 @@ import {combineLatest, of, SubscriptionLike, timer} from 'rxjs';
 import * as _moment from 'moment';
 import {default as _rollupMoment} from 'moment';
 import {Chart_Value_Item, Paginator_Chart_Value, SchemeService} from '../../scheme.service';
-import {Axis_Params, Device_Item, DIG_Param, DIG_Param_Value_Type, Register_Type} from '../../scheme';
+import {Axis_Params, Device_Item, DIG_Param, Register_Type} from '../../scheme';
 import {Scheme_Group_Member} from '../../../user';
 import {BuiltChartParams, Chart_Info_Interface, Chart_Type, ChartFilter, ItemWithLegend, ZoomInfo} from './chart-types';
 import {ChartItemComponent} from './chart-item/chart-item.component';
 import {Hsl} from './color-picker-dialog/color-picker-dialog';
 import {SidebarService} from '../../sidebar.service';
-import Chart, {ChartOptions} from 'chart.js';
+import Chart, {ChartOptions, LinearScaleOptions} from 'chart.js';
 
 const moment = _rollupMoment || _moment;
 
@@ -398,13 +398,13 @@ export class ChartsComponent implements OnDestroy {
 
     private static genAxis(
         id: string,
-        position: Chart.CartesianScaleOptions['position'],
+        position: Chart.LinearScaleOptions['position'],
         min: number,
         max: number,
         display: false | 'auto',
         step = 1,
-        type = 'linear',
-    ): Chart.CartesianScaleOptions & {id: string} {
+        type = 'LinearWithLegend',
+    ): LinearScaleOptions & {id: string} {
         const axis: any = {
             id,
             type,
